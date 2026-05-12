@@ -63,7 +63,7 @@ Manual prerequisites to confirm:
 1. OCI CLI is installed and authenticated.
 2. TENANCY_OCID is exported in the shell.
 3. A remote state bucket and namespace naming decision exists.
-4. GitHub Actions secrets are prepared for plan/apply workflows.
+4. Local or approved external secrets handling is defined.
 5. pre-commit is installed locally.
 
 Suggested validation:

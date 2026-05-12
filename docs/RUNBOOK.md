@@ -20,7 +20,7 @@ Operational procedures will be expanded as Terraform modules are implemented.
 ## Rotate Terraform Credentials
 
 1. Create replacement OCI API key material.
-2. Update the CI/CD secret store.
+2. Update the local or approved external secret store.
 3. Validate `terraform plan` on a non-production environment.
 4. Remove the old API key from OCI IAM.
 5. Record the rotation date in the operational log.

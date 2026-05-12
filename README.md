@@ -16,7 +16,7 @@ OCI Benchmark controls, OCI naming conventions, and GitOps delivery practices.
 - Separate mandatory core controls from optional deployment blueprints.
 - Keep Terraform modules reusable, composable, and free from remote state.
 - Keep each deployable blueprint independently stateful.
-- Make diagrams, documentation, validation, and CI/CD first-class project
+- Make diagrams, documentation, and local validation first-class project
   artifacts.
 - Align security, governance, IAM, and networking patterns with CIS OCI
   Benchmark guidance.
@@ -39,8 +39,6 @@ blueprints that compose the reusable modules under `modules/`.
 
 ```text
 .
-├── .github/
-│   └── workflows/
 ├── docs/
 │   ├── architecture/
 │   │   ├── diagrams/
@@ -186,7 +184,6 @@ Initial required diagrams:
 | `04-security-posture.excalidraw` | Security modules | TODO |
 | `05-governance.excalidraw` | Governance modules | TODO |
 | `06-operating-entity.excalidraw` | Operating entity blueprint | TODO |
-| `07-cicd-pipeline.excalidraw` | CI/CD workflows | TODO |
 
 ## Deployment Flow
 
@@ -195,7 +192,7 @@ Initial required diagrams:
 3. Choose and deploy one networking blueprint.
 4. Add operating entities as needed.
 5. Add optional extensions such as OKE, WAF, Exadata, API Gateway, or Streaming.
-6. Run validation, security scanning, and CI/CD checks before merging changes.
+6. Run local validation and security scanning before merging changes.
 
 ## Validation Tooling
 
@@ -207,7 +204,7 @@ The repository should standardize on:
 - `tfsec`
 - `checkov`
 - Pre-commit hooks
-- GitHub Actions for plan, apply, and scheduled security scans
+Automated workflows and GitHub Actions are intentionally out of scope for now.
 
 Terraform `1.12.0` or later is required for the native OCI remote state backend
 used by the environment examples.

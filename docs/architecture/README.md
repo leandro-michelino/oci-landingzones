@@ -20,7 +20,6 @@ Architecture diagrams are source-controlled as Excalidraw files under
 | `04-security-posture.excalidraw` | Security modules | TODO |
 | `05-governance.excalidraw` | Governance modules | TODO |
 | `06-operating-entity.excalidraw` | Operating entity blueprint | TODO |
-| `07-cicd-pipeline.excalidraw` | GitHub Actions workflows | TODO |
 
 ## Rules
 
@@ -28,3 +27,4 @@ Architecture diagrams are source-controlled as Excalidraw files under
 - Every diagram source must have an exported image before implementation starts.
 - Diagrams must use OCI naming examples for resource labels.
 - Production applies are blocked until the relevant diagram is complete.
+- GitHub Actions and repository workflows are intentionally not used for now.
