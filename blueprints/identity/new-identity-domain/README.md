@@ -56,4 +56,4 @@ sprawl.
 ## Architecture Artifacts
 
 - Source diagram: `architecture/new-identity-domain.excalidraw`
-- Exported image: `architecture/new-identity-domain.png`
+- Exported image: generate a PNG from the source only when a rendered review artifact is needed.

@@ -40,5 +40,5 @@ Each extension folder should contain:
 
 - `README.md` with purpose, prerequisites, inputs, and flow.
 - `architecture/<extension>.excalidraw` for the editable diagram.
-- `architecture/<extension>.png` for the exported image.
+- Optional PNG export for rendered review packages.
 - Terraform code and safe example variables.

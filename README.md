@@ -113,14 +113,14 @@ blueprints that compose the reusable modules under `modules/`.
 
 Each deployable blueprint folder is intended to be self-contained. The local
 `README.md` explains the pattern, fit, inputs, and deployment flow, while the
-local `architecture/` folder defines the editable diagram source and exported
-architecture image names.
+local `architecture/` folder keeps the editable Excalidraw source. PNG exports
+are generated only when a rendered review artifact is needed.
 
 ### Core
 
 | Blueprint | Path | Description |
 |---|---|---|
-| Core baseline | `blueprints/core/` | Mandatory baseline for compartments, IAM, tagging, governance logging, optional Cloud Guard, opt-in Vault/KMS, opt-in Security Zones, opt-in budgets, and opt-in governance events. Monitoring comes in a later phase. |
+| Core baseline | `blueprints/core/` | Mandatory baseline for compartments, IAM, tagging, governance logging, optional Cloud Guard, opt-in Vault/KMS, opt-in Security Zones, opt-in budgets, opt-in governance events, and opt-in monitoring. |
 
 ### CIS Landing Zones
 
@@ -144,7 +144,7 @@ the Terraform code.
 ### Networking
 
 Each networking deployment folder includes its own README and local
-`architecture/` folder for the editable diagram and exported image.
+`architecture/` folder for the editable Excalidraw source.
 
 | Blueprint | Path | Description |
 |---|---|---|
@@ -224,10 +224,10 @@ driven by auditability, traffic inspection, or regulator expectations.
 ### Extensions
 
 Each extension folder includes local deployment notes and an `architecture/`
-folder for the service-specific diagram and exported image.
+folder for the service-specific Excalidraw source.
 
-| Extension | Path |
-|---|---|
+| Extension | Path | Description |
+|---|---|---|
 | OKE | `blueprints/extensions/oke/` | Optional OKE cluster and node pool wiring, disabled by default. |
 | WAF | `blueprints/extensions/waf/` | Optional WAF policy and load-balancer attachment, disabled by default. |
 | Exadata | `blueprints/extensions/exadata/` | Optional Exadata Cloud Infrastructure wiring, disabled by default. |
@@ -292,8 +292,8 @@ folders:
 - `blueprints/cis/level1/`
 - `blueprints/cis/level2/`
 
-See `docs/CIS-PROFILES.md` for the CIS landing zone contract and planned
-behavior.
+See `docs/CIS-PROFILES.md` for the CIS landing zone contract and current
+profile behavior.
 
 ## Ansible Contract
 
@@ -317,24 +317,23 @@ from Ansible for now.
 Placeholder folders and documentation may be created before implementation so
 the project map stays visible. Before adding real OCI resources or running
 `terraform apply` for a blueprint or module, the
-matching Excalidraw diagram must exist either in the shared `docs/architecture/`
-area or in the blueprint's own `architecture/` folder. Each diagram should have
-an exported image beside it and be marked as complete in the diagram tracker.
+matching Excalidraw diagram must exist either in the shared
+`docs/architecture/diagrams/` area or in the blueprint's own `architecture/`
+folder. Customer-facing diagrams should have rendered PNG exports before
+production review, while shared Phase 7 source diagrams remain in Excalidraw
+format.
 
 Initial required diagrams:
 
 | Diagram | First Consumer | Status |
 |---|---|---|
-| `00-overview.excalidraw` | `README.md` | TODO |
-| `blueprints/core/architecture/core.excalidraw` | `blueprints/core/` | TODO |
-| `blueprints/cis/level1/architecture/cis-level1.excalidraw` | CIS Level 1 blueprint | TODO |
-| `blueprints/cis/level2/architecture/cis-level2.excalidraw` | CIS Level 2 blueprint | TODO |
-| `blueprints/networking/*/architecture/*.excalidraw` | Networking blueprints | TODO |
-| `04-security-posture.excalidraw` | Security modules | TODO |
-| `05-governance.excalidraw` | Governance modules | TODO |
-| `blueprints/operating-entity/architecture/operating-entity.excalidraw` | Single operating entity blueprint | TODO |
-| `blueprints/operating-entity/multi-operating-entities/architecture/multi-operating-entities.excalidraw` | Multi-operating-entity blueprint | TODO |
-| `blueprints/operating-entity/workload-vending/architecture/workload-vending.excalidraw` | Workload vending blueprint | TODO |
+| `docs/architecture/diagrams/00-overview.excalidraw` | Repository overview | Source created |
+| `docs/architecture/diagrams/01-iam-compartments.excalidraw` | IAM and compartment foundation | Source created |
+| `docs/architecture/diagrams/04-security-posture.excalidraw` | Shared security posture | Source created |
+| `docs/architecture/diagrams/05-governance.excalidraw` | Shared governance and operations | Source created |
+| `docs/architecture/diagrams/09-cis-level1.excalidraw` | CIS Level 1 blueprint | Source created |
+| `docs/architecture/diagrams/09-cis-level2.excalidraw` | CIS Level 2 blueprint | Source created |
+| Blueprint-local architecture sources | Core, CIS, identity, networking, operating entity, extension, compliance, data, disaster recovery, and industry folders | Source created |
 
 ## Deployment Flow
 

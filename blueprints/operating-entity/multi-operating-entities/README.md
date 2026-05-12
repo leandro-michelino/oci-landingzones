@@ -12,10 +12,10 @@ subsidiaries, agencies, or portfolios. It keeps delegated admins, auditors, scop
 policies, tags, and compartment shapes consistent without flattening everyone into one
 cloud bucket.
 
-In Phase 4 this is a deployable IAM and compartment foundation. It creates repeated
-entity root compartments, each entity's child compartments, delegated groups, and
-entity-scoped IAM policies. Budgets, logging, shared services, and network boundaries are
-still part of the operating model, but they land in later security/governance phases.
+This is a deployable IAM and compartment foundation. It creates repeated entity root
+compartments, each entity's child compartments, delegated groups, and entity-scoped IAM
+policies. Budgets, logging, shared services, and network boundaries are documented
+operating-model hooks and are not created directly by this blueprint.
 
 ## Why Use It
 

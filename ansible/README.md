@@ -22,9 +22,9 @@ ansible-galaxy collection install -r ansible/requirements.yml
 ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook ansible/playbooks/validate.yml
 ```
 
-The validation playbook runs `terraform fmt`, auto-discovers implemented Phase
-1-5 Terraform blueprints, initializes and validates them without a backend,
-runs optional local linters when installed, checks Ansible playbook syntax, and
+The validation playbook runs `terraform fmt`, auto-discovers implemented
+Terraform blueprints, initializes and validates them without a backend, runs
+optional local linters when installed, checks Ansible playbook syntax, and
 removes generated Terraform artifacts afterward. Cleanup is in an Ansible
 `always` block, so generated `.terraform/`, lock, state, and plan files are
 removed even when validation fails.

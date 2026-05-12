@@ -58,7 +58,7 @@ everything.
 ## Architecture Artifacts
 
 - Source diagram: `architecture/externally-managed-vcns.excalidraw`
-- Exported image: `architecture/externally-managed-vcns.png`
+- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
 
 ## Notes
 

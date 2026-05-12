@@ -63,7 +63,7 @@ hub.
 ## Architecture Artifacts
 
 - Source diagram: `architecture/standalone-private-endpoint-only.excalidraw`
-- Exported image: `architecture/standalone-private-endpoint-only.png`
+- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
 
 ## Notes
 

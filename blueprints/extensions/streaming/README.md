@@ -11,8 +11,8 @@ This extension gives event-driven workloads a managed streaming foundation. It c
 stream pools, producer and consumer access, retention, partition choices, private
 access, monitoring, and the ownership model for teams publishing or reading events.
 
-In Phase 5 the Terraform can create a stream pool and streams, or attach streams to an
-existing pool. Creation is disabled by default so validation stays safe and cheap.
+The Terraform can create a stream pool and streams, or attach streams to an existing
+pool. Creation is disabled by default so validation stays safe and cheap.
 
 ## Why Use It
 
@@ -59,4 +59,4 @@ and consumer access, network paths, and retention choices made deliberately.
 ## Architecture Artifacts
 
 - Source diagram: `architecture/streaming.excalidraw`
-- Exported image: `architecture/streaming.png`
+- Exported image: generate a PNG from the source only when a rendered review artifact is needed.

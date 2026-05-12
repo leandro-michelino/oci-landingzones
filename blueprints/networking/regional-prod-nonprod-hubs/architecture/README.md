@@ -2,11 +2,10 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Keep the deployment diagram source and exported image in this folder.
+Keep the deployment editable Excalidraw source in this folder. Export a PNG from the source only when a review package needs a rendered image.
 
 ```text
 - regional-prod-nonprod-hubs.excalidraw
-- regional-prod-nonprod-hubs.png
 ```
 
 The diagram should show prod and nonprod hubs, DRG routing boundaries, inspection,

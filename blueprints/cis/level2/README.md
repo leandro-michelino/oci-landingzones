@@ -7,8 +7,8 @@ deployment should explicitly target stricter CIS OCI Benchmark Level 2 behavior.
 
 The general landing zone blueprints do not enable CIS behavior by default. This folder
 fixes the intended profile to `level2`, composes the implemented core/IAM foundation,
-and will keep adding stricter Level 2 security, governance, and networking defaults as
-those modules mature.
+and enables the stricter Level 2 governance, audit, Cloud Guard, Events, and optional
+security controls exposed by the current modules.
 
 ## What It Does
 
@@ -35,10 +35,10 @@ place to control.
 - Landing zones where private-only access and inspected egress are preferred.
 - Projects that must show which resources are intended to support CIS Level 2.
 
-> [DIAGRAM REQUIRED] `architecture/cis-level2.excalidraw`
+> [DIAGRAM SOURCE] `architecture/cis-level2.excalidraw`
 >
-> Status: TODO - create this diagram before using the blueprint for a production
-> customer review.
+> Status: source created. Export a rendered PNG only when a review package needs
+> one.
 
 ## Profile
 
@@ -61,5 +61,6 @@ cis_level = "level2"
   notification topic.
 - Optional CIS budget creation when `budget_amount` or custom `budgets` are
   supplied.
-- Planned next: stronger break-glass posture, private-first networking,
-  inspected egress, and stricter governance controls.
+- Break-glass posture, private-first networking, inspected egress, and extra
+  governance controls should be selected through the attached identity,
+  networking, and security blueprint choices.

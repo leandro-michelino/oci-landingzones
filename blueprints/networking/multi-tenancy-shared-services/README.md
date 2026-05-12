@@ -59,7 +59,7 @@ about who can talk to what.
 ## Architecture Artifacts
 
 - Source diagram: `architecture/multi-tenancy-shared-services.excalidraw`
-- Exported image: `architecture/multi-tenancy-shared-services.png`
+- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
 
 ## Notes
 

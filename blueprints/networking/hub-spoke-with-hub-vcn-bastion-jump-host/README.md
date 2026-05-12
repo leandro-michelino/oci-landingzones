@@ -59,7 +59,7 @@ RDP scattered around the estate.
 ## Architecture Artifacts
 
 - Source diagram: `architecture/hub-spoke-with-hub-vcn-bastion-jump-host.excalidraw`
-- Exported image: `architecture/hub-spoke-with-hub-vcn-bastion-jump-host.png`
+- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
 
 ## Notes
 

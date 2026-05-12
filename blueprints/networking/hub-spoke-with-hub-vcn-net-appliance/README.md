@@ -60,7 +60,7 @@ existing security operations.
 ## Architecture Artifacts
 
 - Source diagram: `architecture/hub-spoke-with-hub-vcn-net-appliance.excalidraw`
-- Exported image: `architecture/hub-spoke-with-hub-vcn-net-appliance.png`
+- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
 
 ## Notes
 

@@ -2,14 +2,13 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Keep the core landing zone diagram source and exported image in this folder.
+Keep the core landing zone editable Excalidraw source in this folder. Export a PNG from the source only when a review package needs a rendered image.
 
 - `core.excalidraw`
-- `core.png`
 
 The diagram should show the landing zone root compartment, child compartments, IAM
-groups, dynamic groups, policies, tag namespace, tag defaults, and planned security and
-governance services.
+groups, dynamic groups, policies, tag namespace, tag defaults, and optional security,
+governance, and operations services.
 
 ## Why This Diagram Matters
 

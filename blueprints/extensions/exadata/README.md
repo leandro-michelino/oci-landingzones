@@ -12,9 +12,9 @@ network placement, client and backup paths, operational access, governance, and
 ownership points that normally need DBAs, network, security, and platform teams in the
 same conversation.
 
-In Phase 5 the Terraform can create Exadata Cloud Infrastructure, but it is disabled by
-default. That is intentional: Exadata is high-cost, capacity-sensitive, and should only
-move after database, network, finance, and operations people have all nodded.
+The Terraform can create Exadata Cloud Infrastructure, but it is disabled by default.
+That is intentional: Exadata is high-cost, capacity-sensitive, and should only move
+after database, network, finance, and operations people have all nodded.
 
 ## Why Use It
 
@@ -23,7 +23,7 @@ Exadata needs deliberate networking, backup, access, and operations design.
 
 ## When To Use It
 
-- Exadata Cloud Service or Cloud@Customer integration is planned.
+- Exadata Cloud Service or Cloud@Customer integration is in scope.
 - Database networks and backup paths need careful control.
 - DBA and platform responsibilities must be clear.
 
@@ -60,4 +60,4 @@ Exadata needs deliberate networking, backup, access, and operations design.
 ## Architecture Artifacts
 
 - Source diagram: `architecture/exadata.excalidraw`
-- Exported image: `architecture/exadata.png`
+- Exported image: generate a PNG from the source only when a rendered review artifact is needed.

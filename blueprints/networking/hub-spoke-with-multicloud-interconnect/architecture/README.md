@@ -2,11 +2,10 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Keep the deployment diagram source and exported image in this folder.
+Keep the deployment editable Excalidraw source in this folder. Export a PNG from the source only when a review package needs a rendered image.
 
 ```text
 - hub-spoke-with-multicloud-interconnect.excalidraw
-- hub-spoke-with-multicloud-interconnect.png
 ```
 
 The diagram should show OCI DRG, hub VCN, spokes, external cloud attachment, route

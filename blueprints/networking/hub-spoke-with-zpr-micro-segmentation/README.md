@@ -60,7 +60,7 @@ enough. ZPR lets the design talk about workload intent, not only IP ranges.
 ## Architecture Artifacts
 
 - Source diagram: `architecture/hub-spoke-with-zpr-micro-segmentation.excalidraw`
-- Exported image: `architecture/hub-spoke-with-zpr-micro-segmentation.png`
+- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
 
 ## Notes
 

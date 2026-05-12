@@ -11,11 +11,11 @@ This blueprint turns workload onboarding into a repeatable platform product. It 
 the standard package an app team needs: workload compartments, delegated IAM scope, and
 ownership tags.
 
-In Phase 4 it creates the deployable core of that package: one workload root
-compartment, child compartments for app/data/ops by default, admin/operator/auditor
-groups, and policies scoped to those compartment paths. Budget, logging, quota, and
-network attachment expectations stay documented as part of the handoff model and will be
-wired in later phases.
+It creates the deployable core of that package: one workload root compartment,
+child compartments for app/data/ops by default, admin/operator/auditor groups,
+and policies scoped to those compartment paths. Budget, logging, quota, and
+network attachment expectations are documented as part of the handoff model but
+are not created directly by this blueprint.
 
 ## Why Use It
 

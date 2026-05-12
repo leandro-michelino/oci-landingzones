@@ -37,5 +37,5 @@ Each deployment folder should contain:
 
 - `README.md` with purpose, fit, inputs, and deployment flow.
 - `architecture/<deployment>.excalidraw` for the editable diagram.
-- `architecture/<deployment>.png` for the exported image.
+- Optional PNG export for rendered review packages.
 - Terraform code and safe example variables.

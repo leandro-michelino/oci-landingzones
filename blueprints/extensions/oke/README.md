@@ -12,9 +12,9 @@ afterthought. It calls out cluster placement, private nodes, endpoint exposure, 
 registry access, IAM integration, logging, and the choices platform and application
 teams need to agree on.
 
-In Phase 5 the Terraform can create the OKE cluster and a worker node pool, but both are
-disabled by default. That keeps local validation cheap while still giving you the real
-switches for a customer-approved deployment.
+The Terraform can create the OKE cluster and a worker node pool, but both are disabled
+by default. That keeps local validation cheap while still giving you the real switches
+for a customer-approved deployment.
 
 ## Why Use It
 
@@ -62,4 +62,4 @@ up front.
 ## Architecture Artifacts
 
 - Source diagram: `architecture/oke.excalidraw`
-- Exported image: `architecture/oke.png`
+- Exported image: generate a PNG from the source only when a rendered review artifact is needed.

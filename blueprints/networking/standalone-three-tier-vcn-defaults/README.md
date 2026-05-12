@@ -62,7 +62,7 @@ apps.
 ## Architecture Artifacts
 
 - Source diagram: `architecture/standalone-three-tier-vcn-defaults.excalidraw`
-- Exported image: `architecture/standalone-three-tier-vcn-defaults.png`
+- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
 
 ## Notes
 

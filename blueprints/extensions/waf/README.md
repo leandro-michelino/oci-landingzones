@@ -12,9 +12,9 @@ protected hostnames, origins, DNS, TLS certificates, logs, and alerting back to 
 landing-zone controls instead of treating internet exposure as an application-only
 concern.
 
-In Phase 5 the Terraform can create an OCI WAF policy and optionally attach a Web App
-Firewall to a load balancer. Both are disabled by default because public exposure needs
-a deliberate review.
+The Terraform can create an OCI WAF policy and optionally attach a Web App Firewall to
+a load balancer. Both are disabled by default because public exposure needs a deliberate
+review.
 
 ## Why Use It
 
@@ -61,4 +61,4 @@ app. WAF belongs in the design when internet exposure is intentional and needs p
 ## Architecture Artifacts
 
 - Source diagram: `architecture/waf.excalidraw`
-- Exported image: `architecture/waf.png`
+- Exported image: generate a PNG from the source only when a rendered review artifact is needed.

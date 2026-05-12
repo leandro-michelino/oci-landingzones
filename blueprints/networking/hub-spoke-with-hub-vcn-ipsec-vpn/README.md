@@ -61,7 +61,7 @@ plans mature.
 ## Architecture Artifacts
 
 - Source diagram: `architecture/hub-spoke-with-hub-vcn-ipsec-vpn.excalidraw`
-- Exported image: `architecture/hub-spoke-with-hub-vcn-ipsec-vpn.png`
+- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
 
 ## Notes
 

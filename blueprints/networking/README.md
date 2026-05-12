@@ -4,7 +4,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 This folder contains the OCI networking deployment patterns used by the landing zone
 project. Each deployment folder is self-contained: it has Terraform files, a local
-README, and an `architecture/` folder for the diagram source and exported image.
+README, and a local architecture folder for the editable Excalidraw source.
 
 ## What It Does
 
@@ -53,7 +53,7 @@ Each deployment folder should contain:
 
 - `README.md` with the deployment intent, fit, inputs, and flow.
 - `architecture/<deployment>.excalidraw` for the editable diagram source.
-- `architecture/<deployment>.png` for the exported architecture image.
+- Optional PNG export for rendered review packages.
 - `terraform.tfvars.example` with safe example values.
 - Terraform code that composes reusable modules from `modules/`.
 

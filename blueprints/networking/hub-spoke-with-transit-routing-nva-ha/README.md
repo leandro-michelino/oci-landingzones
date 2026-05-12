@@ -61,7 +61,7 @@ is the heavier enterprise pattern for customers who care deeply about failure be
 ## Architecture Artifacts
 
 - Source diagram: `architecture/hub-spoke-with-transit-routing-nva-ha.excalidraw`
-- Exported image: `architecture/hub-spoke-with-transit-routing-nva-ha.png`
+- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
 
 ## Notes
 

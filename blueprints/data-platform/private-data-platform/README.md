@@ -20,7 +20,7 @@ teams to assemble pieces ad hoc.
 
 ## When To Use It
 
-- Private analytics or lakehouse workloads are planned.
+- Private analytics or lakehouse workloads are in scope.
 - Data movement must avoid public exposure.
 - Encryption, audit, and producer/consumer access need to be clear.
 

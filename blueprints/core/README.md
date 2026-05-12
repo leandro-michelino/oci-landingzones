@@ -32,10 +32,10 @@ IAM, tags, and policy outputs.
 - Provide stable outputs for networking, security, governance, and operations.
 - Run ephemeral real-deployment tests in a parent compartment.
 
-> [DIAGRAM REQUIRED] `architecture/core.excalidraw`
+> [DIAGRAM SOURCE] `architecture/core.excalidraw`
 >
-> Status: TODO - create this diagram before using the blueprint for a production
-> customer review.
+> Status: source created. Export a rendered PNG only when a review package needs
+> one.
 
 ## Responsibilities
 

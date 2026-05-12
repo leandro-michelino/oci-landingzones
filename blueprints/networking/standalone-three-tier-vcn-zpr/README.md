@@ -56,7 +56,7 @@ the small-footprint way to bring ZPR thinking into a three-tier app.
 ## Architecture Artifacts
 
 - Source diagram: `architecture/standalone-three-tier-vcn-zpr.excalidraw`
-- Exported image: `architecture/standalone-three-tier-vcn-zpr.png`
+- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
 
 ## Notes
 

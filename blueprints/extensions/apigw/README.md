@@ -11,8 +11,8 @@ This extension gives APIs a managed front door. It captures the gateway, routes,
 reachability, authentication choices, certificates, DNS, logging, and policy decisions
 so every application team is not inventing API exposure from scratch.
 
-In Phase 5 the Terraform can create the API Gateway and a deployment with routes. Both
-are opt-in, because backend reachability, certificates, DNS, and auth should be reviewed
+The Terraform can create the API Gateway and a deployment with routes. Both are
+opt-in, because backend reachability, certificates, DNS, and auth should be reviewed
 before anyone opens a real endpoint.
 
 ## Why Use It
@@ -61,4 +61,4 @@ access.
 ## Architecture Artifacts
 
 - Source diagram: `architecture/apigw.excalidraw`
-- Exported image: `architecture/apigw.png`
+- Exported image: generate a PNG from the source only when a rendered review artifact is needed.

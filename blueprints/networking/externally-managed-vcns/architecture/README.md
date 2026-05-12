@@ -2,10 +2,9 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Keep the deployment diagram source and exported image in this folder.
+Keep the deployment editable Excalidraw source in this folder. Export a PNG from the source only when a review package needs a rendered image.
 
 - `externally-managed-vcns.excalidraw`
-- `externally-managed-vcns.png`
 
 The diagram should show existing VCNs, ownership boundaries, resources managed by this
 repository, and any routing or DNS integration points.

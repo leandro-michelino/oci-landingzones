@@ -2,10 +2,9 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Keep the deployment diagram source and exported image in this folder.
+Keep the deployment editable Excalidraw source in this folder. Export a PNG from the source only when a review package needs a rendered image.
 
 - `standalone-private-endpoint-only.excalidraw`
-- `standalone-private-endpoint-only.png`
 
 The diagram should show private subnets, private endpoints, service gateway, optional
 NAT gateway, DNS path, and administrative access path.

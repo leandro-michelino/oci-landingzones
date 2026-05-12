@@ -60,7 +60,7 @@ as an afterthought. Hybrid and multi-spoke designs need DNS paths drawn clearly.
 ## Architecture Artifacts
 
 - Source diagram: `architecture/hub-spoke-with-private-dns-split-horizon.excalidraw`
-- Exported image: `architecture/hub-spoke-with-private-dns-split-horizon.png`
+- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
 
 ## Notes
 

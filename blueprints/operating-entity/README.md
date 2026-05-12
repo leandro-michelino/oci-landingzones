@@ -11,11 +11,10 @@ This blueprint packages an operating entity into the landing zone: a business un
 subsidiary, agency, application group, or workload owner with its own compartment
 shape and delegated IAM.
 
-Right now it creates the practical foundation: one root compartment, child workload
-compartments, admin and auditor groups, scoped IAM policies, and ownership tags. Budget,
-logging, quota, and network attachment hooks are documented here because they are part of
-the real customer conversation, but the deployable Phase 4 Terraform focuses on
-compartments and IAM first.
+It creates the practical foundation: one root compartment, child workload
+compartments, admin and auditor groups, scoped IAM policies, and ownership tags.
+Budget, logging, quota, and network attachment are documented operating-model
+hooks; this blueprint does not create those resources directly.
 
 ## Why Use It
 
@@ -36,7 +35,7 @@ optional network attachment.
 - Delegated admin and auditor groups.
 - IAM policies scoped to the entity root and child compartment paths.
 - Defined and freeform tags for ownership and chargeback metadata.
-- Documented budget, logging, and network attachment assumptions for later phases.
+- Documented budget, logging, quota, and network attachment handoff assumptions.
 
 ## Best Fit
 
@@ -78,4 +77,4 @@ The committed `terraform.tfvars.example` is only a starter shape.
 ## Architecture Artifacts
 
 - Source diagram: `architecture/operating-entity.excalidraw`
-- Exported image: `architecture/operating-entity.png`
+- Exported image: generate a PNG from the source only when a rendered review artifact is needed.

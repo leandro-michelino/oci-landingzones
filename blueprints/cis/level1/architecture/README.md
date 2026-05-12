@@ -2,10 +2,9 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Keep the CIS Level 1 landing zone diagram source and exported image in this folder.
+Keep the CIS Level 1 landing zone editable Excalidraw source in this folder. Export a PNG from the source only when a review package needs a rendered image.
 
 - `cis-level1.excalidraw`
-- `cis-level1.png`
 
 The diagram should show the Level 1 control scope, inherited core baseline, enabled
 governance services, monitoring, logging, and exception boundaries.

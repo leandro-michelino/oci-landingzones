@@ -2,10 +2,9 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Keep the deployment diagram source and exported image in this folder.
+Keep the deployment editable Excalidraw source in this folder. Export a PNG from the source only when a review package needs a rendered image.
 
 - `hub-spoke-with-drg-and-three-tier-vcns.excalidraw`
-- `hub-spoke-with-drg-and-three-tier-vcns.png`
 
 The diagram should show the DRG, hub VCN, spoke VCNs, attachments, route tables, subnet
 tiers, and intended traffic flows.

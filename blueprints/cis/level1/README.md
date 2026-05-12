@@ -7,8 +7,8 @@ deployment should explicitly target CIS OCI Benchmark Level 1 behavior.
 
 The general landing zone blueprints do not enable CIS behavior by default. This folder
 fixes the intended profile to `level1`, composes the implemented core/IAM foundation,
-and will keep adding Level 1 security, governance, and networking defaults as those
-modules mature.
+and enables the Level 1 governance, audit, Cloud Guard, Events, and optional security
+controls exposed by the current modules.
 
 ## What It Does
 
@@ -38,10 +38,10 @@ security wants structure but the platform still needs to move.
   defaults.
 - Projects that must show which resources are intended to support CIS Level 1.
 
-> [DIAGRAM REQUIRED] `architecture/cis-level1.excalidraw`
+> [DIAGRAM SOURCE] `architecture/cis-level1.excalidraw`
 >
-> Status: TODO - create this diagram before using the blueprint for a production
-> customer review.
+> Status: source created. Export a rendered PNG only when a review package needs
+> one.
 
 ## Profile
 
@@ -65,4 +65,5 @@ cis_level = "level1"
 - Optional CIS budget creation when `budget_amount` or custom `budgets` are
   supplied.
 - CIS profile passed into child modules for control differences.
-- Planned next: stricter network defaults where the customer wants them.
+- Network-specific defaults are selected through the networking blueprint that
+  accompanies this profile.
