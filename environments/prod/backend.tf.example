@@ -9,6 +9,6 @@ terraform {
     namespace = "CHANGE-ME"
     region    = "eu-frankfurt-1"
     key       = "prod/terraform.tfstate"
-    workspace_key_prefix = "envs"
+    workspace_key_prefix = "envs/"
   }
 }
