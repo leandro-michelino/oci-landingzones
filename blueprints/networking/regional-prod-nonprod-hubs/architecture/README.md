@@ -2,16 +2,11 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Expected editable diagram:
+Keep the deployment diagram source and exported image in this folder.
 
 ```text
-docs/architecture/diagrams/15-regional-prod-nonprod-hubs.excalidraw
-```
-
-Expected exported image:
-
-```text
-docs/architecture/exports/15-regional-prod-nonprod-hubs.png
+- regional-prod-nonprod-hubs.excalidraw
+- regional-prod-nonprod-hubs.png
 ```
 
 The diagram should show prod and nonprod hubs, DRG routing boundaries, inspection,

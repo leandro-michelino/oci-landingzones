@@ -2,16 +2,11 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Expected editable diagram:
+Keep the deployment diagram source and exported image in this folder.
 
 ```text
-docs/architecture/diagrams/16-private-data-platform.excalidraw
-```
-
-Expected exported image:
-
-```text
-docs/architecture/exports/16-private-data-platform.png
+- private-data-platform.excalidraw
+- private-data-platform.png
 ```
 
 The diagram should show private endpoints, service gateway, data service access,

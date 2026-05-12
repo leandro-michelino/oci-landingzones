@@ -21,6 +21,15 @@ Local validation can create `.terraform/`, `.terraform.lock.hcl`, plans, and
 state files in many blueprint folders. They are intentionally ignored and should
 be removed from the workspace before committing.
 
+Use the Ansible-backed validation entry point before commits:
+
+```bash
+./scripts/validate-all.sh
+```
+
+This validates every implemented Phase 1-4 Terraform blueprint without a remote
+backend, runs Ansible syntax checks, and cleans generated Terraform artifacts.
+
 The generic landing zone deployment does not enable CIS behavior by default. To
 deploy a CIS landing zone, start from one of the dedicated folders instead:
 
@@ -47,7 +56,7 @@ blueprints.
 Required diagram:
 
 ```text
-docs/architecture/diagrams/01-iam-compartments.excalidraw
+blueprints/core/architecture/core.excalidraw
 ```
 
 For ephemeral tests, set `parent_compartment_ocid` in a local ignored
@@ -102,13 +111,9 @@ Choose one networking blueprint and deploy it after core.
 Each networking deployment folder has a local README and `architecture/` folder
 with the expected editable diagram and exported image names.
 
-Standalone VCN blueprints require:
-
-```text
-docs/architecture/diagrams/03-standalone-vcn.excalidraw
-```
-
-Hub-spoke blueprints require the matching `02-hub-spoke-*.excalidraw` diagram.
+Each networking blueprint keeps its own diagram in its local `architecture/`
+folder, for example `architecture/standalone-three-tier-vcn-defaults.excalidraw`
+or `architecture/hub-spoke-with-drg-and-three-tier-vcns.excalidraw`.
 
 ## Phase 4 - Operating Entities
 
@@ -137,6 +142,15 @@ blueprints/operating-entity/architecture/operating-entity.excalidraw
 blueprints/operating-entity/multi-operating-entities/architecture/multi-operating-entities.excalidraw
 blueprints/operating-entity/workload-vending/architecture/workload-vending.excalidraw
 ```
+
+## Phase 1-4 Wiring Check
+
+| Phase | Terraform Entry Points | Ansible Coverage |
+|---|---|---|
+| Phase 1 - Core | `blueprints/core/` | `validate.yml` runs fmt/init/validate. |
+| Phase 2 - IAM | Reusable IAM modules composed by `blueprints/core/` and CIS wrappers | Covered through core, CIS Level 1, and CIS Level 2 validation. |
+| Phase 3 - Networking | All implemented folders under `blueprints/networking/` | Each implemented networking blueprint is initialized and validated without backend. |
+| Phase 4 - Operating entities | `blueprints/operating-entity/` and child onboarding patterns | Single entity, multi-entity, and workload vending are initialized and validated without backend. |
 
 ## Phase 5 - Extensions
 

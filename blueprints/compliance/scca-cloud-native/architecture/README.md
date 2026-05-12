@@ -2,16 +2,11 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Expected editable diagram:
+Keep the deployment diagram source and exported image in this folder.
 
 ```text
-docs/architecture/diagrams/10-scca-cloud-native.excalidraw
-```
-
-Expected exported image:
-
-```text
-docs/architecture/exports/10-scca-cloud-native.png
+- scca-cloud-native.excalidraw
+- scca-cloud-native.png
 ```
 
 The diagram should show workload spokes, inspection path, ingress path, egress path,

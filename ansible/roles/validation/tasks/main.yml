@@ -1,5 +1,117 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
-- name: Run repository validation script
-  ansible.builtin.command: "{{ validation_script_path }}"
+- name: Check optional validation tools
+  ansible.builtin.command: "which {{ item }}"
   changed_when: false
+  failed_when: false
+  register: validation_optional_tool_checks
+  loop: "{{ validation_optional_tools }}"
+
+- name: Track optional validation tool availability
+  ansible.builtin.set_fact:
+    validation_available_tools: >-
+      {{
+        validation_available_tools | default({}) |
+        combine({item.item: item.rc == 0})
+      }}
+  loop: "{{ validation_optional_tool_checks.results }}"
+
+- name: Run terraform format check
+  ansible.builtin.command: terraform fmt -check -recursive
+  args:
+    chdir: "{{ validation_repo_root }}"
+  changed_when: false
+
+- name: Run terraform init without backend for implemented blueprints
+  ansible.builtin.command: terraform init -backend=false -input=false
+  args:
+    chdir: "{{ validation_repo_root }}/{{ item }}"
+  changed_when: false
+  loop: "{{ validation_terraform_directories }}"
+
+- name: Run terraform validate for implemented blueprints
+  ansible.builtin.command: terraform validate
+  args:
+    chdir: "{{ validation_repo_root }}/{{ item }}"
+  changed_when: false
+  loop: "{{ validation_terraform_directories }}"
+
+- name: Run tflint when available
+  ansible.builtin.command: tflint --recursive
+  args:
+    chdir: "{{ validation_repo_root }}"
+  changed_when: false
+  when: validation_available_tools["tflint"]
+
+- name: Run tfsec when available
+  ansible.builtin.command: tfsec .
+  args:
+    chdir: "{{ validation_repo_root }}"
+  changed_when: false
+  when: validation_available_tools["tfsec"]
+
+- name: Run checkov when available
+  ansible.builtin.command: checkov -d . --framework terraform --compact
+  args:
+    chdir: "{{ validation_repo_root }}"
+  changed_when: false
+  when: validation_available_tools["checkov"]
+
+- name: Run ansible-lint when available
+  ansible.builtin.command: ansible-lint ansible
+  args:
+    chdir: "{{ validation_repo_root }}"
+  changed_when: false
+  when: validation_available_tools["ansible-lint"]
+
+- name: Run Ansible playbook syntax checks
+  ansible.builtin.command: "ansible-playbook --syntax-check {{ item }}"
+  args:
+    chdir: "{{ validation_repo_root }}"
+  changed_when: false
+  loop: "{{ validation_playbooks }}"
+
+- name: Run pre-commit when available
+  ansible.builtin.command: pre-commit run --all-files
+  args:
+    chdir: "{{ validation_repo_root }}"
+  changed_when: false
+  when: validation_available_tools["pre-commit"]
+
+- name: Find generated Terraform directories
+  ansible.builtin.find:
+    paths: "{{ validation_repo_root }}"
+    patterns: "{{ validation_cleanup_patterns }}"
+    file_type: directory
+    recurse: true
+    hidden: true
+  register: validation_generated_dirs
+
+- name: Remove generated Terraform directories
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ validation_generated_dirs.files }}"
+  loop_control:
+    label: "{{ item.path }}"
+
+- name: Find generated Terraform files
+  ansible.builtin.find:
+    paths: "{{ validation_repo_root }}"
+    patterns:
+      - .terraform.lock.hcl
+      - terraform.tfstate
+      - terraform.tfstate.backup
+      - "*.tfplan"
+    file_type: file
+    recurse: true
+    hidden: true
+  register: validation_generated_files
+
+- name: Remove generated Terraform files
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ validation_generated_files.files }}"
+  loop_control:
+    label: "{{ item.path }}"

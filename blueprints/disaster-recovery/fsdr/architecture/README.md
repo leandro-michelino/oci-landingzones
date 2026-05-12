@@ -2,16 +2,11 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Expected editable diagram:
+Keep the deployment diagram source and exported image in this folder.
 
 ```text
-docs/architecture/diagrams/18-fsdr.excalidraw
-```
-
-Expected exported image:
-
-```text
-docs/architecture/exports/18-fsdr.png
+- fsdr.excalidraw
+- fsdr.png
 ```
 
 The diagram should show primary and standby regions, DR protection groups, DR plans,

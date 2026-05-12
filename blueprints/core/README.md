@@ -31,7 +31,7 @@ IAM, tags, and policy outputs.
 - Provide stable outputs for networking, security, governance, and operations.
 - Run ephemeral real-deployment tests in a parent compartment.
 
-> [DIAGRAM REQUIRED] `docs/architecture/diagrams/01-iam-compartments.excalidraw`
+> [DIAGRAM REQUIRED] `architecture/core.excalidraw`
 >
 > Status: TODO - create this diagram before using the blueprint for a production
 > customer review.

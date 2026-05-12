@@ -2,16 +2,11 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Expected editable diagram:
+Keep the deployment diagram source and exported image in this folder.
 
 ```text
-docs/architecture/diagrams/17-telco-cloud-native.excalidraw
-```
-
-Expected exported image:
-
-```text
-docs/architecture/exports/17-telco-cloud-native.png
+- telco-cloud-native.excalidraw
+- telco-cloud-native.png
 ```
 
 The diagram should show OKE, segmented subnets, private connectivity, service exposure,

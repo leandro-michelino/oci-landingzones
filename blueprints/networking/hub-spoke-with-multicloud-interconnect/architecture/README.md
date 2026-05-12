@@ -2,16 +2,11 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Expected editable diagram:
+Keep the deployment diagram source and exported image in this folder.
 
 ```text
-docs/architecture/diagrams/14-hub-spoke-multicloud-interconnect.excalidraw
-```
-
-Expected exported image:
-
-```text
-docs/architecture/exports/14-hub-spoke-multicloud-interconnect.png
+- hub-spoke-with-multicloud-interconnect.excalidraw
+- hub-spoke-with-multicloud-interconnect.png
 ```
 
 The diagram should show OCI DRG, hub VCN, spokes, external cloud attachment, route

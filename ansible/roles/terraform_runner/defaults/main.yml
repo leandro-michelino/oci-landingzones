@@ -2,3 +2,4 @@
 ---
 terraform_working_dir: "{{ terraform_environment_dir | default(playbook_dir + '/../../environments/nonprod/dev') }}"
 terraform_plan_file: tfplan
+terraform_run_plan: true

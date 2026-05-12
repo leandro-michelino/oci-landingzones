@@ -38,7 +38,7 @@ security wants structure but the platform still needs to move.
   defaults.
 - Projects that must show which resources are intended to support CIS Level 1.
 
-> [DIAGRAM REQUIRED] `docs/architecture/diagrams/09-cis-level1.excalidraw`
+> [DIAGRAM REQUIRED] `architecture/cis-level1.excalidraw`
 >
 > Status: TODO - create this diagram before using the blueprint for a production
 > customer review.

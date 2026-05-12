@@ -297,7 +297,7 @@ Ansible content lives under `ansible/` and is used for local orchestration only:
 
 - bootstrap prerequisite checks
 - OCI CLI validation
-- repository validation
+- repository validation across implemented Phase 1-4 blueprints
 - controlled Terraform `init`, `validate`, and `plan` execution
 
 Ansible playbooks must stay non-destructive by default. Terraform remains the
@@ -305,8 +305,9 @@ source of truth for OCI resource creation.
 
 ## Diagram Gate
 
-Terraform and Ansible scaffold files may be created first. Before adding real
-OCI resources or running `terraform apply` for a blueprint or module, the
+Placeholder folders and documentation may be created before implementation so
+the project map stays visible. Before adding real OCI resources or running
+`terraform apply` for a blueprint or module, the
 matching Excalidraw diagram must exist either in the shared `docs/architecture/`
 area or in the blueprint's own `architecture/` folder. Each diagram should have
 an exported image beside it and be marked as complete in the diagram tracker.
@@ -316,9 +317,10 @@ Initial required diagrams:
 | Diagram | First Consumer | Status |
 |---|---|---|
 | `00-overview.excalidraw` | `README.md` | TODO |
-| `01-iam-compartments.excalidraw` | `blueprints/core/` | TODO |
-| `02-hub-spoke-drg.excalidraw` | Hub-spoke DRG blueprint | TODO |
-| `03-standalone-vcn.excalidraw` | Standalone VCN blueprints | TODO |
+| `blueprints/core/architecture/core.excalidraw` | `blueprints/core/` | TODO |
+| `blueprints/cis/level1/architecture/cis-level1.excalidraw` | CIS Level 1 blueprint | TODO |
+| `blueprints/cis/level2/architecture/cis-level2.excalidraw` | CIS Level 2 blueprint | TODO |
+| `blueprints/networking/*/architecture/*.excalidraw` | Networking blueprints | TODO |
 | `04-security-posture.excalidraw` | Security modules | TODO |
 | `05-governance.excalidraw` | Governance modules | TODO |
 | `blueprints/operating-entity/architecture/operating-entity.excalidraw` | Single operating entity blueprint | TODO |
@@ -336,7 +338,19 @@ Initial required diagrams:
 
 ## Validation Tooling
 
-The repository should standardize on:
+The main local validation entry point is:
+
+```bash
+./scripts/validate-all.sh
+```
+
+When Ansible is installed, the script delegates to
+`ansible/playbooks/validate.yml`. That playbook runs `terraform fmt`, initializes
+and validates the implemented Phase 1-4 blueprints with `-backend=false`, checks
+Ansible playbook syntax, runs optional local linters when available, and removes
+generated Terraform artifacts afterward.
+
+The repository standardizes on:
 
 - `terraform fmt`
 - `terraform validate`
@@ -366,6 +380,10 @@ find . -name "terraform.tfstate*" -type f -delete
 rm -rf .codex-local
 ```
 
+The Ansible validation playbook performs this cleanup for generated Terraform
+artifacts after validation, but the commands above are useful after manual
+Terraform experiments.
+
 ## Current Status
 
 Project bootstrap, Phase 1 core structure, Phase 2 IAM foundation, optional CIS
@@ -387,6 +405,8 @@ Completed:
   external or high-cost resources disabled by default.
 - Phase 4 operating entity blueprints wired for single entity onboarding,
   multi-entity onboarding, and workload vending.
+- Ansible validation wired to run Terraform checks across every implemented
+  Phase 1-4 blueprint.
 - Deployment folders documented with local READMEs and architecture image
   locations.
 - Deployment pattern catalog expanded with operating entity, compliance,

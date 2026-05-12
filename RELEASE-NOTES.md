@@ -9,8 +9,9 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Initial project README.
 - Base repository structure for modules, blueprints, environments, docs, tests,
   and scripts.
-- Terraform scaffold files for all planned modules and blueprints.
-- Ansible scaffold for inventories, playbooks, roles, and local orchestration.
+- Initial Terraform placeholders for planned modules and blueprints.
+- Initial Ansible inventories, playbooks, roles, and local orchestration
+  structure.
 - Dedicated opt-in CIS Level 1 and Level 2 landing zone blueprint folders.
 - CIS Level 1 and Level 2 wrappers wired to the implemented core/IAM
   foundation while remaining opt-in.
@@ -33,6 +34,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   services, transit NVA HA, and regional prod/nonprod hub blueprints.
 - Example tfvars and deployment notes for operating entity onboarding,
   multi-entity onboarding, and workload vending.
+- Ansible-backed validation for every implemented Phase 1-4 Terraform
+  blueprint, including generated Terraform artifact cleanup after validation.
 - Self-contained deployment README files and local architecture image locations
   across core, CIS, identity, networking, operating entity, and extension
   blueprints.
@@ -48,3 +51,6 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 - Removed unused `region_key_map` local configuration blocks from modules so
   module locals only keep values currently used by Terraform.
+- Reworked the repository validation helper so `scripts/validate-all.sh`
+  delegates to Ansible when available, with a shell fallback for minimal local
+  environments.

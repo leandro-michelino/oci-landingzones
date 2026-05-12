@@ -35,7 +35,7 @@ place to control.
 - Landing zones where private-only access and inspected egress are preferred.
 - Projects that must show which resources are intended to support CIS Level 2.
 
-> [DIAGRAM REQUIRED] `docs/architecture/diagrams/09-cis-level2.excalidraw`
+> [DIAGRAM REQUIRED] `architecture/cis-level2.excalidraw`
 >
 > Status: TODO - create this diagram before using the blueprint for a production
 > customer review.

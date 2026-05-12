@@ -2,16 +2,11 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Expected editable diagram:
+Keep the deployment diagram source and exported image in this folder.
 
 ```text
-docs/architecture/diagrams/11-zero-trust.excalidraw
-```
-
-Expected exported image:
-
-```text
-docs/architecture/exports/11-zero-trust.png
+- zero-trust.excalidraw
+- zero-trust.png
 ```
 
 The diagram should show identity boundaries, ZPR policy scope, segmentation layers,
