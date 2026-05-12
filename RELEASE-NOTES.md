@@ -27,6 +27,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Phase 4 operating entity implementation for single operating entity,
   multi-operating-entity, and workload vending blueprints using reusable
   compartment, group, and policy modules.
+- Phase 5 extension implementation for opt-in OKE, API Gateway, Streaming, WAF,
+  and Exadata blueprints with resource creation disabled by default.
 - Deployable networking foundations for standalone three-tier, standalone
   private-only, custom standalone, standalone ZPR, brownfield VCN references,
   DRG hub-spoke, IPSec, FastConnect, Bastion, OCI Network Firewall, NVA,
@@ -34,7 +36,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   services, transit NVA HA, and regional prod/nonprod hub blueprints.
 - Example tfvars and deployment notes for operating entity onboarding,
   multi-entity onboarding, and workload vending.
-- Ansible-backed validation for every implemented Phase 1-4 Terraform
+- Ansible-backed validation for every implemented Phase 1-5 Terraform
   blueprint, including generated Terraform artifact cleanup after validation.
 - Self-contained deployment README files and local architecture image locations
   across core, CIS, identity, networking, operating entity, and extension

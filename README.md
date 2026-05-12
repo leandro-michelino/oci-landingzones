@@ -228,11 +228,15 @@ folder for the service-specific diagram and exported image.
 
 | Extension | Path |
 |---|---|
-| OKE | `blueprints/extensions/oke/` |
-| WAF | `blueprints/extensions/waf/` |
-| Exadata | `blueprints/extensions/exadata/` |
-| API Gateway | `blueprints/extensions/apigw/` |
-| Streaming | `blueprints/extensions/streaming/` |
+| OKE | `blueprints/extensions/oke/` | Optional OKE cluster and node pool wiring, disabled by default. |
+| WAF | `blueprints/extensions/waf/` | Optional WAF policy and load-balancer attachment, disabled by default. |
+| Exadata | `blueprints/extensions/exadata/` | Optional Exadata Cloud Infrastructure wiring, disabled by default. |
+| API Gateway | `blueprints/extensions/apigw/` | Optional API Gateway and deployment wiring, disabled by default. |
+| Streaming | `blueprints/extensions/streaming/` | Optional stream pool and stream wiring, disabled by default. |
+
+Phase 5 implements the extension foundation for OKE, API Gateway, Streaming,
+WAF, and Exadata. These are intentionally opt-in because they can create
+cost-sensitive or externally dependent resources.
 
 ## Naming Convention
 
@@ -297,7 +301,7 @@ Ansible content lives under `ansible/` and is used for local orchestration only:
 
 - bootstrap prerequisite checks
 - OCI CLI validation
-- repository validation across implemented Phase 1-4 blueprints
+- repository validation across implemented Phase 1-5 blueprints
 - controlled Terraform `init`, `validate`, and `plan` execution
 
 Ansible playbooks must stay non-destructive by default. Terraform remains the
@@ -346,7 +350,7 @@ The main local validation entry point is:
 
 When Ansible is installed, the script delegates to
 `ansible/playbooks/validate.yml`. That playbook runs `terraform fmt`, initializes
-and validates the implemented Phase 1-4 blueprints with `-backend=false`, checks
+and validates the implemented Phase 1-5 blueprints with `-backend=false`, checks
 Ansible playbook syntax, runs optional local linters when available, and removes
 generated Terraform artifacts afterward.
 
@@ -387,8 +391,8 @@ Terraform experiments.
 ## Current Status
 
 Project bootstrap, Phase 1 core structure, Phase 2 IAM foundation, optional CIS
-wrappers, Phase 3 networking foundations, and Phase 4 operating entity
-onboarding are implemented.
+wrappers, Phase 3 networking foundations, Phase 4 operating entity onboarding,
+and Phase 5 extension foundations are implemented.
 
 Completed:
 
@@ -405,8 +409,10 @@ Completed:
   external or high-cost resources disabled by default.
 - Phase 4 operating entity blueprints wired for single entity onboarding,
   multi-entity onboarding, and workload vending.
+- Phase 5 extension blueprints wired for OKE, API Gateway, Streaming, WAF, and
+  Exadata with resource creation disabled by default.
 - Ansible validation wired to run Terraform checks across every implemented
-  Phase 1-4 blueprint.
+  Phase 1-5 blueprint.
 - Deployment folders documented with local READMEs and architecture image
   locations.
 - Deployment pattern catalog expanded with operating entity, compliance,
@@ -414,7 +420,7 @@ Completed:
 
 Next implementation work should continue with security posture and governance
 controls such as logging, budgets, events, Cloud Guard, Security Zones, Vault,
-and VSS.
+VSS, and extension-specific IAM policies.
 
 ## License
 

@@ -12,6 +12,10 @@ afterthought. It calls out cluster placement, private nodes, endpoint exposure, 
 registry access, IAM integration, logging, and the choices platform and application
 teams need to agree on.
 
+In Phase 5 the Terraform can create the OKE cluster and a worker node pool, but both are
+disabled by default. That keeps local validation cheap while still giving you the real
+switches for a customer-approved deployment.
+
 ## Why Use It
 
 Use this when Kubernetes is the workload platform, not a side feature. It brings OKE
@@ -26,8 +30,8 @@ up front.
 
 ## Pattern
 
-- OKE cluster.
-- Node pools in private subnets.
+- Optional OKE cluster.
+- Optional worker node pool.
 - Optional public or private API endpoint.
 - Load balancer integration.
 - IAM, network, and logging integration.

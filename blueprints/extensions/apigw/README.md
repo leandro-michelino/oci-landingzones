@@ -11,6 +11,10 @@ This extension gives APIs a managed front door. It captures the gateway, routes,
 reachability, authentication choices, certificates, DNS, logging, and policy decisions
 so every application team is not inventing API exposure from scratch.
 
+In Phase 5 the Terraform can create the API Gateway and a deployment with routes. Both
+are opt-in, because backend reachability, certificates, DNS, and auth should be reviewed
+before anyone opens a real endpoint.
+
 ## Why Use It
 
 Use this when APIs need a managed front door instead of every team inventing their own
@@ -25,7 +29,8 @@ access.
 
 ## Pattern
 
-- API Gateway deployment.
+- Optional API Gateway.
+- Optional API deployment and routes.
 - Routes to private or public backends.
 - Optional authentication and authorization policies.
 - Logging and metrics integration.

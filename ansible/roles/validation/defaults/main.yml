@@ -33,6 +33,11 @@ validation_terraform_directories:
   - blueprints/operating-entity
   - blueprints/operating-entity/multi-operating-entities
   - blueprints/operating-entity/workload-vending
+  - blueprints/extensions/oke
+  - blueprints/extensions/apigw
+  - blueprints/extensions/streaming
+  - blueprints/extensions/waf
+  - blueprints/extensions/exadata
 
 validation_optional_tools:
   - tflint

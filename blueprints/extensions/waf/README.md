@@ -12,6 +12,10 @@ protected hostnames, origins, DNS, TLS certificates, logs, and alerting back to 
 landing-zone controls instead of treating internet exposure as an application-only
 concern.
 
+In Phase 5 the Terraform can create an OCI WAF policy and optionally attach a Web App
+Firewall to a load balancer. Both are disabled by default because public exposure needs
+a deliberate review.
+
 ## Why Use It
 
 Use this when public web traffic needs a proper protective layer before it reaches the
@@ -25,8 +29,8 @@ app. WAF belongs in the design when internet exposure is intentional and needs p
 
 ## Pattern
 
-- OCI WAF policy.
-- Origin application or load balancer.
+- Optional OCI WAF policy.
+- Optional Web App Firewall attachment to a load balancer.
 - DNS and certificate integration.
 - Managed and custom protection rules.
 - Logging and monitoring.

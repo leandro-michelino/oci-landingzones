@@ -101,6 +101,28 @@ READMEs may define additional variables for local behavior.
 | `auditor_group_name` | `string` | No | Optional auditor group name override. |
 | `policy_compartment_ocid` | `string` | No | Compartment where delegated policies are attached. Defaults to the parent compartment. |
 
+## Extensions
+
+| Variable | Type | Required | Description |
+|---|---|---:|---|
+| `enable_cluster` | `bool` | For OKE | Creates an OKE cluster when explicitly enabled. Disabled by default. |
+| `enable_node_pool` | `bool` | For OKE | Creates an OKE node pool when explicitly enabled. Disabled by default. |
+| `vcn_id` | `string` | For OKE | VCN OCID for the OKE cluster. |
+| `endpoint_subnet_id` | `string` | For OKE | Optional subnet OCID for the Kubernetes API endpoint. |
+| `node_subnet_ids` | `set(string)` | For OKE | Worker node subnet OCIDs. |
+| `enable_gateway` | `bool` | For API Gateway | Creates an API Gateway when explicitly enabled. Disabled by default. |
+| `enable_deployment` | `bool` | For API Gateway | Creates an API Gateway deployment and routes when explicitly enabled. |
+| `routes` | `list(object)` | For API Gateway | API route definitions including path, methods, backend type, and backend URL. |
+| `enable_streaming` | `bool` | For Streaming | Creates Streaming resources when explicitly enabled. Disabled by default. |
+| `create_stream_pool` | `bool` | For Streaming | Creates a stream pool instead of using `stream_pool_id`. |
+| `streams` | `map(object)` | For Streaming | Streams keyed by logical name, with partitions and optional retention. |
+| `enable_waf_policy` | `bool` | For WAF | Creates an OCI WAF policy when explicitly enabled. Disabled by default. |
+| `enable_web_app_firewall` | `bool` | For WAF | Attaches a Web App Firewall to a load balancer when explicitly enabled. |
+| `load_balancer_id` | `string` | For WAF | Load balancer OCID protected by WAF. |
+| `enable_exadata_infrastructure` | `bool` | For Exadata | Creates Exadata Cloud Infrastructure when explicitly enabled. Disabled by default. |
+| `availability_domain` | `string` | For Exadata | Availability domain for Exadata placement. |
+| `shape` | `string` | For Exadata | Exadata infrastructure shape. |
+
 ## Security And Governance
 
 | Variable | Type | Required | Description |

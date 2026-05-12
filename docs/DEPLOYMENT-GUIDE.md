@@ -27,7 +27,7 @@ Use the Ansible-backed validation entry point before commits:
 ./scripts/validate-all.sh
 ```
 
-This validates every implemented Phase 1-4 Terraform blueprint without a remote
+This validates every implemented Phase 1-5 Terraform blueprint without a remote
 backend, runs Ansible syntax checks, and cleans generated Terraform artifacts.
 
 The generic landing zone deployment does not enable CIS behavior by default. To
@@ -143,7 +143,7 @@ blueprints/operating-entity/multi-operating-entities/architecture/multi-operatin
 blueprints/operating-entity/workload-vending/architecture/workload-vending.excalidraw
 ```
 
-## Phase 1-4 Wiring Check
+## Phase 1-5 Wiring Check
 
 | Phase | Terraform Entry Points | Ansible Coverage |
 |---|---|---|
@@ -151,11 +151,29 @@ blueprints/operating-entity/workload-vending/architecture/workload-vending.excal
 | Phase 2 - IAM | Reusable IAM modules composed by `blueprints/core/` and CIS wrappers | Covered through core, CIS Level 1, and CIS Level 2 validation. |
 | Phase 3 - Networking | All implemented folders under `blueprints/networking/` | Each implemented networking blueprint is initialized and validated without backend. |
 | Phase 4 - Operating entities | `blueprints/operating-entity/` and child onboarding patterns | Single entity, multi-entity, and workload vending are initialized and validated without backend. |
+| Phase 5 - Extensions | `blueprints/extensions/oke`, `apigw`, `streaming`, `waf`, and `exadata` | Each extension blueprint is initialized and validated without backend. |
 
 ## Phase 5 - Extensions
 
 Deploy extensions only after core and the required networking foundation exist.
 Each extension must include its own architecture diagram.
+
+Implemented Phase 5 extension entry points:
+
+- `blueprints/extensions/oke/` creates an optional OKE cluster and optional node
+  pool. Both are disabled by default.
+- `blueprints/extensions/apigw/` creates an optional API Gateway and optional
+  deployment with routes. Both are disabled by default.
+- `blueprints/extensions/streaming/` creates an optional stream pool and streams.
+  Creation is disabled by default.
+- `blueprints/extensions/waf/` creates an optional WAF policy and optional web
+  application firewall attachment to a load balancer. Both are disabled by
+  default.
+- `blueprints/extensions/exadata/` creates optional Exadata Cloud Infrastructure.
+  Creation is disabled by default because it is high-cost and quota-sensitive.
+
+Keep real subnet, VCN, load balancer, availability domain, image, and SSH values
+in local ignored tfvars files. The committed examples show the shape only.
 
 ## Specialized Patterns
 

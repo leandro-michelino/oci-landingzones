@@ -23,7 +23,7 @@ ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook ansible/playbooks/validate.y
 ```
 
 The validation playbook runs `terraform fmt`, initializes and validates every
-implemented Phase 1-4 blueprint without a backend, runs optional local linters
+implemented Phase 1-5 blueprint without a backend, runs optional local linters
 when installed, checks Ansible playbook syntax, and removes generated Terraform
 artifacts afterward.
 

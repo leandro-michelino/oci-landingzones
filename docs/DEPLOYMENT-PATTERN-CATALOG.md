@@ -48,11 +48,11 @@ by default.
 | Disaster recovery | Full Stack Disaster Recovery | `blueprints/disaster-recovery/fsdr/` | Scaffold |
 | Data platform | Private data platform landing zone | `blueprints/data-platform/private-data-platform/` | Scaffold |
 | Industry | Telco cloud-native landing zone | `blueprints/industry/telco-cloud-native/` | Scaffold |
-| Extensions | OKE extension | `blueprints/extensions/oke/` | Scaffold |
-| Extensions | Exadata extension | `blueprints/extensions/exadata/` | Scaffold |
-| Extensions | API Gateway extension | `blueprints/extensions/apigw/` | Scaffold |
-| Extensions | Streaming extension | `blueprints/extensions/streaming/` | Scaffold |
-| Extensions | WAF extension | `blueprints/extensions/waf/` | Scaffold |
+| Extensions | OKE extension | `blueprints/extensions/oke/` | Implementing |
+| Extensions | Exadata extension | `blueprints/extensions/exadata/` | Implementing |
+| Extensions | API Gateway extension | `blueprints/extensions/apigw/` | Implementing |
+| Extensions | Streaming extension | `blueprints/extensions/streaming/` | Implementing |
+| Extensions | WAF extension | `blueprints/extensions/waf/` | Implementing |
 
 ## Selection Notes
 

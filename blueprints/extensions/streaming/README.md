@@ -11,6 +11,9 @@ This extension gives event-driven workloads a managed streaming foundation. It c
 stream pools, producer and consumer access, retention, partition choices, private
 access, monitoring, and the ownership model for teams publishing or reading events.
 
+In Phase 5 the Terraform can create a stream pool and streams, or attach streams to an
+existing pool. Creation is disabled by default so validation stays safe and cheap.
+
 ## Why Use It
 
 Use this when event flow is a first-class part of the platform. Streaming needs producer
@@ -24,7 +27,8 @@ and consumer access, network paths, and retention choices made deliberately.
 
 ## Pattern
 
-- OCI Streaming streams and stream pools.
+- Optional OCI Streaming stream pool.
+- Optional streams with partition and retention settings.
 - Producer and consumer access policies.
 - Optional private endpoint access.
 - Monitoring, alarms, and retention settings.
