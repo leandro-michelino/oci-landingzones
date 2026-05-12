@@ -1,8 +1,57 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 tenancy_ocid       = "ocid1.tenancy.oc1..example"
 region             = "af-johannesburg-1"
+home_region        = "af-johannesburg-1"
 oci_config_profile = "DEFAULT"
 
 org         = "acme"
 environment = "prod"
 region_key  = "jnb"
+
+# Keep real test compartment OCIDs in local, ignored terraform.tfvars files.
+# parent_compartment_ocid = "ocid1.compartment.oc1..example"
+
+default_workload_compartments = {
+  platform = {
+    description = "Shared platform resources for the operating entity."
+  }
+  workloads = {
+    description = "Application and workload resources for the operating entity."
+  }
+  security = {
+    description = "Security resources scoped to the operating entity."
+  }
+}
+
+operating_entities = {
+  finance = {
+    code = "fin"
+    name = "Finance"
+  }
+  retail = {
+    code = "rtl"
+    name = "Retail"
+    workload_compartments = {
+      platform = {
+        description = "Retail shared platform resources."
+      }
+      digital = {
+        description = "Retail digital channel workloads."
+      }
+      data = {
+        description = "Retail reporting and data resources."
+      }
+    }
+  }
+}
+
+defined_tags = {
+  "acme-tags.Environment" = "prod"
+  "acme-tags.ManagedBy"   = "terraform"
+  "acme-tags.Owner"       = "platform-team"
+  "acme-tags.Project"     = "landingzone"
+}
+
+freeform_tags = {
+  CostCenter = "platform"
+}

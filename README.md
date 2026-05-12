@@ -182,9 +182,16 @@ ownership, delegated administration, network attachment, and budget assumptions.
 
 | Blueprint | Path | Description |
 |---|---|---|
-| Operating entity | `blueprints/operating-entity/` | Repeatable onboarding pattern for a business unit, subsidiary, workload, or application team. |
-| Multi-operating-entities | `blueprints/operating-entity/multi-operating-entities/` | Repeatable onboarding for multiple entities with delegated IAM, budgets, and network attachment. |
-| Workload vending | `blueprints/operating-entity/workload-vending/` | Application-team onboarding package for compartments, IAM, budgets, tags, quotas, and network attachment. |
+| Operating entity | `blueprints/operating-entity/` | Repeatable onboarding pattern for one business unit, subsidiary, workload owner, or application team with delegated IAM. |
+| Multi-operating-entities | `blueprints/operating-entity/multi-operating-entities/` | Repeatable onboarding for multiple entities with delegated groups, scoped policies, and consistent compartment shapes. |
+| Workload vending | `blueprints/operating-entity/workload-vending/` | Application-team onboarding package for workload compartments, delegated IAM, and ownership tags. |
+
+Phase 4 implements the operating-entity foundation behind this catalog: single
+entity onboarding, multi-entity onboarding, and workload vending. These
+blueprints now create compartments, delegated IAM groups, scoped policies, and
+ownership tags. Budgets, logging, quota enforcement, and network attachment are
+kept as documented operating-model hooks for the next security and governance
+phases.
 
 ### Compliance
 
@@ -300,9 +307,9 @@ source of truth for OCI resource creation.
 
 Terraform and Ansible scaffold files may be created first. Before adding real
 OCI resources or running `terraform apply` for a blueprint or module, the
-matching Excalidraw diagram must exist under `docs/architecture/diagrams/`, be
-exported under `docs/architecture/exports/`, and be marked as complete in the
-diagram tracker.
+matching Excalidraw diagram must exist either in the shared `docs/architecture/`
+area or in the blueprint's own `architecture/` folder. Each diagram should have
+an exported image beside it and be marked as complete in the diagram tracker.
 
 Initial required diagrams:
 
@@ -314,7 +321,9 @@ Initial required diagrams:
 | `03-standalone-vcn.excalidraw` | Standalone VCN blueprints | TODO |
 | `04-security-posture.excalidraw` | Security modules | TODO |
 | `05-governance.excalidraw` | Governance modules | TODO |
-| `06-operating-entity.excalidraw` | Operating entity blueprint | TODO |
+| `blueprints/operating-entity/architecture/operating-entity.excalidraw` | Single operating entity blueprint | TODO |
+| `blueprints/operating-entity/multi-operating-entities/architecture/multi-operating-entities.excalidraw` | Multi-operating-entity blueprint | TODO |
+| `blueprints/operating-entity/workload-vending/architecture/workload-vending.excalidraw` | Workload vending blueprint | TODO |
 
 ## Deployment Flow
 
@@ -360,7 +369,8 @@ rm -rf .codex-local
 ## Current Status
 
 Project bootstrap, Phase 1 core structure, Phase 2 IAM foundation, optional CIS
-wrappers, and Phase 3 networking foundations are implemented locally.
+wrappers, Phase 3 networking foundations, and Phase 4 operating entity
+onboarding are implemented.
 
 Completed:
 
@@ -375,14 +385,16 @@ Completed:
 - CIS Level 1 and Level 2 wrappers wired to the core/IAM foundation.
 - Phase 3 networking modules and deployment blueprints wired with optional
   external or high-cost resources disabled by default.
+- Phase 4 operating entity blueprints wired for single entity onboarding,
+  multi-entity onboarding, and workload vending.
 - Deployment folders documented with local READMEs and architecture image
   locations.
 - Deployment pattern catalog expanded with operating entity, compliance,
   multicloud, data platform, and industry blueprints.
 
-Next implementation work should continue with Phase 4 operating entities, then
-security posture controls such as logging, budgets, events, Cloud Guard,
-Security Zones, Vault, and VSS.
+Next implementation work should continue with security posture and governance
+controls such as logging, budgets, events, Cloud Guard, Security Zones, Vault,
+and VSS.
 
 ## License
 

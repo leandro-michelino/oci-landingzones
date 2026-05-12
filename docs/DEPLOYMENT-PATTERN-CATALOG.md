@@ -22,9 +22,9 @@ by default.
 | Identity | CIS basic identity baseline | `blueprints/identity/cis-basic/` | Scaffold |
 | Identity | New identity domain | `blueprints/identity/new-identity-domain/` | Scaffold |
 | Identity | Custom identity domain | `blueprints/identity/custom-identity-domain/` | Scaffold |
-| Operating entity | Single operating entity onboarding | `blueprints/operating-entity/` | Scaffold |
-| Operating entity | Multi-operating-entity landing zone | `blueprints/operating-entity/multi-operating-entities/` | Scaffold |
-| Operating entity | Workload vending / application team onboarding | `blueprints/operating-entity/workload-vending/` | Scaffold |
+| Operating entity | Single operating entity onboarding | `blueprints/operating-entity/` | Implementing |
+| Operating entity | Multi-operating-entity landing zone | `blueprints/operating-entity/multi-operating-entities/` | Implementing |
+| Operating entity | Workload vending / application team onboarding | `blueprints/operating-entity/workload-vending/` | Implementing |
 | Networking | Standalone three-tier VCN defaults | `blueprints/networking/standalone-three-tier-vcn-defaults/` | Implementing |
 | Networking | Standalone three-tier VCN custom | `blueprints/networking/standalone-three-tier-vcn-custom/` | Implementing |
 | Networking | Standalone three-tier VCN with ZPR | `blueprints/networking/standalone-three-tier-vcn-zpr/` | Implementing |

@@ -23,11 +23,16 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Phase 3 networking foundation implementation for reusable hub VCN, spoke VCN,
   DRG, IPSec VPN, OCI Network Firewall, FastConnect, private DNS, ZPR, Bastion,
   and network virtual appliance modules.
+- Phase 4 operating entity implementation for single operating entity,
+  multi-operating-entity, and workload vending blueprints using reusable
+  compartment, group, and policy modules.
 - Deployable networking foundations for standalone three-tier, standalone
   private-only, custom standalone, standalone ZPR, brownfield VCN references,
   DRG hub-spoke, IPSec, FastConnect, Bastion, OCI Network Firewall, NVA,
   private DNS, ZPR micro-segmentation, dual-region DR, multicloud, shared
   services, transit NVA HA, and regional prod/nonprod hub blueprints.
+- Example tfvars and deployment notes for operating entity onboarding,
+  multi-entity onboarding, and workload vending.
 - Self-contained deployment README files and local architecture image locations
   across core, CIS, identity, networking, operating entity, and extension
   blueprints.

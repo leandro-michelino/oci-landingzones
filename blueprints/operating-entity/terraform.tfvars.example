@@ -1,17 +1,39 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
-tenancy_ocid      = "ocid1.tenancy.oc1..example"
-current_user_ocid = "ocid1.user.oc1..example"
-region            = "eu-frankfurt-1"
-home_region       = "eu-frankfurt-1"
+tenancy_ocid       = "ocid1.tenancy.oc1..example"
+current_user_ocid  = "ocid1.user.oc1..example"
+region             = "af-johannesburg-1"
+home_region        = "af-johannesburg-1"
+oci_config_profile = "DEFAULT"
 
 org         = "acme"
-environment = "dev"
-region_key  = "fra"
+environment = "prod"
+region_key  = "jnb"
+
+# Keep real test compartment OCIDs in local, ignored terraform.tfvars files.
+# parent_compartment_ocid = "ocid1.compartment.oc1..example"
+
+entity_code = "fin"
+entity_name = "Finance"
+
+workload_compartments = {
+  platform = {
+    description = "Shared platform resources for the Finance operating entity."
+  }
+  workloads = {
+    description = "Finance application and workload resources."
+  }
+  security = {
+    description = "Finance-owned security resources and evidence collection."
+  }
+}
+
 defined_tags = {
-  "acme-tags.Environment" = "dev"
+  "acme-tags.Environment" = "prod"
   "acme-tags.ManagedBy"   = "terraform"
   "acme-tags.Owner"       = "platform-team"
   "acme-tags.Project"     = "landingzone"
 }
 
-freeform_tags = {}
+freeform_tags = {
+  CostCenter = "finops"
+}

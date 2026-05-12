@@ -112,13 +112,30 @@ Hub-spoke blueprints require the matching `02-hub-spoke-*.excalidraw` diagram.
 
 ## Phase 4 - Operating Entities
 
-Use `blueprints/operating-entity/` to onboard each business unit, subsidiary, or
-workload team.
+Use operating entity blueprints when the main question is ownership: who can
+administer the environment, where workloads live, and how access stays scoped.
+
+Available Phase 4 blueprints:
+
+- `blueprints/operating-entity/` creates one operating entity root compartment,
+  child workload compartments, admin and auditor groups, and scoped IAM policies.
+- `blueprints/operating-entity/multi-operating-entities/` repeats that pattern
+  for several business units, subsidiaries, agencies, or major portfolios.
+- `blueprints/operating-entity/workload-vending/` vends a standard app-team
+  package with workload compartments, admin/operator/auditor groups, and scoped
+  manage/use/read policies.
+
+These blueprints are intentionally focused on compartments, delegated IAM, and
+ownership metadata first. Budgets, logging, events, quotas, and network
+attachments are the next governance/security layers, so keep those assumptions
+visible in the local README and architecture notes.
 
 Required diagram:
 
 ```text
-docs/architecture/diagrams/06-operating-entity.excalidraw
+blueprints/operating-entity/architecture/operating-entity.excalidraw
+blueprints/operating-entity/multi-operating-entities/architecture/multi-operating-entities.excalidraw
+blueprints/operating-entity/workload-vending/architecture/workload-vending.excalidraw
 ```
 
 ## Phase 5 - Extensions

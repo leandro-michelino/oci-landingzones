@@ -7,16 +7,21 @@ Operational procedures will be expanded as Terraform modules are implemented.
 ## Add A New Operating Entity
 
 1. Confirm the core landing zone is deployed.
-2. Confirm a networking blueprint is deployed and its outputs are available.
-3. Create or update `docs/architecture/diagrams/06-operating-entity.excalidraw`.
+2. Confirm the required networking blueprint is deployed if this entity needs a
+   network attachment.
+3. Create or update the local diagram in
+   `blueprints/operating-entity/architecture/`.
 4. Prepare operating entity variables:
-   - `oe_name`
-   - `cost_center`
-   - `owner`
-   - `hub_vcn_id`
-   - `drg_id`
+   - `entity_code`
+   - `entity_name`
+   - `parent_compartment_ocid`
+   - `workload_compartments`
+   - `admin_group_name`
+   - `auditor_group_name`
+   - `defined_tags`
+   - `freeform_tags`
 5. Run `terraform plan` from `blueprints/operating-entity/`.
-6. Review compartments, IAM policy scope, budget, and logging outputs.
+6. Review compartments, delegated groups, IAM policy scope, and tag outputs.
 7. Apply after approval.
 
 ## Rotate Terraform Credentials

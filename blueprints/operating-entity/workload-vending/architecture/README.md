@@ -2,16 +2,11 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Expected editable diagram:
+Keep the deployment diagram source and exported image in this folder.
 
 ```text
-docs/architecture/diagrams/13-workload-vending.excalidraw
-```
-
-Expected exported image:
-
-```text
-docs/architecture/exports/13-workload-vending.png
+- workload-vending.excalidraw
+- workload-vending.png
 ```
 
 The diagram should show the standard workload package: compartment, IAM, budget,

@@ -81,6 +81,26 @@ READMEs may define additional variables for local behavior.
 | `secondary_region` | `string` | For dual-region DR | Secondary OCI region for DR networking. |
 | `secondary_region_key` | `string` | For dual-region DR | Short region key for the DR region. |
 
+## Operating Entities
+
+| Variable | Type | Required | Description |
+|---|---|---:|---|
+| `entity_code` | `string` | For single entity | Short operating entity code used in names, such as `fin`, `hr`, or `latam`. |
+| `entity_name` | `string` | No | Human-readable operating entity name. |
+| `root_compartment_name` | `string` | No | Optional root compartment display-name override for operating entity or workload vending blueprints. |
+| `root_compartment_description` | `string` | No | Description used for the generated root compartment. |
+| `enable_delete` | `bool` | No | Allows Terraform destroy to delete compartments created by the blueprint. |
+| `workload_compartments` | `map(object)` | For single entity | Child compartments created under one operating entity root. |
+| `default_workload_compartments` | `map(object)` | For multi-entity | Default child compartments used for entities that do not override their own structure. |
+| `operating_entities` | `map(object)` | For multi-entity | Operating entities keyed by stable logical name, with optional code, name, parent, policy compartment, group names, and child compartments. |
+| `workload_code` | `string` | For workload vending | Short workload code used in names. |
+| `workload_name` | `string` | No | Human-readable workload name. |
+| `child_compartments` | `map(object)` | For workload vending | Child compartments created under the workload root, defaulting to app, data, and ops. |
+| `admin_group_name` | `string` | No | Optional admin group name override. |
+| `operator_group_name` | `string` | No | Optional operator group name override for workload vending. |
+| `auditor_group_name` | `string` | No | Optional auditor group name override. |
+| `policy_compartment_ocid` | `string` | No | Compartment where delegated policies are attached. Defaults to the parent compartment. |
+
 ## Security And Governance
 
 | Variable | Type | Required | Description |

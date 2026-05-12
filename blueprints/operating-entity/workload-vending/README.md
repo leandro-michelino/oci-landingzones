@@ -8,8 +8,14 @@ vends a standard compartment, IAM scope, budget, tags, and network attachment.
 ## What It Does
 
 This blueprint turns workload onboarding into a repeatable platform product. It vends
-the standard package an app team needs: compartment, IAM scope, tags, budget, logging,
-quota expectations, and the right network attachment.
+the standard package an app team needs: workload compartments, delegated IAM scope, and
+ownership tags.
+
+In Phase 4 it creates the deployable core of that package: one workload root
+compartment, child compartments for app/data/ops by default, admin/operator/auditor
+groups, and policies scoped to those compartment paths. Budget, logging, quota, and
+network attachment expectations stay documented as part of the handoff model and will be
+wired in later phases.
 
 ## Why Use It
 
@@ -29,15 +35,28 @@ pattern for compartments and guardrails.
 - Platform teams need repeatable onboarding.
 - Network and security controls are shared but workload ownership is delegated.
 
-## Expected Composition
+## Implemented Composition
 
 - Workload compartment hierarchy.
-- Workload admin, deployer, and reader groups.
-- Optional spoke VCN or existing VCN attachment.
-- Budget, quota, logging, and event defaults.
+- Workload admin, operator, and auditor groups.
+- Workload-scoped manage, use, and read policies.
 - Standard tags and ownership metadata.
+- Documented hooks for a spoke VCN, existing VCN attachment, budget, quota, logging, and
+  event defaults.
 
 ## Deployment Notes
 
 Use this repeatedly after core and the selected network foundation are in place. It
 should become the day-two onboarding workflow for new workloads.
+
+This is the one to reach for when the platform team wants a clean answer to "Can my app
+team have a place to build?" without turning every request into a custom Terraform
+project.
+
+## Terraform Example
+
+```bash
+terraform init
+terraform validate
+terraform plan -var-file=terraform.tfvars
+```

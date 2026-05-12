@@ -2,9 +2,10 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Architecture diagrams are source-controlled as Excalidraw files under
-`docs/architecture/diagrams/`. Exported images belong under
-`docs/architecture/exports/`.
+Architecture diagrams may live either in this shared architecture area or in the
+blueprint's own `architecture/` folder. New deployment folders should keep their
+editable Excalidraw source and exported image beside the blueprint README so the
+use case stays self-contained.
 
 ## Diagram Tracker
 
@@ -21,7 +22,9 @@ Architecture diagrams are source-controlled as Excalidraw files under
 | `03-standalone-vcn.excalidraw` | Standalone VCN blueprints | TODO |
 | `04-security-posture.excalidraw` | Security modules | TODO |
 | `05-governance.excalidraw` | Governance modules | TODO |
-| `06-operating-entity.excalidraw` | Operating entity blueprint | TODO |
+| `blueprints/operating-entity/architecture/operating-entity.excalidraw` | Single operating entity blueprint | TODO |
+| `blueprints/operating-entity/multi-operating-entities/architecture/multi-operating-entities.excalidraw` | Multi-operating-entity blueprint | TODO |
+| `blueprints/operating-entity/workload-vending/architecture/workload-vending.excalidraw` | Workload vending blueprint | TODO |
 | `09-cis-level1.excalidraw` | CIS Level 1 landing zone blueprint | TODO |
 | `09-cis-level2.excalidraw` | CIS Level 2 landing zone blueprint | TODO |
 

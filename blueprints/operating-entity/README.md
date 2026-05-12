@@ -8,8 +8,14 @@ workload owner into the landing zone.
 ## What It Does
 
 This blueprint packages an operating entity into the landing zone: a business unit,
-subsidiary, agency, application group, or workload owner with its own compartment shape,
-delegated IAM, tags, budgets, logging assumptions, and optional network attachment.
+subsidiary, agency, application group, or workload owner with its own compartment
+shape and delegated IAM.
+
+Right now it creates the practical foundation: one root compartment, child workload
+compartments, admin and auditor groups, scoped IAM policies, and ownership tags. Budget,
+logging, quota, and network attachment hooks are documented here because they are part of
+the real customer conversation, but the deployable Phase 4 Terraform focuses on
+compartments and IAM first.
 
 ## Why Use It
 
@@ -25,11 +31,12 @@ optional network attachment.
 
 ## Pattern
 
-- Operating entity compartment structure.
-- Optional workload compartments.
-- IAM groups and policies scoped to the entity.
-- Tagging, budget, and logging assumptions.
-- Optional networking attachment to an existing blueprint.
+- Operating entity root compartment.
+- Optional workload child compartments.
+- Delegated admin and auditor groups.
+- IAM policies scoped to the entity root and child compartment paths.
+- Defined and freeform tags for ownership and chargeback metadata.
+- Documented budget, logging, and network attachment assumptions for later phases.
 
 ## Best Fit
 
@@ -52,10 +59,21 @@ optional network attachment.
 
 1. Deploy `blueprints/core`.
 2. Choose or deploy the required networking blueprint.
-3. Complete the local architecture diagram.
-4. Populate local ignored tfvars.
+3. Complete or update the local architecture diagram.
+4. Populate a local ignored `terraform.tfvars`.
 5. Run Terraform validation and plan.
-6. Apply after ownership, budget, and access scope are reviewed.
+6. Apply after ownership and access scope are reviewed.
+
+## Terraform Example
+
+```bash
+terraform init
+terraform validate
+terraform plan -var-file=terraform.tfvars
+```
+
+Keep real OCIDs, customer names, and test compartment values in local ignored files.
+The committed `terraform.tfvars.example` is only a starter shape.
 
 ## Architecture Artifacts
 

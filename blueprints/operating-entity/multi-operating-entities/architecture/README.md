@@ -2,16 +2,11 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Expected editable diagram:
+Keep the deployment diagram source and exported image in this folder.
 
 ```text
-docs/architecture/diagrams/12-multi-operating-entities.excalidraw
-```
-
-Expected exported image:
-
-```text
-docs/architecture/exports/12-multi-operating-entities.png
+- multi-operating-entities.excalidraw
+- multi-operating-entities.png
 ```
 
 The diagram should show multiple operating entities, delegated IAM boundaries, shared
