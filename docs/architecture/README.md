@@ -13,13 +13,13 @@ is needed.
 
 | Diagram File | Required By | Status |
 |---|---|---|
-| `docs/architecture/diagrams/00-overview.excalidraw` | Repository overview | Source created |
-| `docs/architecture/diagrams/01-iam-compartments.excalidraw` | IAM and compartment foundation | Source created |
-| `docs/architecture/diagrams/04-security-posture.excalidraw` | Shared security posture | Source created |
-| `docs/architecture/diagrams/05-governance.excalidraw` | Shared governance and operations | Source created |
-| `docs/architecture/diagrams/09-cis-level1.excalidraw` | CIS Level 1 blueprint | Source created |
-| `docs/architecture/diagrams/09-cis-level2.excalidraw` | CIS Level 2 blueprint | Source created |
-| Blueprint-local architecture sources | Core, CIS, identity, networking, operating entity, extension, compliance, data, disaster recovery, and industry folders | Source created |
+| `docs/architecture/diagrams/00-overview.excalidraw` | Repository overview | Detailed source created |
+| `docs/architecture/diagrams/01-iam-compartments.excalidraw` | IAM and compartment foundation | Detailed source created |
+| `docs/architecture/diagrams/04-security-posture.excalidraw` | Shared security posture | Detailed source created |
+| `docs/architecture/diagrams/05-governance.excalidraw` | Shared governance and operations | Detailed source created |
+| `docs/architecture/diagrams/09-cis-level1.excalidraw` | CIS Level 1 blueprint | Detailed source created |
+| `docs/architecture/diagrams/09-cis-level2.excalidraw` | CIS Level 2 blueprint | Detailed source created |
+| Blueprint-local architecture sources | Core, CIS, identity, networking, operating entity, extension, compliance, data, disaster recovery, and industry folders | Detailed source created |
 
 ## Rules
 
