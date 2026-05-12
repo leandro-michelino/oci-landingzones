@@ -28,6 +28,8 @@ module "core" {
   default_security_zone_recipe_id           = var.default_security_zone_recipe_id
   default_security_zone_recipe_display_name = var.default_security_zone_recipe_display_name
   security_zones                            = var.security_zones
+  vss_enabled                               = var.vss_enabled
+  enable_default_host_scan                  = var.enable_default_host_scan
   enable_budgets                            = var.budget_amount != null || length(var.budgets) > 0
   default_budget_amount                     = var.budget_amount
   default_budget_alert_recipients           = var.budget_alert_recipients
@@ -35,6 +37,9 @@ module "core" {
   enable_events                             = var.enable_events
   event_subscriptions                       = var.event_subscriptions
   event_rules                               = var.event_rules
+  monitoring_enabled                        = var.monitoring_enabled
+  monitoring_subscriptions                  = var.monitoring_subscriptions
+  monitoring_alarms                         = var.monitoring_alarms
 
   defined_tags = var.defined_tags
   freeform_tags = merge(

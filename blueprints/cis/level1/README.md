@@ -58,10 +58,11 @@ cis_level = "level1"
 - Cloud Guard enabled with a default landing zone target.
 - Optional Vault/KMS and Security Zones when key and recipe decisions are
   approved.
+- Optional VSS and Monitoring alarms when scan scope and notification
+  destinations are approved.
 - Governance Events enabled with default IAM change rules and a default
   notification topic.
 - Optional CIS budget creation when `budget_amount` or custom `budgets` are
   supplied.
 - CIS profile passed into child modules for control differences.
-- Planned next: monitoring and stricter network defaults where the customer
-  wants them.
+- Planned next: stricter network defaults where the customer wants them.

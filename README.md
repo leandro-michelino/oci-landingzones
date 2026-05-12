@@ -410,7 +410,7 @@ Completed:
 - Initial guardrail and documentation files added.
 - Dedicated opt-in CIS Level 1 and Level 2 blueprint folders added.
 - Core compartment, tagging, governance logging, Cloud Guard, Vault/KMS,
-  Security Zones, budgets, and Events modules implemented.
+  Security Zones, VSS, budgets, Events, and Monitoring modules implemented.
 - Core IAM groups, dynamic groups, and scoped policies implemented.
 - CIS Level 1 and Level 2 wrappers wired to the core/IAM foundation.
 - CIS wrappers enable tenancy audit retention by default, while generic core
@@ -430,8 +430,8 @@ Completed:
 - Deployment pattern catalog expanded with operating entity, compliance,
   multicloud, data platform, and industry blueprints.
 
-Next implementation work should continue with security posture and operations
-controls such as VSS, monitoring alarms, and extension-specific IAM policies.
+Next implementation work should continue with extension-specific IAM policies,
+OS Management Hub, and deeper service-specific monitoring patterns.
 
 ## License
 

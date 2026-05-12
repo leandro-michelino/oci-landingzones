@@ -46,11 +46,13 @@ IAM, tags, and policy outputs.
 - Optional VCN flow logs, OCI service logs, saved searches, and audit retention.
 - Optional Cloud Guard configuration and landing zone target.
 - Optional Vault/KMS foundation and Security Zones.
+- Optional Vulnerability Scanning Service host and container scan recipes and
+  targets.
 - Optional governance budgets, alert rules, Events rules, notification topics,
   and subscriptions.
+- Optional Monitoring alarms, notification topics, and subscriptions.
 - Platform IAM groups and least-privilege policies.
 - Dynamic groups for platform automation and workload resource principals.
-- Planned later: monitoring alarms.
 
 ## Module Order
 
@@ -60,15 +62,13 @@ IAM, tags, and policy outputs.
 4. `modules/security/cloud-guard`
 5. `modules/security/vault`
 6. `modules/security/security-zones`
-7. `modules/governance/budgets`
-8. `modules/governance/events`
-9. `modules/iam/groups`
-10. `modules/iam/dynamic-groups`
-11. `modules/iam/policies`
-
-Planned later:
-
-1. `modules/operations/monitoring`
+7. `modules/security/vss`
+8. `modules/governance/budgets`
+9. `modules/governance/events`
+10. `modules/operations/monitoring`
+11. `modules/iam/groups`
+12. `modules/iam/dynamic-groups`
+13. `modules/iam/policies`
 
 ## Expected Outputs
 
@@ -89,11 +89,15 @@ Planned later:
 - `vault_ids`
 - `vault_key_ids`
 - `security_zone_ids`
+- `vss_host_scan_target_ids`
+- `vss_container_scan_target_ids`
 - `budget_ids`
 - `budget_alert_rule_ids`
 - `event_notification_topic_ids`
 - `event_subscription_ids`
 - `event_rule_ids`
+- `monitoring_alarm_ids`
+- `monitoring_notification_topic_ids`
 - `group_ids`
 - `group_names`
 - `dynamic_group_ids`
@@ -101,8 +105,6 @@ Planned later:
 - `policy_ids`
 - `policy_names`
 - `tag_namespace_id`
-
-Planned outputs for later core phases include monitoring identifiers.
 
 ## Implementation Notes
 
@@ -135,6 +137,10 @@ Planned outputs for later core phases include monitoring identifiers.
   hard guardrails on the protected compartment tree. Set
   `security_zones_enabled = true` with an approved recipe OCID or display-name
   lookup before creating the default landing zone Security Zone.
+- Generic core keeps VSS disabled by default because scan scope should be
+  approved per environment. Set `vss_enabled = true` to create the default host
+  scan recipe and target for the workloads compartment, or use the host and
+  container scan maps for explicit scope.
 - Generic core keeps budgets disabled by default because spend thresholds and
   recipients are environment-specific. Set `enable_budgets = true` and
   `default_budget_amount` for the default root-scope budget, or use `budgets`
@@ -142,6 +148,10 @@ Planned outputs for later core phases include monitoring identifiers.
 - Generic core keeps Events disabled by default. CIS Level 1 and Level 2
   wrappers enable the default governance topic and IAM change rules, while
   subscriptions still require explicit local endpoints.
+- Generic core keeps Monitoring alarms disabled by default because metric
+  queries and notification destinations are environment-specific. Set
+  `monitoring_enabled = true`, add subscriptions, and define alarms in local
+  ignored tfvars files.
 - Use the IAM default toggles only in quota-constrained tests. Normal landing zone
   deployments should leave the IAM foundation enabled.
 - IAM policies are attached to the parent compartment and use compartment paths for the

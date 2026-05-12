@@ -36,6 +36,18 @@ cloud_guard_enabled = true
 # security_zones_enabled = true
 # default_security_zone_recipe_id = "ocid1.securityzonesrecipe.oc1..example"
 
+# VSS and monitoring alarms are available from the CIS wrapper, but remain
+# opt-in so teams can approve scan scope and notification destinations.
+# vss_enabled = true
+#
+# monitoring_enabled = true
+# monitoring_subscriptions = {
+#   platform_email = {
+#     protocol = "EMAIL"
+#     endpoint = "platform-alerts@example.com"
+#   }
+# }
+
 # CIS wrappers enable governance Events by default and create a default
 # notification topic/rules. Add subscriptions from local ignored tfvars so real
 # endpoints are not committed.

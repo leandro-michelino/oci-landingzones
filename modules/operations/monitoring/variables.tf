@@ -51,3 +51,72 @@ variable "freeform_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "enable_monitoring" {
+  description = "Create OCI Monitoring alarms and optional notification resources managed by this module."
+  type        = bool
+  default     = false
+}
+
+variable "enable_default_topic" {
+  description = "Create the default monitoring notification topic when monitoring is enabled."
+  type        = bool
+  default     = true
+}
+
+variable "notification_topics" {
+  description = "ONS notification topics keyed by logical name."
+  type = map(object({
+    name             = optional(string)
+    description      = optional(string)
+    compartment_ocid = optional(string)
+  }))
+  default = {}
+}
+
+variable "subscriptions" {
+  description = "ONS subscriptions keyed by logical name. Endpoints should be supplied from local ignored tfvars."
+  type = map(object({
+    topic_key        = optional(string, "default")
+    topic_id         = optional(string)
+    compartment_ocid = optional(string)
+    protocol         = string
+    endpoint         = string
+    delivery_policy  = optional(string)
+  }))
+  default = {}
+}
+
+variable "alarms" {
+  description = "OCI Monitoring alarms keyed by logical name."
+  type = map(object({
+    display_name                                  = optional(string)
+    body                                          = optional(string)
+    compartment_ocid                              = optional(string)
+    metric_compartment_ocid                       = optional(string)
+    metric_compartment_id_in_subtree              = optional(bool, false)
+    namespace                                     = string
+    query                                         = string
+    severity                                      = optional(string, "WARNING")
+    is_enabled                                    = optional(bool, true)
+    destinations                                  = optional(set(string), [])
+    destination_topic_keys                        = optional(set(string), [])
+    pending_duration                              = optional(string)
+    resolution                                    = optional(string)
+    resource_group                                = optional(string)
+    message_format                                = optional(string)
+    repeat_notification_duration                  = optional(string)
+    evaluation_slack_duration                     = optional(string)
+    is_notifications_per_metric_dimension_enabled = optional(bool)
+    notification_title                            = optional(string)
+  }))
+  default = {}
+
+  validation {
+    condition = alltrue([
+      for alarm in values(var.alarms) :
+      length(alarm.destinations) > 0 || length(alarm.destination_topic_keys) > 0
+    ])
+    error_message = "Each alarms entry must set destinations or destination_topic_keys."
+  }
+}

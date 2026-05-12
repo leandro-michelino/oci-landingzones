@@ -135,6 +135,31 @@ module "security_zones" {
   ]
 }
 
+module "vss" {
+  source = "../../modules/security/vss"
+
+  tenancy_ocid                              = var.tenancy_ocid
+  compartment_ocid                          = module.compartments.compartment_ids["security"]
+  region                                    = var.region
+  org                                       = var.org
+  environment                               = var.environment
+  region_key                                = var.region_key
+  cis_level                                 = var.cis_level
+  enable_vss                                = var.vss_enabled
+  enable_default_host_scan                  = var.enable_default_host_scan
+  default_host_scan_target_compartment_ocid = module.compartments.compartment_ids["workloads"]
+  default_host_scan_schedule_type           = var.default_host_scan_schedule_type
+  default_host_scan_day_of_week             = var.default_host_scan_day_of_week
+  default_host_agent_scan_level             = var.default_host_agent_scan_level
+  default_host_port_scan_level              = var.default_host_port_scan_level
+  host_scan_recipes                         = var.host_scan_recipes
+  host_scan_targets                         = var.host_scan_targets
+  container_scan_recipes                    = var.container_scan_recipes
+  container_scan_targets                    = var.container_scan_targets
+  defined_tags                              = var.defined_tags
+  freeform_tags                             = var.freeform_tags
+}
+
 module "budgets" {
   source = "../../modules/governance/budgets"
 
@@ -178,6 +203,25 @@ module "events" {
   event_rules                = var.event_rules
   defined_tags               = var.defined_tags
   freeform_tags              = var.freeform_tags
+}
+
+module "monitoring" {
+  source = "../../modules/operations/monitoring"
+
+  tenancy_ocid         = var.tenancy_ocid
+  compartment_ocid     = module.compartments.compartment_ids["governance"]
+  region               = var.region
+  org                  = var.org
+  environment          = var.environment
+  region_key           = var.region_key
+  cis_level            = var.cis_level
+  enable_monitoring    = var.monitoring_enabled
+  enable_default_topic = var.enable_default_monitoring_topic
+  notification_topics  = var.monitoring_notification_topics
+  subscriptions        = var.monitoring_subscriptions
+  alarms               = var.monitoring_alarms
+  defined_tags         = var.defined_tags
+  freeform_tags        = var.freeform_tags
 }
 
 module "groups" {

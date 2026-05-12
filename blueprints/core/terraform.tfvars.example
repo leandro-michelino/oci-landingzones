@@ -100,6 +100,23 @@ tag_default_values = {
 # default_security_zone_recipe_id = "ocid1.securityzonesrecipe.oc1..example"
 # default_security_zone_recipe_display_name = "Approved Security Recipe"
 
+# Vulnerability Scanning is opt-in for generic core. The default host scan
+# recipe targets the workloads compartment; container scans can be added when
+# OCIR repositories are approved.
+# vss_enabled = true
+#
+# container_scan_recipes = {
+#   ocir = {}
+# }
+#
+# container_scan_targets = {
+#   workloads = {
+#     container_scan_recipe_key = "ocir"
+#     registry_compartment_ocid = "ocid1.compartment.oc1..example"
+#     repositories              = ["team/app"]
+#   }
+# }
+
 # Governance budgets are opt-in because they need approved thresholds and
 # recipients. The default budget targets the landing zone root compartment.
 # enable_budgets        = true
@@ -142,6 +159,25 @@ tag_default_values = {
 #         topic_key   = "default"
 #       }
 #     ]
+#   }
+# }
+
+# Monitoring alarms are opt-in. Create the default topic and add subscriptions
+# and alarms from local ignored tfvars so real endpoints are not committed.
+# monitoring_enabled = true
+#
+# monitoring_subscriptions = {
+#   platform_email = {
+#     protocol = "EMAIL"
+#     endpoint = "platform-alerts@example.com"
+#   }
+# }
+#
+# monitoring_alarms = {
+#   high_cpu = {
+#     namespace              = "oci_computeagent"
+#     query                  = "CpuUtilization[1m].mean() > 80"
+#     destination_topic_keys = ["default"]
 #   }
 # }
 

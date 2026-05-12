@@ -176,6 +176,71 @@ variable "security_zones" {
   }
 }
 
+variable "vss_enabled" {
+  description = "Create OCI Vulnerability Scanning Service resources for the CIS landing zone."
+  type        = bool
+  default     = false
+}
+
+variable "enable_default_host_scan" {
+  description = "Create the default VSS host scan recipe and target when VSS is enabled."
+  type        = bool
+  default     = true
+}
+
+variable "monitoring_enabled" {
+  description = "Create OCI Monitoring alarms and optional notification resources for the CIS landing zone."
+  type        = bool
+  default     = false
+}
+
+variable "monitoring_subscriptions" {
+  description = "ONS subscriptions for monitoring keyed by logical name. Endpoints should be supplied from local ignored tfvars."
+  type = map(object({
+    topic_key        = optional(string, "default")
+    topic_id         = optional(string)
+    compartment_ocid = optional(string)
+    protocol         = string
+    endpoint         = string
+    delivery_policy  = optional(string)
+  }))
+  default = {}
+}
+
+variable "monitoring_alarms" {
+  description = "OCI Monitoring alarms keyed by logical name."
+  type = map(object({
+    display_name                                  = optional(string)
+    body                                          = optional(string)
+    compartment_ocid                              = optional(string)
+    metric_compartment_ocid                       = optional(string)
+    metric_compartment_id_in_subtree              = optional(bool, false)
+    namespace                                     = string
+    query                                         = string
+    severity                                      = optional(string, "WARNING")
+    is_enabled                                    = optional(bool, true)
+    destinations                                  = optional(set(string), [])
+    destination_topic_keys                        = optional(set(string), [])
+    pending_duration                              = optional(string)
+    resolution                                    = optional(string)
+    resource_group                                = optional(string)
+    message_format                                = optional(string)
+    repeat_notification_duration                  = optional(string)
+    evaluation_slack_duration                     = optional(string)
+    is_notifications_per_metric_dimension_enabled = optional(bool)
+    notification_title                            = optional(string)
+  }))
+  default = {}
+
+  validation {
+    condition = alltrue([
+      for alarm in values(var.monitoring_alarms) :
+      length(alarm.destinations) > 0 || length(alarm.destination_topic_keys) > 0
+    ])
+    error_message = "Each monitoring_alarms entry must set destinations or destination_topic_keys."
+  }
+}
+
 variable "budget_amount" {
   description = "Optional amount for the default CIS landing zone budget. Leave null to skip budget creation."
   type        = number

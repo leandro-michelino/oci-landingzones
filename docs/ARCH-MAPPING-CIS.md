@@ -31,12 +31,12 @@ the dedicated CIS landing zone folders when a CIS profile is required:
 | 3.14 | Cloud Guard enabled | `security/cloud-guard` | `core` | Level 1, Level 2 | P0 | Implemented |
 | 3.17 | Vault with customer-managed keys | `security/vault` | `core` | Level 1, Level 2 | P1 | Implemented |
 | 4.1 | Object Storage buckets not public | `iam/policies` | `core` | Level 1, Level 2 | P0 | Planned |
-| 4.2 | Pre-authenticated request audit alarms | `governance/events` | `core` | Level 1, Level 2 | P1 | Planned |
-| 5.1 | Host scanning enabled | `security/vss` | `core` | Level 1, Level 2 | P1 | Planned |
-| 5.2 | Container image scanning enabled | `security/vss` | `extensions/oke` | Level 1, Level 2 | P2 | Planned |
+| 4.2 | Pre-authenticated request audit alarms | `governance/events`, `operations/monitoring` | `core` | Level 1, Level 2 | P1 | Partial |
+| 5.1 | Host scanning enabled | `security/vss` | `core` | Level 1, Level 2 | P1 | Implemented |
+| 5.2 | Container image scanning enabled | `security/vss` | `extensions/oke` | Level 1, Level 2 | P2 | Implemented |
 
 `governance/events` now provides default IAM policy, group membership, and
 credential-change event rules for CIS wrappers. Time-based API key rotation and
-Object Storage pre-authenticated request alarms still need the monitoring layer
-and service-specific log/event wiring before they can be marked fully
-implemented.
+Object Storage pre-authenticated request alarms now have the Events and
+Monitoring foundations, but still need service-specific log/event wiring before
+they can be marked fully implemented.

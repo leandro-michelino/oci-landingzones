@@ -54,6 +54,11 @@ output "security_zone_ids" {
   value       = module.core.security_zone_ids
 }
 
+output "vss_host_scan_target_ids" {
+  description = "Map of VSS host scan target keys to OCIDs."
+  value       = module.core.vss_host_scan_target_ids
+}
+
 output "budget_ids" {
   description = "Map of budget keys to OCIDs."
   value       = module.core.budget_ids
@@ -67,4 +72,9 @@ output "event_rule_ids" {
 output "event_notification_topic_ids" {
   description = "Map of event notification topic keys to OCIDs."
   value       = module.core.event_notification_topic_ids
+}
+
+output "monitoring_alarm_ids" {
+  description = "Map of monitoring alarm keys to OCIDs."
+  value       = module.core.monitoring_alarm_ids
 }

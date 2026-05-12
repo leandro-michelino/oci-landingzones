@@ -28,10 +28,14 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   keys.
 - Security Zones implementation for opt-in landing zone compartment guardrails
   using approved security recipes.
+- Vulnerability Scanning Service implementation for opt-in host and container
+  scan recipes and targets.
 - Governance budgets implementation for opt-in landing zone budgets and budget
   alert rules.
 - Governance Events implementation for ONS notification topics, subscriptions,
   default IAM change rules, and custom Events rules.
+- Monitoring implementation for opt-in alarms, notification topics, and
+  subscriptions.
 - Phase 2 IAM foundation implementation for IAM groups, dynamic groups, and
   scoped policies.
 - Phase 3 networking foundation implementation for reusable hub VCN, spoke VCN,

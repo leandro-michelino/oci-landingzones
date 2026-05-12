@@ -144,6 +144,11 @@ READMEs may define additional variables for local behavior.
 | `security_zones_enabled` | `bool` | No | Create OCI Security Zones. Disabled by default because Security Zones enforce guardrails on protected compartments. |
 | `default_security_zone_recipe_id` | `string` | No | Security recipe OCID used by the default landing zone Security Zone. |
 | `security_zones` | `map(object)` | No | Additional Security Zones keyed by logical name. |
+| `vss_enabled` | `bool` | No | Create Vulnerability Scanning Service host and container scan resources. Disabled by default. |
+| `host_scan_recipes` | `map(object)` | No | VSS host scan recipes keyed by logical name. |
+| `host_scan_targets` | `map(object)` | No | VSS host scan targets keyed by logical name. |
+| `container_scan_recipes` | `map(object)` | No | VSS container image scan recipes keyed by logical name. |
+| `container_scan_targets` | `map(object)` | No | VSS container image scan targets keyed by logical name. |
 | `enable_budgets` | `bool` | No | Create OCI Budgets resources. Generic core disables this by default; CIS wrappers create budgets only when thresholds are supplied. |
 | `default_budget_amount` | `number` | No | Amount for the default landing zone budget. Leave null to skip default budget creation. |
 | `default_budget_alert_recipients` | `set(string)` | No | Email recipients for the default budget alert rule. |
@@ -152,7 +157,9 @@ READMEs may define additional variables for local behavior.
 | `event_notification_topics` | `map(object)` | No | ONS notification topics keyed by logical name. |
 | `event_subscriptions` | `map(object)` | No | ONS subscriptions keyed by logical name; endpoints should stay in local ignored tfvars. |
 | `event_rules` | `map(object)` | No | Additional or overriding OCI Events rules keyed by logical name. |
-| `vss_enabled` | `bool` | No | Enable Vulnerability Scanning Service configuration. |
+| `monitoring_enabled` | `bool` | No | Create Monitoring alarms and optional notification resources. Disabled by default. |
+| `monitoring_subscriptions` | `map(object)` | No | ONS subscriptions for Monitoring alarms; endpoints should stay in local ignored tfvars. |
+| `monitoring_alarms` | `map(object)` | No | OCI Monitoring alarms keyed by logical name. |
 | `bastion_enabled` | `bool` | No | Enable OCI Bastion resources where supported. |
 | `network_firewall_enabled` | `bool` | No | Enable OCI Network Firewall for supported blueprints. |
 | `budget_amount` | `number` | CIS wrappers | Optional default CIS budget threshold. |

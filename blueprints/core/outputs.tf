@@ -139,6 +139,26 @@ output "security_zone_target_ids" {
   value       = module.security_zones.security_zone_target_ids
 }
 
+output "vss_host_scan_recipe_ids" {
+  description = "Map of VSS host scan recipe keys to OCIDs."
+  value       = module.vss.host_scan_recipe_ids
+}
+
+output "vss_host_scan_target_ids" {
+  description = "Map of VSS host scan target keys to OCIDs."
+  value       = module.vss.host_scan_target_ids
+}
+
+output "vss_container_scan_recipe_ids" {
+  description = "Map of VSS container scan recipe keys to OCIDs."
+  value       = module.vss.container_scan_recipe_ids
+}
+
+output "vss_container_scan_target_ids" {
+  description = "Map of VSS container scan target keys to OCIDs."
+  value       = module.vss.container_scan_target_ids
+}
+
 output "budget_ids" {
   description = "Map of budget keys to OCIDs."
   value       = module.budgets.budget_ids
@@ -177,6 +197,26 @@ output "event_rule_ids" {
 output "event_rule_names" {
   description = "Map of event rule keys to display names."
   value       = module.events.event_rule_names
+}
+
+output "monitoring_notification_topic_ids" {
+  description = "Map of monitoring notification topic keys to OCIDs."
+  value       = module.monitoring.notification_topic_ids
+}
+
+output "monitoring_subscription_ids" {
+  description = "Map of monitoring subscription keys to OCIDs."
+  value       = module.monitoring.subscription_ids
+}
+
+output "monitoring_alarm_ids" {
+  description = "Map of monitoring alarm keys to OCIDs."
+  value       = module.monitoring.alarm_ids
+}
+
+output "monitoring_alarm_names" {
+  description = "Map of monitoring alarm keys to display names."
+  value       = module.monitoring.alarm_names
 }
 
 output "group_ids" {
@@ -222,7 +262,9 @@ output "resource_ids" {
     cloud_guard    = module.cloud_guard.resource_ids
     vault          = module.vault.resource_ids
     security_zones = module.security_zones.resource_ids
+    vss            = module.vss.resource_ids
     budgets        = module.budgets.resource_ids
     events         = module.events.resource_ids
+    monitoring     = module.monitoring.resource_ids
   }
 }

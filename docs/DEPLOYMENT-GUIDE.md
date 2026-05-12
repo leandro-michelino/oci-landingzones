@@ -86,11 +86,13 @@ Expected module order:
 4. `security/cloud-guard`
 5. `security/vault`
 6. `security/security-zones`
-7. `governance/budgets`
-8. `governance/events`
-9. `iam/groups`
-10. `iam/dynamic-groups`
-11. `iam/policies`
+7. `security/vss`
+8. `governance/budgets`
+9. `governance/events`
+10. `operations/monitoring`
+11. `iam/groups`
+12. `iam/dynamic-groups`
+13. `iam/policies`
 
 Core creates audit, network, service, and security log groups by default in the
 governance compartment. VCN flow logs, Object Storage logs, Load Balancer logs,
@@ -114,6 +116,11 @@ hard guardrails on the protected compartment tree. Enable
 `security_zones_enabled` only after approving the security recipe OCID or
 display-name lookup used for the landing zone root compartment.
 
+Vulnerability Scanning Service is wired through core but remains opt-in because
+scan scope should be approved per environment. Enable `vss_enabled` to create
+the default host scan recipe and target for the workloads compartment, or use
+the host/container scan maps for explicit scope.
+
 Governance budgets are wired through core but remain opt-in because each
 environment needs approved spend thresholds and notification recipients. Enable
 `enable_budgets` and set `default_budget_amount` for the default landing zone
@@ -123,6 +130,11 @@ Governance Events and Notifications are wired through core. Generic core keeps
 them disabled by default; CIS wrappers enable the default governance event topic
 and IAM change rules by default. Add `event_subscriptions` from local ignored
 tfvars so real email, HTTPS, or other endpoints are not committed.
+
+Monitoring alarms are wired through core but remain opt-in because metric
+queries and notification destinations are environment-specific. Add
+`monitoring_subscriptions` and `monitoring_alarms` from local ignored tfvars
+when alarms should notify platform teams.
 
 ## Phase 2 - IAM Foundation
 
@@ -144,10 +156,6 @@ Implemented module order:
 1. `iam/groups`
 2. `iam/dynamic-groups`
 3. `iam/policies`
-
-Planned core modules after the IAM, security, and governance foundation:
-
-1. `operations/monitoring`
 
 ## Phase 3 - Networking
 
