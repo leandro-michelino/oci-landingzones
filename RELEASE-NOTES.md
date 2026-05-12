@@ -14,6 +14,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Dedicated opt-in CIS Level 1 and Level 2 landing zone blueprint folders.
 - CIS Level 1 and Level 2 wrappers wired to the implemented core/IAM
   foundation while remaining opt-in.
+- Repository cleanup guidance for generated Terraform state, lock, plan, cache,
+  and local test artifacts.
 - Phase 1 core implementation for landing zone compartments and governance
   tagging.
 - Phase 2 IAM foundation implementation for IAM groups, dynamic groups, and
@@ -36,3 +38,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   security handling.
 - Initial documentation for naming conventions, deployment flow, CIS mapping,
   variables, architecture diagrams, runbooks, and the core blueprint.
+
+### Changed
+
+- Removed unused `region_key_map` local configuration blocks from modules so
+  module locals only keep values currently used by Terraform.

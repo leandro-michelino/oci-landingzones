@@ -12,17 +12,4 @@ locals {
       enable_delete = try(compartment.enable_delete, var.enable_delete)
     }
   }
-
-  region_key_map = {
-    eu-frankfurt-1    = "fra"
-    uk-london-1       = "lhr"
-    af-johannesburg-1 = "jnb"
-    sa-saopaulo-1     = "gru"
-    eu-amsterdam-1    = "ams"
-    us-ashburn-1      = "iad"
-    us-phoenix-1      = "phx"
-    me-dubai-1        = "dxb"
-    ap-sydney-1       = "syd"
-    ap-tokyo-1        = "nrt"
-  }
 }

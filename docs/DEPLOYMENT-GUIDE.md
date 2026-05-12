@@ -17,6 +17,10 @@ oci iam tenancy get --tenancy-id "$TENANCY_OCID"
 pre-commit install
 ```
 
+Local validation can create `.terraform/`, `.terraform.lock.hcl`, plans, and
+state files in many blueprint folders. They are intentionally ignored and should
+be removed from the workspace before committing.
+
 The generic landing zone deployment does not enable CIS behavior by default. To
 deploy a CIS landing zone, start from one of the dedicated folders instead:
 

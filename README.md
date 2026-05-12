@@ -341,6 +341,22 @@ Automated workflows and GitHub Actions are intentionally out of scope for now.
 Terraform `1.12.0` or later is required for the native OCI remote state backend
 used by the environment examples.
 
+## Repository Hygiene
+
+Keep generated Terraform and local test files out of the repo. The project
+intentionally ignores `.terraform/`, `.terraform.lock.hcl`, `terraform.tfstate*`,
+`*.tfplan`, local `terraform.tfvars`, and `.codex-local/` because each blueprint
+is validated independently and real test data belongs on the workstation only.
+
+Before committing, clean local generated files if needed:
+
+```bash
+find . -name ".terraform" -type d -prune -exec rm -rf {} +
+find . -name ".terraform.lock.hcl" -type f -delete
+find . -name "terraform.tfstate*" -type f -delete
+rm -rf .codex-local
+```
+
 ## Current Status
 
 Project bootstrap, Phase 1 core structure, Phase 2 IAM foundation, optional CIS

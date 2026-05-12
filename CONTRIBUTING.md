@@ -33,6 +33,10 @@ tflint --recursive
 checkov -d . --framework terraform --compact
 ```
 
+Generated Terraform folders, lock files, plans, state files, local tfvars, and
+`.codex-local/` test data are workstation-only artifacts. Clean them before
+committing so reviews stay focused on source, examples, and documentation.
+
 ## Diagram Gate
 
 Do not add real OCI resources or apply Terraform for a blueprint until its

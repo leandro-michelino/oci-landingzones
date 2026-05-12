@@ -5,21 +5,6 @@ locals {
   name_prefix = "${var.org}-${var.environment}-${var.region_key}"
   vcn_name    = coalesce(var.vcn_display_name, "${local.name_prefix}-vcn-${var.vcn_label}")
 
-  region_key_map = {
-    eu-frankfurt-1    = "fra"
-    uk-london-1       = "lhr"
-    af-johannesburg-1 = "jnb"
-    sa-saopaulo-1     = "gru"
-    eu-amsterdam-1    = "ams"
-    us-ashburn-1      = "iad"
-    us-phoenix-1      = "phx"
-    me-dubai-1        = "dxb"
-    ap-sydney-1       = "syd"
-    ap-tokyo-1        = "nrt"
-    eu-madrid-1       = "mad"
-    me-abudhabi-1     = "auh"
-  }
-
   route_entity_ids = merge(
     {
       igw = try(oci_core_internet_gateway.this[0].id, null)
