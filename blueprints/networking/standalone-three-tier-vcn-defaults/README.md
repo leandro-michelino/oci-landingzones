@@ -42,8 +42,8 @@ apps.
 
 ## Inputs To Decide
 
-- Parent compartment from `blueprints/core`.
-- Workload compartment target.
+- Workload compartment target from `blueprints/core`, another landing-zone
+  process, or an existing brownfield tenancy.
 - VCN CIDR block.
 - Public web subnet CIDR.
 - Private application subnet CIDR.
@@ -53,11 +53,60 @@ apps.
 
 ## Deployment Flow
 
-1. Deploy `blueprints/core`.
-2. Review `architecture/README.md` and complete the architecture diagram.
-3. Copy `terraform.tfvars.example` to a local ignored tfvars file.
-4. Run `terraform init`, `terraform validate`, and `terraform plan`.
-5. Apply only after the plan matches the expected topology.
+1. Identify the target workload compartment OCID.
+2. Review `architecture/README.md` and confirm the topology matches the
+   workload.
+3. Copy `terraform.tfvars.example` to a local ignored `terraform.tfvars` file.
+4. Set `compartment_ocid` to the target workload compartment. If it is omitted,
+   the blueprint falls back to `tenancy_ocid`, which is useful only for simple
+   tests.
+5. Run `terraform init`, `terraform validate`, and `terraform plan`.
+6. Apply only after the plan matches the expected topology.
+
+## Using Only This Blueprint
+
+This blueprint composes the shared module at `modules/networking/spoke-vcn`.
+When consuming only this pattern from GitHub, keep both paths in the same local
+repository layout so the relative module source in `main.tf` resolves.
+
+```bash
+git clone --filter=blob:none --sparse https://github.com/leandro-michelino/oci-landingzones.git
+cd oci-landingzones
+
+git sparse-checkout set \
+  blueprints/networking/standalone-three-tier-vcn-defaults \
+  modules/networking/spoke-vcn
+
+cd blueprints/networking/standalone-three-tier-vcn-defaults
+cp terraform.tfvars.example terraform.tfvars
+```
+
+Edit `terraform.tfvars` with real OCI values:
+
+```hcl
+tenancy_ocid        = "ocid1.tenancy.oc1..."
+current_user_ocid   = "ocid1.user.oc1..."
+region              = "eu-frankfurt-1"
+home_region         = "eu-frankfurt-1"
+oci_config_profile  = "DEFAULT"
+compartment_ocid    = "ocid1.compartment.oc1..."
+org                 = "acme"
+environment         = "dev"
+region_key          = "fra"
+vcn_label           = "app"
+vcn_cidr_block      = "10.10.0.0/16"
+```
+
+Then run:
+
+```bash
+terraform init
+terraform validate
+terraform plan
+terraform apply
+```
+
+For validation without remote state, use `terraform init -backend=false`.
 
 ## Architecture Artifacts
 

@@ -116,6 +116,36 @@ Each deployable blueprint folder is intended to be self-contained. The local
 local `architecture/` folder keeps the editable Excalidraw source. PNG exports
 are generated only when a rendered review artifact is needed.
 
+## Using One Blueprint
+
+You can consume a single blueprint without cloning the full repository history,
+but the blueprint still needs any shared module folders referenced by its
+Terraform `source` blocks. Do not download only a GitHub folder when the
+blueprint uses relative module paths such as `../../../modules/...`; Terraform
+needs those paths to exist locally.
+
+Use Git sparse checkout to pull only the blueprint and its dependencies. For
+example, to use only the default standalone three-tier VCN blueprint:
+
+```bash
+git clone --filter=blob:none --sparse https://github.com/leandro-michelino/oci-landingzones.git
+cd oci-landingzones
+
+git sparse-checkout set \
+  blueprints/networking/standalone-three-tier-vcn-defaults \
+  modules/networking/spoke-vcn
+
+cd blueprints/networking/standalone-three-tier-vcn-defaults
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform validate
+terraform plan
+```
+
+Set `compartment_ocid` to an existing workload compartment when deploying a
+single blueprint directly. That compartment can come from `blueprints/core/`,
+another landing-zone process, or an existing brownfield tenancy.
+
 ### Core
 
 | Blueprint | Path | Description |

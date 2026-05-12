@@ -57,6 +57,42 @@ Use `docs/DEPLOYMENT-PATTERN-CATALOG.md` as the selection menu before choosing
 a blueprint. The catalog includes core, CIS, identity, operating entity,
 networking, compliance, data platform, industry, and extension patterns.
 
+## Using A Single Blueprint
+
+Blueprints are deployable Terraform entry points, but they intentionally compose
+shared modules from `modules/` with relative `source` paths. When a user wants
+only one blueprint, keep the blueprint folder and every referenced module folder
+together in the same repository layout.
+
+The recommended minimal checkout pattern is Git sparse checkout:
+
+```bash
+git clone --filter=blob:none --sparse https://github.com/leandro-michelino/oci-landingzones.git
+cd oci-landingzones
+
+git sparse-checkout set \
+  blueprints/networking/standalone-three-tier-vcn-defaults \
+  modules/networking/spoke-vcn
+
+cd blueprints/networking/standalone-three-tier-vcn-defaults
+cp terraform.tfvars.example terraform.tfvars
+```
+
+After editing `terraform.tfvars` with real OCI values, run:
+
+```bash
+terraform init
+terraform validate
+terraform plan
+terraform apply
+```
+
+For review or CI checks that should not configure remote state, use
+`terraform init -backend=false` before `terraform validate` or `terraform plan`.
+For production use, configure state deliberately before apply. Avoid copying a
+blueprint folder alone from GitHub unless all relative module dependencies are
+copied with it.
+
 ## Phase 1 - Core Structure
 
 Deploy the core blueprint first. The implemented foundation creates the landing
@@ -163,6 +199,12 @@ Implemented module order:
 Choose one networking blueprint and deploy it after core.
 Each networking deployment folder has a local README and `architecture/` folder
 with the expected editable diagram and exported image names.
+
+Networking blueprints can also be used directly against an existing workload
+compartment. In that mode, set `compartment_ocid` to the target compartment and
+include the required networking module folders in the checkout. For
+`standalone-three-tier-vcn-defaults`, the required module folder is
+`modules/networking/spoke-vcn`.
 
 Each networking blueprint keeps its own diagram in its local `architecture/`
 folder, for example `architecture/standalone-three-tier-vcn-defaults.excalidraw`
