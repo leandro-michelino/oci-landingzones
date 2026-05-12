@@ -51,3 +51,65 @@ variable "freeform_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "enable_events" {
+  description = "Create OCI Events and Notifications resources managed by this module."
+  type        = bool
+  default     = false
+}
+
+variable "enable_default_topic" {
+  description = "Create the default governance notification topic."
+  type        = bool
+  default     = true
+}
+
+variable "enable_default_event_rules" {
+  description = "Create default governance event rules that publish to the default topic."
+  type        = bool
+  default     = true
+}
+
+variable "notification_topics" {
+  description = "ONS notification topics keyed by logical name."
+  type = map(object({
+    name             = optional(string)
+    description      = optional(string)
+    compartment_ocid = optional(string)
+  }))
+  default = {}
+}
+
+variable "subscriptions" {
+  description = "ONS subscriptions keyed by logical name. Endpoints are intentionally explicit and should be supplied from local ignored tfvars."
+  type = map(object({
+    topic_key        = optional(string, "default")
+    topic_id         = optional(string)
+    compartment_ocid = optional(string)
+    protocol         = string
+    endpoint         = string
+    delivery_policy  = optional(string)
+  }))
+  default = {}
+}
+
+variable "event_rules" {
+  description = "OCI Events rules keyed by logical name."
+  type = map(object({
+    display_name     = optional(string)
+    description      = optional(string)
+    compartment_ocid = optional(string)
+    condition        = string
+    is_enabled       = optional(bool, true)
+    actions = list(object({
+      action_type = optional(string, "ONS")
+      description = optional(string)
+      function_id = optional(string)
+      is_enabled  = optional(bool, true)
+      stream_id   = optional(string)
+      topic_key   = optional(string, "default")
+      topic_id    = optional(string)
+    }))
+  }))
+  default = {}
+}

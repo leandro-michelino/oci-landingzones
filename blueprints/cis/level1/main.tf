@@ -20,6 +20,13 @@ module "core" {
   cloud_guard_enabled              = var.cloud_guard_enabled
   cloud_guard_detector_recipe_ids  = var.cloud_guard_detector_recipe_ids
   cloud_guard_responder_recipe_ids = var.cloud_guard_responder_recipe_ids
+  enable_budgets                   = var.budget_amount != null || length(var.budgets) > 0
+  default_budget_amount            = var.budget_amount
+  default_budget_alert_recipients  = var.budget_alert_recipients
+  budgets                          = var.budgets
+  enable_events                    = var.enable_events
+  event_subscriptions              = var.event_subscriptions
+  event_rules                      = var.event_rules
 
   defined_tags = var.defined_tags
   freeform_tags = merge(

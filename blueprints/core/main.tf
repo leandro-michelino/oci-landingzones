@@ -87,6 +87,51 @@ module "cloud_guard" {
   freeform_tags               = var.freeform_tags
 }
 
+module "budgets" {
+  source = "../../modules/governance/budgets"
+
+  tenancy_ocid                        = var.tenancy_ocid
+  compartment_ocid                    = module.compartments.compartment_ids["governance"]
+  region                              = var.region
+  org                                 = var.org
+  environment                         = var.environment
+  region_key                          = var.region_key
+  cis_level                           = var.cis_level
+  enable_budgets                      = var.enable_budgets
+  enable_default_budget               = var.enable_default_budget
+  default_budget_amount               = var.default_budget_amount
+  default_budget_target_ocid          = module.compartments.root_compartment_id
+  default_budget_target_ocids         = var.default_budget_target_ocids
+  default_budget_reset_period         = var.default_budget_reset_period
+  default_budget_alert_recipients     = var.default_budget_alert_recipients
+  default_budget_alert_threshold      = var.default_budget_alert_threshold
+  default_budget_alert_threshold_type = var.default_budget_alert_threshold_type
+  default_budget_alert_type           = var.default_budget_alert_type
+  budgets                             = var.budgets
+  defined_tags                        = var.defined_tags
+  freeform_tags                       = var.freeform_tags
+}
+
+module "events" {
+  source = "../../modules/governance/events"
+
+  tenancy_ocid               = var.tenancy_ocid
+  compartment_ocid           = module.compartments.compartment_ids["governance"]
+  region                     = var.region
+  org                        = var.org
+  environment                = var.environment
+  region_key                 = var.region_key
+  cis_level                  = var.cis_level
+  enable_events              = var.enable_events
+  enable_default_topic       = var.enable_default_event_topic
+  enable_default_event_rules = var.enable_default_event_rules
+  notification_topics        = var.event_notification_topics
+  subscriptions              = var.event_subscriptions
+  event_rules                = var.event_rules
+  defined_tags               = var.defined_tags
+  freeform_tags              = var.freeform_tags
+}
+
 module "groups" {
   source = "../../modules/iam/groups"
 

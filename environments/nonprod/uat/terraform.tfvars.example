@@ -18,8 +18,18 @@ vss_enabled              = true
 bastion_enabled          = true
 network_firewall_enabled = true
 
-budget_alert_email = "platform-alerts@example.com"
-budget_amount      = 15000
+enable_budgets        = true
+default_budget_amount = 15000
+default_budget_alert_recipients = [
+  "platform-alerts@example.com"
+]
+enable_events = true
+event_subscriptions = {
+  platform_email = {
+    protocol = "EMAIL"
+    endpoint = "platform-alerts@example.com"
+  }
+}
 log_retention_days = 90
 
 defined_tags = {

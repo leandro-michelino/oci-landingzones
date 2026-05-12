@@ -23,8 +23,8 @@ behavior is opt-in through dedicated landing zone blueprint folders:
 - CIS folders fix their profile internally and expose it through an output named
   `cis_level`.
 - CIS blueprints pass the selected profile into the implemented core, IAM,
-  governance logging, and Cloud Guard foundation and will keep passing it to
-  later security and networking controls as those modules mature.
+  governance logging, Cloud Guard, Events, and Budgets foundation and will keep
+  passing it to later security and networking controls as those modules mature.
 - Documentation must explain behavioral differences before any resource behavior
   changes between profiles.
 - Real `terraform apply` tests for either level must use an approved test
@@ -38,7 +38,7 @@ behavior is opt-in through dedicated landing zone blueprint folders:
 | Networking | No broad internet ingress except approved DMZ patterns. | Adds stricter private-only and inspected-egress defaults where applicable. |
 | Logging | Audit retention enabled and log groups created; service and network logs attach when source OCIDs are provided. | Extends retention and alert coverage for sensitive events. |
 | Security | Cloud Guard enabled with a landing zone target; Security Zones, VSS, Bastion, and Vault remain future baseline controls. | Uses stricter detector/responder posture and stronger enforcement defaults. |
-| Governance | Required tags, budgets, events, and monitoring. | Adds tighter budget, tag, and drift monitoring expectations. |
+| Governance | Required tags, default governance event topic/rules, and optional budgets when thresholds are supplied. | Adds tighter budget, tag, and drift monitoring expectations. |
 
 ## Terraform Examples
 

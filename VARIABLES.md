@@ -138,10 +138,18 @@ READMEs may define additional variables for local behavior.
 | `cloud_guard_detector_recipe_ids` | `set(string)` | No | Detector recipe OCIDs attached to the default Cloud Guard target. |
 | `cloud_guard_responder_recipe_ids` | `set(string)` | No | Responder recipe OCIDs attached to the default Cloud Guard target. |
 | `cloud_guard_targets` | `map(object)` | No | Additional Cloud Guard targets keyed by logical name. |
+| `enable_budgets` | `bool` | No | Create OCI Budgets resources. Generic core disables this by default; CIS wrappers create budgets only when thresholds are supplied. |
+| `default_budget_amount` | `number` | No | Amount for the default landing zone budget. Leave null to skip default budget creation. |
+| `default_budget_alert_recipients` | `set(string)` | No | Email recipients for the default budget alert rule. |
+| `budgets` | `map(object)` | No | Additional OCI Budgets and alert rules keyed by logical name. |
+| `enable_events` | `bool` | No | Create OCI Events and Notifications resources. Generic core disables this by default; CIS wrappers enable default governance events. |
+| `event_notification_topics` | `map(object)` | No | ONS notification topics keyed by logical name. |
+| `event_subscriptions` | `map(object)` | No | ONS subscriptions keyed by logical name; endpoints should stay in local ignored tfvars. |
+| `event_rules` | `map(object)` | No | Additional or overriding OCI Events rules keyed by logical name. |
 | `security_zones_enabled` | `bool` | No | Enable Security Zone policies. |
 | `vss_enabled` | `bool` | No | Enable Vulnerability Scanning Service configuration. |
 | `bastion_enabled` | `bool` | No | Enable OCI Bastion resources where supported. |
 | `network_firewall_enabled` | `bool` | No | Enable OCI Network Firewall for supported blueprints. |
-| `budget_alert_email` | `string` | No | Email destination for budget alerts. |
-| `budget_amount` | `number` | No | Monthly or project budget threshold. |
+| `budget_amount` | `number` | CIS wrappers | Optional default CIS budget threshold. |
+| `budget_alert_recipients` | `set(string)` | CIS wrappers | Email recipients for the default CIS budget alert rule. |
 | `log_retention_days` | `number` | No | Retention period for configured logs. |

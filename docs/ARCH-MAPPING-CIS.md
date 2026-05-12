@@ -18,7 +18,7 @@ the dedicated CIS landing zone folders when a CIS profile is required:
 | 1.1 | Avoid root compartment usage | `iam/compartments` | `core` | Level 1, Level 2 | P0 | Implemented |
 | 1.2 | Local service admin account | `iam/groups`, `iam/policies` | `core` | Level 1, Level 2 | P0 | Partial |
 | 1.3 | MFA enforced | `iam/policies` | `core` | Level 1, Level 2 | P0 | Planned |
-| 1.7 | API keys rotated before 90 days | `governance/events` | `core` | Level 1, Level 2 | P1 | Planned |
+| 1.7 | API keys rotated before 90 days | `governance/events` | `core` | Level 1, Level 2 | P1 | Partial |
 | 1.13 | No API keys on root user | `iam/policies` | `core` | Level 1, Level 2 | P0 | Planned |
 | 1.15 | Break-glass account MFA | `iam/groups`, IdP integration | `identity/cis-basic` | Level 1, Level 2 | P0 | Planned |
 | 2.1 | No broad ingress except approved DMZ patterns | `networking/*` | Networking blueprints | Level 1, Level 2 | P0 | Planned |
@@ -34,3 +34,9 @@ the dedicated CIS landing zone folders when a CIS profile is required:
 | 4.2 | Pre-authenticated request audit alarms | `governance/events` | `core` | Level 1, Level 2 | P1 | Planned |
 | 5.1 | Host scanning enabled | `security/vss` | `core` | Level 1, Level 2 | P1 | Planned |
 | 5.2 | Container image scanning enabled | `security/vss` | `extensions/oke` | Level 1, Level 2 | P2 | Planned |
+
+`governance/events` now provides default IAM policy, group membership, and
+credential-change event rules for CIS wrappers. Time-based API key rotation and
+Object Storage pre-authenticated request alarms still need the monitoring layer
+and service-specific log/event wiring before they can be marked fully
+implemented.

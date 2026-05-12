@@ -53,5 +53,9 @@ cis_level = "level2"
 - CIS profile passed into child modules for stricter defaults.
 - Governance logging groups and tenancy audit retention.
 - Cloud Guard enabled with a default landing zone target.
+- Governance Events enabled with default IAM change rules and a default
+  notification topic.
+- Optional CIS budget creation when `budget_amount` or custom `budgets` are
+  supplied.
 - Planned next: stronger break-glass posture, private-first networking,
-  inspected egress, expanded alerting, and stricter governance controls.
+  inspected egress, monitoring, and stricter governance controls.

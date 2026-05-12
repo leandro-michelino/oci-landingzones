@@ -56,6 +56,10 @@ cis_level = "level1"
 - Governance tagging baseline.
 - Governance logging groups and tenancy audit retention.
 - Cloud Guard enabled with a default landing zone target.
+- Governance Events enabled with default IAM change rules and a default
+  notification topic.
+- Optional CIS budget creation when `budget_amount` or custom `budgets` are
+  supplied.
 - CIS profile passed into child modules for control differences.
-- Planned next: budgets, monitoring, and stricter network defaults where the
-  customer wants them.
+- Planned next: monitoring and stricter network defaults where the customer
+  wants them.

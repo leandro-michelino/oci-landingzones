@@ -45,9 +45,11 @@ IAM, tags, and policy outputs.
 - Governance log groups for audit, network, service, and security logs.
 - Optional VCN flow logs, OCI service logs, saved searches, and audit retention.
 - Optional Cloud Guard configuration and landing zone target.
+- Optional governance budgets, alert rules, Events rules, notification topics,
+  and subscriptions.
 - Platform IAM groups and least-privilege policies.
 - Dynamic groups for platform automation and workload resource principals.
-- Planned later: Security Zones, Vault, events, budgets, and monitoring alarms.
+- Planned later: Security Zones, Vault, and monitoring alarms.
 
 ## Module Order
 
@@ -55,17 +57,17 @@ IAM, tags, and policy outputs.
 2. `modules/governance/tagging`
 3. `modules/governance/logging`
 4. `modules/security/cloud-guard`
-5. `modules/iam/groups`
-6. `modules/iam/dynamic-groups`
-7. `modules/iam/policies`
+5. `modules/governance/budgets`
+6. `modules/governance/events`
+7. `modules/iam/groups`
+8. `modules/iam/dynamic-groups`
+9. `modules/iam/policies`
 
 Planned later:
 
 1. `modules/security/vault`
 2. `modules/security/security-zones`
-3. `modules/governance/events`
-4. `modules/governance/budgets`
-5. `modules/operations/monitoring`
+3. `modules/operations/monitoring`
 
 ## Expected Outputs
 
@@ -83,6 +85,11 @@ Planned later:
 - `audit_configuration_id`
 - `cloud_guard_configuration_id`
 - `cloud_guard_target_ids`
+- `budget_ids`
+- `budget_alert_rule_ids`
+- `event_notification_topic_ids`
+- `event_subscription_ids`
+- `event_rule_ids`
 - `group_ids`
 - `group_names`
 - `dynamic_group_ids`
@@ -91,8 +98,8 @@ Planned later:
 - `policy_names`
 - `tag_namespace_id`
 
-Planned outputs for later core phases include Vault, Security Zones, events,
-budgets, and monitoring identifiers.
+Planned outputs for later core phases include Vault, Security Zones, and
+monitoring identifiers.
 
 ## Implementation Notes
 
@@ -117,6 +124,13 @@ budgets, and monitoring identifiers.
   configuration is tenancy-wide. CIS Level 1 and Level 2 wrappers enable it by
   default. Add approved detector and responder recipe OCIDs through local
   ignored tfvars when custom target recipes are required.
+- Generic core keeps budgets disabled by default because spend thresholds and
+  recipients are environment-specific. Set `enable_budgets = true` and
+  `default_budget_amount` for the default root-scope budget, or use `budgets`
+  for explicit budget definitions.
+- Generic core keeps Events disabled by default. CIS Level 1 and Level 2
+  wrappers enable the default governance topic and IAM change rules, while
+  subscriptions still require explicit local endpoints.
 - Use the IAM default toggles only in quota-constrained tests. Normal landing zone
   deployments should leave the IAM foundation enabled.
 - IAM policies are attached to the parent compartment and use compartment paths for the

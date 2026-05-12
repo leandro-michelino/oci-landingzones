@@ -24,6 +24,10 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Cloud Guard implementation for tenancy configuration, default landing zone
   target, optional detector/responder recipe attachments, and additional
   targets.
+- Governance budgets implementation for opt-in landing zone budgets and budget
+  alert rules.
+- Governance Events implementation for ONS notification topics, subscriptions,
+  default IAM change rules, and custom Events rules.
 - Phase 2 IAM foundation implementation for IAM groups, dynamic groups, and
   scoped policies.
 - Phase 3 networking foundation implementation for reusable hub VCN, spoke VCN,

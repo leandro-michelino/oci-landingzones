@@ -95,6 +95,90 @@ variable "cloud_guard_responder_recipe_ids" {
   default     = []
 }
 
+variable "budget_amount" {
+  description = "Optional amount for the default CIS landing zone budget. Leave null to skip budget creation."
+  type        = number
+  default     = null
+
+  validation {
+    condition     = var.budget_amount == null ? true : var.budget_amount > 0
+    error_message = "budget_amount must be greater than zero when set."
+  }
+}
+
+variable "budget_alert_recipients" {
+  description = "Email recipients for the default CIS budget alert rule."
+  type        = set(string)
+  default     = []
+}
+
+variable "budgets" {
+  description = "Additional OCI Budgets keyed by logical name."
+  type = map(object({
+    display_name                          = optional(string)
+    description                           = optional(string)
+    compartment_ocid                      = optional(string)
+    amount                                = number
+    reset_period                          = optional(string, "MONTHLY")
+    target_type                           = optional(string, "COMPARTMENT")
+    targets                               = optional(set(string), [])
+    processing_period_type                = optional(string)
+    start_date                            = optional(string)
+    end_date                              = optional(string)
+    budget_processing_period_start_offset = optional(number)
+    alert_rules = optional(map(object({
+      display_name   = optional(string)
+      description    = optional(string)
+      message        = optional(string)
+      recipients     = optional(string)
+      threshold      = number
+      threshold_type = optional(string, "PERCENTAGE")
+      type           = optional(string, "ACTUAL")
+    })), {})
+  }))
+  default = {}
+}
+
+variable "enable_events" {
+  description = "Create OCI Events and Notifications resources for CIS governance notifications."
+  type        = bool
+  default     = true
+}
+
+variable "event_subscriptions" {
+  description = "ONS subscriptions keyed by logical name. Endpoints should be supplied from local ignored tfvars."
+  type = map(object({
+    topic_key        = optional(string, "default")
+    topic_id         = optional(string)
+    compartment_ocid = optional(string)
+    protocol         = string
+    endpoint         = string
+    delivery_policy  = optional(string)
+  }))
+  default = {}
+}
+
+variable "event_rules" {
+  description = "Additional or overriding OCI Events rules keyed by logical name."
+  type = map(object({
+    display_name     = optional(string)
+    description      = optional(string)
+    compartment_ocid = optional(string)
+    condition        = string
+    is_enabled       = optional(bool, true)
+    actions = list(object({
+      action_type = optional(string, "ONS")
+      description = optional(string)
+      function_id = optional(string)
+      is_enabled  = optional(bool, true)
+      stream_id   = optional(string)
+      topic_key   = optional(string, "default")
+      topic_id    = optional(string)
+    }))
+  }))
+  default = {}
+}
+
 variable "defined_tags" {
   description = "Defined tags applied to resources."
   type        = map(string)

@@ -38,3 +38,18 @@ output "policy_names" {
   description = "Map of IAM policy keys to names."
   value       = module.core.policy_names
 }
+
+output "budget_ids" {
+  description = "Map of budget keys to OCIDs."
+  value       = module.core.budget_ids
+}
+
+output "event_rule_ids" {
+  description = "Map of event rule keys to OCIDs."
+  value       = module.core.event_rule_ids
+}
+
+output "event_notification_topic_ids" {
+  description = "Map of event notification topic keys to OCIDs."
+  value       = module.core.event_notification_topic_ids
+}

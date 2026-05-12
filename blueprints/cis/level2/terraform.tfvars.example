@@ -28,3 +28,22 @@ audit_retention_period_days = 365
 # recipe OCIDs in local ignored tfvars files when custom recipes should be
 # attached to the default landing zone target.
 cloud_guard_enabled = true
+
+# CIS wrappers enable governance Events by default and create a default
+# notification topic/rules. Add subscriptions from local ignored tfvars so real
+# endpoints are not committed.
+enable_events = true
+
+# event_subscriptions = {
+#   platform_email = {
+#     protocol = "EMAIL"
+#     endpoint = "platform-alerts@example.com"
+#   }
+# }
+
+# Budgets need approved thresholds, so they are created only when budget_amount
+# or custom budgets are supplied.
+# budget_amount = 10000
+# budget_alert_recipients = [
+#   "platform-alerts@example.com"
+# ]

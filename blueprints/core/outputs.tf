@@ -104,6 +104,46 @@ output "cloud_guard_target_names" {
   value       = module.cloud_guard.target_names
 }
 
+output "budget_ids" {
+  description = "Map of budget keys to OCIDs."
+  value       = module.budgets.budget_ids
+}
+
+output "budget_names" {
+  description = "Map of budget keys to display names."
+  value       = module.budgets.budget_names
+}
+
+output "budget_alert_rule_ids" {
+  description = "Map of budget alert rule keys to OCIDs."
+  value       = module.budgets.budget_alert_rule_ids
+}
+
+output "event_notification_topic_ids" {
+  description = "Map of event notification topic keys to OCIDs."
+  value       = module.events.notification_topic_ids
+}
+
+output "event_notification_topic_names" {
+  description = "Map of event notification topic keys to names."
+  value       = module.events.notification_topic_names
+}
+
+output "event_subscription_ids" {
+  description = "Map of event subscription keys to OCIDs."
+  value       = module.events.subscription_ids
+}
+
+output "event_rule_ids" {
+  description = "Map of event rule keys to OCIDs."
+  value       = module.events.event_rule_ids
+}
+
+output "event_rule_names" {
+  description = "Map of event rule keys to display names."
+  value       = module.events.event_rule_names
+}
+
 output "group_ids" {
   description = "Map of IAM group keys to OCIDs."
   value       = module.groups.group_ids
@@ -145,5 +185,7 @@ output "resource_ids" {
     tags           = module.tagging.tag_definition_ids
     logging        = module.logging.resource_ids
     cloud_guard    = module.cloud_guard.resource_ids
+    budgets        = module.budgets.resource_ids
+    events         = module.events.resource_ids
   }
 }
