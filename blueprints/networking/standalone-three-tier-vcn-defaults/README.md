@@ -65,17 +65,15 @@ apps.
 
 ## Using Only This Blueprint
 
-This blueprint composes the shared module at `modules/networking/spoke-vcn`.
-When consuming only this pattern from GitHub, keep both paths in the same local
-repository layout so the relative module source in `main.tf` resolves.
+This blueprint is standalone from a consumer point of view. Its module source is
+pinned to a repository release, so Terraform downloads the shared
+`modules/networking/spoke-vcn` module during `terraform init`.
 
 ```bash
 git clone --filter=blob:none --sparse https://github.com/leandro-michelino/oci-landingzones.git
 cd oci-landingzones
 
-git sparse-checkout set \
-  blueprints/networking/standalone-three-tier-vcn-defaults \
-  modules/networking/spoke-vcn
+git sparse-checkout set blueprints/networking/standalone-three-tier-vcn-defaults
 
 cd blueprints/networking/standalone-three-tier-vcn-defaults
 cp terraform.tfvars.example terraform.tfvars

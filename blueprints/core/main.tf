@@ -1,6 +1,6 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 module "compartments" {
-  source = "../../modules/iam/compartments"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/compartments?ref=v0.1.0"
 
   providers = {
     oci = oci.home
@@ -19,7 +19,7 @@ module "compartments" {
 }
 
 module "tagging" {
-  source = "../../modules/governance/tagging"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/tagging?ref=v0.1.0"
 
   providers = {
     oci = oci.home
@@ -43,7 +43,7 @@ module "tagging" {
 }
 
 module "logging" {
-  source = "../../modules/governance/logging"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/logging?ref=v0.1.0"
 
   tenancy_ocid                = var.tenancy_ocid
   compartment_ocid            = module.compartments.compartment_ids["governance"]
@@ -64,7 +64,7 @@ module "logging" {
 }
 
 module "cloud_guard" {
-  source = "../../modules/security/cloud-guard"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/cloud-guard?ref=v0.1.0"
 
   tenancy_ocid                = var.tenancy_ocid
   compartment_ocid            = module.compartments.compartment_ids["security"]
@@ -88,7 +88,7 @@ module "cloud_guard" {
 }
 
 module "vault" {
-  source = "../../modules/security/vault"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vault?ref=v0.1.0"
 
   tenancy_ocid                = var.tenancy_ocid
   compartment_ocid            = module.compartments.compartment_ids["security"]
@@ -111,7 +111,7 @@ module "vault" {
 }
 
 module "security_zones" {
-  source = "../../modules/security/security-zones"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/security-zones?ref=v0.1.0"
 
   tenancy_ocid                                  = var.tenancy_ocid
   compartment_ocid                              = module.compartments.compartment_ids["security"]
@@ -136,7 +136,7 @@ module "security_zones" {
 }
 
 module "vss" {
-  source = "../../modules/security/vss"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vss?ref=v0.1.0"
 
   tenancy_ocid                              = var.tenancy_ocid
   compartment_ocid                          = module.compartments.compartment_ids["security"]
@@ -161,7 +161,7 @@ module "vss" {
 }
 
 module "budgets" {
-  source = "../../modules/governance/budgets"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/budgets?ref=v0.1.0"
 
   tenancy_ocid                        = var.tenancy_ocid
   compartment_ocid                    = module.compartments.compartment_ids["governance"]
@@ -186,7 +186,7 @@ module "budgets" {
 }
 
 module "events" {
-  source = "../../modules/governance/events"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/events?ref=v0.1.0"
 
   tenancy_ocid               = var.tenancy_ocid
   compartment_ocid           = module.compartments.compartment_ids["governance"]
@@ -206,7 +206,7 @@ module "events" {
 }
 
 module "monitoring" {
-  source = "../../modules/operations/monitoring"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/monitoring?ref=v0.1.0"
 
   tenancy_ocid         = var.tenancy_ocid
   compartment_ocid     = module.compartments.compartment_ids["governance"]
@@ -225,7 +225,7 @@ module "monitoring" {
 }
 
 module "groups" {
-  source = "../../modules/iam/groups"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/groups?ref=v0.1.0"
 
   providers = {
     oci = oci.home
@@ -245,7 +245,7 @@ module "groups" {
 }
 
 module "dynamic_groups" {
-  source = "../../modules/iam/dynamic-groups"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/dynamic-groups?ref=v0.1.0"
 
   providers = {
     oci = oci.home
@@ -264,7 +264,7 @@ module "dynamic_groups" {
 }
 
 module "policies" {
-  source = "../../modules/iam/policies"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/policies?ref=v0.1.0"
 
   providers = {
     oci = oci.home

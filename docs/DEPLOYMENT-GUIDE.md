@@ -59,20 +59,18 @@ networking, compliance, data platform, industry, and extension patterns.
 
 ## Using A Single Blueprint
 
-Blueprints are deployable Terraform entry points, but they intentionally compose
-shared modules from `modules/` with relative `source` paths. When a user wants
-only one blueprint, keep the blueprint folder and every referenced module folder
-together in the same repository layout.
+Blueprints are deployable Terraform entry points. Their module sources are
+pinned Git sources, so each architecture folder can be copied or checked out by
+itself and still fetch the shared modules from the repository release.
 
-The recommended minimal checkout pattern is Git sparse checkout:
+The minimal checkout pattern is Git sparse checkout with only the selected
+blueprint path:
 
 ```bash
 git clone --filter=blob:none --sparse https://github.com/leandro-michelino/oci-landingzones.git
 cd oci-landingzones
 
-git sparse-checkout set \
-  blueprints/networking/standalone-three-tier-vcn-defaults \
-  modules/networking/spoke-vcn
+git sparse-checkout set blueprints/networking/standalone-three-tier-vcn-defaults
 
 cd blueprints/networking/standalone-three-tier-vcn-defaults
 cp terraform.tfvars.example terraform.tfvars
@@ -89,9 +87,12 @@ terraform apply
 
 For review or CI checks that should not configure remote state, use
 `terraform init -backend=false` before `terraform validate` or `terraform plan`.
-For production use, configure state deliberately before apply. Avoid copying a
-blueprint folder alone from GitHub unless all relative module dependencies are
-copied with it.
+For production use, configure state deliberately before apply.
+
+When cutting a new repository release, update blueprint Git source refs to the
+new release tag in the same commit that will be tagged. Avoid `?ref=main` for
+customer-facing blueprints because it makes copied architecture folders change
+under users without review.
 
 ## Phase 1 - Core Structure
 
@@ -201,10 +202,9 @@ Each networking deployment folder has a local README and `architecture/` folder
 with the expected editable diagram and exported image names.
 
 Networking blueprints can also be used directly against an existing workload
-compartment. In that mode, set `compartment_ocid` to the target compartment and
-include the required networking module folders in the checkout. For
-`standalone-three-tier-vcn-defaults`, the required module folder is
-`modules/networking/spoke-vcn`.
+compartment. In that mode, set `compartment_ocid` to the target compartment.
+The blueprint's pinned Git module sources fetch the required networking modules
+during `terraform init`.
 
 Each networking blueprint keeps its own diagram in its local `architecture/`
 folder, for example `architecture/standalone-three-tier-vcn-defaults.excalidraw`

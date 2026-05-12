@@ -2,7 +2,7 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-## Unreleased
+## v0.1.0 - 2026-05-12
 
 ### Added
 
@@ -56,6 +56,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Ansible-backed validation that discovers implemented Terraform blueprints,
   uses a Terraform plugin cache, bounds slow Terraform checks with timeouts, and
   cleans generated Terraform artifacts after validation.
+- Standalone-consumable blueprint architecture folders that use pinned Git
+  module sources instead of local relative module paths.
 - Self-contained deployment README files and local architecture image locations
   across core, CIS, identity, networking, operating entity, and extension
   blueprints.
@@ -74,8 +76,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Reworked the repository validation helper so `scripts/validate-all.sh`
   delegates to Ansible when available, with a shell fallback for minimal local
   environments.
-- Scoped Ansible validation discovery to the implemented Phase 1-5 blueprint
-  families and moved generated Terraform artifact cleanup into an `always`
+- Broadened Ansible validation discovery across implemented Terraform
+  blueprints and moved generated Terraform artifact cleanup into an `always`
   block.
 - Reworked bootstrap so the shell helper delegates to Ansible and the Ansible
   role owns reusable bootstrap checks.

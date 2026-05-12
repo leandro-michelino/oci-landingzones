@@ -118,22 +118,17 @@ are generated only when a rendered review artifact is needed.
 
 ## Using One Blueprint
 
-You can consume a single blueprint without cloning the full repository history,
-but the blueprint still needs any shared module folders referenced by its
-Terraform `source` blocks. Do not download only a GitHub folder when the
-blueprint uses relative module paths such as `../../../modules/...`; Terraform
-needs those paths to exist locally.
+You can consume a single blueprint folder directly. Blueprint module sources are
+pinned Git sources, so Terraform downloads the shared modules from this
+repository release instead of requiring a local `modules/` checkout.
 
-Use Git sparse checkout to pull only the blueprint and its dependencies. For
-example, to use only the default standalone three-tier VCN blueprint:
+For example, to check out only the default standalone three-tier VCN blueprint:
 
 ```bash
 git clone --filter=blob:none --sparse https://github.com/leandro-michelino/oci-landingzones.git
 cd oci-landingzones
 
-git sparse-checkout set \
-  blueprints/networking/standalone-three-tier-vcn-defaults \
-  modules/networking/spoke-vcn
+git sparse-checkout set blueprints/networking/standalone-three-tier-vcn-defaults
 
 cd blueprints/networking/standalone-three-tier-vcn-defaults
 cp terraform.tfvars.example terraform.tfvars
@@ -145,6 +140,10 @@ terraform plan
 Set `compartment_ocid` to an existing workload compartment when deploying a
 single blueprint directly. That compartment can come from `blueprints/core/`,
 another landing-zone process, or an existing brownfield tenancy.
+
+Release refs in blueprint module sources must be advanced deliberately when a
+new repository release is cut. This keeps copied architecture folders stable for
+users and avoids silently changing the modules they consume.
 
 ### Core
 

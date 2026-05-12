@@ -1,6 +1,6 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 module "entity_compartments" {
-  source   = "../../../modules/iam/compartments"
+  source   = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/compartments?ref=v0.1.0"
   for_each = local.entities
 
   providers = {
@@ -28,7 +28,7 @@ module "entity_compartments" {
 }
 
 module "groups" {
-  source = "../../../modules/iam/groups"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/groups?ref=v0.1.0"
 
   providers = {
     oci = oci.home
@@ -47,7 +47,7 @@ module "groups" {
 }
 
 module "policies" {
-  source = "../../../modules/iam/policies"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/policies?ref=v0.1.0"
 
   providers = {
     oci = oci.home

@@ -66,9 +66,9 @@ excluded from automated Terraform validation until implementation starts.
   mapping drives the design.
 - Use data platform and industry patterns when the workload shape needs its own
   landing zone conventions.
-- Use Git sparse checkout when consuming one blueprint from this repository.
-  Keep the selected `blueprints/...` path and every relative `modules/...`
-  dependency together so Terraform module sources resolve locally.
+- Use a single `blueprints/...` folder when consuming one architecture. The
+  blueprint's pinned Git module sources fetch shared modules during
+  `terraform init`.
 
 ## Research Inputs
 
