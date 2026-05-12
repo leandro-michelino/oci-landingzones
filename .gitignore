@@ -19,6 +19,7 @@ override.tf.json
 *.key
 *.p12
 *.pfx
+.codex-local/
 .env
 .env.*
 *.auto.tfvars
