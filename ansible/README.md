@@ -22,10 +22,12 @@ ansible-galaxy collection install -r ansible/requirements.yml
 ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook ansible/playbooks/validate.yml
 ```
 
-The validation playbook runs `terraform fmt`, initializes and validates every
-implemented Phase 1-5 blueprint without a backend, runs optional local linters
-when installed, checks Ansible playbook syntax, and removes generated Terraform
-artifacts afterward.
+The validation playbook runs `terraform fmt`, auto-discovers implemented
+Terraform blueprints, initializes and validates them without a backend, runs
+optional local linters when installed, checks Ansible playbook syntax, and
+removes generated Terraform artifacts afterward. It also uses a Terraform plugin
+cache and command timeout so repeated local validation is much quicker and does
+not hang indefinitely on provider downloads.
 
 The shell helper delegates to this playbook when Ansible is installed:
 

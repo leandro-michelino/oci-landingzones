@@ -349,10 +349,13 @@ The main local validation entry point is:
 ```
 
 When Ansible is installed, the script delegates to
-`ansible/playbooks/validate.yml`. That playbook runs `terraform fmt`, initializes
-and validates the implemented Phase 1-5 blueprints with `-backend=false`, checks
-Ansible playbook syntax, runs optional local linters when available, and removes
-generated Terraform artifacts afterward.
+`ansible/playbooks/validate.yml`. That playbook runs `terraform fmt`,
+auto-discovers implemented Terraform blueprints, initializes and validates them
+with `-backend=false`, checks Ansible playbook syntax, runs optional local
+linters when available, and removes generated Terraform artifacts afterward. To
+keep repeated checks practical, it reuses `TF_PLUGIN_CACHE_DIR` when set or
+falls back to `~/.terraform.d/plugin-cache`, and each Terraform command is
+bounded by a local timeout.
 
 The repository standardizes on:
 
@@ -363,6 +366,7 @@ The repository standardizes on:
 - `checkov`
 - `ansible-lint`
 - Pre-commit hooks
+
 Automated workflows and GitHub Actions are intentionally out of scope for now.
 
 Terraform `1.12.0` or later is required for the native OCI remote state backend

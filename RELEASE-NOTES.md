@@ -36,14 +36,15 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   services, transit NVA HA, and regional prod/nonprod hub blueprints.
 - Example tfvars and deployment notes for operating entity onboarding,
   multi-entity onboarding, and workload vending.
-- Ansible-backed validation for every implemented Phase 1-5 Terraform
-  blueprint, including generated Terraform artifact cleanup after validation.
+- Ansible-backed validation that discovers implemented Terraform blueprints,
+  uses a Terraform plugin cache, bounds slow Terraform checks with timeouts, and
+  cleans generated Terraform artifacts after validation.
 - Self-contained deployment README files and local architecture image locations
   across core, CIS, identity, networking, operating entity, and extension
   blueprints.
 - Expanded deployment pattern catalog with new compliance, disaster recovery,
   operating entity, networking, data platform, and industry blueprint
-  scaffolds.
+  placeholders.
 - Project guardrails for ignore rules, pre-commit checks, contribution flow, and
   security handling.
 - Initial documentation for naming conventions, deployment flow, CIS mapping,

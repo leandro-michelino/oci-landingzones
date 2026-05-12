@@ -27,8 +27,10 @@ Use the Ansible-backed validation entry point before commits:
 ./scripts/validate-all.sh
 ```
 
-This validates every implemented Phase 1-5 Terraform blueprint without a remote
-backend, runs Ansible syntax checks, and cleans generated Terraform artifacts.
+This auto-discovers implemented Terraform blueprints, validates them without a
+remote backend, runs Ansible syntax checks, and cleans generated Terraform
+artifacts. The Ansible role uses a local Terraform plugin cache and a bounded
+timeout per Terraform command so repeated checks stay predictable.
 
 The generic landing zone deployment does not enable CIS behavior by default. To
 deploy a CIS landing zone, start from one of the dedicated folders instead:
@@ -147,7 +149,7 @@ blueprints/operating-entity/workload-vending/architecture/workload-vending.excal
 
 | Phase | Terraform Entry Points | Ansible Coverage |
 |---|---|---|
-| Phase 1 - Core | `blueprints/core/` | `validate.yml` runs fmt/init/validate. |
+| Phase 1 - Core | `blueprints/core/` | `validate.yml` auto-discovers implemented blueprints and runs fmt/init/validate. |
 | Phase 2 - IAM | Reusable IAM modules composed by `blueprints/core/` and CIS wrappers | Covered through core, CIS Level 1, and CIS Level 2 validation. |
 | Phase 3 - Networking | All implemented folders under `blueprints/networking/` | Each implemented networking blueprint is initialized and validated without backend. |
 | Phase 4 - Operating entities | `blueprints/operating-entity/` and child onboarding patterns | Single entity, multi-entity, and workload vending are initialized and validated without backend. |

@@ -27,7 +27,7 @@ use case stays self-contained.
 - Every Terraform blueprint must link to its diagram before real resources are
   added.
 - Every diagram source must have an exported image before implementation moves
-  beyond scaffold files.
+  beyond placeholder files.
 - Diagrams must use OCI naming examples for resource labels.
 - Production applies are blocked until the relevant diagram is complete.
 - GitHub Actions and repository workflows are intentionally not used for now.

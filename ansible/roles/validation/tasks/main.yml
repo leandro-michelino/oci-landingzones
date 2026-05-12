@@ -22,19 +22,68 @@
     chdir: "{{ validation_repo_root }}"
   changed_when: false
 
+- name: Find Terraform blueprint entry points
+  ansible.builtin.find:
+    paths: "{{ validation_blueprint_root }}"
+    patterns: main.tf
+    file_type: file
+    recurse: true
+  register: validation_blueprint_entry_points
+
+- name: Read Terraform blueprint entry points
+  ansible.builtin.slurp:
+    src: "{{ item.path }}"
+  register: validation_blueprint_entry_contents
+  loop: "{{ validation_blueprint_entry_points.files }}"
+  loop_control:
+    label: "{{ item.path }}"
+
+- name: Build implemented Terraform blueprint list
+  ansible.builtin.set_fact:
+    validation_terraform_directories: >-
+      {{
+        (validation_terraform_directories | default([])) +
+        [item.source | dirname]
+      }}
+  when:
+    - "'Terraform scaffold' not in (item.content | b64decode)"
+    - "'Compose reusable modules here' not in (item.content | b64decode)"
+  loop: "{{ validation_blueprint_entry_contents.results }}"
+  loop_control:
+    label: "{{ item.source }}"
+
+- name: Prepare Terraform plugin cache
+  ansible.builtin.file:
+    path: "{{ validation_terraform_plugin_cache_dir }}"
+    state: directory
+    mode: "0755"
+  when: (validation_terraform_directories | default([]) | length) > 0
+
 - name: Run terraform init without backend for implemented blueprints
-  ansible.builtin.command: terraform init -backend=false -input=false
+  ansible.builtin.command: terraform init -backend=false -input=false -no-color
   args:
-    chdir: "{{ validation_repo_root }}/{{ item }}"
+    chdir: "{{ item }}"
   changed_when: false
-  loop: "{{ validation_terraform_directories }}"
+  environment:
+    CHECKPOINT_DISABLE: "1"
+    TF_IN_AUTOMATION: "true"
+    TF_PLUGIN_CACHE_DIR: "{{ validation_terraform_plugin_cache_dir }}"
+  async: "{{ validation_terraform_command_timeout_seconds }}"
+  poll: "{{ validation_terraform_command_poll_seconds }}"
+  loop: "{{ validation_terraform_directories | default([]) | sort }}"
 
 - name: Run terraform validate for implemented blueprints
-  ansible.builtin.command: terraform validate
+  ansible.builtin.command: terraform validate -no-color
   args:
-    chdir: "{{ validation_repo_root }}/{{ item }}"
+    chdir: "{{ item }}"
   changed_when: false
-  loop: "{{ validation_terraform_directories }}"
+  environment:
+    CHECKPOINT_DISABLE: "1"
+    TF_IN_AUTOMATION: "true"
+    TF_PLUGIN_CACHE_DIR: "{{ validation_terraform_plugin_cache_dir }}"
+  async: "{{ validation_terraform_command_timeout_seconds }}"
+  poll: "{{ validation_terraform_command_poll_seconds }}"
+  loop: "{{ validation_terraform_directories | default([]) | sort }}"
 
 - name: Run tflint when available
   ansible.builtin.command: tflint --recursive
