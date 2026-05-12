@@ -12,3 +12,9 @@
     msg: "Missing command: {{ item.item }}"
   when: item.rc != 0
   loop: "{{ command_checks.results }}"
+
+- name: Require local commands
+  ansible.builtin.assert:
+    that:
+      - command_checks.results | selectattr('rc', 'ne', 0) | list | length == 0
+    fail_msg: "Install the missing local commands reported above before continuing."

@@ -6,12 +6,12 @@ This catalog keeps the deployment menu broader than a single reference
 implementation. It borrows from OCI landing zone repositories, OCI reference
 architectures, and patterns that show up in real customer conversations.
 
-Each pattern should have a self-contained blueprint folder with its own
+Implemented patterns should have a self-contained blueprint folder with its own
 `README.md`, `architecture/README.md`, Terraform files, variables example, and
 validation notes. Status `Implementing` means the folder has deployable
 foundation wiring, even when some expensive or external resources are disabled
-by default. Status `Planned` means the folder documents a future pattern but is
-not part of automated Terraform validation yet.
+by default. Status `Planned` means the folder documents a future pattern and is
+excluded from automated Terraform validation until implementation starts.
 
 ## Pattern Families
 

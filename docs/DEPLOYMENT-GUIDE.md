@@ -8,14 +8,20 @@ map.
 
 ## Phase 0 - Bootstrap
 
-Bootstrap creates the remote state location, verifies OCI CLI access, and
-installs local validation tooling.
+Bootstrap verifies local prerequisites and records the manual decisions needed
+before a real `terraform apply`: OCI CLI access, tenancy context, remote state,
+and secrets handling. Remote state provisioning remains a manual or
+customer-specific step until the backend contract is finalized.
 
 ```bash
 bash scripts/bootstrap.sh --org acme --env prod --region eu-frankfurt-1
 oci iam tenancy get --tenancy-id "$TENANCY_OCID"
 pre-commit install
 ```
+
+`scripts/bootstrap.sh` delegates to `ansible/playbooks/bootstrap.yml` when
+Ansible is available. The shell fallback only validates arguments and prints
+the prerequisite checklist.
 
 Local validation can create `.terraform/`, `.terraform.lock.hcl`, plans, and
 state files in many blueprint folders. They are intentionally ignored and should
@@ -27,10 +33,11 @@ Use the Ansible-backed validation entry point before commits:
 ./scripts/validate-all.sh
 ```
 
-This auto-discovers implemented Terraform blueprints, validates them without a
-remote backend, runs Ansible syntax checks, and cleans generated Terraform
-artifacts. The Ansible role uses a local Terraform plugin cache and a bounded
-timeout per Terraform command so repeated checks stay predictable.
+This auto-discovers implemented Terraform blueprints in the Phase 1-5 families
+only, validates them without a remote backend, runs Ansible syntax checks, and
+cleans generated Terraform artifacts even when a validation step fails. The
+Ansible role uses a local Terraform plugin cache and a bounded timeout per
+Terraform command so repeated checks stay predictable.
 
 The generic landing zone deployment does not enable CIS behavior by default. To
 deploy a CIS landing zone, start from one of the dedicated folders instead:
@@ -149,11 +156,15 @@ blueprints/operating-entity/workload-vending/architecture/workload-vending.excal
 
 | Phase | Terraform Entry Points | Ansible Coverage |
 |---|---|---|
-| Phase 1 - Core | `blueprints/core/` | `validate.yml` auto-discovers implemented blueprints and runs fmt/init/validate. |
+| Phase 1 - Core | `blueprints/core/` | `validate.yml` runs fmt/init/validate and cleanup through Ansible. |
 | Phase 2 - IAM | Reusable IAM modules composed by `blueprints/core/` and CIS wrappers | Covered through core, CIS Level 1, and CIS Level 2 validation. |
 | Phase 3 - Networking | All implemented folders under `blueprints/networking/` | Each implemented networking blueprint is initialized and validated without backend. |
 | Phase 4 - Operating entities | `blueprints/operating-entity/` and child onboarding patterns | Single entity, multi-entity, and workload vending are initialized and validated without backend. |
 | Phase 5 - Extensions | `blueprints/extensions/oke`, `apigw`, `streaming`, `waf`, and `exadata` | Each extension blueprint is initialized and validated without backend. |
+
+Planned identity, compliance, data platform, disaster recovery, and industry
+folders are documented in the catalog but are excluded from automated Terraform
+validation until they become part of the implemented phase surface.
 
 ## Phase 5 - Extensions
 

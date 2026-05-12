@@ -1,20 +1,44 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
+- name: Prepare Terraform plugin cache
+  ansible.builtin.file:
+    path: "{{ terraform_plugin_cache_dir }}"
+    state: directory
+    mode: "0755"
+
 - name: Terraform init without backend
-  ansible.builtin.command: terraform init -backend=false -input=false
+  ansible.builtin.command: terraform init -backend=false -input=false -no-color
   args:
     chdir: "{{ terraform_working_dir }}"
   changed_when: false
+  environment:
+    CHECKPOINT_DISABLE: "1"
+    TF_IN_AUTOMATION: "true"
+    TF_PLUGIN_CACHE_DIR: "{{ terraform_plugin_cache_dir }}"
 
 - name: Terraform validate
-  ansible.builtin.command: terraform validate
+  ansible.builtin.command: terraform validate -no-color
   args:
     chdir: "{{ terraform_working_dir }}"
   changed_when: false
+  environment:
+    CHECKPOINT_DISABLE: "1"
+    TF_IN_AUTOMATION: "true"
+    TF_PLUGIN_CACHE_DIR: "{{ terraform_plugin_cache_dir }}"
 
 - name: Terraform plan
-  ansible.builtin.command: "terraform plan -input=false -out={{ terraform_plan_file }}"
+  ansible.builtin.command:
+    argv:
+      - terraform
+      - plan
+      - -input=false
+      - -no-color
+      - "-out={{ terraform_plan_file }}"
   args:
     chdir: "{{ terraform_working_dir }}"
   changed_when: false
+  environment:
+    CHECKPOINT_DISABLE: "1"
+    TF_IN_AUTOMATION: "true"
+    TF_PLUGIN_CACHE_DIR: "{{ terraform_plugin_cache_dir }}"
   when: terraform_run_plan

@@ -1,13 +1,30 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
-- name: Run bootstrap helper
-  ansible.builtin.command:
-    argv:
-      - "{{ bootstrap_script_path }}"
-      - --org
-      - "{{ landingzone_org }}"
-      - --env
-      - "{{ landingzone_environment }}"
-      - --region
-      - "{{ landingzone_region }}"
-  changed_when: false
+- name: Validate bootstrap inputs
+  ansible.builtin.assert:
+    that:
+      - landingzone_org is defined
+      - landingzone_org | length > 0
+      - landingzone_environment is defined
+      - landingzone_environment | length > 0
+      - landingzone_region is defined
+      - landingzone_region | length > 0
+    fail_msg: "Set landingzone_org, landingzone_environment, and landingzone_region before running bootstrap."
+
+- name: Check bootstrap environment variables
+  ansible.builtin.set_fact:
+    bootstrap_environment_status: >-
+      {{
+        bootstrap_environment_status | default({}) |
+        combine({item: (lookup('ansible.builtin.env', item) | length) > 0})
+      }}
+  loop: "{{ bootstrap_required_environment_variables }}"
+
+- name: Report bootstrap context
+  ansible.builtin.debug:
+    msg:
+      - "Organization: {{ landingzone_org }}"
+      - "Environment: {{ landingzone_environment }}"
+      - "Region: {{ landingzone_region }}"
+      - "TENANCY_OCID exported: {{ bootstrap_environment_status.TENANCY_OCID }}"
+      - "Confirm remote state bucket, namespace, and approved local secrets handling before terraform apply."

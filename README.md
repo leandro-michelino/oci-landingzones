@@ -305,7 +305,9 @@ Ansible content lives under `ansible/` and is used for local orchestration only:
 - controlled Terraform `init`, `validate`, and `plan` execution
 
 Ansible playbooks must stay non-destructive by default. Terraform remains the
-source of truth for OCI resource creation.
+source of truth for OCI resource creation. Shell scripts are kept as thin local
+entry points and should delegate repeatable orchestration to Ansible whenever
+possible.
 
 ## Diagram Gate
 
@@ -350,12 +352,13 @@ The main local validation entry point is:
 
 When Ansible is installed, the script delegates to
 `ansible/playbooks/validate.yml`. That playbook runs `terraform fmt`,
-auto-discovers implemented Terraform blueprints, initializes and validates them
-with `-backend=false`, checks Ansible playbook syntax, runs optional local
-linters when available, and removes generated Terraform artifacts afterward. To
-keep repeated checks practical, it reuses `TF_PLUGIN_CACHE_DIR` when set or
-falls back to `~/.terraform.d/plugin-cache`, and each Terraform command is
-bounded by a local timeout.
+auto-discovers implemented Terraform blueprints in the Phase 1-5 families,
+initializes and validates them with `-backend=false`, checks Ansible playbook
+syntax, runs optional local linters when available, and removes generated
+Terraform artifacts afterward. To keep repeated checks practical, it reuses
+`TF_PLUGIN_CACHE_DIR` when set or falls back to
+`~/.terraform.d/plugin-cache`, and each Terraform command is bounded by a local
+timeout.
 
 The repository standardizes on:
 
@@ -415,8 +418,8 @@ Completed:
   multi-entity onboarding, and workload vending.
 - Phase 5 extension blueprints wired for OKE, API Gateway, Streaming, WAF, and
   Exadata with resource creation disabled by default.
-- Ansible validation wired to run Terraform checks across every implemented
-  Phase 1-5 blueprint.
+- Ansible validation wired to run Terraform checks and cleanup across every
+  implemented Phase 1-5 blueprint family.
 - Deployment folders documented with local READMEs and architecture image
   locations.
 - Deployment pattern catalog expanded with operating entity, compliance,

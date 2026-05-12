@@ -10,9 +10,6 @@ Current scripts:
 
 | Script | Purpose |
 |---|---|
-| `bootstrap.sh` | Validate bootstrap inputs and print the manual prerequisites for remote state and local tooling. |
+| `bootstrap.sh` | Delegate bootstrap checks to Ansible when available, with a shell fallback for minimal workstations. |
 | `validate-all.sh` | Delegate to the Ansible validation playbook when available, with a shell fallback for minimal workstations. |
-
-Planned scripts:
-
-- `destroy.sh` - controlled teardown helper for non-production environments.
+| `destroy.sh` | Guarded Terraform destroy helper for the current blueprint or environment directory. |

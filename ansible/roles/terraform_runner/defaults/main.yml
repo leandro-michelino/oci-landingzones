@@ -3,3 +3,8 @@
 terraform_working_dir: "{{ terraform_environment_dir | default(playbook_dir + '/../../environments/nonprod/dev') }}"
 terraform_plan_file: tfplan
 terraform_run_plan: true
+terraform_plugin_cache_dir: >-
+  {{
+    lookup('env', 'TF_PLUGIN_CACHE_DIR') |
+    default(lookup('env', 'HOME') ~ '/.terraform.d/plugin-cache', true)
+  }}

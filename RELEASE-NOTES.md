@@ -57,3 +57,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Reworked the repository validation helper so `scripts/validate-all.sh`
   delegates to Ansible when available, with a shell fallback for minimal local
   environments.
+- Scoped Ansible validation discovery to the implemented Phase 1-5 blueprint
+  families and moved generated Terraform artifact cleanup into an `always`
+  block.
+- Reworked bootstrap so the shell helper delegates to Ansible and the Ansible
+  role owns reusable bootstrap checks.
