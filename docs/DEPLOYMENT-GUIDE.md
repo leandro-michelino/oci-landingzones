@@ -90,6 +90,12 @@ and other service logs are wired through `vcn_flow_logs` and `service_logs`
 once the source resource OCIDs exist. Generic core keeps tenancy audit retention
 opt-in because it is a tenancy-wide setting; CIS wrappers enable it by default.
 
+Cloud Guard is also wired through core. Generic core keeps it disabled by
+default because it manages tenancy-wide service configuration. CIS Level 1 and
+Level 2 enable Cloud Guard by default and create a target for the landing zone
+root compartment. Attach approved detector and responder recipes through
+`cloud_guard_detector_recipe_ids` and `cloud_guard_responder_recipe_ids`.
+
 ## Phase 2 - IAM Foundation
 
 The core IAM foundation creates landing zone administrator, network
@@ -114,11 +120,10 @@ Implemented module order:
 Planned core modules after the IAM foundation:
 
 1. `security/vault`
-2. `security/cloud-guard`
-3. `security/security-zones`
-4. `governance/events`
-5. `governance/budgets`
-6. `operations/monitoring`
+2. `security/security-zones`
+3. `governance/events`
+4. `governance/budgets`
+5. `operations/monitoring`
 
 ## Phase 3 - Networking
 

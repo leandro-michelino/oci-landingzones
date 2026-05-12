@@ -69,6 +69,19 @@ tag_default_values = {
 #   }
 # }
 
+# Cloud Guard is opt-in for generic core because it is tenancy-wide. CIS
+# wrappers enable it by default. Add approved detector/responder recipe OCIDs in
+# local ignored tfvars files when the target should attach custom recipes.
+# cloud_guard_enabled = false
+#
+# cloud_guard_detector_recipe_ids = [
+#   "ocid1.cloudguarddetectorrecipe.oc1..example"
+# ]
+#
+# cloud_guard_responder_recipe_ids = [
+#   "ocid1.cloudguardresponderrecipe.oc1..example"
+# ]
+
 # Optional IAM overrides.
 # enable_default_iam_groups     = true
 # enable_default_dynamic_groups = true

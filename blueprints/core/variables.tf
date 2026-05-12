@@ -169,6 +169,67 @@ variable "audit_retention_period_days" {
   }
 }
 
+variable "cloud_guard_enabled" {
+  description = "Enable Cloud Guard configuration and a default landing zone target."
+  type        = bool
+  default     = false
+}
+
+variable "cloud_guard_status" {
+  description = "Cloud Guard tenancy status when managed by the core blueprint."
+  type        = string
+  default     = "ENABLED"
+
+  validation {
+    condition     = contains(["ENABLED", "DISABLED"], upper(var.cloud_guard_status))
+    error_message = "cloud_guard_status must be ENABLED or DISABLED."
+  }
+}
+
+variable "cloud_guard_reporting_region" {
+  description = "Cloud Guard reporting region. Defaults to region when omitted."
+  type        = string
+  default     = null
+}
+
+variable "cloud_guard_self_manage_resources" {
+  description = "Let Cloud Guard manage required service resources."
+  type        = bool
+  default     = true
+}
+
+variable "cloud_guard_enable_default_target" {
+  description = "Create a default Cloud Guard target for the landing zone root compartment."
+  type        = bool
+  default     = true
+}
+
+variable "cloud_guard_detector_recipe_ids" {
+  description = "Detector recipe OCIDs attached to the default Cloud Guard target."
+  type        = set(string)
+  default     = []
+}
+
+variable "cloud_guard_responder_recipe_ids" {
+  description = "Responder recipe OCIDs attached to the default Cloud Guard target."
+  type        = set(string)
+  default     = []
+}
+
+variable "cloud_guard_targets" {
+  description = "Additional Cloud Guard targets keyed by logical name."
+  type = map(object({
+    display_name         = optional(string)
+    description          = optional(string)
+    compartment_ocid     = optional(string)
+    target_resource_id   = string
+    target_resource_type = optional(string, "COMPARTMENT")
+    detector_recipe_ids  = optional(set(string), [])
+    responder_recipe_ids = optional(set(string), [])
+  }))
+  default = {}
+}
+
 variable "iam_groups" {
   description = "Additional or overriding IAM groups keyed by logical role."
   type = map(object({

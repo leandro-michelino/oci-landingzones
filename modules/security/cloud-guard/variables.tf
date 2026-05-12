@@ -51,3 +51,76 @@ variable "freeform_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "enable_cloud_guard" {
+  description = "Enable Cloud Guard configuration and targets managed by this module."
+  type        = bool
+  default     = false
+}
+
+variable "cloud_guard_status" {
+  description = "Cloud Guard tenancy status when this module manages the configuration."
+  type        = string
+  default     = "ENABLED"
+
+  validation {
+    condition     = contains(["ENABLED", "DISABLED"], upper(var.cloud_guard_status))
+    error_message = "cloud_guard_status must be ENABLED or DISABLED."
+  }
+}
+
+variable "reporting_region" {
+  description = "Cloud Guard reporting region. Defaults to the provider region when omitted."
+  type        = string
+  default     = null
+}
+
+variable "self_manage_resources" {
+  description = "Let Cloud Guard manage required service resources."
+  type        = bool
+  default     = true
+}
+
+variable "enable_default_target" {
+  description = "Create a default Cloud Guard target for target_resource_ocid."
+  type        = bool
+  default     = true
+}
+
+variable "target_resource_ocid" {
+  description = "Default Cloud Guard target resource OCID. Defaults to compartment_ocid."
+  type        = string
+  default     = null
+}
+
+variable "target_resource_type" {
+  description = "Default Cloud Guard target resource type."
+  type        = string
+  default     = "COMPARTMENT"
+}
+
+variable "target_detector_recipe_ids" {
+  description = "Detector recipe OCIDs attached to the default Cloud Guard target."
+  type        = set(string)
+  default     = []
+}
+
+variable "target_responder_recipe_ids" {
+  description = "Responder recipe OCIDs attached to the default Cloud Guard target."
+  type        = set(string)
+  default     = []
+}
+
+variable "targets" {
+  description = "Additional Cloud Guard targets keyed by logical name."
+  type = map(object({
+    display_name         = optional(string)
+    description          = optional(string)
+    compartment_ocid     = optional(string)
+    target_resource_id   = string
+    target_resource_type = optional(string, "COMPARTMENT")
+    detector_recipe_ids  = optional(set(string), [])
+    responder_recipe_ids = optional(set(string), [])
+  }))
+  default = {}
+}

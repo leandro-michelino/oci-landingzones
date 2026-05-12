@@ -89,6 +89,21 @@ output "audit_configuration_id" {
   value       = module.logging.audit_configuration_id
 }
 
+output "cloud_guard_configuration_id" {
+  description = "OCID of the Cloud Guard configuration when managed by the core blueprint."
+  value       = module.cloud_guard.cloud_guard_configuration_id
+}
+
+output "cloud_guard_target_ids" {
+  description = "Map of Cloud Guard target keys to OCIDs."
+  value       = module.cloud_guard.target_ids
+}
+
+output "cloud_guard_target_names" {
+  description = "Map of Cloud Guard target keys to display names."
+  value       = module.cloud_guard.target_names
+}
+
 output "group_ids" {
   description = "Map of IAM group keys to OCIDs."
   value       = module.groups.group_ids
@@ -129,5 +144,6 @@ output "resource_ids" {
     tag_namespace  = module.tagging.tag_namespace_id
     tags           = module.tagging.tag_definition_ids
     logging        = module.logging.resource_ids
+    cloud_guard    = module.cloud_guard.resource_ids
   }
 }

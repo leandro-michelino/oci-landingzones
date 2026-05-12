@@ -55,6 +55,7 @@ cis_level = "level1"
 - Least-privilege IAM foundation.
 - Governance tagging baseline.
 - Governance logging groups and tenancy audit retention.
+- Cloud Guard enabled with a default landing zone target.
 - CIS profile passed into child modules for control differences.
-- Planned next: Cloud Guard, budgets, monitoring, and stricter network
-  defaults where the customer wants them.
+- Planned next: budgets, monitoring, and stricter network defaults where the
+  customer wants them.

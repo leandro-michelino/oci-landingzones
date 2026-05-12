@@ -52,5 +52,6 @@ cis_level = "level2"
 - Stricter privilege separation.
 - CIS profile passed into child modules for stricter defaults.
 - Governance logging groups and tenancy audit retention.
+- Cloud Guard enabled with a default landing zone target.
 - Planned next: stronger break-glass posture, private-first networking,
   inspected egress, expanded alerting, and stricter governance controls.

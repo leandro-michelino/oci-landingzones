@@ -28,7 +28,7 @@ the dedicated CIS landing zone folders when a CIS profile is required:
 | 3.2 | Object Storage write logs enabled | `governance/logging` | `core` | Level 1, Level 2 | P1 | Implementing |
 | 3.3-3.6 | VCN flow logs enabled | `governance/logging` | Networking blueprints | Level 1, Level 2 | P1 | Implementing |
 | 3.7 | Load balancer access logs enabled | `governance/logging` | Networking blueprints | Level 1, Level 2 | P1 | Implementing |
-| 3.14 | Cloud Guard enabled | `security/cloud-guard` | `core` | Level 1, Level 2 | P0 | Planned |
+| 3.14 | Cloud Guard enabled | `security/cloud-guard` | `core` | Level 1, Level 2 | P0 | Implemented |
 | 3.17 | Vault with customer-managed keys | `security/vault` | `core` | Level 1, Level 2 | P1 | Planned |
 | 4.1 | Object Storage buckets not public | `iam/policies` | `core` | Level 1, Level 2 | P0 | Planned |
 | 4.2 | Pre-authenticated request audit alarms | `governance/events` | `core` | Level 1, Level 2 | P1 | Planned |

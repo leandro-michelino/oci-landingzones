@@ -44,28 +44,28 @@ IAM, tags, and policy outputs.
 - Landing zone tag namespace, tag definitions, and tag defaults.
 - Governance log groups for audit, network, service, and security logs.
 - Optional VCN flow logs, OCI service logs, saved searches, and audit retention.
+- Optional Cloud Guard configuration and landing zone target.
 - Platform IAM groups and least-privilege policies.
 - Dynamic groups for platform automation and workload resource principals.
-- Planned later: Cloud Guard, Security Zones, Vault, events, budgets, and
-  monitoring alarms.
+- Planned later: Security Zones, Vault, events, budgets, and monitoring alarms.
 
 ## Module Order
 
 1. `modules/iam/compartments`
 2. `modules/governance/tagging`
 3. `modules/governance/logging`
-4. `modules/iam/groups`
-5. `modules/iam/dynamic-groups`
-6. `modules/iam/policies`
+4. `modules/security/cloud-guard`
+5. `modules/iam/groups`
+6. `modules/iam/dynamic-groups`
+7. `modules/iam/policies`
 
 Planned later:
 
 1. `modules/security/vault`
-2. `modules/security/cloud-guard`
-3. `modules/security/security-zones`
-4. `modules/governance/events`
-5. `modules/governance/budgets`
-6. `modules/operations/monitoring`
+2. `modules/security/security-zones`
+3. `modules/governance/events`
+4. `modules/governance/budgets`
+5. `modules/operations/monitoring`
 
 ## Expected Outputs
 
@@ -81,6 +81,8 @@ Planned later:
 - `service_log_ids`
 - `logging_saved_search_ids`
 - `audit_configuration_id`
+- `cloud_guard_configuration_id`
+- `cloud_guard_target_ids`
 - `group_ids`
 - `group_names`
 - `dynamic_group_ids`
@@ -89,8 +91,8 @@ Planned later:
 - `policy_names`
 - `tag_namespace_id`
 
-Planned outputs for later core phases include Vault, Cloud Guard, Security
-Zones, events, budgets, and monitoring identifiers.
+Planned outputs for later core phases include Vault, Security Zones, events,
+budgets, and monitoring identifiers.
 
 ## Implementation Notes
 
@@ -111,6 +113,10 @@ Zones, events, budgets, and monitoring identifiers.
 - Generic core keeps tenancy audit retention disabled by default because it is
   tenancy-wide. CIS Level 1 and Level 2 wrappers enable it by default and expose
   `audit_retention_period_days`.
+- Generic core keeps Cloud Guard disabled by default because the service
+  configuration is tenancy-wide. CIS Level 1 and Level 2 wrappers enable it by
+  default. Add approved detector and responder recipe OCIDs through local
+  ignored tfvars when custom target recipes are required.
 - Use the IAM default toggles only in quota-constrained tests. Normal landing zone
   deployments should leave the IAM foundation enabled.
 - IAM policies are attached to the parent compartment and use compartment paths for the

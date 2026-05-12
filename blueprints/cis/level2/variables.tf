@@ -77,6 +77,24 @@ variable "audit_retention_period_days" {
   default     = 365
 }
 
+variable "cloud_guard_enabled" {
+  description = "Enable Cloud Guard configuration and a default CIS landing zone target."
+  type        = bool
+  default     = true
+}
+
+variable "cloud_guard_detector_recipe_ids" {
+  description = "Detector recipe OCIDs attached to the default Cloud Guard target."
+  type        = set(string)
+  default     = []
+}
+
+variable "cloud_guard_responder_recipe_ids" {
+  description = "Responder recipe OCIDs attached to the default Cloud Guard target."
+  type        = set(string)
+  default     = []
+}
+
 variable "defined_tags" {
   description = "Defined tags applied to resources."
   type        = map(string)

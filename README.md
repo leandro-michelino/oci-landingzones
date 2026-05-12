@@ -120,7 +120,7 @@ architecture image names.
 
 | Blueprint | Path | Description |
 |---|---|---|
-| Core baseline | `blueprints/core/` | Mandatory baseline for compartments, IAM, and tagging. Logging, Cloud Guard, Security Zones, budgets, events, and Vault come in later phases. |
+| Core baseline | `blueprints/core/` | Mandatory baseline for compartments, IAM, tagging, governance logging, and optional Cloud Guard. Security Zones, budgets, events, and Vault come in later phases. |
 
 ### CIS Landing Zones
 
@@ -409,11 +409,14 @@ Completed:
 - Base repository structure created.
 - Initial guardrail and documentation files added.
 - Dedicated opt-in CIS Level 1 and Level 2 blueprint folders added.
-- Core compartment, tagging, and governance logging modules implemented.
+- Core compartment, tagging, governance logging, and Cloud Guard modules
+  implemented.
 - Core IAM groups, dynamic groups, and scoped policies implemented.
 - CIS Level 1 and Level 2 wrappers wired to the core/IAM foundation.
 - CIS wrappers enable tenancy audit retention by default, while generic core
   keeps audit retention opt-in.
+- CIS wrappers enable Cloud Guard by default, while generic core keeps Cloud
+  Guard opt-in.
 - Phase 3 networking modules and deployment blueprints wired with optional
   external or high-cost resources disabled by default.
 - Phase 4 operating entity blueprints wired for single entity onboarding,
@@ -428,7 +431,7 @@ Completed:
   multicloud, data platform, and industry blueprints.
 
 Next implementation work should continue with security posture and governance
-controls such as budgets, events, Cloud Guard, Security Zones, Vault, VSS, and
+controls such as budgets, events, Security Zones, Vault, VSS, and
 extension-specific IAM policies.
 
 ## License

@@ -134,7 +134,10 @@ READMEs may define additional variables for local behavior.
 | `logging_saved_searches` | `map(object)` | No | OCI Logging saved searches keyed by logical name. |
 | `enable_audit_retention` | `bool` | No | Configure tenancy audit retention. Generic core disables this by default; CIS wrappers enable it by default. |
 | `audit_retention_period_days` | `number` | No | Tenancy audit retention in days when audit retention is managed. |
-| `cloud_guard_enabled` | `bool` | No | Enable Cloud Guard targets and recipes. |
+| `cloud_guard_enabled` | `bool` | No | Enable Cloud Guard configuration and a default landing zone target. |
+| `cloud_guard_detector_recipe_ids` | `set(string)` | No | Detector recipe OCIDs attached to the default Cloud Guard target. |
+| `cloud_guard_responder_recipe_ids` | `set(string)` | No | Responder recipe OCIDs attached to the default Cloud Guard target. |
+| `cloud_guard_targets` | `map(object)` | No | Additional Cloud Guard targets keyed by logical name. |
 | `security_zones_enabled` | `bool` | No | Enable Security Zone policies. |
 | `vss_enabled` | `bool` | No | Enable Vulnerability Scanning Service configuration. |
 | `bastion_enabled` | `bool` | No | Enable OCI Bastion resources where supported. |

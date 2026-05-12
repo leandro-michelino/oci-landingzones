@@ -23,3 +23,8 @@ freeform_tags = {}
 # CIS blueprints enable tenancy audit retention by default.
 enable_audit_retention      = true
 audit_retention_period_days = 365
+
+# CIS blueprints enable Cloud Guard by default. Add approved detector/responder
+# recipe OCIDs in local ignored tfvars files when custom recipes should be
+# attached to the default landing zone target.
+cloud_guard_enabled = true

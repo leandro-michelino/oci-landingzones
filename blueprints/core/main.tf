@@ -63,6 +63,30 @@ module "logging" {
   freeform_tags               = var.freeform_tags
 }
 
+module "cloud_guard" {
+  source = "../../modules/security/cloud-guard"
+
+  tenancy_ocid                = var.tenancy_ocid
+  compartment_ocid            = module.compartments.compartment_ids["security"]
+  region                      = var.region
+  org                         = var.org
+  environment                 = var.environment
+  region_key                  = var.region_key
+  cis_level                   = var.cis_level
+  enable_cloud_guard          = var.cloud_guard_enabled
+  cloud_guard_status          = var.cloud_guard_status
+  reporting_region            = var.cloud_guard_reporting_region
+  self_manage_resources       = var.cloud_guard_self_manage_resources
+  enable_default_target       = var.cloud_guard_enable_default_target
+  target_resource_ocid        = module.compartments.root_compartment_id
+  target_resource_type        = "COMPARTMENT"
+  target_detector_recipe_ids  = var.cloud_guard_detector_recipe_ids
+  target_responder_recipe_ids = var.cloud_guard_responder_recipe_ids
+  targets                     = var.cloud_guard_targets
+  defined_tags                = var.defined_tags
+  freeform_tags               = var.freeform_tags
+}
+
 module "groups" {
   source = "../../modules/iam/groups"
 
