@@ -1,0 +1,24 @@
+# Architecture
+
+Keep the deployment diagram source and exported image in this folder.
+
+- `standalone-three-tier-vcn-defaults.excalidraw`
+- `standalone-three-tier-vcn-defaults.png`
+
+The diagram should show the internet gateway, NAT gateway, service gateway, public web
+tier, private application tier, private database tier, route tables, and security
+boundaries.
+
+## Why This Diagram Matters
+
+The diagram is the quick sanity check before anyone opens Terraform. It should make the
+traffic paths, ownership boundaries, dependencies, and operational hand-offs obvious
+enough that a customer, network engineer, security reviewer, and platform engineer can
+point at the same picture and agree on what is being built.
+
+## When To Update It
+
+- The blueprint adds or removes a major resource type.
+- A route, trust boundary, region, compartment, or access path changes.
+- A customer-specific assumption becomes part of the reusable pattern.
+- The README explains a behavior that is not visible in the diagram yet.

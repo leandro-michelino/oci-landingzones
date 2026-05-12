@@ -13,8 +13,8 @@ the dedicated CIS landing zone folders when a CIS profile is required:
 
 | CIS Section | Requirement | Module | Blueprint | Applies To | Priority | Status |
 |---|---|---|---|---|---|---|
-| 1.1 | Avoid root compartment usage | `iam/compartments` | `core` | Level 1, Level 2 | P0 | Planned |
-| 1.2 | Local service admin account | `iam/groups`, `iam/policies` | `core` | Level 1, Level 2 | P0 | Planned |
+| 1.1 | Avoid root compartment usage | `iam/compartments` | `core` | Level 1, Level 2 | P0 | Implemented |
+| 1.2 | Local service admin account | `iam/groups`, `iam/policies` | `core` | Level 1, Level 2 | P0 | Partial |
 | 1.3 | MFA enforced | `iam/policies` | `core` | Level 1, Level 2 | P0 | Planned |
 | 1.7 | API keys rotated before 90 days | `governance/events` | `core` | Level 1, Level 2 | P1 | Planned |
 | 1.13 | No API keys on root user | `iam/policies` | `core` | Level 1, Level 2 | P0 | Planned |

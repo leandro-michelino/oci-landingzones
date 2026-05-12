@@ -13,7 +13,30 @@ output "cis_level" {
   value       = local.cis_level
 }
 
+output "policy_ids" {
+  description = "Map of IAM policy keys to OCIDs."
+  value = {
+    for key, policy in oci_identity_policy.this : key => policy.id
+  }
+}
+
+output "policy_names" {
+  description = "Map of IAM policy keys to names."
+  value = {
+    for key, policy in oci_identity_policy.this : key => policy.name
+  }
+}
+
+output "policy_statements" {
+  description = "Map of IAM policy keys to policy statements."
+  value = {
+    for key, policy in oci_identity_policy.this : key => policy.statements
+  }
+}
+
 output "resource_ids" {
-  description = "Map of resource identifiers created by this module. Empty until implementation."
-  value       = {}
+  description = "Map of resource identifiers created by this module."
+  value = {
+    for key, policy in oci_identity_policy.this : key => policy.id
+  }
 }

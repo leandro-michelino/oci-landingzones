@@ -10,7 +10,9 @@ READMEs may define additional variables for local behavior.
 | `tenancy_ocid` | `string` | Yes | OCI tenancy OCID. |
 | `current_user_ocid` | `string` | Yes | User OCID used during bootstrap or local execution. |
 | `region` | `string` | Yes | OCI region name, such as `eu-frankfurt-1`. |
-| `home_region` | `string` | No | Tenancy home region when different from `region`. |
+| `home_region` | `string` | No | Tenancy home region used for Identity create/update/delete operations when different from `region`. |
+| `oci_config_profile` | `string` | No | Optional OCI CLI config profile for local Terraform execution. |
+| `parent_compartment_ocid` | `string` | No | Parent compartment for the landing zone root compartment. Defaults to `tenancy_ocid`; use local ignored files for ephemeral test compartments. |
 
 ## Organization Context
 
@@ -27,6 +29,17 @@ READMEs may define additional variables for local behavior.
 |---|---|---:|---|
 | `defined_tags` | `map(string)` | No | Defined tags applied to resources. |
 | `freeform_tags` | `map(string)` | No | Freeform tags applied to resources. |
+| `tag_namespace_name` | `string` | No | Optional tag namespace name override, useful for ephemeral tests. |
+| `enable_tagging` | `bool` | No | Create the landing zone tag namespace, tag definitions, and tag defaults. Disable for fast ephemeral tests. |
+| `enable_tag_defaults` | `bool` | No | Create tag defaults for landing zone compartments. Disable for faster tests while keeping tag definitions. |
+| `tag_default_values` | `map(string)` | No | Default values for the landing zone tag namespace. |
+| `required_tag_defaults` | `set(string)` | No | Tag names whose defaults should be marked required. |
+| `enable_default_iam_groups` | `bool` | No | Create default landing zone IAM groups. Disable only for quota-constrained ephemeral tests. |
+| `iam_groups` | `map(object)` | No | Additional or overriding IAM groups keyed by logical role. |
+| `enable_default_dynamic_groups` | `bool` | No | Create default dynamic groups for platform automation and workload instances. |
+| `iam_dynamic_groups` | `map(object)` | No | Additional or overriding dynamic groups keyed by logical role. |
+| `enable_default_iam_policies` | `bool` | No | Create default least-privilege IAM policies for the core landing zone. |
+| `iam_policies` | `map(object)` | No | Additional or overriding IAM policies keyed by logical role. |
 | `cost_center` | `string` | No | Finance or chargeback cost center. |
 | `owner` | `string` | No | Owning team or operating entity. |
 | `project` | `string` | No | Project or workload identifier. |

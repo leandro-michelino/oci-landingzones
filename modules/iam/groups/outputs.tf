@@ -13,7 +13,23 @@ output "cis_level" {
   value       = local.cis_level
 }
 
+output "group_ids" {
+  description = "Map of IAM group keys to OCIDs."
+  value = {
+    for key, group in oci_identity_group.this : key => group.id
+  }
+}
+
+output "group_names" {
+  description = "Map of IAM group keys to names."
+  value = {
+    for key, group in oci_identity_group.this : key => group.name
+  }
+}
+
 output "resource_ids" {
-  description = "Map of resource identifiers created by this module. Empty until implementation."
-  value       = {}
+  description = "Map of resource identifiers created by this module."
+  value = {
+    for key, group in oci_identity_group.this : key => group.id
+  }
 }

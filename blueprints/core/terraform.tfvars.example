@@ -2,10 +2,20 @@ tenancy_ocid      = "ocid1.tenancy.oc1..example"
 current_user_ocid = "ocid1.user.oc1..example"
 region            = "eu-frankfurt-1"
 home_region       = "eu-frankfurt-1"
+# Optional OCI CLI profile for local execution.
+# oci_config_profile = "DEFAULT"
 
 org         = "acme"
 environment = "dev"
 region_key  = "fra"
+
+# Optional. Defaults to tenancy_ocid when omitted.
+# For ephemeral tests, set this to the approved test compartment OCID in a local
+# terraform.tfvars file that is not committed.
+# parent_compartment_ocid = "ocid1.compartment.oc1..example"
+
+enable_delete = true
+
 defined_tags = {
   "acme-tags.Environment" = "dev"
   "acme-tags.ManagedBy"   = "terraform"
@@ -14,3 +24,50 @@ defined_tags = {
 }
 
 freeform_tags = {}
+
+tag_default_values = {
+  Environment = "dev"
+  ManagedBy   = "terraform"
+  Owner       = "platform-team"
+  Project     = "landingzone"
+  Blueprint   = "core"
+  CostCenter  = "unset"
+  CreatedDate = "unset"
+}
+
+# Optional override, useful for ephemeral tests.
+# tag_namespace_name = "acme-tags"
+
+# Ephemeral test acceleration. Keep these enabled for normal landing zone
+# deployments, but disable tagging for fast create/destroy tests that only need
+# to validate compartments, IAM, networking, or policy wiring.
+# enable_tagging      = true
+# enable_tag_defaults = true
+
+# Optional IAM overrides.
+# enable_default_iam_groups     = true
+# enable_default_dynamic_groups = true
+# enable_default_iam_policies   = true
+#
+# iam_groups = {
+#   auditors = {
+#     name        = "acme-dev-fra-grp-auditors"
+#     description = "Read-only auditors for landing zone resources."
+#   }
+# }
+#
+# iam_dynamic_groups = {
+#   custom_automation_instances = {
+#     description   = "Custom automation instances."
+#     matching_rule = "ALL {resource.type = 'instance', resource.compartment.id = 'ocid1.compartment.oc1..example'}"
+#   }
+# }
+#
+# iam_policies = {
+#   custom_readers = {
+#     description = "Example custom read-only policy."
+#     statements = [
+#       "Allow group acme-dev-fra-grp-auditors to read all-resources in compartment acme-dev-fra-cmp-root"
+#     ]
+#   }
+# }

@@ -13,7 +13,23 @@ output "cis_level" {
   value       = local.cis_level
 }
 
+output "dynamic_group_ids" {
+  description = "Map of dynamic group keys to OCIDs."
+  value = {
+    for key, dynamic_group in oci_identity_dynamic_group.this : key => dynamic_group.id
+  }
+}
+
+output "dynamic_group_names" {
+  description = "Map of dynamic group keys to names."
+  value = {
+    for key, dynamic_group in oci_identity_dynamic_group.this : key => dynamic_group.name
+  }
+}
+
 output "resource_ids" {
-  description = "Map of resource identifiers created by this module. Empty until implementation."
-  value       = {}
+  description = "Map of resource identifiers created by this module."
+  value = {
+    for key, dynamic_group in oci_identity_dynamic_group.this : key => dynamic_group.id
+  }
 }

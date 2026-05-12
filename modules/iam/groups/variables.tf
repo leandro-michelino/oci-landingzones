@@ -50,3 +50,18 @@ variable "freeform_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "enable_default_groups" {
+  description = "Create the default landing zone IAM groups."
+  type        = bool
+  default     = true
+}
+
+variable "groups" {
+  description = "Additional or overriding IAM groups keyed by logical role."
+  type = map(object({
+    name        = optional(string)
+    description = string
+  }))
+  default = {}
+}

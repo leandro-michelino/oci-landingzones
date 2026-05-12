@@ -50,3 +50,38 @@ variable "freeform_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "enable_default_policies" {
+  description = "Create the default landing zone IAM policies."
+  type        = bool
+  default     = true
+}
+
+variable "group_names" {
+  description = "Map of IAM group keys to names used in generated policy statements."
+  type        = map(string)
+  default     = {}
+}
+
+variable "dynamic_group_names" {
+  description = "Map of dynamic group keys to names used in generated policy statements."
+  type        = map(string)
+  default     = {}
+}
+
+variable "compartment_names" {
+  description = "Map of landing zone compartment keys to names used in generated policy statements."
+  type        = map(string)
+  default     = {}
+}
+
+variable "policies" {
+  description = "Additional or overriding IAM policies keyed by logical role."
+  type = map(object({
+    name           = optional(string)
+    compartment_id = optional(string)
+    description    = string
+    statements     = list(string)
+  }))
+  default = {}
+}

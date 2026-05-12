@@ -50,3 +50,13 @@ variable "freeform_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "dynamic_groups" {
+  description = "Dynamic groups keyed by logical role."
+  type = map(object({
+    name          = optional(string)
+    description   = string
+    matching_rule = string
+  }))
+  default = {}
+}

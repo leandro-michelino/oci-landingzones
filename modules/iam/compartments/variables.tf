@@ -50,3 +50,43 @@ variable "freeform_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "root_compartment_name" {
+  description = "Display name for the landing zone root compartment. Defaults to the standard naming prefix with cmp-root."
+  type        = string
+  default     = null
+}
+
+variable "root_compartment_description" {
+  description = "Description for the landing zone root compartment."
+  type        = string
+  default     = "OCI landing zone root compartment managed by Terraform."
+}
+
+variable "enable_delete" {
+  description = "Allow Terraform to delete created compartments during destroy. Keep true for ephemeral tests; review carefully for production."
+  type        = bool
+  default     = true
+}
+
+variable "child_compartments" {
+  description = "Child compartments to create under the landing zone root compartment."
+  type = map(object({
+    description   = string
+    enable_delete = optional(bool)
+  }))
+  default = {
+    network = {
+      description = "Networking resources such as VCNs, DRGs, DNS, and gateways."
+    }
+    security = {
+      description = "Security resources such as Cloud Guard, Vault, Security Zones, VSS, and Bastion."
+    }
+    governance = {
+      description = "Governance resources such as tags, budgets, logs, events, and notifications."
+    }
+    workloads = {
+      description = "Workload and operating entity compartments."
+    }
+  }
+}

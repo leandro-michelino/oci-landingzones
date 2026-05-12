@@ -1,13 +1,33 @@
 # OCI Landing Zones
 
-Opinionated Terraform and Ansible landing zone framework for Oracle Cloud
-Infrastructure (OCI), designed around a centralized core baseline and modular
-deployment blueprints for networking, operating entities, and optional platform
-extensions.
+This is a personal project I have been shaping over the years while working
+with Oracle Cloud Infrastructure customers.
 
-This repository is being bootstrapped from the OCI Landing Zone implementation
-blueprint and will evolve into deployable Terraform compositions aligned to CIS
-OCI Benchmark controls, OCI naming conventions, and GitOps delivery practices.
+It started as the kind of thing you keep rebuilding from notes, diagrams,
+customer workshops, lessons learned, and "we should standardize this next time"
+moments. The goal here is to turn those recurring landing-zone requirements into
+a practical, reusable Terraform and Ansible framework for OCI.
+
+It is intentionally opinionated, but not meant to be rigid. Different customers
+need different levels of governance, networking, security, and operational
+control, so this repository keeps a small mandatory core and then adds optional
+blueprints for the patterns that show up again and again in real environments.
+
+This is not an official product. It is a personal engineering project, built in
+the open, reflecting requirements and patterns I have seen across customer
+engagements over time.
+
+## What This Is
+
+At a high level, this repository provides an OCI landing zone framework designed
+around:
+
+- a centralized core baseline
+- reusable Terraform modules
+- independently deployable blueprints
+- local Ansible orchestration
+- optional CIS Level 1 and Level 2 landing zone profiles
+- practical defaults that can be adapted for real customer requirements
 
 ## Objectives
 
@@ -59,7 +79,11 @@ blueprints that compose the reusable modules under `modules/`.
 ├── blueprints/
 │   ├── core/
 │   ├── cis/
+│   ├── compliance/
+│   ├── data-platform/
+│   ├── disaster-recovery/
 │   ├── identity/
+│   ├── industry/
 │   ├── networking/
 │   ├── operating-entity/
 │   └── extensions/
@@ -85,6 +109,11 @@ blueprints that compose the reusable modules under `modules/`.
 
 ## Blueprint Catalogue
 
+Each deployable blueprint folder is intended to be self-contained. The local
+`README.md` explains the pattern, fit, inputs, and deployment flow, while the
+local `architecture/` folder defines the editable diagram source and exported
+architecture image names.
+
 ### Core
 
 | Blueprint | Path | Description |
@@ -100,6 +129,10 @@ blueprints that compose the reusable modules under `modules/`.
 
 ### Identity
 
+Identity deployments also include local README and architecture folders so the
+customer identity model, group mapping, and federation assumptions stay close to
+the Terraform code.
+
 | Blueprint | Path | Description |
 |---|---|---|
 | CIS basic | `blueprints/identity/cis-basic/` | Minimal CIS-aligned IAM baseline. |
@@ -107,6 +140,9 @@ blueprints that compose the reusable modules under `modules/`.
 | New identity domain | `blueprints/identity/new-identity-domain/` | Provision a dedicated OCI Identity Domain. |
 
 ### Networking
+
+Each networking deployment folder includes its own README and local
+`architecture/` folder for the editable diagram and exported image.
 
 | Blueprint | Path | Description |
 |---|---|---|
@@ -118,16 +154,54 @@ blueprints that compose the reusable modules under `modules/`.
 | Hub-spoke with Bastion | `blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/` | Hub-spoke with OCI Bastion for administrative access. |
 | Hub-spoke with FastConnect | `blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc/` | Hub-spoke with private dedicated connectivity. |
 | Hub-spoke with IPSec VPN | `blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn/` | Hub-spoke with site-to-site VPN connectivity. |
+| Hub-spoke with multicloud interconnect | `blueprints/networking/hub-spoke-with-multicloud-interconnect/` | Hub-spoke with private connectivity to another cloud or external provider. |
 | Hub-spoke with network appliance | `blueprints/networking/hub-spoke-with-hub-vcn-net-appliance/` | Hub-spoke with third-party NVA inspection. |
 | Hub-spoke with OCI Network Firewall | `blueprints/networking/hub-spoke-with-hub-vcn-net-firewall/` | Hub-spoke with managed OCI Network Firewall inspection. |
+| Regional prod/nonprod hubs | `blueprints/networking/regional-prod-nonprod-hubs/` | Separate regional hubs and route domains for production and nonproduction isolation. |
 
 ### Operating Entity
+
+Operating entity onboarding has its own local README and architecture folder for
+ownership, delegated administration, network attachment, and budget assumptions.
 
 | Blueprint | Path | Description |
 |---|---|---|
 | Operating entity | `blueprints/operating-entity/` | Repeatable onboarding pattern for a business unit, subsidiary, workload, or application team. |
+| Multi-operating-entities | `blueprints/operating-entity/multi-operating-entities/` | Repeatable onboarding for multiple entities with delegated IAM, budgets, and network attachment. |
+| Workload vending | `blueprints/operating-entity/workload-vending/` | Application-team onboarding package for compartments, IAM, budgets, tags, quotas, and network attachment. |
+
+### Compliance
+
+Compliance deployment folders add stricter control layouts where the design is
+driven by auditability, traffic inspection, or regulator expectations.
+
+| Blueprint | Path | Description |
+|---|---|---|
+| SCCA cloud native | `blueprints/compliance/scca-cloud-native/` | Regulated cloud-native landing zone with inspected ingress, egress, logging, and security boundaries. |
+| Zero Trust | `blueprints/compliance/zero-trust/` | Identity-aware segmented landing zone using ZPR, private access, and inspected traffic paths. |
+
+### Data Platform
+
+| Blueprint | Path | Description |
+|---|---|---|
+| Private data platform | `blueprints/data-platform/private-data-platform/` | Private analytics and data platform landing zone with private endpoints, encryption, and controlled data access. |
+
+### Disaster Recovery
+
+| Blueprint | Path | Description |
+|---|---|---|
+| Full Stack Disaster Recovery | `blueprints/disaster-recovery/fsdr/` | OCI FSDR pattern for orchestrated failover and switchover across the application stack. |
+
+### Industry
+
+| Blueprint | Path | Description |
+|---|---|---|
+| Telco cloud native | `blueprints/industry/telco-cloud-native/` | Telco-oriented cloud-native landing zone with OKE, segmentation, private connectivity, and operations controls. |
 
 ### Extensions
+
+Each extension folder includes local deployment notes and an `architecture/`
+folder for the service-specific diagram and exported image.
 
 | Extension | Path |
 |---|---|
@@ -253,19 +327,26 @@ used by the environment examples.
 
 ## Current Status
 
-Project bootstrap is in progress.
+Project bootstrap, Phase 1 core structure, and Phase 2 IAM foundation are
+implemented locally.
 
 Completed:
 
 - Remote repository cloned.
 - Apache 2.0 license present.
-- Initial README drafted from the implementation blueprint.
+- README drafted around the project goals and personal project context.
 - Base repository structure created.
 - Initial guardrail and documentation files added.
+- Dedicated opt-in CIS Level 1 and Level 2 blueprint folders added.
+- Core compartment and tagging modules implemented.
+- Core IAM groups, dynamic groups, and scoped policies implemented.
+- Deployment folders documented with local READMEs and architecture image
+  locations.
+- Deployment pattern catalog expanded with operating entity, compliance,
+  multicloud, data platform, and industry blueprints.
 
-Next implementation work should create the first architecture diagram
-(`00-overview.excalidraw`) and then start the core landing zone Terraform
-skeleton.
+Next implementation work should continue the core baseline with logging,
+budgets, events, and security posture controls.
 
 ## License
 

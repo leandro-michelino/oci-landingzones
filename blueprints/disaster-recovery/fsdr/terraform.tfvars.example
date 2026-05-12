@@ -1,0 +1,9 @@
+tenancy_ocid       = "ocid1.tenancy.oc1..example"
+region             = "af-johannesburg-1"
+standby_region     = "eu-frankfurt-1"
+oci_config_profile = "DEFAULT"
+
+org                = "acme"
+environment        = "prod"
+region_key         = "jnb"
+standby_region_key = "fra"
