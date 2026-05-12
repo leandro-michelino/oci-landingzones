@@ -3,11 +3,7 @@
 validation_repo_root: "{{ playbook_dir }}/../.."
 validation_blueprint_root: "{{ validation_repo_root }}/blueprints"
 validation_blueprint_roots:
-  - "{{ validation_blueprint_root }}/core"
-  - "{{ validation_blueprint_root }}/cis"
-  - "{{ validation_blueprint_root }}/networking"
-  - "{{ validation_blueprint_root }}/operating-entity"
-  - "{{ validation_blueprint_root }}/extensions"
+  - "{{ validation_blueprint_root }}"
 validation_terraform_plugin_cache_dir: >-
   {{
     lookup('env', 'TF_PLUGIN_CACHE_DIR') |

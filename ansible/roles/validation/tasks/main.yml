@@ -24,7 +24,7 @@
         chdir: "{{ validation_repo_root }}"
       changed_when: false
 
-    - name: Find Phase 1-5 Terraform blueprint entry points
+    - name: Find Terraform blueprint entry points
       ansible.builtin.find:
         paths: "{{ validation_blueprint_roots }}"
         patterns: main.tf
@@ -60,7 +60,7 @@
 
     - name: Show implemented Terraform blueprint count
       ansible.builtin.debug:
-        msg: "Validating {{ validation_terraform_directories | length }} implemented Phase 1-5 Terraform blueprints."
+        msg: "Validating {{ validation_terraform_directories | length }} implemented Terraform blueprints."
 
     - name: Prepare Terraform plugin cache
       ansible.builtin.file:

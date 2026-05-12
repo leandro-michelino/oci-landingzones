@@ -33,11 +33,12 @@ Use the Ansible-backed validation entry point before commits:
 ./scripts/validate-all.sh
 ```
 
-This auto-discovers implemented Terraform blueprints in the Phase 1-5 families
-only, validates them without a remote backend, runs Ansible syntax checks, and
-cleans generated Terraform artifacts even when a validation step fails. The
-Ansible role uses a local Terraform plugin cache and a bounded timeout per
-Terraform command so repeated checks stay predictable.
+This auto-discovers implemented Terraform blueprints under `blueprints/`,
+validates them without a remote backend, runs Ansible syntax checks, and cleans
+generated Terraform artifacts even when a validation step fails. Scaffolded
+pattern folders stay out of Terraform validation until they contain real
+blueprint wiring. The Ansible role uses a local Terraform plugin cache and a
+bounded timeout per Terraform command so repeated checks stay predictable.
 
 The generic landing zone deployment does not enable CIS behavior by default. To
 deploy a CIS landing zone, start from one of the dedicated folders instead:
@@ -195,7 +196,7 @@ blueprints/operating-entity/multi-operating-entities/architecture/multi-operatin
 blueprints/operating-entity/workload-vending/architecture/workload-vending.excalidraw
 ```
 
-## Phase 1-5 Wiring Check
+## Implemented Blueprint Wiring Check
 
 | Phase | Terraform Entry Points | Ansible Coverage |
 |---|---|---|
@@ -207,7 +208,7 @@ blueprints/operating-entity/workload-vending/architecture/workload-vending.excal
 
 Planned identity, compliance, data platform, disaster recovery, and industry
 folders are documented in the catalog but are excluded from automated Terraform
-validation until they become part of the implemented phase surface.
+validation until implementation starts.
 
 ## Phase 5 - Extensions
 

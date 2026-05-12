@@ -301,7 +301,7 @@ Ansible content lives under `ansible/` and is used for local orchestration only:
 
 - bootstrap prerequisite checks
 - OCI CLI validation
-- repository validation across implemented Phase 1-5 blueprints
+- repository validation across implemented Terraform blueprints
 - controlled Terraform `init`, `validate`, `plan`, `apply`, and `destroy`
   execution
 
@@ -354,7 +354,7 @@ The main local validation entry point is:
 
 When Ansible is installed, the script delegates to
 `ansible/playbooks/validate.yml`. That playbook runs `terraform fmt`,
-auto-discovers implemented Terraform blueprints in the Phase 1-5 families,
+auto-discovers implemented Terraform blueprints under `blueprints/`,
 initializes and validates them with `-backend=false`, checks Ansible playbook
 syntax, runs optional local linters when available, and removes generated
 Terraform artifacts afterward. To keep repeated checks practical, it reuses
@@ -426,7 +426,7 @@ Completed:
 - Phase 5 extension blueprints wired for OKE, API Gateway, Streaming, WAF, and
   Exadata with resource creation disabled by default.
 - Ansible validation wired to run Terraform checks and cleanup across every
-  implemented Phase 1-5 blueprint family.
+  implemented Terraform blueprint.
 - Deployment folders documented with local READMEs and architecture image
   locations.
 - Deployment pattern catalog expanded with operating entity, compliance,
