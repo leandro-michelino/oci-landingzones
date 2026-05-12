@@ -3,11 +3,11 @@
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 Architecture diagrams may live either in this shared architecture area or in a
-blueprint's own local architecture folder. Shared Phase 7 sources live in
-`docs/architecture/diagrams/`. New deployment folders should keep their editable
-Excalidraw source beside the blueprint README so the use case stays
-self-contained. PNG exports are generated only when a rendered review artifact
-is needed.
+blueprint's own local architecture folder. Shared reference sources live in
+`docs/architecture/diagrams/`. Deployable blueprint folders keep exactly one
+canonical editable Excalidraw source beside the blueprint README so the use case
+stays self-contained. PNG exports are generated only when a rendered review
+artifact is needed.
 
 ## Diagram Tracker
 
@@ -25,6 +25,11 @@ is needed.
 
 - Every Terraform blueprint must link to its diagram before real resources are
   added.
+- Every deployable blueprint keeps one canonical `.excalidraw` source in its
+  local `architecture/` folder.
+- Draft, detailed LLD, professional, or customer-specific variants should be
+  promoted into the canonical source or kept outside the reusable blueprint
+  tree.
 - Every production/customer-facing diagram source should have a rendered PNG
   export before implementation moves into customer review.
 - Diagrams must use OCI naming examples for resource labels.

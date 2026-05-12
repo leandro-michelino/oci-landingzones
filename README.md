@@ -166,7 +166,13 @@ Every deployable blueprint should include:
 - `README.md`
 - `terraform.tfvars.example`
 - `architecture/README.md`
-- an editable `.excalidraw` diagram
+- one canonical editable `.excalidraw` diagram in its local `architecture/`
+  folder
+
+Keep additional LLD, draft, or rendered review variants out of the blueprint
+folders unless they become the canonical source for that deployment. The
+blueprint-local diagram is the source of truth; PNG exports are generated only
+when a review package needs one.
 
 ## Repository Hygiene
 
