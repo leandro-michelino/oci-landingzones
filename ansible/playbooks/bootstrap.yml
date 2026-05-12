@@ -1,0 +1,8 @@
+---
+- name: Bootstrap local landing zone prerequisites
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - common
+    - oci_cli
+    - landingzone_bootstrap

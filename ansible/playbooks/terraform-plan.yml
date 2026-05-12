@@ -1,0 +1,6 @@
+---
+- name: Run Terraform plan from a selected directory
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - terraform_runner

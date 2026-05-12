@@ -1,0 +1,2 @@
+---
+validation_script_path: "{{ playbook_dir }}/../../scripts/validate-all.sh"

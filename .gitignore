@@ -30,6 +30,9 @@ oci_config
 .checkov/
 checkov-report.*
 tfsec-report.*
+*.retry
+.ansible/
+ansible/vault-password*
 
 # Editors
 .idea/

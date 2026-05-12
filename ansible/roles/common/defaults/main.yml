@@ -1,0 +1,4 @@
+---
+landingzone_required_commands:
+  - terraform
+  - oci

@@ -1,0 +1,4 @@
+---
+- name: Run repository validation script
+  ansible.builtin.command: "{{ validation_script_path }}"
+  changed_when: false

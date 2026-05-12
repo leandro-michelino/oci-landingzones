@@ -6,7 +6,8 @@ controls used by all other blueprints.
 
 > [DIAGRAM REQUIRED] `docs/architecture/diagrams/01-iam-compartments.excalidraw`
 >
-> Status: TODO - create this diagram before implementing or applying Terraform.
+> Status: TODO - scaffold files may exist now; create this diagram before adding
+> real OCI resources or applying Terraform.
 
 ## Responsibilities
 

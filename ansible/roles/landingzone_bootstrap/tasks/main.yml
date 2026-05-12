@@ -1,0 +1,12 @@
+---
+- name: Run bootstrap helper
+  ansible.builtin.command:
+    argv:
+      - "{{ bootstrap_script_path }}"
+      - --org
+      - "{{ landingzone_org }}"
+      - --env
+      - "{{ landingzone_environment }}"
+      - --region
+      - "{{ landingzone_region }}"
+  changed_when: false

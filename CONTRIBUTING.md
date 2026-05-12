@@ -1,16 +1,16 @@
 # Contributing
 
-This project uses a diagram-first and documentation-first workflow for landing
-zone changes. The goal is to keep OCI infrastructure patterns explainable before
-they become deployable.
+This project creates Terraform and Ansible scaffolding first, then requires
+diagrams and documentation before scaffolds become deployable OCI resources.
+The goal is to keep infrastructure patterns explainable before they are applied.
 
 ## Workflow
 
-1. Create or update the relevant architecture diagram.
-2. Update the blueprint or module README.
-3. Implement Terraform in the smallest useful scope.
-4. Run local validation.
-5. Open a pull request with diagrams, docs, Terraform, and test evidence.
+1. Add or update Terraform and Ansible scaffold files.
+2. Create or update the relevant architecture diagram before real resources.
+3. Update the blueprint or module README.
+4. Implement Terraform in the smallest useful scope.
+5. Run local validation.
 
 ## Local Validation
 
@@ -33,8 +33,9 @@ checkov -d . --framework terraform --compact
 
 ## Diagram Gate
 
-Do not implement or apply Terraform for a blueprint until its required diagram
-exists under `docs/architecture/diagrams/` and is reflected in the tracker.
+Do not add real OCI resources or apply Terraform for a blueprint until its
+required diagram exists under `docs/architecture/diagrams/` and is reflected in
+the tracker.
 
 ## Pull Request Checklist
 

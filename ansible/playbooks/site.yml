@@ -1,0 +1,8 @@
+---
+- name: OCI landing zone local orchestration
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - common
+    - oci_cli
+    - validation

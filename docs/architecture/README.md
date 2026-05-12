@@ -23,8 +23,10 @@ Architecture diagrams are source-controlled as Excalidraw files under
 
 ## Rules
 
-- Every Terraform blueprint must link to its diagram.
-- Every diagram source must have an exported image before implementation starts.
+- Every Terraform blueprint must link to its diagram before real resources are
+  added.
+- Every diagram source must have an exported image before implementation moves
+  beyond scaffold files.
 - Diagrams must use OCI naming examples for resource labels.
 - Production applies are blocked until the relevant diagram is complete.
 - GitHub Actions and repository workflows are intentionally not used for now.

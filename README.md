@@ -1,8 +1,8 @@
 # OCI Landing Zones
 
-Opinionated Terraform landing zone framework for Oracle Cloud Infrastructure
-(OCI), designed around a centralized core baseline and modular deployment
-blueprints for networking, operating entities, and optional platform
+Opinionated Terraform and Ansible landing zone framework for Oracle Cloud
+Infrastructure (OCI), designed around a centralized core baseline and modular
+deployment blueprints for networking, operating entities, and optional platform
 extensions.
 
 This repository is being bootstrapped from the OCI Landing Zone implementation
@@ -16,6 +16,8 @@ OCI Benchmark controls, OCI naming conventions, and GitOps delivery practices.
 - Separate mandatory core controls from optional deployment blueprints.
 - Keep Terraform modules reusable, composable, and free from remote state.
 - Keep each deployable blueprint independently stateful.
+- Use Ansible for local orchestration, bootstrap checks, validation, and
+  controlled Terraform command execution.
 - Make diagrams, documentation, and local validation first-class project
   artifacts.
 - Align security, governance, IAM, and networking patterns with CIS OCI
@@ -59,6 +61,10 @@ blueprints that compose the reusable modules under `modules/`.
 │   ├── networking/
 │   ├── operating-entity/
 │   └── extensions/
+├── ansible/
+│   ├── inventories/
+│   ├── playbooks/
+│   └── roles/
 ├── environments/
 │   ├── nonprod/
 │   └── prod/
@@ -166,12 +172,25 @@ Modules should output stable identifiers such as OCIDs, names, and maps needed
 by downstream blueprints. Remote state belongs to deployable blueprints, not
 shared modules.
 
+## Ansible Contract
+
+Ansible content lives under `ansible/` and is used for local orchestration only:
+
+- bootstrap prerequisite checks
+- OCI CLI validation
+- repository validation
+- controlled Terraform `init`, `validate`, and `plan` execution
+
+Ansible playbooks must stay non-destructive by default. Terraform remains the
+source of truth for OCI resource creation.
+
 ## Diagram Gate
 
-Before implementing Terraform for a blueprint or module, the matching
-Excalidraw diagram must exist under `docs/architecture/diagrams/`, be exported
-under `docs/architecture/exports/`, and be marked as complete in the diagram
-tracker.
+Terraform and Ansible scaffold files may be created first. Before adding real
+OCI resources or running `terraform apply` for a blueprint or module, the
+matching Excalidraw diagram must exist under `docs/architecture/diagrams/`, be
+exported under `docs/architecture/exports/`, and be marked as complete in the
+diagram tracker.
 
 Initial required diagrams:
 
@@ -203,6 +222,7 @@ The repository should standardize on:
 - `tflint`
 - `tfsec`
 - `checkov`
+- `ansible-lint`
 - Pre-commit hooks
 Automated workflows and GitHub Actions are intentionally out of scope for now.
 

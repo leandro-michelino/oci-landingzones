@@ -1,0 +1,13 @@
+---
+- name: Check required command availability
+  ansible.builtin.command: "which {{ item }}"
+  changed_when: false
+  failed_when: false
+  register: command_checks
+  loop: "{{ landingzone_required_commands }}"
+
+- name: Show missing commands
+  ansible.builtin.debug:
+    msg: "Missing command: {{ item.item }}"
+  when: item.rc != 0
+  loop: "{{ command_checks.results }}"

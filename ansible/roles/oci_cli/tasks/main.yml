@@ -1,0 +1,10 @@
+---
+- name: Check OCI CLI configuration
+  ansible.builtin.command: "oci session validate --profile {{ oci_cli_profile }}"
+  changed_when: false
+  failed_when: false
+  register: oci_session_validation
+
+- name: Report OCI CLI validation status
+  ansible.builtin.debug:
+    msg: "OCI CLI session validation rc={{ oci_session_validation.rc }}"

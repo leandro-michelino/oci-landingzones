@@ -1,0 +1,5 @@
+---
+landingzone_org: acme
+landingzone_region: eu-frankfurt-1
+landingzone_region_key: fra
+terraform_environment_dir: "{{ playbook_dir }}/../../environments/nonprod/dev"

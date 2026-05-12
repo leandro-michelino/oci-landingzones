@@ -1,0 +1,6 @@
+---
+- name: Validate local landing zone repository
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - validation
