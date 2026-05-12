@@ -24,6 +24,10 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Cloud Guard implementation for tenancy configuration, default landing zone
   target, optional detector/responder recipe attachments, and additional
   targets.
+- Vault/KMS implementation for opt-in landing zone vaults and master encryption
+  keys.
+- Security Zones implementation for opt-in landing zone compartment guardrails
+  using approved security recipes.
 - Governance budgets implementation for opt-in landing zone budgets and budget
   alert rules.
 - Governance Events implementation for ONS notification topics, subscriptions,

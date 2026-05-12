@@ -138,6 +138,12 @@ READMEs may define additional variables for local behavior.
 | `cloud_guard_detector_recipe_ids` | `set(string)` | No | Detector recipe OCIDs attached to the default Cloud Guard target. |
 | `cloud_guard_responder_recipe_ids` | `set(string)` | No | Responder recipe OCIDs attached to the default Cloud Guard target. |
 | `cloud_guard_targets` | `map(object)` | No | Additional Cloud Guard targets keyed by logical name. |
+| `vault_enabled` | `bool` | No | Create OCI Vault and KMS keys. Disabled by default. |
+| `vaults` | `map(object)` | No | Additional OCI Vaults keyed by logical name. |
+| `vault_keys` | `map(object)` | No | KMS keys keyed by logical name. |
+| `security_zones_enabled` | `bool` | No | Create OCI Security Zones. Disabled by default because Security Zones enforce guardrails on protected compartments. |
+| `default_security_zone_recipe_id` | `string` | No | Security recipe OCID used by the default landing zone Security Zone. |
+| `security_zones` | `map(object)` | No | Additional Security Zones keyed by logical name. |
 | `enable_budgets` | `bool` | No | Create OCI Budgets resources. Generic core disables this by default; CIS wrappers create budgets only when thresholds are supplied. |
 | `default_budget_amount` | `number` | No | Amount for the default landing zone budget. Leave null to skip default budget creation. |
 | `default_budget_alert_recipients` | `set(string)` | No | Email recipients for the default budget alert rule. |
@@ -146,7 +152,6 @@ READMEs may define additional variables for local behavior.
 | `event_notification_topics` | `map(object)` | No | ONS notification topics keyed by logical name. |
 | `event_subscriptions` | `map(object)` | No | ONS subscriptions keyed by logical name; endpoints should stay in local ignored tfvars. |
 | `event_rules` | `map(object)` | No | Additional or overriding OCI Events rules keyed by logical name. |
-| `security_zones_enabled` | `bool` | No | Enable Security Zone policies. |
 | `vss_enabled` | `bool` | No | Enable Vulnerability Scanning Service configuration. |
 | `bastion_enabled` | `bool` | No | Enable OCI Bastion resources where supported. |
 | `network_firewall_enabled` | `bool` | No | Enable OCI Network Firewall for supported blueprints. |

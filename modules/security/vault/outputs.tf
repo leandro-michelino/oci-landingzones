@@ -15,6 +15,48 @@ output "cis_level" {
 }
 
 output "resource_ids" {
-  description = "Map of resource identifiers created by this module. Empty until implementation."
-  value       = {}
+  description = "Map of resource identifiers created by this module."
+  value = merge(
+    {
+      for key, vault in oci_kms_vault.this : "vault.${key}" => vault.id
+    },
+    {
+      for key, key_resource in oci_kms_key.this : "key.${key}" => key_resource.id
+    }
+  )
+}
+
+output "vault_ids" {
+  description = "Map of vault keys to OCIDs."
+  value = {
+    for key, vault in oci_kms_vault.this : key => vault.id
+  }
+}
+
+output "vault_names" {
+  description = "Map of vault keys to display names."
+  value = {
+    for key, vault in oci_kms_vault.this : key => vault.display_name
+  }
+}
+
+output "vault_management_endpoints" {
+  description = "Map of vault keys to management endpoints."
+  value = {
+    for key, vault in oci_kms_vault.this : key => vault.management_endpoint
+  }
+}
+
+output "vault_crypto_endpoints" {
+  description = "Map of vault keys to crypto endpoints."
+  value = {
+    for key, vault in oci_kms_vault.this : key => vault.crypto_endpoint
+  }
+}
+
+output "key_ids" {
+  description = "Map of KMS key keys to OCIDs."
+  value = {
+    for key, key_resource in oci_kms_key.this : key => key_resource.id
+  }
 }

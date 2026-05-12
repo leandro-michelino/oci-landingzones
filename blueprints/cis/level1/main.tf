@@ -11,22 +11,30 @@ module "core" {
   region_key         = var.region_key
   cis_level          = local.cis_level
 
-  parent_compartment_ocid          = var.parent_compartment_ocid
-  enable_delete                    = var.enable_delete
-  enable_tagging                   = var.enable_tagging
-  enable_tag_defaults              = var.enable_tag_defaults
-  enable_audit_retention           = var.enable_audit_retention
-  audit_retention_period_days      = var.audit_retention_period_days
-  cloud_guard_enabled              = var.cloud_guard_enabled
-  cloud_guard_detector_recipe_ids  = var.cloud_guard_detector_recipe_ids
-  cloud_guard_responder_recipe_ids = var.cloud_guard_responder_recipe_ids
-  enable_budgets                   = var.budget_amount != null || length(var.budgets) > 0
-  default_budget_amount            = var.budget_amount
-  default_budget_alert_recipients  = var.budget_alert_recipients
-  budgets                          = var.budgets
-  enable_events                    = var.enable_events
-  event_subscriptions              = var.event_subscriptions
-  event_rules                      = var.event_rules
+  parent_compartment_ocid                   = var.parent_compartment_ocid
+  enable_delete                             = var.enable_delete
+  enable_tagging                            = var.enable_tagging
+  enable_tag_defaults                       = var.enable_tag_defaults
+  enable_audit_retention                    = var.enable_audit_retention
+  audit_retention_period_days               = var.audit_retention_period_days
+  cloud_guard_enabled                       = var.cloud_guard_enabled
+  cloud_guard_detector_recipe_ids           = var.cloud_guard_detector_recipe_ids
+  cloud_guard_responder_recipe_ids          = var.cloud_guard_responder_recipe_ids
+  vault_enabled                             = var.vault_enabled
+  enable_default_vault_key                  = var.enable_default_vault_key
+  vaults                                    = var.vaults
+  vault_keys                                = var.vault_keys
+  security_zones_enabled                    = var.security_zones_enabled
+  default_security_zone_recipe_id           = var.default_security_zone_recipe_id
+  default_security_zone_recipe_display_name = var.default_security_zone_recipe_display_name
+  security_zones                            = var.security_zones
+  enable_budgets                            = var.budget_amount != null || length(var.budgets) > 0
+  default_budget_amount                     = var.budget_amount
+  default_budget_alert_recipients           = var.budget_alert_recipients
+  budgets                                   = var.budgets
+  enable_events                             = var.enable_events
+  event_subscriptions                       = var.event_subscriptions
+  event_rules                               = var.event_rules
 
   defined_tags = var.defined_tags
   freeform_tags = merge(

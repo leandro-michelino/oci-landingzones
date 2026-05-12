@@ -230,6 +230,129 @@ variable "cloud_guard_targets" {
   default = {}
 }
 
+variable "vault_enabled" {
+  description = "Create OCI Vault and KMS keys for the landing zone."
+  type        = bool
+  default     = false
+}
+
+variable "enable_default_vault" {
+  description = "Create the default landing zone vault when vault_enabled is true."
+  type        = bool
+  default     = true
+}
+
+variable "default_vault_type" {
+  description = "Vault type for the default landing zone vault."
+  type        = string
+  default     = "DEFAULT"
+}
+
+variable "enable_default_vault_key" {
+  description = "Create the default landing zone master encryption key when the default vault is created."
+  type        = bool
+  default     = true
+}
+
+variable "default_vault_key_algorithm" {
+  description = "Key shape algorithm for the default landing zone key."
+  type        = string
+  default     = "AES"
+}
+
+variable "default_vault_key_length" {
+  description = "Key shape length for the default landing zone key."
+  type        = number
+  default     = 32
+}
+
+variable "default_vault_key_protection_mode" {
+  description = "Protection mode for the default landing zone key."
+  type        = string
+  default     = "HSM"
+}
+
+variable "vaults" {
+  description = "Additional OCI Vaults keyed by logical name."
+  type = map(object({
+    display_name     = optional(string)
+    compartment_ocid = optional(string)
+    vault_type       = optional(string, "DEFAULT")
+  }))
+  default = {}
+}
+
+variable "vault_keys" {
+  description = "KMS keys keyed by logical name. Use vault_key for module-created vaults or vault_management_endpoint for existing vaults."
+  type = map(object({
+    display_name              = optional(string)
+    compartment_ocid          = optional(string)
+    vault_key                 = optional(string, "default")
+    vault_management_endpoint = optional(string)
+    algorithm                 = optional(string, "AES")
+    length                    = optional(number, 32)
+    curve_id                  = optional(string)
+    protection_mode           = optional(string, "HSM")
+    desired_state             = optional(string)
+    is_auto_rotation_enabled  = optional(bool)
+    rotation_interval_in_days = optional(number)
+    time_of_schedule_start    = optional(string)
+  }))
+  default = {}
+}
+
+variable "security_zones_enabled" {
+  description = "Create OCI Security Zones for protected landing zone compartments."
+  type        = bool
+  default     = false
+}
+
+variable "enable_default_security_zone" {
+  description = "Create the default landing zone Security Zone when a default recipe is provided."
+  type        = bool
+  default     = true
+}
+
+variable "default_security_zone_recipe_id" {
+  description = "Security recipe OCID used by the default landing zone Security Zone."
+  type        = string
+  default     = null
+}
+
+variable "default_security_zone_recipe_display_name" {
+  description = "Optional security recipe display name to look up for the default landing zone Security Zone when recipe OCID is not supplied."
+  type        = string
+  default     = null
+}
+
+variable "default_security_zone_recipe_compartment_ocid" {
+  description = "Compartment OCID used when looking up default_security_zone_recipe_display_name. Defaults to tenancy_ocid."
+  type        = string
+  default     = null
+}
+
+variable "security_zones" {
+  description = "Additional Security Zones keyed by logical name."
+  type = map(object({
+    display_name                          = optional(string)
+    description                           = optional(string)
+    compartment_ocid                      = string
+    security_zone_recipe_id               = optional(string)
+    security_zone_recipe_display_name     = optional(string)
+    security_zone_recipe_compartment_ocid = optional(string)
+    is_inheritance_after_delete_enabled   = optional(bool)
+  }))
+  default = {}
+
+  validation {
+    condition = alltrue([
+      for zone in values(var.security_zones) :
+      zone.security_zone_recipe_id != null || zone.security_zone_recipe_display_name != null
+    ])
+    error_message = "Each security_zones entry must set security_zone_recipe_id or security_zone_recipe_display_name."
+  }
+}
+
 variable "enable_budgets" {
   description = "Create OCI Budgets resources for the landing zone."
   type        = bool

@@ -39,6 +39,21 @@ output "policy_names" {
   value       = module.core.policy_names
 }
 
+output "vault_ids" {
+  description = "Map of vault keys to OCIDs."
+  value       = module.core.vault_ids
+}
+
+output "vault_key_ids" {
+  description = "Map of KMS key keys to OCIDs."
+  value       = module.core.vault_key_ids
+}
+
+output "security_zone_ids" {
+  description = "Map of Security Zone keys to OCIDs."
+  value       = module.core.security_zone_ids
+}
+
 output "budget_ids" {
   description = "Map of budget keys to OCIDs."
   value       = module.core.budget_ids

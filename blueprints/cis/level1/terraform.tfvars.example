@@ -29,6 +29,13 @@ audit_retention_period_days = 365
 # attached to the default landing zone target.
 cloud_guard_enabled = true
 
+# Vault/KMS and Security Zones are available from the CIS wrapper, but remain
+# opt-in because they need approved key and recipe decisions.
+# vault_enabled = true
+#
+# security_zones_enabled = true
+# default_security_zone_recipe_id = "ocid1.securityzonesrecipe.oc1..example"
+
 # CIS wrappers enable governance Events by default and create a default
 # notification topic/rules. Add subscriptions from local ignored tfvars so real
 # endpoints are not committed.

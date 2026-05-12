@@ -51,3 +51,61 @@ variable "freeform_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "enable_security_zones" {
+  description = "Create OCI Security Zones managed by this module."
+  type        = bool
+  default     = false
+}
+
+variable "enable_default_security_zone" {
+  description = "Create the default landing zone Security Zone when a default recipe is provided."
+  type        = bool
+  default     = true
+}
+
+variable "default_security_zone_target_ocid" {
+  description = "Compartment OCID protected by the default Security Zone. Defaults to compartment_ocid when omitted."
+  type        = string
+  default     = null
+}
+
+variable "default_security_zone_recipe_id" {
+  description = "Security recipe OCID used by the default Security Zone."
+  type        = string
+  default     = null
+}
+
+variable "default_security_zone_recipe_display_name" {
+  description = "Optional security recipe display name to look up for the default Security Zone when recipe OCID is not supplied."
+  type        = string
+  default     = null
+}
+
+variable "default_security_zone_recipe_compartment_ocid" {
+  description = "Compartment OCID used when looking up default_security_zone_recipe_display_name. Defaults to tenancy_ocid."
+  type        = string
+  default     = null
+}
+
+variable "security_zones" {
+  description = "Security Zones keyed by logical name."
+  type = map(object({
+    display_name                          = optional(string)
+    description                           = optional(string)
+    compartment_ocid                      = string
+    security_zone_recipe_id               = optional(string)
+    security_zone_recipe_display_name     = optional(string)
+    security_zone_recipe_compartment_ocid = optional(string)
+    is_inheritance_after_delete_enabled   = optional(bool)
+  }))
+  default = {}
+
+  validation {
+    condition = alltrue([
+      for zone in values(var.security_zones) :
+      zone.security_zone_recipe_id != null || zone.security_zone_recipe_display_name != null
+    ])
+    error_message = "Each security_zones entry must set security_zone_recipe_id or security_zone_recipe_display_name."
+  }
+}

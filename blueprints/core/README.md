@@ -45,11 +45,12 @@ IAM, tags, and policy outputs.
 - Governance log groups for audit, network, service, and security logs.
 - Optional VCN flow logs, OCI service logs, saved searches, and audit retention.
 - Optional Cloud Guard configuration and landing zone target.
+- Optional Vault/KMS foundation and Security Zones.
 - Optional governance budgets, alert rules, Events rules, notification topics,
   and subscriptions.
 - Platform IAM groups and least-privilege policies.
 - Dynamic groups for platform automation and workload resource principals.
-- Planned later: Security Zones, Vault, and monitoring alarms.
+- Planned later: monitoring alarms.
 
 ## Module Order
 
@@ -57,17 +58,17 @@ IAM, tags, and policy outputs.
 2. `modules/governance/tagging`
 3. `modules/governance/logging`
 4. `modules/security/cloud-guard`
-5. `modules/governance/budgets`
-6. `modules/governance/events`
-7. `modules/iam/groups`
-8. `modules/iam/dynamic-groups`
-9. `modules/iam/policies`
+5. `modules/security/vault`
+6. `modules/security/security-zones`
+7. `modules/governance/budgets`
+8. `modules/governance/events`
+9. `modules/iam/groups`
+10. `modules/iam/dynamic-groups`
+11. `modules/iam/policies`
 
 Planned later:
 
-1. `modules/security/vault`
-2. `modules/security/security-zones`
-3. `modules/operations/monitoring`
+1. `modules/operations/monitoring`
 
 ## Expected Outputs
 
@@ -85,6 +86,9 @@ Planned later:
 - `audit_configuration_id`
 - `cloud_guard_configuration_id`
 - `cloud_guard_target_ids`
+- `vault_ids`
+- `vault_key_ids`
+- `security_zone_ids`
 - `budget_ids`
 - `budget_alert_rule_ids`
 - `event_notification_topic_ids`
@@ -98,8 +102,7 @@ Planned later:
 - `policy_names`
 - `tag_namespace_id`
 
-Planned outputs for later core phases include Vault, Security Zones, and
-monitoring identifiers.
+Planned outputs for later core phases include monitoring identifiers.
 
 ## Implementation Notes
 
@@ -124,6 +127,14 @@ monitoring identifiers.
   configuration is tenancy-wide. CIS Level 1 and Level 2 wrappers enable it by
   default. Add approved detector and responder recipe OCIDs through local
   ignored tfvars when custom target recipes are required.
+- Generic core keeps Vault/KMS disabled by default because key ownership,
+  protection mode, and rotation windows are environment-specific. Set
+  `vault_enabled = true` to create the default vault and key, or use `vaults`
+  and `vault_keys` for explicit definitions.
+- Generic core keeps Security Zones disabled by default because they enforce
+  hard guardrails on the protected compartment tree. Set
+  `security_zones_enabled = true` with an approved recipe OCID or display-name
+  lookup before creating the default landing zone Security Zone.
 - Generic core keeps budgets disabled by default because spend thresholds and
   recipients are environment-specific. Set `enable_budgets = true` and
   `default_budget_amount` for the default root-scope budget, or use `budgets`

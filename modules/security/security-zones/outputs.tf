@@ -15,6 +15,36 @@ output "cis_level" {
 }
 
 output "resource_ids" {
-  description = "Map of resource identifiers created by this module. Empty until implementation."
-  value       = {}
+  description = "Map of resource identifiers created by this module."
+  value = {
+    for key, zone in oci_cloud_guard_security_zone.this : "security_zone.${key}" => zone.id
+  }
+}
+
+output "security_zone_ids" {
+  description = "Map of Security Zone keys to OCIDs."
+  value = {
+    for key, zone in oci_cloud_guard_security_zone.this : key => zone.id
+  }
+}
+
+output "security_zone_names" {
+  description = "Map of Security Zone keys to display names."
+  value = {
+    for key, zone in oci_cloud_guard_security_zone.this : key => zone.display_name
+  }
+}
+
+output "security_zone_target_ids" {
+  description = "Map of Security Zone keys to target OCIDs."
+  value = {
+    for key, zone in oci_cloud_guard_security_zone.this : key => zone.security_zone_target_id
+  }
+}
+
+output "security_zone_recipe_ids" {
+  description = "Map of Security Zone keys to recipe OCIDs."
+  value = {
+    for key, zone in oci_cloud_guard_security_zone.this : key => zone.security_zone_recipe_id
+  }
 }

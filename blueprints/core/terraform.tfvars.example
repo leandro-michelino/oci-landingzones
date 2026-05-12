@@ -82,6 +82,24 @@ tag_default_values = {
 #   "ocid1.cloudguardresponderrecipe.oc1..example"
 # ]
 
+# Vault and KMS are opt-in for generic core because they create regional
+# security resources and keys. Keep customer-managed key choices in local
+# ignored tfvars files.
+# vault_enabled = true
+#
+# vault_keys = {
+#   database = {
+#     vault_key = "default"
+#   }
+# }
+
+# Security Zones are opt-in because they enforce guardrails on protected
+# compartments. Provide an approved security recipe OCID or display-name lookup
+# before enabling the default landing zone Security Zone.
+# security_zones_enabled = true
+# default_security_zone_recipe_id = "ocid1.securityzonesrecipe.oc1..example"
+# default_security_zone_recipe_display_name = "Approved Security Recipe"
+
 # Governance budgets are opt-in because they need approved thresholds and
 # recipients. The default budget targets the landing zone root compartment.
 # enable_budgets        = true

@@ -87,6 +87,54 @@ module "cloud_guard" {
   freeform_tags               = var.freeform_tags
 }
 
+module "vault" {
+  source = "../../modules/security/vault"
+
+  tenancy_ocid                = var.tenancy_ocid
+  compartment_ocid            = module.compartments.compartment_ids["security"]
+  region                      = var.region
+  org                         = var.org
+  environment                 = var.environment
+  region_key                  = var.region_key
+  cis_level                   = var.cis_level
+  enable_vault                = var.vault_enabled
+  enable_default_vault        = var.enable_default_vault
+  default_vault_type          = var.default_vault_type
+  enable_default_key          = var.enable_default_vault_key
+  default_key_algorithm       = var.default_vault_key_algorithm
+  default_key_length          = var.default_vault_key_length
+  default_key_protection_mode = var.default_vault_key_protection_mode
+  vaults                      = var.vaults
+  keys                        = var.vault_keys
+  defined_tags                = var.defined_tags
+  freeform_tags               = var.freeform_tags
+}
+
+module "security_zones" {
+  source = "../../modules/security/security-zones"
+
+  tenancy_ocid                                  = var.tenancy_ocid
+  compartment_ocid                              = module.compartments.compartment_ids["security"]
+  region                                        = var.region
+  org                                           = var.org
+  environment                                   = var.environment
+  region_key                                    = var.region_key
+  cis_level                                     = var.cis_level
+  enable_security_zones                         = var.security_zones_enabled
+  enable_default_security_zone                  = var.enable_default_security_zone
+  default_security_zone_target_ocid             = module.compartments.root_compartment_id
+  default_security_zone_recipe_id               = var.default_security_zone_recipe_id
+  default_security_zone_recipe_display_name     = var.default_security_zone_recipe_display_name
+  default_security_zone_recipe_compartment_ocid = var.default_security_zone_recipe_compartment_ocid
+  security_zones                                = var.security_zones
+  defined_tags                                  = var.defined_tags
+  freeform_tags                                 = var.freeform_tags
+
+  depends_on = [
+    module.cloud_guard
+  ]
+}
+
 module "budgets" {
   source = "../../modules/governance/budgets"
 

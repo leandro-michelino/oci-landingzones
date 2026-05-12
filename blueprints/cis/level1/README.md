@@ -56,6 +56,8 @@ cis_level = "level1"
 - Governance tagging baseline.
 - Governance logging groups and tenancy audit retention.
 - Cloud Guard enabled with a default landing zone target.
+- Optional Vault/KMS and Security Zones when key and recipe decisions are
+  approved.
 - Governance Events enabled with default IAM change rules and a default
   notification topic.
 - Optional CIS budget creation when `budget_amount` or custom `budgets` are

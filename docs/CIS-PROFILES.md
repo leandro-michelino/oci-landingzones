@@ -37,7 +37,7 @@ behavior is opt-in through dedicated landing zone blueprint folders:
 | IAM | Least-privilege groups and root compartment avoidance. | Adds stricter break-glass, API key, and privilege separation defaults. |
 | Networking | No broad internet ingress except approved DMZ patterns. | Adds stricter private-only and inspected-egress defaults where applicable. |
 | Logging | Audit retention enabled and log groups created; service and network logs attach when source OCIDs are provided. | Extends retention and alert coverage for sensitive events. |
-| Security | Cloud Guard enabled with a landing zone target; Security Zones, VSS, Bastion, and Vault remain future baseline controls. | Uses stricter detector/responder posture and stronger enforcement defaults. |
+| Security | Cloud Guard enabled with a landing zone target; Vault/KMS and Security Zones are available as opt-in controls when key and recipe decisions are approved. | Uses stricter detector/responder posture and stronger enforcement defaults; VSS and Bastion remain future baseline controls. |
 | Governance | Required tags, default governance event topic/rules, and optional budgets when thresholds are supplied. | Adds tighter budget, tag, and drift monitoring expectations. |
 
 ## Terraform Examples

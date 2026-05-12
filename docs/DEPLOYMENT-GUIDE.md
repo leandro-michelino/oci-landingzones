@@ -84,11 +84,13 @@ Expected module order:
 2. `governance/tagging`
 3. `governance/logging`
 4. `security/cloud-guard`
-5. `governance/budgets`
-6. `governance/events`
-7. `iam/groups`
-8. `iam/dynamic-groups`
-9. `iam/policies`
+5. `security/vault`
+6. `security/security-zones`
+7. `governance/budgets`
+8. `governance/events`
+9. `iam/groups`
+10. `iam/dynamic-groups`
+11. `iam/policies`
 
 Core creates audit, network, service, and security log groups by default in the
 governance compartment. VCN flow logs, Object Storage logs, Load Balancer logs,
@@ -101,6 +103,16 @@ default because it manages tenancy-wide service configuration. CIS Level 1 and
 Level 2 enable Cloud Guard by default and create a target for the landing zone
 root compartment. Attach approved detector and responder recipes through
 `cloud_guard_detector_recipe_ids` and `cloud_guard_responder_recipe_ids`.
+
+Vault/KMS is wired through core but remains opt-in because key ownership,
+protection mode, and rotation settings are customer decisions. Enable
+`vault_enabled` for the default landing zone vault and key, or use `vaults` and
+`vault_keys` for explicit definitions.
+
+Security Zones are wired through core but remain opt-in because they enforce
+hard guardrails on the protected compartment tree. Enable
+`security_zones_enabled` only after approving the security recipe OCID or
+display-name lookup used for the landing zone root compartment.
 
 Governance budgets are wired through core but remain opt-in because each
 environment needs approved spend thresholds and notification recipients. Enable
@@ -133,11 +145,9 @@ Implemented module order:
 2. `iam/dynamic-groups`
 3. `iam/policies`
 
-Planned core modules after the IAM and governance foundation:
+Planned core modules after the IAM, security, and governance foundation:
 
-1. `security/vault`
-2. `security/security-zones`
-3. `operations/monitoring`
+1. `operations/monitoring`
 
 ## Phase 3 - Networking
 

@@ -104,6 +104,41 @@ output "cloud_guard_target_names" {
   value       = module.cloud_guard.target_names
 }
 
+output "vault_ids" {
+  description = "Map of vault keys to OCIDs."
+  value       = module.vault.vault_ids
+}
+
+output "vault_management_endpoints" {
+  description = "Map of vault keys to management endpoints."
+  value       = module.vault.vault_management_endpoints
+}
+
+output "vault_crypto_endpoints" {
+  description = "Map of vault keys to crypto endpoints."
+  value       = module.vault.vault_crypto_endpoints
+}
+
+output "vault_key_ids" {
+  description = "Map of KMS key keys to OCIDs."
+  value       = module.vault.key_ids
+}
+
+output "security_zone_ids" {
+  description = "Map of Security Zone keys to OCIDs."
+  value       = module.security_zones.security_zone_ids
+}
+
+output "security_zone_names" {
+  description = "Map of Security Zone keys to display names."
+  value       = module.security_zones.security_zone_names
+}
+
+output "security_zone_target_ids" {
+  description = "Map of Security Zone keys to target OCIDs."
+  value       = module.security_zones.security_zone_target_ids
+}
+
 output "budget_ids" {
   description = "Map of budget keys to OCIDs."
   value       = module.budgets.budget_ids
@@ -185,6 +220,8 @@ output "resource_ids" {
     tags           = module.tagging.tag_definition_ids
     logging        = module.logging.resource_ids
     cloud_guard    = module.cloud_guard.resource_ids
+    vault          = module.vault.resource_ids
+    security_zones = module.security_zones.resource_ids
     budgets        = module.budgets.resource_ids
     events         = module.events.resource_ids
   }

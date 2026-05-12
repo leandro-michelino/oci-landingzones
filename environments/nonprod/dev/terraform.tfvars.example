@@ -13,10 +13,13 @@ hub_fw_cidr   = "10.10.1.0/24"
 hub_mgmt_cidr = "10.10.2.0/24"
 
 cloud_guard_enabled      = true
-security_zones_enabled   = true
+security_zones_enabled   = false
 vss_enabled              = true
 bastion_enabled          = true
 network_firewall_enabled = false
+
+# Enable only after approving the Security Zone recipe for this environment.
+# default_security_zone_recipe_id = "ocid1.securityzonesrecipe.oc1..example"
 
 enable_budgets        = true
 default_budget_amount = 5000
