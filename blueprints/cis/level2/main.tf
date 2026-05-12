@@ -11,10 +11,12 @@ module "core" {
   region_key         = var.region_key
   cis_level          = local.cis_level
 
-  parent_compartment_ocid = var.parent_compartment_ocid
-  enable_delete           = var.enable_delete
-  enable_tagging          = var.enable_tagging
-  enable_tag_defaults     = var.enable_tag_defaults
+  parent_compartment_ocid     = var.parent_compartment_ocid
+  enable_delete               = var.enable_delete
+  enable_tagging              = var.enable_tagging
+  enable_tag_defaults         = var.enable_tag_defaults
+  enable_audit_retention      = var.enable_audit_retention
+  audit_retention_period_days = var.audit_retention_period_days
 
   defined_tags = var.defined_tags
   freeform_tags = merge(

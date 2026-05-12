@@ -94,6 +94,81 @@ variable "required_tag_defaults" {
   default     = []
 }
 
+variable "enable_logging" {
+  description = "Create core governance log groups and optional service logs."
+  type        = bool
+  default     = true
+}
+
+variable "log_groups" {
+  description = "Additional or overriding governance log groups keyed by logical name."
+  type = map(object({
+    display_name = optional(string)
+    description  = optional(string)
+  }))
+  default = {}
+}
+
+variable "service_logs" {
+  description = "OCI service logs keyed by logical name."
+  type = map(object({
+    log_group_key      = optional(string, "service")
+    display_name       = optional(string)
+    service            = string
+    category           = string
+    resource_id        = string
+    source_type        = optional(string, "OCISERVICE")
+    compartment_ocid   = optional(string)
+    retention_duration = optional(number, 30)
+    is_enabled         = optional(bool, true)
+    parameters         = optional(map(string), {})
+  }))
+  default = {}
+}
+
+variable "vcn_flow_logs" {
+  description = "Convenience VCN flow log definitions keyed by logical name."
+  type = map(object({
+    log_group_key      = optional(string, "network")
+    display_name       = optional(string)
+    resource_id        = string
+    compartment_ocid   = optional(string)
+    category           = optional(string, "all")
+    retention_duration = optional(number, 30)
+    is_enabled         = optional(bool, true)
+    parameters         = optional(map(string), {})
+  }))
+  default = {}
+}
+
+variable "logging_saved_searches" {
+  description = "Logging saved searches keyed by logical name."
+  type = map(object({
+    name             = optional(string)
+    description      = optional(string)
+    query            = string
+    compartment_ocid = optional(string)
+  }))
+  default = {}
+}
+
+variable "enable_audit_retention" {
+  description = "Configure tenancy audit retention. This is tenancy-wide and should be enabled deliberately."
+  type        = bool
+  default     = false
+}
+
+variable "audit_retention_period_days" {
+  description = "Tenancy audit retention in days when enable_audit_retention is true."
+  type        = number
+  default     = 365
+
+  validation {
+    condition     = var.audit_retention_period_days >= 90 && var.audit_retention_period_days <= 365
+    error_message = "audit_retention_period_days must be between 90 and 365."
+  }
+}
+
 variable "iam_groups" {
   description = "Additional or overriding IAM groups keyed by logical role."
   type = map(object({

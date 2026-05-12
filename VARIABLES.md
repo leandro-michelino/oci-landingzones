@@ -127,6 +127,13 @@ READMEs may define additional variables for local behavior.
 
 | Variable | Type | Required | Description |
 |---|---|---:|---|
+| `enable_logging` | `bool` | No | Create governance log groups and optional service logs. |
+| `log_groups` | `map(object)` | No | Additional or overriding governance log groups keyed by logical name. |
+| `service_logs` | `map(object)` | No | OCI service logs keyed by logical name; requires source resource OCIDs. |
+| `vcn_flow_logs` | `map(object)` | No | Convenience VCN flow log definitions keyed by logical name. |
+| `logging_saved_searches` | `map(object)` | No | OCI Logging saved searches keyed by logical name. |
+| `enable_audit_retention` | `bool` | No | Configure tenancy audit retention. Generic core disables this by default; CIS wrappers enable it by default. |
+| `audit_retention_period_days` | `number` | No | Tenancy audit retention in days when audit retention is managed. |
 | `cloud_guard_enabled` | `bool` | No | Enable Cloud Guard targets and recipes. |
 | `security_zones_enabled` | `bool` | No | Enable Security Zone policies. |
 | `vss_enabled` | `bool` | No | Enable Vulnerability Scanning Service configuration. |

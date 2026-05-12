@@ -64,6 +64,31 @@ output "tag_definition_ids" {
   value       = module.tagging.tag_definition_ids
 }
 
+output "log_group_ids" {
+  description = "Map of governance log group keys to OCIDs."
+  value       = module.logging.log_group_ids
+}
+
+output "log_group_names" {
+  description = "Map of governance log group keys to display names."
+  value       = module.logging.log_group_names
+}
+
+output "service_log_ids" {
+  description = "Map of governance service log keys to OCIDs."
+  value       = module.logging.service_log_ids
+}
+
+output "logging_saved_search_ids" {
+  description = "Map of logging saved search keys to OCIDs."
+  value       = module.logging.saved_search_ids
+}
+
+output "audit_configuration_id" {
+  description = "OCID of the tenancy audit configuration when managed by the core blueprint."
+  value       = module.logging.audit_configuration_id
+}
+
 output "group_ids" {
   description = "Map of IAM group keys to OCIDs."
   value       = module.groups.group_ids
@@ -103,5 +128,6 @@ output "resource_ids" {
     policies       = module.policies.resource_ids
     tag_namespace  = module.tagging.tag_namespace_id
     tags           = module.tagging.tag_definition_ids
+    logging        = module.logging.resource_ids
   }
 }

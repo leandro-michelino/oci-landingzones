@@ -51,3 +51,78 @@ variable "freeform_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "enable_logging" {
+  description = "Create OCI Logging log groups, service logs, and saved searches."
+  type        = bool
+  default     = true
+}
+
+variable "log_groups" {
+  description = "Additional or overriding log groups keyed by logical name."
+  type = map(object({
+    display_name = optional(string)
+    description  = optional(string)
+  }))
+  default = {}
+}
+
+variable "service_logs" {
+  description = "OCI service logs keyed by logical name. Use for Object Storage, Load Balancer, API Gateway, and other OCI service logs when source resource OCIDs are known."
+  type = map(object({
+    log_group_key      = optional(string, "service")
+    display_name       = optional(string)
+    service            = string
+    category           = string
+    resource_id        = string
+    source_type        = optional(string, "OCISERVICE")
+    compartment_ocid   = optional(string)
+    retention_duration = optional(number, 30)
+    is_enabled         = optional(bool, true)
+    parameters         = optional(map(string), {})
+  }))
+  default = {}
+}
+
+variable "vcn_flow_logs" {
+  description = "Convenience VCN flow log definitions keyed by logical name. Resource IDs can be VCN, subnet, or other flow-log-supported network resource OCIDs."
+  type = map(object({
+    log_group_key      = optional(string, "network")
+    display_name       = optional(string)
+    resource_id        = string
+    compartment_ocid   = optional(string)
+    category           = optional(string, "all")
+    retention_duration = optional(number, 30)
+    is_enabled         = optional(bool, true)
+    parameters         = optional(map(string), {})
+  }))
+  default = {}
+}
+
+variable "saved_searches" {
+  description = "Logging saved searches keyed by logical name."
+  type = map(object({
+    name             = optional(string)
+    description      = optional(string)
+    query            = string
+    compartment_ocid = optional(string)
+  }))
+  default = {}
+}
+
+variable "enable_audit_retention" {
+  description = "Configure tenancy audit retention. This is tenancy-wide and should be enabled deliberately."
+  type        = bool
+  default     = false
+}
+
+variable "audit_retention_period_days" {
+  description = "Tenancy audit retention in days when enable_audit_retention is true."
+  type        = number
+  default     = 365
+
+  validation {
+    condition     = var.audit_retention_period_days >= 90 && var.audit_retention_period_days <= 365
+    error_message = "audit_retention_period_days must be between 90 and 365."
+  }
+}

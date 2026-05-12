@@ -42,6 +42,27 @@ module "tagging" {
   freeform_tags               = var.freeform_tags
 }
 
+module "logging" {
+  source = "../../modules/governance/logging"
+
+  tenancy_ocid                = var.tenancy_ocid
+  compartment_ocid            = module.compartments.compartment_ids["governance"]
+  region                      = var.region
+  org                         = var.org
+  environment                 = var.environment
+  region_key                  = var.region_key
+  cis_level                   = var.cis_level
+  enable_logging              = var.enable_logging
+  log_groups                  = var.log_groups
+  service_logs                = var.service_logs
+  vcn_flow_logs               = var.vcn_flow_logs
+  saved_searches              = var.logging_saved_searches
+  enable_audit_retention      = var.enable_audit_retention
+  audit_retention_period_days = var.audit_retention_period_days
+  defined_tags                = var.defined_tags
+  freeform_tags               = var.freeform_tags
+}
+
 module "groups" {
   source = "../../modules/iam/groups"
 

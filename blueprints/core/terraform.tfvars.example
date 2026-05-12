@@ -45,6 +45,30 @@ tag_default_values = {
 # enable_tagging      = true
 # enable_tag_defaults = true
 
+# Governance logging. Core creates log groups by default. Service logs and VCN
+# flow logs require real source resource OCIDs, so keep them in local ignored
+# tfvars files for each environment.
+# enable_logging = true
+#
+# enable_audit_retention      = false
+# audit_retention_period_days = 365
+#
+# vcn_flow_logs = {
+#   hub_vcn = {
+#     resource_id      = "ocid1.vcn.oc1.eu-frankfurt-1.example"
+#     compartment_ocid = "ocid1.compartment.oc1..example"
+#   }
+# }
+#
+# service_logs = {
+#   object_storage_write = {
+#     log_group_key = "service"
+#     service       = "objectstorage"
+#     category      = "write"
+#     resource_id   = "ocid1.bucket.oc1.eu-frankfurt-1.example"
+#   }
+# }
+
 # Optional IAM overrides.
 # enable_default_iam_groups     = true
 # enable_default_dynamic_groups = true

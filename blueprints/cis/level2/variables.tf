@@ -65,6 +65,18 @@ variable "enable_tag_defaults" {
   default     = true
 }
 
+variable "enable_audit_retention" {
+  description = "Configure tenancy audit retention for the CIS landing zone."
+  type        = bool
+  default     = true
+}
+
+variable "audit_retention_period_days" {
+  description = "Tenancy audit retention in days."
+  type        = number
+  default     = 365
+}
+
 variable "defined_tags" {
   description = "Defined tags applied to resources."
   type        = map(string)

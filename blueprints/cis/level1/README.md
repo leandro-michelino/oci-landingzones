@@ -54,6 +54,7 @@ cis_level = "level1"
 - Baseline compartment hierarchy.
 - Least-privilege IAM foundation.
 - Governance tagging baseline.
-- CIS profile passed into child modules for future control differences.
-- Planned next: Cloud Guard, logging, budgets, monitoring, and stricter network
+- Governance logging groups and tenancy audit retention.
+- CIS profile passed into child modules for control differences.
+- Planned next: Cloud Guard, budgets, monitoring, and stricter network
   defaults where the customer wants them.

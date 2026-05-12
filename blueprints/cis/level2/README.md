@@ -50,6 +50,7 @@ cis_level = "level2"
 
 - Level 1 baseline controls.
 - Stricter privilege separation.
-- CIS profile passed into child modules for future stricter defaults.
+- CIS profile passed into child modules for stricter defaults.
+- Governance logging groups and tenancy audit retention.
 - Planned next: stronger break-glass posture, private-first networking,
-  inspected egress, expanded alerting, and stricter logging/governance controls.
+  inspected egress, expanded alerting, and stricter governance controls.

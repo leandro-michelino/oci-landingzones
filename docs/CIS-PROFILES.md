@@ -22,8 +22,8 @@ behavior is opt-in through dedicated landing zone blueprint folders:
   `blueprints/cis/level2/` folder.
 - CIS folders fix their profile internally and expose it through an output named
   `cis_level`.
-- CIS blueprints pass the selected profile into the implemented core/IAM
-  foundation and will keep passing it to later security, governance, and
+- CIS blueprints pass the selected profile into the implemented core, IAM, and
+  governance logging foundation and will keep passing it to later security and
   networking controls as those modules mature.
 - Documentation must explain behavioral differences before any resource behavior
   changes between profiles.
@@ -36,7 +36,7 @@ behavior is opt-in through dedicated landing zone blueprint folders:
 |---|---|---|
 | IAM | Least-privilege groups and root compartment avoidance. | Adds stricter break-glass, API key, and privilege separation defaults. |
 | Networking | No broad internet ingress except approved DMZ patterns. | Adds stricter private-only and inspected-egress defaults where applicable. |
-| Logging | Audit, service, and network logging enabled where supported. | Extends retention and alert coverage for sensitive events. |
+| Logging | Audit retention enabled and log groups created; service and network logs attach when source OCIDs are provided. | Extends retention and alert coverage for sensitive events. |
 | Security | Cloud Guard, Security Zones, VSS, Bastion, and Vault baseline. | Uses stricter detector/responder posture and stronger enforcement defaults. |
 | Governance | Required tags, budgets, events, and monitoring. | Adds tighter budget, tag, and drift monitoring expectations. |
 

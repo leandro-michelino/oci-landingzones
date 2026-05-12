@@ -19,6 +19,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   and local test artifacts.
 - Phase 1 core implementation for landing zone compartments and governance
   tagging.
+- Governance logging implementation for core log groups, optional service logs,
+  VCN flow-log shortcuts, saved searches, and opt-in tenancy audit retention.
 - Phase 2 IAM foundation implementation for IAM groups, dynamic groups, and
   scoped policies.
 - Phase 3 networking foundation implementation for reusable hub VCN, spoke VCN,

@@ -19,3 +19,7 @@ defined_tags = {
 }
 
 freeform_tags = {}
+
+# CIS blueprints enable tenancy audit retention by default.
+enable_audit_retention      = true
+audit_retention_period_days = 365

@@ -82,6 +82,13 @@ Expected module order:
 
 1. `iam/compartments`
 2. `governance/tagging`
+3. `governance/logging`
+
+Core creates audit, network, service, and security log groups by default in the
+governance compartment. VCN flow logs, Object Storage logs, Load Balancer logs,
+and other service logs are wired through `vcn_flow_logs` and `service_logs`
+once the source resource OCIDs exist. Generic core keeps tenancy audit retention
+opt-in because it is a tenancy-wide setting; CIS wrappers enable it by default.
 
 ## Phase 2 - IAM Foundation
 
@@ -109,10 +116,9 @@ Planned core modules after the IAM foundation:
 1. `security/vault`
 2. `security/cloud-guard`
 3. `security/security-zones`
-4. `governance/logging`
-5. `governance/events`
-6. `governance/budgets`
-7. `operations/monitoring`
+4. `governance/events`
+5. `governance/budgets`
+6. `operations/monitoring`
 
 ## Phase 3 - Networking
 
