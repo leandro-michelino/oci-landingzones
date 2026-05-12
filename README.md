@@ -302,12 +302,15 @@ Ansible content lives under `ansible/` and is used for local orchestration only:
 - bootstrap prerequisite checks
 - OCI CLI validation
 - repository validation across implemented Phase 1-5 blueprints
-- controlled Terraform `init`, `validate`, and `plan` execution
+- controlled Terraform `init`, `validate`, `plan`, `apply`, and `destroy`
+  execution
 
 Ansible playbooks must stay non-destructive by default. Terraform remains the
 source of truth for OCI resource creation. Shell scripts are kept as thin local
 entry points and should delegate repeatable orchestration to Ansible whenever
-possible.
+possible. Terraform apply requires `CONFIRM_APPLY=true`, Terraform destroy
+requires `CONFIRM_DESTROY=true`, and production apply/destroy remains blocked
+from Ansible for now.
 
 ## Diagram Gate
 

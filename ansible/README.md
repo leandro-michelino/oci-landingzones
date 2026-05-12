@@ -46,3 +46,62 @@ The shell helper delegates to this playbook when Ansible is installed:
 ```bash
 ./scripts/bootstrap.sh --org acme --env dev --region eu-frankfurt-1
 ```
+
+## Run Terraform Plan
+
+Terraform plan uses `terraform init -backend=false` by default so local checks do
+not require remote state. Pass `terraform_working_dir` to target a specific
+blueprint.
+
+```bash
+ANSIBLE_CONFIG=ansible/ansible.cfg \
+  ansible-playbook -i ansible/inventories/dev/hosts.yml \
+  ansible/playbooks/terraform-plan.yml \
+  -e "terraform_working_dir=$PWD/blueprints/core"
+```
+
+## Run Guarded Apply
+
+Terraform apply is opt-in and requires `CONFIRM_APPLY=true`. Production applies
+are blocked from Ansible for now.
+
+```bash
+CONFIRM_APPLY=true \
+ANSIBLE_CONFIG=ansible/ansible.cfg \
+  ansible-playbook -i ansible/inventories/dev/hosts.yml \
+  ansible/playbooks/terraform-apply.yml \
+  -e "terraform_working_dir=$PWD/blueprints/core"
+```
+
+## Run Guarded Destroy
+
+Terraform destroy is opt-in and requires `CONFIRM_DESTROY=true`. Production
+destroys are also blocked by the Terraform runner role.
+
+```bash
+CONFIRM_DESTROY=true \
+ANSIBLE_CONFIG=ansible/ansible.cfg \
+  ansible-playbook -i ansible/inventories/dev/hosts.yml \
+  ansible/playbooks/terraform-destroy.yml \
+  -e "terraform_working_dir=$PWD/blueprints/core"
+```
+
+The shell helper delegates to this playbook when Ansible is installed:
+
+```bash
+CONFIRM_DESTROY=true ./scripts/destroy.sh
+```
+
+## Run Ephemeral Test
+
+The ephemeral test playbook runs an approved local apply with
+`terraform init -backend=false`, then runs destroy in an `always` block. It is
+intended for approved test compartments only.
+
+```bash
+CONFIRM_APPLY=true CONFIRM_DESTROY=true \
+ANSIBLE_CONFIG=ansible/ansible.cfg \
+  ansible-playbook -i ansible/inventories/dev/hosts.yml \
+  ansible/playbooks/ephemeral-test.yml \
+  -e "terraform_working_dir=$PWD/blueprints/core"
+```

@@ -21,6 +21,9 @@ validation_playbooks:
   - ansible/playbooks/bootstrap.yml
   - ansible/playbooks/validate.yml
   - ansible/playbooks/terraform-plan.yml
+  - ansible/playbooks/terraform-apply.yml
+  - ansible/playbooks/terraform-destroy.yml
+  - ansible/playbooks/ephemeral-test.yml
 
 validation_optional_tools:
   - tflint

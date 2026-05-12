@@ -231,6 +231,55 @@ Implemented Phase 5 extension entry points:
 Keep real subnet, VCN, load balancer, availability domain, image, and SSH values
 in local ignored tfvars files. The committed examples show the shape only.
 
+## Phase 6 - Ansible Orchestration
+
+Ansible is the local orchestration layer for bootstrap checks, repository
+validation, Terraform plan, guarded apply, guarded destroy, and ephemeral test
+deployments. Terraform remains the source of truth for OCI resources.
+
+Use plan for non-destructive checks. It initializes without a backend by
+default:
+
+```bash
+ANSIBLE_CONFIG=ansible/ansible.cfg \
+  ansible-playbook -i ansible/inventories/dev/hosts.yml \
+  ansible/playbooks/terraform-plan.yml \
+  -e "terraform_working_dir=$PWD/blueprints/core"
+```
+
+Apply is guarded. It requires an explicit confirmation and production applies
+are blocked from Ansible for now:
+
+```bash
+CONFIRM_APPLY=true \
+ANSIBLE_CONFIG=ansible/ansible.cfg \
+  ansible-playbook -i ansible/inventories/dev/hosts.yml \
+  ansible/playbooks/terraform-apply.yml \
+  -e "terraform_working_dir=$PWD/blueprints/core"
+```
+
+Destroy is also guarded:
+
+```bash
+CONFIRM_DESTROY=true \
+ANSIBLE_CONFIG=ansible/ansible.cfg \
+  ansible-playbook -i ansible/inventories/dev/hosts.yml \
+  ansible/playbooks/terraform-destroy.yml \
+  -e "terraform_working_dir=$PWD/blueprints/core"
+```
+
+The ephemeral test playbook applies with a local backend-free state and then
+destroys in an Ansible `always` block. Use it only with approved test
+compartments and ignored local `terraform.tfvars` values:
+
+```bash
+CONFIRM_APPLY=true CONFIRM_DESTROY=true \
+ANSIBLE_CONFIG=ansible/ansible.cfg \
+  ansible-playbook -i ansible/inventories/dev/hosts.yml \
+  ansible/playbooks/ephemeral-test.yml \
+  -e "terraform_working_dir=$PWD/blueprints/core"
+```
+
 ## Specialized Patterns
 
 Some deployments are cross-cutting and should be selected based on the customer

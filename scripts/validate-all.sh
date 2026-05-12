@@ -37,6 +37,9 @@ if command -v ansible-playbook >/dev/null 2>&1; then
   ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook --syntax-check ansible/playbooks/bootstrap.yml
   ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook --syntax-check ansible/playbooks/validate.yml
   ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook --syntax-check ansible/playbooks/terraform-plan.yml
+  ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook --syntax-check ansible/playbooks/terraform-apply.yml
+  ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook --syntax-check ansible/playbooks/terraform-destroy.yml
+  ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook --syntax-check ansible/playbooks/ephemeral-test.yml
 else
   echo "==> Skipping ansible-playbook syntax checks; command not found"
 fi

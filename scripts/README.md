@@ -12,4 +12,8 @@ Current scripts:
 |---|---|
 | `bootstrap.sh` | Delegate bootstrap checks to Ansible when available, with a shell fallback for minimal workstations. |
 | `validate-all.sh` | Delegate to the Ansible validation playbook when available, with a shell fallback for minimal workstations. |
-| `destroy.sh` | Guarded Terraform destroy helper for the current blueprint or environment directory. |
+| `destroy.sh` | Delegate guarded Terraform destroy to Ansible when available; requires `CONFIRM_DESTROY=true`. |
+
+For apply, plan, and ephemeral tests, call the Ansible playbooks directly from
+`ansible/playbooks/`. Shell scripts should remain thin wrappers around Ansible
+instead of duplicating orchestration logic.

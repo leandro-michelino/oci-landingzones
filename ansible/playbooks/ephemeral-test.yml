@@ -1,0 +1,28 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+---
+- name: Run ephemeral Terraform apply and automatic destroy
+  hosts: localhost
+  gather_facts: false
+  vars:
+    terraform_backend_enabled: false
+  tasks:
+    - name: Require explicit ephemeral lifecycle confirmation
+      ansible.builtin.assert:
+        that:
+          - lookup('env', 'CONFIRM_APPLY') == "true"
+          - lookup('env', 'CONFIRM_DESTROY') == "true"
+        fail_msg: "Ephemeral tests require CONFIRM_APPLY=true and CONFIRM_DESTROY=true."
+
+    - name: Run ephemeral deployment lifecycle
+      block:
+        - name: Apply ephemeral Terraform deployment
+          ansible.builtin.import_role:
+            name: terraform_runner
+          vars:
+            terraform_action: apply
+      always:
+        - name: Destroy ephemeral Terraform deployment
+          ansible.builtin.import_role:
+            name: terraform_runner
+          vars:
+            terraform_action: destroy

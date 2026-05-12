@@ -1,10 +1,10 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
-- name: Run Terraform plan from a selected directory
+- name: Run guarded Terraform destroy from a selected directory
   hosts: localhost
   gather_facts: false
   vars:
-    terraform_action: plan
-    terraform_backend_enabled: false
+    terraform_action: destroy
+    terraform_backend_enabled: true
   roles:
     - terraform_runner

@@ -1,13 +1,52 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
+- name: Normalize Terraform runner inputs
+  ansible.builtin.set_fact:
+    terraform_action_normalized: "{{ terraform_action | lower }}"
+    terraform_landingzone_environment: "{{ landingzone_environment | default('dev') | lower }}"
+
+- name: Validate Terraform action
+  ansible.builtin.assert:
+    that:
+      - terraform_action_normalized in ["plan", "apply", "destroy"]
+    fail_msg: "terraform_action must be one of: plan, apply, destroy."
+
+- name: Block production Terraform changes from Ansible
+  ansible.builtin.assert:
+    that:
+      - terraform_landingzone_environment != "prod"
+    fail_msg: "Production Terraform apply/destroy is blocked from Ansible for now."
+  when:
+    - terraform_block_production_changes | bool
+    - terraform_action_normalized in ["apply", "destroy"]
+
+- name: Require explicit apply confirmation
+  ansible.builtin.assert:
+    that:
+      - lookup('env', 'CONFIRM_APPLY') == "true"
+    fail_msg: "Refusing Terraform apply without CONFIRM_APPLY=true."
+  when: terraform_action_normalized == "apply"
+
+- name: Require explicit destroy confirmation
+  ansible.builtin.assert:
+    that:
+      - lookup('env', 'CONFIRM_DESTROY') == "true"
+    fail_msg: "Refusing Terraform destroy without CONFIRM_DESTROY=true."
+  when: terraform_action_normalized == "destroy"
+
 - name: Prepare Terraform plugin cache
   ansible.builtin.file:
     path: "{{ terraform_plugin_cache_dir }}"
     state: directory
     mode: "0755"
 
-- name: Terraform init without backend
-  ansible.builtin.command: terraform init -backend=false -input=false -no-color
+- name: Terraform init with backend
+  ansible.builtin.command:
+    argv:
+      - terraform
+      - init
+      - -input=false
+      - -no-color
   args:
     chdir: "{{ terraform_working_dir }}"
   changed_when: false
@@ -15,6 +54,24 @@
     CHECKPOINT_DISABLE: "1"
     TF_IN_AUTOMATION: "true"
     TF_PLUGIN_CACHE_DIR: "{{ terraform_plugin_cache_dir }}"
+  when: terraform_backend_enabled | bool
+
+- name: Terraform init without backend
+  ansible.builtin.command:
+    argv:
+      - terraform
+      - init
+      - -backend=false
+      - -input=false
+      - -no-color
+  args:
+    chdir: "{{ terraform_working_dir }}"
+  changed_when: false
+  environment:
+    CHECKPOINT_DISABLE: "1"
+    TF_IN_AUTOMATION: "true"
+    TF_PLUGIN_CACHE_DIR: "{{ terraform_plugin_cache_dir }}"
+  when: not terraform_backend_enabled | bool
 
 - name: Terraform validate
   ansible.builtin.command: terraform validate -no-color
@@ -41,4 +98,40 @@
     CHECKPOINT_DISABLE: "1"
     TF_IN_AUTOMATION: "true"
     TF_PLUGIN_CACHE_DIR: "{{ terraform_plugin_cache_dir }}"
-  when: terraform_run_plan
+  when:
+    - terraform_run_plan | bool
+    - terraform_action_normalized in ["plan", "apply"]
+
+- name: Terraform apply approved plan
+  ansible.builtin.command:
+    argv:
+      - terraform
+      - apply
+      - -input=false
+      - -no-color
+      - "{{ terraform_plan_file }}"
+  args:
+    chdir: "{{ terraform_working_dir }}"
+  changed_when: true
+  environment:
+    CHECKPOINT_DISABLE: "1"
+    TF_IN_AUTOMATION: "true"
+    TF_PLUGIN_CACHE_DIR: "{{ terraform_plugin_cache_dir }}"
+  when: terraform_action_normalized == "apply"
+
+- name: Terraform destroy
+  ansible.builtin.command:
+    argv:
+      - terraform
+      - destroy
+      - -auto-approve
+      - -input=false
+      - -no-color
+  args:
+    chdir: "{{ terraform_working_dir }}"
+  changed_when: true
+  environment:
+    CHECKPOINT_DISABLE: "1"
+    TF_IN_AUTOMATION: "true"
+    TF_PLUGIN_CACHE_DIR: "{{ terraform_plugin_cache_dir }}"
+  when: terraform_action_normalized == "destroy"
