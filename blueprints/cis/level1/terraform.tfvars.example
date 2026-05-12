@@ -3,6 +3,8 @@ tenancy_ocid      = "ocid1.tenancy.oc1..example"
 current_user_ocid = "ocid1.user.oc1..example"
 region            = "eu-frankfurt-1"
 home_region       = "eu-frankfurt-1"
+# oci_config_profile = "DEFAULT"
+# parent_compartment_ocid = "ocid1.compartment.oc1..example"
 
 org         = "acme"
 environment = "dev"
@@ -17,4 +19,3 @@ defined_tags = {
 }
 
 freeform_tags = {}
-

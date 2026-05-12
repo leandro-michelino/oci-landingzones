@@ -9,6 +9,11 @@ output "name_prefix" {
   value       = local.name_prefix
 }
 
+output "cis_level" {
+  description = "Selected CIS OCI Benchmark profile, when this core is wrapped by a CIS blueprint."
+  value       = var.cis_level == null ? null : lower(var.cis_level)
+}
+
 output "root_compartment_id" {
   description = "OCID of the landing zone root compartment."
   value       = module.compartments.root_compartment_id

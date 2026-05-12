@@ -6,8 +6,9 @@ This blueprint is the opt-in CIS Level 2 landing zone profile. Use this folder w
 deployment should explicitly target stricter CIS OCI Benchmark Level 2 behavior.
 
 The general landing zone blueprints do not enable CIS behavior by default. This folder
-fixes the intended profile to `level2` and will compose the core, security, governance,
-and networking modules with stricter Level 2 defaults as the implementation matures.
+fixes the intended profile to `level2`, composes the implemented core/IAM foundation,
+and will keep adding stricter Level 2 security, governance, and networking defaults as
+those modules mature.
 
 ## What It Does
 
@@ -36,8 +37,8 @@ place to control.
 
 > [DIAGRAM REQUIRED] `docs/architecture/diagrams/09-cis-level2.excalidraw`
 >
-> Status: TODO - scaffold files may exist now; create this diagram before adding
-> real OCI resources or applying Terraform.
+> Status: TODO - create this diagram before using the blueprint for a production
+> customer review.
 
 ## Profile
 
@@ -49,7 +50,6 @@ cis_level = "level2"
 
 - Level 1 baseline controls.
 - Stricter privilege separation.
-- Stronger break-glass and credential posture.
-- Private-first networking and inspected-egress defaults where applicable.
-- Expanded alerting and monitoring expectations.
-- Stricter logging and governance posture for regulated environments.
+- CIS profile passed into child modules for future stricter defaults.
+- Planned next: stronger break-glass posture, private-first networking,
+  inspected egress, expanded alerting, and stricter logging/governance controls.

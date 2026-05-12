@@ -120,7 +120,7 @@ architecture image names.
 
 | Blueprint | Path | Description |
 |---|---|---|
-| Core baseline | `blueprints/core/` | Mandatory baseline for compartments, IAM, tagging, logging, Cloud Guard, Security Zones, budgets, events, and Vault. |
+| Core baseline | `blueprints/core/` | Mandatory baseline for compartments, IAM, and tagging. Logging, Cloud Guard, Security Zones, budgets, events, and Vault come in later phases. |
 
 ### CIS Landing Zones
 
@@ -343,8 +343,8 @@ used by the environment examples.
 
 ## Current Status
 
-Project bootstrap, Phase 1 core structure, and Phase 2 IAM foundation are
-implemented locally.
+Project bootstrap, Phase 1 core structure, Phase 2 IAM foundation, optional CIS
+wrappers, and Phase 3 networking foundations are implemented locally.
 
 Completed:
 
@@ -356,13 +356,17 @@ Completed:
 - Dedicated opt-in CIS Level 1 and Level 2 blueprint folders added.
 - Core compartment and tagging modules implemented.
 - Core IAM groups, dynamic groups, and scoped policies implemented.
+- CIS Level 1 and Level 2 wrappers wired to the core/IAM foundation.
+- Phase 3 networking modules and deployment blueprints wired with optional
+  external or high-cost resources disabled by default.
 - Deployment folders documented with local READMEs and architecture image
   locations.
 - Deployment pattern catalog expanded with operating entity, compliance,
   multicloud, data platform, and industry blueprints.
 
-Next implementation work should continue the core baseline with logging,
-budgets, events, and security posture controls.
+Next implementation work should continue with Phase 4 operating entities, then
+security posture controls such as logging, budgets, events, Cloud Guard,
+Security Zones, Vault, and VSS.
 
 ## License
 

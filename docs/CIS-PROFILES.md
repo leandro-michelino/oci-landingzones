@@ -22,8 +22,9 @@ behavior is opt-in through dedicated landing zone blueprint folders:
   `blueprints/cis/level2/` folder.
 - CIS folders fix their profile internally and expose it through an output named
   `cis_level`.
-- CIS blueprints must pass the selected profile to child modules once real
-  resources are implemented.
+- CIS blueprints pass the selected profile into the implemented core/IAM
+  foundation and will keep passing it to later security, governance, and
+  networking controls as those modules mature.
 - Documentation must explain behavioral differences before any resource behavior
   changes between profiles.
 - Real `terraform apply` tests for either level must use an approved test

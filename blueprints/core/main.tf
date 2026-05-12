@@ -12,6 +12,7 @@ module "compartments" {
   org              = var.org
   environment      = var.environment
   region_key       = var.region_key
+  cis_level        = var.cis_level
   enable_delete    = var.enable_delete
   defined_tags     = var.defined_tags
   freeform_tags    = var.freeform_tags
@@ -30,6 +31,7 @@ module "tagging" {
   org                         = var.org
   environment                 = var.environment
   region_key                  = var.region_key
+  cis_level                   = var.cis_level
   enable_tagging              = var.enable_tagging
   enable_tag_defaults         = var.enable_tag_defaults
   tag_namespace_name          = var.tag_namespace_name
@@ -53,6 +55,7 @@ module "groups" {
   org                   = var.org
   environment           = var.environment
   region_key            = var.region_key
+  cis_level             = var.cis_level
   enable_default_groups = var.enable_default_iam_groups
   groups                = var.iam_groups
   defined_tags          = var.defined_tags
@@ -72,6 +75,7 @@ module "dynamic_groups" {
   org              = var.org
   environment      = var.environment
   region_key       = var.region_key
+  cis_level        = var.cis_level
   dynamic_groups   = local.core_dynamic_groups
   defined_tags     = var.defined_tags
   freeform_tags    = var.freeform_tags
@@ -90,6 +94,7 @@ module "policies" {
   org                     = var.org
   environment             = var.environment
   region_key              = var.region_key
+  cis_level               = var.cis_level
   enable_default_policies = var.enable_default_iam_policies
   group_names             = module.groups.group_names
   dynamic_group_names     = module.dynamic_groups.dynamic_group_names

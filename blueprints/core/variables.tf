@@ -41,6 +41,17 @@ variable "region_key" {
   type        = string
 }
 
+variable "cis_level" {
+  description = "Optional CIS OCI Benchmark profile selected by dedicated CIS wrapper blueprints."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.cis_level == null ? true : contains(["level1", "level2"], lower(var.cis_level))
+    error_message = "cis_level must be either level1 or level2."
+  }
+}
+
 variable "parent_compartment_ocid" {
   description = "Parent compartment OCID for the landing zone root compartment. Defaults to tenancy_ocid when omitted."
   type        = string

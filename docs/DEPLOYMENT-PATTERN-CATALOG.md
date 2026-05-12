@@ -6,17 +6,19 @@ This catalog keeps the deployment menu broader than a single reference
 implementation. It borrows from OCI landing zone repositories, OCI reference
 architectures, and patterns that show up in real customer conversations.
 
-Each pattern should eventually have a self-contained blueprint folder with its
-own `README.md`, `architecture/README.md`, Terraform scaffold, variables
-example, and validation notes.
+Each pattern should have a self-contained blueprint folder with its own
+`README.md`, `architecture/README.md`, Terraform files, variables example, and
+validation notes. Status `Implementing` means the folder has deployable
+foundation wiring, even when some expensive or external resources are disabled
+by default.
 
 ## Pattern Families
 
 | Family | Pattern | Blueprint | Status |
 |---|---|---|---|
 | Core | Core landing zone with no application networking | `blueprints/core/` | Implementing |
-| CIS | CIS Level 1 landing zone | `blueprints/cis/level1/` | Scaffold |
-| CIS | CIS Level 2 landing zone | `blueprints/cis/level2/` | Scaffold |
+| CIS | CIS Level 1 landing zone | `blueprints/cis/level1/` | Implementing |
+| CIS | CIS Level 2 landing zone | `blueprints/cis/level2/` | Implementing |
 | Identity | CIS basic identity baseline | `blueprints/identity/cis-basic/` | Scaffold |
 | Identity | New identity domain | `blueprints/identity/new-identity-domain/` | Scaffold |
 | Identity | Custom identity domain | `blueprints/identity/custom-identity-domain/` | Scaffold |

@@ -6,8 +6,9 @@ This blueprint is the opt-in CIS Level 1 landing zone profile. Use this folder w
 deployment should explicitly target CIS OCI Benchmark Level 1 behavior.
 
 The general landing zone blueprints do not enable CIS behavior by default. This folder
-fixes the intended profile to `level1` and will compose the core, security, governance,
-and networking modules with Level 1 defaults as the implementation matures.
+fixes the intended profile to `level1`, composes the implemented core/IAM foundation,
+and will keep adding Level 1 security, governance, and networking defaults as those
+modules mature.
 
 ## What It Does
 
@@ -39,8 +40,8 @@ security wants structure but the platform still needs to move.
 
 > [DIAGRAM REQUIRED] `docs/architecture/diagrams/09-cis-level1.excalidraw`
 >
-> Status: TODO - scaffold files may exist now; create this diagram before adding
-> real OCI resources or applying Terraform.
+> Status: TODO - create this diagram before using the blueprint for a production
+> customer review.
 
 ## Profile
 
@@ -52,7 +53,7 @@ cis_level = "level1"
 
 - Baseline compartment hierarchy.
 - Least-privilege IAM foundation.
-- Cloud Guard and detector recipe baseline.
-- Audit, service, and network logging baseline.
-- Required tagging, budgets, and monitoring baseline.
-- Networking defaults that avoid broad internet ingress.
+- Governance tagging baseline.
+- CIS profile passed into child modules for future control differences.
+- Planned next: Cloud Guard, logging, budgets, monitoring, and stricter network
+  defaults where the customer wants them.

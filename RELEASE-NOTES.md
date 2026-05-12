@@ -12,6 +12,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Terraform scaffold files for all planned modules and blueprints.
 - Ansible scaffold for inventories, playbooks, roles, and local orchestration.
 - Dedicated opt-in CIS Level 1 and Level 2 landing zone blueprint folders.
+- CIS Level 1 and Level 2 wrappers wired to the implemented core/IAM
+  foundation while remaining opt-in.
 - Phase 1 core implementation for landing zone compartments and governance
   tagging.
 - Phase 2 IAM foundation implementation for IAM groups, dynamic groups, and

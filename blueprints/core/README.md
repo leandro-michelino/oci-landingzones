@@ -3,8 +3,8 @@
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 The core blueprint is the mandatory baseline for every OCI landing zone deployment. It
-creates shared identity, security, governance, and operational controls used by all
-other blueprints.
+creates the shared compartments, tags, and IAM foundation used by the other
+blueprints.
 
 ## What It Does
 
@@ -33,8 +33,8 @@ IAM, tags, and policy outputs.
 
 > [DIAGRAM REQUIRED] `docs/architecture/diagrams/01-iam-compartments.excalidraw`
 >
-> Status: TODO - scaffold files may exist now; create this diagram before adding
-> real OCI resources or applying Terraform.
+> Status: TODO - create this diagram before using the blueprint for a production
+> customer review.
 
 ## Responsibilities
 
@@ -43,11 +43,8 @@ IAM, tags, and policy outputs.
 - Landing zone tag namespace, tag definitions, and tag defaults.
 - Platform IAM groups and least-privilege policies.
 - Dynamic groups for platform automation and workload resource principals.
-- Tag namespace and tag defaults.
-- Cloud Guard baseline.
-- Security Zones baseline.
-- Vault and customer-managed key baseline.
-- Audit, service logging, events, budgets, and monitoring alarms.
+- Planned later: Cloud Guard, Security Zones, Vault, logging, events, budgets,
+  and monitoring alarms.
 
 ## Module Order
 
@@ -56,12 +53,16 @@ IAM, tags, and policy outputs.
 3. `modules/iam/groups`
 4. `modules/iam/dynamic-groups`
 5. `modules/iam/policies`
-6. `modules/security/vault`
-7. `modules/security/cloud-guard`
-8. `modules/security/security-zones`
-9. `modules/governance/logging`
-10. `modules/governance/events` 11. `modules/governance/budgets` 12.
-    `modules/operations/monitoring`
+
+Planned later:
+
+1. `modules/security/vault`
+2. `modules/security/cloud-guard`
+3. `modules/security/security-zones`
+4. `modules/governance/logging`
+5. `modules/governance/events`
+6. `modules/governance/budgets`
+7. `modules/operations/monitoring`
 
 ## Expected Outputs
 
