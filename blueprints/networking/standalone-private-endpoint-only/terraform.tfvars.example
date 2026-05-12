@@ -6,7 +6,6 @@ home_region       = "eu-frankfurt-1"
 org         = "acme"
 environment = "dev"
 region_key  = "fra"
-
 defined_tags = {
   "acme-tags.Environment" = "dev"
   "acme-tags.ManagedBy"   = "terraform"

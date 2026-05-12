@@ -20,6 +20,8 @@ Architecture diagrams are source-controlled as Excalidraw files under
 | `04-security-posture.excalidraw` | Security modules | TODO |
 | `05-governance.excalidraw` | Governance modules | TODO |
 | `06-operating-entity.excalidraw` | Operating entity blueprint | TODO |
+| `09-cis-level1.excalidraw` | CIS Level 1 landing zone blueprint | TODO |
+| `09-cis-level2.excalidraw` | CIS Level 2 landing zone blueprint | TODO |
 
 ## Rules
 

@@ -1,5 +1,6 @@
 locals {
   module_name = "iam-compartments"
+  cis_level   = var.cis_level == null ? null : lower(var.cis_level)
   name_prefix = "${var.org}-${var.environment}-${var.region_key}"
 
   region_key_map = {

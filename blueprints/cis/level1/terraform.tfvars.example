@@ -1,0 +1,19 @@
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "eu-frankfurt-1"
+home_region       = "eu-frankfurt-1"
+
+org         = "acme"
+environment = "dev"
+region_key  = "fra"
+
+defined_tags = {
+  "acme-tags.Environment" = "dev"
+  "acme-tags.ManagedBy"   = "terraform"
+  "acme-tags.Owner"       = "platform-team"
+  "acme-tags.Project"     = "landingzone"
+  "acme-tags.Compliance"  = "cis-level1"
+}
+
+freeform_tags = {}
+

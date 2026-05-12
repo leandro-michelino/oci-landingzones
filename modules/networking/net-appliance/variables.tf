@@ -28,6 +28,17 @@ variable "region_key" {
   type        = string
 }
 
+variable "cis_level" {
+  description = "CIS OCI Benchmark profile for the landing zone. Use level1 for baseline controls or level2 for stricter controls."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.cis_level == null ? true : contains(["level1", "level2"], lower(var.cis_level))
+    error_message = "cis_level must be either level1 or level2."
+  }
+}
+
 variable "defined_tags" {
   description = "Defined tags applied to resources."
   type        = map(string)

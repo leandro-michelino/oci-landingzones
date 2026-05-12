@@ -9,6 +9,7 @@
   and scripts.
 - Terraform scaffold files for all planned modules and blueprints.
 - Ansible scaffold for inventories, playbooks, roles, and local orchestration.
+- Dedicated opt-in CIS Level 1 and Level 2 landing zone blueprint folders.
 - Project guardrails for ignore rules, pre-commit checks, contribution flow, and
   security handling.
 - Initial documentation for naming conventions, deployment flow, CIS mapping,

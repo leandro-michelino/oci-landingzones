@@ -14,6 +14,15 @@ oci iam tenancy get --tenancy-id "$TENANCY_OCID"
 pre-commit install
 ```
 
+The generic landing zone deployment does not enable CIS behavior by default. To
+deploy a CIS landing zone, start from one of the dedicated folders instead:
+
+```bash
+cd blueprints/cis/level1
+# or
+cd blueprints/cis/level2
+```
+
 ## Phase 1 - Core Landing Zone
 
 Deploy the core blueprint first. It creates the baseline compartments, IAM,

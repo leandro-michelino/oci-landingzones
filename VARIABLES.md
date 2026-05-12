@@ -19,6 +19,7 @@ READMEs may define additional variables for local behavior.
 | `org` | `string` | Yes | Short organization prefix used in names and tags. |
 | `environment` | `string` | Yes | Deployment environment such as `dev`, `uat`, `prod`, or `dr`. |
 | `region_key` | `string` | Yes | Short OCI region key used in resource names. |
+| `cis_level` | `string` | Internal | Fixed by dedicated CIS landing zone blueprints. Generic blueprints omit this unless composing CIS behavior explicitly. |
 
 ## Tagging
 

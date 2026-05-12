@@ -16,6 +16,7 @@ OCI Benchmark controls, OCI naming conventions, and GitOps delivery practices.
 - Separate mandatory core controls from optional deployment blueprints.
 - Keep Terraform modules reusable, composable, and free from remote state.
 - Keep each deployable blueprint independently stateful.
+- Provide dedicated opt-in CIS landing zone blueprints for Level 1 and Level 2.
 - Use Ansible for local orchestration, bootstrap checks, validation, and
   controlled Terraform command execution.
 - Make diagrams, documentation, and local validation first-class project
@@ -57,6 +58,7 @@ blueprints that compose the reusable modules under `modules/`.
 │   └── operations/
 ├── blueprints/
 │   ├── core/
+│   ├── cis/
 │   ├── identity/
 │   ├── networking/
 │   ├── operating-entity/
@@ -88,6 +90,13 @@ blueprints that compose the reusable modules under `modules/`.
 | Blueprint | Path | Description |
 |---|---|---|
 | Core baseline | `blueprints/core/` | Mandatory baseline for compartments, IAM, tagging, logging, Cloud Guard, Security Zones, budgets, events, and Vault. |
+
+### CIS Landing Zones
+
+| Blueprint | Path | Description |
+|---|---|---|
+| CIS Level 1 landing zone | `blueprints/cis/level1/` | Optional CIS Level 1 profile for baseline CIS-aligned landing zone controls. |
+| CIS Level 2 landing zone | `blueprints/cis/level2/` | Optional CIS Level 2 profile for stricter regulated or high-security environments. |
 
 ### Identity
 
@@ -165,12 +174,25 @@ Every reusable module should expose a consistent interface:
 - `org`
 - `environment`
 - `region_key`
+- `cis_level`
 - `defined_tags`
 - `freeform_tags`
 
 Modules should output stable identifiers such as OCIDs, names, and maps needed
 by downstream blueprints. Remote state belongs to deployable blueprints, not
 shared modules.
+
+## CIS Landing Zones
+
+No CIS profile is enabled by default in the generic blueprints. Users who want
+CIS-specific landing zone behavior should start from one of the dedicated
+folders:
+
+- `blueprints/cis/level1/`
+- `blueprints/cis/level2/`
+
+See `docs/CIS-PROFILES.md` for the CIS landing zone contract and planned
+behavior.
 
 ## Ansible Contract
 

@@ -8,6 +8,11 @@ output "name_prefix" {
   value       = local.name_prefix
 }
 
+output "cis_level" {
+  description = "Selected CIS OCI Benchmark profile."
+  value       = local.cis_level
+}
+
 output "resource_ids" {
   description = "Map of resource identifiers created by this module. Empty until implementation."
   value       = {}
