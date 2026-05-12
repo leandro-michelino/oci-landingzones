@@ -1,5 +1,7 @@
 # API Gateway Extension
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this extension when applications need managed API ingress, routing, and policy
 enforcement.
 

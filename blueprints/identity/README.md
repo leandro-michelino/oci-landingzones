@@ -1,5 +1,7 @@
 # Identity Deployment Blueprints
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 This folder contains identity-specific deployment patterns for OCI landing zones. Each
 child folder should be usable on its own, with local deployment notes and architecture
 artifacts.

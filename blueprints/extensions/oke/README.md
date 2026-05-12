@@ -1,5 +1,7 @@
 # OKE Extension
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this extension when Kubernetes workloads should run on OCI Container Engine for
 Kubernetes.
 

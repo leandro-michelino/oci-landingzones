@@ -1,5 +1,7 @@
 # Hub-Spoke With ZPR Micro-Segmentation
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this deployment when multiple VCNs need segmentation intent using Zero Packet
 Routing attributes.
 

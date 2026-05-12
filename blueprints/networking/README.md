@@ -1,5 +1,7 @@
 # Networking Deployment Blueprints
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 This folder contains the OCI networking deployment patterns used by the landing zone
 project. Each deployment folder is self-contained: it has Terraform files, a local
 README, and an `architecture/` folder for the diagram source and exported image.

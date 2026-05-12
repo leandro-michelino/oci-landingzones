@@ -1,5 +1,7 @@
 # Hub-Spoke With OCI Network Firewall
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this deployment when traffic between spokes, internet, and private networks must be
 inspected by OCI Network Firewall.
 

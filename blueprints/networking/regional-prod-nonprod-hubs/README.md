@@ -1,5 +1,7 @@
 # Regional Prod/Nonprod Hubs
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 This blueprint separates production and nonproduction traffic into distinct regional hub
 networks while keeping shared governance and operations consistent.
 

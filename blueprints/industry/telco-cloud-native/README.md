@@ -1,5 +1,7 @@
 # Telco Cloud-Native Landing Zone
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 This blueprint is for telco-oriented cloud-native platforms where OKE, segmented
 networking, private connectivity, and operational telemetry are part of the landing zone
 baseline.

@@ -1,3 +1,4 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 output "blueprint_name" {
   description = "Blueprint identifier."
   value       = local.blueprint_name
@@ -8,6 +9,26 @@ output "name_prefix" {
   value       = local.name_prefix
 }
 output "resource_ids" {
-  description = "Map of resource identifiers created by this blueprint. Empty until implementation."
-  value       = {}
+  description = "Map of resource identifiers created by this blueprint."
+  value       = module.workload_vcn.resource_ids
+}
+
+output "vcn_id" {
+  description = "Workload VCN OCID."
+  value       = module.workload_vcn.vcn_id
+}
+
+output "subnet_ids" {
+  description = "Subnet OCIDs keyed by role."
+  value       = module.workload_vcn.subnet_ids
+}
+
+output "route_table_ids" {
+  description = "Route table OCIDs keyed by role."
+  value       = module.workload_vcn.route_table_ids
+}
+
+output "gateway_ids" {
+  description = "Gateway OCIDs keyed by type."
+  value       = module.workload_vcn.gateway_ids
 }

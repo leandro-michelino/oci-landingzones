@@ -1,5 +1,7 @@
 # Hub-Spoke With Transit Routing NVA HA
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this deployment when the customer needs high-availability transit routing through
 network virtual appliances.
 

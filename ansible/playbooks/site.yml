@@ -1,3 +1,4 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
 - name: OCI landing zone local orchestration
   hosts: localhost

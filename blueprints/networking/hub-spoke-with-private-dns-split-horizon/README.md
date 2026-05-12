@@ -1,5 +1,7 @@
 # Hub-Spoke With Private DNS Split Horizon
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this deployment when OCI and on-premises networks need coordinated private DNS
 resolution across hub and spoke VCNs.
 

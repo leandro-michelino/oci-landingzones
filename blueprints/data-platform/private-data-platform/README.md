@@ -1,5 +1,7 @@
 # Private Data Platform Landing Zone
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 This blueprint is for private analytics and data workloads that need controlled data
 access, encryption, service endpoints, and private connectivity.
 

@@ -1,5 +1,7 @@
 # Workload Vending Blueprint
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 This blueprint is for repeatable application-team onboarding where the platform team
 vends a standard compartment, IAM scope, budget, tags, and network attachment.
 

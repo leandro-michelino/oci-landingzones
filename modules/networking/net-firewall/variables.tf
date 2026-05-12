@@ -1,3 +1,4 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 variable "tenancy_ocid" {
   description = "OCI tenancy OCID."
   type        = string
@@ -26,6 +27,60 @@ variable "environment" {
 variable "region_key" {
   description = "Short OCI region key used in resource names."
   type        = string
+}
+
+variable "enable_network_firewall" {
+  description = "Create an OCI Network Firewall and policy."
+  type        = bool
+  default     = false
+}
+
+variable "firewall_label" {
+  description = "Short semantic label for the firewall."
+  type        = string
+  default     = "hub"
+}
+
+variable "subnet_id" {
+  description = "Subnet OCID where OCI Network Firewall will be deployed."
+  type        = string
+  default     = null
+}
+
+variable "network_firewall_policy_id" {
+  description = "Optional existing OCI Network Firewall policy OCID."
+  type        = string
+  default     = null
+}
+
+variable "network_security_group_ids" {
+  description = "Optional NSG OCIDs attached to the network firewall."
+  type        = set(string)
+  default     = []
+}
+
+variable "availability_domain" {
+  description = "Optional availability domain for the firewall."
+  type        = string
+  default     = null
+}
+
+variable "policy_display_name" {
+  description = "Optional firewall policy display name override."
+  type        = string
+  default     = null
+}
+
+variable "policy_description" {
+  description = "Description for the generated firewall policy."
+  type        = string
+  default     = "Landing zone network firewall policy scaffold."
+}
+
+variable "firewall_display_name" {
+  description = "Optional firewall display name override."
+  type        = string
+  default     = null
 }
 
 variable "cis_level" {

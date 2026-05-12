@@ -1,5 +1,7 @@
 # Architecture Diagrams
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Architecture diagrams are source-controlled as Excalidraw files under
 `docs/architecture/diagrams/`. Exported images belong under
 `docs/architecture/exports/`.

@@ -1,5 +1,7 @@
 # Standalone Three-Tier VCN Custom
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this deployment when the workload still follows the classic web, application, and
 database tiers, but the customer needs full control over CIDRs, subnet names, routing,
 or security rules.

@@ -1,3 +1,4 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 variable "tenancy_ocid" {
   description = "OCI tenancy OCID."
   type        = string
@@ -37,6 +38,34 @@ variable "cis_level" {
     condition     = var.cis_level == null ? true : contains(["level1", "level2"], lower(var.cis_level))
     error_message = "cis_level must be either level1 or level2."
   }
+}
+
+variable "enable_zpr_configuration" {
+  description = "Create or manage the ZPR configuration status in the compartment."
+  type        = bool
+  default     = false
+}
+
+variable "zpr_status" {
+  description = "Requested ZPR status when enable_zpr_configuration is true."
+  type        = string
+  default     = "ENABLED"
+}
+
+variable "enable_zpr_policies" {
+  description = "Create ZPR policies."
+  type        = bool
+  default     = false
+}
+
+variable "zpr_policies" {
+  description = "ZPR policies keyed by logical name."
+  type = map(object({
+    name        = string
+    description = string
+    statements  = list(string)
+  }))
+  default = {}
 }
 
 variable "defined_tags" {

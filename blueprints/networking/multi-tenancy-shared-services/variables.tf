@@ -1,3 +1,4 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 variable "tenancy_ocid" {
   description = "OCI tenancy OCID."
   type        = string
@@ -19,6 +20,12 @@ variable "home_region" {
   default     = null
 }
 
+variable "oci_config_profile" {
+  description = "Optional OCI CLI config profile for local execution."
+  type        = string
+  default     = null
+}
+
 variable "org" {
   description = "Short organization prefix used in names."
   type        = string
@@ -32,6 +39,33 @@ variable "environment" {
 variable "region_key" {
   description = "Short OCI region key used in resource names."
   type        = string
+}
+
+variable "compartment_ocid" {
+  description = "Compartment OCID where networking resources are deployed. Defaults to tenancy_ocid for simple tests."
+  type        = string
+  default     = null
+}
+
+variable "enable_private_dns" {
+  description = "Create private DNS for shared services."
+  type        = bool
+  default     = true
+}
+
+variable "private_zones" {
+  description = "Private DNS zones keyed by logical name."
+  type = map(object({
+    name        = string
+    zone_type   = optional(string, "PRIMARY")
+    scope       = optional(string, "PRIVATE")
+    description = optional(string)
+  }))
+  default = {
+    shared = {
+      name = "shared.internal"
+    }
+  }
 }
 
 variable "defined_tags" {

@@ -1,5 +1,7 @@
 # Compliance Blueprints
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Compliance blueprints compose core, identity, networking, logging, and security controls
 for regulated landing zone profiles that need more than a generic CIS toggle.
 

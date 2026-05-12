@@ -1,5 +1,7 @@
 # Release Notes
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 ## Unreleased
 
 ### Added
@@ -14,6 +16,14 @@
   tagging.
 - Phase 2 IAM foundation implementation for IAM groups, dynamic groups, and
   scoped policies.
+- Phase 3 networking foundation implementation for reusable hub VCN, spoke VCN,
+  DRG, IPSec VPN, OCI Network Firewall, FastConnect, private DNS, ZPR, Bastion,
+  and network virtual appliance modules.
+- Deployable networking foundations for standalone three-tier, standalone
+  private-only, custom standalone, standalone ZPR, brownfield VCN references,
+  DRG hub-spoke, IPSec, FastConnect, Bastion, OCI Network Firewall, NVA,
+  private DNS, ZPR micro-segmentation, dual-region DR, multicloud, shared
+  services, transit NVA HA, and regional prod/nonprod hub blueprints.
 - Self-contained deployment README files and local architecture image locations
   across core, CIS, identity, networking, operating entity, and extension
   blueprints.

@@ -1,3 +1,4 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 variable "tenancy_ocid" {
   description = "OCI tenancy OCID."
   type        = string
@@ -26,6 +27,54 @@ variable "environment" {
 variable "region_key" {
   description = "Short OCI region key used in resource names."
   type        = string
+}
+
+variable "enable_ipsec" {
+  description = "Create the CPE and IPSec connection."
+  type        = bool
+  default     = false
+}
+
+variable "vpn_label" {
+  description = "Short semantic label for the VPN connection."
+  type        = string
+  default     = "onprem"
+}
+
+variable "drg_id" {
+  description = "DRG OCID used by the IPSec connection."
+  type        = string
+  default     = null
+}
+
+variable "cpe_ip_address" {
+  description = "Public or private IP address of the customer-premises equipment."
+  type        = string
+  default     = null
+}
+
+variable "cpe_is_private" {
+  description = "Whether the CPE IP address is private."
+  type        = bool
+  default     = false
+}
+
+variable "cpe_display_name" {
+  description = "Optional CPE display name override."
+  type        = string
+  default     = null
+}
+
+variable "ipsec_display_name" {
+  description = "Optional IPSec display name override."
+  type        = string
+  default     = null
+}
+
+variable "static_routes" {
+  description = "On-premises CIDR routes advertised over the IPSec connection."
+  type        = list(string)
+  default     = []
 }
 
 variable "cis_level" {

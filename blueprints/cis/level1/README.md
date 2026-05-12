@@ -1,5 +1,7 @@
 # CIS Level 1 Landing Zone Blueprint
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 This blueprint is the opt-in CIS Level 1 landing zone profile. Use this folder when a
 deployment should explicitly target CIS OCI Benchmark Level 1 behavior.
 

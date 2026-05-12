@@ -1,5 +1,7 @@
 # Runbook
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Operational procedures will be expanded as Terraform modules are implemented.
 
 ## Add A New Operating Entity

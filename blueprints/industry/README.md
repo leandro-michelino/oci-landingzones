@@ -1,5 +1,7 @@
 # Industry Blueprints
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Industry blueprints capture repeatable OCI landing zone patterns that need
 domain-specific assumptions beyond the generic platform foundation.
 

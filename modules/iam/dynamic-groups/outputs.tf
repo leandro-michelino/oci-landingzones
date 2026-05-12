@@ -1,3 +1,4 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 output "module_name" {
   description = "Module identifier."
   value       = local.module_name

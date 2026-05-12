@@ -1,5 +1,7 @@
 # OCI Landing Zones
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 This is a personal project I have been shaping over the years while working
 with Oracle Cloud Infrastructure customers.
 
@@ -149,6 +151,7 @@ Each networking deployment folder includes its own README and local
 | Standalone three-tier VCN defaults | `blueprints/networking/standalone-three-tier-vcn-defaults/` | Single VCN using standard CIDR defaults. |
 | Standalone three-tier VCN custom | `blueprints/networking/standalone-three-tier-vcn-custom/` | Single VCN with fully parameterized CIDRs and rules. |
 | Standalone three-tier VCN with ZPR | `blueprints/networking/standalone-three-tier-vcn-zpr/` | Single VCN using Zero Packet Routing attributes. |
+| Standalone private endpoint only | `blueprints/networking/standalone-private-endpoint-only/` | Private-only VCN with service gateway access and no public ingress by default. |
 | Externally managed VCNs | `blueprints/networking/externally-managed-vcns/` | Brownfield pattern for existing VCNs. |
 | Hub-spoke with DRG | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/` | OCI-only multi-VCN hub-spoke topology. |
 | Hub-spoke with Bastion | `blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/` | Hub-spoke with OCI Bastion for administrative access. |
@@ -157,7 +160,20 @@ Each networking deployment folder includes its own README and local
 | Hub-spoke with multicloud interconnect | `blueprints/networking/hub-spoke-with-multicloud-interconnect/` | Hub-spoke with private connectivity to another cloud or external provider. |
 | Hub-spoke with network appliance | `blueprints/networking/hub-spoke-with-hub-vcn-net-appliance/` | Hub-spoke with third-party NVA inspection. |
 | Hub-spoke with OCI Network Firewall | `blueprints/networking/hub-spoke-with-hub-vcn-net-firewall/` | Hub-spoke with managed OCI Network Firewall inspection. |
+| Hub-spoke with private DNS split horizon | `blueprints/networking/hub-spoke-with-private-dns-split-horizon/` | Hub-spoke with private zones and resolver attachments. |
+| Hub-spoke with transit routing NVA HA | `blueprints/networking/hub-spoke-with-transit-routing-nva-ha/` | Hub-spoke with optional HA network virtual appliances and route target IPs. |
+| Hub-spoke with ZPR micro-segmentation | `blueprints/networking/hub-spoke-with-zpr-micro-segmentation/` | Hub-spoke with optional ZPR configuration and policies. |
+| Hub-spoke with dual-region DR | `blueprints/networking/hub-spoke-with-dual-region-dr/` | Primary and secondary regional hub-spoke networks. |
+| Multi-tenancy shared services | `blueprints/networking/multi-tenancy-shared-services/` | Shared hub services with private DNS for multiple tenant/workload spokes. |
 | Regional prod/nonprod hubs | `blueprints/networking/regional-prod-nonprod-hubs/` | Separate regional hubs and route domains for production and nonproduction isolation. |
+
+Phase 3 implements the reusable networking foundations behind the catalog:
+standalone VCNs, private-only VCNs, DRG hub-spoke, Bastion, FastConnect, IPSec,
+OCI Network Firewall, NVA, private DNS, ZPR, dual-region DR, multicloud, shared
+services, and prod/nonprod hub separation. External or potentially expensive
+resources such as IPSec, FastConnect, Bastion, Network Firewall, NVA compute,
+resolver endpoints, and ZPR are intentionally optional so local smoke tests can
+validate topology without surprising anyone with provider dependencies or cost.
 
 ### Operating Entity
 

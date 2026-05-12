@@ -1,5 +1,7 @@
 # Contributing
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 This project creates Terraform and Ansible scaffolding first, then requires
 diagrams and documentation before scaffolds become deployable OCI resources.
 The goal is to keep infrastructure patterns explainable before they are applied.

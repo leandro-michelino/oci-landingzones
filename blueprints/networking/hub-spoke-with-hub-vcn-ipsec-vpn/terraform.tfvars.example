@@ -1,11 +1,22 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 tenancy_ocid      = "ocid1.tenancy.oc1..example"
 current_user_ocid = "ocid1.user.oc1..example"
 region            = "eu-frankfurt-1"
 home_region       = "eu-frankfurt-1"
+# oci_config_profile = "DEFAULT"
+
+# Optional. Defaults to tenancy_ocid when omitted.
+# compartment_ocid = "ocid1.compartment.oc1..example"
 
 org         = "acme"
 environment = "dev"
 region_key  = "fra"
+
+# Keep disabled until real CPE details and routes are approved.
+enable_ipsec              = false
+vpn_label                 = "onprem"
+cpe_ip_address            = "203.0.113.10"
+on_premises_cidr_blocks   = ["192.168.0.0/16"]
 defined_tags = {
   "acme-tags.Environment" = "dev"
   "acme-tags.ManagedBy"   = "terraform"

@@ -1,5 +1,7 @@
 # Ansible
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Ansible is used for local orchestration around the Terraform landing zone:
 bootstrap checks, OCI CLI validation, repository validation, and controlled
 Terraform command execution.

@@ -1,5 +1,7 @@
 # Hub-Spoke With FastConnect Virtual Circuit
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this deployment when the landing zone needs private dedicated connectivity between
 OCI and customer networks through FastConnect.
 

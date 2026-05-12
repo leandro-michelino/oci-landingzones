@@ -1,5 +1,7 @@
 # New Identity Domain
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this deployment when a landing zone needs a dedicated OCI Identity Domain for
 platform teams, workloads, or a customer operating entity.
 

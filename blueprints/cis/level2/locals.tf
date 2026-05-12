@@ -1,3 +1,4 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 locals {
   blueprint_name = "cis-level2"
   cis_level      = "level2"

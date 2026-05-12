@@ -1,5 +1,7 @@
 # Standalone Three-Tier VCN Defaults
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this deployment when a team needs a simple internet-facing application VCN with
 standard landing-zone defaults.
 

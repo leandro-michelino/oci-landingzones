@@ -1,7 +1,13 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 tenancy_ocid       = "ocid1.tenancy.oc1..example"
+current_user_ocid  = "ocid1.user.oc1..example"
 region             = "af-johannesburg-1"
+home_region        = "af-johannesburg-1"
 oci_config_profile = "DEFAULT"
 
 org         = "acme"
 environment = "prod"
 region_key  = "jnb"
+
+prod_environment    = "prod"
+nonprod_environment = "nonprod"

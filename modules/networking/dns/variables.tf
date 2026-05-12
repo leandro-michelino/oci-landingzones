@@ -1,3 +1,4 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 variable "tenancy_ocid" {
   description = "OCI tenancy OCID."
   type        = string
@@ -37,6 +38,79 @@ variable "cis_level" {
     condition     = var.cis_level == null ? true : contains(["level1", "level2"], lower(var.cis_level))
     error_message = "cis_level must be either level1 or level2."
   }
+}
+
+variable "enable_private_dns" {
+  description = "Create private DNS view and zones."
+  type        = bool
+  default     = true
+}
+
+variable "dns_label" {
+  description = "Short semantic label for the private DNS view."
+  type        = string
+  default     = "shared"
+}
+
+variable "private_zones" {
+  description = "Private DNS zones keyed by logical name."
+  type = map(object({
+    name        = string
+    zone_type   = optional(string, "PRIMARY")
+    scope       = optional(string, "PRIVATE")
+    description = optional(string)
+  }))
+  default = {
+    internal = {
+      name = "internal.example"
+    }
+  }
+}
+
+variable "vcn_ids" {
+  description = "VCN OCIDs whose default resolvers should attach the private DNS view."
+  type        = map(string)
+  default     = {}
+}
+
+variable "attach_private_view_to_vcn_resolvers" {
+  description = "Attach the created private DNS view to the default resolver of each VCN in vcn_ids."
+  type        = bool
+  default     = true
+}
+
+variable "resolver_rules" {
+  description = "Forwarding rules added to attached VCN resolvers."
+  type = list(object({
+    action                    = string
+    source_endpoint_name      = string
+    destination_addresses     = list(string)
+    client_address_conditions = optional(list(string), [])
+    qname_cover_conditions    = optional(list(string), [])
+  }))
+  default = []
+}
+
+variable "enable_resolver_endpoints" {
+  description = "Create DNS resolver endpoints. Requires resolver_id or vcn_key for each endpoint."
+  type        = bool
+  default     = false
+}
+
+variable "resolver_endpoints" {
+  description = "DNS resolver endpoints keyed by logical name."
+  type = map(object({
+    subnet_id          = string
+    resolver_id        = optional(string)
+    vcn_key            = optional(string)
+    endpoint_type      = optional(string, "VNIC")
+    is_forwarding      = bool
+    is_listening       = bool
+    forwarding_address = optional(string)
+    listening_address  = optional(string)
+    nsg_ids            = optional(list(string), [])
+  }))
+  default = {}
 }
 
 variable "defined_tags" {

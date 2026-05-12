@@ -1,5 +1,7 @@
 # Exadata Extension
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this extension when the landing zone needs Exadata infrastructure for database
 workloads.
 

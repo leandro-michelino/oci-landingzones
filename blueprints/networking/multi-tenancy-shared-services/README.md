@@ -1,5 +1,7 @@
 # Multi-Tenancy Shared Services
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this deployment when a central shared-services network supports multiple teams,
 entities, or workload compartments.
 

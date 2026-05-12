@@ -1,5 +1,7 @@
 # Operating Entity Deployment
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this deployment to onboard a business unit, subsidiary, application team, or
 workload owner into the landing zone.
 

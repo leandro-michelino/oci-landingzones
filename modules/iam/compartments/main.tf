@@ -1,3 +1,4 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_identity_compartment" "root" {
   compartment_id = var.compartment_ocid
   name           = local.root_name

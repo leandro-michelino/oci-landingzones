@@ -1,5 +1,7 @@
 # Hub-Spoke With DRG And Three-Tier VCNs
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this deployment when the customer needs a central hub VCN, a DRG, and one or more
 spoke VCNs that follow the three-tier workload pattern.
 

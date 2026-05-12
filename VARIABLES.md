@@ -1,5 +1,7 @@
 # Variables Reference
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 This file tracks global variables shared by blueprints and modules. Blueprint
 READMEs may define additional variables for local behavior.
 
@@ -48,11 +50,36 @@ READMEs may define additional variables for local behavior.
 
 | Variable | Type | Required | Description |
 |---|---|---:|---|
-| `hub_vcn_cidr` | `string` | For hub-spoke | CIDR block for the hub VCN. |
-| `hub_dmz_cidr` | `string` | For hub-spoke | CIDR block for public or DMZ hub subnet. |
-| `hub_fw_cidr` | `string` | For inspected hub-spoke | CIDR block for firewall or inspection subnet. |
-| `hub_mgmt_cidr` | `string` | For hub-spoke | CIDR block for management subnet. |
+| `compartment_ocid` | `string` | For networking blueprints | Compartment where networking resources are deployed. Defaults to `tenancy_ocid` for simple tests. |
+| `vcn_label` | `string` | For standalone blueprints | Short semantic label used in VCN, subnet, route table, and gateway names. |
+| `vcn_cidr_block` | `string` | For standalone blueprints | CIDR block for the standalone workload VCN. |
+| `hub_vcn_cidr_block` | `string` | For hub-spoke | CIDR block for the hub VCN. |
+| `hub_subnets` | `map(object)` | For hub-spoke | Hub subnet definitions such as DMZ, firewall, shared services, and management. |
 | `spoke_vcns` | `map(object)` | For hub-spoke | Spoke VCN and subnet definitions. |
+| `spoke_route_tables` | `map(object)` | For hub-spoke | Shared spoke route table definitions, usually sending non-local traffic to the DRG. |
+| `enable_nat_gateway` | `bool` | For private-only | Enables optional outbound NAT in private-only patterns. Disabled by default. |
+| `enable_ipsec` | `bool` | For IPSec | Creates CPE and IPSec resources when real customer network details are approved. Disabled by default. |
+| `cpe_ip_address` | `string` | For IPSec | Customer-premises equipment IP address. |
+| `on_premises_cidr_blocks` | `list(string)` | For IPSec | CIDR blocks routed over the IPSec VPN. |
+| `enable_fastconnect` | `bool` | For FastConnect | Creates a FastConnect virtual circuit when provider and BGP details are ready. Disabled by default. |
+| `customer_bgp_asn` | `number` | For FastConnect | Customer BGP ASN for private virtual circuits. |
+| `provider_service_id` | `string` | For FastConnect | Provider service OCID for partner FastConnect circuits. |
+| `provider_service_key_name` | `string` | For FastConnect | Provider service key/name supplied by the FastConnect partner. |
+| `enable_network_firewall` | `bool` | For firewall hub-spoke | Creates OCI Network Firewall and policy resources. Disabled by default for low-cost smoke tests. |
+| `firewall_subnet_key` | `string` | For firewall hub-spoke | Hub subnet key where OCI Network Firewall is placed. |
+| `enable_bastion` | `bool` | For Bastion hub-spoke | Creates OCI Bastion in the hub. Disabled by default. |
+| `client_cidr_block_allow_list` | `list(string)` | For Bastion hub-spoke | Client CIDR blocks allowed to open bastion sessions. |
+| `enable_private_dns` | `bool` | For DNS blueprints | Creates private DNS view and zones. |
+| `private_zones` | `map(object)` | For DNS blueprints | Private DNS zones keyed by logical name. |
+| `attach_private_view_to_vcn_resolvers` | `bool` | For DNS blueprints | Attaches the created private DNS view to hub and spoke VCN resolvers. |
+| `enable_zpr_configuration` | `bool` | For ZPR blueprints | Enables ZPR configuration when the customer wants that guardrail. Disabled by default. |
+| `enable_zpr_policies` | `bool` | For ZPR blueprints | Creates ZPR policies. Disabled by default. |
+| `zpr_policies` | `map(object)` | For ZPR blueprints | ZPR policy definitions and statements. |
+| `enable_net_appliance` | `bool` | For NVA blueprints | Creates NVA compute instances when image, AD, and route details are ready. Disabled by default. |
+| `enable_reserved_route_ips` | `bool` | For NVA blueprints | Creates reserved private IP route targets for customer-managed or HA appliance designs. |
+| `existing_route_target_private_ip_ids` | `map(string)` | For NVA blueprints | Existing appliance private IP OCIDs used for route steering. |
+| `secondary_region` | `string` | For dual-region DR | Secondary OCI region for DR networking. |
+| `secondary_region_key` | `string` | For dual-region DR | Short region key for the DR region. |
 
 ## Security And Governance
 

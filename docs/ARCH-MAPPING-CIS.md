@@ -1,5 +1,7 @@
 # CIS OCI Benchmark Mapping
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 This document maps target landing zone capabilities to CIS OCI Benchmark
 requirements. The mapping starts as an implementation guide and should become a
 traceability record as modules are added.

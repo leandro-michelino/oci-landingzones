@@ -1,5 +1,7 @@
 # Core Landing Zone Blueprint
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 The core blueprint is the mandatory baseline for every OCI landing zone deployment. It
 creates shared identity, security, governance, and operational controls used by all
 other blueprints.

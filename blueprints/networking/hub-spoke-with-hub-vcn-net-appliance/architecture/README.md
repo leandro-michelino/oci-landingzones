@@ -1,5 +1,7 @@
 # Architecture
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Keep the deployment diagram source and exported image in this folder.
 
 - `hub-spoke-with-hub-vcn-net-appliance.excalidraw`

@@ -1,5 +1,7 @@
 # CIS Profiles
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 The generic landing zone blueprints do not enable CIS behavior by default. CIS
 behavior is opt-in through dedicated landing zone blueprint folders:
 

@@ -1,5 +1,7 @@
 # Streaming Extension
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this extension when workloads need managed event streaming, decoupled messaging, or
 integration pipelines.
 

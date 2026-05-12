@@ -1,5 +1,7 @@
 # Deployment Pattern Catalog
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 This catalog keeps the deployment menu broader than a single reference
 implementation. It borrows from OCI landing zone repositories, OCI reference
 architectures, and patterns that show up in real customer conversations.
@@ -21,24 +23,24 @@ example, and validation notes.
 | Operating entity | Single operating entity onboarding | `blueprints/operating-entity/` | Scaffold |
 | Operating entity | Multi-operating-entity landing zone | `blueprints/operating-entity/multi-operating-entities/` | Scaffold |
 | Operating entity | Workload vending / application team onboarding | `blueprints/operating-entity/workload-vending/` | Scaffold |
-| Networking | Standalone three-tier VCN defaults | `blueprints/networking/standalone-three-tier-vcn-defaults/` | Scaffold |
-| Networking | Standalone three-tier VCN custom | `blueprints/networking/standalone-three-tier-vcn-custom/` | Scaffold |
-| Networking | Standalone three-tier VCN with ZPR | `blueprints/networking/standalone-three-tier-vcn-zpr/` | Scaffold |
-| Networking | Standalone private endpoint only | `blueprints/networking/standalone-private-endpoint-only/` | Scaffold |
-| Networking | Externally managed VCNs | `blueprints/networking/externally-managed-vcns/` | Scaffold |
-| Networking | Hub-spoke with DRG and three-tier VCNs | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/` | Scaffold |
-| Networking | Hub-spoke with IPSec VPN | `blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn/` | Scaffold |
-| Networking | Hub-spoke with FastConnect virtual circuit | `blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc/` | Scaffold |
-| Networking | Hub-spoke with network firewall | `blueprints/networking/hub-spoke-with-hub-vcn-net-firewall/` | Scaffold |
-| Networking | Hub-spoke with network appliance | `blueprints/networking/hub-spoke-with-hub-vcn-net-appliance/` | Scaffold |
-| Networking | Hub-spoke with bastion jump host | `blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/` | Scaffold |
-| Networking | Hub-spoke with transit routing NVA HA | `blueprints/networking/hub-spoke-with-transit-routing-nva-ha/` | Scaffold |
-| Networking | Hub-spoke with private DNS split horizon | `blueprints/networking/hub-spoke-with-private-dns-split-horizon/` | Scaffold |
-| Networking | Hub-spoke with ZPR micro-segmentation | `blueprints/networking/hub-spoke-with-zpr-micro-segmentation/` | Scaffold |
-| Networking | Hub-spoke with dual-region DR | `blueprints/networking/hub-spoke-with-dual-region-dr/` | Scaffold |
-| Networking | Multi-tenancy shared services | `blueprints/networking/multi-tenancy-shared-services/` | Scaffold |
-| Networking | Hub-spoke with multicloud interconnect | `blueprints/networking/hub-spoke-with-multicloud-interconnect/` | Scaffold |
-| Networking | Regional prod/nonprod hub separation | `blueprints/networking/regional-prod-nonprod-hubs/` | Scaffold |
+| Networking | Standalone three-tier VCN defaults | `blueprints/networking/standalone-three-tier-vcn-defaults/` | Implementing |
+| Networking | Standalone three-tier VCN custom | `blueprints/networking/standalone-three-tier-vcn-custom/` | Implementing |
+| Networking | Standalone three-tier VCN with ZPR | `blueprints/networking/standalone-three-tier-vcn-zpr/` | Implementing |
+| Networking | Standalone private endpoint only | `blueprints/networking/standalone-private-endpoint-only/` | Implementing |
+| Networking | Externally managed VCNs | `blueprints/networking/externally-managed-vcns/` | Implementing |
+| Networking | Hub-spoke with DRG and three-tier VCNs | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/` | Implementing |
+| Networking | Hub-spoke with IPSec VPN | `blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn/` | Implementing |
+| Networking | Hub-spoke with FastConnect virtual circuit | `blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc/` | Implementing |
+| Networking | Hub-spoke with network firewall | `blueprints/networking/hub-spoke-with-hub-vcn-net-firewall/` | Implementing |
+| Networking | Hub-spoke with network appliance | `blueprints/networking/hub-spoke-with-hub-vcn-net-appliance/` | Implementing |
+| Networking | Hub-spoke with bastion jump host | `blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/` | Implementing |
+| Networking | Hub-spoke with transit routing NVA HA | `blueprints/networking/hub-spoke-with-transit-routing-nva-ha/` | Implementing |
+| Networking | Hub-spoke with private DNS split horizon | `blueprints/networking/hub-spoke-with-private-dns-split-horizon/` | Implementing |
+| Networking | Hub-spoke with ZPR micro-segmentation | `blueprints/networking/hub-spoke-with-zpr-micro-segmentation/` | Implementing |
+| Networking | Hub-spoke with dual-region DR | `blueprints/networking/hub-spoke-with-dual-region-dr/` | Implementing |
+| Networking | Multi-tenancy shared services | `blueprints/networking/multi-tenancy-shared-services/` | Implementing |
+| Networking | Hub-spoke with multicloud interconnect | `blueprints/networking/hub-spoke-with-multicloud-interconnect/` | Implementing |
+| Networking | Regional prod/nonprod hub separation | `blueprints/networking/regional-prod-nonprod-hubs/` | Implementing |
 | Compliance | SCCA-style cloud-native landing zone | `blueprints/compliance/scca-cloud-native/` | Scaffold |
 | Compliance | Zero Trust landing zone | `blueprints/compliance/zero-trust/` | Scaffold |
 | Disaster recovery | Full Stack Disaster Recovery | `blueprints/disaster-recovery/fsdr/` | Scaffold |

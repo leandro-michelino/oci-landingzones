@@ -1,5 +1,7 @@
 # Data Platform Blueprints
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Data platform blueprints focus on private analytics, data movement, service endpoints,
 encryption, and controlled workload access.
 

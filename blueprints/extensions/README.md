@@ -1,5 +1,7 @@
 # Extension Deployment Blueprints
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Extensions add platform services on top of the core landing zone and networking
 baseline. Each extension folder documents its own prerequisites, deployment flow, and
 architecture artifact locations.

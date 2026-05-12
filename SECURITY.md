@@ -1,5 +1,7 @@
 # Security Policy
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 ## Supported Branch
 
 Security fixes are accepted against the `main` branch while the project is being

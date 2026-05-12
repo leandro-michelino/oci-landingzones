@@ -1,3 +1,4 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 variable "tenancy_ocid" {
   description = "OCI tenancy OCID."
   type        = string
@@ -19,6 +20,12 @@ variable "home_region" {
   default     = null
 }
 
+variable "oci_config_profile" {
+  description = "Optional OCI CLI config profile for local execution."
+  type        = string
+  default     = null
+}
+
 variable "org" {
   description = "Short organization prefix used in names."
   type        = string
@@ -32,6 +39,30 @@ variable "environment" {
 variable "region_key" {
   description = "Short OCI region key used in resource names."
   type        = string
+}
+
+variable "vcn_ids" {
+  description = "Externally managed VCN OCIDs keyed by logical name."
+  type        = map(string)
+  default     = {}
+}
+
+variable "subnet_ids" {
+  description = "Externally managed subnet OCIDs keyed by logical name."
+  type        = map(string)
+  default     = {}
+}
+
+variable "drg_id" {
+  description = "Externally managed DRG OCID, when this blueprint is documenting or consuming an existing hub."
+  type        = string
+  default     = null
+}
+
+variable "route_target_ids" {
+  description = "Externally managed route target OCIDs keyed by logical name, for example firewall private IPs or DRG attachments."
+  type        = map(string)
+  default     = {}
 }
 
 variable "defined_tags" {

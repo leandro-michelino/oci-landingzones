@@ -1,5 +1,7 @@
 # Disaster Recovery Blueprints
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Disaster recovery blueprints compose regional foundations, replication, runbooks, and
 operational controls for workloads that need tested failover.
 

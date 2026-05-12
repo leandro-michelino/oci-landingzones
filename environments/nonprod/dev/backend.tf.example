@@ -1,3 +1,4 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 # Copy to backend.tf and fill in values for the development state backend.
 # Do not commit backend.tf if it contains customer-specific identifiers.
 # Native OCI backend requires Terraform v1.12.0 or later.

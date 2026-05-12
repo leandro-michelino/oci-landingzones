@@ -1,5 +1,7 @@
 # WAF Extension
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this extension when internet-facing applications need web application firewall
 protection.
 

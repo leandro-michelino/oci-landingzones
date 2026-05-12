@@ -1,5 +1,7 @@
 # Externally Managed VCNs
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this deployment when VCNs already exist or are managed by another platform, but the
 landing zone still needs to reference them for governance, routing, or integration.
 

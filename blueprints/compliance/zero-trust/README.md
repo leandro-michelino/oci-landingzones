@@ -1,5 +1,7 @@
 # Zero Trust Landing Zone
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 This blueprint is for environments where identity, segmentation, continuous inspection,
 and least-privilege access drive the architecture.
 

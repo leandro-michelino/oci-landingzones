@@ -1,5 +1,7 @@
 # Hub-Spoke With Bastion Jump Host
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this deployment when administrators need controlled private access to hub and spoke
 resources without exposing workload hosts directly to the internet.
 

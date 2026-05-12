@@ -1,5 +1,7 @@
 # Hub-Spoke With Multicloud Interconnect
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 This blueprint is for hub-spoke environments that connect OCI to another cloud or
 external provider through private connectivity.
 

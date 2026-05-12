@@ -1,5 +1,7 @@
 # Standalone Three-Tier VCN With ZPR
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this deployment when a standalone three-tier VCN should also model Zero Packet
 Routing attributes for stronger network isolation.
 

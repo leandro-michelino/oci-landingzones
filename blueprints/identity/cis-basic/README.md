@@ -1,5 +1,7 @@
 # CIS Basic Identity
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this deployment when a tenancy needs a minimal CIS-aligned identity foundation
 without adopting a full CIS landing zone profile.
 

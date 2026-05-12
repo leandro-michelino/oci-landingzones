@@ -1,3 +1,4 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 locals {
   module_name = "operations-os-management"
   cis_level   = var.cis_level == null ? null : lower(var.cis_level)

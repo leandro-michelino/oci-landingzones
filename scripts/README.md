@@ -1,5 +1,7 @@
 # Scripts
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Project automation scripts live here.
 
 Planned scripts:

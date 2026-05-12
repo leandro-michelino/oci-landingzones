@@ -1,3 +1,4 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 variable "tenancy_ocid" {
   description = "OCI tenancy OCID."
   type        = string
@@ -26,6 +27,30 @@ variable "environment" {
 variable "region_key" {
   description = "Short OCI region key used in resource names."
   type        = string
+}
+
+variable "drg_label" {
+  description = "Short semantic label for the DRG."
+  type        = string
+  default     = "hub"
+}
+
+variable "drg_display_name" {
+  description = "Optional DRG display name override."
+  type        = string
+  default     = null
+}
+
+variable "vcn_attachments" {
+  description = "VCN attachments keyed by logical attachment name."
+  type = map(object({
+    vcn_id             = string
+    display_name       = optional(string)
+    vcn_route_table_id = optional(string)
+    vcn_route_type     = optional(string)
+    freeform_tags      = optional(map(string), {})
+  }))
+  default = {}
 }
 
 variable "cis_level" {

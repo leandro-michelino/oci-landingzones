@@ -1,3 +1,4 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_identity_group" "this" {
   for_each = local.groups
 

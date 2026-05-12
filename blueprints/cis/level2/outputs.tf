@@ -1,3 +1,4 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 output "blueprint_name" {
   description = "Blueprint identifier."
   value       = local.blueprint_name

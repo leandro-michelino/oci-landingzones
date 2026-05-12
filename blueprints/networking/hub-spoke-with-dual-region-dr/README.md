@@ -1,5 +1,7 @@
 # Hub-Spoke With Dual-Region DR
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this deployment when the landing zone needs a primary and secondary region network
 pattern for disaster recovery.
 

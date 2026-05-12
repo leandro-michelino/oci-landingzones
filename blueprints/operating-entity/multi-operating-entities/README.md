@@ -1,5 +1,7 @@
 # Multi-Operating-Entities Landing Zone
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 This blueprint is for customers that need repeatable onboarding for multiple business
 units, subsidiaries, agencies, or major application portfolios.
 

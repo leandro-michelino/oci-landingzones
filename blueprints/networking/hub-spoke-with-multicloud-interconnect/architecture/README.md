@@ -1,5 +1,7 @@
 # Architecture
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Expected editable diagram:
 
 ```text

@@ -1,11 +1,20 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 tenancy_ocid      = "ocid1.tenancy.oc1..example"
 current_user_ocid = "ocid1.user.oc1..example"
 region            = "eu-frankfurt-1"
 home_region       = "eu-frankfurt-1"
+# oci_config_profile = "DEFAULT"
+
+# Optional. Defaults to tenancy_ocid when omitted.
+# compartment_ocid = "ocid1.compartment.oc1..example"
 
 org         = "acme"
 environment = "dev"
 region_key  = "fra"
+
+# Keep disabled for low-cost topology smoke tests.
+enable_network_firewall = false
+firewall_subnet_key     = "firewall"
 defined_tags = {
   "acme-tags.Environment" = "dev"
   "acme-tags.ManagedBy"   = "terraform"

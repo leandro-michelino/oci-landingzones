@@ -1,5 +1,7 @@
 # OCI Naming Conventions
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 ## Format
 
 ```text

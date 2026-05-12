@@ -1,5 +1,7 @@
 # Deployment Guide
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 This guide describes the intended deployment sequence. Some Terraform resources
 are implemented and others remain planned; use this as the project execution
 map.

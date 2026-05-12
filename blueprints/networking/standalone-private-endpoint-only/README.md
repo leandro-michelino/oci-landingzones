@@ -1,5 +1,7 @@
 # Standalone Private Endpoint Only
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 Use this deployment when workloads should have no direct internet exposure and only
 communicate through private endpoints or private connectivity.
 

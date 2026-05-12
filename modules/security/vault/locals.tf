@@ -1,3 +1,4 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 locals {
   module_name = "security-vault"
   cis_level   = var.cis_level == null ? null : lower(var.cis_level)

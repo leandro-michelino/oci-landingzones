@@ -1,5 +1,7 @@
 # Full Stack Disaster Recovery Blueprint
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 This blueprint is for OCI Full Stack Disaster Recovery deployments where failover and
 switchover need to be orchestrated across the application stack, not just handled as
 separate infrastructure pieces.

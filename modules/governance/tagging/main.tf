@@ -1,3 +1,4 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_identity_tag_namespace" "this" {
   count = var.enable_tagging ? 1 : 0
 

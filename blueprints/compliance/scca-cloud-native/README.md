@@ -1,5 +1,7 @@
 # SCCA Cloud-Native Landing Zone
 
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
 This blueprint is for regulated cloud-native environments that need strong traffic
 inspection, centralized auditability, controlled ingress and egress, and a clear
 separation between platform, security, and workload responsibilities.
