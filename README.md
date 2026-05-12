@@ -209,6 +209,9 @@ The repository should standardize on:
 - Pre-commit hooks
 - GitHub Actions for plan, apply, and scheduled security scans
 
+Terraform `1.12.0` or later is required for the native OCI remote state backend
+used by the environment examples.
+
 ## Current Status
 
 Project bootstrap is in progress.
@@ -218,9 +221,12 @@ Completed:
 - Remote repository cloned.
 - Apache 2.0 license present.
 - Initial README drafted from the implementation blueprint.
+- Base repository structure created.
+- Initial guardrail and documentation files added.
 
-Next implementation work should create the base folder structure, add project
-guardrails, and then start with the core landing zone documentation and diagram.
+Next implementation work should create the first architecture diagram
+(`00-overview.excalidraw`) and then start the core landing zone Terraform
+skeleton.
 
 ## License
 

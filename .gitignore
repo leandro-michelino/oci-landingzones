@@ -1,0 +1,38 @@
+# macOS
+.DS_Store
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Secrets and local credentials
+*.pem
+*.key
+*.p12
+*.pfx
+.env
+.env.*
+*.auto.tfvars
+terraform.tfvars
+oci_config
+
+# Tool output
+.tflint.d/
+.checkov/
+checkov-report.*
+tfsec-report.*
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo

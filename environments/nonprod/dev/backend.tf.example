@@ -1,0 +1,14 @@
+# Copy to backend.tf and fill in values for the development state backend.
+# Do not commit backend.tf if it contains customer-specific identifiers.
+# Native OCI backend requires Terraform v1.12.0 or later.
+# Enable Object Storage bucket versioning for state recovery.
+
+terraform {
+  backend "oci" {
+    bucket    = "CHANGE-ME"
+    namespace = "CHANGE-ME"
+    region    = "eu-frankfurt-1"
+    key       = "nonprod/dev/terraform.tfstate"
+    workspace_key_prefix = "envs"
+  }
+}

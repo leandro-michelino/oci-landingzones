@@ -1,0 +1,32 @@
+tenancy_ocid       = "ocid1.tenancy.oc1..example"
+current_user_ocid  = "ocid1.user.oc1..example"
+region             = "eu-frankfurt-1"
+home_region        = "eu-frankfurt-1"
+
+org         = "acme"
+environment = "prod"
+region_key  = "fra"
+
+hub_vcn_cidr  = "10.0.0.0/16"
+hub_dmz_cidr  = "10.0.0.0/24"
+hub_fw_cidr   = "10.0.1.0/24"
+hub_mgmt_cidr = "10.0.2.0/24"
+
+cloud_guard_enabled      = true
+security_zones_enabled   = true
+vss_enabled              = true
+bastion_enabled          = true
+network_firewall_enabled = true
+
+budget_alert_email = "platform-alerts@example.com"
+budget_amount      = 50000
+log_retention_days = 90
+
+defined_tags = {
+  "acme-tags.Environment" = "prod"
+  "acme-tags.ManagedBy"   = "terraform"
+  "acme-tags.Owner"       = "platform-team"
+  "acme-tags.Project"     = "landingzone"
+}
+
+freeform_tags = {}
