@@ -7,19 +7,16 @@ blueprint folders keep their design scope, assumptions, and update guidance in a
 local `architecture/README.md` beside the blueprint README so the use case stays
 self-contained.
 
-Rendered review artifacts can be placed in `docs/architecture/exports/` when a
-customer or design review package needs them. Editable diagram sources and
-tool-specific work files should stay outside the reusable blueprint tree unless
-they become an approved repository artifact.
+Rendered review artifacts should be generated only when a customer or design
+review package needs them. Editable diagram sources and tool-specific work files
+should stay outside the reusable blueprint tree unless they become an approved
+repository artifact.
 
 ## Tracker
 
 | Architecture Area | Required By | Status |
 |---|---|---|
 | Blueprint-local `architecture/README.md` files | Core, CIS, identity, networking, operating entity, extension, compliance, data, disaster recovery, and industry folders | Architecture notes maintained |
-| `docs/architecture/exports/core-landing-zone.svg` | Core landing zone review artifact | Rendered SVG export available |
-| `docs/architecture/exports/hub-spoke-bastion.svg` | Hub-spoke with bastion review artifact | Rendered SVG export available |
-| `docs/architecture/exports/` | Shared rendered review artifacts | Keep rendered exports here and retain `.gitkeep` |
 
 ## Rules
 

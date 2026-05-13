@@ -59,7 +59,6 @@ RDP scattered around the estate.
 ## Architecture Artifacts
 
 - Architecture notes: `architecture/README.md`
-- Rendered review export: `../../../docs/architecture/exports/hub-spoke-bastion.svg`
 
 ## Notes
 
