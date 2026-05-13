@@ -1,18 +1,50 @@
-# Architecture
+# Zero Trust Architecture
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
+This planned compliance pattern shows identity-first access, ZPR policy scope, segmentation, inspected flows, private access, and security telemetry.
+
 Keep architecture notes in this folder. Add rendered artifacts only when a review package needs them.
 
-The diagram should show identity boundaries, ZPR policy scope, segmentation layers,
-inspected traffic paths, private access, and security telemetry.
+## ASCII Architecture
+
+```text
+Users, Services, and Workloads
+          |
+          v
++--------------------+
+| Identity Boundary  |
+| Domains, groups,   |
+| federation, MFA    |
++--------------------+
+          | policy context
+          v
++--------------------+      +--------------------+
+| ZPR Policy Scope   | ---> | App Segments       |
+| attributes, rules  |      | tier and workload  |
++--------------------+      +--------------------+
+          |                         |
+          v                         v
++--------------------+      +--------------------+
+| Inspection / DNS   |      | Telemetry          |
+| private paths only | ---> | logs, alarms, SIEM |
++--------------------+      +--------------------+
+```
 
 ## Why This Diagram Matters
 
-The diagram is the quick sanity check before anyone opens Terraform. It should make the
+The diagram is the quick sanity check before anyone opens Terraform. It should make
 traffic paths, ownership boundaries, dependencies, and operational hand-offs obvious
 enough that a customer, network engineer, security reviewer, and platform engineer can
 point at the same picture and agree on what is being built.
+
+## Review Checklist
+
+- Confirm the compartment, region, and ownership boundary shown here matches the tfvars.
+- Confirm all external dependencies are named before `terraform plan`.
+- Confirm ingress, egress, inspection, DNS, and private service paths are intentional.
+- Confirm logging, monitoring, IAM, and break-glass responsibilities are represented.
+- Keep rendered diagrams outside the blueprint unless they become the approved artifact.
 
 ## When To Update It
 

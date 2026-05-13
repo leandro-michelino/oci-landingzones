@@ -68,6 +68,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   security handling.
 - Initial documentation for naming conventions, deployment flow, CIS mapping,
   variables, architecture diagrams, runbooks, and the core blueprint.
+- Canonical ASCII architecture diagrams and review checklists for every
+  blueprint-local `architecture/README.md`.
 
 ### Changed
 

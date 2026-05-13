@@ -1,18 +1,46 @@
-# Architecture
+# Private Data Platform Architecture
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
+This planned data-platform pattern keeps producer and consumer access private while centralizing encryption, logging, service access, and network controls.
+
 Keep architecture notes in this folder. Add rendered artifacts only when a review package needs them.
 
-The diagram should show private endpoints, service gateway, data service access,
-encryption, logging, network path, and producer/consumer boundaries.
+## ASCII Architecture
+
+```text
+Producer Workloads                 Consumer Workloads
+        |                                  ^
+        v                                  |
++--------------------+      +--------------------------+
+| Private Endpoints  | ---> | Private Data Services    |
+| subnet and DNS     |      | database, analytics, obj |
++--------------------+      +--------------------------+
+        |                                  |
+        v                                  v
++--------------------+      +--------------------------+
+| Service Gateway    |      | Security and Operations  |
+| OCI private APIs   |      | KMS, logs, alarms        |
++--------------------+      +--------------------------+
+        |
+        v
+No public ingress path by default
+```
 
 ## Why This Diagram Matters
 
-The diagram is the quick sanity check before anyone opens Terraform. It should make the
+The diagram is the quick sanity check before anyone opens Terraform. It should make
 traffic paths, ownership boundaries, dependencies, and operational hand-offs obvious
 enough that a customer, network engineer, security reviewer, and platform engineer can
 point at the same picture and agree on what is being built.
+
+## Review Checklist
+
+- Confirm the compartment, region, and ownership boundary shown here matches the tfvars.
+- Confirm all external dependencies are named before `terraform plan`.
+- Confirm ingress, egress, inspection, DNS, and private service paths are intentional.
+- Confirm logging, monitoring, IAM, and break-glass responsibilities are represented.
+- Keep rendered diagrams outside the blueprint unless they become the approved artifact.
 
 ## When To Update It
 

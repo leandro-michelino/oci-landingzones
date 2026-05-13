@@ -1,18 +1,44 @@
-# Architecture
+# Multi-Operating-Entity Architecture
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
+This pattern repeats the operating-entity boundary for multiple business units while keeping shared services, network attachments, budgets, logging, and security operations consistent.
+
 Keep architecture notes in this folder. Add rendered artifacts only when a review package needs them.
 
-The diagram should show multiple operating entities, delegated IAM boundaries, shared
-services, network attachments, budgets, logging, and security operations.
+## ASCII Architecture
+
+```text
+OCI Tenancy
++-- Shared Platform Services
+|   +-- DNS, logging, monitoring, security operations
+|
++-- Operating Entity A
+|   +-- delegated IAM, budgets, workloads, network attach
+|
++-- Operating Entity B
+|   +-- delegated IAM, budgets, workloads, network attach
+|
++-- Operating Entity C
+    +-- delegated IAM, budgets, workloads, network attach
+
+Isolation boundary: entity-to-entity access requires explicit policy and routing approval
+```
 
 ## Why This Diagram Matters
 
-The diagram is the quick sanity check before anyone opens Terraform. It should make the
+The diagram is the quick sanity check before anyone opens Terraform. It should make
 traffic paths, ownership boundaries, dependencies, and operational hand-offs obvious
 enough that a customer, network engineer, security reviewer, and platform engineer can
 point at the same picture and agree on what is being built.
+
+## Review Checklist
+
+- Confirm the compartment, region, and ownership boundary shown here matches the tfvars.
+- Confirm all external dependencies are named before `terraform plan`.
+- Confirm ingress, egress, inspection, DNS, and private service paths are intentional.
+- Confirm logging, monitoring, IAM, and break-glass responsibilities are represented.
+- Keep rendered diagrams outside the blueprint unless they become the approved artifact.
 
 ## When To Update It
 

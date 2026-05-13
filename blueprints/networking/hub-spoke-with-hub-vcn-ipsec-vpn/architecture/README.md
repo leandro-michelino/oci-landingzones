@@ -1,18 +1,52 @@
-# Architecture
+# Hub-Spoke IPSec VPN Architecture
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
+This pattern connects on-premises CIDRs to the hub-spoke network through CPE, IPSec tunnels, DRG routing, spoke VCNs, and optional DNS forwarding.
+
 Keep architecture notes in this folder. Add rendered artifacts only when a review package needs them.
 
-The diagram should show CPE, IPSec tunnels, DRG, hub VCN, spoke VCNs, route propagation,
-on-premises CIDRs, and DNS forwarding if used.
+## ASCII Architecture
+
+```text
+On-premises Network
+      | CPE
+      v
++----------------------+
+| IPSec Tunnels        |
+| tunnel 1 / tunnel 2  |
++----------------------+
+      |
+      v
++----------------------+      +----------------------+
+| OCI DRG              | ---> | Hub VCN              |
+| route propagation    |      | shared services      |
++----------------------+      +----------------------+
+      |
+      v
++----------------------+
+| Spoke VCNs           |
+| workload tiers       |
++----------------------+
+      |
+      v
+DNS forwarding and security route review
+```
 
 ## Why This Diagram Matters
 
-The diagram is the quick sanity check before anyone opens Terraform. It should make the
+The diagram is the quick sanity check before anyone opens Terraform. It should make
 traffic paths, ownership boundaries, dependencies, and operational hand-offs obvious
 enough that a customer, network engineer, security reviewer, and platform engineer can
 point at the same picture and agree on what is being built.
+
+## Review Checklist
+
+- Confirm the compartment, region, and ownership boundary shown here matches the tfvars.
+- Confirm all external dependencies are named before `terraform plan`.
+- Confirm ingress, egress, inspection, DNS, and private service paths are intentional.
+- Confirm logging, monitoring, IAM, and break-glass responsibilities are represented.
+- Keep rendered diagrams outside the blueprint unless they become the approved artifact.
 
 ## When To Update It
 

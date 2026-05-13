@@ -51,7 +51,9 @@ cd blueprints/cis/level2
 
 Each deployable blueprint folder should be readable on its own. Review the local
 `README.md` and `architecture/README.md` before planning or applying that
-blueprint.
+blueprint. The architecture README contains the canonical ASCII diagram for the
+pattern and the review checklist for ownership, dependency, traffic, DNS, IAM,
+logging, and monitoring assumptions.
 
 Use `docs/DEPLOYMENT-PATTERN-CATALOG.md` as the selection menu before choosing
 a blueprint. The catalog includes core, CIS, identity, operating entity,
@@ -195,7 +197,7 @@ Implemented module order:
 
 Choose one networking blueprint and deploy it after core.
 Each networking deployment folder has a local README and `architecture/` folder
-with the expected architecture notes and review artifact guidance.
+with the expected ASCII architecture notes and review artifact guidance.
 
 Networking blueprints can also be used directly against an existing workload
 compartment. In that mode, set `compartment_ocid` to the target compartment.

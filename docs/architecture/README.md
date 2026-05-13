@@ -3,9 +3,9 @@
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 Architecture intent lives close to the Terraform that implements it. Deployable
-blueprint folders keep their design scope, assumptions, and update guidance in a
-local `architecture/README.md` beside the blueprint README so the use case stays
-self-contained.
+blueprint folders keep their design scope, assumptions, ASCII diagram, review
+checklist, and update guidance in a local `architecture/README.md` beside the
+blueprint README so the use case stays self-contained.
 
 Rendered review artifacts should be generated only when a customer or design
 review package needs them. Editable diagram sources and tool-specific work files
@@ -16,12 +16,14 @@ repository artifact.
 
 | Architecture Area | Required By | Status |
 |---|---|---|
-| Blueprint-local `architecture/README.md` files | Core, CIS, identity, networking, operating entity, extension, compliance, data, disaster recovery, and industry folders | Architecture notes maintained |
+| Blueprint-local `architecture/README.md` files | Core, CIS, identity, networking, operating entity, extension, compliance, data, disaster recovery, and industry folders | ASCII architecture notes maintained |
 
 ## Rules
 
 - Every deployable blueprint keeps architecture notes in its local
   `architecture/` folder.
+- Every blueprint-local architecture README includes an `## ASCII Architecture`
+  section with the main components and flow in a fenced `text` block.
 - Draft, detailed LLD, professional, or customer-specific variants should be
   promoted into the canonical artifact or kept outside the reusable blueprint
   tree.
