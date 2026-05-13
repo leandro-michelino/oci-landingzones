@@ -18,7 +18,6 @@ Creates a hub-spoke shared services network and private DNS view that can serve 
 | Purpose | Creates a hub-spoke shared services network and private DNS view that can serve multiple tenants or workload groups. |
 | Terraform components | `network`, `shared_dns` |
 | Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
-| Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `hub_vcn_id`, `spoke_vcn_ids`, `private_view_id`, `private_zone_ids` |
 
 
 ## ASCII Architecture
@@ -86,5 +85,4 @@ These notes expand the diagram with the design details that usually matter durin
 - Confirm the described traffic path is the path you want in OCI before apply.
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
-- Confirm `terraform output` will expose the hand-off values expected by downstream teams: `blueprint_name`, `name_prefix`, `resource_ids`, `hub_vcn_id`, `spoke_vcn_ids`, `private_view_id`, `private_zone_ids`.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.

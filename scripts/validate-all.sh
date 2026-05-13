@@ -4,6 +4,9 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
+source "$REPO_ROOT/scripts/terraform-env.sh"
+terraform_env_export_common
+
 export ANSIBLE_LOCAL_TEMP="${ANSIBLE_LOCAL_TEMP:-${TMPDIR:-/tmp}/ansible-local}"
 export ANSIBLE_REMOTE_TEMP="${ANSIBLE_REMOTE_TEMP:-${ANSIBLE_LOCAL_TEMP}/remote}"
 mkdir -p "$ANSIBLE_LOCAL_TEMP" "$ANSIBLE_REMOTE_TEMP"
@@ -22,6 +25,8 @@ cleanup_generated_artifacts() {
 }
 
 trap cleanup_generated_artifacts EXIT
+
+"$REPO_ROOT/scripts/check-repo-contracts.sh"
 
 if command -v ansible-playbook >/dev/null 2>&1 && [[ "${VALIDATE_ALL_SHELL_FALLBACK:-0}" != "1" ]]; then
   echo "==> ansible-playbook ansible/playbooks/validate.yml"

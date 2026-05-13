@@ -16,7 +16,6 @@ Deploys an Oracle Analytics Cloud instance with optional private access channel.
 | Purpose | Deploys an Oracle Analytics Cloud instance with optional private access channel. |
 | Terraform components | `oci_analytics_analytics_instance.this`, `oci_analytics_analytics_instance_private_access_channel.this` |
 | Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic or control flow for this exact deployment. |
-| Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `analytics_instance_id`, `private_access_channel_id` |
 
 ## ASCII Architecture
 
@@ -74,5 +73,4 @@ Deploys an Oracle Analytics Cloud instance with optional private access channel.
 - Confirm the described traffic or control path is the path you want in OCI before apply.
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
-- Confirm `terraform output` will expose the hand-off values expected by downstream teams: `blueprint_name`, `name_prefix`, `resource_ids`, `analytics_instance_id`, `private_access_channel_id`.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.

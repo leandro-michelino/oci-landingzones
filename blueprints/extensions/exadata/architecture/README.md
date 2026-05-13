@@ -18,7 +18,6 @@ Creates OCI Cloud Exadata Infrastructure in a selected availability domain for d
 | Purpose | Creates OCI Cloud Exadata Infrastructure in a selected availability domain for database platform capacity. |
 | Terraform components | `oci_database_cloud_exadata_infrastructure.this` |
 | Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
-| Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `cloud_exadata_infrastructure_id` |
 
 
 ## ASCII Architecture
@@ -82,5 +81,4 @@ These notes expand the diagram with the design details that usually matter durin
 - Confirm the described traffic path is the path you want in OCI before apply.
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
-- Confirm `terraform output` will expose the hand-off values expected by downstream teams: `blueprint_name`, `name_prefix`, `resource_ids`, `cloud_exadata_infrastructure_id`.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.

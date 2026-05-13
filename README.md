@@ -185,7 +185,7 @@ The longer walkthrough lives in `docs/DEPLOYMENT-GUIDE.md`.
 | Extensions | Optional OKE, WAF, Exadata, API Gateway, and Streaming blueprints. |
 | Compliance and industry | CIS, Zero Trust, SCCA-style, private data platform, FSDR, and telco cloud-native shapes. |
 | Automation | Terraform for infrastructure and Ansible for local plan/apply/destroy orchestration. |
-| Documentation | Each deployment has its own README, detailed ASCII architecture, and TF + Ansible output section. |
+| Documentation | Each deployment has its own README, detailed ASCII architecture, and local TF + Ansible workflow notes. |
 
 ## Repo Map
 
@@ -219,7 +219,7 @@ Every deployment README now follows the same operator-friendly shape:
 
 | Section | What You Should Get From It |
 |---|---|
-| At A Glance | The quick fit, Terraform shape, key decisions, outputs, and runner path. |
+| At A Glance | The quick fit, Terraform shape, key decisions, and runner path. |
 | What This Deploys | The actual modules, resources, or data sources wired in `main.tf`. |
 | Inputs To Decide | Base tenancy inputs, deployment-specific choices, and enable flags. |
 | Outputs And Hand-Off | The named values another blueprint, runbook, or customer note can consume. |
@@ -249,7 +249,7 @@ blueprints/<family>/<deployment>/
 
 This matters because every architecture is reviewable and runnable from its own folder. The
 docs are not a shared generic diagram pasted everywhere; each architecture page reflects
-that folder's Terraform components, request flow, outputs, and local Ansible workflow.
+that folder's Terraform components, request flow, trust boundaries, and local Ansible workflow.
 
 ## Architecture Experience
 
@@ -263,9 +263,8 @@ Each architecture page includes:
 | Deployment purpose | Plain-language reason this blueprint exists. |
 | ASCII architecture | Detailed resource, boundary, and flow view in plain text. |
 | Terraform components | Real modules/resources wired in `main.tf`. |
-| Request and deployment flow | How inputs move into resources and outputs. |
+| Request and deployment flow | How operator intent moves into the Terraform resource graph. |
 | Detailed architecture notes | Design-review detail for dependencies, traffic paths, ownership, and hand-offs. |
-| State, inputs, and outputs | What comes from tfvars, what lands in state, and what gets handed off. |
 | Operational boundaries | Things to check before plan/apply/destroy. |
 | Review checklist | What to inspect before trusting the deployment. |
 
@@ -290,7 +289,7 @@ terraform init / validate / plan
 ansible/plan.yml or guarded ansible/apply.yml
   |
   v
-terraform outputs and Ansible recap become the hand-off
+reviewed plan/apply result becomes the hand-off
 ```
 
 Apply and destroy are guarded:
@@ -300,8 +299,8 @@ CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
-Each architecture page now uses the space for deeper design notes instead of long command
-output examples, while the deployment README keeps the operator workflow close at hand.
+Each architecture page uses the space for deeper design notes instead of repeated state,
+input, or output blocks, while the deployment README keeps the operator workflow close at hand.
 
 ## CIS Profiles
 

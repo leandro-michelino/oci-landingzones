@@ -18,6 +18,10 @@
 
 - name: Run repository validation
   block:
+    - name: Run repository contract guard
+      ansible.builtin.command: "{{ validation_repo_root }}/scripts/check-repo-contracts.sh"
+      changed_when: false
+
     - name: Run terraform format check
       ansible.builtin.command: terraform fmt -check -recursive
       args:
@@ -175,10 +179,7 @@
       args:
         chdir: "{{ item }}"
       changed_when: false
-      environment:
-        CHECKPOINT_DISABLE: "1"
-        TF_IN_AUTOMATION: "true"
-        TF_PLUGIN_CACHE_DIR: "{{ validation_terraform_plugin_cache_dir }}"
+      environment: "{{ validation_terraform_command_environment }}"
       async: "{{ validation_terraform_command_timeout_seconds }}"
       poll: "{{ validation_terraform_command_poll_seconds }}"
       loop: "{{ validation_terraform_directories | sort }}"
@@ -190,10 +191,7 @@
       args:
         chdir: "{{ item }}"
       changed_when: false
-      environment:
-        CHECKPOINT_DISABLE: "1"
-        TF_IN_AUTOMATION: "true"
-        TF_PLUGIN_CACHE_DIR: "{{ validation_terraform_plugin_cache_dir }}"
+      environment: "{{ validation_terraform_command_environment }}"
       async: "{{ validation_terraform_command_timeout_seconds }}"
       poll: "{{ validation_terraform_command_poll_seconds }}"
       loop: "{{ validation_terraform_directories | sort }}"
@@ -226,6 +224,7 @@
       args:
         chdir: "{{ validation_repo_root }}"
       changed_when: false
+      environment: "{{ validation_ansible_command_environment }}"
       when: validation_available_tools["ansible-lint"] | default(false)
 
     - name: Run Ansible playbook syntax checks
@@ -233,6 +232,7 @@
       args:
         chdir: "{{ validation_repo_root }}"
       changed_when: false
+      environment: "{{ validation_ansible_command_environment }}"
       loop: "{{ validation_playbooks }}"
 
     - name: Find blueprint-local Ansible playbooks
@@ -283,6 +283,7 @@
       args:
         chdir: "{{ validation_repo_root }}"
       changed_when: false
+      environment: "{{ validation_ansible_command_environment }}"
       loop: "{{ validation_blueprint_ansible_playbook_paths }}"
       loop_control:
         label: "{{ item | regex_replace('^' ~ validation_repo_root ~ '/', '') }}"

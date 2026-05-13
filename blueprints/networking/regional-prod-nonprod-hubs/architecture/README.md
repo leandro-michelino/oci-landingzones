@@ -18,7 +18,6 @@ Creates separate prod and nonprod hub-spoke networks in the same region with dis
 | Purpose | Creates separate prod and nonprod hub-spoke networks in the same region with distinct CIDR spaces and environment tags. |
 | Terraform components | `prod_network`, `nonprod_network` |
 | Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
-| Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `prod_hub_vcn_id`, `nonprod_hub_vcn_id`, `prod_drg_id`, `nonprod_drg_id` |
 
 
 ## ASCII Architecture
@@ -85,5 +84,4 @@ These notes expand the diagram with the design details that usually matter durin
 - Confirm the described traffic path is the path you want in OCI before apply.
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
-- Confirm `terraform output` will expose the hand-off values expected by downstream teams: `blueprint_name`, `name_prefix`, `resource_ids`, `prod_hub_vcn_id`, `nonprod_hub_vcn_id`, `prod_drg_id`, `nonprod_drg_id`.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.

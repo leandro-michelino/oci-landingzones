@@ -18,7 +18,6 @@ Creates one or more OCI IAM identity domains with optional replica regions from 
 | Purpose | Creates one or more OCI IAM identity domains with optional replica regions from a structured identity domain map. |
 | Terraform components | `oci_identity_domain.this`, `oci_identity_domain_replication_to_region.replicas` |
 | Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
-| Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `identity_domain_ids`, `identity_domain_urls`, `replica_region_ids` |
 
 
 ## ASCII Architecture
@@ -83,5 +82,4 @@ These notes expand the diagram with the design details that usually matter durin
 - Confirm the described traffic path is the path you want in OCI before apply.
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
-- Confirm `terraform output` will expose the hand-off values expected by downstream teams: `blueprint_name`, `name_prefix`, `resource_ids`, `identity_domain_ids`, `identity_domain_urls`, `replica_region_ids`.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.

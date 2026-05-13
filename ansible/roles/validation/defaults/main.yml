@@ -4,11 +4,39 @@ validation_repo_root: "{{ playbook_dir }}/../.."
 validation_blueprint_root: "{{ validation_repo_root }}/blueprints"
 validation_blueprint_roots:
   - "{{ validation_blueprint_root }}"
+validation_ansible_config: "{{ validation_repo_root }}/ansible/ansible.cfg"
+validation_ansible_command_environment:
+  ANSIBLE_CONFIG: "{{ validation_ansible_config }}"
 validation_terraform_plugin_cache_dir: >-
   {{
     lookup('env', 'TF_PLUGIN_CACHE_DIR') |
     default(lookup('env', 'HOME') ~ '/.terraform.d/plugin-cache', true)
   }}
+validation_terraform_godebug: "{{ lookup('env', 'GODEBUG') | default('', true) }}"
+validation_terraform_allow_legacy_x509_cn: >-
+  {{
+    (
+      lookup('env', 'TERRAFORM_ALLOW_LEGACY_X509_CN') |
+      default(lookup('env', 'TF_ALLOW_LEGACY_X509_CN'), true) |
+      default('false', true)
+    ) | bool
+  }}
+validation_terraform_godebug_effective: >-
+  {{
+    (
+      validation_terraform_allow_legacy_x509_cn and
+      'x509ignoreCN=0' not in validation_terraform_godebug
+    ) | ternary(
+      ((validation_terraform_godebug | length > 0) |
+        ternary(validation_terraform_godebug ~ ',x509ignoreCN=0', 'x509ignoreCN=0')),
+      validation_terraform_godebug
+    )
+  }}
+validation_terraform_command_environment:
+  CHECKPOINT_DISABLE: "1"
+  TF_IN_AUTOMATION: "true"
+  TF_PLUGIN_CACHE_DIR: "{{ validation_terraform_plugin_cache_dir }}"
+  GODEBUG: "{{ validation_terraform_godebug_effective }}"
 validation_terraform_command_timeout_seconds: 180
 validation_terraform_command_poll_seconds: 5
 

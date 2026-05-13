@@ -16,7 +16,6 @@ Deploys an Oracle Integration Cloud instance with optional private outbound conn
 | Purpose | Deploys an Oracle Integration Cloud instance with optional private outbound connection. |
 | Terraform components | `oci_integration_integration_instance.this`, `oci_integration_private_endpoint_outbound_connection.this` |
 | Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic or control flow for this exact deployment. |
-| Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `integration_instance_id`, `outbound_connection_id` |
 
 ## ASCII Architecture
 
@@ -74,5 +73,4 @@ Deploys an Oracle Integration Cloud instance with optional private outbound conn
 - Confirm the described traffic or control path is the path you want in OCI before apply.
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
-- Confirm `terraform output` will expose the hand-off values expected by downstream teams: `blueprint_name`, `name_prefix`, `resource_ids`, `integration_instance_id`, `outbound_connection_id`.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.

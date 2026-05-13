@@ -10,16 +10,33 @@ flows. Pattern-specific design checks live in each blueprint's local
 
 1. Confirm the working tree only contains intended changes.
 2. Run `./scripts/validate-all.sh` from the repository root.
-3. Review Terraform fmt/init/validate output for failed blueprint directories.
-4. Review Ansible syntax-check output for shared and blueprint-local playbooks.
-5. Confirm generated artifacts were cleaned:
+3. Fix any repository contract guard failures before investigating slower
+   Terraform or Ansible failures.
+4. Review Terraform fmt/init/validate output for failed blueprint directories.
+5. Review Ansible syntax-check output for shared and blueprint-local playbooks.
+6. Confirm generated artifacts were cleaned:
    - `.terraform/`
    - `.terraform.lock.hcl`
    - `terraform.tfstate*`
    - `tfplan` and `*.tfplan`
    - `.DS_Store`
-6. Re-run validation after fixing any Terraform, Ansible, README, or ASCII
+7. Re-run validation after fixing any Terraform, Ansible, README, or ASCII
    architecture contract failures.
+
+### Terraform Registry TLS Behind Corporate Proxies
+
+Prefer installing the corporate root CA so Terraform can verify
+`registry.terraform.io` normally. If a managed proxy presents a legacy
+Common Name-only certificate and Terraform fails with an `x509` standards
+compliance error, use the explicit compatibility switch:
+
+```bash
+TERRAFORM_ALLOW_LEGACY_X509_CN=true ./scripts/validate-all.sh
+```
+
+The same switch is honored by the Ansible Terraform runner for
+plan/apply/destroy. It sets `GODEBUG=x509ignoreCN=0` only for Terraform
+commands launched through the repository scripts or Ansible roles.
 
 ## Add Or Change A Blueprint
 
@@ -32,8 +49,9 @@ flows. Pattern-specific design checks live in each blueprint's local
    components, deployment flow, architecture notes, and review checklist.
 5. Add or update local `ansible/plan.yml`, `ansible/apply.yml`, and
    `ansible/destroy.yml` when the blueprint is deployable.
-6. Run `./scripts/validate-all.sh`.
-7. Update `docs/DEPLOYMENT-PATTERN-CATALOG.md` and the root `README.md` when
+6. Run `./scripts/check-repo-contracts.sh` for a fast contract check.
+7. Run `./scripts/validate-all.sh`.
+8. Update `docs/DEPLOYMENT-PATTERN-CATALOG.md` and the root `README.md` when
    the blueprint should be visible in the deployment menu.
 
 ## Clean Generated Files

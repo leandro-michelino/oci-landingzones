@@ -18,7 +18,6 @@ Creates multiple operating entity compartment trees, shared IAM groups, and poli
 | Purpose | Creates multiple operating entity compartment trees, shared IAM groups, and policies from a single deployment input. |
 | Terraform components | `entity_compartments`, `groups`, `policies` |
 | Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
-| Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `entity_compartment_ids`, `entity_compartment_names`, `entity_group_ids`, `entity_group_names`, `entity_policy_ids`, ... |
 
 
 ## ASCII Architecture
@@ -87,5 +86,4 @@ These notes expand the diagram with the design details that usually matter durin
 - Confirm the described traffic path is the path you want in OCI before apply.
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
-- Confirm `terraform output` will expose the hand-off values expected by downstream teams: `blueprint_name`, `name_prefix`, `resource_ids`, `entity_compartment_ids`, `entity_compartment_names`, `entity_group_ids`, `entity_group_names`, `entity_policy_ids`, `entity_policy_statements`.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.

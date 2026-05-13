@@ -27,21 +27,31 @@ Local validation can create `.terraform/`, `.terraform.lock.hcl`, plans, and
 state files in many blueprint folders. They are intentionally ignored and should
 be removed from the workspace before committing.
 
-Use the Ansible-backed validation entry point before commits:
+Use the validation entry point before commits:
 
 ```bash
 ./scripts/validate-all.sh
 ```
 
-This auto-discovers Terraform blueprints under `blueprints/`,
-validates them without a remote backend, runs Ansible syntax checks, and cleans
-generated Terraform artifacts, plan files, and `.DS_Store` files even when a
-validation step fails. Blueprint
-folders with scaffold markers now fail validation, because every architecture is
-expected to have real Terraform wiring. Blueprint-local Ansible playbooks are
-syntax-checked for every
-architecture folder. The Ansible role uses a local Terraform plugin cache and a
-bounded timeout per Terraform command so repeated checks stay predictable.
+This first runs a fast repository contract guard, then auto-discovers Terraform
+blueprints under `blueprints/`, validates them without a remote backend, runs
+Ansible syntax checks, and cleans generated Terraform artifacts, plan files, and
+`.DS_Store` files even when a validation step fails. Blueprint folders with
+scaffold markers fail validation, because every architecture is expected to have
+real Terraform wiring. Blueprint-local Ansible playbooks are syntax-checked for
+every architecture folder. The Ansible role uses a local Terraform plugin cache
+and a bounded timeout per Terraform command so repeated checks stay predictable.
+
+For quick feedback while editing docs or blueprint wrappers, run only the
+contract guard:
+
+```bash
+./scripts/check-repo-contracts.sh
+```
+
+It blocks repeated documentation fragments, missing blueprint files, and local
+Ansible runners that drift away from their Terraform working directory or
+action.
 
 The default Ansible plan artifact is `tfplan.tfplan`. It is ignored and removed
 by validation cleanup, along with older `tfplan` artifacts from previous runs.

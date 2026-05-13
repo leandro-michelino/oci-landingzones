@@ -14,3 +14,28 @@ terraform_plugin_cache_dir: >-
     lookup('env', 'TF_PLUGIN_CACHE_DIR') |
     default(lookup('env', 'HOME') ~ '/.terraform.d/plugin-cache', true)
   }}
+terraform_godebug: "{{ lookup('env', 'GODEBUG') | default('', true) }}"
+terraform_allow_legacy_x509_cn: >-
+  {{
+    (
+      lookup('env', 'TERRAFORM_ALLOW_LEGACY_X509_CN') |
+      default(lookup('env', 'TF_ALLOW_LEGACY_X509_CN'), true) |
+      default('false', true)
+    ) | bool
+  }}
+terraform_godebug_effective: >-
+  {{
+    (
+      terraform_allow_legacy_x509_cn and
+      'x509ignoreCN=0' not in terraform_godebug
+    ) | ternary(
+      ((terraform_godebug | length > 0) |
+        ternary(terraform_godebug ~ ',x509ignoreCN=0', 'x509ignoreCN=0')),
+      terraform_godebug
+    )
+  }}
+terraform_command_environment:
+  CHECKPOINT_DISABLE: "1"
+  TF_IN_AUTOMATION: "true"
+  TF_PLUGIN_CACHE_DIR: "{{ terraform_plugin_cache_dir }}"
+  GODEBUG: "{{ terraform_godebug_effective }}"

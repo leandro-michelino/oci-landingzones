@@ -15,3 +15,11 @@ repos:
     hooks:
       - id: terraform_fmt
       - id: terraform_validate
+
+  - repo: local
+    hooks:
+      - id: landingzone-contracts
+        name: landing zone repository contracts
+        entry: scripts/check-repo-contracts.sh
+        language: script
+        pass_filenames: false

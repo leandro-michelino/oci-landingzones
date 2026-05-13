@@ -16,6 +16,9 @@ if [[ "${CONFIRM_DESTROY:-}" != "true" ]]; then
 fi
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$REPO_ROOT/scripts/terraform-env.sh"
+terraform_env_export_common
+
 TERRAFORM_WORKING_DIR="${TERRAFORM_WORKING_DIR:-$PWD}"
 LANDINGZONE_ENVIRONMENT="${LANDINGZONE_ENVIRONMENT:-dev}"
 ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-$REPO_ROOT/ansible/inventories/$LANDINGZONE_ENVIRONMENT/hosts.yml}"

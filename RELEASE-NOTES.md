@@ -13,6 +13,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Repository-level ASCII architecture index under `docs/architecture/`.
 - Text-first implementation roadmap under `docs/ROADMAP.md`.
 - Validation contract notes in `tests/README.md`.
+- Fast repository contract guard for repeated documentation fragments,
+  blueprint file completeness, and blueprint-local Ansible runner wiring.
 
 ### Changed
 
@@ -26,6 +28,11 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   metadata in both Ansible and shell fallback paths.
 - Kept `terraform_tflint` out of the default pre-commit hook set so optional
   scanner availability stays consistent with the validation script.
+- Wired shared Terraform environment handling into validation and destroy
+  scripts so local and Ansible Terraform commands use the same automation,
+  plugin-cache, and guarded TLS compatibility settings.
+- Injected the repository Ansible configuration into validation syntax checks
+  so blueprint-local runners resolve shared roles consistently.
 
 ### Removed
 
@@ -38,7 +45,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Replaced every deployment-local `architecture/README.md` with a real
   deployment-specific ASCII architecture that shows the OCI components,
   dependency order, traffic flow, trust boundaries, Terraform components, and
-  Terraform + Ansible output shape for that exact blueprint.
+  local Terraform + Ansible workflow for that exact blueprint.
 - Removed the previous generic file-contract architecture narrative from the
   architecture folders so each folder now documents what its deployment
   actually builds or references.
@@ -59,8 +66,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - OCI OS Management Hub module resources for managed instance groups and
   scheduled jobs.
 - Detailed, deployment-specific ASCII architecture pages for every blueprint,
-  including Terraform components, request flow, state/input/output contracts,
-  architecture review notes, and review checklists.
+  including Terraform components, request flow, architecture review notes, and
+  review checklists.
 - Operator-friendly deployment READMEs for all 37 blueprint folders, including
   At A Glance summaries, input decision tables, output hand-off tables,
   workflow commands, deployment order, review checks, and validation guidance.
@@ -76,7 +83,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Updated validation guardrails so every Terraform blueprint must keep its
   deployment README, architecture README, At A Glance sections, ASCII design,
   Terraform components, request flow, review checklist, and Terraform + Ansible
-  output sections.
+  workflow sections.
 - Expanded the deployment pattern catalog and root README language to make the
   repository easier to scan without losing the engineering details.
 
@@ -100,7 +107,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Dedicated opt-in CIS Level 1 and Level 2 landing zone blueprint folders.
 - CIS Level 1 and Level 2 wrappers wired to the implemented core/IAM
   foundation while remaining opt-in.
-- Repository cleanup guidance for generated Terraform state, lock, plan, cache,
+- Repository cleanup guidance for generated state, lock, plan, cache,
   and local test artifacts.
 - Phase 1 core implementation for landing zone compartments and governance
   tagging.

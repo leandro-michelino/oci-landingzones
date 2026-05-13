@@ -18,6 +18,11 @@ architecture for a deployable pattern still lives beside that pattern at
 |      v                                                                         |
 |  scripts/validate-all.sh                                                       |
 |      |                                                                         |
+|      +--> scripts/check-repo-contracts.sh                                      |
+|      |       |                                                                 |
+|      |       +--> forbidden repeated doc fragment checks                      |
+|      |       `--> blueprint TF + Ansible file contract checks                 |
+|      |                                                                         |
 |      +--> ansible/playbooks/validate.yml                                       |
 |      |       |                                                                 |
 |      |       +--> Terraform fmt, init -backend=false, validate                 |
@@ -56,7 +61,7 @@ Each deployable blueprint must include:
 | Artifact | Purpose |
 |---|---|
 | `README.md` | Operator-facing deployment purpose, inputs, outputs, workflow, validation, and review notes. |
-| `architecture/README.md` | Detailed ASCII architecture, Terraform components, request flow, design notes, and review checklist. |
+| `architecture/README.md` | Detailed ASCII architecture, Terraform components, request flow, design notes, trust boundaries, and review checklist. |
 | `main.tf` | The Terraform composition that matches the documented architecture. |
 | `terraform.tfvars.example` | Safe input shape without real tenancy secrets or OCIDs. |
 | `ansible/plan.yml`, `ansible/apply.yml`, `ansible/destroy.yml` | Local orchestration entry points for the blueprint. |
@@ -95,4 +100,5 @@ terraform plan or ansible/plan.yml
 - Keep this file focused on repository-level structure.
 - Keep pattern-specific diagrams in the local blueprint architecture folder.
 - Run `./scripts/validate-all.sh` after adding or changing a blueprint; validation
-  checks that the blueprint README and ASCII architecture sections are present.
+  checks the blueprint file contract, Terraform, Ansible, README, and ASCII
+  architecture sections together.

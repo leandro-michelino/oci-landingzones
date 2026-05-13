@@ -16,7 +16,6 @@ Deploys a private OCI Generative AI endpoint pattern with optional archive bucke
 | Purpose | Deploys a private OCI Generative AI endpoint pattern with optional archive bucket and scoped IAM policy. |
 | Terraform components | `oci_generative_ai_generative_ai_private_endpoint.this`, `oci_objectstorage_bucket.archive`, `oci_identity_policy.access` |
 | Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic or control flow for this exact deployment. |
-| Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `private_endpoint_id`, `archive_bucket_name`, `access_policy_id` |
 
 ## ASCII Architecture
 
@@ -75,5 +74,4 @@ Deploys a private OCI Generative AI endpoint pattern with optional archive bucke
 - Confirm the described traffic or control path is the path you want in OCI before apply.
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
-- Confirm `terraform output` will expose the hand-off values expected by downstream teams: `blueprint_name`, `name_prefix`, `resource_ids`, `private_endpoint_id`, `archive_bucket_name`, `access_policy_id`.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.

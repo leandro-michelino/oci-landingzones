@@ -16,7 +16,6 @@ Deploys a regulated landing-zone control pack with IAM guardrail policy, budget 
 | Purpose | Deploys a regulated landing-zone control pack with IAM guardrail policy, budget alerting, and optional Data Safe target registration. |
 | Terraform components | `oci_identity_policy.guardrails`, `oci_budget_budget.this`, `oci_budget_alert_rule.this`, `oci_data_safe_target_database.this` |
 | Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic or control flow for this exact deployment. |
-| Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `guardrail_policy_id`, `budget_id`, `budget_alert_rule_id`, `data_safe_target_database_id` |
 
 ## ASCII Architecture
 
@@ -76,5 +75,4 @@ Deploys a regulated landing-zone control pack with IAM guardrail policy, budget 
 - Confirm the described traffic or control path is the path you want in OCI before apply.
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
-- Confirm `terraform output` will expose the hand-off values expected by downstream teams: `blueprint_name`, `name_prefix`, `resource_ids`, `guardrail_policy_id`, `budget_id`, `budget_alert_rule_id`, `data_safe_target_database_id`.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.

@@ -85,10 +85,7 @@
   args:
     chdir: "{{ terraform_working_dir }}"
   changed_when: false
-  environment:
-    CHECKPOINT_DISABLE: "1"
-    TF_IN_AUTOMATION: "true"
-    TF_PLUGIN_CACHE_DIR: "{{ terraform_plugin_cache_dir }}"
+  environment: "{{ terraform_command_environment }}"
   when: terraform_backend_enabled | bool
 
 - name: Terraform init without backend
@@ -102,10 +99,7 @@
   args:
     chdir: "{{ terraform_working_dir }}"
   changed_when: false
-  environment:
-    CHECKPOINT_DISABLE: "1"
-    TF_IN_AUTOMATION: "true"
-    TF_PLUGIN_CACHE_DIR: "{{ terraform_plugin_cache_dir }}"
+  environment: "{{ terraform_command_environment }}"
   when: not terraform_backend_enabled | bool
 
 - name: Terraform validate
@@ -113,10 +107,7 @@
   args:
     chdir: "{{ terraform_working_dir }}"
   changed_when: false
-  environment:
-    CHECKPOINT_DISABLE: "1"
-    TF_IN_AUTOMATION: "true"
-    TF_PLUGIN_CACHE_DIR: "{{ terraform_plugin_cache_dir }}"
+  environment: "{{ terraform_command_environment }}"
 
 - name: Terraform plan
   ansible.builtin.command:
@@ -129,10 +120,7 @@
   args:
     chdir: "{{ terraform_working_dir }}"
   changed_when: false
-  environment:
-    CHECKPOINT_DISABLE: "1"
-    TF_IN_AUTOMATION: "true"
-    TF_PLUGIN_CACHE_DIR: "{{ terraform_plugin_cache_dir }}"
+  environment: "{{ terraform_command_environment }}"
   when:
     - terraform_run_plan | bool
     - terraform_action_normalized in ["plan", "apply"]
@@ -148,10 +136,7 @@
   args:
     chdir: "{{ terraform_working_dir }}"
   changed_when: true
-  environment:
-    CHECKPOINT_DISABLE: "1"
-    TF_IN_AUTOMATION: "true"
-    TF_PLUGIN_CACHE_DIR: "{{ terraform_plugin_cache_dir }}"
+  environment: "{{ terraform_command_environment }}"
   when: terraform_action_normalized == "apply"
 
 - name: Terraform destroy
@@ -164,8 +149,5 @@
   args:
     chdir: "{{ terraform_working_dir }}"
   changed_when: true
-  environment:
-    CHECKPOINT_DISABLE: "1"
-    TF_IN_AUTOMATION: "true"
-    TF_PLUGIN_CACHE_DIR: "{{ terraform_plugin_cache_dir }}"
+  environment: "{{ terraform_command_environment }}"
   when: terraform_action_normalized == "destroy"
