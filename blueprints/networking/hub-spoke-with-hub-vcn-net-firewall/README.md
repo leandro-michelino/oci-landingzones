@@ -51,7 +51,7 @@ and external flows.
 ## Deployment Flow
 
 1. Deploy `blueprints/core`.
-2. Complete the architecture diagram with inspection paths.
+2. Complete the architecture notes with inspection paths.
 3. Confirm firewall policy ownership.
 4. Populate local tfvars.
 5. Run Terraform validation and plan.

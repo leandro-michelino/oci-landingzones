@@ -28,6 +28,7 @@ terraform.tfvars
 oci_config
 
 # Tool output
+.claude/
 .tflint.d/
 .checkov/
 checkov-report.*

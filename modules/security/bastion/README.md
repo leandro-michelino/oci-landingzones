@@ -24,7 +24,10 @@ This Terraform module creates an OCI Bastion target for private administrative a
 ## Usage Notes
 
 - Bastion is disabled unless explicitly enabled.
-- Restrict allowed client CIDRs and TTL values before production use.
+- `target_subnet_id` and a non-empty `client_cidr_block_allow_list` are required
+  when Bastion is enabled.
+- World-open client CIDRs (`0.0.0.0/0` and `::/0`) are rejected. Use approved
+  administrator source CIDRs and review TTL values before production use.
 
 ## Contract
 

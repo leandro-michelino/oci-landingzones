@@ -54,7 +54,7 @@ hub.
 ## Deployment Flow
 
 1. Deploy `blueprints/core`.
-2. Complete the local architecture diagram.
+2. Complete the local architecture notes.
 3. Confirm there is no required public ingress.
 4. Populate local tfvars.
 5. Run Terraform validation and plan.

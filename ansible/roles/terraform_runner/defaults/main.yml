@@ -1,6 +1,9 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
 terraform_working_dir: "{{ playbook_dir }}/../../blueprints/core"
+terraform_environment_dir: ""
+terraform_var_file: ""
+terraform_require_var_file: false
 terraform_plan_file: tfplan
 terraform_action: plan
 terraform_backend_enabled: false

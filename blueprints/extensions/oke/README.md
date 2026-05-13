@@ -54,7 +54,7 @@ up front.
 ## Deployment Flow
 
 1. Confirm subnet and security requirements.
-2. Complete the local architecture diagram.
+2. Complete the local architecture notes.
 3. Populate local ignored tfvars.
 4. Run Terraform validation and plan.
 5. Apply after platform and application teams review.

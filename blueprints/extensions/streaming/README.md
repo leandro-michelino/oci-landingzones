@@ -51,7 +51,7 @@ and consumer access, network paths, and retention choices made deliberately.
 ## Deployment Flow
 
 1. Confirm producer and consumer applications.
-2. Complete the local architecture diagram.
+2. Complete the local architecture notes.
 3. Populate local ignored tfvars.
 4. Run Terraform validation and plan.
 5. Apply after data retention and access rules are reviewed.

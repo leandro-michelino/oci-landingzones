@@ -4,6 +4,16 @@
   ansible.builtin.set_fact:
     terraform_action_normalized: "{{ terraform_action | lower }}"
     terraform_landingzone_environment: "{{ landingzone_environment | default('dev') | lower }}"
+    terraform_var_file_candidate: >-
+      {{
+        terraform_var_file |
+        default(
+          (terraform_environment_dir ~ '/terraform.tfvars')
+          if (terraform_environment_dir | default('') | length > 0)
+          else '',
+          true
+        )
+      }}
 
 - name: Validate Terraform action
   ansible.builtin.assert:
@@ -33,6 +43,31 @@
       - lookup('env', 'CONFIRM_DESTROY') == "true"
     fail_msg: "Refusing Terraform destroy without CONFIRM_DESTROY=true."
   when: terraform_action_normalized == "destroy"
+
+- name: Check optional Terraform variable file
+  ansible.builtin.stat:
+    path: "{{ terraform_var_file_candidate }}"
+  register: terraform_var_file_status
+  when: terraform_var_file_candidate | length > 0
+
+- name: Require Terraform variable file when configured
+  ansible.builtin.assert:
+    that:
+      - terraform_var_file_candidate | length > 0
+      - terraform_var_file_status is defined
+      - terraform_var_file_status.stat.exists | default(false)
+    fail_msg: "Terraform variable file was required but not found."
+  when: terraform_require_var_file | bool
+
+- name: Build Terraform variable file arguments
+  ansible.builtin.set_fact:
+    terraform_var_file_args: >-
+      {{
+        (
+          terraform_var_file_candidate | length > 0 and
+          terraform_var_file_status.stat.exists | default(false)
+        ) | ternary(['-var-file=' ~ terraform_var_file_candidate], [])
+      }}
 
 - name: Prepare Terraform plugin cache
   ansible.builtin.file:
@@ -85,12 +120,12 @@
 
 - name: Terraform plan
   ansible.builtin.command:
-    argv:
-      - terraform
-      - plan
-      - -input=false
-      - -no-color
-      - "-out={{ terraform_plan_file }}"
+    argv: >-
+      {{
+        ['terraform', 'plan', '-input=false', '-no-color'] +
+        terraform_var_file_args +
+        ['-out=' ~ terraform_plan_file]
+      }}
   args:
     chdir: "{{ terraform_working_dir }}"
   changed_when: false
@@ -121,12 +156,11 @@
 
 - name: Terraform destroy
   ansible.builtin.command:
-    argv:
-      - terraform
-      - destroy
-      - -auto-approve
-      - -input=false
-      - -no-color
+    argv: >-
+      {{
+        ['terraform', 'destroy', '-auto-approve', '-input=false', '-no-color'] +
+        terraform_var_file_args
+      }}
   args:
     chdir: "{{ terraform_working_dir }}"
   changed_when: true

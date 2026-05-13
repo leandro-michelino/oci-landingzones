@@ -3,13 +3,14 @@
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 This project creates Terraform and Ansible scaffolding first, then requires
-diagrams and documentation before scaffolds become deployable OCI resources.
-The goal is to keep infrastructure patterns explainable before they are applied.
+architecture notes and documentation before scaffolds become deployable OCI
+resources. The goal is to keep infrastructure patterns explainable before they
+are applied.
 
 ## Workflow
 
 1. Add or update Terraform and Ansible scaffold files.
-2. Create or update the relevant architecture diagram before real resources.
+2. Create or update the relevant `architecture/README.md` before real resources.
 3. Update the blueprint or module README.
 4. Implement Terraform in the smallest useful scope.
 5. Run local validation.
@@ -19,25 +20,27 @@ The goal is to keep infrastructure patterns explainable before they are applied.
 Run these checks before opening a pull request:
 
 ```bash
-terraform fmt -recursive
-pre-commit run --all-files
+./scripts/validate-all.sh
 ```
 
-When Terraform files are added, also run validation from the relevant blueprint
-directory:
+The validation helper delegates to Ansible when available. It runs Terraform
+formatting, discovers implemented blueprints, initializes and validates them
+without a backend, runs optional local linters when installed, checks Ansible
+playbook syntax, and removes generated Terraform artifacts.
+
+For a focused local check from a single blueprint directory:
 
 ```bash
 terraform init -backend=false
 terraform validate
-tflint --recursive
-checkov -d . --framework terraform --compact
 ```
 
 Generated Terraform folders, lock files, plans, state files, local tfvars, and
-`.codex-local/` test data are workstation-only artifacts. Clean them before
-committing so reviews stay focused on source, examples, and documentation.
+`.codex-local/` or `.claude/` workspace data are workstation-only artifacts.
+Clean them before committing so reviews stay focused on source, examples, and
+documentation.
 
-## Diagram Gate
+## Architecture Gate
 
 Do not add real OCI resources or apply Terraform for a blueprint until its local
 architecture notes describe the intended design, scope, and review assumptions.

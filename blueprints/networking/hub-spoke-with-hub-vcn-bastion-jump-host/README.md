@@ -50,7 +50,7 @@ RDP scattered around the estate.
 ## Deployment Flow
 
 1. Deploy `blueprints/core`.
-2. Complete the architecture diagram with admin paths.
+2. Complete the architecture notes with admin paths.
 3. Confirm allowed administrator networks.
 4. Populate local tfvars.
 5. Run Terraform validation and plan.
@@ -59,8 +59,11 @@ RDP scattered around the estate.
 ## Architecture Artifacts
 
 - Architecture notes: `architecture/README.md`
+- Rendered review export: `../../../docs/architecture/exports/hub-spoke-bastion.svg`
 
 ## Notes
 
 Prefer OCI Bastion when possible. If a compute jump host is required, document patching,
 hardening, and lifecycle ownership in this folder.
+OCI Bastion requires explicit approved administrator CIDRs; world-open client
+CIDRs are intentionally rejected by validation.

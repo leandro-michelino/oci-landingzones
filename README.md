@@ -155,7 +155,7 @@ Terraform artifacts afterward.
 
 - `docs/DEPLOYMENT-GUIDE.md` - deployment sequence and operating notes.
 - `docs/DEPLOYMENT-PATTERN-CATALOG.md` - blueprint catalog and selection notes.
-- `docs/architecture/` - shared architecture diagrams and diagram rules.
+- `docs/architecture/` - shared architecture rules and rendered review artifact location.
 - `docs/CIS-PROFILES.md` - CIS profile behavior.
 - `docs/ARCH-MAPPING-CIS.md` - CIS mapping notes.
 - `docs/NAMING-CONVENTIONS.md` - naming standard.
@@ -176,7 +176,7 @@ generated only when a review package needs one.
 
 Generated Terraform and local test files are intentionally ignored:
 `.terraform/`, `.terraform.lock.hcl`, `terraform.tfstate*`, `*.tfplan`,
-local `terraform.tfvars`, and `.codex-local/`.
+local `terraform.tfvars`, `.codex-local/`, and `.claude/`.
 
 The validation playbook cleans generated Terraform artifacts automatically. For
 manual cleanup:
@@ -185,7 +185,9 @@ manual cleanup:
 find . -name ".terraform" -type d -prune -exec rm -rf {} +
 find . -name ".terraform.lock.hcl" -type f -delete
 find . -name "terraform.tfstate*" -type f -delete
+find . -name ".DS_Store" -type f -delete
 rm -rf .codex-local
+rm -rf .claude
 ```
 
 ## Release Discipline

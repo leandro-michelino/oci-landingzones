@@ -68,7 +68,21 @@ variable "bastion_subnet_key" {
 variable "client_cidr_block_allow_list" {
   description = "Client CIDR blocks allowed to create bastion sessions."
   type        = list(string)
-  default     = ["0.0.0.0/0"]
+  default     = []
+
+  validation {
+    condition = (
+      !var.enable_bastion ||
+      (
+        length(var.client_cidr_block_allow_list) > 0 &&
+        alltrue([
+          for cidr in var.client_cidr_block_allow_list :
+          !contains(["0.0.0.0/0", "::/0"], cidr)
+        ])
+      )
+    )
+    error_message = "Set at least one specific client CIDR when enable_bastion is true; 0.0.0.0/0 and ::/0 are not allowed."
+  }
 }
 
 variable "max_session_ttl_in_seconds" {

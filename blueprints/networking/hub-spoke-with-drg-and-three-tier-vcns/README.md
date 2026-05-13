@@ -51,7 +51,7 @@ center. This is the base enterprise network shape for many OCI landing zones.
 ## Deployment Flow
 
 1. Deploy `blueprints/core`.
-2. Complete the architecture diagram for the hub, DRG, and spokes.
+2. Complete the architecture notes for the hub, DRG, and spokes.
 3. Confirm the customer IP plan has no overlaps.
 4. Populate local tfvars.
 5. Run Terraform validation and plan.

@@ -52,7 +52,7 @@ plans mature.
 ## Deployment Flow
 
 1. Deploy `blueprints/core`.
-2. Complete the architecture diagram with on-premises CIDRs and tunnel paths.
+2. Complete the architecture notes with on-premises CIDRs and tunnel paths.
 3. Confirm CPE details with the customer network team.
 4. Populate local tfvars without committing secrets.
 5. Run Terraform validation and plan.

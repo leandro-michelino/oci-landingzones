@@ -49,7 +49,7 @@ everything.
 ## Deployment Flow
 
 1. Deploy or identify `blueprints/core`.
-2. Complete the architecture diagram with clear ownership boundaries.
+2. Complete the architecture notes with clear ownership boundaries.
 3. Inventory existing VCNs and subnets.
 4. Populate local tfvars with existing OCIDs.
 5. Run Terraform validation and plan.

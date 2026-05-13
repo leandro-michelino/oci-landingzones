@@ -7,16 +7,9 @@ home_region        = "eu-frankfurt-1"
 org         = "acme"
 environment = "uat"
 region_key  = "fra"
-hub_vcn_cidr  = "10.20.0.0/16"
-hub_dmz_cidr  = "10.20.0.0/24"
-hub_fw_cidr   = "10.20.1.0/24"
-hub_mgmt_cidr = "10.20.2.0/24"
-
 cloud_guard_enabled      = true
 security_zones_enabled   = false
 vss_enabled              = true
-bastion_enabled          = true
-network_firewall_enabled = true
 
 # Enable only after approving the Security Zone recipe for this environment.
 # default_security_zone_recipe_id = "ocid1.securityzonesrecipe.oc1..example"
@@ -33,8 +26,6 @@ event_subscriptions = {
     endpoint = "platform-alerts@example.com"
   }
 }
-log_retention_days = 90
-
 defined_tags = {
   "acme-tags.Environment" = "uat"
   "acme-tags.ManagedBy"   = "terraform"

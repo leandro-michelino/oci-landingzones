@@ -47,7 +47,7 @@ the small-footprint way to bring ZPR thinking into a three-tier app.
 ## Deployment Flow
 
 1. Deploy `blueprints/core`.
-2. Complete the architecture diagram with ZPR attributes.
+2. Complete the architecture notes with ZPR attributes.
 3. Validate the tier communication matrix with the security team.
 4. Populate local tfvars.
 5. Run Terraform validation and plan.

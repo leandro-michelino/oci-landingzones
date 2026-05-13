@@ -48,7 +48,7 @@ sprawl.
 ## Deployment Flow
 
 1. Confirm that a new identity domain is required.
-2. Complete the architecture diagram.
+2. Complete the architecture notes.
 3. Populate local ignored tfvars.
 4. Run Terraform validation and plan.
 5. Apply after the identity ownership model is approved.

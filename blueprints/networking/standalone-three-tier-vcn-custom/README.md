@@ -53,7 +53,7 @@ opinions. CIDRs, routes, labels, and security rules can be made explicit here.
 ## Deployment Flow
 
 1. Deploy `blueprints/core`.
-2. Complete the local architecture diagram.
+2. Complete the local architecture notes.
 3. Confirm CIDRs with the customer network team.
 4. Populate a local ignored tfvars file.
 5. Run `terraform init`, `terraform validate`, and `terraform plan`.

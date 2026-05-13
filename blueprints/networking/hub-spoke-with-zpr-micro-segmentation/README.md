@@ -51,7 +51,7 @@ enough. ZPR lets the design talk about workload intent, not only IP ranges.
 ## Deployment Flow
 
 1. Deploy `blueprints/core`.
-2. Complete the architecture diagram with ZPR attributes and allowed flows.
+2. Complete the architecture notes with ZPR attributes and allowed flows.
 3. Review the communication matrix with application and security owners.
 4. Populate local tfvars.
 5. Run Terraform validation and plan.

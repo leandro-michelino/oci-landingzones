@@ -51,7 +51,7 @@ as an afterthought. Hybrid and multi-spoke designs need DNS paths drawn clearly.
 ## Deployment Flow
 
 1. Deploy `blueprints/core`.
-2. Complete the architecture diagram with DNS query paths.
+2. Complete the architecture notes with DNS query paths.
 3. Confirm domains and forwarding rules with DNS owners.
 4. Populate local tfvars.
 5. Run Terraform validation and plan.

@@ -48,7 +48,7 @@ plug into it instead of inventing a new one. This is the respectful brownfield o
 ## Deployment Flow
 
 1. Inventory existing identity domains and groups.
-2. Complete the architecture diagram with ownership boundaries.
+2. Complete the architecture notes with ownership boundaries.
 3. Confirm group mappings with the customer identity team.
 4. Populate local ignored tfvars.
 5. Run Terraform validation and plan.

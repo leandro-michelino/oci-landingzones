@@ -58,7 +58,7 @@ optional network attachment.
 
 1. Deploy `blueprints/core`.
 2. Choose or deploy the required networking blueprint.
-3. Complete or update the local architecture diagram.
+3. Complete or update the local architecture notes.
 4. Populate a local ignored `terraform.tfvars`.
 5. Run Terraform validation and plan.
 6. Apply after ownership and access scope are reviewed.

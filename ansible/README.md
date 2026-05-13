@@ -51,7 +51,9 @@ The shell helper delegates to this playbook when Ansible is installed:
 
 Terraform plan uses `terraform init -backend=false` by default so local checks do
 not require remote state. Pass `terraform_working_dir` to target a specific
-blueprint.
+blueprint. When `terraform_environment_dir` contains a local
+`terraform.tfvars`, the runner passes it to `terraform plan` and
+`terraform destroy`; committed `.tfvars.example` files are templates only.
 
 ```bash
 ANSIBLE_CONFIG=ansible/ansible.cfg \

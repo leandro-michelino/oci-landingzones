@@ -68,7 +68,7 @@ READMEs may define additional variables for local behavior.
 | `enable_network_firewall` | `bool` | For firewall hub-spoke | Creates OCI Network Firewall and policy resources. Disabled by default for low-cost smoke tests. |
 | `firewall_subnet_key` | `string` | For firewall hub-spoke | Hub subnet key where OCI Network Firewall is placed. |
 | `enable_bastion` | `bool` | For Bastion hub-spoke | Creates OCI Bastion in the hub. Disabled by default. |
-| `client_cidr_block_allow_list` | `list(string)` | For Bastion hub-spoke | Client CIDR blocks allowed to open bastion sessions. |
+| `client_cidr_block_allow_list` | `list(string)` | For Bastion hub-spoke | Client CIDR blocks allowed to open bastion sessions. Required when Bastion is enabled; world-open CIDRs are rejected. |
 | `enable_private_dns` | `bool` | For DNS blueprints | Creates private DNS view and zones. |
 | `private_zones` | `map(object)` | For DNS blueprints | Private DNS zones keyed by logical name. |
 | `attach_private_view_to_vcn_resolvers` | `bool` | For DNS blueprints | Attaches the created private DNS view to hub and spoke VCN resolvers. |
@@ -160,8 +160,5 @@ READMEs may define additional variables for local behavior.
 | `monitoring_enabled` | `bool` | No | Create Monitoring alarms and optional notification resources. Disabled by default. |
 | `monitoring_subscriptions` | `map(object)` | No | ONS subscriptions for Monitoring alarms; endpoints should stay in local ignored tfvars. |
 | `monitoring_alarms` | `map(object)` | No | OCI Monitoring alarms keyed by logical name. |
-| `bastion_enabled` | `bool` | No | Enable OCI Bastion resources where supported. |
-| `network_firewall_enabled` | `bool` | No | Enable OCI Network Firewall for supported blueprints. |
 | `budget_amount` | `number` | CIS wrappers | Optional default CIS budget threshold. |
 | `budget_alert_recipients` | `set(string)` | CIS wrappers | Email recipients for the default CIS budget alert rule. |
-| `log_retention_days` | `number` | No | Retention period for configured logs. |

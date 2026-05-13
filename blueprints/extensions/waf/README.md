@@ -53,7 +53,7 @@ app. WAF belongs in the design when internet exposure is intentional and needs p
 ## Deployment Flow
 
 1. Confirm public application endpoint and DNS ownership.
-2. Complete the local architecture diagram.
+2. Complete the local architecture notes.
 3. Populate local ignored tfvars.
 4. Run Terraform validation and plan.
 5. Apply after WAF policy and origin behavior are reviewed.

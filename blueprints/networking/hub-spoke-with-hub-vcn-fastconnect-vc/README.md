@@ -52,7 +52,7 @@ FastConnect is the right move when bandwidth, latency, and predictable routing m
 ## Deployment Flow
 
 1. Deploy `blueprints/core`.
-2. Complete the architecture diagram with FastConnect path and BGP details.
+2. Complete the architecture notes with FastConnect path and BGP details.
 3. Confirm provider, ASN, and peering information.
 4. Populate local tfvars.
 5. Run Terraform validation and plan.

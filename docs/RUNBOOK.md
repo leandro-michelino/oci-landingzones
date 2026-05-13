@@ -9,8 +9,8 @@ Operational procedures will be expanded as Terraform modules are implemented.
 1. Confirm the core landing zone is deployed.
 2. Confirm the required networking blueprint is deployed if this entity needs a
    network attachment.
-3. Create or update the local diagram in
-   `blueprints/operating-entity/architecture/`.
+3. Create or update the local architecture notes in
+   `blueprints/operating-entity/architecture/README.md`.
 4. Prepare operating entity variables:
    - `entity_code`
    - `entity_name`

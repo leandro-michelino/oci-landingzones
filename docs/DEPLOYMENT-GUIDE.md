@@ -271,7 +271,9 @@ validation, Terraform plan, guarded apply, guarded destroy, and ephemeral test
 deployments. Terraform remains the source of truth for OCI resources.
 
 Use plan for non-destructive checks. It initializes without a backend by
-default:
+default. If the selected inventory's `terraform_environment_dir` contains a
+local `terraform.tfvars`, Ansible passes that file to `terraform plan`; the
+committed `terraform.tfvars.example` files are templates only:
 
 ```bash
 ANSIBLE_CONFIG=ansible/ansible.cfg \

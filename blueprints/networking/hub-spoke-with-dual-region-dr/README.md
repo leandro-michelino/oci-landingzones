@@ -50,7 +50,7 @@ matching routing foundation before workload-level DR is layered on top.
 ## Deployment Flow
 
 1. Deploy `blueprints/core` in the primary region context.
-2. Complete the dual-region architecture diagram.
+2. Complete the dual-region architecture notes.
 3. Confirm regional CIDRs and peering.
 4. Populate local tfvars for both regions.
 5. Run Terraform validation and plan.
