@@ -35,10 +35,7 @@ place to control.
 - Landing zones where private-only access and inspected egress are preferred.
 - Projects that must show which resources are intended to support CIS Level 2.
 
-> [DIAGRAM SOURCE] `architecture/cis-level2.excalidraw`
->
-> Status: source created. Export a rendered PNG only when a review package needs
-> one.
+Architecture notes live in `architecture/README.md`.
 
 ## Profile
 

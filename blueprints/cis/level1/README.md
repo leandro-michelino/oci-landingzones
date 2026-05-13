@@ -38,10 +38,7 @@ security wants structure but the platform still needs to move.
   defaults.
 - Projects that must show which resources are intended to support CIS Level 1.
 
-> [DIAGRAM SOURCE] `architecture/cis-level1.excalidraw`
->
-> Status: source created. Export a rendered PNG only when a review package needs
-> one.
+Architecture notes live in `architecture/README.md`.
 
 ## Profile
 

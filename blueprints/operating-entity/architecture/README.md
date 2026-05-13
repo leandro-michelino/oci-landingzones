@@ -2,9 +2,7 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Keep the deployment editable Excalidraw source in this folder. Export a PNG from the source only when a review package needs a rendered image.
-
-- `operating-entity.excalidraw`
+Keep architecture notes in this folder. Add rendered artifacts only when a review package needs them.
 
 The diagram should show the operating entity compartment structure, delegated groups,
 policies, network attachment, budgets, logging, and optional extensions.

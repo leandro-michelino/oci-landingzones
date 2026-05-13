@@ -32,10 +32,7 @@ IAM, tags, and policy outputs.
 - Provide stable outputs for networking, security, governance, and operations.
 - Run ephemeral real-deployment tests in a parent compartment.
 
-> [DIAGRAM SOURCE] `architecture/core.excalidraw`
->
-> Status: source created. Export a rendered PNG only when a review package needs
-> one.
+Architecture notes live in `architecture/README.md`.
 
 ## Responsibilities
 

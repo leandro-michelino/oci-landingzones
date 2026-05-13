@@ -58,8 +58,7 @@ matching routing foundation before workload-level DR is layered on top.
 
 ## Architecture Artifacts
 
-- Source diagram: `architecture/hub-spoke-with-dual-region-dr.excalidraw`
-- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
+- Architecture notes: `architecture/README.md`
 
 ## Notes
 

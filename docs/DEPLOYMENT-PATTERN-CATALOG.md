@@ -7,8 +7,8 @@ implementation. It borrows from OCI landing zone repositories, OCI reference
 architectures, and patterns that show up in real customer conversations.
 
 Implemented patterns should have a self-contained blueprint folder with its own
-`README.md`, `architecture/README.md`, one canonical blueprint-local
-`.excalidraw` source, Terraform files, variables example, and validation notes.
+`README.md`, `architecture/README.md`, Terraform files, variables example, and
+validation notes.
 Status `Implementing` means the folder has deployable foundation wiring, even
 when some expensive or external resources are disabled by default. Status
 `Planned` means the folder documents a future pattern and is excluded from

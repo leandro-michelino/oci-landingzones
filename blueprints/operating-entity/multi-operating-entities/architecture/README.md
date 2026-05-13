@@ -2,11 +2,7 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Keep the deployment editable Excalidraw source in this folder. Export a PNG from the source only when a review package needs a rendered image.
-
-```text
-- multi-operating-entities.excalidraw
-```
+Keep architecture notes in this folder. Add rendered artifacts only when a review package needs them.
 
 The diagram should show multiple operating entities, delegated IAM boundaries, shared
 services, network attachments, budgets, logging, and security operations.

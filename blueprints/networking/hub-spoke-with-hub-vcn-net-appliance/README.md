@@ -59,8 +59,7 @@ existing security operations.
 
 ## Architecture Artifacts
 
-- Source diagram: `architecture/hub-spoke-with-hub-vcn-net-appliance.excalidraw`
-- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
+- Architecture notes: `architecture/README.md`
 
 ## Notes
 

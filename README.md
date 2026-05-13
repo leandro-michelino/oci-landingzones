@@ -8,8 +8,8 @@ operating-entity onboarding, and optional service extensions.
 
 It is a personal engineering project, not an official Oracle product. The goal
 is to provide reusable Terraform modules, independently deployable architecture
-blueprints, local Ansible orchestration, and editable Excalidraw diagrams that
-can be adapted for real OCI environments.
+blueprints, local Ansible orchestration, and architecture documentation that can
+be adapted for real OCI environments.
 
 ## What Is Included
 
@@ -22,7 +22,7 @@ can be adapted for real OCI environments.
 - Reusable Terraform modules under `modules/`.
 - Local Ansible playbooks for bootstrap checks, validation, Terraform plan,
   guarded apply, guarded destroy, and ephemeral tests.
-- Architecture documentation with editable Excalidraw sources.
+- Architecture documentation for blueprint intent, scope, and review notes.
 
 ## Repository Layout
 
@@ -166,13 +166,11 @@ Every deployable blueprint should include:
 - `README.md`
 - `terraform.tfvars.example`
 - `architecture/README.md`
-- one canonical editable `.excalidraw` diagram in its local `architecture/`
-  folder
 
 Keep additional LLD, draft, or rendered review variants out of the blueprint
-folders unless they become the canonical source for that deployment. The
-blueprint-local diagram is the source of truth; PNG exports are generated only
-when a review package needs one.
+folders unless they become the canonical artifact for that deployment.
+Blueprint-local architecture notes are the source of truth; rendered exports are
+generated only when a review package needs one.
 
 ## Repository Hygiene
 

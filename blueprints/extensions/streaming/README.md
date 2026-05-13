@@ -58,5 +58,4 @@ and consumer access, network paths, and retention choices made deliberately.
 
 ## Architecture Artifacts
 
-- Source diagram: `architecture/streaming.excalidraw`
-- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
+- Architecture notes: `architecture/README.md`

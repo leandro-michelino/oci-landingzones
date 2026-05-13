@@ -61,8 +61,7 @@ opinions. CIDRs, routes, labels, and security rules can be made explicit here.
 
 ## Architecture Artifacts
 
-- Source diagram: `architecture/standalone-three-tier-vcn-custom.excalidraw`
-- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
+- Architecture notes: `architecture/README.md`
 
 ## Notes
 

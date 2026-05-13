@@ -108,8 +108,7 @@ For validation without remote state, use `terraform init -backend=false`.
 
 ## Architecture Artifacts
 
-- Source diagram: `architecture/standalone-three-tier-vcn-defaults.excalidraw`
-- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
+- Architecture notes: `architecture/README.md`
 
 ## Notes
 

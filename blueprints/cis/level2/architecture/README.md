@@ -2,9 +2,7 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Keep the CIS Level 2 landing zone editable Excalidraw source in this folder. Export a PNG from the source only when a review package needs a rendered image.
-
-- `cis-level2.excalidraw`
+Keep architecture notes in this folder. Add rendered artifacts only when a review package needs them.
 
 The diagram should show stricter Level 2 control scope, inherited core baseline,
 additional security controls, restricted network exposure, logging, monitoring, and

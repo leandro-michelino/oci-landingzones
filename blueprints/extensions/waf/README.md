@@ -60,5 +60,4 @@ app. WAF belongs in the design when internet exposure is intentional and needs p
 
 ## Architecture Artifacts
 
-- Source diagram: `architecture/waf.excalidraw`
-- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
+- Architecture notes: `architecture/README.md`

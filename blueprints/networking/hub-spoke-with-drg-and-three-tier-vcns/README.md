@@ -59,8 +59,7 @@ center. This is the base enterprise network shape for many OCI landing zones.
 
 ## Architecture Artifacts
 
-- Source diagram: `architecture/hub-spoke-with-drg-and-three-tier-vcns.excalidraw`
-- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
+- Architecture notes: `architecture/README.md`
 
 ## Notes
 

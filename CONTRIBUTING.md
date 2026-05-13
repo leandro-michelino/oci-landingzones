@@ -39,14 +39,13 @@ committing so reviews stay focused on source, examples, and documentation.
 
 ## Diagram Gate
 
-Do not add real OCI resources or apply Terraform for a blueprint until its
-required diagram exists under `docs/architecture/diagrams/` and is reflected in
-the tracker.
+Do not add real OCI resources or apply Terraform for a blueprint until its local
+architecture notes describe the intended design, scope, and review assumptions.
 
 ## Pull Request Checklist
 
 - The change is scoped to one blueprint, module family, or documentation area.
-- The required Excalidraw source and exported image are included when relevant.
+- Architecture notes and rendered review artifacts are updated when relevant.
 - Naming follows `docs/NAMING-CONVENTIONS.md`.
 - New variables are documented in `VARIABLES.md` or the blueprint README.
 - Security-sensitive defaults are conservative.

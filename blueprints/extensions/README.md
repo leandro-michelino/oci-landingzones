@@ -39,9 +39,9 @@ not the foundation; they are the services workloads actually consume.
 Each extension folder should contain:
 
 - `README.md` with purpose, prerequisites, inputs, and flow.
-- `architecture/<extension>.excalidraw` as the canonical editable diagram.
-- Optional PNG export for rendered review packages.
+- `architecture/README.md` with diagram scope and update guidance.
+- Optional rendered export for review packages.
 - Terraform code and safe example variables.
 
 Keep draft, detailed LLD, and customer-specific variants outside the reusable
-extension folders unless they replace the canonical source.
+extension folders unless they replace the canonical artifact.

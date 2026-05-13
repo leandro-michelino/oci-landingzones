@@ -60,8 +60,7 @@ FastConnect is the right move when bandwidth, latency, and predictable routing m
 
 ## Architecture Artifacts
 
-- Source diagram: `architecture/hub-spoke-with-hub-vcn-fastconnect-vc.excalidraw`
-- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
+- Architecture notes: `architecture/README.md`
 
 ## Notes
 

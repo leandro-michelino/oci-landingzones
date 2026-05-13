@@ -100,11 +100,7 @@ Deploy the core blueprint first. The implemented foundation creates the landing
 zone compartment structure and baseline governance tagging required by later
 blueprints.
 
-Required diagram:
-
-```text
-blueprints/core/architecture/core.excalidraw
-```
+Architecture notes live in `blueprints/core/architecture/README.md`.
 
 For ephemeral tests, set `parent_compartment_ocid` in a local ignored
 `terraform.tfvars` file. Do not commit real tenancy or compartment OCIDs.
@@ -199,16 +195,15 @@ Implemented module order:
 
 Choose one networking blueprint and deploy it after core.
 Each networking deployment folder has a local README and `architecture/` folder
-with the expected editable diagram and exported image names.
+with the expected architecture notes and review artifact guidance.
 
 Networking blueprints can also be used directly against an existing workload
 compartment. In that mode, set `compartment_ocid` to the target compartment.
 The blueprint's pinned Git module sources fetch the required networking modules
 during `terraform init`.
 
-Each networking blueprint keeps its own diagram in its local `architecture/`
-folder, for example `architecture/standalone-three-tier-vcn-defaults.excalidraw`
-or `architecture/hub-spoke-with-drg-and-three-tier-vcns.excalidraw`.
+Each networking blueprint keeps its diagram scope and update guidance in its
+local `architecture/` folder.
 
 ## Phase 4 - Operating Entities
 
@@ -230,13 +225,8 @@ ownership metadata first. Budgets, logging, events, quotas, and network
 attachments are the next governance/security layers, so keep those assumptions
 visible in the local README and architecture notes.
 
-Required diagram:
-
-```text
-blueprints/operating-entity/architecture/operating-entity.excalidraw
-blueprints/operating-entity/multi-operating-entities/architecture/multi-operating-entities.excalidraw
-blueprints/operating-entity/workload-vending/architecture/workload-vending.excalidraw
-```
+Architecture notes live in each operating-entity blueprint's
+`architecture/README.md`.
 
 ## Implemented Blueprint Wiring Check
 
@@ -255,7 +245,7 @@ validation until implementation starts.
 ## Phase 5 - Extensions
 
 Deploy extensions only after core and the required networking foundation exist.
-Each extension must include its own architecture diagram.
+Each extension must include its own architecture notes.
 
 Implemented Phase 5 extension entry points:
 

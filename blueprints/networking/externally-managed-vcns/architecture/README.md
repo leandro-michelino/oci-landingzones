@@ -2,9 +2,7 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Keep the deployment editable Excalidraw source in this folder. Export a PNG from the source only when a review package needs a rendered image.
-
-- `externally-managed-vcns.excalidraw`
+Keep architecture notes in this folder. Add rendered artifacts only when a review package needs them.
 
 The diagram should show existing VCNs, ownership boundaries, resources managed by this
 repository, and any routing or DNS integration points.

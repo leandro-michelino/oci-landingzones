@@ -56,5 +56,4 @@ plug into it instead of inventing a new one. This is the respectful brownfield o
 
 ## Architecture Artifacts
 
-- Source diagram: `architecture/custom-identity-domain.excalidraw`
-- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
+- Architecture notes: `architecture/README.md`

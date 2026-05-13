@@ -2,9 +2,7 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Keep the deployment editable Excalidraw source in this folder. Export a PNG from the source only when a review package needs a rendered image.
-
-- `hub-spoke-with-hub-vcn-ipsec-vpn.excalidraw`
+Keep architecture notes in this folder. Add rendered artifacts only when a review package needs them.
 
 The diagram should show CPE, IPSec tunnels, DRG, hub VCN, spoke VCNs, route propagation,
 on-premises CIDRs, and DNS forwarding if used.

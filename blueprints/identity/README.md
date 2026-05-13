@@ -36,6 +36,6 @@ identity domain, and under whose operational control.
 Each deployment folder should contain:
 
 - `README.md` with purpose, fit, inputs, and deployment flow.
-- `architecture/<deployment>.excalidraw` for the editable diagram.
-- Optional PNG export for rendered review packages.
+- `architecture/README.md` with diagram scope and update guidance.
+- Optional rendered export for review packages.
 - Terraform code and safe example variables.

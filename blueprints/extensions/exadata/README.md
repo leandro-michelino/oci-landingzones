@@ -59,5 +59,4 @@ Exadata needs deliberate networking, backup, access, and operations design.
 
 ## Architecture Artifacts
 
-- Source diagram: `architecture/exadata.excalidraw`
-- Exported image: generate a PNG from the source only when a rendered review artifact is needed.
+- Architecture notes: `architecture/README.md`
