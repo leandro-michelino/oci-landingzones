@@ -22,6 +22,7 @@ deployment folder.
 | I Want To... | Go Here |
 |---|---|
 | Pick the right deployment folder | [Choose A Deployment](#choose-a-deployment) |
+| Compare deployment families | [Deployment Categories](#deployment-categories) |
 | See every blueprint with direct links | [Deployment Menu](#deployment-menu) |
 | Build a complete landing zone | [Build A Full Landing Zone](#build-a-full-landing-zone) |
 | Understand the folder contract | [Every Blueprint Is End-To-End](#every-blueprint-is-end-to-end) |
@@ -38,7 +39,8 @@ deployment folder.
 
 ## Choose A Deployment
 
-Most customers should start with one of these paths:
+Start with the outcome, then open the linked folder. Each folder has its own README,
+architecture, Terraform files, example tfvars, and local Ansible runners.
 
 | Situation | Best Starting Point | Why |
 |---|---|---|
@@ -53,11 +55,25 @@ Most customers should start with one of these paths:
 | I need a private data platform | [Private Data Platform](blueprints/data-platform/private-data-platform/) | Builds private VCN, Vault/KMS, Object Storage private endpoint, and Streaming. |
 | I need disaster recovery | [Full Stack DR](blueprints/disaster-recovery/fsdr/) | Creates FSDR protection groups, log buckets, and an optional DR plan. |
 
+## Deployment Categories
+
+Use this when you know the family, but not the exact blueprint yet.
+
+| Category | Start Here | Then Look At |
+|---|---|---|
+| Foundation and compliance | [Core Landing Zone](blueprints/core/) | [Foundation And Compliance](#foundation-and-compliance) |
+| Networking | [Hub-Spoke DRG And Three-Tier VCNs](blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/) | [Networking Deployments](#networking-deployments) |
+| Identity and entity onboarding | [Workload Vending](blueprints/operating-entity/workload-vending/) | [Identity And Operating Entity Deployments](#identity-and-operating-entity-deployments) |
+| Service extensions | [OKE](blueprints/extensions/oke/) | [Extension Deployments](#extension-deployments) |
+| Data, DR, and industry | [Private Data Platform](blueprints/data-platform/private-data-platform/) | [Data, DR, And Industry Deployments](#data-dr-and-industry-deployments) |
+
 ## Deployment Menu
 
-Each link below goes directly to the deployment folder. Inside each folder you get the
-customer-facing `README.md`, the detailed `architecture/README.md`, Terraform files, example
-tfvars, and local Ansible plan/apply/destroy runners.
+Each link below goes directly to the deployment folder.
+
+```text
+open folder -> read README.md -> review architecture/README.md -> fill tfvars -> plan
+```
 
 ### Foundation And Compliance
 
