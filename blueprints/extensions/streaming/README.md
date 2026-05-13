@@ -2,60 +2,142 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Use this extension when workloads need managed event streaming, decoupled messaging, or
-integration pipelines.
+This deployment README belongs only to `blueprints/extensions/streaming`. It is the run-facing guide for this blueprint; the detailed ASCII design lives beside it in `architecture/README.md`.
 
-## What It Does
+## Deployment Purpose
 
-This extension gives event-driven workloads a managed streaming foundation. It covers
-stream pools, producer and consumer access, retention, partition choices, private
-access, monitoring, and the ownership model for teams publishing or reading events.
+Adds OCI Streaming resources with stream pool and stream outputs for event-driven or data-platform workloads.
 
-The Terraform can create a stream pool and streams, or attach streams to an existing
-pool. Creation is disabled by default so validation stays safe and cheap.
+## When To Use This Deployment
 
-## Why Use It
+- Applications need managed streaming.
+- Retention, partitions, and access policies need a reusable pattern.
+- Streaming outputs must be handed off to producers and consumers.
 
-Use this when event flow is a first-class part of the platform. Streaming needs producer
-and consumer access, network paths, and retention choices made deliberately.
+## What This Deploys
 
-## When To Use It
+The Terraform in this folder wires the following local components:
 
-- Apps need Kafka-compatible or OCI Streaming style event flows.
-- Producer and consumer teams need scoped access.
-- Event retention, logging, and private access matter.
+- Terraform resource `oci_streaming_stream_pool.this`
+- Terraform resource `oci_streaming_stream.this`
 
-## Pattern
+The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local ignored `terraform.tfvars` file.
 
-- Optional OCI Streaming stream pool.
-- Optional streams with partition and retention settings.
-- Producer and consumer access policies.
-- Optional private endpoint access.
-- Monitoring, alarms, and retention settings.
+## Folder Contract
 
-## Prerequisites
-
-- `blueprints/core` deployed.
-- Workload compartment and IAM groups defined.
-- Network access model decided if private producers or consumers are used.
+```text
+blueprints/extensions/streaming/
+|-- README.md                  This deployment guide
+|-- architecture/README.md     Detailed ASCII architecture for this deployment
+|-- main.tf                    Terraform modules, resources, and data sources
+|-- variables.tf               Input contract
+|-- outputs.tf                 Deployment hand-off values
+|-- providers.tf               OCI provider configuration
+|-- versions.tf                Terraform and provider constraints
+|-- terraform.tfvars.example   Example input shape
+`-- ansible/
+    |-- plan.yml               Local init, validate, and plan
+    |-- apply.yml              Guarded init, validate, plan, and apply
+    `-- destroy.yml            Guarded destroy
+```
 
 ## Inputs To Decide
 
-- Stream pool compartment.
-- Stream names and partition counts.
-- Retention period.
-- Producer and consumer groups.
-- Private endpoint requirement.
-- Monitoring thresholds.
+Base tenancy and naming inputs:
+- `tenancy_ocid`
+- `current_user_ocid`
+- `region`
+- `home_region`
+- `oci_config_profile`
+- `org`
+- `environment`
+- `region_key`
+- `defined_tags`
+- `freeform_tags`
 
-## Deployment Flow
+Deployment-specific inputs to review:
+- `compartment_ocid`
+- `create_stream_pool`
+- `stream_pool_id`
+- `stream_pool_name`
+- `kms_key_id`
+- `private_endpoint_subnet_id`
+- `private_endpoint_nsg_ids`
+- `kafka_settings`
+- `streams`
 
-1. Confirm producer and consumer applications.
-2. Complete the local architecture notes.
-3. Populate local ignored tfvars.
-4. Run Terraform validation and plan.
-5. Apply after data retention and access rules are reviewed.
+Important enable flags and switches:
+- `enable_streaming`
 
-## Architecture Artifacts
+Review `terraform.tfvars.example` first, then create a local ignored `terraform.tfvars` for real OCIDs, CIDRs, names, recipients, and enable flags.
 
-- Architecture notes: `architecture/README.md`
+## Outputs And Hand-Off
+
+This deployment exports the following outputs from `outputs.tf`:
+
+- `blueprint_name`
+- `name_prefix`
+- `resource_ids`
+- `stream_pool_id`
+- `stream_ids`
+
+Use these outputs as the contract for downstream blueprints, runbooks, customer notes, or manual hand-off. If an output name changes, update dependent documentation and consumers in the same change.
+
+## Terraform And Ansible Workflow
+
+Use direct Terraform when you are iterating locally:
+
+```bash
+cd blueprints/extensions/streaming
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform validate
+terraform plan
+```
+
+Use the local Ansible wrapper when you want the same runner shape used across the repo:
+
+```bash
+cd blueprints/extensions/streaming
+ansible-playbook -i localhost, ansible/plan.yml
+CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
+CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
+```
+
+`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for customer-facing or shared environments.
+
+## Deployment Order
+
+1. Deploy core and the required network foundation first.
+2. Confirm service-specific quotas, cost, and dependencies.
+3. Populate `terraform.tfvars` with subnet, compartment, and service values.
+4. Run plan and review optional resource enable flags.
+5. Apply only after the platform or service owner approves the output shape.
+
+## Architecture
+
+The full detailed ASCII architecture is local to this deployment:
+
+```text
+architecture/README.md
+```
+
+That file documents the ownership boundary, Terraform components, request flow, state and output contract, operational boundaries, review checklist, and the expected Terraform + Ansible output at the end of the deployment.
+
+## Review Before Apply
+
+- Confirm partition count and retention.
+- Review private access and IAM policies.
+- Check throughput and cost expectations before apply.
+- Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
+- Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
+
+## Validation
+
+From the repository root:
+
+```bash
+./scripts/validate-all.sh
+```
+
+The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.

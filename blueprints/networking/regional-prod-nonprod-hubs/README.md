@@ -1,46 +1,139 @@
-# Regional Prod/Nonprod Hubs
+# Regional Prod Nonprod Hubs
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This blueprint separates production and nonproduction traffic into distinct regional hub
-networks while keeping shared governance and operations consistent.
+This deployment README belongs only to `blueprints/networking/regional-prod-nonprod-hubs`. It is the run-facing guide for this blueprint; the detailed ASCII design lives beside it in `architecture/README.md`.
 
-## What It Does
+## Deployment Purpose
 
-This blueprint gives production and nonproduction their own regional hub networks. It is
-for customers who need different routing, inspection, DNS, and shared-services rules for
-prod and nonprod instead of relying on compartments alone.
+Creates separate production and nonproduction hub networks in a region so environment isolation is stronger than naming alone.
 
-## Why Use It
+## When To Use This Deployment
 
-Use this when production and nonproduction should not share the same network blast
-radius. It is more structure than a simple compartment split, and that is the point.
+- Production and nonproduction need separate routing domains.
+- Network teams want environment-specific hub outputs.
+- Shared regional patterns should still keep blast radius controlled.
 
-## When To Use It
+## What This Deploys
 
-- Production isolation is a hard requirement.
-- Prod and nonprod need different inspection or routing rules.
-- Shared services exist but must cross boundaries carefully.
+The Terraform in this folder wires the following local components:
 
-## Fit
+- Terraform module `prod_network`
+- Terraform module `nonprod_network`
 
-- Customers with strict production isolation.
-- Separate routing and inspection policies for prod and nonprod.
-- Shared services with explicit route and DNS boundaries.
+The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local ignored `terraform.tfvars` file.
 
-## Expected Composition
+## Folder Contract
 
-- Production hub VCN and DRG route domain.
-- Nonproduction hub VCN and DRG route domain.
-- Separate firewall or appliance policies.
-- Shared DNS with controlled forwarding.
-- Workload spokes attached to the correct route domain.
+```text
+blueprints/networking/regional-prod-nonprod-hubs/
+|-- README.md                  This deployment guide
+|-- architecture/README.md     Detailed ASCII architecture for this deployment
+|-- main.tf                    Terraform modules, resources, and data sources
+|-- variables.tf               Input contract
+|-- outputs.tf                 Deployment hand-off values
+|-- providers.tf               OCI provider configuration
+|-- versions.tf                Terraform and provider constraints
+|-- terraform.tfvars.example   Example input shape
+`-- ansible/
+    |-- plan.yml               Local init, validate, and plan
+    |-- apply.yml              Guarded init, validate, plan, and apply
+    `-- destroy.yml            Guarded destroy
+```
 
-## Deployment Notes
+## Inputs To Decide
 
-Use this when production isolation is stronger than a simple compartment boundary. Pair
-with operating entity or workload vending patterns.
+Base tenancy and naming inputs:
+- `tenancy_ocid`
+- `current_user_ocid`
+- `region`
+- `home_region`
+- `oci_config_profile`
+- `org`
+- `environment`
+- `region_key`
+- `defined_tags`
+- `freeform_tags`
+
+Deployment-specific inputs to review:
+- `compartment_ocid`
+- `prod_environment`
+- `nonprod_environment`
+
+Important enable flags and switches:
+- None declared in this folder.
+
+Review `terraform.tfvars.example` first, then create a local ignored `terraform.tfvars` for real OCIDs, CIDRs, names, recipients, and enable flags.
+
+## Outputs And Hand-Off
+
+This deployment exports the following outputs from `outputs.tf`:
+
+- `blueprint_name`
+- `name_prefix`
+- `resource_ids`
+- `prod_hub_vcn_id`
+- `nonprod_hub_vcn_id`
+- `prod_drg_id`
+- `nonprod_drg_id`
+
+Use these outputs as the contract for downstream blueprints, runbooks, customer notes, or manual hand-off. If an output name changes, update dependent documentation and consumers in the same change.
+
+## Terraform And Ansible Workflow
+
+Use direct Terraform when you are iterating locally:
+
+```bash
+cd blueprints/networking/regional-prod-nonprod-hubs
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform validate
+terraform plan
+```
+
+Use the local Ansible wrapper when you want the same runner shape used across the repo:
+
+```bash
+cd blueprints/networking/regional-prod-nonprod-hubs
+ansible-playbook -i localhost, ansible/plan.yml
+CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
+CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
+```
+
+`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for customer-facing or shared environments.
+
+## Deployment Order
+
+1. Deploy or identify the target compartment.
+2. Review CIDRs, subnets, gateways, route tables, DNS, and inspection choices.
+3. Populate `terraform.tfvars` with customer-specific network values.
+4. Run plan and review traffic path changes.
+5. Apply, then hand VCN, subnet, DRG, DNS, or inspection outputs to workloads and extensions.
 
 ## Architecture
 
-Detailed ASCII architecture notes live in `architecture/README.md`.
+The full detailed ASCII architecture is local to this deployment:
+
+```text
+architecture/README.md
+```
+
+That file documents the ownership boundary, Terraform components, request flow, state and output contract, operational boundaries, review checklist, and the expected Terraform + Ansible output at the end of the deployment.
+
+## Review Before Apply
+
+- Confirm prod and nonprod CIDR separation.
+- Review DRG and route behavior per environment.
+- Do not mix prod and nonprod attachments casually.
+- Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
+- Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
+
+## Validation
+
+From the repository root:
+
+```bash
+./scripts/validate-all.sh
+```
+
+The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.

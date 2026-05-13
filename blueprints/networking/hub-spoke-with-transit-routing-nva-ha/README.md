@@ -2,67 +2,141 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Use this deployment when the customer needs high-availability transit routing through
-network virtual appliances.
+This deployment README belongs only to `blueprints/networking/hub-spoke-with-transit-routing-nva-ha`. It is the run-facing guide for this blueprint; the detailed ASCII design lives beside it in `architecture/README.md`.
 
-## What It Does
+## Deployment Purpose
 
-This blueprint is the heavier enterprise NVA pattern: transit routing through redundant
-appliances. It documents active/passive or active/active behavior, interfaces, health
-checks, route steering, failover assumptions, licensing, and management access.
+Adds highly available network virtual appliance routing to hub-spoke networking for inspected transit paths.
 
-## Why Use It
+## When To Use This Deployment
 
-Use this when traffic inspection needs both vendor appliances and high availability. It
-is the heavier enterprise pattern for customers who care deeply about failure behavior.
+- Transit traffic must pass through NVA instances.
+- HA route targets are required.
+- Security or network teams own an appliance-based inspection model.
 
-## When To Use It
+## What This Deploys
 
-- Transit inspection must survive appliance or domain failure.
-- The customer requires NVA HA instead of managed firewall.
-- Routing and failover need explicit review.
+The Terraform in this folder wires the following local components:
 
-## Pattern
+- Terraform module `network`
+- Terraform module `nva_ha`
 
-- Hub VCN.
-- DRG.
-- Redundant network virtual appliances.
-- Transit route tables.
-- Spoke VCN attachments.
-- Failure-domain or availability-domain placement.
-- Optional north-south and east-west inspection.
+The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local ignored `terraform.tfvars` file.
 
-## Best Fit
+## Folder Contract
 
-- Enterprise security appliance standards.
-- High-availability inspection.
-- Advanced routing requirements.
-- Vendor-specific transit firewall patterns.
+```text
+blueprints/networking/hub-spoke-with-transit-routing-nva-ha/
+|-- README.md                  This deployment guide
+|-- architecture/README.md     Detailed ASCII architecture for this deployment
+|-- main.tf                    Terraform modules, resources, and data sources
+|-- variables.tf               Input contract
+|-- outputs.tf                 Deployment hand-off values
+|-- providers.tf               OCI provider configuration
+|-- versions.tf                Terraform and provider constraints
+|-- terraform.tfvars.example   Example input shape
+`-- ansible/
+    |-- plan.yml               Local init, validate, and plan
+    |-- apply.yml              Guarded init, validate, plan, and apply
+    `-- destroy.yml            Guarded destroy
+```
 
 ## Inputs To Decide
 
-- NVA vendor and image.
-- Active/passive or active/active design.
-- Appliance interface layout.
-- Health check and failover approach.
-- Transit route tables.
-- Management access model.
-- Licensing and bootstrap inputs.
+Base tenancy and naming inputs:
+- `tenancy_ocid`
+- `current_user_ocid`
+- `region`
+- `home_region`
+- `oci_config_profile`
+- `org`
+- `environment`
+- `region_key`
+- `defined_tags`
+- `freeform_tags`
 
-## Deployment Flow
+Deployment-specific inputs to review:
+- `compartment_ocid`
+- `appliances`
+- `reserved_route_ips`
+- `existing_route_target_private_ip_ids`
 
-1. Deploy `blueprints/core`.
-2. Complete the architecture notes with HA and failover paths.
-3. Confirm vendor design requirements.
-4. Populate local tfvars and secret-free bootstrap inputs.
-5. Run Terraform validation and plan.
-6. Apply after failover, route steering, and lifecycle ownership are reviewed.
+Important enable flags and switches:
+- `enable_net_appliance`
+- `enable_reserved_route_ips`
 
-## Architecture Artifacts
+Review `terraform.tfvars.example` first, then create a local ignored `terraform.tfvars` for real OCIDs, CIDRs, names, recipients, and enable flags.
 
-- Architecture notes: `architecture/README.md`
+## Outputs And Hand-Off
 
-## Notes
+This deployment exports the following outputs from `outputs.tf`:
 
-This blueprint should clearly document failure behavior. Do not hide HA assumptions in
-Terraform variables only.
+- `blueprint_name`
+- `name_prefix`
+- `resource_ids`
+- `hub_vcn_id`
+- `drg_id`
+- `spoke_vcn_ids`
+- `appliance_instance_ids`
+- `route_target_private_ip_ids`
+
+Use these outputs as the contract for downstream blueprints, runbooks, customer notes, or manual hand-off. If an output name changes, update dependent documentation and consumers in the same change.
+
+## Terraform And Ansible Workflow
+
+Use direct Terraform when you are iterating locally:
+
+```bash
+cd blueprints/networking/hub-spoke-with-transit-routing-nva-ha
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform validate
+terraform plan
+```
+
+Use the local Ansible wrapper when you want the same runner shape used across the repo:
+
+```bash
+cd blueprints/networking/hub-spoke-with-transit-routing-nva-ha
+ansible-playbook -i localhost, ansible/plan.yml
+CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
+CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
+```
+
+`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for customer-facing or shared environments.
+
+## Deployment Order
+
+1. Deploy or identify the target compartment.
+2. Review CIDRs, subnets, gateways, route tables, DNS, and inspection choices.
+3. Populate `terraform.tfvars` with customer-specific network values.
+4. Run plan and review traffic path changes.
+5. Apply, then hand VCN, subnet, DRG, DNS, or inspection outputs to workloads and extensions.
+
+## Architecture
+
+The full detailed ASCII architecture is local to this deployment:
+
+```text
+architecture/README.md
+```
+
+That file documents the ownership boundary, Terraform components, request flow, state and output contract, operational boundaries, review checklist, and the expected Terraform + Ansible output at the end of the deployment.
+
+## Review Before Apply
+
+- Confirm private IP route targets and failover behavior.
+- Review appliance lifecycle, patching, and health checks.
+- Validate asymmetric routing risk before production.
+- Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
+- Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
+
+## Validation
+
+From the repository root:
+
+```bash
+./scripts/validate-all.sh
+```
+
+The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.

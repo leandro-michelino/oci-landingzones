@@ -1,68 +1,142 @@
-# Multi-Operating-Entities Landing Zone
+# Multi Operating Entities
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This blueprint is for customers that need repeatable onboarding for multiple business
-units, subsidiaries, agencies, or major application portfolios.
+This deployment README belongs only to `blueprints/operating-entity/multi-operating-entities`. It is the run-facing guide for this blueprint; the detailed ASCII design lives beside it in `architecture/README.md`.
 
-## What It Does
+## Deployment Purpose
 
-This blueprint repeats the operating-entity pattern for many business units,
-subsidiaries, agencies, or portfolios. It keeps delegated admins, auditors, scoped
-policies, tags, and compartment shapes consistent without flattening everyone into one
-cloud bucket.
+Creates multiple operating-entity boundaries at once, each with compartments, groups, and policies.
 
-This is a deployable IAM and compartment foundation. It creates repeated entity root
-compartments, each entity's child compartments, delegated groups, and entity-scoped IAM
-policies. Budgets, logging, shared services, and network boundaries are documented
-operating-model hooks and are not created directly by this blueprint.
+## When To Use This Deployment
 
-## Why Use It
+- Several business units need a repeatable onboarding shape.
+- Common child compartments should be created for each entity.
+- Administration should be delegated per entity.
 
-Use this when one operating entity is not enough and the platform team needs a
-repeatable onboarding model. This is for organizations with several teams that all need
-the same grown-up treatment.
+## What This Deploys
 
-## When To Use It
+The Terraform in this folder wires the following local components:
 
-- Multiple business units or agencies share one landing zone.
-- Each entity needs its own delegated admins, budgets, and policies.
-- Shared services exist, but isolation still matters.
+- Terraform module `entity_compartments`
+- Terraform module `groups`
+- Terraform module `policies`
 
-## Fit
+The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local ignored `terraform.tfvars` file.
 
-- Several operating entities sharing one OCI foundation.
-- Delegated administration per entity.
-- Shared network, DNS, security, and governance services.
-- Entity-level budgets, tags, and logging conventions.
+## Folder Contract
 
-## Implemented Composition
+```text
+blueprints/operating-entity/multi-operating-entities/
+|-- README.md                  This deployment guide
+|-- architecture/README.md     Detailed ASCII architecture for this deployment
+|-- main.tf                    Terraform modules, resources, and data sources
+|-- variables.tf               Input contract
+|-- outputs.tf                 Deployment hand-off values
+|-- providers.tf               OCI provider configuration
+|-- versions.tf                Terraform and provider constraints
+|-- terraform.tfvars.example   Example input shape
+`-- ansible/
+    |-- plan.yml               Local init, validate, and plan
+    |-- apply.yml              Guarded init, validate, plan, and apply
+    `-- destroy.yml            Guarded destroy
+```
 
-- Repeated operating entity compartments.
-- Entity IAM groups and policies.
-- Per-entity admin and auditor delegation.
-- Per-entity compartment policy paths.
-- Optional per-entity parent and policy compartment overrides.
-- Defined and freeform tags for ownership and chargeback metadata.
-- Documented hooks for entity spokes, shared services, budgets, logging, and event rules.
+## Inputs To Decide
 
-## Deployment Notes
+Base tenancy and naming inputs:
+- `tenancy_ocid`
+- `current_user_ocid`
+- `region`
+- `home_region`
+- `oci_config_profile`
+- `org`
+- `environment`
+- `region_key`
+- `defined_tags`
+- `freeform_tags`
 
-Use this after the core blueprint. Pair it with a hub-spoke, shared-services, or
-externally managed VCN pattern depending on the customer network model.
+Deployment-specific inputs to review:
+- `parent_compartment_ocid`
+- `default_workload_compartments`
+- `operating_entities`
 
-Run it when the platform team knows the operating model and wants to onboard multiple
-teams in one controlled pass. For one team only, use the parent `operating-entity`
-blueprint; for a repeatable app-team handoff, use `workload-vending`.
+Important enable flags and switches:
+- `enable_delete`
 
-## Terraform Example
+Review `terraform.tfvars.example` first, then create a local ignored `terraform.tfvars` for real OCIDs, CIDRs, names, recipients, and enable flags.
+
+## Outputs And Hand-Off
+
+This deployment exports the following outputs from `outputs.tf`:
+
+- `blueprint_name`
+- `name_prefix`
+- `resource_ids`
+- `entity_compartment_ids`
+- `entity_compartment_names`
+- `entity_group_ids`
+- `entity_group_names`
+- `entity_policy_ids`
+- `entity_policy_statements`
+
+Use these outputs as the contract for downstream blueprints, runbooks, customer notes, or manual hand-off. If an output name changes, update dependent documentation and consumers in the same change.
+
+## Terraform And Ansible Workflow
+
+Use direct Terraform when you are iterating locally:
 
 ```bash
+cd blueprints/operating-entity/multi-operating-entities
+cp terraform.tfvars.example terraform.tfvars
 terraform init
 terraform validate
-terraform plan -var-file=terraform.tfvars
+terraform plan
 ```
+
+Use the local Ansible wrapper when you want the same runner shape used across the repo:
+
+```bash
+cd blueprints/operating-entity/multi-operating-entities
+ansible-playbook -i localhost, ansible/plan.yml
+CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
+CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
+```
+
+`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for customer-facing or shared environments.
+
+## Deployment Order
+
+1. Deploy or identify the parent landing-zone compartment.
+2. Review entity or workload naming, child compartments, and delegated groups.
+3. Populate `terraform.tfvars` with ownership and policy values.
+4. Run plan and review every compartment and policy statement.
+5. Apply, then hand outputs to the owning team.
 
 ## Architecture
 
-Detailed ASCII architecture notes live in `architecture/README.md`.
+The full detailed ASCII architecture is local to this deployment:
+
+```text
+architecture/README.md
+```
+
+That file documents the ownership boundary, Terraform components, request flow, state and output contract, operational boundaries, review checklist, and the expected Terraform + Ansible output at the end of the deployment.
+
+## Review Before Apply
+
+- Review every entity object before apply.
+- Confirm parent compartment and policy compartment.
+- Avoid broad policies that cross entity boundaries unintentionally.
+- Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
+- Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
+
+## Validation
+
+From the repository root:
+
+```bash
+./scripts/validate-all.sh
+```
+
+The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.

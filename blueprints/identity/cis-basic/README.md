@@ -1,59 +1,142 @@
-# CIS Basic Identity
+# CIS Basic Identity Baseline
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Use this deployment when a tenancy needs a minimal CIS-aligned identity foundation
-without adopting a full CIS landing zone profile.
+This deployment README belongs only to `blueprints/identity/cis-basic`. It is the run-facing guide for this blueprint; the detailed ASCII design lives beside it in `architecture/README.md`.
 
-## What It Does
+## Deployment Purpose
 
-This blueprint cleans up the first layer of OCI identity without forcing a full CIS
-landing zone. It focuses on administrator and auditor separation, least-privilege
-policies, MFA and break-glass assumptions, and the basic access model customers usually
-want fixed early.
+Creates CIS-oriented IAM groups, dynamic groups, and policies without deploying the full core landing-zone stack.
 
-## Why Use It
+## When To Use This Deployment
 
-Use this when identity needs to be cleaned up early, before the whole landing zone is
-ready. It is a good first move when IAM is messy and everyone agrees access control
-should stop being tribal knowledge.
+- Identity baseline is needed as a standalone task.
+- Groups, dynamic groups, and policies need repeatable naming.
+- A team wants CIS-aligned identity scope before broader resources.
 
-## When To Use It
+## What This Deploys
 
-- You need a minimal CIS-flavored IAM baseline.
-- The customer wants admin and auditor separation quickly.
-- Identity hardening is urgent but the full CIS landing zone is not selected yet.
+The Terraform in this folder wires the following local components:
 
-## Pattern
+- Terraform module `groups`
+- Terraform module `dynamic_groups`
+- Terraform module `policies`
 
-- Baseline administrator and auditor groups.
-- Least-privilege IAM policies.
-- MFA and password-policy assumptions documented for operations.
-- Separation between platform administration and workload administration.
+The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local ignored `terraform.tfvars` file.
 
-## Best Fit
+## Folder Contract
 
-- Smaller tenancies.
-- Early governance baselines.
-- Customers that want identity hardening before broader landing-zone rollout.
+```text
+blueprints/identity/cis-basic/
+|-- README.md                  This deployment guide
+|-- architecture/README.md     Detailed ASCII architecture for this deployment
+|-- main.tf                    Terraform modules, resources, and data sources
+|-- variables.tf               Input contract
+|-- outputs.tf                 Deployment hand-off values
+|-- providers.tf               OCI provider configuration
+|-- versions.tf                Terraform and provider constraints
+|-- terraform.tfvars.example   Example input shape
+`-- ansible/
+    |-- plan.yml               Local init, validate, and plan
+    |-- apply.yml              Guarded init, validate, plan, and apply
+    `-- destroy.yml            Guarded destroy
+```
 
 ## Inputs To Decide
 
-- Identity domain or tenancy IAM model.
-- Administrator group names.
-- Auditor group names.
-- Break-glass access approach.
-- MFA enforcement process.
-- Policy scope.
+Base tenancy and naming inputs:
+- `tenancy_ocid`
+- `current_user_ocid`
+- `region`
+- `home_region`
+- `org`
+- `environment`
+- `region_key`
+- `defined_tags`
+- `freeform_tags`
 
-## Deployment Flow
+Deployment-specific inputs to review:
+- `compartment_ocid`
+- `groups`
+- `dynamic_groups`
+- `policies`
 
-1. Review the architecture notes in this folder.
-2. Confirm identity ownership with the customer security team.
-3. Populate local ignored tfvars.
-4. Run Terraform validation and plan.
-5. Apply after IAM policy scope is reviewed.
+Important enable flags and switches:
+- `enable_default_groups`
+- `enable_default_policies`
 
-## Architecture Artifacts
+Review `terraform.tfvars.example` first, then create a local ignored `terraform.tfvars` for real OCIDs, CIDRs, names, recipients, and enable flags.
 
-- Architecture notes: `architecture/README.md`
+## Outputs And Hand-Off
+
+This deployment exports the following outputs from `outputs.tf`:
+
+- `blueprint_name`
+- `name_prefix`
+- `cis_level`
+- `resource_ids`
+- `group_ids`
+- `group_names`
+- `dynamic_group_ids`
+- `policy_ids`
+
+Use these outputs as the contract for downstream blueprints, runbooks, customer notes, or manual hand-off. If an output name changes, update dependent documentation and consumers in the same change.
+
+## Terraform And Ansible Workflow
+
+Use direct Terraform when you are iterating locally:
+
+```bash
+cd blueprints/identity/cis-basic
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform validate
+terraform plan
+```
+
+Use the local Ansible wrapper when you want the same runner shape used across the repo:
+
+```bash
+cd blueprints/identity/cis-basic
+ansible-playbook -i localhost, ansible/plan.yml
+CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
+CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
+```
+
+`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for customer-facing or shared environments.
+
+## Deployment Order
+
+1. Confirm the target tenancy and identity-domain strategy.
+2. Review group, dynamic-group, domain, replica, and policy inputs.
+3. Populate `terraform.tfvars` with identity naming and scope values.
+4. Run plan and inspect IAM or domain impact.
+5. Apply, then hand group, domain, and policy outputs to administrators.
+
+## Architecture
+
+The full detailed ASCII architecture is local to this deployment:
+
+```text
+architecture/README.md
+```
+
+That file documents the ownership boundary, Terraform components, request flow, state and output contract, operational boundaries, review checklist, and the expected Terraform + Ansible output at the end of the deployment.
+
+## Review Before Apply
+
+- Review policy statements carefully.
+- Confirm target compartment and tenancy scope.
+- Do not duplicate groups already managed elsewhere.
+- Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
+- Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
+
+## Validation
+
+From the repository root:
+
+```bash
+./scripts/validate-all.sh
+```
+
+The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.

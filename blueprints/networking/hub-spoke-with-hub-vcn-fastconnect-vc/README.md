@@ -2,67 +2,143 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Use this deployment when the landing zone needs private dedicated connectivity between
-OCI and customer networks through FastConnect.
+This deployment README belongs only to `blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc`. It is the run-facing guide for this blueprint; the detailed ASCII design lives beside it in `architecture/README.md`.
 
-## What It Does
+## Deployment Purpose
 
-This blueprint adds dedicated private connectivity to the hub-spoke model. It captures
-the FastConnect virtual circuit, BGP details, customer CIDRs, redundancy, DNS
-forwarding, and route distribution choices that usually involve both OCI and the
-customer network provider.
+Adds FastConnect virtual circuit integration to a hub-spoke network for dedicated hybrid connectivity.
 
-## Why Use It
+## When To Use This Deployment
 
-Use this when connectivity is serious enough to deserve dedicated private links.
-FastConnect is the right move when bandwidth, latency, and predictable routing matter.
+- Hybrid connectivity uses FastConnect.
+- DRG, hub VCN, and provider circuit state need a single blueprint.
+- Network teams need explicit hand-off outputs.
 
-## When To Use It
+## What This Deploys
 
-- Production hybrid connectivity is required.
-- Large data flows or low latency paths are expected.
-- The customer has provider, colocation, BGP, and redundancy details ready.
+The Terraform in this folder wires the following local components:
 
-## Pattern
+- Terraform module `network`
+- Terraform module `fastconnect`
 
-- Hub VCN.
-- DRG.
-- FastConnect virtual circuit.
-- Spoke VCN attachments.
-- Private routing to customer networks.
-- Optional DNS forwarding between OCI and on-premises.
+The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local ignored `terraform.tfvars` file.
 
-## Best Fit
+## Folder Contract
 
-- Production hybrid cloud.
-- High-throughput private connectivity.
-- Low-latency network paths.
-- Customer data centers or colocation environments.
+```text
+blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc/
+|-- README.md                  This deployment guide
+|-- architecture/README.md     Detailed ASCII architecture for this deployment
+|-- main.tf                    Terraform modules, resources, and data sources
+|-- variables.tf               Input contract
+|-- outputs.tf                 Deployment hand-off values
+|-- providers.tf               OCI provider configuration
+|-- versions.tf                Terraform and provider constraints
+|-- terraform.tfvars.example   Example input shape
+`-- ansible/
+    |-- plan.yml               Local init, validate, and plan
+    |-- apply.yml              Guarded init, validate, plan, and apply
+    `-- destroy.yml            Guarded destroy
+```
 
 ## Inputs To Decide
 
-- FastConnect provider or colocation model.
-- Virtual circuit type and bandwidth.
-- BGP ASN and peering IPs.
-- Customer network CIDRs.
-- Route distribution rules.
-- Redundancy model.
-- DNS forwarding model.
+Base tenancy and naming inputs:
+- `tenancy_ocid`
+- `current_user_ocid`
+- `region`
+- `home_region`
+- `oci_config_profile`
+- `org`
+- `environment`
+- `region_key`
+- `defined_tags`
+- `freeform_tags`
 
-## Deployment Flow
+Deployment-specific inputs to review:
+- `compartment_ocid`
+- `virtual_circuit_label`
+- `virtual_circuit_type`
+- `bandwidth_shape_name`
+- `customer_bgp_asn`
+- `provider_service_id`
+- `provider_service_key_name`
 
-1. Deploy `blueprints/core`.
-2. Complete the architecture notes with FastConnect path and BGP details.
-3. Confirm provider, ASN, and peering information.
-4. Populate local tfvars.
-5. Run Terraform validation and plan.
-6. Apply after network and provider readiness are confirmed.
+Important enable flags and switches:
+- `enable_fastconnect`
 
-## Architecture Artifacts
+Review `terraform.tfvars.example` first, then create a local ignored `terraform.tfvars` for real OCIDs, CIDRs, names, recipients, and enable flags.
 
-- Architecture notes: `architecture/README.md`
+## Outputs And Hand-Off
 
-## Notes
+This deployment exports the following outputs from `outputs.tf`:
 
-FastConnect often has external provider dependencies. Track those assumptions in this
-folder before applying.
+- `blueprint_name`
+- `name_prefix`
+- `resource_ids`
+- `hub_vcn_id`
+- `drg_id`
+- `spoke_vcn_ids`
+- `virtual_circuit_id`
+- `virtual_circuit_state`
+
+Use these outputs as the contract for downstream blueprints, runbooks, customer notes, or manual hand-off. If an output name changes, update dependent documentation and consumers in the same change.
+
+## Terraform And Ansible Workflow
+
+Use direct Terraform when you are iterating locally:
+
+```bash
+cd blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform validate
+terraform plan
+```
+
+Use the local Ansible wrapper when you want the same runner shape used across the repo:
+
+```bash
+cd blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc
+ansible-playbook -i localhost, ansible/plan.yml
+CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
+CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
+```
+
+`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for customer-facing or shared environments.
+
+## Deployment Order
+
+1. Deploy or identify the target compartment.
+2. Review CIDRs, subnets, gateways, route tables, DNS, and inspection choices.
+3. Populate `terraform.tfvars` with customer-specific network values.
+4. Run plan and review traffic path changes.
+5. Apply, then hand VCN, subnet, DRG, DNS, or inspection outputs to workloads and extensions.
+
+## Architecture
+
+The full detailed ASCII architecture is local to this deployment:
+
+```text
+architecture/README.md
+```
+
+That file documents the ownership boundary, Terraform components, request flow, state and output contract, operational boundaries, review checklist, and the expected Terraform + Ansible output at the end of the deployment.
+
+## Review Before Apply
+
+- Confirm provider, bandwidth, cross-connect, and routing details.
+- Review BGP and DRG route assumptions.
+- Coordinate external provider tasks outside Terraform.
+- Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
+- Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
+
+## Validation
+
+From the repository root:
+
+```bash
+./scripts/validate-all.sh
+```
+
+The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.

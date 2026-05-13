@@ -2,47 +2,144 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This blueprint is for hub-spoke environments that connect OCI to another cloud or
-external provider through private connectivity.
+This deployment README belongs only to `blueprints/networking/hub-spoke-with-multicloud-interconnect`. It is the run-facing guide for this blueprint; the detailed ASCII design lives beside it in `architecture/README.md`.
 
-## What It Does
+## Deployment Purpose
 
-This blueprint connects OCI to another cloud or external provider through a controlled
-hub-spoke design. It documents the external attachment, route domains, DNS forwarding,
-inspection options, and the shared-services paths that keep multicloud from turning into
-a tunnel collection.
+Composes hub-spoke networking with FastConnect and IPSec options for multicloud or multi-provider connectivity.
 
-## Why Use It
+## When To Use This Deployment
 
-Use this when OCI is one part of a wider cloud estate. It is the pattern for making
-multicloud connectivity deliberate instead of a pile of one-off tunnels.
+- OCI needs to connect to another cloud.
+- Dedicated and VPN paths are both part of the design.
+- Private DNS and inspection may be layered later.
 
-## When To Use It
+## What This Deploys
 
-- OCI must connect privately to another cloud or provider.
-- Shared services or workloads span more than one cloud.
-- Routing, DNS, and inspection need a single documented model.
+The Terraform in this folder wires the following local components:
 
-## Fit
+- Terraform module `network`
+- Terraform module `fastconnect`
+- Terraform module `ipsec_vpn`
 
-- OCI plus Azure, AWS, Google Cloud, or partner cloud connectivity.
-- Shared services in OCI with workloads spanning more than one provider.
-- Hybrid or multicloud routing controlled through the OCI DRG.
+The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local ignored `terraform.tfvars` file.
 
-## Expected Composition
+## Folder Contract
 
-- Hub VCN and DRG.
-- Workload spoke VCNs.
-- FastConnect, partner interconnect, or IPSec VPN.
-- Route tables and DRG route distributions.
-- Private DNS forwarding and split-horizon DNS.
-- Optional firewall or network appliance inspection.
+```text
+blueprints/networking/hub-spoke-with-multicloud-interconnect/
+|-- README.md                  This deployment guide
+|-- architecture/README.md     Detailed ASCII architecture for this deployment
+|-- main.tf                    Terraform modules, resources, and data sources
+|-- variables.tf               Input contract
+|-- outputs.tf                 Deployment hand-off values
+|-- providers.tf               OCI provider configuration
+|-- versions.tf                Terraform and provider constraints
+|-- terraform.tfvars.example   Example input shape
+`-- ansible/
+    |-- plan.yml               Local init, validate, and plan
+    |-- apply.yml              Guarded init, validate, plan, and apply
+    `-- destroy.yml            Guarded destroy
+```
 
-## Deployment Notes
+## Inputs To Decide
 
-Use this when the customer has a real external cloud attachment. For single provider
-hybrid connectivity, use the FastConnect or IPSec VPN blueprints.
+Base tenancy and naming inputs:
+- `tenancy_ocid`
+- `current_user_ocid`
+- `region`
+- `home_region`
+- `oci_config_profile`
+- `org`
+- `environment`
+- `region_key`
+- `defined_tags`
+- `freeform_tags`
+
+Deployment-specific inputs to review:
+- `compartment_ocid`
+- `customer_bgp_asn`
+- `provider_service_id`
+- `provider_service_key_name`
+- `cpe_ip_address`
+- `remote_cloud_cidr_blocks`
+
+Important enable flags and switches:
+- `enable_fastconnect`
+- `enable_ipsec`
+
+Review `terraform.tfvars.example` first, then create a local ignored `terraform.tfvars` for real OCIDs, CIDRs, names, recipients, and enable flags.
+
+## Outputs And Hand-Off
+
+This deployment exports the following outputs from `outputs.tf`:
+
+- `blueprint_name`
+- `name_prefix`
+- `resource_ids`
+- `hub_vcn_id`
+- `drg_id`
+- `spoke_vcn_ids`
+- `virtual_circuit_id`
+- `ipsec_id`
+
+Use these outputs as the contract for downstream blueprints, runbooks, customer notes, or manual hand-off. If an output name changes, update dependent documentation and consumers in the same change.
+
+## Terraform And Ansible Workflow
+
+Use direct Terraform when you are iterating locally:
+
+```bash
+cd blueprints/networking/hub-spoke-with-multicloud-interconnect
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform validate
+terraform plan
+```
+
+Use the local Ansible wrapper when you want the same runner shape used across the repo:
+
+```bash
+cd blueprints/networking/hub-spoke-with-multicloud-interconnect
+ansible-playbook -i localhost, ansible/plan.yml
+CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
+CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
+```
+
+`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for customer-facing or shared environments.
+
+## Deployment Order
+
+1. Deploy or identify the target compartment.
+2. Review CIDRs, subnets, gateways, route tables, DNS, and inspection choices.
+3. Populate `terraform.tfvars` with customer-specific network values.
+4. Run plan and review traffic path changes.
+5. Apply, then hand VCN, subnet, DRG, DNS, or inspection outputs to workloads and extensions.
 
 ## Architecture
 
-Detailed ASCII architecture notes live in `architecture/README.md`.
+The full detailed ASCII architecture is local to this deployment:
+
+```text
+architecture/README.md
+```
+
+That file documents the ownership boundary, Terraform components, request flow, state and output contract, operational boundaries, review checklist, and the expected Terraform + Ansible output at the end of the deployment.
+
+## Review Before Apply
+
+- Confirm external cloud network CIDRs and ownership.
+- Review FastConnect and IPSec enablement separately.
+- Keep DNS, routing, and inspection assumptions explicit.
+- Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
+- Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
+
+## Validation
+
+From the repository root:
+
+```bash
+./scripts/validate-all.sh
+```
+
+The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.

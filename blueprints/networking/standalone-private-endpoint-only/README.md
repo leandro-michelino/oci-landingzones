@@ -1,69 +1,142 @@
-# Standalone Private Endpoint Only
+# Standalone Private Endpoint Only VCN
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Use this deployment when workloads should have no direct internet exposure and only
-communicate through private endpoints or private connectivity.
+This deployment README belongs only to `blueprints/networking/standalone-private-endpoint-only`. It is the run-facing guide for this blueprint; the detailed ASCII design lives beside it in `architecture/README.md`.
 
-## What It Does
+## Deployment Purpose
 
-This blueprint creates a private-only workload network. It avoids public subnets and
-internet ingress, then uses private endpoints, service gateways, private connectivity,
-optional controlled egress, and DNS planning to keep the workload reachable only through
-approved paths.
+Creates a private-first VCN shape with private endpoint access and no public application subnet pattern.
 
-## Why Use It
+## When To Use This Deployment
 
-Use this when public ingress is not part of the story. This is for private workloads
-that talk through private endpoints, service gateways, VPN, FastConnect, or a shared
-hub.
+- The workload should not expose public subnets.
+- Private endpoints and service access drive the network design.
+- A compact private network is enough for the deployment.
 
-## When To Use It
+## What This Deploys
 
-- The workload is internal-only.
-- Regulated controls forbid direct internet exposure.
-- Access comes from private connectivity or shared services.
+The Terraform in this folder wires the following local components:
 
-## Pattern
+- Terraform module `private_vcn`
 
-- One private VCN.
-- Private subnets only.
-- No public subnet.
-- No internet gateway.
-- Optional NAT gateway for controlled outbound updates.
-- Service gateway for OCI services.
-- Private endpoints for supported platform services.
+The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local ignored `terraform.tfvars` file.
 
-## Best Fit
+## Folder Contract
 
-- Internal applications.
-- Regulated workloads.
-- Private service access patterns.
-- Environments where inbound access comes from VPN, FastConnect, Bastion, or a
-  shared-services hub.
+```text
+blueprints/networking/standalone-private-endpoint-only/
+|-- README.md                  This deployment guide
+|-- architecture/README.md     Detailed ASCII architecture for this deployment
+|-- main.tf                    Terraform modules, resources, and data sources
+|-- variables.tf               Input contract
+|-- outputs.tf                 Deployment hand-off values
+|-- providers.tf               OCI provider configuration
+|-- versions.tf                Terraform and provider constraints
+|-- terraform.tfvars.example   Example input shape
+`-- ansible/
+    |-- plan.yml               Local init, validate, and plan
+    |-- apply.yml              Guarded init, validate, plan, and apply
+    `-- destroy.yml            Guarded destroy
+```
 
 ## Inputs To Decide
 
-- VCN and private subnet CIDRs.
-- Required private endpoints.
-- Whether NAT egress is allowed.
-- OCI service access requirements.
-- Administrative access path.
-- DNS resolution path.
+Base tenancy and naming inputs:
+- `tenancy_ocid`
+- `current_user_ocid`
+- `region`
+- `home_region`
+- `oci_config_profile`
+- `org`
+- `environment`
+- `region_key`
+- `defined_tags`
+- `freeform_tags`
 
-## Deployment Flow
+Deployment-specific inputs to review:
+- `compartment_ocid`
+- `vcn_label`
+- `vcn_dns_label`
+- `vcn_cidr_block`
+- `subnets`
+- `route_tables`
+- `security_lists`
 
-1. Deploy `blueprints/core`.
-2. Complete the local architecture notes.
-3. Confirm there is no required public ingress.
-4. Populate local tfvars.
-5. Run Terraform validation and plan.
-6. Apply after private access and DNS are reviewed.
+Important enable flags and switches:
+- `enable_nat_gateway`
 
-## Architecture Artifacts
+Review `terraform.tfvars.example` first, then create a local ignored `terraform.tfvars` for real OCIDs, CIDRs, names, recipients, and enable flags.
 
-- Architecture notes: `architecture/README.md`
+## Outputs And Hand-Off
 
-## Notes
+This deployment exports the following outputs from `outputs.tf`:
 
-This is the private-only alternative to the internet-facing three-tier blueprints.
+- `blueprint_name`
+- `name_prefix`
+- `resource_ids`
+- `vcn_id`
+- `subnet_ids`
+- `route_table_ids`
+- `gateway_ids`
+
+Use these outputs as the contract for downstream blueprints, runbooks, customer notes, or manual hand-off. If an output name changes, update dependent documentation and consumers in the same change.
+
+## Terraform And Ansible Workflow
+
+Use direct Terraform when you are iterating locally:
+
+```bash
+cd blueprints/networking/standalone-private-endpoint-only
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform validate
+terraform plan
+```
+
+Use the local Ansible wrapper when you want the same runner shape used across the repo:
+
+```bash
+cd blueprints/networking/standalone-private-endpoint-only
+ansible-playbook -i localhost, ansible/plan.yml
+CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
+CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
+```
+
+`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for customer-facing or shared environments.
+
+## Deployment Order
+
+1. Deploy or identify the target compartment.
+2. Review CIDRs, subnets, gateways, route tables, DNS, and inspection choices.
+3. Populate `terraform.tfvars` with customer-specific network values.
+4. Run plan and review traffic path changes.
+5. Apply, then hand VCN, subnet, DRG, DNS, or inspection outputs to workloads and extensions.
+
+## Architecture
+
+The full detailed ASCII architecture is local to this deployment:
+
+```text
+architecture/README.md
+```
+
+That file documents the ownership boundary, Terraform components, request flow, state and output contract, operational boundaries, review checklist, and the expected Terraform + Ansible output at the end of the deployment.
+
+## Review Before Apply
+
+- Confirm NAT and service gateway choices.
+- Review private endpoint subnet and DNS behavior.
+- Validate no public route slips into the design.
+- Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
+- Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
+
+## Validation
+
+From the repository root:
+
+```bash
+./scripts/validate-all.sh
+```
+
+The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.

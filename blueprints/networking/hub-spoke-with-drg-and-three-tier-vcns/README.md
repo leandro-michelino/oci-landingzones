@@ -2,66 +2,147 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Use this deployment when the customer needs a central hub VCN, a DRG, and one or more
-spoke VCNs that follow the three-tier workload pattern.
+This deployment README belongs only to `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns`. It is the run-facing guide for this blueprint; the detailed ASCII design lives beside it in `architecture/README.md`.
 
-## What It Does
+## Deployment Purpose
 
-This is the base enterprise hub-spoke network. It creates the shared routing center with
-a hub VCN and DRG, then attaches three-tier spoke VCNs for workload teams that need
-separation but still depend on common routing, DNS, or future hybrid connectivity.
+Builds a hub VCN, DRG, spoke VCNs, and DRG attachments for a classic routed hub-spoke landing-zone network.
 
-## Why Use It
+## When To Use This Deployment
 
-Use this when one VCN is no longer enough and the customer needs a proper shared routing
-center. This is the base enterprise network shape for many OCI landing zones.
+- Multiple workload VCNs need central routing.
+- A DRG is the routing hub.
+- Spoke VCN subnet tiers need repeatable creation.
 
-## When To Use It
+## What This Deploys
 
-- Multiple applications or teams need separate spokes.
-- A DRG is needed for routing growth.
-- Future VPN, FastConnect, firewall, or DR patterns are likely.
+The Terraform in this folder wires the following local components:
 
-## Pattern
+- Terraform module `hub_vcn`
+- Terraform module `drg`
+- Terraform module `spoke_vcns`
+- Terraform resource `oci_core_drg_attachment.hub`
+- Terraform resource `oci_core_drg_attachment.spokes`
 
-- Hub VCN for shared routing and central services.
-- DRG for VCN attachments and future on-premises connectivity.
-- One or more spoke VCNs.
-- Three-tier subnet layout inside each spoke.
-- Centralized routing between spokes through the DRG.
-- Optional internet egress from hub or spokes, depending on design.
+The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local ignored `terraform.tfvars` file.
 
-## Best Fit
+## Folder Contract
 
-- Multi-application landing zones.
-- Shared-services network models.
-- Customers expecting growth beyond one VCN.
-- Environments that may add FastConnect, IPSec, firewall inspection, or DR later.
+```text
+blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/
+|-- README.md                  This deployment guide
+|-- architecture/README.md     Detailed ASCII architecture for this deployment
+|-- main.tf                    Terraform modules, resources, and data sources
+|-- variables.tf               Input contract
+|-- outputs.tf                 Deployment hand-off values
+|-- providers.tf               OCI provider configuration
+|-- versions.tf                Terraform and provider constraints
+|-- terraform.tfvars.example   Example input shape
+`-- ansible/
+    |-- plan.yml               Local init, validate, and plan
+    |-- apply.yml              Guarded init, validate, plan, and apply
+    `-- destroy.yml            Guarded destroy
+```
 
 ## Inputs To Decide
 
-- Hub VCN CIDR.
-- Spoke VCN CIDRs.
-- DRG attachment model.
-- Route distribution and import/export rules.
-- Internet egress pattern.
-- Inspection requirement.
-- DNS resolution model.
+Base tenancy and naming inputs:
+- `tenancy_ocid`
+- `current_user_ocid`
+- `region`
+- `home_region`
+- `oci_config_profile`
+- `org`
+- `environment`
+- `region_key`
+- `defined_tags`
+- `freeform_tags`
 
-## Deployment Flow
+Deployment-specific inputs to review:
+- `compartment_ocid`
+- `hub_vcn_dns_label`
+- `hub_vcn_cidr_block`
+- `hub_subnets`
+- `spoke_vcns`
+- `spoke_route_tables`
+- `spoke_security_lists`
 
-1. Deploy `blueprints/core`.
-2. Complete the architecture notes for the hub, DRG, and spokes.
-3. Confirm the customer IP plan has no overlaps.
-4. Populate local tfvars.
-5. Run Terraform validation and plan.
-6. Apply after routing and security rules are reviewed.
+Important enable flags and switches:
+- None declared in this folder.
 
-## Architecture Artifacts
+Review `terraform.tfvars.example` first, then create a local ignored `terraform.tfvars` for real OCIDs, CIDRs, names, recipients, and enable flags.
 
-- Architecture notes: `architecture/README.md`
+## Outputs And Hand-Off
 
-## Notes
+This deployment exports the following outputs from `outputs.tf`:
 
-This is the base hub-spoke pattern. Use the more specific hub-spoke folders when the
-design requires VPN, FastConnect, managed firewall, NVA inspection, or DR.
+- `blueprint_name`
+- `name_prefix`
+- `resource_ids`
+- `hub_vcn_id`
+- `drg_id`
+- `hub_subnet_ids`
+- `spoke_vcn_ids`
+- `spoke_subnet_ids`
+- `drg_attachment_ids`
+
+Use these outputs as the contract for downstream blueprints, runbooks, customer notes, or manual hand-off. If an output name changes, update dependent documentation and consumers in the same change.
+
+## Terraform And Ansible Workflow
+
+Use direct Terraform when you are iterating locally:
+
+```bash
+cd blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform validate
+terraform plan
+```
+
+Use the local Ansible wrapper when you want the same runner shape used across the repo:
+
+```bash
+cd blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns
+ansible-playbook -i localhost, ansible/plan.yml
+CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
+CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
+```
+
+`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for customer-facing or shared environments.
+
+## Deployment Order
+
+1. Deploy or identify the target compartment.
+2. Review CIDRs, subnets, gateways, route tables, DNS, and inspection choices.
+3. Populate `terraform.tfvars` with customer-specific network values.
+4. Run plan and review traffic path changes.
+5. Apply, then hand VCN, subnet, DRG, DNS, or inspection outputs to workloads and extensions.
+
+## Architecture
+
+The full detailed ASCII architecture is local to this deployment:
+
+```text
+architecture/README.md
+```
+
+That file documents the ownership boundary, Terraform components, request flow, state and output contract, operational boundaries, review checklist, and the expected Terraform + Ansible output at the end of the deployment.
+
+## Review Before Apply
+
+- Review CIDR overlap and route propagation.
+- Confirm hub and spoke attachment intent.
+- Validate inspection and DNS choices before apply.
+- Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
+- Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
+
+## Validation
+
+From the repository root:
+
+```bash
+./scripts/validate-all.sh
+```
+
+The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.

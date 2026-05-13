@@ -2,58 +2,135 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Use this deployment when the customer already has an OCI Identity Domain or an external
-identity provider that the landing zone must integrate with.
+This deployment README belongs only to `blueprints/identity/custom-identity-domain`. It is the run-facing guide for this blueprint; the detailed ASCII design lives beside it in `architecture/README.md`.
 
-## What It Does
+## Deployment Purpose
 
-This blueprint connects the landing zone to identity that already exists. It keeps group
-mappings, federation ownership, policy bindings, break-glass handling, and external IdP
-assumptions visible so Terraform plugs into the customer model instead of taking it
-over.
+Creates one or more custom OCI identity domains and optional regional replicas for a named identity boundary.
 
-## Why Use It
+## When To Use This Deployment
 
-Use this when the customer already has an identity model and the landing zone needs to
-plug into it instead of inventing a new one. This is the respectful brownfield option.
+- A customer needs custom identity-domain naming or structure.
+- Multiple identity domains need consistent creation.
+- Replica regions must be explicit.
 
-## When To Use It
+## What This Deploys
 
-- There is an existing OCI identity domain or corporate IdP.
-- Group names and federation rules are already owned by another team.
-- Terraform should bind policy and access, not rebuild identity from scratch.
+The Terraform in this folder wires the following local components:
 
-## Pattern
+- Terraform resource `oci_identity_domain.this`
+- Terraform resource `oci_identity_domain_replication_to_region.replicas`
 
-- Existing identity domain integration.
-- Group mapping for platform, security, networking, and workload roles.
-- Optional federation notes for external identity providers.
-- IAM policy bindings to existing groups.
+The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local ignored `terraform.tfvars` file.
 
-## Best Fit
+## Folder Contract
 
-- Brownfield tenancies.
-- Enterprise identity integration.
-- Customers with existing SSO and lifecycle-management processes.
+```text
+blueprints/identity/custom-identity-domain/
+|-- README.md                  This deployment guide
+|-- architecture/README.md     Detailed ASCII architecture for this deployment
+|-- main.tf                    Terraform modules, resources, and data sources
+|-- variables.tf               Input contract
+|-- outputs.tf                 Deployment hand-off values
+|-- providers.tf               OCI provider configuration
+|-- versions.tf                Terraform and provider constraints
+|-- terraform.tfvars.example   Example input shape
+`-- ansible/
+    |-- plan.yml               Local init, validate, and plan
+    |-- apply.yml              Guarded init, validate, plan, and apply
+    `-- destroy.yml            Guarded destroy
+```
 
 ## Inputs To Decide
 
-- Existing identity domain OCID or name.
-- External IdP details.
-- Group mapping.
-- Federation ownership.
-- SCIM or manual group lifecycle.
-- Break-glass account handling.
+Base tenancy and naming inputs:
+- `tenancy_ocid`
+- `current_user_ocid`
+- `region`
+- `home_region`
+- `org`
+- `environment`
+- `region_key`
+- `defined_tags`
+- `freeform_tags`
 
-## Deployment Flow
+Deployment-specific inputs to review:
+- `compartment_ocid`
+- `identity_domains`
 
-1. Inventory existing identity domains and groups.
-2. Complete the architecture notes with ownership boundaries.
-3. Confirm group mappings with the customer identity team.
-4. Populate local ignored tfvars.
-5. Run Terraform validation and plan.
-6. Apply after federation and policy scope are reviewed.
+Important enable flags and switches:
+- None declared in this folder.
 
-## Architecture Artifacts
+Review `terraform.tfvars.example` first, then create a local ignored `terraform.tfvars` for real OCIDs, CIDRs, names, recipients, and enable flags.
 
-- Architecture notes: `architecture/README.md`
+## Outputs And Hand-Off
+
+This deployment exports the following outputs from `outputs.tf`:
+
+- `blueprint_name`
+- `name_prefix`
+- `resource_ids`
+- `identity_domain_ids`
+- `identity_domain_urls`
+- `replica_region_ids`
+
+Use these outputs as the contract for downstream blueprints, runbooks, customer notes, or manual hand-off. If an output name changes, update dependent documentation and consumers in the same change.
+
+## Terraform And Ansible Workflow
+
+Use direct Terraform when you are iterating locally:
+
+```bash
+cd blueprints/identity/custom-identity-domain
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform validate
+terraform plan
+```
+
+Use the local Ansible wrapper when you want the same runner shape used across the repo:
+
+```bash
+cd blueprints/identity/custom-identity-domain
+ansible-playbook -i localhost, ansible/plan.yml
+CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
+CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
+```
+
+`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for customer-facing or shared environments.
+
+## Deployment Order
+
+1. Confirm the target tenancy and identity-domain strategy.
+2. Review group, dynamic-group, domain, replica, and policy inputs.
+3. Populate `terraform.tfvars` with identity naming and scope values.
+4. Run plan and inspect IAM or domain impact.
+5. Apply, then hand group, domain, and policy outputs to administrators.
+
+## Architecture
+
+The full detailed ASCII architecture is local to this deployment:
+
+```text
+architecture/README.md
+```
+
+That file documents the ownership boundary, Terraform components, request flow, state and output contract, operational boundaries, review checklist, and the expected Terraform + Ansible output at the end of the deployment.
+
+## Review Before Apply
+
+- Confirm domain names and license type.
+- Review replica region list.
+- Coordinate federation and app integration after the domain exists.
+- Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
+- Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
+
+## Validation
+
+From the repository root:
+
+```bash
+./scripts/validate-all.sh
+```
+
+The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.

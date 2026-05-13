@@ -48,6 +48,35 @@
       loop_control:
         label: "{{ item.item.path | dirname | regex_replace('^' ~ validation_repo_root ~ '/', '') }}/README.md"
 
+    - name: Read blueprint README files
+      ansible.builtin.slurp:
+        src: "{{ item.item.path | dirname }}/README.md"
+      register: validation_blueprint_readme_contents
+      loop: "{{ validation_blueprint_readmes.results | default([]) }}"
+      when: item.stat.exists
+      loop_control:
+        label: "{{ item.item.path | dirname | regex_replace('^' ~ validation_repo_root ~ '/', '') }}/README.md"
+
+    - name: Fail when a blueprint README lacks full deployment guidance
+      ansible.builtin.fail:
+        msg: "{{ item.source }} must include full deployment purpose, inputs, outputs, Terraform and Ansible workflow, local ASCII architecture, review, and validation sections."
+      when:
+        - >-
+          '## Deployment Purpose' not in (item.content | b64decode) or
+          '## When To Use This Deployment' not in (item.content | b64decode) or
+          '## What This Deploys' not in (item.content | b64decode) or
+          '## Folder Contract' not in (item.content | b64decode) or
+          '## Inputs To Decide' not in (item.content | b64decode) or
+          '## Outputs And Hand-Off' not in (item.content | b64decode) or
+          '## Terraform And Ansible Workflow' not in (item.content | b64decode) or
+          '## Architecture' not in (item.content | b64decode) or
+          'architecture/README.md' not in (item.content | b64decode) or
+          '## Review Before Apply' not in (item.content | b64decode) or
+          '## Validation' not in (item.content | b64decode)
+      loop: "{{ validation_blueprint_readme_contents.results | default([]) }}"
+      loop_control:
+        label: "{{ item.source }}"
+
     - name: Check blueprint architecture README files
       ansible.builtin.stat:
         path: "{{ item.path | dirname }}/architecture/README.md"

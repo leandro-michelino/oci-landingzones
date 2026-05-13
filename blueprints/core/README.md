@@ -1,159 +1,228 @@
-# Core Landing Zone Blueprint
+# Core Landing Zone
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-The core blueprint is the mandatory baseline for every OCI landing zone deployment. It
-creates the shared compartments, tags, and IAM foundation used by the other
-blueprints.
+This deployment README belongs only to `blueprints/core`. It is the run-facing guide for this blueprint; the detailed ASCII design lives beside it in `architecture/README.md`.
 
-## What It Does
+## Deployment Purpose
 
-Core is the base layer everything else expects. It creates the compartment shape,
-baseline tags, governance log groups, IAM groups, dynamic groups, and policies
-that networking, security, compliance, operating-entity, and extension
-blueprints build on top of.
+Builds the shared OCI foundation: compartments, IAM, tagging, logging, Cloud Guard, Vault/KMS, Security Zones, VSS, budgets, events, and monitoring.
 
-## Why Use It
-
-Use core when you need the boring-but-critical foundation in place before anyone starts
-building fancy stuff. It gives the rest of the repo a stable place to hang compartments,
-IAM, tags, and policy outputs.
-
-## When To Use It
+## When To Use This Deployment
 
 - You are starting a new landing zone.
-- Other blueprints need shared compartment or IAM outputs.
-- You want a repeatable baseline before handing space to app teams.
+- Other blueprints need shared compartments, IAM groups, policies, tags, and security services.
+- The customer wants a governed OCI foundation before workload networking.
 
-## Use Cases
+## What This Deploys
 
-- Start a new OCI landing zone from a clean baseline.
-- Create the shared compartments and IAM roles before workload onboarding.
-- Provide stable outputs for networking, security, governance, and operations.
-- Run ephemeral real-deployment tests in a parent compartment.
+The Terraform in this folder wires the following local components:
 
-Architecture notes live in `architecture/README.md`.
+- Terraform module `compartments`
+- Terraform module `tagging`
+- Terraform module `logging`
+- Terraform module `cloud_guard`
+- Terraform module `vault`
+- Terraform module `security_zones`
+- Terraform module `vss`
+- Terraform module `budgets`
+- Terraform module `events`
+- Terraform module `monitoring`
+- Terraform module `groups`
+- Terraform module `dynamic_groups`
+- Terraform module `policies`
 
-## Responsibilities
+The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local ignored `terraform.tfvars` file.
 
-- Root landing zone compartment.
-- Network, security, governance, and workload compartments.
-- Landing zone tag namespace, tag definitions, and tag defaults.
-- Governance log groups for audit, network, service, and security logs.
-- Optional VCN flow logs, OCI service logs, saved searches, and audit retention.
-- Optional Cloud Guard configuration and landing zone target.
-- Optional Vault/KMS foundation and Security Zones.
-- Optional Vulnerability Scanning Service host and container scan recipes and
-  targets.
-- Optional governance budgets, alert rules, Events rules, notification topics,
-  and subscriptions.
-- Optional Monitoring alarms, notification topics, and subscriptions.
-- Platform IAM groups and least-privilege policies.
-- Dynamic groups for platform automation and workload resource principals.
+## Folder Contract
 
-## Module Order
+```text
+blueprints/core/
+|-- README.md                  This deployment guide
+|-- architecture/README.md     Detailed ASCII architecture for this deployment
+|-- main.tf                    Terraform modules, resources, and data sources
+|-- variables.tf               Input contract
+|-- outputs.tf                 Deployment hand-off values
+|-- providers.tf               OCI provider configuration
+|-- versions.tf                Terraform and provider constraints
+|-- terraform.tfvars.example   Example input shape
+`-- ansible/
+    |-- plan.yml               Local init, validate, and plan
+    |-- apply.yml              Guarded init, validate, plan, and apply
+    `-- destroy.yml            Guarded destroy
+```
 
-1. `modules/iam/compartments`
-2. `modules/governance/tagging`
-3. `modules/governance/logging`
-4. `modules/security/cloud-guard`
-5. `modules/security/vault`
-6. `modules/security/security-zones`
-7. `modules/security/vss`
-8. `modules/governance/budgets`
-9. `modules/governance/events`
-10. `modules/operations/monitoring`
-11. `modules/iam/groups`
-12. `modules/iam/dynamic-groups`
-13. `modules/iam/policies`
+## Inputs To Decide
 
-## Expected Outputs
+Base tenancy and naming inputs:
+- `tenancy_ocid`
+- `current_user_ocid`
+- `region`
+- `home_region`
+- `oci_config_profile`
+- `org`
+- `environment`
+- `region_key`
+- `defined_tags`
+- `freeform_tags`
 
+Deployment-specific inputs to review:
+- `cis_level`
+- `parent_compartment_ocid`
+- `tag_default_values`
+- `tag_namespace_name`
+- `required_tag_defaults`
+- `log_groups`
+- `service_logs`
+- `vcn_flow_logs`
+- `logging_saved_searches`
+- `audit_retention_period_days`
+- `cloud_guard_enabled`
+- `cloud_guard_status`
+- `cloud_guard_reporting_region`
+- `cloud_guard_self_manage_resources`
+- `cloud_guard_enable_default_target`
+- `cloud_guard_detector_recipe_ids`
+- `cloud_guard_responder_recipe_ids`
+- `cloud_guard_targets`
+- ... plus 39 more deployment-specific inputs in `variables.tf`
+
+Important enable flags and switches:
+- `enable_delete`
+- `enable_tagging`
+- `enable_tag_defaults`
+- `enable_logging`
+- `enable_audit_retention`
+- `cloud_guard_enabled`
+- `vault_enabled`
+- `enable_default_vault`
+- `enable_default_vault_key`
+- `security_zones_enabled`
+- `enable_default_security_zone`
+- `vss_enabled`
+- `enable_default_host_scan`
+- `enable_budgets`
+- `enable_default_budget`
+- `enable_events`
+- `enable_default_event_topic`
+- `enable_default_event_rules`
+- ... plus 5 more enable flags in `variables.tf`
+
+Review `terraform.tfvars.example` first, then create a local ignored `terraform.tfvars` for real OCIDs, CIDRs, names, recipients, and enable flags.
+
+## Outputs And Hand-Off
+
+This deployment exports the following outputs from `outputs.tf`:
+
+- `blueprint_name`
+- `name_prefix`
+- `cis_level`
 - `root_compartment_id`
+- `compartment_ids`
 - `network_compartment_id`
 - `security_compartment_id`
 - `governance_compartment_id`
 - `workloads_compartment_id`
-- `compartment_ids`
 - `compartment_names`
+- `tag_namespace_id`
+- `tag_namespace_name`
 - `tag_definition_ids`
 - `log_group_ids`
+- `log_group_names`
 - `service_log_ids`
 - `logging_saved_search_ids`
 - `audit_configuration_id`
 - `cloud_guard_configuration_id`
 - `cloud_guard_target_ids`
+- `cloud_guard_target_names`
 - `vault_ids`
+- `vault_management_endpoints`
+- `vault_crypto_endpoints`
 - `vault_key_ids`
 - `security_zone_ids`
+- `security_zone_names`
+- `security_zone_target_ids`
+- `vss_host_scan_recipe_ids`
 - `vss_host_scan_target_ids`
+- `vss_container_scan_recipe_ids`
 - `vss_container_scan_target_ids`
 - `budget_ids`
+- `budget_names`
 - `budget_alert_rule_ids`
 - `event_notification_topic_ids`
+- `event_notification_topic_names`
 - `event_subscription_ids`
 - `event_rule_ids`
-- `monitoring_alarm_ids`
+- `event_rule_names`
 - `monitoring_notification_topic_ids`
+- `monitoring_subscription_ids`
+- `monitoring_alarm_ids`
+- `monitoring_alarm_names`
 - `group_ids`
 - `group_names`
 - `dynamic_group_ids`
 - `dynamic_group_names`
 - `policy_ids`
 - `policy_names`
-- `tag_namespace_id`
+- `resource_ids`
 
-## Implementation Notes
+Use these outputs as the contract for downstream blueprints, runbooks, customer notes, or manual hand-off. If an output name changes, update dependent documentation and consumers in the same change.
 
-- Compartments are created before tag defaults because tag defaults attach to
-  compartment OCIDs.
-- Identity resources are created through the home-region OCI provider alias. Set
-  `home_region` when the workload region is not the tenancy home region.
-- `parent_compartment_ocid` can be used for ephemeral tests and should be kept in local
-  ignored variable files.
-- OCI tag definition deletes are slow because OCI Identity retires and deletes them
-  asynchronously in the home region. Use `enable_tagging = false` for fast ephemeral
-  tests that do not need defined tags.
-- Use `enable_tag_defaults = false` when a test needs tag definitions but does not need
-  tag defaults on every compartment.
-- Core creates governance log groups by default. Service logs and VCN flow logs
-  require real source resource OCIDs, so configure `service_logs` and
-  `vcn_flow_logs` in local ignored tfvars files.
-- Generic core keeps tenancy audit retention disabled by default because it is
-  tenancy-wide. CIS Level 1 and Level 2 wrappers enable it by default and expose
-  `audit_retention_period_days`.
-- Generic core keeps Cloud Guard disabled by default because the service
-  configuration is tenancy-wide. CIS Level 1 and Level 2 wrappers enable it by
-  default. Add approved detector and responder recipe OCIDs through local
-  ignored tfvars when custom target recipes are required.
-- Generic core keeps Vault/KMS disabled by default because key ownership,
-  protection mode, and rotation windows are environment-specific. Set
-  `vault_enabled = true` to create the default vault and key, or use `vaults`
-  and `vault_keys` for explicit definitions.
-- Generic core keeps Security Zones disabled by default because they enforce
-  hard guardrails on the protected compartment tree. Set
-  `security_zones_enabled = true` with an approved recipe OCID or display-name
-  lookup before creating the default landing zone Security Zone.
-- Generic core keeps VSS disabled by default because scan scope should be
-  approved per environment. Set `vss_enabled = true` to create the default host
-  scan recipe and target for the workloads compartment, or use the host and
-  container scan maps for explicit scope.
-- Generic core keeps budgets disabled by default because spend thresholds and
-  recipients are environment-specific. Set `enable_budgets = true` and
-  `default_budget_amount` for the default root-scope budget, or use `budgets`
-  for explicit budget definitions.
-- Generic core keeps Events disabled by default. CIS Level 1 and Level 2
-  wrappers enable the default governance topic and IAM change rules, while
-  subscriptions still require explicit local endpoints.
-- Generic core keeps Monitoring alarms disabled by default because metric
-  queries and notification destinations are environment-specific. Set
-  `monitoring_enabled = true`, add subscriptions, and define alarms in local
-  ignored tfvars files.
-- Use the IAM default toggles only in quota-constrained tests. Normal landing zone
-  deployments should leave the IAM foundation enabled.
-- IAM policies are attached to the parent compartment and use compartment paths for the
-  landing zone root and child compartments.
-- IAM policies should avoid granting workload teams permissions outside their operating
-  entity compartments.
-- Core should expose stable outputs for networking, operating entity, and extension
-  blueprints.
+## Terraform And Ansible Workflow
+
+Use direct Terraform when you are iterating locally:
+
+```bash
+cd blueprints/core
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform validate
+terraform plan
+```
+
+Use the local Ansible wrapper when you want the same runner shape used across the repo:
+
+```bash
+cd blueprints/core
+ansible-playbook -i localhost, ansible/plan.yml
+CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
+CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
+```
+
+`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for customer-facing or shared environments.
+
+## Deployment Order
+
+1. Bootstrap state and OCI credentials.
+2. Populate `terraform.tfvars` from the example.
+3. Review governance, IAM, logging, security, and monitoring choices.
+4. Run plan, then apply after review.
+5. Hand outputs to network, operating-entity, compliance, or extension deployments.
+
+## Architecture
+
+The full detailed ASCII architecture is local to this deployment:
+
+```text
+architecture/README.md
+```
+
+That file documents the ownership boundary, Terraform components, request flow, state and output contract, operational boundaries, review checklist, and the expected Terraform + Ansible output at the end of the deployment.
+
+## Review Before Apply
+
+- Review tenancy-wide controls before apply.
+- Confirm notification topics, budget alerts, and monitoring recipients.
+- Keep core outputs stable because downstream blueprints consume them.
+- Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
+- Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
+
+## Validation
+
+From the repository root:
+
+```bash
+./scripts/validate-all.sh
+```
+
+The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.
