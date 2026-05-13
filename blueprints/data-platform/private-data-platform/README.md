@@ -43,3 +43,7 @@ teams to assemble pieces ad hoc.
 
 Use this after core and a private networking pattern. Pair with workload vending when
 multiple data product teams need isolated spaces.
+
+## Architecture
+
+Detailed ASCII architecture notes live in `architecture/README.md`.

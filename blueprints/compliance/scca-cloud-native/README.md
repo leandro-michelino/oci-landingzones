@@ -46,3 +46,7 @@ without pretending compliance is just a checkbox.
 Deploy core first, then the selected networking inspection pattern, then this compliance
 composition. Keep CIS Level 1 or Level 2 as a separate opt-in choice when the customer
 explicitly requires it.
+
+## Architecture
+
+Detailed ASCII architecture notes live in `architecture/README.md`.

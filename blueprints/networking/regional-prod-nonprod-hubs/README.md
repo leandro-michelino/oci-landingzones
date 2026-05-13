@@ -40,3 +40,7 @@ radius. It is more structure than a simple compartment split, and that is the po
 
 Use this when production isolation is stronger than a simple compartment boundary. Pair
 with operating entity or workload vending patterns.
+
+## Architecture
+
+Detailed ASCII architecture notes live in `architecture/README.md`.

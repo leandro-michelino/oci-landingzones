@@ -44,3 +44,7 @@ baseline conversation.
 
 Use this after core and a selected networking pattern. It can compose OKE, streaming,
 WAF, API Gateway, and private data platform pieces as needed.
+
+## Architecture
+
+Detailed ASCII architecture notes live in `architecture/README.md`.

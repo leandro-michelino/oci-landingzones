@@ -62,3 +62,7 @@ terraform init
 terraform validate
 terraform plan -var-file=terraform.tfvars
 ```
+
+## Architecture
+
+Detailed ASCII architecture notes live in `architecture/README.md`.

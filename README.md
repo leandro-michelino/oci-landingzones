@@ -1,8 +1,8 @@
+![OCI Landing Zones architecture banner](docs/assets/oci-landing-zones-banner.svg)
+
 # OCI Landing Zones
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
-![OCI Landing Zones architecture banner](docs/assets/oci-landing-zones-banner.svg)
 
 This repo is a practical OCI landing-zone toolkit. It collects Terraform
 modules, ready-to-use blueprints, Ansible helpers, and architecture notes for

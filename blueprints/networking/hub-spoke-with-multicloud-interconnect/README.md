@@ -42,3 +42,7 @@ multicloud connectivity deliberate instead of a pile of one-off tunnels.
 
 Use this when the customer has a real external cloud attachment. For single provider
 hybrid connectivity, use the FastConnect or IPSec VPN blueprints.
+
+## Architecture
+
+Detailed ASCII architecture notes live in `architecture/README.md`.

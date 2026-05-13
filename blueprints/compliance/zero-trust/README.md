@@ -42,3 +42,7 @@ soft internal network.
 
 Start with core, then choose the networking pattern that fits the traffic model. Use CIS
 Level 2 only when that extra strictness is explicitly selected.
+
+## Architecture
+
+Detailed ASCII architecture notes live in `architecture/README.md`.

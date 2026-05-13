@@ -48,3 +48,7 @@ groups and plans.
 
 Keep drill and failover plan execution separate from normal Terraform apply until the
 runbook flow is explicitly reviewed.
+
+## Architecture
+
+Detailed ASCII architecture notes live in `architecture/README.md`.

@@ -1,50 +1,144 @@
-# Private Data Platform Architecture
+# Private Data Platform Landing Zone Architecture
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This planned data-platform pattern keeps producer and consumer access private while centralizing encryption, logging, service access, and network controls.
+This architecture page documents the `blueprints/data-platform/private-data-platform` deployment. It is intentionally text-first and ASCII-only so it can be reviewed in terminals, pull requests, and customer notes without a diagramming tool.
 
-Keep architecture notes in this folder. Add rendered artifacts only when a review package needs them.
+## Deployment Purpose
+
+This blueprint provides private data platform foundation with private network,
+Vault/KMS, Object Storage, private endpoint, and Streaming.
+
+## Files In This Deployment
+
+```text
+blueprints/data-platform/private-data-platform/
+|-- README.md                         Human-friendly deployment notes
+|-- architecture/README.md            This detailed ASCII architecture
+|-- main.tf                           Terraform resource and module wiring
+|-- variables.tf                      Input contract and defaults
+|-- outputs.tf                        Hand-off values for dependent blueprints
+|-- providers.tf                      OCI provider configuration
+|-- versions.tf                       Terraform and provider constraints
+|-- terraform.tfvars.example          Example local variable shape
+`-- ansible/
+    |-- plan.yml                      Local guarded plan runner
+    |-- apply.yml                     Local guarded apply runner
+    `-- destroy.yml                   Local guarded destroy runner
+```
 
 ## ASCII Architecture
 
 ```text
-Producer Workloads                 Consumer Workloads
-        |                                  ^
-        v                                  |
-+--------------------+      +--------------------------+
-| Private Endpoints  | ---> | Private Data Services    |
-| subnet and DNS     |      | database, analytics, obj |
-+--------------------+      +--------------------------+
-        |                                  |
-        v                                  v
-+--------------------+      +--------------------------+
-| Service Gateway    |      | Security and Operations  |
-| OCI private APIs   |      | KMS, logs, alarms        |
-+--------------------+      +--------------------------+
-        |
-        v
-No public ingress path by default
++--------------------------------------------------------------------------------+
+| Private Data Platform Landing Zone                                             |
+| blueprints/data-platform/private-data-platform                                 |
++--------------------------------------------------------------------------------+
+| Operator / CI / local shell                                                    |
+|   |                                                                            |
+|   v                                                                            |
++--------------------------------------------------------------------------------+
+| Blueprint folder contract                                                      |
+|   README.md                                                                    |
+|   architecture/README.md                                                       |
+|   main.tf + variables.tf + outputs.tf + providers.tf + versions.tf             |
+|   ansible/plan.yml + apply.yml + destroy.yml                                   |
++--------------------------------------------------------------------------------+
+|   |                                                                            |
+|   v                                                                            |
++--------------------------------------------------------------------------------+
+| Terraform composition and OCI resources                                        |
+|  01. data     oci_objectstorage_namespace.this                 (main.tf)       |
+|  02. module   network                                          (main.tf)       |
+|  03. module   vault                                            (main.tf)       |
+|  04. resource oci_objectstorage_bucket.data                    (main.tf)       |
+|  05. resource oci_objectstorage_private_endpoint.data          (main.tf)       |
+|  06. module   streaming                                        (main.tf)       |
++--------------------------------------------------------------------------------+
+|   |                                                                            |
+|   v                                                                            |
++--------------------------------------------------------------------------------+
+| Architecture layers                                                            |
+|   - Control plane: Terraform provider and data platform variables              |
+|   - Network plane: private-only VCN, service gateway, and private endpoint subn|
+|   - Data plane: Object Storage bucket, Streaming, and private access targets   |
+|   - Security plane: Vault/KMS, tags, and no-public-access defaults             |
++--------------------------------------------------------------------------------+
+|   |                                                                            |
+|   v                                                                            |
++--------------------------------------------------------------------------------+
+| Outputs and hand-off                                                           |
+|   resource_ids plus blueprint-specific IDs                                     |
+|   tfvars reviewed before apply                                                 |
+|   generated Terraform artifacts cleaned after validation                       |
++--------------------------------------------------------------------------------+
 ```
 
-## Why This Diagram Matters
+## Terraform Components
 
-The diagram is the quick sanity check before anyone opens Terraform. It should make
-traffic paths, ownership boundaries, dependencies, and operational hand-offs obvious
-enough that a customer, network engineer, security reviewer, and platform engineer can
-point at the same picture and agree on what is being built.
+- `data oci_objectstorage_namespace.this` in `main.tf`: reads the Object Storage namespace needed by buckets and endpoints.
+- `module network` in `main.tf`: composes the reusable network module or child blueprint.
+- `module vault` in `main.tf`: composes the reusable vault module or child blueprint.
+- `resource oci_objectstorage_bucket.data` in `main.tf`: creates a private Object Storage bucket for data or DR logs.
+- `resource oci_objectstorage_private_endpoint.data` in `main.tf`: creates a private Object Storage endpoint inside the VCN.
+- `module streaming` in `main.tf`: composes the reusable streaming module or child blueprint.
+
+## Request And Deployment Flow
+
+- Operator supplies compartment and optional subnet/KMS overrides.
+- Private network and service gateway are created first.
+- Vault/KMS is prepared for encryption where enabled.
+- Object Storage bucket, private endpoint, and Streaming resources are created.
+- Outputs hand private endpoint, bucket, stream, and key IDs to data producers and consumers.
+
+## State, Inputs, And Outputs
+
+```text
+Input sources
+|-- terraform.tfvars.example documents expected values
+|-- local *.tfvars files provide tenancy, compartment, CIDR, endpoint, and OCID values
+|-- environment variables may provide OCI authentication and guarded Ansible confirms
+|
+Terraform state
+|-- backend is disabled for local validation and plan runners by default
+|-- production backends should be configured outside this reusable blueprint folder
+|-- generated .terraform directories, lock files, plans, and state files are cleaned by validation
+|
+Output contract
+|-- blueprint_name and name_prefix identify the deployment
+|-- resource_ids summarizes primary resources in a machine-friendly map
+`-- blueprint-specific outputs expose compartment, VCN, subnet, key, policy, service, or DR IDs
+```
+
+## Operational Boundaries
+
+- Keep apply/destroy behind the guarded Ansible runners or equivalent review gates.
+- Use local ignored tfvars for OCIDs, notification endpoints, customer CIDRs, and secrets.
+- Run ./scripts/validate-all.sh before commits or hand-off.
+- Confirm no-public-access bucket settings and private endpoint subnet placement.
+- Confirm KMS ownership and stream retention before production use.
 
 ## Review Checklist
 
-- Confirm the compartment, region, and ownership boundary shown here matches the tfvars.
-- Confirm all external dependencies are named before `terraform plan`.
-- Confirm ingress, egress, inspection, DNS, and private service paths are intentional.
-- Confirm logging, monitoring, IAM, and break-glass responsibilities are represented.
-- Keep rendered diagrams outside the blueprint unless they become the approved artifact.
+- Confirm the `README.md` story matches this ASCII architecture.
+- Confirm every module/resource listed above is intentional for this deployment.
+- Confirm required external IDs are documented before `terraform plan`.
+- Confirm enable flags are set deliberately, especially for tenancy-wide, paid, or destructive resources.
+- Confirm logging, IAM, security, networking, and operational hand-offs are visible in the diagram.
+- Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
 
-## When To Update It
+## Validation
 
-- The blueprint adds or removes a major resource type.
-- A route, trust boundary, region, compartment, or access path changes.
-- A customer-specific assumption becomes part of the reusable pattern.
-- The README explains a behavior that is not visible in the diagram yet.
+```bash
+./scripts/validate-all.sh
+```
+
+The repository validator checks Terraform formatting, initializes and validates every blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every blueprint-local Ansible runner, and removes generated Terraform artifacts afterward.
+
+## When To Update This Architecture
+
+- Terraform modules, resources, data sources, or provider aliases change.
+- A subnet, route, trust boundary, region, compartment, or access path changes.
+- A new enable flag changes what the deployment can create.
+- README usage notes describe behavior that is not represented here.
+- A customer review turns an assumption into a reusable pattern.

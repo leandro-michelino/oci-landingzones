@@ -32,6 +32,60 @@
         recurse: true
       register: validation_blueprint_entry_points
 
+    - name: Check blueprint README files
+      ansible.builtin.stat:
+        path: "{{ item.path | dirname }}/README.md"
+      register: validation_blueprint_readmes
+      loop: "{{ validation_blueprint_entry_points.files | default([]) }}"
+      loop_control:
+        label: "{{ item.path | dirname | regex_replace('^' ~ validation_repo_root ~ '/', '') }}/README.md"
+
+    - name: Fail when a blueprint README is missing
+      ansible.builtin.fail:
+        msg: "{{ item.item.path | dirname }}/README.md is required for every Terraform blueprint."
+      when: not item.stat.exists
+      loop: "{{ validation_blueprint_readmes.results | default([]) }}"
+      loop_control:
+        label: "{{ item.item.path | dirname | regex_replace('^' ~ validation_repo_root ~ '/', '') }}/README.md"
+
+    - name: Check blueprint architecture README files
+      ansible.builtin.stat:
+        path: "{{ item.path | dirname }}/architecture/README.md"
+      register: validation_blueprint_architecture_readmes
+      loop: "{{ validation_blueprint_entry_points.files | default([]) }}"
+      loop_control:
+        label: "{{ item.path | dirname | regex_replace('^' ~ validation_repo_root ~ '/', '') }}/architecture/README.md"
+
+    - name: Fail when a blueprint architecture README is missing
+      ansible.builtin.fail:
+        msg: "{{ item.item.path | dirname }}/architecture/README.md is required for every Terraform blueprint."
+      when: not item.stat.exists
+      loop: "{{ validation_blueprint_architecture_readmes.results | default([]) }}"
+      loop_control:
+        label: "{{ item.item.path | dirname | regex_replace('^' ~ validation_repo_root ~ '/', '') }}/architecture/README.md"
+
+    - name: Read blueprint architecture README files
+      ansible.builtin.slurp:
+        src: "{{ item.item.path | dirname }}/architecture/README.md"
+      register: validation_blueprint_architecture_contents
+      loop: "{{ validation_blueprint_architecture_readmes.results | default([]) }}"
+      when: item.stat.exists
+      loop_control:
+        label: "{{ item.item.path | dirname | regex_replace('^' ~ validation_repo_root ~ '/', '') }}/architecture/README.md"
+
+    - name: Fail when a blueprint architecture README lacks detailed ASCII sections
+      ansible.builtin.fail:
+        msg: "{{ item.source }} must include detailed ASCII architecture, Terraform components, deployment flow, and review checklist sections."
+      when:
+        - >-
+          '## ASCII Architecture' not in (item.content | b64decode) or
+          '## Terraform Components' not in (item.content | b64decode) or
+          '## Request And Deployment Flow' not in (item.content | b64decode) or
+          '## Review Checklist' not in (item.content | b64decode)
+      loop: "{{ validation_blueprint_architecture_contents.results | default([]) }}"
+      loop_control:
+        label: "{{ item.source }}"
+
     - name: Read Terraform blueprint entry points
       ansible.builtin.slurp:
         src: "{{ item.path }}"
