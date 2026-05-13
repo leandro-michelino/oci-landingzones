@@ -19,25 +19,7 @@ Creates a single OCI IAM identity domain with optional regional replication.
 | Terraform components | `oci_identity_domain.this`, `oci_identity_domain_replication_to_region.replicas` |
 | Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
 | Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `identity_domain_id`, `identity_domain_url`, `replica_region_ids` |
-| Runner contract | `ansible/plan.yml`, guarded `ansible/apply.yml`, and guarded `ansible/destroy.yml`. |
 
-## Files In This Deployment
-
-```text
-blueprints/identity/new-identity-domain/
-|-- README.md                         Operator guide for this deployment
-|-- architecture/README.md            This deployment-specific ASCII architecture
-|-- main.tf                           Terraform module and resource graph
-|-- variables.tf                      Input contract and defaults
-|-- outputs.tf                        Hand-off values for downstream deployments
-|-- providers.tf                      OCI provider configuration
-|-- versions.tf                       Terraform and provider constraints
-|-- terraform.tfvars.example          Example tfvars shape for this deployment
-`-- ansible/
-    |-- plan.yml                      Local plan runner
-    |-- apply.yml                     Guarded apply runner
-    `-- destroy.yml                   Guarded destroy runner
-```
 
 ## ASCII Architecture
 
@@ -85,6 +67,17 @@ blueprints/identity/new-identity-domain/
 - Trust boundaries are the tenancy, compartment, VCN, subnet, DRG, private endpoint, identity domain, or managed service edges shown in the diagram.
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
+## Detailed Architecture Notes
+
+These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
+
+- This deployment creates one identity domain when enable_identity_domain is true.
+- Replica regions are created after the domain exists and should be aligned with regional availability and recovery needs.
+- Admin user fields, notification behavior, login visibility, and primary email requirements should be reviewed before apply.
+- The identity domain ID and URL are the primary hand-offs for identity operations, federation, and application onboarding.
+
+- The output contract at the end of this page is the hand-off surface for downstream blueprints, runbooks, and customer notes.
+
 ## State, Inputs, And Outputs
 
 ```text
@@ -107,13 +100,6 @@ Output contract
 `-- replica_region_ids
 ```
 
-## Operational Boundaries
-
-- Review enable flags before apply, especially for paid, tenancy-wide, identity, network edge, database, or destructive resources.
-- Confirm required external IDs are real and in the intended region and compartment before running `terraform plan`.
-- Keep apply and destroy behind the guarded Ansible runners or an equivalent approval gate.
-- Treat route tables, firewall policies, ZPR policies, identity policies, and domain replication as change-controlled surfaces.
-- Run repository validation before commit or hand-off.
 
 ## Review Checklist
 
@@ -123,70 +109,3 @@ Output contract
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `terraform output` will expose the hand-off values expected by downstream teams: `blueprint_name`, `name_prefix`, `resource_ids`, `identity_domain_id`, `identity_domain_url`, `replica_region_ids`.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
-
-## Validation
-
-```bash
-./scripts/validate-all.sh
-```
-
-The repository validator checks Terraform formatting, initializes and validates every
-blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every
-blueprint-local Ansible runner, verifies README coverage, and removes generated Terraform
-artifacts afterward.
-
-## When To Update This Architecture
-
-- Terraform modules, resources, data sources, provider aliases, or enable flags change.
-- A subnet, route, trust boundary, identity scope, region, compartment, private endpoint, or access path changes.
-- A new output becomes part of the contract for downstream deployments or operators.
-- README usage notes describe behavior that is not represented in the diagram.
-
-## Terraform + Ansible Deployment Output
-
-This is the expected close-out shape for `blueprints/identity/new-identity-domain`. Terraform owns the OCI resource graph and
-named outputs; Ansible gives the operator a repeatable plan/apply/destroy wrapper with a
-clear recap.
-
-```text
-$ cd blueprints/identity/new-identity-domain
-$ terraform init
-$ terraform validate
-$ terraform plan -out=tfplan
-$ terraform apply tfplan
-
-Apply complete! Resources: <added> added, <changed> changed, <destroyed> destroyed.
-
-$ terraform output
-blueprint_name = "<value>"
-name_prefix = "<value>"
-resource_ids = { ... }
-identity_domain_id = "ocid1.<resource>..."
-identity_domain_url = "https://<endpoint>"
-replica_region_ids = { ... }
-```
-
-```text
-$ cd blueprints/identity/new-identity-domain
-$ ansible-playbook -i localhost, ansible/plan.yml
-
-TASK [terraform_runner : Terraform init]      ok
-TASK [terraform_runner : Terraform validate]  ok
-TASK [terraform_runner : Terraform plan]      ok
-
-PLAY RECAP *********************************************************************
-localhost                  : ok=<n> changed=0 unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
-
-$ CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
-
-TASK [terraform_runner : Terraform init]      ok
-TASK [terraform_runner : Terraform validate]  ok
-TASK [terraform_runner : Terraform plan]      ok
-TASK [terraform_runner : Terraform apply]     changed
-
-PLAY RECAP *********************************************************************
-localhost                  : ok=<n> changed=<n> unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
-```
-
-For this deployment, keep the output names stable unless the downstream deployment, runbook,
-or customer hand-off is updated in the same change.

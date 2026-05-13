@@ -240,14 +240,13 @@ Each architecture page includes:
 | Section | Why It Is There |
 |---|---|
 | Deployment purpose | Plain-language reason this blueprint exists. |
-| Files in this deployment | The local TF + Ansible file contract. |
 | ASCII architecture | Detailed resource, boundary, and flow view in plain text. |
 | Terraform components | Real modules/resources wired in `main.tf`. |
 | Request and deployment flow | How inputs move into resources and outputs. |
+| Detailed architecture notes | Design-review detail for dependencies, traffic paths, ownership, and hand-offs. |
 | State, inputs, and outputs | What comes from tfvars, what lands in state, and what gets handed off. |
 | Operational boundaries | Things to check before plan/apply/destroy. |
 | Review checklist | What to inspect before trusting the deployment. |
-| Terraform + Ansible deployment output | The expected `terraform output` shape and Ansible recap for that folder. |
 
 ## Terraform + Ansible Workflow
 
@@ -280,9 +279,8 @@ CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
-At the end of each architecture page, the `Terraform + Ansible Deployment Output` section
-shows the folder-specific output names from `outputs.tf`, plus a clean example of the
-Ansible plan/apply recap.
+Each architecture page now uses the space for deeper design notes instead of long command
+output examples, while the deployment README keeps the operator workflow close at hand.
 
 ## CIS Profiles
 

@@ -31,7 +31,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   scheduled jobs.
 - Detailed, deployment-specific ASCII architecture pages for every blueprint,
   including Terraform components, request flow, state/input/output contracts,
-  review checklists, and Terraform + Ansible deployment output examples.
+  architecture review notes, and review checklists.
 - Operator-friendly deployment READMEs for all 37 blueprint folders, including
   At A Glance summaries, input decision tables, output hand-off tables,
   workflow commands, deployment order, review checks, and validation guidance.

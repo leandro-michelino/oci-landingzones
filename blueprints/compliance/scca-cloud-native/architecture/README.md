@@ -19,25 +19,7 @@ Composes the core landing-zone foundation, a firewall-centered hub-spoke network
 | Terraform components | `core`, `network`, `os_management` |
 | Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
 | Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `root_compartment_id`, `compartment_ids`, `network_resource_ids`, `os_management_resource_ids` |
-| Runner contract | `ansible/plan.yml`, guarded `ansible/apply.yml`, and guarded `ansible/destroy.yml`. |
 
-## Files In This Deployment
-
-```text
-blueprints/compliance/scca-cloud-native/
-|-- README.md                         Operator guide for this deployment
-|-- architecture/README.md            This deployment-specific ASCII architecture
-|-- main.tf                           Terraform module and resource graph
-|-- variables.tf                      Input contract and defaults
-|-- outputs.tf                        Hand-off values for downstream deployments
-|-- providers.tf                      OCI provider configuration
-|-- versions.tf                       Terraform and provider constraints
-|-- terraform.tfvars.example          Example tfvars shape for this deployment
-`-- ansible/
-    |-- plan.yml                      Local plan runner
-    |-- apply.yml                     Guarded apply runner
-    `-- destroy.yml                   Guarded destroy runner
-```
 
 ## ASCII Architecture
 
@@ -99,6 +81,17 @@ blueprints/compliance/scca-cloud-native/
 - Trust boundaries are the tenancy, compartment, VCN, subnet, DRG, private endpoint, identity domain, or managed service edges shown in the diagram.
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
+## Detailed Architecture Notes
+
+These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
+
+- Core Level 2 controls are created first, then the network module consumes the core network compartment output.
+- The network path centers on a hub VCN with OCI Network Firewall in the firewall subnet and spoke VCNs attached through the DRG.
+- OS Management resources live in the governance compartment and provide patch/group/job control for managed instances that join the landing zone.
+- North-south and east-west traffic should be reviewed against the firewall policy, DRG attachments, subnet route tables, and service gateway paths.
+
+- The output contract at the end of this page is the hand-off surface for downstream blueprints, runbooks, and customer notes.
+
 ## State, Inputs, And Outputs
 
 ```text
@@ -122,13 +115,6 @@ Output contract
 `-- os_management_resource_ids
 ```
 
-## Operational Boundaries
-
-- Review enable flags before apply, especially for paid, tenancy-wide, identity, network edge, database, or destructive resources.
-- Confirm required external IDs are real and in the intended region and compartment before running `terraform plan`.
-- Keep apply and destroy behind the guarded Ansible runners or an equivalent approval gate.
-- Treat route tables, firewall policies, ZPR policies, identity policies, and domain replication as change-controlled surfaces.
-- Run repository validation before commit or hand-off.
 
 ## Review Checklist
 
@@ -138,71 +124,3 @@ Output contract
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `terraform output` will expose the hand-off values expected by downstream teams: `blueprint_name`, `name_prefix`, `resource_ids`, `root_compartment_id`, `compartment_ids`, `network_resource_ids`, `os_management_resource_ids`.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
-
-## Validation
-
-```bash
-./scripts/validate-all.sh
-```
-
-The repository validator checks Terraform formatting, initializes and validates every
-blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every
-blueprint-local Ansible runner, verifies README coverage, and removes generated Terraform
-artifacts afterward.
-
-## When To Update This Architecture
-
-- Terraform modules, resources, data sources, provider aliases, or enable flags change.
-- A subnet, route, trust boundary, identity scope, region, compartment, private endpoint, or access path changes.
-- A new output becomes part of the contract for downstream deployments or operators.
-- README usage notes describe behavior that is not represented in the diagram.
-
-## Terraform + Ansible Deployment Output
-
-This is the expected close-out shape for `blueprints/compliance/scca-cloud-native`. Terraform owns the OCI resource graph and
-named outputs; Ansible gives the operator a repeatable plan/apply/destroy wrapper with a
-clear recap.
-
-```text
-$ cd blueprints/compliance/scca-cloud-native
-$ terraform init
-$ terraform validate
-$ terraform plan -out=tfplan
-$ terraform apply tfplan
-
-Apply complete! Resources: <added> added, <changed> changed, <destroyed> destroyed.
-
-$ terraform output
-blueprint_name = "<value>"
-name_prefix = "<value>"
-resource_ids = { ... }
-root_compartment_id = "ocid1.<resource>..."
-compartment_ids = { ... }
-network_resource_ids = { ... }
-os_management_resource_ids = { ... }
-```
-
-```text
-$ cd blueprints/compliance/scca-cloud-native
-$ ansible-playbook -i localhost, ansible/plan.yml
-
-TASK [terraform_runner : Terraform init]      ok
-TASK [terraform_runner : Terraform validate]  ok
-TASK [terraform_runner : Terraform plan]      ok
-
-PLAY RECAP *********************************************************************
-localhost                  : ok=<n> changed=0 unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
-
-$ CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
-
-TASK [terraform_runner : Terraform init]      ok
-TASK [terraform_runner : Terraform validate]  ok
-TASK [terraform_runner : Terraform plan]      ok
-TASK [terraform_runner : Terraform apply]     changed
-
-PLAY RECAP *********************************************************************
-localhost                  : ok=<n> changed=<n> unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
-```
-
-For this deployment, keep the output names stable unless the downstream deployment, runbook,
-or customer hand-off is updated in the same change.
