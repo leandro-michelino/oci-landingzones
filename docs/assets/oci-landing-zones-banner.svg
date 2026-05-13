@@ -26,7 +26,11 @@
     </filter>
     <!-- Clip card background to rounded corners -->
     <clipPath id="cc">
-      <rect width="720" height="410" rx="16"/>
+      <rect width="720" height="432" rx="16"/>
+    </clipPath>
+    <!-- Clip Core Baseline box fill to rounded corners -->
+    <clipPath id="cb">
+      <rect width="664" height="86" rx="10"/>
     </clipPath>
     <style>
       .fa { font: 800 50px system-ui, -apple-system, "Segoe UI", sans-serif; }
@@ -55,11 +59,11 @@
     <rect y="66" width="375" height="3" rx="1.5" fill="url(#hg)"/>
 
     <!-- Tagline -->
-    <text y="98" class="fb" fill="#c74634">Blueprints · Modules · Governance · Checks</text>
+    <text y="98" class="fb" fill="#c74634">Blueprints · Automation · Architecture · CIS</text>
 
     <!-- Description -->
-    <text y="124" class="fc" fill="#475569">Repeatable OCI cloud foundations with core IAM, networking,</text>
-    <text y="146" class="fc" fill="#475569">security, operations, and optional service extensions.</text>
+    <text y="124" class="fc" fill="#475569">Pick a blueprint, review the ASCII architecture, run a plan.</text>
+    <text y="146" class="fc" fill="#475569">Modules and automation for OCI patterns that come up again.</text>
 
     <!-- Author / metadata -->
     <text y="172" class="ff" fill="#94a3b8">Leandro Michelino · ACE · Oracle</text>
@@ -143,11 +147,11 @@
 
     <!-- Card background + gradient top-bar, clipped to rounded rect -->
     <g clip-path="url(#cc)">
-      <rect width="720" height="410" fill="#ffffff"/>
+      <rect width="720" height="432" fill="#ffffff"/>
       <rect width="720" height="5"   fill="url(#hg)"/>
     </g>
     <!-- Card border -->
-    <rect width="720" height="410" rx="16" fill="none" stroke="#e2e8f0" stroke-width="1.5"/>
+    <rect width="720" height="432" rx="16" fill="none" stroke="#e2e8f0" stroke-width="1.5"/>
 
     <!-- Card header row -->
     <text x="28" y="29" class="fd" fill="#0f172a">Architecture Stack</text>
@@ -167,24 +171,47 @@
 
     <!-- ─── Layer 1 : Core Baseline ─── -->
     <g transform="translate(28,139)">
-      <rect width="664" height="64" rx="10" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
-      <rect width="5"   height="64" rx="2"  fill="#ea580c"/>
-      <text x="24" y="22" class="fd" fill="#9a3412">Core Baseline</text>
-      <text x="24" y="39" class="ff" fill="#7c3d2a">compartments · IAM · tagging · logging · monitoring · budgets</text>
-      <text x="24" y="53" class="ff" fill="#7c3d2a">Cloud Guard · Vault / KMS · Security Zones · VSS · Events</text>
+      <!-- Fills clipped to rounded box shape -->
+      <g clip-path="url(#cb)">
+        <rect width="664" height="86" fill="#fff7ed"/>
+        <!-- Header band -->
+        <rect width="664" height="28" fill="#fde8cc"/>
+        <!-- Left accent bar -->
+        <rect width="5"   height="86" fill="#ea580c"/>
+      </g>
+      <!-- Border drawn on top, unclipped -->
+      <rect width="664" height="86" rx="10" fill="none" stroke="#fed7aa" stroke-width="1.5"/>
+      <!-- Header / content separator -->
+      <line x1="5" y1="28" x2="659" y2="28" stroke="#fed7aa" stroke-width="1"/>
+
+      <!-- Title -->
+      <text x="20" y="19" class="fd" fill="#9a3412" font-weight="700">Core Baseline</text>
+      <!-- FOUNDATION LAYER badge (right side of header) -->
+      <rect x="530" y="6" width="120" height="16" rx="8" fill="#ea580c" fill-opacity="0.14"/>
+      <text x="590" y="18" class="ff" fill="#9a3412" text-anchor="middle" font-weight="700">FOUNDATION LAYER</text>
+
+      <!-- GOVERN category pill + items row 1 -->
+      <rect x="12" y="36" width="52" height="16" rx="8" fill="#ea580c" fill-opacity="0.14"/>
+      <text x="38" y="48" class="ff" fill="#9a3412" text-anchor="middle" font-weight="700">GOVERN</text>
+      <text x="72" y="48" class="ff" fill="#7c3d2a">compartments · IAM · tagging · logging · monitoring · budgets</text>
+
+      <!-- PROTECT category pill + items row 2 -->
+      <rect x="12" y="58" width="52" height="16" rx="8" fill="#ea580c" fill-opacity="0.14"/>
+      <text x="38" y="70" class="ff" fill="#9a3412" text-anchor="middle" font-weight="700">PROTECT</text>
+      <text x="72" y="70" class="ff" fill="#7c3d2a">Cloud Guard · Vault / KMS · Security Zones · VSS · Events</text>
     </g>
     <!-- Three arrows ↓ Core → pillars -->
-    <line x1="128" y1="203" x2="128" y2="221" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4,2"/>
-    <polygon points="122,219 128,229 134,219" fill="#cbd5e1"/>
-    <line x1="360" y1="203" x2="360" y2="221" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4,2"/>
-    <polygon points="354,219 360,229 366,219" fill="#cbd5e1"/>
-    <line x1="592" y1="203" x2="592" y2="221" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4,2"/>
-    <polygon points="586,219 592,229 598,219" fill="#cbd5e1"/>
+    <line x1="128" y1="225" x2="128" y2="243" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <polygon points="122,241 128,251 134,241" fill="#cbd5e1"/>
+    <line x1="360" y1="225" x2="360" y2="243" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <polygon points="354,241 360,251 366,241" fill="#cbd5e1"/>
+    <line x1="592" y1="225" x2="592" y2="243" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <polygon points="586,241 592,251 598,241" fill="#cbd5e1"/>
 
     <!-- ─── Layer 2 : Three pillars ─── -->
 
     <!-- Networking -->
-    <g transform="translate(28,233)">
+    <g transform="translate(28,255)">
       <rect width="200" height="76" rx="10" fill="#ecfeff" stroke="#a5f3fc" stroke-width="1.5"/>
       <rect width="5"   height="76" rx="2"  fill="#0891b2"/>
       <text x="100" y="25" class="fd" fill="#155e75" text-anchor="middle">Networking</text>
@@ -193,16 +220,16 @@
     </g>
 
     <!-- Identity / Operating Entity -->
-    <g transform="translate(260,233)">
+    <g transform="translate(260,255)">
       <rect width="200" height="76" rx="10" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
       <rect width="5"   height="76" rx="2"  fill="#4f6bed"/>
-      <text x="100" y="25" class="fd" fill="#1e3a8a" text-anchor="middle">Identity / Entity</text>
-      <text x="100" y="43" class="ff" fill="#1d4ed8" text-anchor="middle">domains · federation</text>
-      <text x="100" y="58" class="ff" fill="#1d4ed8" text-anchor="middle">groups · BU onboarding</text>
+      <text x="100" y="25" class="fd" fill="#1e3a8a" text-anchor="middle">Operating Entity</text>
+      <text x="100" y="43" class="ff" fill="#1d4ed8" text-anchor="middle">workload vending</text>
+      <text x="100" y="58" class="ff" fill="#1d4ed8" text-anchor="middle">BU · app-team scope</text>
     </g>
 
     <!-- Security / CIS -->
-    <g transform="translate(492,233)">
+    <g transform="translate(492,255)">
       <rect width="200" height="76" rx="10" fill="#fefce8" stroke="#fde68a" stroke-width="1.5"/>
       <rect width="5"   height="76" rx="2"  fill="#d97706"/>
       <text x="100" y="25" class="fd" fill="#78350f" text-anchor="middle">Security / CIS</text>
@@ -211,11 +238,11 @@
     </g>
 
     <!-- Arrow ↓ pillars → Extensions -->
-    <line x1="360" y1="309" x2="360" y2="327" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4,2"/>
-    <polygon points="354,325 360,335 366,325" fill="#cbd5e1"/>
+    <line x1="360" y1="331" x2="360" y2="349" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <polygon points="354,347 360,357 366,347" fill="#cbd5e1"/>
 
     <!-- ─── Layer 3 : Extensions ─── -->
-    <g transform="translate(28,339)">
+    <g transform="translate(28,361)">
       <rect width="664" height="36" rx="10" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="1.5"/>
       <rect width="5"   height="36" rx="2"  fill="#7c3aed"/>
       <text x="334" y="23" class="ff" fill="#4c1d95" text-anchor="middle" font-weight="700">Extensions: OKE · WAF · Exadata · API Gateway · Streaming · Full Stack DR</text>
