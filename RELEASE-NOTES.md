@@ -72,6 +72,11 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   blueprint-local `architecture/README.md`.
 - Blueprint-local Ansible plan, apply, and destroy runners for every
   architecture folder.
+- Full Terraform implementation wiring for the identity, compliance, disaster
+  recovery, private data platform, and telco cloud-native blueprints that were
+  previously documentation-only placeholders.
+- OCI OS Management Hub module resources for managed instance groups and
+  scheduled jobs.
 
 ### Changed
 
@@ -80,8 +85,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Reworked the repository validation helper so `scripts/validate-all.sh`
   delegates to Ansible when available, with a shell fallback for minimal local
   environments.
-- Broadened Ansible validation discovery across implemented Terraform
-  blueprints and moved generated Terraform artifact cleanup into an `always`
-  block.
+- Broadened Ansible validation discovery across Terraform blueprints, made
+  scaffold markers fail validation, and moved generated Terraform artifact
+  cleanup into an `always` block.
 - Reworked bootstrap so the shell helper delegates to Ansible and the Ansible
   role owns reusable bootstrap checks.

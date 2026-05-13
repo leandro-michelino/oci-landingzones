@@ -2,9 +2,9 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This guide describes the intended deployment sequence. Some Terraform resources
-are implemented and others remain planned; use this as the project execution
-map.
+This guide describes the intended deployment sequence. Every blueprint has real
+Terraform wiring now; use the enable flags and tfvars examples to decide which
+resources should be created in a specific tenancy.
 
 ## Phase 0 - Bootstrap
 
@@ -33,11 +33,12 @@ Use the Ansible-backed validation entry point before commits:
 ./scripts/validate-all.sh
 ```
 
-This auto-discovers implemented Terraform blueprints under `blueprints/`,
+This auto-discovers Terraform blueprints under `blueprints/`,
 validates them without a remote backend, runs Ansible syntax checks, and cleans
-generated Terraform artifacts even when a validation step fails. Scaffolded
-pattern folders stay out of Terraform validation until they contain real
-blueprint wiring. Blueprint-local Ansible playbooks are syntax-checked for every
+generated Terraform artifacts even when a validation step fails. Blueprint
+folders with scaffold markers now fail validation, because every architecture is
+expected to have real Terraform wiring. Blueprint-local Ansible playbooks are
+syntax-checked for every
 architecture folder. The Ansible role uses a local Terraform plugin cache and a
 bounded timeout per Terraform command so repeated checks stay predictable.
 
@@ -259,9 +260,9 @@ Architecture notes live in each operating-entity blueprint's
 | Phase 4 - Operating entities | `blueprints/operating-entity/` and child onboarding patterns | Single entity, multi-entity, and workload vending are initialized and validated without backend. |
 | Phase 5 - Extensions | `blueprints/extensions/oke`, `apigw`, `streaming`, `waf`, and `exadata` | Each extension blueprint is initialized and validated without backend. |
 
-Planned identity, compliance, data platform, disaster recovery, and industry
-folders are documented in the catalog but are excluded from automated Terraform
-validation until implementation starts.
+Identity, compliance, data platform, disaster recovery, and industry folders are
+now included in automated Terraform validation with the rest of the blueprint
+catalog.
 
 ## Phase 5 - Extensions
 

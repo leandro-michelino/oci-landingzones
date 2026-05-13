@@ -35,6 +35,54 @@ variable "region_key" {
   type        = string
 }
 
+variable "compartment_ocid" {
+  description = "Compartment OCID where identity policies are created. Defaults to tenancy_ocid."
+  type        = string
+  default     = null
+}
+
+variable "enable_default_groups" {
+  description = "Create the default CIS landing zone IAM groups."
+  type        = bool
+  default     = true
+}
+
+variable "enable_default_policies" {
+  description = "Create baseline CIS IAM policies."
+  type        = bool
+  default     = true
+}
+
+variable "groups" {
+  description = "Additional or overriding IAM groups keyed by logical role."
+  type = map(object({
+    name        = optional(string)
+    description = string
+  }))
+  default = {}
+}
+
+variable "dynamic_groups" {
+  description = "Dynamic groups keyed by logical role."
+  type = map(object({
+    name          = optional(string)
+    description   = string
+    matching_rule = string
+  }))
+  default = {}
+}
+
+variable "policies" {
+  description = "Additional IAM policies keyed by logical role."
+  type = map(object({
+    name           = optional(string)
+    compartment_id = optional(string)
+    description    = string
+    statements     = list(string)
+  }))
+  default = {}
+}
+
 variable "defined_tags" {
   description = "Defined tags applied to resources."
   type        = map(string)

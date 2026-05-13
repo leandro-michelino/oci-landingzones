@@ -13,8 +13,8 @@ pattern and must include an ASCII diagram before the pattern is used in a
 customer review.
 Status `Implementing` means the folder has deployable foundation wiring, even
 when some expensive or external resources are disabled by default. Status
-`Planned` means the folder documents a future pattern and is excluded from
-automated Terraform validation until implementation starts.
+`Planned` is reserved for future patterns that do not yet have a blueprint
+folder.
 
 ## Pattern Families
 
@@ -23,9 +23,9 @@ automated Terraform validation until implementation starts.
 | Core | Core landing zone with no application networking | `blueprints/core/` | Implementing |
 | CIS | CIS Level 1 landing zone | `blueprints/cis/level1/` | Implementing |
 | CIS | CIS Level 2 landing zone | `blueprints/cis/level2/` | Implementing |
-| Identity | CIS basic identity baseline | `blueprints/identity/cis-basic/` | Planned |
-| Identity | New identity domain | `blueprints/identity/new-identity-domain/` | Planned |
-| Identity | Custom identity domain | `blueprints/identity/custom-identity-domain/` | Planned |
+| Identity | CIS basic identity baseline | `blueprints/identity/cis-basic/` | Implementing |
+| Identity | New identity domain | `blueprints/identity/new-identity-domain/` | Implementing |
+| Identity | Custom identity domain | `blueprints/identity/custom-identity-domain/` | Implementing |
 | Operating entity | Single operating entity onboarding | `blueprints/operating-entity/` | Implementing |
 | Operating entity | Multi-operating-entity landing zone | `blueprints/operating-entity/multi-operating-entities/` | Implementing |
 | Operating entity | Workload vending / application team onboarding | `blueprints/operating-entity/workload-vending/` | Implementing |
@@ -47,11 +47,11 @@ automated Terraform validation until implementation starts.
 | Networking | Multi-tenancy shared services | `blueprints/networking/multi-tenancy-shared-services/` | Implementing |
 | Networking | Hub-spoke with multicloud interconnect | `blueprints/networking/hub-spoke-with-multicloud-interconnect/` | Implementing |
 | Networking | Regional prod/nonprod hub separation | `blueprints/networking/regional-prod-nonprod-hubs/` | Implementing |
-| Compliance | SCCA-style cloud-native landing zone | `blueprints/compliance/scca-cloud-native/` | Planned |
-| Compliance | Zero Trust landing zone | `blueprints/compliance/zero-trust/` | Planned |
-| Disaster recovery | Full Stack Disaster Recovery | `blueprints/disaster-recovery/fsdr/` | Planned |
-| Data platform | Private data platform landing zone | `blueprints/data-platform/private-data-platform/` | Planned |
-| Industry | Telco cloud-native landing zone | `blueprints/industry/telco-cloud-native/` | Planned |
+| Compliance | SCCA-style cloud-native landing zone | `blueprints/compliance/scca-cloud-native/` | Implementing |
+| Compliance | Zero Trust landing zone | `blueprints/compliance/zero-trust/` | Implementing |
+| Disaster recovery | Full Stack Disaster Recovery | `blueprints/disaster-recovery/fsdr/` | Implementing |
+| Data platform | Private data platform landing zone | `blueprints/data-platform/private-data-platform/` | Implementing |
+| Industry | Telco cloud-native landing zone | `blueprints/industry/telco-cloud-native/` | Implementing |
 | Extensions | OKE extension | `blueprints/extensions/oke/` | Implementing |
 | Extensions | Exadata extension | `blueprints/extensions/exadata/` | Implementing |
 | Extensions | API Gateway extension | `blueprints/extensions/apigw/` | Implementing |

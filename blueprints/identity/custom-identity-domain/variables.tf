@@ -35,6 +35,36 @@ variable "region_key" {
   type        = string
 }
 
+variable "compartment_ocid" {
+  description = "Default compartment OCID where identity domains are created. Defaults to tenancy_ocid."
+  type        = string
+  default     = null
+}
+
+variable "identity_domains" {
+  description = "Identity domains keyed by logical name."
+  type = map(object({
+    compartment_ocid          = optional(string)
+    display_name              = optional(string)
+    description               = optional(string)
+    home_region               = optional(string)
+    license_type              = optional(string, "free")
+    admin_email               = optional(string)
+    admin_first_name          = optional(string)
+    admin_last_name           = optional(string)
+    admin_user_name           = optional(string)
+    is_hidden_on_login        = optional(bool, false)
+    is_notification_bypassed  = optional(bool, false)
+    is_primary_email_required = optional(bool, true)
+    replica_regions           = optional(set(string), [])
+  }))
+  default = {
+    workforce = {
+      description = "Custom workforce identity domain managed by Terraform."
+    }
+  }
+}
+
 variable "defined_tags" {
   description = "Defined tags applied to resources."
   type        = map(string)

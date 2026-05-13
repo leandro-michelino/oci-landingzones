@@ -74,7 +74,7 @@ variable "policy_display_name" {
 variable "policy_description" {
   description = "Description for the generated firewall policy."
   type        = string
-  default     = "Landing zone network firewall policy scaffold."
+  default     = "Landing zone network firewall policy starter."
 }
 
 variable "firewall_display_name" {

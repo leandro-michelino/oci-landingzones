@@ -44,6 +44,15 @@
       ansible.builtin.set_fact:
         validation_terraform_directories: []
 
+    - name: Fail when a Terraform blueprint still has scaffold markers
+      ansible.builtin.fail:
+        msg: "{{ item.source }} still contains scaffold markers. Replace them with real Terraform wiring before validation."
+      when:
+        - "'Terraform scaffold' in (item.content | b64decode) or 'Compose reusable modules here' in (item.content | b64decode)"
+      loop: "{{ validation_blueprint_entry_contents.results | default([]) }}"
+      loop_control:
+        label: "{{ item.source }}"
+
     - name: Build implemented Terraform blueprint list
       ansible.builtin.set_fact:
         validation_terraform_directories: >-
@@ -51,16 +60,13 @@
             validation_terraform_directories +
             [item.source | dirname]
           }}
-      when:
-        - "'Terraform scaffold' not in (item.content | b64decode)"
-        - "'Compose reusable modules here' not in (item.content | b64decode)"
       loop: "{{ validation_blueprint_entry_contents.results | default([]) }}"
       loop_control:
         label: "{{ item.source }}"
 
-    - name: Show implemented Terraform blueprint count
+    - name: Show Terraform blueprint count
       ansible.builtin.debug:
-        msg: "Validating {{ validation_terraform_directories | length }} implemented Terraform blueprints."
+        msg: "Validating {{ validation_terraform_directories | length }} Terraform blueprints."
 
     - name: Prepare Terraform plugin cache
       ansible.builtin.file:

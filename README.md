@@ -209,9 +209,9 @@ CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
-Some blueprint folders are still planned scaffolds. They keep the same Terraform
-and Ansible file shape, but repository validation skips Terraform init/validate
-until the scaffold comments are removed and real module composition is added.
+Every blueprint folder now has the same end-to-end shape and real Terraform
+wiring. Some expensive or customer-specific resources are intentionally
+controlled by enable flags, but validation no longer skips blueprint folders.
 
 ## Module Shape
 
