@@ -4,25 +4,66 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This repo is a practical OCI landing-zone toolkit. It collects Terraform
-modules, ready-to-use blueprints, Ansible helpers, and architecture notes for
-the landing-zone patterns that tend to come up again and again: core
-governance, IAM, networking, security, operating entities, extensions, and a few
-specialized industry or compliance shapes.
+This repo is a practical OCI landing-zone toolkit: Terraform modules,
+ready-to-use blueprints, local Ansible automation, and plain-text architecture
+notes for the OCI patterns that come up again and again.
 
-Small but important note: this is a personal engineering project, not an
-official Oracle product. Treat it as a reusable accelerator that you can review,
-adapt, and harden for your own OCI environments.
+It is meant to be useful in real work: clone it, pick a blueprint, review the
+ASCII architecture, run a plan, and adapt the inputs to your tenancy. It is a
+personal engineering project, not an official Oracle product, so treat it as a
+solid accelerator that you still review, test, and harden before production.
 
-## Start Here
+## Quick Navigation
 
-Most people use this repo in one of two ways:
+| I Want To... | Start Here |
+|---|---|
+| See the full deployment menu | [Blueprint Families](#blueprint-families) |
+| Try one architecture quickly | [Use One Blueprint](#use-one-blueprint) |
+| Build a fuller landing zone | [Use The Full Landing Zone](#use-the-full-landing-zone) |
+| Understand the folder contract | [Every Blueprint Is End-To-End](#every-blueprint-is-end-to-end) |
+| Check the ASCII diagrams | [Architecture Experience](#architecture-experience) |
+| Validate everything locally | [Validation](#validation) |
 
-1. Use one blueprint, such as a standalone three-tier VCN or an OKE extension.
-2. Use the full repo, starting with `blueprints/core/` and then adding the
-   network, operating entity, and extension patterns needed by the environment.
+## What You Get
 
-If you are just exploring, start with the validation command:
+| Area | What Is Included |
+|---|---|
+| Core governance | Compartments, IAM, tagging, logging, monitoring, budgets, Cloud Guard, Vault/KMS, Security Zones, VSS, Events, and related controls. |
+| Networking | Standalone VCNs, hub-spoke, DRG, VPN, FastConnect, DNS, firewall, network appliance, ZPR, multicloud, and regional patterns. |
+| Operating model | Operating entity and workload vending patterns for team, business unit, or application ownership boundaries. |
+| Extensions | Optional OKE, WAF, Exadata, API Gateway, and Streaming blueprints. |
+| Compliance and industry | CIS, Zero Trust, SCCA-style, private data platform, FSDR, and telco cloud-native shapes. |
+| Automation | Terraform for infrastructure and Ansible for local plan/apply/destroy orchestration. |
+| Documentation | Each deployment has its own README, detailed ASCII architecture, and TF + Ansible output section. |
+
+## Repo Map
+
+```text
+blueprints/    Deployable architectures. Pick from here when you want a working pattern.
+modules/       Reusable Terraform building blocks used by the blueprints.
+ansible/       Shared roles, inventories, validation, and Terraform orchestration.
+docs/          Guides, catalog, runbooks, architecture rules, and standards.
+environments/  Example backend and tfvars shapes for dev, uat, and prod.
+scripts/       Thin wrappers for validation and common local workflows.
+tests/         Test scaffolding.
+```
+
+## Requirements
+
+| Tool | Why You Need It |
+|---|---|
+| Terraform `1.12.0` or later | Builds and validates the OCI resource graph. |
+| OCI CLI | Supplies local OCI authentication and tenancy context. |
+| Git | Fetches the repo and pinned module sources. |
+| Ansible | Runs repo-wide validation and blueprint-local plan/apply/destroy workflows. |
+| Optional scanners | `tflint`, `tfsec`, `checkov`, `ansible-lint`, and `pre-commit` are used when installed. |
+
+The optional scanners are nice to have, not mandatory. Validation skips them
+cleanly when they are not installed.
+
+## Fastest Safe Check
+
+If you are only exploring, start here:
 
 ```bash
 git clone https://github.com/leandro-michelino/oci-landingzones.git
@@ -31,57 +72,17 @@ cd oci-landingzones
 ./scripts/validate-all.sh
 ```
 
-That checks Terraform formatting, validates implemented blueprints, runs Ansible
-syntax checks, uses optional scanners when installed, and cleans generated
+That command checks Terraform formatting, verifies every implemented blueprint,
+runs root and blueprint-local Ansible syntax checks, and removes generated
 Terraform artifacts afterward.
-
-## What You Get
-
-- A core landing-zone baseline for compartments, IAM, tagging, logging,
-  monitoring, budgets, Cloud Guard, Vault/KMS, Security Zones, VSS, Events, and
-  related governance controls.
-- Deployable blueprints for networking, CIS profiles, operating entities,
-  extensions, compliance, data platform, disaster recovery, identity, and
-  industry patterns.
-- Reusable Terraform modules under `modules/`.
-- Local Ansible orchestration for bootstrap, validation, plan, guarded apply,
-  guarded destroy, and ephemeral tests.
-- Blueprint-local Ansible runners in every architecture folder, so each
-  blueprint can be planned, applied, or destroyed from its own directory.
-- Blueprint-local architecture notes with ASCII diagrams, assumptions, and
-  review checklists.
-
-## Repo Map
-
-```text
-blueprints/    Pick one of these when you want a deployable architecture.
-modules/       Reusable Terraform building blocks used by the blueprints.
-ansible/       Shared roles, inventories, and repository-wide orchestration.
-docs/          Deployment guides, catalog, runbooks, mappings, and standards.
-environments/  Example backend and tfvars shapes for dev, uat, and prod.
-scripts/       Thin command wrappers around Ansible and Terraform workflows.
-tests/         Test scaffolding.
-```
-
-## Requirements
-
-- Terraform `1.12.0` or later.
-- OCI CLI configured for the target tenancy.
-- Git, because blueprints use pinned Git module sources.
-- Ansible for the full local workflow.
-- Optional scanners: `tflint`, `tfsec`, `checkov`, `ansible-lint`, and
-  `pre-commit`.
-
-The repo still works without the optional scanners; validation will simply skip
-what is not installed.
 
 ## Use One Blueprint
 
-Blueprints are meant to stand on their own. Their Terraform module sources are
-pinned to repository release tags, so you can sparse-checkout a single
-architecture and still fetch the shared modules during `terraform init`.
+Blueprints are designed to stand on their own. You can clone the repo normally,
+or sparse-checkout a single deployment folder and still let Terraform fetch the
+shared modules through pinned Git module sources.
 
-Example: use only the default standalone three-tier VCN blueprint.
+Example: run only the default standalone three-tier VCN blueprint.
 
 ```bash
 git clone --filter=blob:none --sparse https://github.com/leandro-michelino/oci-landingzones.git
@@ -96,8 +97,7 @@ terraform validate
 terraform plan
 ```
 
-Or use the blueprint-local Ansible runner, which calls the shared Terraform role
-for this folder:
+You can also use the blueprint-local Ansible wrapper:
 
 ```bash
 cd blueprints/networking/standalone-three-tier-vcn-defaults
@@ -108,124 +108,161 @@ ansible-playbook -i localhost, ansible/plan.yml
 
 For a single networking blueprint, set `compartment_ocid` to the workload
 compartment where resources should land. That compartment can come from
-`blueprints/core/`, another landing-zone process, or an existing brownfield
-tenancy.
+`blueprints/core/`, another landing-zone process, or an existing tenancy.
 
 ## Use The Full Landing Zone
 
-For a fuller environment, start with the core baseline and add only the patterns
-you actually need.
+For a fuller environment, deploy only what you actually need. A sensible order
+usually looks like this:
 
-Recommended order:
+| Step | Deployment |
+|---|---|
+| 1 | Bootstrap remote state, OCI CLI access, and tenancy prerequisites. |
+| 2 | Deploy `blueprints/core/` for the shared governance baseline. |
+| 3 | Deploy one networking blueprint for the traffic model. |
+| 4 | Add operating entity or workload vending patterns when ownership boundaries matter. |
+| 5 | Add optional extensions such as OKE, WAF, Exadata, API Gateway, or Streaming. |
+| 6 | Run validation and security checks before merge or apply. |
 
-1. Bootstrap remote state, OCI CLI access, and tenancy prerequisites.
-2. Deploy `blueprints/core/`.
-3. Deploy one networking blueprint.
-4. Add operating entities or workload vending if ownership boundaries matter.
-5. Add optional extensions such as OKE, WAF, Exadata, API Gateway, or Streaming.
-6. Run validation and security scanning before merging or applying changes.
-
-The deployment guide has the longer version:
-
-```text
-docs/DEPLOYMENT-GUIDE.md
-```
+The longer walkthrough lives in `docs/DEPLOYMENT-GUIDE.md`.
 
 ## Blueprint Families
 
-| Family | When To Use It |
+| Family | Good For | Folders |
+|---|---|---|
+| Core | Shared IAM, governance, security, logging, and operations baseline. | `blueprints/core/` |
+| CIS | Dedicated CIS Level 1 or Level 2 landing-zone behavior. | `blueprints/cis/level1/`, `blueprints/cis/level2/` |
+| Identity | Identity domains, federation, groups, and policy scope. | `blueprints/identity/` |
+| Networking | VCNs, hub-spoke, DRG, VPN, FastConnect, DNS, firewall, NVA, ZPR, multicloud, and regional designs. | `blueprints/networking/` |
+| Operating Entity | Business unit, subsidiary, workload owner, or app-team onboarding. | `blueprints/operating-entity/` |
+| Extensions | Optional service add-ons after the foundation is ready. | `blueprints/extensions/` |
+| Compliance | Stricter regulated-environment landing-zone shapes. | `blueprints/compliance/` |
+| Data Platform | Private data and analytics landing-zone pattern. | `blueprints/data-platform/` |
+| Disaster Recovery | OCI Full Stack Disaster Recovery patterns. | `blueprints/disaster-recovery/` |
+| Industry | Industry-oriented variants, such as telco cloud-native. | `blueprints/industry/` |
+
+For the complete pattern catalog, see `docs/DEPLOYMENT-PATTERN-CATALOG.md`.
+
+## Good First Folders
+
+| If You Are Thinking... | Try This |
 |---|---|
-| `blueprints/core/` | You need the shared IAM, governance, security, logging, and operations baseline. |
-| `blueprints/cis/` | You need dedicated CIS Level 1 or Level 2 landing-zone behavior. |
-| `blueprints/networking/` | You need standalone VCNs, hub-spoke, DRG, VPN, FastConnect, DNS, firewall, NVA, ZPR, multicloud, or regional patterns. |
-| `blueprints/operating-entity/` | You need business unit, subsidiary, workload owner, or application-team onboarding. |
-| `blueprints/extensions/` | You want optional service add-ons such as OKE, WAF, Exadata, API Gateway, or Streaming. |
-| `blueprints/identity/` | You are shaping identity domains, federation, groups, and policy scope. |
-| `blueprints/compliance/` | You need a stricter landing-zone shape for regulated environments. |
-| `blueprints/data-platform/` | You are building a private data or analytics landing-zone pattern. |
-| `blueprints/disaster-recovery/` | You are working on OCI Full Stack Disaster Recovery patterns. |
-| `blueprints/industry/` | You need an industry-oriented variant, such as telco cloud-native. |
+| I need the baseline first | `blueprints/core/` |
+| I just need a clean VCN example | `blueprints/networking/standalone-three-tier-vcn-defaults/` |
+| I need custom subnet or routing shape | `blueprints/networking/standalone-three-tier-vcn-custom/` |
+| I need hub-spoke with DRG | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/` |
+| I need a stricter CIS build | `blueprints/cis/level1/` or `blueprints/cis/level2/` |
+| I need app-team onboarding | `blueprints/operating-entity/workload-vending/` |
+| I need Kubernetes on top | `blueprints/extensions/oke/` |
 
-For the complete menu and current implementation status, see:
+## Every Blueprint Is End-To-End
 
-```text
-docs/DEPLOYMENT-PATTERN-CATALOG.md
-```
-
-## CIS Profiles
-
-Generic blueprints do not turn on CIS behavior by default. If you need a
-CIS-aligned landing zone, start from one of these dedicated folders:
+Each deployable blueprint folder has the same working shape:
 
 ```text
-blueprints/cis/level1/
-blueprints/cis/level2/
+blueprints/<family>/<deployment>/
+|-- README.md                  Human-friendly deployment notes
+|-- architecture/
+|   `-- README.md              Detailed, individual ASCII architecture
+|-- main.tf                    Terraform composition for this deployment
+|-- variables.tf               Input contract
+|-- outputs.tf                 Named hand-off values
+|-- providers.tf               OCI provider configuration
+|-- versions.tf                Terraform/provider constraints
+|-- terraform.tfvars.example   Local input example
+`-- ansible/
+    |-- plan.yml               Local init, validate, and plan
+    |-- apply.yml              Guarded init, validate, plan, and apply
+    `-- destroy.yml            Guarded destroy
 ```
 
-The current CIS contract lives here:
+This matters because every architecture is reviewable and runnable from its own
+folder. The docs are not a shared generic diagram pasted everywhere; each
+architecture page reflects that folder's Terraform components, request flow,
+outputs, and local Ansible workflow.
+
+## Architecture Experience
+
+Every `architecture/README.md` is intentionally text-first. You should be able
+to review it in GitHub, a terminal, a pull request, or customer notes without
+needing a diagramming tool.
+
+Each architecture page includes:
+
+| Section | Why It Is There |
+|---|---|
+| Deployment purpose | Plain-language reason this blueprint exists. |
+| Files in this deployment | The local TF + Ansible file contract. |
+| ASCII architecture | Detailed resource, boundary, and flow view in plain text. |
+| Terraform components | Real modules/resources wired in `main.tf`. |
+| Request and deployment flow | How inputs move into resources and outputs. |
+| State, inputs, and outputs | What comes from tfvars, what lands in state, and what gets handed off. |
+| Operational boundaries | Things to check before plan/apply/destroy. |
+| Review checklist | What to inspect before trusting the deployment. |
+| Terraform + Ansible deployment output | The expected `terraform output` shape and Ansible recap for that folder. |
+
+## Terraform + Ansible Workflow
+
+The usual local workflow is intentionally boring, which is exactly what you want
+for infrastructure:
 
 ```text
-docs/CIS-PROFILES.md
+review README.md
+  |
+  v
+review architecture/README.md
+  |
+  v
+copy terraform.tfvars.example -> terraform.tfvars
+  |
+  v
+terraform init / validate / plan
+  |
+  v
+ansible/plan.yml or guarded ansible/apply.yml
+  |
+  v
+terraform outputs and Ansible recap become the hand-off
 ```
 
-## Architecture Notes
-
-Every deployable blueprint should include:
-
-- `README.md`
-- `terraform.tfvars.example`
-- `architecture/README.md`
-- `ansible/plan.yml`
-- `ansible/apply.yml`
-- `ansible/destroy.yml`
-
-The local `architecture/README.md` is the lightweight design artifact for that
-blueprint. It should include an `## ASCII Architecture` section that shows the
-main ownership boundary, traffic path, dependencies, and operational hand-offs
-in plain text.
-
-Rendered diagrams are useful for customer reviews, but keep draft, LLD, and
-tool-specific work files outside the reusable blueprint folders unless they
-become the canonical artifact for that pattern.
-
-## Blueprint-Local Ansible
-
-Every blueprint has a small `ansible/` folder beside its Terraform files:
-
-```text
-ansible/plan.yml      Runs init, validate, and plan with backend disabled.
-ansible/apply.yml     Runs guarded init, validate, plan, and apply.
-ansible/destroy.yml   Runs guarded destroy.
-```
-
-The local playbooks reuse the shared `ansible/roles/terraform_runner` role, so
-the orchestration logic stays in one place while each architecture folder still
-has a clear Ansible entry point.
-
-Apply and destroy are intentionally guarded:
+Apply and destroy are guarded:
 
 ```bash
 CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
-Every blueprint folder now has the same end-to-end shape and real Terraform
-wiring. Some expensive or customer-specific resources are intentionally
-controlled by enable flags, but validation no longer skips blueprint folders.
+At the end of each architecture page, the `Terraform + Ansible Deployment
+Output` section shows the folder-specific output names from `outputs.tf`, plus a
+clean example of the Ansible plan/apply recap.
+
+## CIS Profiles
+
+Generic blueprints do not turn on CIS behavior by default. If you need a
+CIS-aligned landing zone, start from one of these folders:
+
+```text
+blueprints/cis/level1/
+blueprints/cis/level2/
+```
+
+The current CIS contract lives in `docs/CIS-PROFILES.md`.
 
 ## Module Shape
 
 Reusable modules try to keep a familiar interface where it makes sense:
 
-- `tenancy_ocid`
-- `compartment_ocid`
-- `region`
-- `org`
-- `environment`
-- `region_key`
-- `cis_level`
-- `defined_tags`
-- `freeform_tags`
+```text
+tenancy_ocid
+compartment_ocid
+region
+org
+environment
+region_key
+cis_level
+defined_tags
+freeform_tags
+```
 
 Modules should output stable identifiers such as OCIDs, names, and maps that
 blueprints can compose. Remote state belongs to deployable blueprints, not
@@ -233,33 +270,51 @@ shared modules.
 
 ## Validation
 
-Use this before committing or before trusting a local change:
+Use this before committing, reviewing, or trusting a local change:
 
 ```bash
 ./scripts/validate-all.sh
 ```
 
-When Ansible is installed, the script delegates to
-`ansible/playbooks/validate.yml`. The playbook discovers implemented blueprints,
-runs `terraform init -backend=false`, runs `terraform validate`, checks Ansible
-syntax, runs optional scanners when available, and removes generated Terraform
-folders and lock files afterward.
+The validator checks:
+
+- Terraform format across the repo.
+- Every blueprint has `README.md`.
+- Every blueprint has `architecture/README.md`.
+- Every architecture includes ASCII design, Terraform components, deployment
+  flow, review checklist, and TF + Ansible output sections.
+- Every implemented blueprint runs `terraform init -backend=false` and
+  `terraform validate`.
+- Root Ansible playbooks pass syntax checks.
+- Blueprint-local `ansible/plan.yml`, `ansible/apply.yml`, and
+  `ansible/destroy.yml` pass syntax checks.
+- Optional scanners run when available.
+- Generated Terraform artifacts are cleaned afterward.
 
 ## Useful Docs
 
-- `docs/DEPLOYMENT-GUIDE.md` - deployment sequence and operating notes.
-- `docs/DEPLOYMENT-PATTERN-CATALOG.md` - blueprint catalog and selection notes.
-- `docs/architecture/` - shared architecture rules and review-artifact guidance.
-- `docs/CIS-PROFILES.md` - CIS profile behavior.
-- `docs/ARCH-MAPPING-CIS.md` - CIS mapping notes.
-- `docs/NAMING-CONVENTIONS.md` - naming standard.
-- `docs/RUNBOOK.md` - operational runbook.
+| Doc | Use It For |
+|---|---|
+| `docs/DEPLOYMENT-GUIDE.md` | Deployment sequence and operating notes. |
+| `docs/DEPLOYMENT-PATTERN-CATALOG.md` | Blueprint catalog and selection notes. |
+| `docs/CIS-PROFILES.md` | CIS profile behavior. |
+| `docs/ARCH-MAPPING-CIS.md` | CIS mapping notes. |
+| `docs/NAMING-CONVENTIONS.md` | Naming standard. |
+| `docs/RUNBOOK.md` | Operational runbook. |
 
 ## Keep The Repo Clean
 
 Generated Terraform and local test files are intentionally ignored:
-`.terraform/`, `.terraform.lock.hcl`, `terraform.tfstate*`, `*.tfplan`,
-local `terraform.tfvars`, `.codex-local/`, and `.claude/`.
+
+```text
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate*
+*.tfplan
+terraform.tfvars
+.codex-local/
+.claude/
+```
 
 The validation playbook normally cleans generated Terraform artifacts for you.
 For manual cleanup:
@@ -273,7 +328,7 @@ rm -rf .codex-local
 rm -rf .claude
 ```
 
-## Release Notes For Maintainers
+## Maintainer Notes
 
 Blueprint module sources are pinned to release tags such as `v0.1.0`. When a new
 release is cut, update blueprint source refs deliberately in the same tagged

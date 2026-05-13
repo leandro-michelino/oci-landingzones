@@ -132,3 +132,48 @@ The repository validator checks Terraform formatting, initializes and validates 
 - A new enable flag changes what the deployment can create.
 - README usage notes describe behavior that is not represented here.
 - A customer review turns an assumption into a reusable pattern.
+
+## Terraform + Ansible Deployment Output
+
+This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper with a clean recap at the end.
+
+```text
+$ cd blueprints/extensions/waf
+$ terraform init
+$ terraform validate
+$ terraform plan -out=tfplan
+$ terraform apply tfplan
+
+Apply complete! Resources: <added> added, <changed> changed, <destroyed> destroyed.
+
+$ terraform output
+blueprint_name = "waf"
+name_prefix = "<org>-<env>-<region_key>"
+resource_ids = { ... }
+waf_policy_id = "ocid1.<resource>..."
+web_app_firewall_id = "ocid1.<resource>..."
+```
+
+```text
+$ cd blueprints/extensions/waf
+$ ansible-playbook -i localhost, ansible/plan.yml
+
+TASK [terraform_runner : Terraform init]      ok
+TASK [terraform_runner : Terraform validate]  ok
+TASK [terraform_runner : Terraform plan]      ok
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=<n> changed=0 unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
+
+$ CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
+
+TASK [terraform_runner : Terraform init]      ok
+TASK [terraform_runner : Terraform validate]  ok
+TASK [terraform_runner : Terraform plan]      ok
+TASK [terraform_runner : Terraform apply]     changed
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=<n> changed=<n> unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
+```
+
+For WAF, the important hand-off values are `blueprint_name`, `name_prefix`, `resource_ids`, `waf_policy_id`, `web_app_firewall_id`. Keep those names stable unless a downstream blueprint, runbook, or customer hand-off is updated at the same time.

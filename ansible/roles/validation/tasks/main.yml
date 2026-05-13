@@ -75,13 +75,17 @@
 
     - name: Fail when a blueprint architecture README lacks detailed ASCII sections
       ansible.builtin.fail:
-        msg: "{{ item.source }} must include detailed ASCII architecture, Terraform components, deployment flow, and review checklist sections."
+        msg: "{{ item.source }} must include detailed ASCII architecture, Terraform components, deployment flow, review checklist, and Terraform + Ansible deployment output sections."
       when:
         - >-
           '## ASCII Architecture' not in (item.content | b64decode) or
           '## Terraform Components' not in (item.content | b64decode) or
           '## Request And Deployment Flow' not in (item.content | b64decode) or
-          '## Review Checklist' not in (item.content | b64decode)
+          '## Review Checklist' not in (item.content | b64decode) or
+          '## Terraform + Ansible Deployment Output' not in (item.content | b64decode) or
+          'terraform output' not in (item.content | b64decode) or
+          'ansible-playbook -i localhost, ansible/plan.yml' not in (item.content | b64decode) or
+          'CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml' not in (item.content | b64decode)
       loop: "{{ validation_blueprint_architecture_contents.results | default([]) }}"
       loop_control:
         label: "{{ item.source }}"
