@@ -83,30 +83,6 @@ These notes expand the diagram with the design details that usually matter durin
 - Node pools depend on the created or referenced cluster ID and use the supplied node subnet IDs, shape, image, SSH key, and sizing inputs.
 - Service load balancer subnet choices decide where Kubernetes Service traffic enters the VCN.
 
-- The output contract at the end of this page is the hand-off surface for downstream blueprints, runbooks, and customer notes.
-
-## State, Inputs, And Outputs
-
-```text
-Input sources
-|-- terraform.tfvars.example documents expected values for this deployment
-|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
-|-- environment variables may provide OCI authentication and guarded Ansible confirms
-|
-Terraform state
-|-- backend is disabled for local validation and blueprint-local runners by default
-|-- production state backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
-|
-Output contract
-|-- blueprint_name
-|-- name_prefix
-|-- resource_ids
-|-- cluster_id
-`-- node_pool_id
-```
-
-
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `oci_containerengine_cluster.this`, `oci_containerengine_node_pool.this`.

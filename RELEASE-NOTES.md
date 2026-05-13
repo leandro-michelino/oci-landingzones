@@ -6,6 +6,10 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 ### Added
 
+- Eight deployable roadmap blueprints: Autonomous Database, OCI Generative AI
+  private landing zone, OCI DevOps pipeline, Observability, Oracle Integration
+  Cloud, Oracle Analytics Cloud, Healthcare / PCI compliance, and OKE Service
+  Mesh.
 - Repository-level ASCII architecture index under `docs/architecture/`.
 - Text-first implementation roadmap under `docs/ROADMAP.md`.
 - Validation contract notes in `tests/README.md`.

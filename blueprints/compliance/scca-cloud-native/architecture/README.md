@@ -90,32 +90,6 @@ These notes expand the diagram with the design details that usually matter durin
 - OS Management resources live in the governance compartment and provide patch/group/job control for managed instances that join the landing zone.
 - North-south and east-west traffic should be reviewed against the firewall policy, DRG attachments, subnet route tables, and service gateway paths.
 
-- The output contract at the end of this page is the hand-off surface for downstream blueprints, runbooks, and customer notes.
-
-## State, Inputs, And Outputs
-
-```text
-Input sources
-|-- terraform.tfvars.example documents expected values for this deployment
-|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
-|-- environment variables may provide OCI authentication and guarded Ansible confirms
-|
-Terraform state
-|-- backend is disabled for local validation and blueprint-local runners by default
-|-- production state backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
-|
-Output contract
-|-- blueprint_name
-|-- name_prefix
-|-- resource_ids
-|-- root_compartment_id
-|-- compartment_ids
-|-- network_resource_ids
-`-- os_management_resource_ids
-```
-
-
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `core`, `network`, `os_management`.

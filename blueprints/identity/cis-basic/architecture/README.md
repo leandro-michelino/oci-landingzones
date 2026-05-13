@@ -78,33 +78,6 @@ These notes expand the diagram with the design details that usually matter durin
 - Policy scope should be reviewed against target compartments and least-privilege requirements before apply.
 - Outputs expose group, dynamic group, and policy identifiers for governance review and downstream automation.
 
-- The output contract at the end of this page is the hand-off surface for downstream blueprints, runbooks, and customer notes.
-
-## State, Inputs, And Outputs
-
-```text
-Input sources
-|-- terraform.tfvars.example documents expected values for this deployment
-|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
-|-- environment variables may provide OCI authentication and guarded Ansible confirms
-|
-Terraform state
-|-- backend is disabled for local validation and blueprint-local runners by default
-|-- production state backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
-|
-Output contract
-|-- blueprint_name
-|-- name_prefix
-|-- cis_level
-|-- resource_ids
-|-- group_ids
-|-- group_names
-|-- dynamic_group_ids
-`-- policy_ids
-```
-
-
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `groups`, `dynamic_groups`, `policies`.

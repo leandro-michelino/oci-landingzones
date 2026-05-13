@@ -79,34 +79,6 @@ These notes expand the diagram with the design details that usually matter durin
 - Bastion sessions reach private IP targets through the routed hub/spoke network without assigning public IPs to targets.
 - Review the bastion subnet, route tables, NSGs/security lists, and target host access before enabling production sessions.
 
-- The output contract at the end of this page is the hand-off surface for downstream blueprints, runbooks, and customer notes.
-
-## State, Inputs, And Outputs
-
-```text
-Input sources
-|-- terraform.tfvars.example documents expected values for this deployment
-|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
-|-- environment variables may provide OCI authentication and guarded Ansible confirms
-|
-Terraform state
-|-- backend is disabled for local validation and blueprint-local runners by default
-|-- production state backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
-|
-Output contract
-|-- blueprint_name
-|-- name_prefix
-|-- resource_ids
-|-- hub_vcn_id
-|-- drg_id
-|-- hub_subnet_ids
-|-- spoke_vcn_ids
-|-- bastion_id
-`-- bastion_private_endpoint_ip_address
-```
-
-
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `network`, `bastion`.

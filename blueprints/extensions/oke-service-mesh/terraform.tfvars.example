@@ -1,0 +1,17 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "eu-frankfurt-1"
+home_region       = "eu-frankfurt-1"
+org               = "acme"
+environment       = "dev"
+region_key        = "fra"
+compartment_ocid  = "ocid1.compartment.oc1..example"
+
+enable_service_mesh_addon = false
+# cluster_id                 = "ocid1.cluster.oc1..example"
+addon_name                  = "ServiceMesh"
+enable_apm_domain           = false
+addon_configurations        = []
+defined_tags  = {}
+freeform_tags = {}

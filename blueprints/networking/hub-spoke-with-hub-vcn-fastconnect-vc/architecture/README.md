@@ -79,33 +79,6 @@ These notes expand the diagram with the design details that usually matter durin
 - On-premises routes enter the DRG through FastConnect and can reach hub or spoke CIDRs depending on route table design.
 - Review DRG route tables and customer/provider BGP settings before treating the path as production-ready.
 
-- The output contract at the end of this page is the hand-off surface for downstream blueprints, runbooks, and customer notes.
-
-## State, Inputs, And Outputs
-
-```text
-Input sources
-|-- terraform.tfvars.example documents expected values for this deployment
-|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
-|-- environment variables may provide OCI authentication and guarded Ansible confirms
-|
-Terraform state
-|-- backend is disabled for local validation and blueprint-local runners by default
-|-- production state backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
-|
-Output contract
-|-- blueprint_name
-|-- name_prefix
-|-- resource_ids
-|-- hub_vcn_id
-|-- drg_id
-|-- spoke_vcn_ids
-|-- virtual_circuit_id
-`-- virtual_circuit_state
-```
-
-
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `network`, `fastconnect`.

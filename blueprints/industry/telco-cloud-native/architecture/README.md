@@ -84,36 +84,6 @@ These notes expand the diagram with the design details that usually matter durin
 - Monitoring and OS Management add operational signals and instance management around the telco workload platform.
 - CNF traffic should be reviewed across OKE endpoint access, service load balancer subnets, node subnets, DRG paths, NAT, and service gateway routes.
 
-- The output contract at the end of this page is the hand-off surface for downstream blueprints, runbooks, and customer notes.
-
-## State, Inputs, And Outputs
-
-```text
-Input sources
-|-- terraform.tfvars.example documents expected values for this deployment
-|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
-|-- environment variables may provide OCI authentication and guarded Ansible confirms
-|
-Terraform state
-|-- backend is disabled for local validation and blueprint-local runners by default
-|-- production state backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
-|
-Output contract
-|-- blueprint_name
-|-- name_prefix
-|-- resource_ids
-|-- hub_vcn_id
-|-- drg_id
-|-- hub_subnet_ids
-|-- oke_cluster_id
-|-- oke_node_pool_id
-|-- vault_ids
-|-- monitoring_alarm_ids
-`-- os_management_resource_ids
-```
-
-
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `network`, `vault`, `oke`, `monitoring`, `os_management`.

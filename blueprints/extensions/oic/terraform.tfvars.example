@@ -1,0 +1,16 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "eu-frankfurt-1"
+home_region       = "eu-frankfurt-1"
+org               = "acme"
+environment       = "dev"
+region_key        = "fra"
+compartment_ocid  = "ocid1.compartment.oc1..example"
+
+enable_integration_instance         = false
+integration_instance_type          = "STANDARD"
+message_packs                      = 1
+enable_private_outbound_connection = false
+defined_tags  = {}
+freeform_tags = {}

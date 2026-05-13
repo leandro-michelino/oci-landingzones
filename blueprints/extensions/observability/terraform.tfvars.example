@@ -1,0 +1,17 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "eu-frankfurt-1"
+home_region       = "eu-frankfurt-1"
+org               = "acme"
+environment       = "dev"
+region_key        = "fra"
+compartment_ocid  = "ocid1.compartment.oc1..example"
+
+enable_log_analytics_namespace = false
+enable_log_group               = false
+enable_apm_domain              = false
+enable_opsi_private_endpoint   = false
+log_analytics_namespace        = "default"
+defined_tags  = {}
+freeform_tags = {}

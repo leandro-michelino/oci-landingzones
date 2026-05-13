@@ -89,36 +89,6 @@ These notes expand the diagram with the design details that usually matter durin
 - Object Storage remains NoPublicAccess; access should flow through the object storage private endpoint, service gateway, and configured NSGs.
 - Streaming can be private-endpoint enabled and should share the same private subnet and key-management review as the bucket path.
 
-- The output contract at the end of this page is the hand-off surface for downstream blueprints, runbooks, and customer notes.
-
-## State, Inputs, And Outputs
-
-```text
-Input sources
-|-- terraform.tfvars.example documents expected values for this deployment
-|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
-|-- environment variables may provide OCI authentication and guarded Ansible confirms
-|
-Terraform state
-|-- backend is disabled for local validation and blueprint-local runners by default
-|-- production state backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
-|
-Output contract
-|-- blueprint_name
-|-- name_prefix
-|-- resource_ids
-|-- vcn_id
-|-- subnet_ids
-|-- vault_ids
-|-- vault_key_ids
-|-- data_bucket_name
-|-- object_storage_private_endpoint_id
-|-- stream_pool_id
-`-- stream_ids
-```
-
-
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `oci_objectstorage_namespace.this`, `network`, `vault`, `oci_objectstorage_bucket.data`, `oci_objectstorage_private_endpoint.data`, `streaming`.

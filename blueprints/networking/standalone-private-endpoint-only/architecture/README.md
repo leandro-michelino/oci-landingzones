@@ -76,32 +76,6 @@ These notes expand the diagram with the design details that usually matter durin
 - Security lists and NSGs should be scoped around private endpoint consumers and service-specific traffic.
 - Review whether NAT is truly required; leaving it disabled keeps the pattern private-only.
 
-- The output contract at the end of this page is the hand-off surface for downstream blueprints, runbooks, and customer notes.
-
-## State, Inputs, And Outputs
-
-```text
-Input sources
-|-- terraform.tfvars.example documents expected values for this deployment
-|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
-|-- environment variables may provide OCI authentication and guarded Ansible confirms
-|
-Terraform state
-|-- backend is disabled for local validation and blueprint-local runners by default
-|-- production state backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
-|
-Output contract
-|-- blueprint_name
-|-- name_prefix
-|-- resource_ids
-|-- vcn_id
-|-- subnet_ids
-|-- route_table_ids
-`-- gateway_ids
-```
-
-
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `private_vcn`.

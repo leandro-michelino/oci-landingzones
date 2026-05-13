@@ -1,0 +1,19 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "eu-frankfurt-1"
+home_region       = "eu-frankfurt-1"
+org               = "acme"
+environment       = "dev"
+region_key        = "fra"
+compartment_ocid  = "ocid1.compartment.oc1..example"
+
+enable_autonomous_database = false
+db_name                    = "LZADB"
+db_workload                = "OLTP"
+compute_count              = 2
+data_storage_size_in_tbs   = 1
+# subnet_id                = "ocid1.subnet.oc1..example"
+# admin_password           = "use-a-secure-variable-store"
+defined_tags  = {}
+freeform_tags = {}

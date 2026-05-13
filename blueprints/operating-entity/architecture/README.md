@@ -80,35 +80,6 @@ These notes expand the diagram with the design details that usually matter durin
 - It does not create network traffic; the important flow is permission delegation from tenancy IAM into the entity compartment tree.
 - Downstream teams should deploy networking, data, and extensions inside the exported entity compartments.
 
-- The output contract at the end of this page is the hand-off surface for downstream blueprints, runbooks, and customer notes.
-
-## State, Inputs, And Outputs
-
-```text
-Input sources
-|-- terraform.tfvars.example documents expected values for this deployment
-|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
-|-- environment variables may provide OCI authentication and guarded Ansible confirms
-|
-Terraform state
-|-- backend is disabled for local validation and blueprint-local runners by default
-|-- production state backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
-|
-Output contract
-|-- blueprint_name
-|-- name_prefix
-|-- resource_ids
-|-- root_compartment_id
-|-- compartment_ids
-|-- compartment_names
-|-- group_ids
-|-- group_names
-|-- policy_ids
-`-- policy_statements
-```
-
-
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `compartments`, `groups`, `policies`.

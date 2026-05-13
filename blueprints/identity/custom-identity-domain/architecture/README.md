@@ -77,31 +77,6 @@ These notes expand the diagram with the design details that usually matter durin
 - The admin contact and login visibility settings directly affect initial domain administration and user experience.
 - Outputs expose identity domain IDs, URLs, and replica region IDs for identity operations and federation planning.
 
-- The output contract at the end of this page is the hand-off surface for downstream blueprints, runbooks, and customer notes.
-
-## State, Inputs, And Outputs
-
-```text
-Input sources
-|-- terraform.tfvars.example documents expected values for this deployment
-|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
-|-- environment variables may provide OCI authentication and guarded Ansible confirms
-|
-Terraform state
-|-- backend is disabled for local validation and blueprint-local runners by default
-|-- production state backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
-|
-Output contract
-|-- blueprint_name
-|-- name_prefix
-|-- resource_ids
-|-- identity_domain_ids
-|-- identity_domain_urls
-`-- replica_region_ids
-```
-
-
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `oci_identity_domain.this`, `oci_identity_domain_replication_to_region.replicas`.

@@ -76,32 +76,6 @@ These notes expand the diagram with the design details that usually matter durin
 - Packet paths already exist outside this folder, so the architecture review should confirm the brownfield routes and security controls separately.
 - Downstream deployments can use the exported maps the same way they use outputs from resource-creating network blueprints.
 
-- The output contract at the end of this page is the hand-off surface for downstream blueprints, runbooks, and customer notes.
-
-## State, Inputs, And Outputs
-
-```text
-Input sources
-|-- terraform.tfvars.example documents expected values for this deployment
-|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
-|-- environment variables may provide OCI authentication and guarded Ansible confirms
-|
-Terraform state
-|-- backend is disabled for local validation and blueprint-local runners by default
-|-- production state backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
-|
-Output contract
-|-- blueprint_name
-|-- name_prefix
-|-- resource_ids
-|-- vcn_ids
-|-- subnet_ids
-|-- drg_id
-`-- route_target_ids
-```
-
-
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `locals.external_resource_ids`.

@@ -88,34 +88,6 @@ These notes expand the diagram with the design details that usually matter durin
 - The DR plan is created only after protection groups exist and should be reviewed against the intended failover or switchover type.
 - Runtime application replication is outside this folder; this deployment prepares the FSDR control plane and log locations.
 
-- The output contract at the end of this page is the hand-off surface for downstream blueprints, runbooks, and customer notes.
-
-## State, Inputs, And Outputs
-
-```text
-Input sources
-|-- terraform.tfvars.example documents expected values for this deployment
-|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
-|-- environment variables may provide OCI authentication and guarded Ansible confirms
-|
-Terraform state
-|-- backend is disabled for local validation and blueprint-local runners by default
-|-- production state backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
-|
-Output contract
-|-- blueprint_name
-|-- name_prefix
-|-- standby_name_prefix
-|-- resource_ids
-|-- primary_dr_protection_group_id
-|-- standby_dr_protection_group_id
-|-- primary_log_bucket_name
-|-- standby_log_bucket_name
-`-- primary_dr_plan_id
-```
-
-
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `oci_objectstorage_namespace.primary`, `oci_objectstorage_namespace.standby`, `oci_objectstorage_bucket.primary_dr_logs`, `oci_objectstorage_bucket.standby_dr_logs`, `oci_disaster_recovery_dr_protection_group.primary`, `oci_disaster_recovery_dr_protection_group.standby`, `oci_disaster_recovery_dr_plan.primary`.

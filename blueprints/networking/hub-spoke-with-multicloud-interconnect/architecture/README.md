@@ -78,33 +78,6 @@ These notes expand the diagram with the design details that usually matter durin
 - remote_cloud_cidr_blocks, customer BGP ASN, provider service details, and CPE address define the multicloud edge.
 - Review route preference, failover behavior, and overlapping CIDRs before advertising production routes.
 
-- The output contract at the end of this page is the hand-off surface for downstream blueprints, runbooks, and customer notes.
-
-## State, Inputs, And Outputs
-
-```text
-Input sources
-|-- terraform.tfvars.example documents expected values for this deployment
-|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
-|-- environment variables may provide OCI authentication and guarded Ansible confirms
-|
-Terraform state
-|-- backend is disabled for local validation and blueprint-local runners by default
-|-- production state backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
-|
-Output contract
-|-- blueprint_name
-|-- name_prefix
-|-- resource_ids
-|-- hub_vcn_id
-|-- drg_id
-|-- spoke_vcn_ids
-|-- virtual_circuit_id
-`-- ipsec_id
-```
-
-
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `network`, `fastconnect`, `ipsec_vpn`.

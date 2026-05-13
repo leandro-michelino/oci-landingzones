@@ -49,12 +49,20 @@ folder.
 | Networking | Regional prod/nonprod hub separation | `blueprints/networking/regional-prod-nonprod-hubs/` | Implementing |
 | Compliance | SCCA-style cloud-native landing zone | `blueprints/compliance/scca-cloud-native/` | Implementing |
 | Compliance | Zero Trust landing zone | `blueprints/compliance/zero-trust/` | Implementing |
+| Compliance | Healthcare / PCI compliance landing zone | `blueprints/compliance/healthcare-pci/` | Implementing |
 | Disaster recovery | Full Stack Disaster Recovery | `blueprints/disaster-recovery/fsdr/` | Implementing |
+| Data platform | Autonomous Database ATP / ADW | `blueprints/data-platform/autonomous-database/` | Implementing |
 | Data platform | Private data platform landing zone | `blueprints/data-platform/private-data-platform/` | Implementing |
+| AI | OCI Generative AI private landing zone | `blueprints/ai/genai-private/` | Implementing |
+| DevOps | OCI DevOps pipeline | `blueprints/devops/oci-devops-pipeline/` | Implementing |
 | Industry | Telco cloud-native landing zone | `blueprints/industry/telco-cloud-native/` | Implementing |
 | Extensions | OKE extension | `blueprints/extensions/oke/` | Implementing |
+| Extensions | OKE service mesh | `blueprints/extensions/oke-service-mesh/` | Implementing |
 | Extensions | Exadata extension | `blueprints/extensions/exadata/` | Implementing |
 | Extensions | API Gateway extension | `blueprints/extensions/apigw/` | Implementing |
+| Extensions | Oracle Analytics Cloud | `blueprints/extensions/oac/` | Implementing |
+| Extensions | Oracle Integration Cloud | `blueprints/extensions/oic/` | Implementing |
+| Extensions | Observability platform | `blueprints/extensions/observability/` | Implementing |
 | Extensions | Streaming extension | `blueprints/extensions/streaming/` | Implementing |
 | Extensions | WAF extension | `blueprints/extensions/waf/` | Implementing |
 

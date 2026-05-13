@@ -312,7 +312,8 @@ Architecture notes live in each operating-entity blueprint's
 | Phase 2 - IAM | Reusable IAM modules composed by `blueprints/core/` and CIS wrappers | Covered through core, CIS Level 1, and CIS Level 2 validation. |
 | Phase 3 - Networking | All implemented folders under `blueprints/networking/` | Each implemented networking blueprint is initialized and validated without backend. |
 | Phase 4 - Operating entities | `blueprints/operating-entity/` and child onboarding patterns | Single entity, multi-entity, and workload vending are initialized and validated without backend. |
-| Phase 5 - Extensions | `blueprints/extensions/oke`, `apigw`, `streaming`, `waf`, and `exadata` | Each extension blueprint is initialized and validated without backend. |
+| Phase 5 - Extensions | `blueprints/extensions/oke`, `apigw`, `streaming`, `waf`, `exadata`, `observability`, `oic`, `oac`, and `oke-service-mesh` | Each extension blueprint is initialized and validated without backend. |
+| Phase 6 - Data, AI, DevOps, and regulated services | `blueprints/data-platform/autonomous-database`, `blueprints/ai/genai-private`, `blueprints/devops/oci-devops-pipeline`, and `blueprints/compliance/healthcare-pci` | Service-specific blueprints are initialized and validated without backend. |
 
 Identity, compliance, data platform, disaster recovery, and industry folders are
 now included in automated Terraform validation with the rest of the blueprint
@@ -336,6 +337,18 @@ Implemented Phase 5 extension entry points:
   default.
 - `blueprints/extensions/exadata/` creates optional Exadata Cloud Infrastructure.
   Creation is disabled by default because it is high-cost and quota-sensitive.
+- `blueprints/extensions/observability/` creates optional Log Analytics, APM,
+  and Operations Insights private endpoint foundations.
+- `blueprints/extensions/oic/` creates optional Oracle Integration Cloud and
+  private outbound connectivity.
+- `blueprints/extensions/oac/` creates optional Oracle Analytics Cloud and a
+  private access channel.
+- `blueprints/extensions/oke-service-mesh/` creates an optional OKE service mesh
+  add-on shell and optional APM tracing domain.
+
+Additional service blueprints now cover Autonomous Database, OCI Generative AI,
+OCI DevOps, and Healthcare / PCI guardrails. They follow the same local README,
+ASCII architecture, Terraform, tfvars, and Ansible runner contract.
 
 Keep real subnet, VCN, load balancer, availability domain, image, and SSH values
 in local ignored tfvars files. The committed examples show the shape only.

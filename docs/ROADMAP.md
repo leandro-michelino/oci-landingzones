@@ -2,8 +2,20 @@
 
 Author: Leandro Michelino | ACE | <leandro.michelino@oracle.com>
 
-This document defines the planned blueprint families and deployments not yet in the repo,
-organized by implementation priority and dependency order.
+This document defines roadmap blueprint families and deployments, organized by
+implementation priority and dependency order. The first eight recommendations
+are now implemented as deployable blueprint folders:
+
+```text
+blueprints/data-platform/autonomous-database/
+blueprints/ai/genai-private/
+blueprints/devops/oci-devops-pipeline/
+blueprints/extensions/observability/
+blueprints/extensions/oic/
+blueprints/extensions/oac/
+blueprints/compliance/healthcare-pci/
+blueprints/extensions/oke-service-mesh/
+```
 
 Each planned blueprint will follow the same folder contract as existing blueprints:
 
