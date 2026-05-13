@@ -1,24 +1,24 @@
-# CIS Level 2 Landing Zone Blueprint Architecture
+# CIS Level 2 Landing Zone Architecture
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This is the design view for `blueprints/cis/level2`. It stays ASCII-first on purpose so you
-can review the deployment in GitHub, a terminal, a pull request, or customer notes without a
+This page is the deployment architecture for `blueprints/cis/level2`. It is intentionally ASCII-first so it
+is easy to review in GitHub, terminals, pull requests, runbooks, and customer notes without a
 diagramming tool.
 
 ## Deployment Purpose
 
-Builds the stricter CIS-aligned landing-zone baseline for regulated environments where
-hardened controls and tighter operational review are expected.
+Builds the core landing-zone foundation with stricter CIS Level 2-oriented guardrails, monitoring, scanning, and governance controls.
 
 ## Architecture At A Glance
 
 | Item | Details |
 | --- | --- |
-| Boundary | `blueprints/cis/level2` owns this deployment end to end. |
+| Boundary | `blueprints/cis/level2` owns this deployment folder and its Terraform + Ansible runners. |
+| Purpose | Builds the core landing-zone foundation with stricter CIS Level 2-oriented guardrails, monitoring, scanning, and governance controls. |
 | Terraform components | `core` |
-| Input source | `terraform.tfvars.example` documents the shape; local ignored tfvars provide real values. |
-| Output contract | `blueprint_name`, `cis_level`, `name_prefix`, `resource_ids`, `root_compartment_id`, `compartment_ids`, `group_names`, `policy_names`, plus 8 more |
+| Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Output contract | `blueprint_name`, `cis_level`, `name_prefix`, `resource_ids`, `root_compartment_id`, `compartment_ids`, `group_names`, `policy_names`, ... |
 | Runner contract | `ansible/plan.yml`, guarded `ansible/apply.yml`, and guarded `ansible/destroy.yml`. |
 
 ## Files In This Deployment
@@ -26,68 +26,57 @@ hardened controls and tighter operational review are expected.
 ```text
 blueprints/cis/level2/
 |-- README.md                         Operator guide for this deployment
-|-- architecture/README.md            This detailed ASCII architecture
-|-- main.tf                           Terraform resource and module wiring
+|-- architecture/README.md            This deployment-specific ASCII architecture
+|-- main.tf                           Terraform module and resource graph
 |-- variables.tf                      Input contract and defaults
-|-- outputs.tf                        Hand-off values for dependent blueprints
+|-- outputs.tf                        Hand-off values for downstream deployments
 |-- providers.tf                      OCI provider configuration
 |-- versions.tf                       Terraform and provider constraints
-|-- terraform.tfvars.example          Example local variable shape
+|-- terraform.tfvars.example          Example tfvars shape for this deployment
 `-- ansible/
-    |-- plan.yml                      Local guarded plan runner
-    |-- apply.yml                     Local guarded apply runner
-    `-- destroy.yml                   Local guarded destroy runner
+    |-- plan.yml                      Local plan runner
+    |-- apply.yml                     Guarded apply runner
+    `-- destroy.yml                   Guarded destroy runner
 ```
 
 ## ASCII Architecture
 
 ```text
-+------------------------------------------------------------------------------------------------------+
-| CIS Level 2 Landing Zone                                                                             |
-| Folder: blueprints/cis/level2                                                                        |
-|                                                                                                      |
-| [1] Operator entry                                                                                   |
-| Operator, CI job, or local shell reviews README.md and architecture/README.md, copies                |
-| terraform.tfvars.example to terraform.tfvars, and chooses either direct Terraform or the local       |
-| Ansible wrapper.                                                                                     |
-|                                                                                                      |
-| [2] Local file contract                                                                              |
-| README.md -> run-facing deployment guide.                                                            |
-| architecture/README.md -> detailed text architecture and review notes.                               |
-| main.tf -> Terraform composition for this deployment.                                                |
-| variables.tf -> input contract and defaults.                                                         |
-| outputs.tf -> named hand-off values.                                                                 |
-| providers.tf + versions.tf -> provider setup and version constraints.                                |
-| ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
-|                                                                                                      |
-| [3] Terraform composition from main.tf                                                               |
-| 01. module.core -> blueprints/core @ v0.2.0                                                          |
-|                                                                                                      |
-| [4] OCI/resource planes                                                                              |
-| - Control: provider config, tenancy context, naming inputs, and local tfvars.                        |
-| - Governance: stricter security, audit, IAM, logging, segmentation, and guardrail posture.           |
-| - Consumption: compliance-oriented outputs for evidence, runbooks, and downstream workload teams.    |
-| - Operations: Ansible plan/apply/destroy wrappers, validation, and cleanup.                          |
-|                                                                                                      |
-| [5] Output hand-off                                                                                  |
-| - blueprint_name: Blueprint identifier.                                                              |
-| - cis_level: Fixed CIS OCI Benchmark profile for this blueprint.                                     |
-| - name_prefix: Standard OCI naming prefix for resources created by this blueprint.                   |
-| - resource_ids: Map of resource identifiers created by this blueprint.                               |
-| - root_compartment_id: OCID of the CIS landing zone root compartment.                                |
-| - compartment_ids: Map of CIS landing zone compartment keys to OCIDs.                                |
-| - group_names: Map of IAM group keys to names.                                                       |
-| - policy_names: Map of IAM policy keys to names.                                                     |
-| - vault_ids: Map of vault keys to OCIDs.                                                             |
-| - vault_key_ids: Map of KMS key keys to OCIDs.                                                       |
-| - security_zone_ids: Map of Security Zone keys to OCIDs.                                             |
-| - vss_host_scan_target_ids: Map of VSS host scan target keys to OCIDs.                               |
-| - plus 4 more outputs declared in outputs.tf                                                         |
-|                                                                                                      |
-| [6] Deployment close-out                                                                             |
-| terraform output and the Ansible PLAY RECAP are the human and automation hand-off.                   |
-| Generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git.  |
-+------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------------------------+
+| CIS Level 2 Landing Zone                                                                                |
+|                                                                                                  |
+|  Operator / CI / Ansible                                                                         |
+|          | terraform plan/apply                                                                  |
+|          v                                                                                       |
+|  +-------------------------- OCI Tenancy / Home Region IAM ---------------------------+          |
+|  | Compartments                                                                       |          |
+|  |   root/parent -> governance, security, network, workloads                          |          |
+|  | IAM                                                                                |          |
+|  |   admin groups + dynamic groups -> policies scoped to compartments                 |          |
+|  | Tagging                                                                            |          |
+|  |   namespace, tag definitions, tag defaults applied to landing-zone compartments     |          |
+|  +-------------------------------+----------------------------------------------------+          |
+|                                  |                                                               |
+|                                  v                                                               |
+|  +---------------------- Governance Compartment ----------------------+                           |
+|  | Logging: log groups, service logs, VCN flow-log targets, saved searches            |           |
+|  | Audit retention: tenancy audit configuration                                       |           |
+|  | Budgets: cost targets and alert rules                                              |           |
+|  | Events + Notifications: event rules -> ONS topics/subscriptions                    |           |
+|  | Monitoring: alarms -> notification topics/subscriptions                            |           |
+|  +-------------------------------+----------------------------------------------------+          |
+|                                  | signals, alarms, events                                      |
+|                                  v                                                               |
+|  +----------------------- Security Compartment -----------------------+                           |
+|  | Cloud Guard configuration and targets watch the root/landing-zone compartments      |           |
+|  | Vault/KMS creates vaults and master encryption keys for downstream resources        |           |
+|  | Security zones, Cloud Guard, VSS, audit retention, and stricter evidence controls are expected review points                |           |
+|  | Vulnerability Scanning Service creates host/container scan recipes and targets      |           |
+|  +-------------------------------+----------------------------------------------------+          |
+|                                  | outputs consumed by network, app, data, compliance blueprints |
+|                                  v                                                               |
+|  resource_ids, compartment_ids, policy_ids, vault_key_ids, log_group_ids, alarm_ids               |
++--------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components
@@ -98,43 +87,64 @@ blueprints/cis/level2/
 
 ## Request And Deployment Flow
 
-- Operator reviews the local tfvars contract and chooses the plan/apply runner.
-- Terraform composes the OCI resources declared in `main.tf`.
-- Outputs become the deployment hand-off contract for runbooks and downstream blueprints.
-- Validation checks formatting, init, validate, Ansible syntax, documentation coverage, and cleanup.
+- The wrapper passes cis_level = level2 into the core blueprint.
+- Level 2 review focuses on stronger audit, scanning, security zone, Cloud Guard, and policy posture.
+- Outputs are the same core hand-off contract so stricter foundations do not change downstream consumption.
+
+## Traffic And Trust Boundaries
+
+- Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
+- Data plane traffic is the packet or service path shown in the ASCII diagram; if this deployment only creates identity or governance resources, the data plane is intentionally permission and signal flow instead of network packets.
+- Trust boundaries are the tenancy, compartment, VCN, subnet, DRG, private endpoint, identity domain, or managed service edges shown in the diagram.
+- Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
 ## State, Inputs, And Outputs
 
 ```text
 Input sources
-|-- terraform.tfvars.example documents expected values
-|-- local *.tfvars files provide tenancy, compartment, CIDR, endpoint, and OCID values
+|-- terraform.tfvars.example documents expected values for this deployment
+|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
 |-- environment variables may provide OCI authentication and guarded Ansible confirms
 |
 Terraform state
-|-- backend is disabled for local validation and plan runners by default
-|-- production backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, and state files are cleaned by validation
+|-- backend is disabled for local validation and blueprint-local runners by default
+|-- production state backends should be configured outside this reusable blueprint folder
+|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
 |
 Output contract
-|-- blueprint_name and name_prefix identify the deployment when declared
-|-- resource_ids summarizes primary resources when declared
-`-- blueprint-specific outputs expose compartment, VCN, subnet, key, policy, service, or DR IDs
+|-- blueprint_name
+|-- cis_level
+|-- name_prefix
+|-- resource_ids
+|-- root_compartment_id
+|-- compartment_ids
+|-- group_names
+|-- policy_names
+|-- vault_ids
+|-- vault_key_ids
+|-- security_zone_ids
+|-- vss_host_scan_target_ids
+|-- budget_ids
+|-- event_rule_ids
+|-- event_notification_topic_ids
+`-- monitoring_alarm_ids
 ```
 
 ## Operational Boundaries
 
-- Keep apply/destroy behind the guarded Ansible runners or equivalent review gates.
-- Use local ignored tfvars for OCIDs, notification endpoints, customer CIDRs, and secrets.
-- Run ./scripts/validate-all.sh before commits or hand-off.
+- Review enable flags before apply, especially for paid, tenancy-wide, identity, network edge, database, or destructive resources.
+- Confirm required external IDs are real and in the intended region and compartment before running `terraform plan`.
+- Keep apply and destroy behind the guarded Ansible runners or an equivalent approval gate.
+- Treat route tables, firewall policies, ZPR policies, identity policies, and domain replication as change-controlled surfaces.
+- Run repository validation before commit or hand-off.
 
 ## Review Checklist
 
-- Confirm the `README.md` story matches this ASCII architecture.
-- Confirm every module/resource listed above is intentional for this deployment.
-- Confirm required external IDs are documented before `terraform plan`.
-- Confirm enable flags are set deliberately, especially for tenancy-wide, paid, or destructive resources.
-- Confirm logging, IAM, security, networking, and operational hand-offs are visible in the diagram.
+- Confirm the diagram matches `main.tf`: `core`.
+- Confirm the described traffic path is the path you want in OCI before apply.
+- Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
+- Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
+- Confirm `terraform output` will expose the hand-off values expected by downstream teams: `blueprint_name`, `cis_level`, `name_prefix`, `resource_ids`, `root_compartment_id`, `compartment_ids`, `group_names`, `policy_names`, `vault_ids`, `vault_key_ids`, `security_zone_ids`, `vss_host_scan_target_ids`, ....
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
 
 ## Validation
@@ -150,17 +160,16 @@ artifacts afterward.
 
 ## When To Update This Architecture
 
-- Terraform modules, resources, data sources, or provider aliases change.
-- A subnet, route, trust boundary, region, compartment, or access path changes.
-- A new enable flag changes what the deployment can create.
-- README usage notes describe behavior that is not represented here.
-- A customer review turns an assumption into a reusable pattern.
+- Terraform modules, resources, data sources, provider aliases, or enable flags change.
+- A subnet, route, trust boundary, identity scope, region, compartment, private endpoint, or access path changes.
+- A new output becomes part of the contract for downstream deployments or operators.
+- README usage notes describe behavior that is not represented in the diagram.
 
 ## Terraform + Ansible Deployment Output
 
-This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph
-and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper
-with a clean recap at the end.
+This is the expected close-out shape for `blueprints/cis/level2`. Terraform owns the OCI resource graph and
+named outputs; Ansible gives the operator a repeatable plan/apply/destroy wrapper with a
+clear recap.
 
 ```text
 $ cd blueprints/cis/level2
@@ -172,9 +181,9 @@ $ terraform apply tfplan
 Apply complete! Resources: <added> added, <changed> changed, <destroyed> destroyed.
 
 $ terraform output
-blueprint_name = "level2"
-cis_level = "<cis-level>"
-name_prefix = "<org>-<env>-<region_key>"
+blueprint_name = "<value>"
+cis_level = "<value>"
+name_prefix = "<value>"
 resource_ids = { ... }
 root_compartment_id = "ocid1.<resource>..."
 compartment_ids = { ... }
@@ -212,8 +221,5 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=<n> changed=<n> unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
 ```
 
-For CIS Level 2 Landing Zone, the important hand-off values are `blueprint_name`,
-`cis_level`, `name_prefix`, `resource_ids`, `root_compartment_id`, `compartment_ids`,
-`group_names`, `policy_names`, `vault_ids`, `vault_key_ids`, plus 6 more. Keep those names
-stable unless a downstream blueprint, runbook, or customer hand-off is updated at the same
-time.
+For this deployment, keep the output names stable unless the downstream deployment, runbook,
+or customer hand-off is updated in the same change.

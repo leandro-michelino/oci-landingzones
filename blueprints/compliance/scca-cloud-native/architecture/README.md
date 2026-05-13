@@ -1,23 +1,23 @@
-# SCCA Cloud-Native Landing Zone Architecture
+# SCCA Cloud Native Compliance Architecture
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This is the design view for `blueprints/compliance/scca-cloud-native`. It stays ASCII-first
-on purpose so you can review the deployment in GitHub, a terminal, a pull request, or
-customer notes without a diagramming tool.
+This page is the deployment architecture for `blueprints/compliance/scca-cloud-native`. It is intentionally ASCII-first so it
+is easy to review in GitHub, terminals, pull requests, runbooks, and customer notes without a
+diagramming tool.
 
 ## Deployment Purpose
 
-Combines core governance, controlled networking, and operations hooks for a SCCA-style
-cloud-native landing-zone pattern.
+Composes the core landing-zone foundation, a firewall-centered hub-spoke network, and OS management controls for SCCA-style cloud-native workloads.
 
 ## Architecture At A Glance
 
 | Item | Details |
 | --- | --- |
-| Boundary | `blueprints/compliance/scca-cloud-native` owns this deployment end to end. |
+| Boundary | `blueprints/compliance/scca-cloud-native` owns this deployment folder and its Terraform + Ansible runners. |
+| Purpose | Composes the core landing-zone foundation, a firewall-centered hub-spoke network, and OS management controls for SCCA-style cloud-native workloads. |
 | Terraform components | `core`, `network`, `os_management` |
-| Input source | `terraform.tfvars.example` documents the shape; local ignored tfvars provide real values. |
+| Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
 | Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `root_compartment_id`, `compartment_ids`, `network_resource_ids`, `os_management_resource_ids` |
 | Runner contract | `ansible/plan.yml`, guarded `ansible/apply.yml`, and guarded `ansible/destroy.yml`. |
 
@@ -26,64 +26,56 @@ cloud-native landing-zone pattern.
 ```text
 blueprints/compliance/scca-cloud-native/
 |-- README.md                         Operator guide for this deployment
-|-- architecture/README.md            This detailed ASCII architecture
-|-- main.tf                           Terraform resource and module wiring
+|-- architecture/README.md            This deployment-specific ASCII architecture
+|-- main.tf                           Terraform module and resource graph
 |-- variables.tf                      Input contract and defaults
-|-- outputs.tf                        Hand-off values for dependent blueprints
+|-- outputs.tf                        Hand-off values for downstream deployments
 |-- providers.tf                      OCI provider configuration
 |-- versions.tf                       Terraform and provider constraints
-|-- terraform.tfvars.example          Example local variable shape
+|-- terraform.tfvars.example          Example tfvars shape for this deployment
 `-- ansible/
-    |-- plan.yml                      Local guarded plan runner
-    |-- apply.yml                     Local guarded apply runner
-    `-- destroy.yml                   Local guarded destroy runner
+    |-- plan.yml                      Local plan runner
+    |-- apply.yml                     Guarded apply runner
+    `-- destroy.yml                   Guarded destroy runner
 ```
 
 ## ASCII Architecture
 
 ```text
-+------------------------------------------------------------------------------------------------------+
-| SCCA Cloud Native Landing Zone                                                                       |
-| Folder: blueprints/compliance/scca-cloud-native                                                      |
-|                                                                                                      |
-| [1] Operator entry                                                                                   |
-| Operator, CI job, or local shell reviews README.md and architecture/README.md, copies                |
-| terraform.tfvars.example to terraform.tfvars, and chooses either direct Terraform or the local       |
-| Ansible wrapper.                                                                                     |
-|                                                                                                      |
-| [2] Local file contract                                                                              |
-| README.md -> run-facing deployment guide.                                                            |
-| architecture/README.md -> detailed text architecture and review notes.                               |
-| main.tf -> Terraform composition for this deployment.                                                |
-| variables.tf -> input contract and defaults.                                                         |
-| outputs.tf -> named hand-off values.                                                                 |
-| providers.tf + versions.tf -> provider setup and version constraints.                                |
-| ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
-|                                                                                                      |
-| [3] Terraform composition from main.tf                                                               |
-| 01. module.core -> ../../../blueprints/core                                                          |
-| 02. module.network -> ../../../blueprints/networking/hub-spoke-with-hub-vcn-net-firewall             |
-| 03. module.os_management -> ../../../modules/operations/os-management                                |
-|                                                                                                      |
-| [4] OCI/resource planes                                                                              |
-| - Control: provider config, tenancy context, naming inputs, and local tfvars.                        |
-| - Governance: stricter security, audit, IAM, logging, segmentation, and guardrail posture.           |
-| - Consumption: compliance-oriented outputs for evidence, runbooks, and downstream workload teams.    |
-| - Operations: Ansible plan/apply/destroy wrappers, validation, and cleanup.                          |
-|                                                                                                      |
-| [5] Output hand-off                                                                                  |
-| - blueprint_name: Blueprint identifier.                                                              |
-| - name_prefix: Standard OCI naming prefix for resources created by this blueprint.                   |
-| - resource_ids: Map of resource identifiers created by this blueprint.                               |
-| - root_compartment_id: OCID of the SCCA landing zone root compartment.                               |
-| - compartment_ids: Map of SCCA landing zone compartment keys to OCIDs.                               |
-| - network_resource_ids: SCCA inspected network resource identifiers.                                 |
-| - os_management_resource_ids: OS Management Hub resource identifiers.                                |
-|                                                                                                      |
-| [6] Deployment close-out                                                                             |
-| terraform output and the Ansible PLAY RECAP are the human and automation hand-off.                   |
-| Generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git.  |
-+------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------------------------+
+| SCCA Cloud Native                                                                                 |
+|                                                                                                  |
+|  Operator / CI                                                                                    |
+|       |                                                                                          |
+|       v                                                                                          |
+|  +--------------------------- Core Level 2 Foundation ---------------------------+                |
+|  | Compartments: governance, security, network, workloads                        |                |
+|  | IAM: groups, dynamic groups, policies                                         |                |
+|  | Security: Cloud Guard, Vault/KMS, Security Zones, VSS                         |                |
+|  | Governance/Ops: logging, audit retention, budgets, events, monitoring         |                |
+|  +----------------------------+--------------------------------------------------+                |
+|                               | network_compartment_id, security outputs                         |
+|                               v                                                                  |
+|  +----------------------------- Hub VCN ----------------------------------------+                |
+|  | DMZ subnet -> IGW for approved public ingress/egress                          |                |
+|  | Firewall subnet -> OCI Network Firewall + firewall policy                     |                |
+|  | Shared subnet -> shared services and operational endpoints                    |                |
+|  | NAT Gateway + Service Gateway for controlled outbound and OCI service access  |                |
+|  +-----------------------------+------------------------------------------------+                |
+|                                | DRG attachments                                                 |
+|                                v                                                                 |
+|  +------------------- DRG -------------------+        +-------------------------+                |
+|  | routes on-prem, hub, and spokes            |<------>| Spoke VCNs              |                |
+|  | east-west paths are centralized through hub |        | web -> app -> db tiers  |                |
+|  +-------------------+------------------------+        +------------+------------+                |
+|                      | inspection path                                    |                      |
+|                      v                                                    v                      |
+|              OCI Network Firewall                              OS Management Hub                 |
+|              policy checks traffic                            managed groups + jobs              |
+|                                                                                                  |
+|  Traffic: internet/on-prem -> DRG or IGW -> hub -> firewall -> spoke web/app/db tiers.            |
+|  Ops: instance patching jobs and security signals return to governance outputs.                   |
++--------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components
@@ -96,43 +88,55 @@ blueprints/compliance/scca-cloud-native/
 
 ## Request And Deployment Flow
 
-- Operator reviews the local tfvars contract and chooses the plan/apply runner.
-- Terraform composes the OCI resources declared in `main.tf`.
-- Outputs become the deployment hand-off contract for runbooks and downstream blueprints.
-- Validation checks formatting, init, validate, Ansible syntax, documentation coverage, and cleanup.
+- Terraform creates the core governance/security foundation first.
+- The compliance network or platform layer consumes core compartment and security outputs.
+- Traffic and operational signals follow the specific compliance pattern shown in the diagram.
+
+## Traffic And Trust Boundaries
+
+- Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
+- Data plane traffic is the packet or service path shown in the ASCII diagram; if this deployment only creates identity or governance resources, the data plane is intentionally permission and signal flow instead of network packets.
+- Trust boundaries are the tenancy, compartment, VCN, subnet, DRG, private endpoint, identity domain, or managed service edges shown in the diagram.
+- Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
 ## State, Inputs, And Outputs
 
 ```text
 Input sources
-|-- terraform.tfvars.example documents expected values
-|-- local *.tfvars files provide tenancy, compartment, CIDR, endpoint, and OCID values
+|-- terraform.tfvars.example documents expected values for this deployment
+|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
 |-- environment variables may provide OCI authentication and guarded Ansible confirms
 |
 Terraform state
-|-- backend is disabled for local validation and plan runners by default
-|-- production backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, and state files are cleaned by validation
+|-- backend is disabled for local validation and blueprint-local runners by default
+|-- production state backends should be configured outside this reusable blueprint folder
+|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
 |
 Output contract
-|-- blueprint_name and name_prefix identify the deployment when declared
-|-- resource_ids summarizes primary resources when declared
-`-- blueprint-specific outputs expose compartment, VCN, subnet, key, policy, service, or DR IDs
+|-- blueprint_name
+|-- name_prefix
+|-- resource_ids
+|-- root_compartment_id
+|-- compartment_ids
+|-- network_resource_ids
+`-- os_management_resource_ids
 ```
 
 ## Operational Boundaries
 
-- Keep apply/destroy behind the guarded Ansible runners or equivalent review gates.
-- Use local ignored tfvars for OCIDs, notification endpoints, customer CIDRs, and secrets.
-- Run ./scripts/validate-all.sh before commits or hand-off.
+- Review enable flags before apply, especially for paid, tenancy-wide, identity, network edge, database, or destructive resources.
+- Confirm required external IDs are real and in the intended region and compartment before running `terraform plan`.
+- Keep apply and destroy behind the guarded Ansible runners or an equivalent approval gate.
+- Treat route tables, firewall policies, ZPR policies, identity policies, and domain replication as change-controlled surfaces.
+- Run repository validation before commit or hand-off.
 
 ## Review Checklist
 
-- Confirm the `README.md` story matches this ASCII architecture.
-- Confirm every module/resource listed above is intentional for this deployment.
-- Confirm required external IDs are documented before `terraform plan`.
-- Confirm enable flags are set deliberately, especially for tenancy-wide, paid, or destructive resources.
-- Confirm logging, IAM, security, networking, and operational hand-offs are visible in the diagram.
+- Confirm the diagram matches `main.tf`: `core`, `network`, `os_management`.
+- Confirm the described traffic path is the path you want in OCI before apply.
+- Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
+- Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
+- Confirm `terraform output` will expose the hand-off values expected by downstream teams: `blueprint_name`, `name_prefix`, `resource_ids`, `root_compartment_id`, `compartment_ids`, `network_resource_ids`, `os_management_resource_ids`.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
 
 ## Validation
@@ -148,17 +152,16 @@ artifacts afterward.
 
 ## When To Update This Architecture
 
-- Terraform modules, resources, data sources, or provider aliases change.
-- A subnet, route, trust boundary, region, compartment, or access path changes.
-- A new enable flag changes what the deployment can create.
-- README usage notes describe behavior that is not represented here.
-- A customer review turns an assumption into a reusable pattern.
+- Terraform modules, resources, data sources, provider aliases, or enable flags change.
+- A subnet, route, trust boundary, identity scope, region, compartment, private endpoint, or access path changes.
+- A new output becomes part of the contract for downstream deployments or operators.
+- README usage notes describe behavior that is not represented in the diagram.
 
 ## Terraform + Ansible Deployment Output
 
-This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph
-and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper
-with a clean recap at the end.
+This is the expected close-out shape for `blueprints/compliance/scca-cloud-native`. Terraform owns the OCI resource graph and
+named outputs; Ansible gives the operator a repeatable plan/apply/destroy wrapper with a
+clear recap.
 
 ```text
 $ cd blueprints/compliance/scca-cloud-native
@@ -170,8 +173,8 @@ $ terraform apply tfplan
 Apply complete! Resources: <added> added, <changed> changed, <destroyed> destroyed.
 
 $ terraform output
-blueprint_name = "scca-cloud-native"
-name_prefix = "<org>-<env>-<region_key>"
+blueprint_name = "<value>"
+name_prefix = "<value>"
 resource_ids = { ... }
 root_compartment_id = "ocid1.<resource>..."
 compartment_ids = { ... }
@@ -201,7 +204,5 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=<n> changed=<n> unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
 ```
 
-For SCCA Cloud Native Landing Zone, the important hand-off values are `blueprint_name`,
-`name_prefix`, `resource_ids`, `root_compartment_id`, `compartment_ids`,
-`network_resource_ids`, `os_management_resource_ids`. Keep those names stable unless a
-downstream blueprint, runbook, or customer hand-off is updated at the same time.
+For this deployment, keep the output names stable unless the downstream deployment, runbook,
+or customer hand-off is updated in the same change.

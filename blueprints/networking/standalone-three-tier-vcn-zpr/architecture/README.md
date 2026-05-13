@@ -1,23 +1,23 @@
-# Standalone Three-Tier VCN With ZPR Architecture
+# Standalone Three-Tier VCN ZPR Architecture
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This is the design view for `blueprints/networking/standalone-three-tier-vcn-zpr`. It stays
-ASCII-first on purpose so you can review the deployment in GitHub, a terminal, a pull
-request, or customer notes without a diagramming tool.
+This page is the deployment architecture for `blueprints/networking/standalone-three-tier-vcn-zpr`. It is intentionally ASCII-first so it
+is easy to review in GitHub, terminals, pull requests, runbooks, and customer notes without a
+diagramming tool.
 
 ## Deployment Purpose
 
-Creates a standalone three-tier VCN with ZPR controls so micro-segmentation is built into
-the workload network.
+Creates a standalone three-tier VCN and applies Zero Trust Packet Routing configuration and policies for segmentation.
 
 ## Architecture At A Glance
 
 | Item | Details |
 | --- | --- |
-| Boundary | `blueprints/networking/standalone-three-tier-vcn-zpr` owns this deployment end to end. |
+| Boundary | `blueprints/networking/standalone-three-tier-vcn-zpr` owns this deployment folder and its Terraform + Ansible runners. |
+| Purpose | Creates a standalone three-tier VCN and applies Zero Trust Packet Routing configuration and policies for segmentation. |
 | Terraform components | `workload_vcn`, `zpr` |
-| Input source | `terraform.tfvars.example` documents the shape; local ignored tfvars provide real values. |
+| Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
 | Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `vcn_id`, `subnet_ids`, `zpr_configuration_id`, `zpr_policy_ids` |
 | Runner contract | `ansible/plan.yml`, guarded `ansible/apply.yml`, and guarded `ansible/destroy.yml`. |
 
@@ -26,67 +26,46 @@ the workload network.
 ```text
 blueprints/networking/standalone-three-tier-vcn-zpr/
 |-- README.md                         Operator guide for this deployment
-|-- architecture/README.md            This detailed ASCII architecture
-|-- main.tf                           Terraform resource and module wiring
+|-- architecture/README.md            This deployment-specific ASCII architecture
+|-- main.tf                           Terraform module and resource graph
 |-- variables.tf                      Input contract and defaults
-|-- outputs.tf                        Hand-off values for dependent blueprints
+|-- outputs.tf                        Hand-off values for downstream deployments
 |-- providers.tf                      OCI provider configuration
 |-- versions.tf                       Terraform and provider constraints
-|-- terraform.tfvars.example          Example local variable shape
+|-- terraform.tfvars.example          Example tfvars shape for this deployment
 `-- ansible/
-    |-- plan.yml                      Local guarded plan runner
-    |-- apply.yml                     Local guarded apply runner
-    `-- destroy.yml                   Local guarded destroy runner
+    |-- plan.yml                      Local plan runner
+    |-- apply.yml                     Guarded apply runner
+    `-- destroy.yml                   Guarded destroy runner
 ```
 
 ## ASCII Architecture
 
 ```text
-+------------------------------------------------------------------------------------------------------+
-| Standalone Three-Tier VCN With ZPR                                                                   |
-| Folder: blueprints/networking/standalone-three-tier-vcn-zpr                                          |
-|                                                                                                      |
-| [1] Operator entry                                                                                   |
-| Operator, CI job, or local shell reviews README.md and architecture/README.md, copies                |
-| terraform.tfvars.example to terraform.tfvars, and chooses either direct Terraform or the local       |
-| Ansible wrapper.                                                                                     |
-|                                                                                                      |
-| [2] Local file contract                                                                              |
-| README.md -> run-facing deployment guide.                                                            |
-| architecture/README.md -> detailed text architecture and review notes.                               |
-| main.tf -> Terraform composition for this deployment.                                                |
-| variables.tf -> input contract and defaults.                                                         |
-| outputs.tf -> named hand-off values.                                                                 |
-| providers.tf + versions.tf -> provider setup and version constraints.                                |
-| ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
-|                                                                                                      |
-| [3] Terraform composition from main.tf                                                               |
-| 01. module.workload_vcn -> modules/networking/spoke-vcn @ v0.2.0                                     |
-| 02. module.zpr -> modules/networking/zpr @ v0.2.0                                                    |
-|                                                                                                      |
-| [4] OCI/resource planes                                                                              |
-| - Control: provider config, tenancy context, naming inputs, and local tfvars.                        |
-| - Network: VCNs, subnets, route tables, gateways, DRG attachments, DNS, private access, and          |
-| inspection hops as declared by this folder.                                                          |
-| - Security: security lists, NSGs, firewall or appliance controls, ZPR, and traffic path decisions    |
-| where the blueprint enables them.                                                                    |
-| - Consumption: VCN, subnet, gateway, DNS, DRG, and inspection outputs for workload and extension     |
-| teams.                                                                                               |
-| - Operations: Ansible plan/apply/destroy wrappers, validation, and cleanup.                          |
-|                                                                                                      |
-| [5] Output hand-off                                                                                  |
-| - blueprint_name: Blueprint identifier.                                                              |
-| - name_prefix: Standard OCI naming prefix for resources created by this blueprint.                   |
-| - resource_ids: Map of resource identifiers created by this blueprint.                               |
-| - vcn_id: Workload VCN OCID.                                                                         |
-| - subnet_ids: Subnet OCIDs keyed by tier.                                                            |
-| - zpr_configuration_id: ZPR configuration OCID.                                                      |
-| - zpr_policy_ids: ZPR policy OCIDs keyed by logical name.                                            |
-|                                                                                                      |
-| [6] Deployment close-out                                                                             |
-| terraform output and the Ansible PLAY RECAP are the human and automation hand-off.                   |
-| Generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git.  |
-+------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------------------------+
+| Standalone Three-Tier VCN ZPR                                                                     |
+|                                                                                                  |
+|  Application traffic                                                                              |
+|       |                                                                                            |
+|       v                                                                                            |
+|  +----------------------------- Workload VCN -----------------------------+                     |
+|  | Internet Gateway, NAT Gateway, and Service Gateway enabled              |                     |
+|  | Web subnet -> App subnet -> DB subnet                                  |                     |
+|  | Subnets from var.subnets                                               |                     |
+|  +------------------------------+----------------------------------------+                     |
+|                                 | protected by ZPR configuration/policies                     |
+|                                 v                                                               |
+|  +-------------------------- Zero Trust Packet Routing -------------------+                     |
+|  | enable_zpr_configuration controls tenancy/network configuration         |                     |
+|  | enable_zpr_policies controls policy creation                           |                     |
+|  | var.zpr_policies describes allowed subjects/resources/flows             |                     |
+|  +------------------------------+----------------------------------------+                     |
+|                                 |                                                               |
+|                                 v                                                               |
+|  Allowed flows: client -> web, web -> app, app -> db, private tiers -> OCI services               |
+|                                                                                                  |
+|  Traffic: normal VCN routes carry packets; ZPR policies decide which packets are authorized.      |
++--------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components
@@ -98,45 +77,55 @@ blueprints/networking/standalone-three-tier-vcn-zpr/
 
 ## Request And Deployment Flow
 
-- Operator reviews CIDR, subnet, DNS, inspection, and connectivity inputs.
-- Terraform creates or references the VCN foundation and network attachments.
-- Gateways, route tables, DRG attachments, DNS, inspection, or private access resources are composed as declared in `main.tf`.
-- Outputs expose VCN, subnet, gateway, attachment, and policy IDs for workloads and extension blueprints.
+- Operator reviews CIDRs, subnet maps, gateway flags, route targets, and inspection requirements.
+- Terraform creates the network foundation first, then dependent attachments or network services declared in main.tf.
+- Traffic follows the diagrammed route path, and outputs expose VCN, subnet, DRG, gateway, DNS, inspection, or policy IDs for the next deployment.
+
+## Traffic And Trust Boundaries
+
+- Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
+- Data plane traffic is the packet or service path shown in the ASCII diagram; if this deployment only creates identity or governance resources, the data plane is intentionally permission and signal flow instead of network packets.
+- Trust boundaries are the tenancy, compartment, VCN, subnet, DRG, private endpoint, identity domain, or managed service edges shown in the diagram.
+- Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
 ## State, Inputs, And Outputs
 
 ```text
 Input sources
-|-- terraform.tfvars.example documents expected values
-|-- local *.tfvars files provide tenancy, compartment, CIDR, endpoint, and OCID values
+|-- terraform.tfvars.example documents expected values for this deployment
+|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
 |-- environment variables may provide OCI authentication and guarded Ansible confirms
 |
 Terraform state
-|-- backend is disabled for local validation and plan runners by default
-|-- production backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, and state files are cleaned by validation
+|-- backend is disabled for local validation and blueprint-local runners by default
+|-- production state backends should be configured outside this reusable blueprint folder
+|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
 |
 Output contract
-|-- blueprint_name and name_prefix identify the deployment when declared
-|-- resource_ids summarizes primary resources when declared
-`-- blueprint-specific outputs expose compartment, VCN, subnet, key, policy, service, or DR IDs
+|-- blueprint_name
+|-- name_prefix
+|-- resource_ids
+|-- vcn_id
+|-- subnet_ids
+|-- zpr_configuration_id
+`-- zpr_policy_ids
 ```
 
 ## Operational Boundaries
 
-- Keep apply/destroy behind the guarded Ansible runners or equivalent review gates.
-- Use local ignored tfvars for OCIDs, notification endpoints, customer CIDRs, and secrets.
-- Run ./scripts/validate-all.sh before commits or hand-off.
-- Confirm route tables, inspection hops, and public/private subnet flags before apply.
-- Confirm DNS behavior and service-gateway routes for private OCI access.
+- Review enable flags before apply, especially for paid, tenancy-wide, identity, network edge, database, or destructive resources.
+- Confirm required external IDs are real and in the intended region and compartment before running `terraform plan`.
+- Keep apply and destroy behind the guarded Ansible runners or an equivalent approval gate.
+- Treat route tables, firewall policies, ZPR policies, identity policies, and domain replication as change-controlled surfaces.
+- Run repository validation before commit or hand-off.
 
 ## Review Checklist
 
-- Confirm the `README.md` story matches this ASCII architecture.
-- Confirm every module/resource listed above is intentional for this deployment.
-- Confirm required external IDs are documented before `terraform plan`.
-- Confirm enable flags are set deliberately, especially for tenancy-wide, paid, or destructive resources.
-- Confirm logging, IAM, security, networking, and operational hand-offs are visible in the diagram.
+- Confirm the diagram matches `main.tf`: `workload_vcn`, `zpr`.
+- Confirm the described traffic path is the path you want in OCI before apply.
+- Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
+- Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
+- Confirm `terraform output` will expose the hand-off values expected by downstream teams: `blueprint_name`, `name_prefix`, `resource_ids`, `vcn_id`, `subnet_ids`, `zpr_configuration_id`, `zpr_policy_ids`.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
 
 ## Validation
@@ -152,17 +141,16 @@ artifacts afterward.
 
 ## When To Update This Architecture
 
-- Terraform modules, resources, data sources, or provider aliases change.
-- A subnet, route, trust boundary, region, compartment, or access path changes.
-- A new enable flag changes what the deployment can create.
-- README usage notes describe behavior that is not represented here.
-- A customer review turns an assumption into a reusable pattern.
+- Terraform modules, resources, data sources, provider aliases, or enable flags change.
+- A subnet, route, trust boundary, identity scope, region, compartment, private endpoint, or access path changes.
+- A new output becomes part of the contract for downstream deployments or operators.
+- README usage notes describe behavior that is not represented in the diagram.
 
 ## Terraform + Ansible Deployment Output
 
-This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph
-and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper
-with a clean recap at the end.
+This is the expected close-out shape for `blueprints/networking/standalone-three-tier-vcn-zpr`. Terraform owns the OCI resource graph and
+named outputs; Ansible gives the operator a repeatable plan/apply/destroy wrapper with a
+clear recap.
 
 ```text
 $ cd blueprints/networking/standalone-three-tier-vcn-zpr
@@ -174,8 +162,8 @@ $ terraform apply tfplan
 Apply complete! Resources: <added> added, <changed> changed, <destroyed> destroyed.
 
 $ terraform output
-blueprint_name = "standalone-three-tier-vcn-zpr"
-name_prefix = "<org>-<env>-<region_key>"
+blueprint_name = "<value>"
+name_prefix = "<value>"
 resource_ids = { ... }
 vcn_id = "ocid1.<resource>..."
 subnet_ids = { ... }
@@ -205,7 +193,5 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=<n> changed=<n> unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
 ```
 
-For Standalone Three-Tier VCN With ZPR, the important hand-off values are `blueprint_name`,
-`name_prefix`, `resource_ids`, `vcn_id`, `subnet_ids`, `zpr_configuration_id`,
-`zpr_policy_ids`. Keep those names stable unless a downstream blueprint, runbook, or
-customer hand-off is updated at the same time.
+For this deployment, keep the output names stable unless the downstream deployment, runbook,
+or customer hand-off is updated in the same change.

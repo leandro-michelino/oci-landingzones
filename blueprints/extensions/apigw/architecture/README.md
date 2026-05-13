@@ -2,22 +2,22 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This is the design view for `blueprints/extensions/apigw`. It stays ASCII-first on purpose
-so you can review the deployment in GitHub, a terminal, a pull request, or customer notes
-without a diagramming tool.
+This page is the deployment architecture for `blueprints/extensions/apigw`. It is intentionally ASCII-first so it
+is easy to review in GitHub, terminals, pull requests, runbooks, and customer notes without a
+diagramming tool.
 
 ## Deployment Purpose
 
-Adds OCI API Gateway resources to an existing landing zone so API exposure, routing, and
-deployment outputs are managed consistently.
+Adds OCI API Gateway and deployment routes so application APIs can be exposed through a managed gateway endpoint.
 
 ## Architecture At A Glance
 
 | Item | Details |
 | --- | --- |
-| Boundary | `blueprints/extensions/apigw` owns this deployment end to end. |
+| Boundary | `blueprints/extensions/apigw` owns this deployment folder and its Terraform + Ansible runners. |
+| Purpose | Adds OCI API Gateway and deployment routes so application APIs can be exposed through a managed gateway endpoint. |
 | Terraform components | `oci_apigateway_gateway.this`, `oci_apigateway_deployment.this` |
-| Input source | `terraform.tfvars.example` documents the shape; local ignored tfvars provide real values. |
+| Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
 | Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `gateway_id`, `deployment_id`, `deployment_endpoint` |
 | Runner contract | `ansible/plan.yml`, guarded `ansible/apply.yml`, and guarded `ansible/destroy.yml`. |
 
@@ -26,111 +26,107 @@ deployment outputs are managed consistently.
 ```text
 blueprints/extensions/apigw/
 |-- README.md                         Operator guide for this deployment
-|-- architecture/README.md            This detailed ASCII architecture
-|-- main.tf                           Terraform resource and module wiring
+|-- architecture/README.md            This deployment-specific ASCII architecture
+|-- main.tf                           Terraform module and resource graph
 |-- variables.tf                      Input contract and defaults
-|-- outputs.tf                        Hand-off values for dependent blueprints
+|-- outputs.tf                        Hand-off values for downstream deployments
 |-- providers.tf                      OCI provider configuration
 |-- versions.tf                       Terraform and provider constraints
-|-- terraform.tfvars.example          Example local variable shape
+|-- terraform.tfvars.example          Example tfvars shape for this deployment
 `-- ansible/
-    |-- plan.yml                      Local guarded plan runner
-    |-- apply.yml                     Local guarded apply runner
-    `-- destroy.yml                   Local guarded destroy runner
+    |-- plan.yml                      Local plan runner
+    |-- apply.yml                     Guarded apply runner
+    `-- destroy.yml                   Guarded destroy runner
 ```
 
 ## ASCII Architecture
 
 ```text
-+------------------------------------------------------------------------------------------------------+
-| API Gateway Extension                                                                                |
-| Folder: blueprints/extensions/apigw                                                                  |
-|                                                                                                      |
-| [1] Operator entry                                                                                   |
-| Operator, CI job, or local shell reviews README.md and architecture/README.md, copies                |
-| terraform.tfvars.example to terraform.tfvars, and chooses either direct Terraform or the local       |
-| Ansible wrapper.                                                                                     |
-|                                                                                                      |
-| [2] Local file contract                                                                              |
-| README.md -> run-facing deployment guide.                                                            |
-| architecture/README.md -> detailed text architecture and review notes.                               |
-| main.tf -> Terraform composition for this deployment.                                                |
-| variables.tf -> input contract and defaults.                                                         |
-| outputs.tf -> named hand-off values.                                                                 |
-| providers.tf + versions.tf -> provider setup and version constraints.                                |
-| ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
-|                                                                                                      |
-| [3] Terraform composition from main.tf                                                               |
-| 01. resource.oci_apigateway_gateway.this                                                             |
-| 02. resource.oci_apigateway_deployment.this                                                          |
-|                                                                                                      |
-| [4] OCI/resource planes                                                                              |
-| - Control: provider config, tenancy context, naming inputs, and local tfvars.                        |
-| - Service extension: optional OCI service resources that attach to an existing landing-zone          |
-| foundation.                                                                                          |
-| - Consumption: service IDs, endpoints, and names for applications, runbooks, and monitoring.         |
-| - Operations: Ansible plan/apply/destroy wrappers, validation, and cleanup.                          |
-|                                                                                                      |
-| [5] Output hand-off                                                                                  |
-| - blueprint_name: Blueprint identifier.                                                              |
-| - name_prefix: Standard OCI naming prefix for resources created by this blueprint.                   |
-| - resource_ids: Map of resource identifiers created by this blueprint.                               |
-| - gateway_id: Created or referenced API Gateway OCID.                                                |
-| - deployment_id: API Gateway deployment OCID.                                                        |
-| - deployment_endpoint: API Gateway deployment endpoint.                                              |
-|                                                                                                      |
-| [6] Deployment close-out                                                                             |
-| terraform output and the Ansible PLAY RECAP are the human and automation hand-off.                   |
-| Generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git.  |
-+------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------------------------+
+| API Gateway Extension                                                                             |
+|                                                                                                  |
+|  API clients                                                                                      |
+|      | HTTPS                                                                                      |
+|      v                                                                                           |
+|  +------------------------ OCI API Gateway -------------------------+                            |
+|  | Gateway                                                                               |       |
+|  | - endpoint_type from variables: public or private                                      |       |
+|  | - subnet_id places private gateways inside a selected subnet                           |       |
+|  | - NSG IDs and certificate ID attach when provided                                      |       |
+|  +--------------------------+---------------------------------------+                            |
+|                             | path_prefix + route rules                                          |
+|                             v                                                                  |
+|  +------------------------ API Deployment --------------------------+                            |
+|  | routes[*].path + methods                                                              |       |
+|  | backend.type: HTTP, STOCK_RESPONSE, or other API Gateway-supported backend shape        |       |
+|  | backend.url/status/timeouts from variables                                             |       |
+|  +--------------------------+---------------------------------------+                            |
+|                             |                                                                  |
+|                             v                                                                  |
+|        Private service, public HTTPS backend, function endpoint, or mock response                 |
+|                                                                                                  |
+|  Traffic: client -> gateway endpoint -> deployment route -> configured backend.                   |
+|  Control: Terraform may create a gateway or attach the deployment to an existing gateway_id.       |
++--------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Resource | `oci_apigateway_gateway.this` | Declared directly in `main.tf` |
-| Resource | `oci_apigateway_deployment.this` | Declared directly in `main.tf` |
+| Resource | `oci_apigateway_gateway.this` | `Declared directly in main.tf` |
+| Resource | `oci_apigateway_deployment.this` | `Declared directly in main.tf` |
 
 ## Request And Deployment Flow
 
-- Operator confirms the foundation and network dependencies are already available.
-- Terraform composes the optional service resources declared by this deployment.
-- Outputs expose service IDs, names, and endpoints for applications and runbooks.
+- Operator supplies the existing network, compartment, service, or backend IDs required by the extension.
+- Terraform creates the optional service resource graph declared in main.tf.
+- Outputs expose service IDs, endpoint names, or attachment IDs for applications and runbooks.
+
+## Traffic And Trust Boundaries
+
+- Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
+- Data plane traffic is the packet or service path shown in the ASCII diagram; if this deployment only creates identity or governance resources, the data plane is intentionally permission and signal flow instead of network packets.
+- Trust boundaries are the tenancy, compartment, VCN, subnet, DRG, private endpoint, identity domain, or managed service edges shown in the diagram.
+- Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
 ## State, Inputs, And Outputs
 
 ```text
 Input sources
-|-- terraform.tfvars.example documents expected values
-|-- local *.tfvars files provide tenancy, compartment, CIDR, endpoint, and OCID values
+|-- terraform.tfvars.example documents expected values for this deployment
+|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
 |-- environment variables may provide OCI authentication and guarded Ansible confirms
 |
 Terraform state
-|-- backend is disabled for local validation and plan runners by default
-|-- production backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, and state files are cleaned by validation
+|-- backend is disabled for local validation and blueprint-local runners by default
+|-- production state backends should be configured outside this reusable blueprint folder
+|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
 |
 Output contract
-|-- blueprint_name and name_prefix identify the deployment when declared
-|-- resource_ids summarizes primary resources when declared
-`-- blueprint-specific outputs expose compartment, VCN, subnet, key, policy, service, or DR IDs
+|-- blueprint_name
+|-- name_prefix
+|-- resource_ids
+|-- gateway_id
+|-- deployment_id
+`-- deployment_endpoint
 ```
 
 ## Operational Boundaries
 
-- Keep apply/destroy behind the guarded Ansible runners or equivalent review gates.
-- Use local ignored tfvars for OCIDs, notification endpoints, customer CIDRs, and secrets.
-- Run ./scripts/validate-all.sh before commits or hand-off.
-- Confirm optional service costs and quotas before enabling compute, OKE, WAF, Exadata, or Streaming resources.
+- Review enable flags before apply, especially for paid, tenancy-wide, identity, network edge, database, or destructive resources.
+- Confirm required external IDs are real and in the intended region and compartment before running `terraform plan`.
+- Keep apply and destroy behind the guarded Ansible runners or an equivalent approval gate.
+- Treat route tables, firewall policies, ZPR policies, identity policies, and domain replication as change-controlled surfaces.
+- Run repository validation before commit or hand-off.
 
 ## Review Checklist
 
-- Confirm the `README.md` story matches this ASCII architecture.
-- Confirm every module/resource listed above is intentional for this deployment.
-- Confirm required external IDs are documented before `terraform plan`.
-- Confirm enable flags are set deliberately, especially for tenancy-wide, paid, or destructive resources.
-- Confirm logging, IAM, security, networking, and operational hand-offs are visible in the diagram.
+- Confirm the diagram matches `main.tf`: `oci_apigateway_gateway.this`, `oci_apigateway_deployment.this`.
+- Confirm the described traffic path is the path you want in OCI before apply.
+- Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
+- Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
+- Confirm `terraform output` will expose the hand-off values expected by downstream teams: `blueprint_name`, `name_prefix`, `resource_ids`, `gateway_id`, `deployment_id`, `deployment_endpoint`.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
 
 ## Validation
@@ -146,17 +142,16 @@ artifacts afterward.
 
 ## When To Update This Architecture
 
-- Terraform modules, resources, data sources, or provider aliases change.
-- A subnet, route, trust boundary, region, compartment, or access path changes.
-- A new enable flag changes what the deployment can create.
-- README usage notes describe behavior that is not represented here.
-- A customer review turns an assumption into a reusable pattern.
+- Terraform modules, resources, data sources, provider aliases, or enable flags change.
+- A subnet, route, trust boundary, identity scope, region, compartment, private endpoint, or access path changes.
+- A new output becomes part of the contract for downstream deployments or operators.
+- README usage notes describe behavior that is not represented in the diagram.
 
 ## Terraform + Ansible Deployment Output
 
-This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph
-and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper
-with a clean recap at the end.
+This is the expected close-out shape for `blueprints/extensions/apigw`. Terraform owns the OCI resource graph and
+named outputs; Ansible gives the operator a repeatable plan/apply/destroy wrapper with a
+clear recap.
 
 ```text
 $ cd blueprints/extensions/apigw
@@ -168,8 +163,8 @@ $ terraform apply tfplan
 Apply complete! Resources: <added> added, <changed> changed, <destroyed> destroyed.
 
 $ terraform output
-blueprint_name = "apigw"
-name_prefix = "<org>-<env>-<region_key>"
+blueprint_name = "<value>"
+name_prefix = "<value>"
 resource_ids = { ... }
 gateway_id = "ocid1.<resource>..."
 deployment_id = "ocid1.<resource>..."
@@ -198,7 +193,5 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=<n> changed=<n> unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
 ```
 
-For API Gateway Extension, the important hand-off values are `blueprint_name`,
-`name_prefix`, `resource_ids`, `gateway_id`, `deployment_id`, `deployment_endpoint`. Keep
-those names stable unless a downstream blueprint, runbook, or customer hand-off is updated
-at the same time.
+For this deployment, keep the output names stable unless the downstream deployment, runbook,
+or customer hand-off is updated in the same change.

@@ -1,24 +1,24 @@
-# Full Stack Disaster Recovery Blueprint Architecture
+# Full Stack Disaster Recovery Architecture
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This is the design view for `blueprints/disaster-recovery/fsdr`. It stays ASCII-first on
-purpose so you can review the deployment in GitHub, a terminal, a pull request, or customer
-notes without a diagramming tool.
+This page is the deployment architecture for `blueprints/disaster-recovery/fsdr`. It is intentionally ASCII-first so it
+is easy to review in GitHub, terminals, pull requests, runbooks, and customer notes without a
+diagramming tool.
 
 ## Deployment Purpose
 
-Creates the OCI Full Stack Disaster Recovery scaffolding for primary and standby protection
-groups, log buckets, and DR plan wiring.
+Creates OCI Full Stack Disaster Recovery protection groups, log buckets, and an optional DR plan across primary and standby regions.
 
 ## Architecture At A Glance
 
 | Item | Details |
 | --- | --- |
-| Boundary | `blueprints/disaster-recovery/fsdr` owns this deployment end to end. |
-| Terraform components | `oci_objectstorage_bucket.primary_dr_logs`, `oci_objectstorage_bucket.standby_dr_logs`, `oci_disaster_recovery_dr_protection_group.primary`, `oci_disaster_recovery_dr_protection_group.standby`, `oci_disaster_recovery_dr_plan.primary`, `data.oci_objectstorage_namespace.primary`, `data.oci_objectstorage_namespace.standby` |
-| Input source | `terraform.tfvars.example` documents the shape; local ignored tfvars provide real values. |
-| Output contract | `blueprint_name`, `name_prefix`, `standby_name_prefix`, `resource_ids`, `primary_dr_protection_group_id`, `standby_dr_protection_group_id`, `primary_log_bucket_name`, `standby_log_bucket_name`, plus 1 more |
+| Boundary | `blueprints/disaster-recovery/fsdr` owns this deployment folder and its Terraform + Ansible runners. |
+| Purpose | Creates OCI Full Stack Disaster Recovery protection groups, log buckets, and an optional DR plan across primary and standby regions. |
+| Terraform components | `oci_objectstorage_namespace.primary`, `oci_objectstorage_namespace.standby`, `oci_objectstorage_bucket.primary_dr_logs`, `oci_objectstorage_bucket.standby_dr_logs`, `oci_disaster_recovery_dr_protection_group.primary`, `oci_disaster_recovery_dr_protection_group.standby`, `oci_disaster_recovery_dr_plan.primary` |
+| Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Output contract | `blueprint_name`, `name_prefix`, `standby_name_prefix`, `resource_ids`, `primary_dr_protection_group_id`, `standby_dr_protection_group_id`, `primary_log_bucket_name`, `standby_log_bucket_name`, ... |
 | Runner contract | `ansible/plan.yml`, guarded `ansible/apply.yml`, and guarded `ansible/destroy.yml`. |
 
 ## Files In This Deployment
@@ -26,125 +26,117 @@ groups, log buckets, and DR plan wiring.
 ```text
 blueprints/disaster-recovery/fsdr/
 |-- README.md                         Operator guide for this deployment
-|-- architecture/README.md            This detailed ASCII architecture
-|-- main.tf                           Terraform resource and module wiring
+|-- architecture/README.md            This deployment-specific ASCII architecture
+|-- main.tf                           Terraform module and resource graph
 |-- variables.tf                      Input contract and defaults
-|-- outputs.tf                        Hand-off values for dependent blueprints
+|-- outputs.tf                        Hand-off values for downstream deployments
 |-- providers.tf                      OCI provider configuration
 |-- versions.tf                       Terraform and provider constraints
-|-- terraform.tfvars.example          Example local variable shape
+|-- terraform.tfvars.example          Example tfvars shape for this deployment
 `-- ansible/
-    |-- plan.yml                      Local guarded plan runner
-    |-- apply.yml                     Local guarded apply runner
-    `-- destroy.yml                   Local guarded destroy runner
+    |-- plan.yml                      Local plan runner
+    |-- apply.yml                     Guarded apply runner
+    `-- destroy.yml                   Guarded destroy runner
 ```
 
 ## ASCII Architecture
 
 ```text
-+------------------------------------------------------------------------------------------------------+
-| Full Stack Disaster Recovery                                                                         |
-| Folder: blueprints/disaster-recovery/fsdr                                                            |
-|                                                                                                      |
-| [1] Operator entry                                                                                   |
-| Operator, CI job, or local shell reviews README.md and architecture/README.md, copies                |
-| terraform.tfvars.example to terraform.tfvars, and chooses either direct Terraform or the local       |
-| Ansible wrapper.                                                                                     |
-|                                                                                                      |
-| [2] Local file contract                                                                              |
-| README.md -> run-facing deployment guide.                                                            |
-| architecture/README.md -> detailed text architecture and review notes.                               |
-| main.tf -> Terraform composition for this deployment.                                                |
-| variables.tf -> input contract and defaults.                                                         |
-| outputs.tf -> named hand-off values.                                                                 |
-| providers.tf + versions.tf -> provider setup and version constraints.                                |
-| ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
-|                                                                                                      |
-| [3] Terraform composition from main.tf                                                               |
-| 01. resource.oci_objectstorage_bucket.primary_dr_logs                                                |
-| 02. resource.oci_objectstorage_bucket.standby_dr_logs                                                |
-| 03. resource.oci_disaster_recovery_dr_protection_group.primary                                       |
-| 04. resource.oci_disaster_recovery_dr_protection_group.standby                                       |
-| 05. resource.oci_disaster_recovery_dr_plan.primary                                                   |
-| 06. data.oci_objectstorage_namespace.primary                                                         |
-| 07. data.oci_objectstorage_namespace.standby                                                         |
-|                                                                                                      |
-| [4] OCI/resource planes                                                                              |
-| - Control: provider config, tenancy context, naming inputs, and local tfvars.                        |
-| - Resilience: DR resources, dependencies, protection groups, recovery plans, and cross-region        |
-| operating notes.                                                                                     |
-| - Consumption: recovery IDs and orchestration outputs for DR runbooks and service owners.            |
-| - Operations: Ansible plan/apply/destroy wrappers, validation, and cleanup.                          |
-|                                                                                                      |
-| [5] Output hand-off                                                                                  |
-| - blueprint_name: Blueprint identifier.                                                              |
-| - name_prefix: Standard OCI naming prefix for primary-region resources.                              |
-| - standby_name_prefix: Standard OCI naming prefix for standby-region resources.                      |
-| - resource_ids: Map of resource identifiers created by this blueprint.                               |
-| - primary_dr_protection_group_id: Primary DR protection group OCID.                                  |
-| - standby_dr_protection_group_id: Standby DR protection group OCID.                                  |
-| - primary_log_bucket_name: Primary DR log bucket name.                                               |
-| - standby_log_bucket_name: Standby DR log bucket name.                                               |
-| - primary_dr_plan_id: Primary DR plan OCID.                                                          |
-|                                                                                                      |
-| [6] Deployment close-out                                                                             |
-| terraform output and the Ansible PLAY RECAP are the human and automation hand-off.                   |
-| Generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git.  |
-+------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------------------------+
+| Full Stack Disaster Recovery                                                                      |
+|                                                                                                  |
+|  Operator / CI                                                                                    |
+|       | uses primary OCI provider and standby OCI provider aliases                                |
+|       v                                                                                          |
+|  +--------------------------- Primary Region ---------------------------+                        |
+|  | Object Storage namespace                                            |                        |
+|  | DR log bucket: primary_dr_logs                                      |                        |
+|  | DR Protection Group: primary                                        |                        |
+|  |   members: compute, volume groups, databases, or app resources       |                        |
+|  | DR Plan: switchover/failover/start-stop plan                         |                        |
+|  +------------------------------+---------------------------------------+                        |
+|                                 | protection relationship and plan orchestration                  |
+|                                 v                                                                  |
+|  +--------------------------- Standby Region ---------------------------+                        |
+|  | Object Storage namespace                                            |                        |
+|  | DR log bucket: standby_dr_logs                                      |                        |
+|  | DR Protection Group: standby                                        |                        |
+|  |   members mirror standby-side app resources                          |                        |
+|  +------------------------------+---------------------------------------+                        |
+|                                 |                                                                  |
+|                                 v                                                                  |
+|  Outputs: primary/standby DRPG IDs, log bucket names, and primary DR plan ID                       |
+|                                                                                                  |
+|  Flow: Terraform prepares log locations, creates both DR protection groups, then creates the plan. |
+|  Runtime traffic is application-specific; FSDR controls recovery orchestration between regions.    |
++--------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Resource | `oci_objectstorage_bucket.primary_dr_logs` | Declared directly in `main.tf` |
-| Resource | `oci_objectstorage_bucket.standby_dr_logs` | Declared directly in `main.tf` |
-| Resource | `oci_disaster_recovery_dr_protection_group.primary` | Declared directly in `main.tf` |
-| Resource | `oci_disaster_recovery_dr_protection_group.standby` | Declared directly in `main.tf` |
-| Resource | `oci_disaster_recovery_dr_plan.primary` | Declared directly in `main.tf` |
-| Data source | `data.oci_objectstorage_namespace.primary` | Read during plan/apply |
-| Data source | `data.oci_objectstorage_namespace.standby` | Read during plan/apply |
+| Data source | `oci_objectstorage_namespace.primary` | `Read during plan/apply` |
+| Data source | `oci_objectstorage_namespace.standby` | `Read during plan/apply` |
+| Resource | `oci_objectstorage_bucket.primary_dr_logs` | `Declared directly in main.tf` |
+| Resource | `oci_objectstorage_bucket.standby_dr_logs` | `Declared directly in main.tf` |
+| Resource | `oci_disaster_recovery_dr_protection_group.primary` | `Declared directly in main.tf` |
+| Resource | `oci_disaster_recovery_dr_protection_group.standby` | `Declared directly in main.tf` |
+| Resource | `oci_disaster_recovery_dr_plan.primary` | `Declared directly in main.tf` |
 
 ## Request And Deployment Flow
 
-- Operator reviews primary/standby region assumptions, dependencies, and recovery objectives.
-- Terraform composes the DR resources and orchestration objects declared in `main.tf`.
-- Outputs feed DR runbooks, recovery plans, and service-owner hand-off notes.
+- Operator reviews tfvars, enable flags, and required external IDs.
+- Terraform creates resources in the dependency order declared by main.tf.
+- Outputs expose the hand-off contract for the next deployment, app team, or runbook.
+
+## Traffic And Trust Boundaries
+
+- Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
+- Data plane traffic is the packet or service path shown in the ASCII diagram; if this deployment only creates identity or governance resources, the data plane is intentionally permission and signal flow instead of network packets.
+- Trust boundaries are the tenancy, compartment, VCN, subnet, DRG, private endpoint, identity domain, or managed service edges shown in the diagram.
+- Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
 ## State, Inputs, And Outputs
 
 ```text
 Input sources
-|-- terraform.tfvars.example documents expected values
-|-- local *.tfvars files provide tenancy, compartment, CIDR, endpoint, and OCID values
+|-- terraform.tfvars.example documents expected values for this deployment
+|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
 |-- environment variables may provide OCI authentication and guarded Ansible confirms
 |
 Terraform state
-|-- backend is disabled for local validation and plan runners by default
-|-- production backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, and state files are cleaned by validation
+|-- backend is disabled for local validation and blueprint-local runners by default
+|-- production state backends should be configured outside this reusable blueprint folder
+|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
 |
 Output contract
-|-- blueprint_name and name_prefix identify the deployment when declared
-|-- resource_ids summarizes primary resources when declared
-`-- blueprint-specific outputs expose compartment, VCN, subnet, key, policy, service, or DR IDs
+|-- blueprint_name
+|-- name_prefix
+|-- standby_name_prefix
+|-- resource_ids
+|-- primary_dr_protection_group_id
+|-- standby_dr_protection_group_id
+|-- primary_log_bucket_name
+|-- standby_log_bucket_name
+`-- primary_dr_plan_id
 ```
 
 ## Operational Boundaries
 
-- Keep apply/destroy behind the guarded Ansible runners or equivalent review gates.
-- Use local ignored tfvars for OCIDs, notification endpoints, customer CIDRs, and secrets.
-- Run ./scripts/validate-all.sh before commits or hand-off.
-- Confirm DR members, runbook ownership, and region pairing before any DR plan execution.
-- Treat failover and switchover plans as operational change events.
+- Review enable flags before apply, especially for paid, tenancy-wide, identity, network edge, database, or destructive resources.
+- Confirm required external IDs are real and in the intended region and compartment before running `terraform plan`.
+- Keep apply and destroy behind the guarded Ansible runners or an equivalent approval gate.
+- Treat route tables, firewall policies, ZPR policies, identity policies, and domain replication as change-controlled surfaces.
+- Run repository validation before commit or hand-off.
 
 ## Review Checklist
 
-- Confirm the `README.md` story matches this ASCII architecture.
-- Confirm every module/resource listed above is intentional for this deployment.
-- Confirm required external IDs are documented before `terraform plan`.
-- Confirm enable flags are set deliberately, especially for tenancy-wide, paid, or destructive resources.
-- Confirm logging, IAM, security, networking, and operational hand-offs are visible in the diagram.
+- Confirm the diagram matches `main.tf`: `oci_objectstorage_namespace.primary`, `oci_objectstorage_namespace.standby`, `oci_objectstorage_bucket.primary_dr_logs`, `oci_objectstorage_bucket.standby_dr_logs`, `oci_disaster_recovery_dr_protection_group.primary`, `oci_disaster_recovery_dr_protection_group.standby`, `oci_disaster_recovery_dr_plan.primary`.
+- Confirm the described traffic path is the path you want in OCI before apply.
+- Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
+- Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
+- Confirm `terraform output` will expose the hand-off values expected by downstream teams: `blueprint_name`, `name_prefix`, `standby_name_prefix`, `resource_ids`, `primary_dr_protection_group_id`, `standby_dr_protection_group_id`, `primary_log_bucket_name`, `standby_log_bucket_name`, `primary_dr_plan_id`.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
 
 ## Validation
@@ -160,17 +152,16 @@ artifacts afterward.
 
 ## When To Update This Architecture
 
-- Terraform modules, resources, data sources, or provider aliases change.
-- A subnet, route, trust boundary, region, compartment, or access path changes.
-- A new enable flag changes what the deployment can create.
-- README usage notes describe behavior that is not represented here.
-- A customer review turns an assumption into a reusable pattern.
+- Terraform modules, resources, data sources, provider aliases, or enable flags change.
+- A subnet, route, trust boundary, identity scope, region, compartment, private endpoint, or access path changes.
+- A new output becomes part of the contract for downstream deployments or operators.
+- README usage notes describe behavior that is not represented in the diagram.
 
 ## Terraform + Ansible Deployment Output
 
-This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph
-and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper
-with a clean recap at the end.
+This is the expected close-out shape for `blueprints/disaster-recovery/fsdr`. Terraform owns the OCI resource graph and
+named outputs; Ansible gives the operator a repeatable plan/apply/destroy wrapper with a
+clear recap.
 
 ```text
 $ cd blueprints/disaster-recovery/fsdr
@@ -182,14 +173,14 @@ $ terraform apply tfplan
 Apply complete! Resources: <added> added, <changed> changed, <destroyed> destroyed.
 
 $ terraform output
-blueprint_name = "fsdr"
-name_prefix = "<org>-<env>-<region_key>"
+blueprint_name = "<value>"
+name_prefix = "<value>"
 standby_name_prefix = "<value>"
 resource_ids = { ... }
 primary_dr_protection_group_id = "ocid1.<resource>..."
 standby_dr_protection_group_id = "ocid1.<resource>..."
-primary_log_bucket_name = "<name>"
-standby_log_bucket_name = "<name>"
+primary_log_bucket_name = "<value>"
+standby_log_bucket_name = "<value>"
 primary_dr_plan_id = "ocid1.<resource>..."
 ```
 
@@ -215,8 +206,5 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=<n> changed=<n> unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
 ```
 
-For Full Stack Disaster Recovery, the important hand-off values are `blueprint_name`,
-`name_prefix`, `standby_name_prefix`, `resource_ids`, `primary_dr_protection_group_id`,
-`standby_dr_protection_group_id`, `primary_log_bucket_name`, `standby_log_bucket_name`,
-`primary_dr_plan_id`. Keep those names stable unless a downstream blueprint, runbook, or
-customer hand-off is updated at the same time.
+For this deployment, keep the output names stable unless the downstream deployment, runbook,
+or customer hand-off is updated in the same change.

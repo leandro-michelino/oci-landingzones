@@ -2,6 +2,18 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
+## v0.2.1 - 2026-05-13
+
+### Changed
+
+- Replaced every deployment-local `architecture/README.md` with a real
+  deployment-specific ASCII architecture that shows the OCI components,
+  dependency order, traffic flow, trust boundaries, Terraform components, and
+  Terraform + Ansible output shape for that exact blueprint.
+- Removed the previous generic file-contract architecture narrative from the
+  architecture folders so each folder now documents what its deployment
+  actually builds or references.
+
 ## v0.2.0 - 2026-05-13
 
 ### Added

@@ -1,23 +1,23 @@
-# Hub-Spoke With Transit Routing NVA HA Architecture
+# Hub-Spoke Transit Routing NVA HA Architecture
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This is the design view for `blueprints/networking/hub-spoke-with-transit-routing-nva-ha`.
-It stays ASCII-first on purpose so you can review the deployment in GitHub, a terminal, a
-pull request, or customer notes without a diagramming tool.
+This page is the deployment architecture for `blueprints/networking/hub-spoke-with-transit-routing-nva-ha`. It is intentionally ASCII-first so it
+is easy to review in GitHub, terminals, pull requests, runbooks, and customer notes without a
+diagramming tool.
 
 ## Deployment Purpose
 
-Adds highly available network virtual appliance routing to hub-spoke networking for
-inspected transit paths.
+Adds highly available network virtual appliances and route target private IPs to a hub-spoke transit network.
 
 ## Architecture At A Glance
 
 | Item | Details |
 | --- | --- |
-| Boundary | `blueprints/networking/hub-spoke-with-transit-routing-nva-ha` owns this deployment end to end. |
+| Boundary | `blueprints/networking/hub-spoke-with-transit-routing-nva-ha` owns this deployment folder and its Terraform + Ansible runners. |
+| Purpose | Adds highly available network virtual appliances and route target private IPs to a hub-spoke transit network. |
 | Terraform components | `network`, `nva_ha` |
-| Input source | `terraform.tfvars.example` documents the shape; local ignored tfvars provide real values. |
+| Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
 | Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `hub_vcn_id`, `drg_id`, `spoke_vcn_ids`, `appliance_instance_ids`, `route_target_private_ip_ids` |
 | Runner contract | `ansible/plan.yml`, guarded `ansible/apply.yml`, and guarded `ansible/destroy.yml`. |
 
@@ -26,68 +26,48 @@ inspected transit paths.
 ```text
 blueprints/networking/hub-spoke-with-transit-routing-nva-ha/
 |-- README.md                         Operator guide for this deployment
-|-- architecture/README.md            This detailed ASCII architecture
-|-- main.tf                           Terraform resource and module wiring
+|-- architecture/README.md            This deployment-specific ASCII architecture
+|-- main.tf                           Terraform module and resource graph
 |-- variables.tf                      Input contract and defaults
-|-- outputs.tf                        Hand-off values for dependent blueprints
+|-- outputs.tf                        Hand-off values for downstream deployments
 |-- providers.tf                      OCI provider configuration
 |-- versions.tf                       Terraform and provider constraints
-|-- terraform.tfvars.example          Example local variable shape
+|-- terraform.tfvars.example          Example tfvars shape for this deployment
 `-- ansible/
-    |-- plan.yml                      Local guarded plan runner
-    |-- apply.yml                     Local guarded apply runner
-    `-- destroy.yml                   Local guarded destroy runner
+    |-- plan.yml                      Local plan runner
+    |-- apply.yml                     Guarded apply runner
+    `-- destroy.yml                   Guarded destroy runner
 ```
 
 ## ASCII Architecture
 
 ```text
-+------------------------------------------------------------------------------------------------------+
-| Hub-Spoke With Transit Routing NVA HA                                                                |
-| Folder: blueprints/networking/hub-spoke-with-transit-routing-nva-ha                                  |
-|                                                                                                      |
-| [1] Operator entry                                                                                   |
-| Operator, CI job, or local shell reviews README.md and architecture/README.md, copies                |
-| terraform.tfvars.example to terraform.tfvars, and chooses either direct Terraform or the local       |
-| Ansible wrapper.                                                                                     |
-|                                                                                                      |
-| [2] Local file contract                                                                              |
-| README.md -> run-facing deployment guide.                                                            |
-| architecture/README.md -> detailed text architecture and review notes.                               |
-| main.tf -> Terraform composition for this deployment.                                                |
-| variables.tf -> input contract and defaults.                                                         |
-| outputs.tf -> named hand-off values.                                                                 |
-| providers.tf + versions.tf -> provider setup and version constraints.                                |
-| ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
-|                                                                                                      |
-| [3] Terraform composition from main.tf                                                               |
-| 01. module.network -> blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.2.0          |
-| 02. module.nva_ha -> modules/networking/net-appliance @ v0.2.0                                       |
-|                                                                                                      |
-| [4] OCI/resource planes                                                                              |
-| - Control: provider config, tenancy context, naming inputs, and local tfvars.                        |
-| - Network: VCNs, subnets, route tables, gateways, DRG attachments, DNS, private access, and          |
-| inspection hops as declared by this folder.                                                          |
-| - Security: security lists, NSGs, firewall or appliance controls, ZPR, and traffic path decisions    |
-| where the blueprint enables them.                                                                    |
-| - Consumption: VCN, subnet, gateway, DNS, DRG, and inspection outputs for workload and extension     |
-| teams.                                                                                               |
-| - Operations: Ansible plan/apply/destroy wrappers, validation, and cleanup.                          |
-|                                                                                                      |
-| [5] Output hand-off                                                                                  |
-| - blueprint_name: Blueprint identifier.                                                              |
-| - name_prefix: Standard OCI naming prefix for resources created by this blueprint.                   |
-| - resource_ids: Map of resource identifiers created by this blueprint.                               |
-| - hub_vcn_id: Hub VCN OCID.                                                                          |
-| - drg_id: DRG OCID.                                                                                  |
-| - spoke_vcn_ids: Spoke VCN OCIDs keyed by spoke name.                                                |
-| - appliance_instance_ids: HA NVA compute instance OCIDs.                                             |
-| - route_target_private_ip_ids: HA route target private IP OCIDs.                                     |
-|                                                                                                      |
-| [6] Deployment close-out                                                                             |
-| terraform output and the Ansible PLAY RECAP are the human and automation hand-off.                   |
-| Generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git.  |
-+------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------------------------+
+| Hub-Spoke Transit Routing NVA HA                                                                  |
+|                                                                                                  |
+|  Spoke VCNs / on-prem / hub services                                                              |
+|          | selected route table targets                                                           |
+|          v                                                                                        |
+|  +-------------------------------- Hub VCN -----------------------------------+                  |
+|  | Appliance subnets host two or more NVA instances                             |                  |
+|  | Reserved route IPs provide stable next-hop targets                           |                  |
+|  | Hub DRG attachment exchanges routes with spokes                              |                  |
+|  +-------------------------------+--------------------------------------------+                  |
+|                                  |                                                                  |
+|                                  v                                                                  |
+|  +----------------------- HA Network Virtual Appliances ----------------------+                  |
+|  | appliance_instance_ids from var.appliances                                  |                  |
+|  | route_target_private_ip_ids expose private IPs for route tables             |                  |
+|  | existing_route_target_private_ip_ids can import prebuilt HA targets          |                  |
+|  +-------------------------------+--------------------------------------------+                  |
+|                                  | inspected/transit forwarding                                  |
+|                                  v                                                                  |
+|  +------------------------ DRG and Spoke Attachments -------------------------+                  |
+|  | east-west and north-south transit paths can be forced through the NVAs       |                  |
+|  +----------------------------------------------------------------------------+                  |
+|                                                                                                  |
+|  Traffic: route table -> reserved route IP/NVA -> next hop through DRG, hub, spoke, or edge.      |
++--------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components
@@ -99,45 +79,56 @@ blueprints/networking/hub-spoke-with-transit-routing-nva-ha/
 
 ## Request And Deployment Flow
 
-- Operator reviews CIDR, subnet, DNS, inspection, and connectivity inputs.
-- Terraform creates or references the VCN foundation and network attachments.
-- Gateways, route tables, DRG attachments, DNS, inspection, or private access resources are composed as declared in `main.tf`.
-- Outputs expose VCN, subnet, gateway, attachment, and policy IDs for workloads and extension blueprints.
+- Operator reviews CIDRs, subnet maps, gateway flags, route targets, and inspection requirements.
+- Terraform creates the network foundation first, then dependent attachments or network services declared in main.tf.
+- Traffic follows the diagrammed route path, and outputs expose VCN, subnet, DRG, gateway, DNS, inspection, or policy IDs for the next deployment.
+
+## Traffic And Trust Boundaries
+
+- Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
+- Data plane traffic is the packet or service path shown in the ASCII diagram; if this deployment only creates identity or governance resources, the data plane is intentionally permission and signal flow instead of network packets.
+- Trust boundaries are the tenancy, compartment, VCN, subnet, DRG, private endpoint, identity domain, or managed service edges shown in the diagram.
+- Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
 ## State, Inputs, And Outputs
 
 ```text
 Input sources
-|-- terraform.tfvars.example documents expected values
-|-- local *.tfvars files provide tenancy, compartment, CIDR, endpoint, and OCID values
+|-- terraform.tfvars.example documents expected values for this deployment
+|-- local ignored tfvars provide tenancy, compartment, CIDR, endpoint, and service-specific values
 |-- environment variables may provide OCI authentication and guarded Ansible confirms
 |
 Terraform state
-|-- backend is disabled for local validation and plan runners by default
-|-- production backends should be configured outside this reusable blueprint folder
-|-- generated .terraform directories, lock files, plans, and state files are cleaned by validation
+|-- backend is disabled for local validation and blueprint-local runners by default
+|-- production state backends should be configured outside this reusable blueprint folder
+|-- generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git
 |
 Output contract
-|-- blueprint_name and name_prefix identify the deployment when declared
-|-- resource_ids summarizes primary resources when declared
-`-- blueprint-specific outputs expose compartment, VCN, subnet, key, policy, service, or DR IDs
+|-- blueprint_name
+|-- name_prefix
+|-- resource_ids
+|-- hub_vcn_id
+|-- drg_id
+|-- spoke_vcn_ids
+|-- appliance_instance_ids
+`-- route_target_private_ip_ids
 ```
 
 ## Operational Boundaries
 
-- Keep apply/destroy behind the guarded Ansible runners or equivalent review gates.
-- Use local ignored tfvars for OCIDs, notification endpoints, customer CIDRs, and secrets.
-- Run ./scripts/validate-all.sh before commits or hand-off.
-- Confirm route tables, inspection hops, and public/private subnet flags before apply.
-- Confirm DNS behavior and service-gateway routes for private OCI access.
+- Review enable flags before apply, especially for paid, tenancy-wide, identity, network edge, database, or destructive resources.
+- Confirm required external IDs are real and in the intended region and compartment before running `terraform plan`.
+- Keep apply and destroy behind the guarded Ansible runners or an equivalent approval gate.
+- Treat route tables, firewall policies, ZPR policies, identity policies, and domain replication as change-controlled surfaces.
+- Run repository validation before commit or hand-off.
 
 ## Review Checklist
 
-- Confirm the `README.md` story matches this ASCII architecture.
-- Confirm every module/resource listed above is intentional for this deployment.
-- Confirm required external IDs are documented before `terraform plan`.
-- Confirm enable flags are set deliberately, especially for tenancy-wide, paid, or destructive resources.
-- Confirm logging, IAM, security, networking, and operational hand-offs are visible in the diagram.
+- Confirm the diagram matches `main.tf`: `network`, `nva_ha`.
+- Confirm the described traffic path is the path you want in OCI before apply.
+- Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
+- Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
+- Confirm `terraform output` will expose the hand-off values expected by downstream teams: `blueprint_name`, `name_prefix`, `resource_ids`, `hub_vcn_id`, `drg_id`, `spoke_vcn_ids`, `appliance_instance_ids`, `route_target_private_ip_ids`.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
 
 ## Validation
@@ -153,17 +144,16 @@ artifacts afterward.
 
 ## When To Update This Architecture
 
-- Terraform modules, resources, data sources, or provider aliases change.
-- A subnet, route, trust boundary, region, compartment, or access path changes.
-- A new enable flag changes what the deployment can create.
-- README usage notes describe behavior that is not represented here.
-- A customer review turns an assumption into a reusable pattern.
+- Terraform modules, resources, data sources, provider aliases, or enable flags change.
+- A subnet, route, trust boundary, identity scope, region, compartment, private endpoint, or access path changes.
+- A new output becomes part of the contract for downstream deployments or operators.
+- README usage notes describe behavior that is not represented in the diagram.
 
 ## Terraform + Ansible Deployment Output
 
-This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph
-and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper
-with a clean recap at the end.
+This is the expected close-out shape for `blueprints/networking/hub-spoke-with-transit-routing-nva-ha`. Terraform owns the OCI resource graph and
+named outputs; Ansible gives the operator a repeatable plan/apply/destroy wrapper with a
+clear recap.
 
 ```text
 $ cd blueprints/networking/hub-spoke-with-transit-routing-nva-ha
@@ -175,8 +165,8 @@ $ terraform apply tfplan
 Apply complete! Resources: <added> added, <changed> changed, <destroyed> destroyed.
 
 $ terraform output
-blueprint_name = "hub-spoke-with-transit-routing-nva-ha"
-name_prefix = "<org>-<env>-<region_key>"
+blueprint_name = "<value>"
+name_prefix = "<value>"
 resource_ids = { ... }
 hub_vcn_id = "ocid1.<resource>..."
 drg_id = "ocid1.<resource>..."
@@ -207,7 +197,5 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=<n> changed=<n> unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
 ```
 
-For Hub-Spoke With Transit Routing NVA HA, the important hand-off values are
-`blueprint_name`, `name_prefix`, `resource_ids`, `hub_vcn_id`, `drg_id`, `spoke_vcn_ids`,
-`appliance_instance_ids`, `route_target_private_ip_ids`. Keep those names stable unless a
-downstream blueprint, runbook, or customer hand-off is updated at the same time.
+For this deployment, keep the output names stable unless the downstream deployment, runbook,
+or customer hand-off is updated in the same change.
