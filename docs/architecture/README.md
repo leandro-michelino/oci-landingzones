@@ -24,6 +24,8 @@ repository artifact.
   `architecture/` folder.
 - Every blueprint-local architecture README includes an `## ASCII Architecture`
   section with the main components and flow in a fenced `text` block.
+- Every blueprint folder keeps local `ansible/plan.yml`, `ansible/apply.yml`,
+  and `ansible/destroy.yml` runners beside the Terraform files.
 - Draft, detailed LLD, professional, or customer-specific variants should be
   promoted into the canonical artifact or kept outside the reusable blueprint
   tree.

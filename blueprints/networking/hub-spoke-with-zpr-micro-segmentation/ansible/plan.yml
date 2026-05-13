@@ -1,0 +1,13 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+---
+- name: Plan the Hub-Spoke With ZPR Micro-Segmentation blueprint
+  hosts: localhost
+  gather_facts: false
+  vars:
+    terraform_working_dir: "{{ playbook_dir }}/.."
+    terraform_action: plan
+    terraform_backend_enabled: false
+  tasks:
+    - name: Run shared Terraform runner
+      ansible.builtin.import_role:
+        name: ../../../../ansible/roles/terraform_runner

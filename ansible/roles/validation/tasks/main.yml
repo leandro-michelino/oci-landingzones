@@ -134,6 +134,58 @@
       changed_when: false
       loop: "{{ validation_playbooks }}"
 
+    - name: Find blueprint-local Ansible playbooks
+      ansible.builtin.command:
+        argv:
+          - find
+          - "{{ item }}"
+          - -path
+          - "*/.terraform/*"
+          - -prune
+          - -o
+          - (
+          - -path
+          - "*/ansible/plan.yml"
+          - -o
+          - -path
+          - "*/ansible/apply.yml"
+          - -o
+          - -path
+          - "*/ansible/destroy.yml"
+          - )
+          - -type
+          - f
+          - -print
+      changed_when: false
+      register: validation_blueprint_ansible_find_results
+      loop: "{{ validation_blueprint_roots }}"
+
+    - name: Build blueprint-local Ansible playbook list
+      ansible.builtin.set_fact:
+        validation_blueprint_ansible_playbook_paths: >-
+          {{
+            validation_blueprint_ansible_find_results.results |
+            default([]) |
+            map(attribute='stdout_lines') |
+            list |
+            flatten |
+            sort |
+            list
+          }}
+
+    - name: Show blueprint-local Ansible playbook count
+      ansible.builtin.debug:
+        msg: "Validating {{ validation_blueprint_ansible_playbook_paths | length }} blueprint-local Ansible playbooks."
+
+    - name: Run blueprint-local Ansible syntax checks
+      ansible.builtin.command: "ansible-playbook --syntax-check {{ item }}"
+      args:
+        chdir: "{{ validation_repo_root }}"
+      changed_when: false
+      loop: "{{ validation_blueprint_ansible_playbook_paths }}"
+      loop_control:
+        label: "{{ item | regex_replace('^' ~ validation_repo_root ~ '/', '') }}"
+
     - name: Run pre-commit when available
       ansible.builtin.command: pre-commit run --all-files
       args:

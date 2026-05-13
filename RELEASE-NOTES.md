@@ -70,6 +70,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   variables, architecture diagrams, runbooks, and the core blueprint.
 - Canonical ASCII architecture diagrams and review checklists for every
   blueprint-local `architecture/README.md`.
+- Blueprint-local Ansible plan, apply, and destroy runners for every
+  architecture folder.
 
 ### Changed
 

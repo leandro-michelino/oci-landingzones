@@ -37,7 +37,8 @@ This auto-discovers implemented Terraform blueprints under `blueprints/`,
 validates them without a remote backend, runs Ansible syntax checks, and cleans
 generated Terraform artifacts even when a validation step fails. Scaffolded
 pattern folders stay out of Terraform validation until they contain real
-blueprint wiring. The Ansible role uses a local Terraform plugin cache and a
+blueprint wiring. Blueprint-local Ansible playbooks are syntax-checked for every
+architecture folder. The Ansible role uses a local Terraform plugin cache and a
 bounded timeout per Terraform command so repeated checks stay predictable.
 
 The generic landing zone deployment does not enable CIS behavior by default. To
@@ -54,6 +55,24 @@ Each deployable blueprint folder should be readable on its own. Review the local
 blueprint. The architecture README contains the canonical ASCII diagram for the
 pattern and the review checklist for ownership, dependency, traffic, DNS, IAM,
 logging, and monitoring assumptions.
+
+Each blueprint folder also includes local Ansible runners:
+
+```text
+ansible/plan.yml
+ansible/apply.yml
+ansible/destroy.yml
+```
+
+These call the shared `ansible/roles/terraform_runner` role while setting
+`terraform_working_dir` to the blueprint folder. Use `-i localhost,` when
+running them directly from a blueprint:
+
+```bash
+ansible-playbook -i localhost, ansible/plan.yml
+CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
+CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
+```
 
 Use `docs/DEPLOYMENT-PATTERN-CATALOG.md` as the selection menu before choosing
 a blueprint. The catalog includes core, CIS, identity, operating entity,

@@ -10,6 +10,19 @@ The playbooks stay non-destructive by default. Terraform remains the source of
 truth for OCI resources, while Ansible handles repeatable local checks and
 safe command orchestration.
 
+Each blueprint also has local Ansible runners under its own `ansible/` folder:
+
+```text
+blueprints/.../ansible/plan.yml
+blueprints/.../ansible/apply.yml
+blueprints/.../ansible/destroy.yml
+```
+
+Those local runners import the shared `terraform_runner` role from this
+directory and set `terraform_working_dir` to the blueprint they sit beside.
+Repository-wide playbooks remain here for validation, bootstrap, and workflows
+that intentionally operate from the root.
+
 ## Install Collections
 
 ```bash

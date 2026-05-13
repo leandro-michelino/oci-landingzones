@@ -2,6 +2,8 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
+![OCI Landing Zones architecture banner](docs/assets/oci-landing-zones-banner.svg)
+
 This repo is a practical OCI landing-zone toolkit. It collects Terraform
 modules, ready-to-use blueprints, Ansible helpers, and architecture notes for
 the landing-zone patterns that tend to come up again and again: core
@@ -44,6 +46,8 @@ Terraform artifacts afterward.
 - Reusable Terraform modules under `modules/`.
 - Local Ansible orchestration for bootstrap, validation, plan, guarded apply,
   guarded destroy, and ephemeral tests.
+- Blueprint-local Ansible runners in every architecture folder, so each
+  blueprint can be planned, applied, or destroyed from its own directory.
 - Blueprint-local architecture notes with ASCII diagrams, assumptions, and
   review checklists.
 
@@ -52,7 +56,7 @@ Terraform artifacts afterward.
 ```text
 blueprints/    Pick one of these when you want a deployable architecture.
 modules/       Reusable Terraform building blocks used by the blueprints.
-ansible/       Local orchestration for validation, plan, apply, and destroy.
+ansible/       Shared roles, inventories, and repository-wide orchestration.
 docs/          Deployment guides, catalog, runbooks, mappings, and standards.
 environments/  Example backend and tfvars shapes for dev, uat, and prod.
 scripts/       Thin command wrappers around Ansible and Terraform workflows.
@@ -90,6 +94,16 @@ cp terraform.tfvars.example terraform.tfvars
 terraform init
 terraform validate
 terraform plan
+```
+
+Or use the blueprint-local Ansible runner, which calls the shared Terraform role
+for this folder:
+
+```bash
+cd blueprints/networking/standalone-three-tier-vcn-defaults
+cp terraform.tfvars.example terraform.tfvars
+
+ansible-playbook -i localhost, ansible/plan.yml
 ```
 
 For a single networking blueprint, set `compartment_ocid` to the workload
@@ -161,6 +175,9 @@ Every deployable blueprint should include:
 - `README.md`
 - `terraform.tfvars.example`
 - `architecture/README.md`
+- `ansible/plan.yml`
+- `ansible/apply.yml`
+- `ansible/destroy.yml`
 
 The local `architecture/README.md` is the lightweight design artifact for that
 blueprint. It should include an `## ASCII Architecture` section that shows the
@@ -170,6 +187,31 @@ in plain text.
 Rendered diagrams are useful for customer reviews, but keep draft, LLD, and
 tool-specific work files outside the reusable blueprint folders unless they
 become the canonical artifact for that pattern.
+
+## Blueprint-Local Ansible
+
+Every blueprint has a small `ansible/` folder beside its Terraform files:
+
+```text
+ansible/plan.yml      Runs init, validate, and plan with backend disabled.
+ansible/apply.yml     Runs guarded init, validate, plan, and apply.
+ansible/destroy.yml   Runs guarded destroy.
+```
+
+The local playbooks reuse the shared `ansible/roles/terraform_runner` role, so
+the orchestration logic stays in one place while each architecture folder still
+has a clear Ansible entry point.
+
+Apply and destroy are intentionally guarded:
+
+```bash
+CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
+CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
+```
+
+Some blueprint folders are still planned scaffolds. They keep the same Terraform
+and Ansible file shape, but repository validation skips Terraform init/validate
+until the scaffold comments are removed and real module composition is added.
 
 ## Module Shape
 
