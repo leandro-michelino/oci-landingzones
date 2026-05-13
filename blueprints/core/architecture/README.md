@@ -2,18 +2,30 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This architecture page documents the `blueprints/core` deployment. It is intentionally text-first and ASCII-only so it can be reviewed in terminals, pull requests, and customer notes without a diagramming tool.
+This is the design view for `blueprints/core`. It stays ASCII-first on purpose so you can
+review the deployment in GitHub, a terminal, a pull request, or customer notes without a
+diagramming tool.
 
 ## Deployment Purpose
 
-This blueprint provides shared landing-zone foundation for compartments, IAM,
-governance, logging, security, events, monitoring, and optional guardrail services.
+Builds the shared OCI foundation: compartments, IAM, tagging, logging, Cloud Guard,
+Vault/KMS, Security Zones, VSS, budgets, events, and monitoring.
+
+## Architecture At A Glance
+
+| Item | Details |
+| --- | --- |
+| Boundary | `blueprints/core` owns this deployment end to end. |
+| Terraform components | `compartments`, `tagging`, `logging`, `cloud_guard`, `vault`, `security_zones`, `vss`, `budgets`, plus 5 more |
+| Input source | `terraform.tfvars.example` documents the shape; local ignored tfvars provide real values. |
+| Output contract | `blueprint_name`, `name_prefix`, `cis_level`, `root_compartment_id`, `compartment_ids`, `network_compartment_id`, `security_compartment_id`, `governance_compartment_id`, plus 43 more |
+| Runner contract | `ansible/plan.yml`, guarded `ansible/apply.yml`, and guarded `ansible/destroy.yml`. |
 
 ## Files In This Deployment
 
 ```text
 blueprints/core/
-|-- README.md                         Human-friendly deployment notes
+|-- README.md                         Operator guide for this deployment
 |-- architecture/README.md            This detailed ASCII architecture
 |-- main.tf                           Terraform resource and module wiring
 |-- variables.tf                      Input contract and defaults
@@ -30,79 +42,92 @@ blueprints/core/
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------+
-| Core Landing Zone Blueprint                                                                |
-| blueprints/core                                                                            |
-+--------------------------------------------------------------------------------------------+
-| Operator / CI / local shell                                                                |
-|   |                                                                                        |
-|   v                                                                                        |
-+--------------------------------------------------------------------------------------------+
-| Blueprint folder contract                                                                  |
-|   README.md                                                                                |
-|   architecture/README.md                                                                   |
-|   main.tf + variables.tf + outputs.tf + providers.tf + versions.tf                         |
-|   ansible/plan.yml + apply.yml + destroy.yml                                               |
-+--------------------------------------------------------------------------------------------+
-|   |                                                                                        |
-|   v                                                                                        |
-+--------------------------------------------------------------------------------------------+
-| Terraform composition and OCI resources                                                    |
-|  01. module   compartments                                     (main.tf)                   |
-|  02. module   tagging                                          (main.tf)                   |
-|  03. module   logging                                          (main.tf)                   |
-|  04. module   cloud_guard                                      (main.tf)                   |
-|  05. module   vault                                            (main.tf)                   |
-|  06. module   security_zones                                   (main.tf)                   |
-|  07. module   vss                                              (main.tf)                   |
-|  08. module   budgets                                          (main.tf)                   |
-|  09. module   events                                           (main.tf)                   |
-|  10. module   monitoring                                       (main.tf)                   |
-|  11. module   groups                                           (main.tf)                   |
-|  12. module   dynamic_groups                                   (main.tf)                   |
-|  13. module   policies                                         (main.tf)                   |
-+--------------------------------------------------------------------------------------------+
-|   |                                                                                        |
-|   v                                                                                        |
-+--------------------------------------------------------------------------------------------+
-| Architecture layers                                                                        |
-|   - Control plane: Terraform provider and blueprint variables                              |
-|   - Foundation plane: compartments, tags, IAM, logging, security, and operations modules   |
-|   - Consumption plane: outputs used by networking, operating entity, and extension blueprin|
-|   - Operations plane: Ansible runners, validation, and cleanup                             |
-+--------------------------------------------------------------------------------------------+
-|   |                                                                                        |
-|   v                                                                                        |
-+--------------------------------------------------------------------------------------------+
-| Outputs and hand-off                                                                       |
-|   resource_ids plus blueprint-specific IDs                                                 |
-|   tfvars reviewed before apply                                                             |
-|   generated Terraform artifacts cleaned after validation                                   |
-+--------------------------------------------------------------------------------------------+
++------------------------------------------------------------------------------------------------------+
+| Core Landing Zone                                                                                    |
+| Folder: blueprints/core                                                                              |
+|                                                                                                      |
+| [1] Operator entry                                                                                   |
+| Operator, CI job, or local shell reviews README.md and architecture/README.md, copies                |
+| terraform.tfvars.example to terraform.tfvars, and chooses either direct Terraform or the local       |
+| Ansible wrapper.                                                                                     |
+|                                                                                                      |
+| [2] Local file contract                                                                              |
+| README.md -> run-facing deployment guide.                                                            |
+| architecture/README.md -> detailed text architecture and review notes.                               |
+| main.tf -> Terraform composition for this deployment.                                                |
+| variables.tf -> input contract and defaults.                                                         |
+| outputs.tf -> named hand-off values.                                                                 |
+| providers.tf + versions.tf -> provider setup and version constraints.                                |
+| ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
+|                                                                                                      |
+| [3] Terraform composition from main.tf                                                               |
+| 01. module.compartments -> modules/iam/compartments @ v0.1.0                                         |
+| 02. module.tagging -> modules/governance/tagging @ v0.1.0                                            |
+| 03. module.logging -> modules/governance/logging @ v0.1.0                                            |
+| 04. module.cloud_guard -> modules/security/cloud-guard @ v0.1.0                                      |
+| 05. module.vault -> modules/security/vault @ v0.1.0                                                  |
+| 06. module.security_zones -> modules/security/security-zones @ v0.1.0                                |
+| 07. module.vss -> modules/security/vss @ v0.1.0                                                      |
+| 08. module.budgets -> modules/governance/budgets @ v0.1.0                                            |
+| 09. module.events -> modules/governance/events @ v0.1.0                                              |
+| 10. module.monitoring -> modules/operations/monitoring @ v0.1.0                                      |
+| 11. module.groups -> modules/iam/groups @ v0.1.0                                                     |
+| 12. module.dynamic_groups -> modules/iam/dynamic-groups @ v0.1.0                                     |
+| 13. module.policies -> modules/iam/policies @ v0.1.0                                                 |
+|                                                                                                      |
+| [4] OCI/resource planes                                                                              |
+| - Control: provider config, tenancy context, naming inputs, and local tfvars.                        |
+| - Foundation: compartments, IAM, tag namespaces, logging, Cloud Guard, Vault/KMS, Security Zones,    |
+| VSS, budgets, events, and monitoring.                                                                |
+| - Consumption: stable outputs for networking, operating entity, compliance, and extension            |
+| blueprints.                                                                                          |
+| - Operations: Ansible plan/apply/destroy wrappers, validation, and cleanup.                          |
+|                                                                                                      |
+| [5] Output hand-off                                                                                  |
+| - blueprint_name: Blueprint identifier.                                                              |
+| - name_prefix: Standard OCI naming prefix for resources created by this blueprint.                   |
+| - cis_level: Selected CIS OCI Benchmark profile, when this core is wrapped by a CIS blueprint.       |
+| - root_compartment_id: OCID of the landing zone root compartment.                                    |
+| - compartment_ids: Map of landing zone compartment keys to OCIDs.                                    |
+| - network_compartment_id: OCID of the landing zone network compartment.                              |
+| - security_compartment_id: OCID of the landing zone security compartment.                            |
+| - governance_compartment_id: OCID of the landing zone governance compartment.                        |
+| - workloads_compartment_id: OCID of the landing zone workloads compartment.                          |
+| - compartment_names: Map of landing zone compartment keys to display names.                          |
+| - tag_namespace_id: OCID of the landing zone tag namespace.                                          |
+| - tag_namespace_name: Name of the landing zone tag namespace.                                        |
+| - plus 39 more outputs declared in outputs.tf                                                        |
+|                                                                                                      |
+| [6] Deployment close-out                                                                             |
+| terraform output and the Ansible PLAY RECAP are the human and automation hand-off.                   |
+| Generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git.  |
++------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components
 
-- `module compartments` in `main.tf`: composes the reusable compartments module or child blueprint.
-- `module tagging` in `main.tf`: composes the reusable tagging module or child blueprint.
-- `module logging` in `main.tf`: composes the reusable logging module or child blueprint.
-- `module cloud_guard` in `main.tf`: composes the reusable cloud guard module or child blueprint.
-- `module vault` in `main.tf`: composes the reusable vault module or child blueprint.
-- `module security_zones` in `main.tf`: composes the reusable security zones module or child blueprint.
-- `module vss` in `main.tf`: composes the reusable vss module or child blueprint.
-- `module budgets` in `main.tf`: composes the reusable budgets module or child blueprint.
-- `module events` in `main.tf`: composes the reusable events module or child blueprint.
-- `module monitoring` in `main.tf`: composes the reusable monitoring module or child blueprint.
-- `module groups` in `main.tf`: composes the reusable groups module or child blueprint.
-- `module dynamic_groups` in `main.tf`: composes the reusable dynamic groups module or child blueprint.
-- `module policies` in `main.tf`: composes the reusable policies module or child blueprint.
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Module | `compartments` | `modules/iam/compartments @ v0.1.0` |
+| Module | `tagging` | `modules/governance/tagging @ v0.1.0` |
+| Module | `logging` | `modules/governance/logging @ v0.1.0` |
+| Module | `cloud_guard` | `modules/security/cloud-guard @ v0.1.0` |
+| Module | `vault` | `modules/security/vault @ v0.1.0` |
+| Module | `security_zones` | `modules/security/security-zones @ v0.1.0` |
+| Module | `vss` | `modules/security/vss @ v0.1.0` |
+| Module | `budgets` | `modules/governance/budgets @ v0.1.0` |
+| Module | `events` | `modules/governance/events @ v0.1.0` |
+| Module | `monitoring` | `modules/operations/monitoring @ v0.1.0` |
+| Module | `groups` | `modules/iam/groups @ v0.1.0` |
+| Module | `dynamic_groups` | `modules/iam/dynamic-groups @ v0.1.0` |
+| Module | `policies` | `modules/iam/policies @ v0.1.0` |
 
 ## Request And Deployment Flow
 
-- Operator reviews tfvars and chooses the plan/apply runner.
-- Terraform builds the foundation in dependency order.
-- Outputs become the hand-off contract for dependent blueprints.
-- Validation checks fmt, init, validate, and Ansible syntax.
+- Operator reviews tenancy, governance, IAM, logging, security, and monitoring inputs.
+- Terraform builds the shared foundation in dependency order.
+- Outputs become the hand-off contract for networking, operating entity, compliance, and extension blueprints.
+- Validation checks formatting, init, validate, Ansible syntax, documentation coverage, and cleanup.
 
 ## State, Inputs, And Outputs
 
@@ -118,8 +143,8 @@ Terraform state
 |-- generated .terraform directories, lock files, plans, and state files are cleaned by validation
 |
 Output contract
-|-- blueprint_name and name_prefix identify the deployment
-|-- resource_ids summarizes primary resources in a machine-friendly map
+|-- blueprint_name and name_prefix identify the deployment when declared
+|-- resource_ids summarizes primary resources when declared
 `-- blueprint-specific outputs expose compartment, VCN, subnet, key, policy, service, or DR IDs
 ```
 
@@ -144,7 +169,10 @@ Output contract
 ./scripts/validate-all.sh
 ```
 
-The repository validator checks Terraform formatting, initializes and validates every blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every blueprint-local Ansible runner, and removes generated Terraform artifacts afterward.
+The repository validator checks Terraform formatting, initializes and validates every
+blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every
+blueprint-local Ansible runner, verifies README coverage, and removes generated Terraform
+artifacts afterward.
 
 ## When To Update This Architecture
 
@@ -156,7 +184,9 @@ The repository validator checks Terraform formatting, initializes and validates 
 
 ## Terraform + Ansible Deployment Output
 
-This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper with a clean recap at the end.
+This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph
+and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper
+with a clean recap at the end.
 
 ```text
 $ cd blueprints/core
@@ -243,4 +273,8 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=<n> changed=<n> unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
 ```
 
-For Core, the important hand-off values are `blueprint_name`, `name_prefix`, `cis_level`, `root_compartment_id`, `compartment_ids`, `network_compartment_id`, `security_compartment_id`, `governance_compartment_id`, and the remaining outputs declared in `outputs.tf`. Keep those names stable unless a downstream blueprint, runbook, or customer hand-off is updated at the same time.
+For Core Landing Zone, the important hand-off values are `blueprint_name`, `name_prefix`,
+`cis_level`, `root_compartment_id`, `compartment_ids`, `network_compartment_id`,
+`security_compartment_id`, `governance_compartment_id`, `workloads_compartment_id`,
+`compartment_names`, plus 41 more. Keep those names stable unless a downstream blueprint,
+runbook, or customer hand-off is updated at the same time.

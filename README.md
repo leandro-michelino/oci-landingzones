@@ -4,14 +4,14 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This repo is a practical OCI landing-zone toolkit: Terraform modules,
-ready-to-use blueprints, local Ansible automation, and plain-text architecture
-notes for the OCI patterns that come up again and again.
+This repo is a practical OCI landing-zone toolkit: Terraform modules, ready-to-use
+blueprints, local Ansible automation, and plain-text architecture notes for the OCI patterns
+that come up again and again.
 
-It is meant to be useful in real work: clone it, pick a blueprint, review the
-ASCII architecture, run a plan, and adapt the inputs to your tenancy. It is a
-personal engineering project, not an official Oracle product, so treat it as a
-solid accelerator that you still review, test, and harden before production.
+It is meant to be useful in real work: clone it, pick a blueprint, review the ASCII
+architecture, run a plan, and adapt the inputs to your tenancy. It is a personal engineering
+project, not an official Oracle product, so treat it as a solid accelerator that you still
+review, test, and harden before production.
 
 ## Quick Navigation
 
@@ -42,7 +42,7 @@ solid accelerator that you still review, test, and harden before production.
 blueprints/    Deployable architectures. Pick from here when you want a working pattern.
 modules/       Reusable Terraform building blocks used by the blueprints.
 ansible/       Shared roles, inventories, validation, and Terraform orchestration.
-docs/          Guides, catalog, runbooks, architecture rules, and standards.
+docs/          Guides, catalog, runbooks, naming conventions, and standards.
 environments/  Example backend and tfvars shapes for dev, uat, and prod.
 scripts/       Thin wrappers for validation and common local workflows.
 tests/         Test scaffolding.
@@ -58,8 +58,8 @@ tests/         Test scaffolding.
 | Ansible | Runs repo-wide validation and blueprint-local plan/apply/destroy workflows. |
 | Optional scanners | `tflint`, `tfsec`, `checkov`, `ansible-lint`, and `pre-commit` are used when installed. |
 
-The optional scanners are nice to have, not mandatory. Validation skips them
-cleanly when they are not installed.
+The optional scanners are nice to have, not mandatory. Validation skips them cleanly when
+they are not installed.
 
 ## Fastest Safe Check
 
@@ -72,15 +72,15 @@ cd oci-landingzones
 ./scripts/validate-all.sh
 ```
 
-That command checks Terraform formatting, verifies every implemented blueprint,
-runs root and blueprint-local Ansible syntax checks, and removes generated
-Terraform artifacts afterward.
+That command checks Terraform formatting, verifies every implemented blueprint, runs root
+and blueprint-local Ansible syntax checks, and removes generated Terraform artifacts
+afterward.
 
 ## Use One Blueprint
 
-Blueprints are designed to stand on their own. You can clone the repo normally,
-or sparse-checkout a single deployment folder and still let Terraform fetch the
-shared modules through pinned Git module sources.
+Blueprints are designed to stand on their own. You can clone the repo normally, or
+sparse-checkout a single deployment folder and still let Terraform fetch the shared modules
+through pinned Git module sources.
 
 Example: run only the default standalone three-tier VCN blueprint.
 
@@ -106,14 +106,14 @@ cp terraform.tfvars.example terraform.tfvars
 ansible-playbook -i localhost, ansible/plan.yml
 ```
 
-For a single networking blueprint, set `compartment_ocid` to the workload
-compartment where resources should land. That compartment can come from
-`blueprints/core/`, another landing-zone process, or an existing tenancy.
+For a single networking blueprint, set `compartment_ocid` to the workload compartment where
+resources should land. That compartment can come from `blueprints/core/`, another
+landing-zone process, or an existing tenancy.
 
 ## Use The Full Landing Zone
 
-For a fuller environment, deploy only what you actually need. A sensible order
-usually looks like this:
+For a fuller environment, deploy only what you actually need. A sensible order usually looks
+like this:
 
 | Step | Deployment |
 |---|---|
@@ -155,6 +155,19 @@ For the complete pattern catalog, see `docs/DEPLOYMENT-PATTERN-CATALOG.md`.
 | I need app-team onboarding | `blueprints/operating-entity/workload-vending/` |
 | I need Kubernetes on top | `blueprints/extensions/oke/` |
 
+## How To Read A Deployment
+
+Every deployment README now follows the same operator-friendly shape:
+
+| Section | What You Should Get From It |
+|---|---|
+| At A Glance | The quick fit, Terraform shape, key decisions, outputs, and runner path. |
+| What This Deploys | The actual modules, resources, or data sources wired in `main.tf`. |
+| Inputs To Decide | Base tenancy inputs, deployment-specific choices, and enable flags. |
+| Outputs And Hand-Off | The named values another blueprint, runbook, or customer note can consume. |
+| Architecture | The local `architecture/README.md` with the detailed ASCII resource flow. |
+| Review Before Apply | The short list to check before a real plan or apply. |
+
 ## Every Blueprint Is End-To-End
 
 Each deployable blueprint folder has the same working shape:
@@ -176,16 +189,14 @@ blueprints/<family>/<deployment>/
     `-- destroy.yml            Guarded destroy
 ```
 
-This matters because every architecture is reviewable and runnable from its own
-folder. The docs are not a shared generic diagram pasted everywhere; each
-architecture page reflects that folder's Terraform components, request flow,
-outputs, and local Ansible workflow.
+This matters because every architecture is reviewable and runnable from its own folder. The
+docs are not a shared generic diagram pasted everywhere; each architecture page reflects
+that folder's Terraform components, request flow, outputs, and local Ansible workflow.
 
 ## Architecture Experience
 
-Every `architecture/README.md` is intentionally text-first. You should be able
-to review it in GitHub, a terminal, a pull request, or customer notes without
-needing a diagramming tool.
+Every `architecture/README.md` is intentionally text-first. You should be able to review it
+in GitHub, a terminal, a pull request, or customer notes without needing a diagramming tool.
 
 Each architecture page includes:
 
@@ -203,8 +214,8 @@ Each architecture page includes:
 
 ## Terraform + Ansible Workflow
 
-The usual local workflow is intentionally boring, which is exactly what you want
-for infrastructure:
+The usual local workflow is intentionally boring, which is exactly what you want for
+infrastructure:
 
 ```text
 review README.md
@@ -232,14 +243,14 @@ CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
-At the end of each architecture page, the `Terraform + Ansible Deployment
-Output` section shows the folder-specific output names from `outputs.tf`, plus a
-clean example of the Ansible plan/apply recap.
+At the end of each architecture page, the `Terraform + Ansible Deployment Output` section
+shows the folder-specific output names from `outputs.tf`, plus a clean example of the
+Ansible plan/apply recap.
 
 ## CIS Profiles
 
-Generic blueprints do not turn on CIS behavior by default. If you need a
-CIS-aligned landing zone, start from one of these folders:
+Generic blueprints do not turn on CIS behavior by default. If you need a CIS-aligned landing
+zone, start from one of these folders:
 
 ```text
 blueprints/cis/level1/
@@ -264,9 +275,8 @@ defined_tags
 freeform_tags
 ```
 
-Modules should output stable identifiers such as OCIDs, names, and maps that
-blueprints can compose. Remote state belongs to deployable blueprints, not
-shared modules.
+Modules should output stable identifiers such as OCIDs, names, and maps that blueprints can
+compose. Remote state belongs to deployable blueprints, not shared modules.
 
 ## Validation
 
@@ -281,6 +291,8 @@ The validator checks:
 - Terraform format across the repo.
 - Every blueprint has `README.md`.
 - Every blueprint has `architecture/README.md`.
+- Every deployment README includes at-a-glance guidance, inputs, outputs, workflow, review,
+  and validation sections.
 - Every architecture includes ASCII design, Terraform components, deployment
   flow, review checklist, and TF + Ansible output sections.
 - Every implemented blueprint runs `terraform init -backend=false` and
@@ -316,8 +328,8 @@ terraform.tfvars
 .claude/
 ```
 
-The validation playbook normally cleans generated Terraform artifacts for you.
-For manual cleanup:
+The validation playbook normally cleans generated Terraform artifacts for you. For manual
+cleanup:
 
 ```bash
 find . -name ".terraform" -type d -prune -exec rm -rf {} +
@@ -330,12 +342,11 @@ rm -rf .claude
 
 ## Maintainer Notes
 
-Blueprint module sources are pinned to release tags such as `v0.1.0`. When a new
-release is cut, update blueprint source refs deliberately in the same tagged
-commit. Avoid `?ref=main` for customer-facing architecture folders because it
-can change module behavior without review.
+Blueprint module sources are pinned to release tags such as `v0.1.0`. When a new release is
+cut, update blueprint source refs deliberately in the same tagged commit. Avoid `?ref=main`
+for customer-facing architecture folders because it can change module behavior without
+review.
 
 ## License
 
-This project is licensed under the Apache License 2.0. See `LICENSE` for
-details.
+This project is licensed under the Apache License 2.0. See `LICENSE` for details.

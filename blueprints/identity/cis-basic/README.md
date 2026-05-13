@@ -2,11 +2,25 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This deployment README belongs only to `blueprints/identity/cis-basic`. It is the run-facing guide for this blueprint; the detailed ASCII design lives beside it in `architecture/README.md`.
+Use this page as the operator guide for `blueprints/identity/cis-basic`. It tells you what
+the blueprint builds, which inputs deserve a real review, how to run Terraform or the local
+Ansible wrappers, and where to find the detailed ASCII design.
+
+## At A Glance
+
+| Item | Details |
+| --- | --- |
+| Folder | `blueprints/identity/cis-basic` |
+| Best fit | Creates CIS-oriented IAM groups, dynamic groups, and policies without deploying the full core landing-zone stack. |
+| Terraform shape | `groups`, `dynamic_groups`, `policies` |
+| Inputs to settle first | `compartment_ocid`, `groups`, `dynamic_groups`, `policies` |
+| Outputs to hand off | `blueprint_name`, `name_prefix`, `cis_level`, `resource_ids`, `group_ids`, `group_names`, `dynamic_group_ids`, plus 1 more |
+| Local runner | `terraform plan` for quick iteration; `ansible/plan.yml` and guarded `ansible/apply.yml` for the repo-standard flow. |
 
 ## Deployment Purpose
 
-Creates CIS-oriented IAM groups, dynamic groups, and policies without deploying the full core landing-zone stack.
+Creates CIS-oriented IAM groups, dynamic groups, and policies without deploying the full
+core landing-zone stack.
 
 ## When To Use This Deployment
 
@@ -16,19 +30,24 @@ Creates CIS-oriented IAM groups, dynamic groups, and policies without deploying 
 
 ## What This Deploys
 
-The Terraform in this folder wires the following local components:
+This folder is self-contained at the deployment level: Terraform composes the OCI resource
+graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere
+in the repo.
 
-- Terraform module `groups`
-- Terraform module `dynamic_groups`
-- Terraform module `policies`
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Module | `groups` | `../../../modules/iam/groups` |
+| Module | `dynamic_groups` | `../../../modules/iam/dynamic-groups` |
+| Module | `policies` | `../../../modules/iam/policies` |
 
-The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local ignored `terraform.tfvars` file.
+The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local
+ignored `terraform.tfvars` file.
 
 ## Folder Contract
 
 ```text
 blueprints/identity/cis-basic/
-|-- README.md                  This deployment guide
+|-- README.md                  Operator guide for this deployment
 |-- architecture/README.md     Detailed ASCII architecture for this deployment
 |-- main.tf                    Terraform modules, resources, and data sources
 |-- variables.tf               Input contract
@@ -44,43 +63,55 @@ blueprints/identity/cis-basic/
 
 ## Inputs To Decide
 
-Base tenancy and naming inputs:
-- `tenancy_ocid`
-- `current_user_ocid`
-- `region`
-- `home_region`
-- `org`
-- `environment`
-- `region_key`
-- `defined_tags`
-- `freeform_tags`
+Start with `terraform.tfvars.example`, then create a local ignored `terraform.tfvars` with
+real OCIDs, CIDRs, names, recipients, and enable flags.
 
-Deployment-specific inputs to review:
-- `compartment_ocid`
-- `groups`
-- `dynamic_groups`
-- `policies`
+### Base Tenancy And Naming
 
-Important enable flags and switches:
-- `enable_default_groups`
-- `enable_default_policies`
+| Input | What To Decide |
+| --- | --- |
+| `tenancy_ocid` | OCI tenancy OCID. |
+| `current_user_ocid` | OCI user OCID used for local execution or bootstrap. |
+| `region` | OCI region name. |
+| `home_region` | OCI tenancy home region. |
+| `org` | Short organization prefix used in names. |
+| `environment` | Deployment environment name. |
+| `region_key` | Short OCI region key used in resource names. |
+| `defined_tags` | Defined tags applied to resources. |
+| `freeform_tags` | Freeform tags applied to resources. |
 
-Review `terraform.tfvars.example` first, then create a local ignored `terraform.tfvars` for real OCIDs, CIDRs, names, recipients, and enable flags.
+### Deployment-Specific Decisions
+
+| Input | What To Decide |
+| --- | --- |
+| `compartment_ocid` | Compartment OCID where identity policies are created. Defaults to tenancy_ocid. |
+| `groups` | Additional or overriding IAM groups keyed by logical role. |
+| `dynamic_groups` | Dynamic groups keyed by logical role. |
+| `policies` | Additional IAM policies keyed by logical role. |
+
+### Enable Flags And Switches
+
+| Input | What To Decide |
+| --- | --- |
+| `enable_default_groups` | Create the default CIS landing zone IAM groups. |
+| `enable_default_policies` | Create baseline CIS IAM policies. |
 
 ## Outputs And Hand-Off
 
-This deployment exports the following outputs from `outputs.tf`:
+These outputs are the deployment contract for downstream blueprints, runbooks, customer
+notes, or manual hand-off. If an output name changes, update dependent docs and consumers in
+the same change.
 
-- `blueprint_name`
-- `name_prefix`
-- `cis_level`
-- `resource_ids`
-- `group_ids`
-- `group_names`
-- `dynamic_group_ids`
-- `policy_ids`
-
-Use these outputs as the contract for downstream blueprints, runbooks, customer notes, or manual hand-off. If an output name changes, update dependent documentation and consumers in the same change.
+| Output | Hand-Off Meaning |
+| --- | --- |
+| `blueprint_name` | Blueprint identifier. |
+| `name_prefix` | Standard OCI naming prefix for resources created by this blueprint. |
+| `cis_level` | CIS baseline level implemented by this identity blueprint. |
+| `resource_ids` | Map of resource identifiers created by this blueprint. |
+| `group_ids` | IAM group OCIDs keyed by logical role. |
+| `group_names` | IAM group names keyed by logical role. |
+| `dynamic_group_ids` | Dynamic group OCIDs keyed by logical role. |
+| `policy_ids` | IAM policy OCIDs keyed by logical role. |
 
 ## Terraform And Ansible Workflow
 
@@ -103,7 +134,8 @@ CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
-`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for customer-facing or shared environments.
+`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for
+customer-facing or shared environments.
 
 ## Deployment Order
 
@@ -121,7 +153,9 @@ The full detailed ASCII architecture is local to this deployment:
 architecture/README.md
 ```
 
-That file documents the ownership boundary, Terraform components, request flow, state and output contract, operational boundaries, review checklist, and the expected Terraform + Ansible output at the end of the deployment.
+That file documents the ownership boundary, Terraform components, request flow, state and
+output contract, operational boundaries, review checklist, and the expected Terraform +
+Ansible output at the end of the deployment.
 
 ## Review Before Apply
 
@@ -139,4 +173,7 @@ From the repository root:
 ./scripts/validate-all.sh
 ```
 
-The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.
+The validator checks Terraform formatting, required deployment README files, required
+architecture README sections, `terraform init -backend=false`, `terraform validate`, root
+Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
+cleanup of generated Terraform artifacts.

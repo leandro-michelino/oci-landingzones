@@ -2,18 +2,30 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This architecture page documents the `blueprints/extensions/streaming` deployment. It is intentionally text-first and ASCII-only so it can be reviewed in terminals, pull requests, and customer notes without a diagramming tool.
+This is the design view for `blueprints/extensions/streaming`. It stays ASCII-first on
+purpose so you can review the deployment in GitHub, a terminal, a pull request, or customer
+notes without a diagramming tool.
 
 ## Deployment Purpose
 
-This blueprint provides optional Streaming stream pool and stream extension with private
-endpoint and KMS options.
+Adds OCI Streaming resources with stream pool and stream outputs for event-driven or
+data-platform workloads.
+
+## Architecture At A Glance
+
+| Item | Details |
+| --- | --- |
+| Boundary | `blueprints/extensions/streaming` owns this deployment end to end. |
+| Terraform components | `oci_streaming_stream_pool.this`, `oci_streaming_stream.this` |
+| Input source | `terraform.tfvars.example` documents the shape; local ignored tfvars provide real values. |
+| Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `stream_pool_id`, `stream_ids` |
+| Runner contract | `ansible/plan.yml`, guarded `ansible/apply.yml`, and guarded `ansible/destroy.yml`. |
 
 ## Files In This Deployment
 
 ```text
 blueprints/extensions/streaming/
-|-- README.md                         Human-friendly deployment notes
+|-- README.md                         Operator guide for this deployment
 |-- architecture/README.md            This detailed ASCII architecture
 |-- main.tf                           Terraform resource and module wiring
 |-- variables.tf                      Input contract and defaults
@@ -30,57 +42,60 @@ blueprints/extensions/streaming/
 ## ASCII Architecture
 
 ```text
-+----------------------------------------------------------------------------------------------+
-| Streaming Extension                                                                          |
-| blueprints/extensions/streaming                                                              |
-+----------------------------------------------------------------------------------------------+
-| Operator / CI / local shell                                                                  |
-|   |                                                                                          |
-|   v                                                                                          |
-+----------------------------------------------------------------------------------------------+
-| Blueprint folder contract                                                                    |
-|   README.md                                                                                  |
-|   architecture/README.md                                                                     |
-|   main.tf + variables.tf + outputs.tf + providers.tf + versions.tf                           |
-|   ansible/plan.yml + apply.yml + destroy.yml                                                 |
-+----------------------------------------------------------------------------------------------+
-|   |                                                                                          |
-|   v                                                                                          |
-+----------------------------------------------------------------------------------------------+
-| Terraform composition and OCI resources                                                      |
-|  01. resource oci_streaming_stream_pool.this                   (main.tf)                     |
-|  02. resource oci_streaming_stream.this                        (main.tf)                     |
-+----------------------------------------------------------------------------------------------+
-|   |                                                                                          |
-|   v                                                                                          |
-+----------------------------------------------------------------------------------------------+
-| Architecture layers                                                                          |
-|   - Control plane: Terraform provider and extension variables                                |
-|   - Dependency plane: existing compartment, subnet, VCN, key, or backend IDs supplied by tfva|
-|   - Service plane: extension-specific OCI resources                                          |
-|   - Operations plane: IDs and endpoints consumed by workloads and runbooks                   |
-+----------------------------------------------------------------------------------------------+
-|   |                                                                                          |
-|   v                                                                                          |
-+----------------------------------------------------------------------------------------------+
-| Outputs and hand-off                                                                         |
-|   resource_ids plus blueprint-specific IDs                                                   |
-|   tfvars reviewed before apply                                                               |
-|   generated Terraform artifacts cleaned after validation                                     |
-+----------------------------------------------------------------------------------------------+
++------------------------------------------------------------------------------------------------------+
+| Streaming Extension                                                                                  |
+| Folder: blueprints/extensions/streaming                                                              |
+|                                                                                                      |
+| [1] Operator entry                                                                                   |
+| Operator, CI job, or local shell reviews README.md and architecture/README.md, copies                |
+| terraform.tfvars.example to terraform.tfvars, and chooses either direct Terraform or the local       |
+| Ansible wrapper.                                                                                     |
+|                                                                                                      |
+| [2] Local file contract                                                                              |
+| README.md -> run-facing deployment guide.                                                            |
+| architecture/README.md -> detailed text architecture and review notes.                               |
+| main.tf -> Terraform composition for this deployment.                                                |
+| variables.tf -> input contract and defaults.                                                         |
+| outputs.tf -> named hand-off values.                                                                 |
+| providers.tf + versions.tf -> provider setup and version constraints.                                |
+| ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
+|                                                                                                      |
+| [3] Terraform composition from main.tf                                                               |
+| 01. resource.oci_streaming_stream_pool.this                                                          |
+| 02. resource.oci_streaming_stream.this                                                               |
+|                                                                                                      |
+| [4] OCI/resource planes                                                                              |
+| - Control: provider config, tenancy context, naming inputs, and local tfvars.                        |
+| - Service extension: optional OCI service resources that attach to an existing landing-zone          |
+| foundation.                                                                                          |
+| - Consumption: service IDs, endpoints, and names for applications, runbooks, and monitoring.         |
+| - Operations: Ansible plan/apply/destroy wrappers, validation, and cleanup.                          |
+|                                                                                                      |
+| [5] Output hand-off                                                                                  |
+| - blueprint_name: Blueprint identifier.                                                              |
+| - name_prefix: Standard OCI naming prefix for resources created by this blueprint.                   |
+| - resource_ids: Map of resource identifiers created by this blueprint.                               |
+| - stream_pool_id: Created or referenced stream pool OCID.                                            |
+| - stream_ids: Stream OCIDs keyed by logical stream name.                                             |
+|                                                                                                      |
+| [6] Deployment close-out                                                                             |
+| terraform output and the Ansible PLAY RECAP are the human and automation hand-off.                   |
+| Generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git.  |
++------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components
 
-- `resource oci_streaming_stream_pool.this` in `main.tf`: creates a Streaming stream pool.
-- `resource oci_streaming_stream.this` in `main.tf`: creates one or more streams.
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Resource | `oci_streaming_stream_pool.this` | Declared directly in `main.tf` |
+| Resource | `oci_streaming_stream.this` | Declared directly in `main.tf` |
 
 ## Request And Deployment Flow
 
-- Operator supplies existing compartment, subnet, VCN, backend, or key dependencies.
-- Terraform creates the optional OCI service extension only when enable flags allow it.
-- The extension attaches to the supplied network or backend boundary.
-- Outputs expose service IDs and endpoint IDs for workloads and runbooks.
+- Operator confirms the foundation and network dependencies are already available.
+- Terraform composes the optional service resources declared by this deployment.
+- Outputs expose service IDs, names, and endpoints for applications and runbooks.
 
 ## State, Inputs, And Outputs
 
@@ -96,8 +111,8 @@ Terraform state
 |-- generated .terraform directories, lock files, plans, and state files are cleaned by validation
 |
 Output contract
-|-- blueprint_name and name_prefix identify the deployment
-|-- resource_ids summarizes primary resources in a machine-friendly map
+|-- blueprint_name and name_prefix identify the deployment when declared
+|-- resource_ids summarizes primary resources when declared
 `-- blueprint-specific outputs expose compartment, VCN, subnet, key, policy, service, or DR IDs
 ```
 
@@ -123,7 +138,10 @@ Output contract
 ./scripts/validate-all.sh
 ```
 
-The repository validator checks Terraform formatting, initializes and validates every blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every blueprint-local Ansible runner, and removes generated Terraform artifacts afterward.
+The repository validator checks Terraform formatting, initializes and validates every
+blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every
+blueprint-local Ansible runner, verifies README coverage, and removes generated Terraform
+artifacts afterward.
 
 ## When To Update This Architecture
 
@@ -135,7 +153,9 @@ The repository validator checks Terraform formatting, initializes and validates 
 
 ## Terraform + Ansible Deployment Output
 
-This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper with a clean recap at the end.
+This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph
+and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper
+with a clean recap at the end.
 
 ```text
 $ cd blueprints/extensions/streaming
@@ -176,4 +196,6 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=<n> changed=<n> unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
 ```
 
-For Streaming, the important hand-off values are `blueprint_name`, `name_prefix`, `resource_ids`, `stream_pool_id`, `stream_ids`. Keep those names stable unless a downstream blueprint, runbook, or customer hand-off is updated at the same time.
+For Streaming Extension, the important hand-off values are `blueprint_name`, `name_prefix`,
+`resource_ids`, `stream_pool_id`, `stream_ids`. Keep those names stable unless a downstream
+blueprint, runbook, or customer hand-off is updated at the same time.

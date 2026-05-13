@@ -2,11 +2,26 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This deployment README belongs only to `blueprints/networking/hub-spoke-with-multicloud-interconnect`. It is the run-facing guide for this blueprint; the detailed ASCII design lives beside it in `architecture/README.md`.
+Use this page as the operator guide for
+`blueprints/networking/hub-spoke-with-multicloud-interconnect`. It tells you what the
+blueprint builds, which inputs deserve a real review, how to run Terraform or the local
+Ansible wrappers, and where to find the detailed ASCII design.
+
+## At A Glance
+
+| Item | Details |
+| --- | --- |
+| Folder | `blueprints/networking/hub-spoke-with-multicloud-interconnect` |
+| Best fit | Composes hub-spoke networking with FastConnect and IPSec options for multicloud or multi-provider connectivity. |
+| Terraform shape | `network`, `fastconnect`, `ipsec_vpn` |
+| Inputs to settle first | `compartment_ocid`, `customer_bgp_asn`, `provider_service_id`, `provider_service_key_name`, `cpe_ip_address`, `remote_cloud_cidr_blocks` |
+| Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `hub_vcn_id`, `drg_id`, `spoke_vcn_ids`, `virtual_circuit_id`, plus 1 more |
+| Local runner | `terraform plan` for quick iteration; `ansible/plan.yml` and guarded `ansible/apply.yml` for the repo-standard flow. |
 
 ## Deployment Purpose
 
-Composes hub-spoke networking with FastConnect and IPSec options for multicloud or multi-provider connectivity.
+Composes hub-spoke networking with FastConnect and IPSec options for multicloud or
+multi-provider connectivity.
 
 ## When To Use This Deployment
 
@@ -16,19 +31,24 @@ Composes hub-spoke networking with FastConnect and IPSec options for multicloud 
 
 ## What This Deploys
 
-The Terraform in this folder wires the following local components:
+This folder is self-contained at the deployment level: Terraform composes the OCI resource
+graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere
+in the repo.
 
-- Terraform module `network`
-- Terraform module `fastconnect`
-- Terraform module `ipsec_vpn`
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Module | `network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.1.0` |
+| Module | `fastconnect` | `modules/networking/fastconnect @ v0.1.0` |
+| Module | `ipsec_vpn` | `modules/networking/ipsec-vpn @ v0.1.0` |
 
-The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local ignored `terraform.tfvars` file.
+The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local
+ignored `terraform.tfvars` file.
 
 ## Folder Contract
 
 ```text
 blueprints/networking/hub-spoke-with-multicloud-interconnect/
-|-- README.md                  This deployment guide
+|-- README.md                  Operator guide for this deployment
 |-- architecture/README.md     Detailed ASCII architecture for this deployment
 |-- main.tf                    Terraform modules, resources, and data sources
 |-- variables.tf               Input contract
@@ -44,46 +64,58 @@ blueprints/networking/hub-spoke-with-multicloud-interconnect/
 
 ## Inputs To Decide
 
-Base tenancy and naming inputs:
-- `tenancy_ocid`
-- `current_user_ocid`
-- `region`
-- `home_region`
-- `oci_config_profile`
-- `org`
-- `environment`
-- `region_key`
-- `defined_tags`
-- `freeform_tags`
+Start with `terraform.tfvars.example`, then create a local ignored `terraform.tfvars` with
+real OCIDs, CIDRs, names, recipients, and enable flags.
 
-Deployment-specific inputs to review:
-- `compartment_ocid`
-- `customer_bgp_asn`
-- `provider_service_id`
-- `provider_service_key_name`
-- `cpe_ip_address`
-- `remote_cloud_cidr_blocks`
+### Base Tenancy And Naming
 
-Important enable flags and switches:
-- `enable_fastconnect`
-- `enable_ipsec`
+| Input | What To Decide |
+| --- | --- |
+| `tenancy_ocid` | OCI tenancy OCID. |
+| `current_user_ocid` | OCI user OCID used for local execution or bootstrap. |
+| `region` | OCI region name. |
+| `home_region` | OCI tenancy home region. |
+| `oci_config_profile` | Optional OCI CLI config profile for local execution. |
+| `org` | Short organization prefix used in names. |
+| `environment` | Deployment environment name. |
+| `region_key` | Short OCI region key used in resource names. |
+| `defined_tags` | Defined tags applied to resources. |
+| `freeform_tags` | Freeform tags applied to resources. |
 
-Review `terraform.tfvars.example` first, then create a local ignored `terraform.tfvars` for real OCIDs, CIDRs, names, recipients, and enable flags.
+### Deployment-Specific Decisions
+
+| Input | What To Decide |
+| --- | --- |
+| `compartment_ocid` | Compartment OCID where networking resources are deployed. Defaults to tenancy_ocid for simple tests. |
+| `customer_bgp_asn` | Customer BGP ASN for FastConnect. |
+| `provider_service_id` | Provider service OCID for partner FastConnect circuits. |
+| `provider_service_key_name` | Provider service key/name supplied by the FastConnect partner. |
+| `cpe_ip_address` | Remote cloud VPN gateway public or private IP address. |
+| `remote_cloud_cidr_blocks` | Remote cloud CIDR blocks routed over IPSec. |
+
+### Enable Flags And Switches
+
+| Input | What To Decide |
+| --- | --- |
+| `enable_fastconnect` | Create FastConnect for cloud exchange or partner connectivity. |
+| `enable_ipsec` | Create IPSec as a backup or primary multicloud tunnel. |
 
 ## Outputs And Hand-Off
 
-This deployment exports the following outputs from `outputs.tf`:
+These outputs are the deployment contract for downstream blueprints, runbooks, customer
+notes, or manual hand-off. If an output name changes, update dependent docs and consumers in
+the same change.
 
-- `blueprint_name`
-- `name_prefix`
-- `resource_ids`
-- `hub_vcn_id`
-- `drg_id`
-- `spoke_vcn_ids`
-- `virtual_circuit_id`
-- `ipsec_id`
-
-Use these outputs as the contract for downstream blueprints, runbooks, customer notes, or manual hand-off. If an output name changes, update dependent documentation and consumers in the same change.
+| Output | Hand-Off Meaning |
+| --- | --- |
+| `blueprint_name` | Blueprint identifier. |
+| `name_prefix` | Standard OCI naming prefix for resources created by this blueprint. |
+| `resource_ids` | Map of resource identifiers created by this blueprint. |
+| `hub_vcn_id` | Hub VCN OCID. |
+| `drg_id` | DRG OCID. |
+| `spoke_vcn_ids` | Spoke VCN OCIDs keyed by spoke name. |
+| `virtual_circuit_id` | FastConnect virtual circuit OCID. |
+| `ipsec_id` | IPSec connection OCID. |
 
 ## Terraform And Ansible Workflow
 
@@ -106,7 +138,8 @@ CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
-`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for customer-facing or shared environments.
+`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for
+customer-facing or shared environments.
 
 ## Deployment Order
 
@@ -124,7 +157,9 @@ The full detailed ASCII architecture is local to this deployment:
 architecture/README.md
 ```
 
-That file documents the ownership boundary, Terraform components, request flow, state and output contract, operational boundaries, review checklist, and the expected Terraform + Ansible output at the end of the deployment.
+That file documents the ownership boundary, Terraform components, request flow, state and
+output contract, operational boundaries, review checklist, and the expected Terraform +
+Ansible output at the end of the deployment.
 
 ## Review Before Apply
 
@@ -142,4 +177,7 @@ From the repository root:
 ./scripts/validate-all.sh
 ```
 
-The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.
+The validator checks Terraform formatting, required deployment README files, required
+architecture README sections, `terraform init -backend=false`, `terraform validate`, root
+Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
+cleanup of generated Terraform artifacts.

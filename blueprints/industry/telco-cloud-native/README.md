@@ -2,11 +2,25 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This deployment README belongs only to `blueprints/industry/telco-cloud-native`. It is the run-facing guide for this blueprint; the detailed ASCII design lives beside it in `architecture/README.md`.
+Use this page as the operator guide for `blueprints/industry/telco-cloud-native`. It tells
+you what the blueprint builds, which inputs deserve a real review, how to run Terraform or
+the local Ansible wrappers, and where to find the detailed ASCII design.
+
+## At A Glance
+
+| Item | Details |
+| --- | --- |
+| Folder | `blueprints/industry/telco-cloud-native` |
+| Best fit | Composes network, vault, OKE, monitoring, and OS Management foundations for telco-oriented cloud-native workloads. |
+| Terraform shape | `network`, `vault`, `oke`, `monitoring`, `os_management` |
+| Inputs to settle first | `compartment_ocid`, `cluster_label`, `kubernetes_version`, `oke_endpoint_subnet_key`, `oke_service_lb_subnet_key`, `oke_node_subnet_key`, `node_shape`, plus 8 more |
+| Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `hub_vcn_id`, `drg_id`, `hub_subnet_ids`, `oke_cluster_id`, plus 4 more |
+| Local runner | `terraform plan` for quick iteration; `ansible/plan.yml` and guarded `ansible/apply.yml` for the repo-standard flow. |
 
 ## Deployment Purpose
 
-Composes network, vault, OKE, monitoring, and OS Management foundations for telco-oriented cloud-native workloads.
+Composes network, vault, OKE, monitoring, and OS Management foundations for telco-oriented
+cloud-native workloads.
 
 ## When To Use This Deployment
 
@@ -16,21 +30,26 @@ Composes network, vault, OKE, monitoring, and OS Management foundations for telc
 
 ## What This Deploys
 
-The Terraform in this folder wires the following local components:
+This folder is self-contained at the deployment level: Terraform composes the OCI resource
+graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere
+in the repo.
 
-- Terraform module `network`
-- Terraform module `vault`
-- Terraform module `oke`
-- Terraform module `monitoring`
-- Terraform module `os_management`
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Module | `network` | `../../networking/hub-spoke-with-drg-and-three-tier-vcns` |
+| Module | `vault` | `../../../modules/security/vault` |
+| Module | `oke` | `../../extensions/oke` |
+| Module | `monitoring` | `../../../modules/operations/monitoring` |
+| Module | `os_management` | `../../../modules/operations/os-management` |
 
-The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local ignored `terraform.tfvars` file.
+The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local
+ignored `terraform.tfvars` file.
 
 ## Folder Contract
 
 ```text
 blueprints/industry/telco-cloud-native/
-|-- README.md                  This deployment guide
+|-- README.md                  Operator guide for this deployment
 |-- architecture/README.md     Detailed ASCII architecture for this deployment
 |-- main.tf                    Terraform modules, resources, and data sources
 |-- variables.tf               Input contract
@@ -46,64 +65,76 @@ blueprints/industry/telco-cloud-native/
 
 ## Inputs To Decide
 
-Base tenancy and naming inputs:
-- `tenancy_ocid`
-- `current_user_ocid`
-- `region`
-- `home_region`
-- `oci_config_profile`
-- `org`
-- `environment`
-- `region_key`
-- `defined_tags`
-- `freeform_tags`
+Start with `terraform.tfvars.example`, then create a local ignored `terraform.tfvars` with
+real OCIDs, CIDRs, names, recipients, and enable flags.
 
-Deployment-specific inputs to review:
-- `compartment_ocid`
-- `cluster_label`
-- `kubernetes_version`
-- `oke_endpoint_subnet_key`
-- `oke_service_lb_subnet_key`
-- `oke_node_subnet_key`
-- `node_shape`
-- `node_shape_ocpus`
-- `node_shape_memory_in_gbs`
-- `ssh_public_key`
-- `monitoring_notification_topics`
-- `monitoring_subscriptions`
-- `monitoring_alarms`
-- `os_managed_instance_groups`
-- `os_scheduled_jobs`
+### Base Tenancy And Naming
 
-Important enable flags and switches:
-- `enable_vault`
-- `enable_default_vault`
-- `enable_default_key`
-- `enable_oke_cluster`
-- `enable_oke_node_pool`
-- `enable_monitoring`
-- `enable_default_monitoring_topic`
-- `enable_os_management`
+| Input | What To Decide |
+| --- | --- |
+| `tenancy_ocid` | OCI tenancy OCID. |
+| `current_user_ocid` | OCI user OCID used for local execution or bootstrap. |
+| `region` | OCI region name. |
+| `home_region` | OCI tenancy home region. |
+| `oci_config_profile` | Optional OCI CLI config profile for local execution. |
+| `org` | Short organization prefix used in names. |
+| `environment` | Deployment environment name. |
+| `region_key` | Short OCI region key used in resource names. |
+| `defined_tags` | Defined tags applied to resources. |
+| `freeform_tags` | Freeform tags applied to resources. |
 
-Review `terraform.tfvars.example` first, then create a local ignored `terraform.tfvars` for real OCIDs, CIDRs, names, recipients, and enable flags.
+### Deployment-Specific Decisions
+
+| Input | What To Decide |
+| --- | --- |
+| `compartment_ocid` | Compartment OCID where telco cloud-native resources are created. Defaults to tenancy_ocid. |
+| `cluster_label` | Short OKE cluster label used in names. |
+| `kubernetes_version` | Kubernetes version for the OKE cluster and node pool. |
+| `oke_endpoint_subnet_key` | Hub subnet key used for the OKE API endpoint. |
+| `oke_service_lb_subnet_key` | Hub subnet key used for OKE service load balancers. |
+| `oke_node_subnet_key` | Hub subnet key used for OKE worker nodes. |
+| `node_shape` | OKE worker node shape. |
+| `node_shape_ocpus` | Optional OCPU count for flexible node shapes. |
+| `node_shape_memory_in_gbs` | Optional memory in GB for flexible node shapes. |
+| `ssh_public_key` | Optional SSH public key for OKE worker nodes. |
+| `monitoring_notification_topics` | ONS notification topics keyed by logical name. |
+| `monitoring_subscriptions` | ONS subscriptions keyed by logical name. |
+| `monitoring_alarms` | Monitoring alarms keyed by logical name. |
+| `os_managed_instance_groups` | OS Management Hub managed instance groups keyed by logical name. |
+| `os_scheduled_jobs` | OS Management Hub scheduled jobs keyed by logical name. |
+
+### Enable Flags And Switches
+
+| Input | What To Decide |
+| --- | --- |
+| `enable_vault` | Create Vault resources for telco platform encryption. |
+| `enable_default_vault` | Create the default telco platform vault. |
+| `enable_default_key` | Create the default telco platform KMS key. |
+| `enable_oke_cluster` | Create an OKE cluster for telco cloud-native workloads. |
+| `enable_oke_node_pool` | Create an OKE node pool for telco workloads. |
+| `enable_monitoring` | Create Monitoring resources for telco workloads. |
+| `enable_default_monitoring_topic` | Create the default monitoring notification topic. |
+| `enable_os_management` | Create OS Management Hub resources for telco compute fleets. |
 
 ## Outputs And Hand-Off
 
-This deployment exports the following outputs from `outputs.tf`:
+These outputs are the deployment contract for downstream blueprints, runbooks, customer
+notes, or manual hand-off. If an output name changes, update dependent docs and consumers in
+the same change.
 
-- `blueprint_name`
-- `name_prefix`
-- `resource_ids`
-- `hub_vcn_id`
-- `drg_id`
-- `hub_subnet_ids`
-- `oke_cluster_id`
-- `oke_node_pool_id`
-- `vault_ids`
-- `monitoring_alarm_ids`
-- `os_management_resource_ids`
-
-Use these outputs as the contract for downstream blueprints, runbooks, customer notes, or manual hand-off. If an output name changes, update dependent documentation and consumers in the same change.
+| Output | Hand-Off Meaning |
+| --- | --- |
+| `blueprint_name` | Blueprint identifier. |
+| `name_prefix` | Standard OCI naming prefix for resources created by this blueprint. |
+| `resource_ids` | Map of resource identifiers created by this blueprint. |
+| `hub_vcn_id` | Telco hub VCN OCID. |
+| `drg_id` | Telco DRG OCID. |
+| `hub_subnet_ids` | Hub subnet OCIDs keyed by role. |
+| `oke_cluster_id` | OKE cluster OCID. |
+| `oke_node_pool_id` | OKE node pool OCID. |
+| `vault_ids` | Vault OCIDs keyed by logical name. |
+| `monitoring_alarm_ids` | Monitoring alarm OCIDs keyed by logical name. |
+| `os_management_resource_ids` | OS Management Hub resource identifiers. |
 
 ## Terraform And Ansible Workflow
 
@@ -126,7 +157,8 @@ CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
-`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for customer-facing or shared environments.
+`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for
+customer-facing or shared environments.
 
 ## Deployment Order
 
@@ -144,7 +176,9 @@ The full detailed ASCII architecture is local to this deployment:
 architecture/README.md
 ```
 
-That file documents the ownership boundary, Terraform components, request flow, state and output contract, operational boundaries, review checklist, and the expected Terraform + Ansible output at the end of the deployment.
+That file documents the ownership boundary, Terraform components, request flow, state and
+output contract, operational boundaries, review checklist, and the expected Terraform +
+Ansible output at the end of the deployment.
 
 ## Review Before Apply
 
@@ -162,4 +196,7 @@ From the repository root:
 ./scripts/validate-all.sh
 ```
 
-The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.
+The validator checks Terraform formatting, required deployment README files, required
+architecture README sections, `terraform init -backend=false`, `terraform validate`, root
+Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
+cleanup of generated Terraform artifacts.

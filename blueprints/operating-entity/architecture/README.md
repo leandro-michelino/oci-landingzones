@@ -2,18 +2,30 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This architecture page documents the `blueprints/operating-entity` deployment. It is intentionally text-first and ASCII-only so it can be reviewed in terminals, pull requests, and customer notes without a diagramming tool.
+This is the design view for `blueprints/operating-entity`. It stays ASCII-first on purpose
+so you can review the deployment in GitHub, a terminal, a pull request, or customer notes
+without a diagramming tool.
 
 ## Deployment Purpose
 
-This blueprint provides single operating entity onboarding with delegated compartments,
-groups, and policies.
+Creates a single operating-entity boundary with compartments, groups, and policies for
+delegated administration.
+
+## Architecture At A Glance
+
+| Item | Details |
+| --- | --- |
+| Boundary | `blueprints/operating-entity` owns this deployment end to end. |
+| Terraform components | `compartments`, `groups`, `policies` |
+| Input source | `terraform.tfvars.example` documents the shape; local ignored tfvars provide real values. |
+| Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `root_compartment_id`, `compartment_ids`, `compartment_names`, `group_ids`, `group_names`, plus 2 more |
+| Runner contract | `ansible/plan.yml`, guarded `ansible/apply.yml`, and guarded `ansible/destroy.yml`. |
 
 ## Files In This Deployment
 
 ```text
 blueprints/operating-entity/
-|-- README.md                         Human-friendly deployment notes
+|-- README.md                         Operator guide for this deployment
 |-- architecture/README.md            This detailed ASCII architecture
 |-- main.tf                           Terraform resource and module wiring
 |-- variables.tf                      Input contract and defaults
@@ -30,59 +42,67 @@ blueprints/operating-entity/
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------+
-| Operating Entity Deployment                                                                |
-| blueprints/operating-entity                                                                |
-+--------------------------------------------------------------------------------------------+
-| Operator / CI / local shell                                                                |
-|   |                                                                                        |
-|   v                                                                                        |
-+--------------------------------------------------------------------------------------------+
-| Blueprint folder contract                                                                  |
-|   README.md                                                                                |
-|   architecture/README.md                                                                   |
-|   main.tf + variables.tf + outputs.tf + providers.tf + versions.tf                         |
-|   ansible/plan.yml + apply.yml + destroy.yml                                               |
-+--------------------------------------------------------------------------------------------+
-|   |                                                                                        |
-|   v                                                                                        |
-+--------------------------------------------------------------------------------------------+
-| Terraform composition and OCI resources                                                    |
-|  01. module   compartments                                     (main.tf)                   |
-|  02. module   groups                                           (main.tf)                   |
-|  03. module   policies                                         (main.tf)                   |
-+--------------------------------------------------------------------------------------------+
-|   |                                                                                        |
-|   v                                                                                        |
-+--------------------------------------------------------------------------------------------+
-| Architecture layers                                                                        |
-|   - Control plane: Terraform provider and blueprint variables                              |
-|   - Foundation plane: compartments, tags, IAM, logging, security, and operations modules   |
-|   - Consumption plane: outputs used by networking, operating entity, and extension blueprin|
-|   - Operations plane: Ansible runners, validation, and cleanup                             |
-+--------------------------------------------------------------------------------------------+
-|   |                                                                                        |
-|   v                                                                                        |
-+--------------------------------------------------------------------------------------------+
-| Outputs and hand-off                                                                       |
-|   resource_ids plus blueprint-specific IDs                                                 |
-|   tfvars reviewed before apply                                                             |
-|   generated Terraform artifacts cleaned after validation                                   |
-+--------------------------------------------------------------------------------------------+
++------------------------------------------------------------------------------------------------------+
+| Single Operating Entity                                                                              |
+| Folder: blueprints/operating-entity                                                                  |
+|                                                                                                      |
+| [1] Operator entry                                                                                   |
+| Operator, CI job, or local shell reviews README.md and architecture/README.md, copies                |
+| terraform.tfvars.example to terraform.tfvars, and chooses either direct Terraform or the local       |
+| Ansible wrapper.                                                                                     |
+|                                                                                                      |
+| [2] Local file contract                                                                              |
+| README.md -> run-facing deployment guide.                                                            |
+| architecture/README.md -> detailed text architecture and review notes.                               |
+| main.tf -> Terraform composition for this deployment.                                                |
+| variables.tf -> input contract and defaults.                                                         |
+| outputs.tf -> named hand-off values.                                                                 |
+| providers.tf + versions.tf -> provider setup and version constraints.                                |
+| ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
+|                                                                                                      |
+| [3] Terraform composition from main.tf                                                               |
+| 01. module.compartments -> modules/iam/compartments @ v0.1.0                                         |
+| 02. module.groups -> modules/iam/groups @ v0.1.0                                                     |
+| 03. module.policies -> modules/iam/policies @ v0.1.0                                                 |
+|                                                                                                      |
+| [4] OCI/resource planes                                                                              |
+| - Control: provider config, tenancy context, naming inputs, and local tfvars.                        |
+| - Ownership: compartments, policies, groups, budgets, tags, and workload boundaries for teams or     |
+| business units.                                                                                      |
+| - Consumption: operating entity outputs for app teams, platform teams, and onboarding runbooks.      |
+| - Operations: Ansible plan/apply/destroy wrappers, validation, and cleanup.                          |
+|                                                                                                      |
+| [5] Output hand-off                                                                                  |
+| - blueprint_name: Blueprint identifier.                                                              |
+| - name_prefix: Standard OCI naming prefix for resources created by this blueprint.                   |
+| - resource_ids: Map of resource identifiers created by this blueprint.                               |
+| - root_compartment_id: Operating entity root compartment OCID.                                       |
+| - compartment_ids: Operating entity compartment OCIDs keyed by logical name.                         |
+| - compartment_names: Operating entity compartment names keyed by logical name.                       |
+| - group_ids: Operating entity IAM group OCIDs.                                                       |
+| - group_names: Operating entity IAM group names.                                                     |
+| - policy_ids: Operating entity IAM policy OCIDs.                                                     |
+| - policy_statements: Operating entity IAM policy statements.                                         |
+|                                                                                                      |
+| [6] Deployment close-out                                                                             |
+| terraform output and the Ansible PLAY RECAP are the human and automation hand-off.                   |
+| Generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git.  |
++------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components
 
-- `module compartments` in `main.tf`: composes the reusable compartments module or child blueprint.
-- `module groups` in `main.tf`: composes the reusable groups module or child blueprint.
-- `module policies` in `main.tf`: composes the reusable policies module or child blueprint.
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Module | `compartments` | `modules/iam/compartments @ v0.1.0` |
+| Module | `groups` | `modules/iam/groups @ v0.1.0` |
+| Module | `policies` | `modules/iam/policies @ v0.1.0` |
 
 ## Request And Deployment Flow
 
-- Operator reviews tfvars and chooses the plan/apply runner.
-- Terraform builds the foundation in dependency order.
-- Outputs become the hand-off contract for dependent blueprints.
-- Validation checks fmt, init, validate, and Ansible syntax.
+- Operator reviews the ownership model, compartment hierarchy, budgets, IAM, and workload onboarding choices.
+- Terraform composes the entity boundary and supporting controls.
+- Outputs become the app-team or business-unit onboarding contract.
 
 ## State, Inputs, And Outputs
 
@@ -98,8 +118,8 @@ Terraform state
 |-- generated .terraform directories, lock files, plans, and state files are cleaned by validation
 |
 Output contract
-|-- blueprint_name and name_prefix identify the deployment
-|-- resource_ids summarizes primary resources in a machine-friendly map
+|-- blueprint_name and name_prefix identify the deployment when declared
+|-- resource_ids summarizes primary resources when declared
 `-- blueprint-specific outputs expose compartment, VCN, subnet, key, policy, service, or DR IDs
 ```
 
@@ -124,7 +144,10 @@ Output contract
 ./scripts/validate-all.sh
 ```
 
-The repository validator checks Terraform formatting, initializes and validates every blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every blueprint-local Ansible runner, and removes generated Terraform artifacts afterward.
+The repository validator checks Terraform formatting, initializes and validates every
+blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every
+blueprint-local Ansible runner, verifies README coverage, and removes generated Terraform
+artifacts afterward.
 
 ## When To Update This Architecture
 
@@ -136,7 +159,9 @@ The repository validator checks Terraform formatting, initializes and validates 
 
 ## Terraform + Ansible Deployment Output
 
-This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper with a clean recap at the end.
+This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph
+and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper
+with a clean recap at the end.
 
 ```text
 $ cd blueprints/operating-entity
@@ -157,7 +182,7 @@ compartment_names = { ... }
 group_ids = { ... }
 group_names = { ... }
 policy_ids = { ... }
-policy_statements = [ ... ]
+policy_statements = "<value>"
 ```
 
 ```text
@@ -182,4 +207,8 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=<n> changed=<n> unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
 ```
 
-For Operating Entity, the important hand-off values are `blueprint_name`, `name_prefix`, `resource_ids`, `root_compartment_id`, `compartment_ids`, `compartment_names`, `group_ids`, `group_names`, and the remaining outputs declared in `outputs.tf`. Keep those names stable unless a downstream blueprint, runbook, or customer hand-off is updated at the same time.
+For Single Operating Entity, the important hand-off values are `blueprint_name`,
+`name_prefix`, `resource_ids`, `root_compartment_id`, `compartment_ids`,
+`compartment_names`, `group_ids`, `group_names`, `policy_ids`, `policy_statements`. Keep
+those names stable unless a downstream blueprint, runbook, or customer hand-off is updated
+at the same time.

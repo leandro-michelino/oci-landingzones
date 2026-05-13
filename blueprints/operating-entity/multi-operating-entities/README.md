@@ -2,11 +2,26 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This deployment README belongs only to `blueprints/operating-entity/multi-operating-entities`. It is the run-facing guide for this blueprint; the detailed ASCII design lives beside it in `architecture/README.md`.
+Use this page as the operator guide for
+`blueprints/operating-entity/multi-operating-entities`. It tells you what the blueprint
+builds, which inputs deserve a real review, how to run Terraform or the local Ansible
+wrappers, and where to find the detailed ASCII design.
+
+## At A Glance
+
+| Item | Details |
+| --- | --- |
+| Folder | `blueprints/operating-entity/multi-operating-entities` |
+| Best fit | Creates multiple operating-entity boundaries at once, each with compartments, groups, and policies. |
+| Terraform shape | `entity_compartments`, `groups`, `policies` |
+| Inputs to settle first | `parent_compartment_ocid`, `default_workload_compartments`, `operating_entities` |
+| Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `entity_compartment_ids`, `entity_compartment_names`, `entity_group_ids`, `entity_group_names`, plus 2 more |
+| Local runner | `terraform plan` for quick iteration; `ansible/plan.yml` and guarded `ansible/apply.yml` for the repo-standard flow. |
 
 ## Deployment Purpose
 
-Creates multiple operating-entity boundaries at once, each with compartments, groups, and policies.
+Creates multiple operating-entity boundaries at once, each with compartments, groups, and
+policies.
 
 ## When To Use This Deployment
 
@@ -16,19 +31,24 @@ Creates multiple operating-entity boundaries at once, each with compartments, gr
 
 ## What This Deploys
 
-The Terraform in this folder wires the following local components:
+This folder is self-contained at the deployment level: Terraform composes the OCI resource
+graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere
+in the repo.
 
-- Terraform module `entity_compartments`
-- Terraform module `groups`
-- Terraform module `policies`
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Module | `entity_compartments` | `modules/iam/compartments @ v0.1.0` |
+| Module | `groups` | `modules/iam/groups @ v0.1.0` |
+| Module | `policies` | `modules/iam/policies @ v0.1.0` |
 
-The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local ignored `terraform.tfvars` file.
+The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local
+ignored `terraform.tfvars` file.
 
 ## Folder Contract
 
 ```text
 blueprints/operating-entity/multi-operating-entities/
-|-- README.md                  This deployment guide
+|-- README.md                  Operator guide for this deployment
 |-- architecture/README.md     Detailed ASCII architecture for this deployment
 |-- main.tf                    Terraform modules, resources, and data sources
 |-- variables.tf               Input contract
@@ -44,43 +64,55 @@ blueprints/operating-entity/multi-operating-entities/
 
 ## Inputs To Decide
 
-Base tenancy and naming inputs:
-- `tenancy_ocid`
-- `current_user_ocid`
-- `region`
-- `home_region`
-- `oci_config_profile`
-- `org`
-- `environment`
-- `region_key`
-- `defined_tags`
-- `freeform_tags`
+Start with `terraform.tfvars.example`, then create a local ignored `terraform.tfvars` with
+real OCIDs, CIDRs, names, recipients, and enable flags.
 
-Deployment-specific inputs to review:
-- `parent_compartment_ocid`
-- `default_workload_compartments`
-- `operating_entities`
+### Base Tenancy And Naming
 
-Important enable flags and switches:
-- `enable_delete`
+| Input | What To Decide |
+| --- | --- |
+| `tenancy_ocid` | OCI tenancy OCID. |
+| `current_user_ocid` | OCI user OCID used for local execution or bootstrap. |
+| `region` | OCI region name. |
+| `home_region` | OCI tenancy home region. |
+| `oci_config_profile` | Optional OCI CLI config profile for local execution. |
+| `org` | Short organization prefix used in names. |
+| `environment` | Deployment environment name. |
+| `region_key` | Short OCI region key used in resource names. |
+| `defined_tags` | Defined tags applied to resources. |
+| `freeform_tags` | Freeform tags applied to resources. |
 
-Review `terraform.tfvars.example` first, then create a local ignored `terraform.tfvars` for real OCIDs, CIDRs, names, recipients, and enable flags.
+### Deployment-Specific Decisions
+
+| Input | What To Decide |
+| --- | --- |
+| `parent_compartment_ocid` | Default parent compartment OCID where operating entity root compartments are created. Defaults to tenancy_ocid. |
+| `default_workload_compartments` | Default child compartments created under each operating entity root when not overridden per entity. |
+| `operating_entities` | Operating entities keyed by stable logical name. |
+
+### Enable Flags And Switches
+
+| Input | What To Decide |
+| --- | --- |
+| `enable_delete` | Allow Terraform to delete created operating entity compartments during destroy. |
 
 ## Outputs And Hand-Off
 
-This deployment exports the following outputs from `outputs.tf`:
+These outputs are the deployment contract for downstream blueprints, runbooks, customer
+notes, or manual hand-off. If an output name changes, update dependent docs and consumers in
+the same change.
 
-- `blueprint_name`
-- `name_prefix`
-- `resource_ids`
-- `entity_compartment_ids`
-- `entity_compartment_names`
-- `entity_group_ids`
-- `entity_group_names`
-- `entity_policy_ids`
-- `entity_policy_statements`
-
-Use these outputs as the contract for downstream blueprints, runbooks, customer notes, or manual hand-off. If an output name changes, update dependent documentation and consumers in the same change.
+| Output | Hand-Off Meaning |
+| --- | --- |
+| `blueprint_name` | Blueprint identifier. |
+| `name_prefix` | Standard OCI naming prefix for resources created by this blueprint. |
+| `resource_ids` | Map of resource identifiers created by this blueprint. |
+| `entity_compartment_ids` | Operating entity compartment IDs keyed by entity and compartment key. |
+| `entity_compartment_names` | Operating entity compartment names keyed by entity and compartment key. |
+| `entity_group_ids` | Delegated IAM group IDs keyed by entity role. |
+| `entity_group_names` | Delegated IAM group names keyed by entity role. |
+| `entity_policy_ids` | Delegated IAM policy IDs keyed by entity role. |
+| `entity_policy_statements` | Delegated IAM policy statements keyed by entity role. |
 
 ## Terraform And Ansible Workflow
 
@@ -103,7 +135,8 @@ CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
-`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for customer-facing or shared environments.
+`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for
+customer-facing or shared environments.
 
 ## Deployment Order
 
@@ -121,7 +154,9 @@ The full detailed ASCII architecture is local to this deployment:
 architecture/README.md
 ```
 
-That file documents the ownership boundary, Terraform components, request flow, state and output contract, operational boundaries, review checklist, and the expected Terraform + Ansible output at the end of the deployment.
+That file documents the ownership boundary, Terraform components, request flow, state and
+output contract, operational boundaries, review checklist, and the expected Terraform +
+Ansible output at the end of the deployment.
 
 ## Review Before Apply
 
@@ -139,4 +174,7 @@ From the repository root:
 ./scripts/validate-all.sh
 ```
 
-The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.
+The validator checks Terraform formatting, required deployment README files, required
+architecture README sections, `terraform init -backend=false`, `terraform validate`, root
+Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
+cleanup of generated Terraform artifacts.

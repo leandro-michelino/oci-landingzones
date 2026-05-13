@@ -2,18 +2,29 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This architecture page documents the `blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn` deployment. It is intentionally text-first and ASCII-only so it can be reviewed in terminals, pull requests, and customer notes without a diagramming tool.
+This is the design view for `blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn`. It
+stays ASCII-first on purpose so you can review the deployment in GitHub, a terminal, a pull
+request, or customer notes without a diagramming tool.
 
 ## Deployment Purpose
 
-This blueprint provides networking landing-zone pattern for the hub-spoke with ipsec
-vpn.
+Adds IPSec VPN connectivity to a hub-spoke network for encrypted hybrid connectivity.
+
+## Architecture At A Glance
+
+| Item | Details |
+| --- | --- |
+| Boundary | `blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn` owns this deployment end to end. |
+| Terraform components | `network`, `ipsec_vpn` |
+| Input source | `terraform.tfvars.example` documents the shape; local ignored tfvars provide real values. |
+| Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `hub_vcn_id`, `drg_id`, `spoke_vcn_ids`, `ipsec_id`, `cpe_id` |
+| Runner contract | `ansible/plan.yml`, guarded `ansible/apply.yml`, and guarded `ansible/destroy.yml`. |
 
 ## Files In This Deployment
 
 ```text
 blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn/
-|-- README.md                         Human-friendly deployment notes
+|-- README.md                         Operator guide for this deployment
 |-- architecture/README.md            This detailed ASCII architecture
 |-- main.tf                           Terraform resource and module wiring
 |-- variables.tf                      Input contract and defaults
@@ -30,57 +41,67 @@ blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn/
 ## ASCII Architecture
 
 ```text
-+-------------------------------------------------------------------------------------------+
-| Hub-Spoke With IPSec VPN                                                                  |
-| blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn                                    |
-+-------------------------------------------------------------------------------------------+
-| Operator / CI / local shell                                                               |
-|   |                                                                                       |
-|   v                                                                                       |
-+-------------------------------------------------------------------------------------------+
-| Blueprint folder contract                                                                 |
-|   README.md                                                                               |
-|   architecture/README.md                                                                  |
-|   main.tf + variables.tf + outputs.tf + providers.tf + versions.tf                        |
-|   ansible/plan.yml + apply.yml + destroy.yml                                              |
-+-------------------------------------------------------------------------------------------+
-|   |                                                                                       |
-|   v                                                                                       |
-+-------------------------------------------------------------------------------------------+
-| Terraform composition and OCI resources                                                   |
-|  01. module   network                                          (main.tf)                  |
-|  02. module   ipsec_vpn                                        (main.tf)                  |
-+-------------------------------------------------------------------------------------------+
-|   |                                                                                       |
-|   v                                                                                       |
-+-------------------------------------------------------------------------------------------+
-| Architecture layers                                                                       |
-|   - Control plane: Terraform provider and blueprint variables                             |
-|   - Network plane: VCNs, DRG, gateways, route tables, subnets, and optional inspection    |
-|   - Security plane: security lists, NSGs where used, private DNS, ZPR, or appliance contro|
-|   - Operations plane: outputs consumed by service extensions, monitoring, and runbooks    |
-+-------------------------------------------------------------------------------------------+
-|   |                                                                                       |
-|   v                                                                                       |
-+-------------------------------------------------------------------------------------------+
-| Outputs and hand-off                                                                      |
-|   resource_ids plus blueprint-specific IDs                                                |
-|   tfvars reviewed before apply                                                            |
-|   generated Terraform artifacts cleaned after validation                                  |
-+-------------------------------------------------------------------------------------------+
++------------------------------------------------------------------------------------------------------+
+| Hub-Spoke With IPSec VPN                                                                             |
+| Folder: blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn                                       |
+|                                                                                                      |
+| [1] Operator entry                                                                                   |
+| Operator, CI job, or local shell reviews README.md and architecture/README.md, copies                |
+| terraform.tfvars.example to terraform.tfvars, and chooses either direct Terraform or the local       |
+| Ansible wrapper.                                                                                     |
+|                                                                                                      |
+| [2] Local file contract                                                                              |
+| README.md -> run-facing deployment guide.                                                            |
+| architecture/README.md -> detailed text architecture and review notes.                               |
+| main.tf -> Terraform composition for this deployment.                                                |
+| variables.tf -> input contract and defaults.                                                         |
+| outputs.tf -> named hand-off values.                                                                 |
+| providers.tf + versions.tf -> provider setup and version constraints.                                |
+| ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
+|                                                                                                      |
+| [3] Terraform composition from main.tf                                                               |
+| 01. module.network -> blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.1.0          |
+| 02. module.ipsec_vpn -> modules/networking/ipsec-vpn @ v0.1.0                                        |
+|                                                                                                      |
+| [4] OCI/resource planes                                                                              |
+| - Control: provider config, tenancy context, naming inputs, and local tfvars.                        |
+| - Network: VCNs, subnets, route tables, gateways, DRG attachments, DNS, private access, and          |
+| inspection hops as declared by this folder.                                                          |
+| - Security: security lists, NSGs, firewall or appliance controls, ZPR, and traffic path decisions    |
+| where the blueprint enables them.                                                                    |
+| - Consumption: VCN, subnet, gateway, DNS, DRG, and inspection outputs for workload and extension     |
+| teams.                                                                                               |
+| - Operations: Ansible plan/apply/destroy wrappers, validation, and cleanup.                          |
+|                                                                                                      |
+| [5] Output hand-off                                                                                  |
+| - blueprint_name: Blueprint identifier.                                                              |
+| - name_prefix: Standard OCI naming prefix for resources created by this blueprint.                   |
+| - resource_ids: Map of primary resource identifiers created by this blueprint.                       |
+| - hub_vcn_id: Hub VCN OCID.                                                                          |
+| - drg_id: DRG OCID.                                                                                  |
+| - spoke_vcn_ids: Spoke VCN OCIDs keyed by spoke name.                                                |
+| - ipsec_id: IPSec connection OCID.                                                                   |
+| - cpe_id: CPE OCID.                                                                                  |
+|                                                                                                      |
+| [6] Deployment close-out                                                                             |
+| terraform output and the Ansible PLAY RECAP are the human and automation hand-off.                   |
+| Generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git.  |
++------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components
 
-- `module network` in `main.tf`: composes the reusable network module or child blueprint.
-- `module ipsec_vpn` in `main.tf`: composes the reusable ipsec vpn module or child blueprint.
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Module | `network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.1.0` |
+| Module | `ipsec_vpn` | `modules/networking/ipsec-vpn @ v0.1.0` |
 
 ## Request And Deployment Flow
 
 - Operator reviews CIDR, subnet, DNS, inspection, and connectivity inputs.
-- Terraform creates or references the VCN foundation.
-- Gateways, route tables, DRG attachments, DNS, inspection, or private access resources are composed.
-- Outputs expose VCN, subnet, gateway, attachment, and policy IDs for workload and extension blueprints.
+- Terraform creates or references the VCN foundation and network attachments.
+- Gateways, route tables, DRG attachments, DNS, inspection, or private access resources are composed as declared in `main.tf`.
+- Outputs expose VCN, subnet, gateway, attachment, and policy IDs for workloads and extension blueprints.
 
 ## State, Inputs, And Outputs
 
@@ -96,8 +117,8 @@ Terraform state
 |-- generated .terraform directories, lock files, plans, and state files are cleaned by validation
 |
 Output contract
-|-- blueprint_name and name_prefix identify the deployment
-|-- resource_ids summarizes primary resources in a machine-friendly map
+|-- blueprint_name and name_prefix identify the deployment when declared
+|-- resource_ids summarizes primary resources when declared
 `-- blueprint-specific outputs expose compartment, VCN, subnet, key, policy, service, or DR IDs
 ```
 
@@ -124,7 +145,10 @@ Output contract
 ./scripts/validate-all.sh
 ```
 
-The repository validator checks Terraform formatting, initializes and validates every blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every blueprint-local Ansible runner, and removes generated Terraform artifacts afterward.
+The repository validator checks Terraform formatting, initializes and validates every
+blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every
+blueprint-local Ansible runner, verifies README coverage, and removes generated Terraform
+artifacts afterward.
 
 ## When To Update This Architecture
 
@@ -136,7 +160,9 @@ The repository validator checks Terraform formatting, initializes and validates 
 
 ## Terraform + Ansible Deployment Output
 
-This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper with a clean recap at the end.
+This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph
+and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper
+with a clean recap at the end.
 
 ```text
 $ cd blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn
@@ -180,4 +206,7 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=<n> changed=<n> unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
 ```
 
-For Hub Spoke With Hub VCN IPSEC Vpn, the important hand-off values are `blueprint_name`, `name_prefix`, `resource_ids`, `hub_vcn_id`, `drg_id`, `spoke_vcn_ids`, `ipsec_id`, `cpe_id`. Keep those names stable unless a downstream blueprint, runbook, or customer hand-off is updated at the same time.
+For Hub-Spoke With IPSec VPN, the important hand-off values are `blueprint_name`,
+`name_prefix`, `resource_ids`, `hub_vcn_id`, `drg_id`, `spoke_vcn_ids`, `ipsec_id`,
+`cpe_id`. Keep those names stable unless a downstream blueprint, runbook, or customer
+hand-off is updated at the same time.

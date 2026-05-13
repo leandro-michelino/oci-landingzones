@@ -2,18 +2,30 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This architecture page documents the `blueprints/compliance/scca-cloud-native` deployment. It is intentionally text-first and ASCII-only so it can be reviewed in terminals, pull requests, and customer notes without a diagramming tool.
+This is the design view for `blueprints/compliance/scca-cloud-native`. It stays ASCII-first
+on purpose so you can review the deployment in GitHub, a terminal, a pull request, or
+customer notes without a diagramming tool.
 
 ## Deployment Purpose
 
-This blueprint provides SCCA-style cloud-native landing zone that composes core,
-inspected networking, and OS operations controls.
+Combines core governance, controlled networking, and operations hooks for a SCCA-style
+cloud-native landing-zone pattern.
+
+## Architecture At A Glance
+
+| Item | Details |
+| --- | --- |
+| Boundary | `blueprints/compliance/scca-cloud-native` owns this deployment end to end. |
+| Terraform components | `core`, `network`, `os_management` |
+| Input source | `terraform.tfvars.example` documents the shape; local ignored tfvars provide real values. |
+| Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `root_compartment_id`, `compartment_ids`, `network_resource_ids`, `os_management_resource_ids` |
+| Runner contract | `ansible/plan.yml`, guarded `ansible/apply.yml`, and guarded `ansible/destroy.yml`. |
 
 ## Files In This Deployment
 
 ```text
 blueprints/compliance/scca-cloud-native/
-|-- README.md                         Human-friendly deployment notes
+|-- README.md                         Operator guide for this deployment
 |-- architecture/README.md            This detailed ASCII architecture
 |-- main.tf                           Terraform resource and module wiring
 |-- variables.tf                      Input contract and defaults
@@ -30,60 +42,64 @@ blueprints/compliance/scca-cloud-native/
 ## ASCII Architecture
 
 ```text
-+---------------------------------------------------------------------------------------------+
-| SCCA Cloud-Native Landing Zone                                                              |
-| blueprints/compliance/scca-cloud-native                                                     |
-+---------------------------------------------------------------------------------------------+
-| Operator / CI / local shell                                                                 |
-|   |                                                                                         |
-|   v                                                                                         |
-+---------------------------------------------------------------------------------------------+
-| Blueprint folder contract                                                                   |
-|   README.md                                                                                 |
-|   architecture/README.md                                                                    |
-|   main.tf + variables.tf + outputs.tf + providers.tf + versions.tf                          |
-|   ansible/plan.yml + apply.yml + destroy.yml                                                |
-+---------------------------------------------------------------------------------------------+
-|   |                                                                                         |
-|   v                                                                                         |
-+---------------------------------------------------------------------------------------------+
-| Terraform composition and OCI resources                                                     |
-|  01. module   core                                             (main.tf)                    |
-|  02. module   network                                          (main.tf)                    |
-|  03. module   os_management                                    (main.tf)                    |
-+---------------------------------------------------------------------------------------------+
-|   |                                                                                         |
-|   v                                                                                         |
-+---------------------------------------------------------------------------------------------+
-| Architecture layers                                                                         |
-|   - Control plane: Terraform provider, core blueprint, and compliance variables             |
-|   - Governance plane: compartments, tags, Cloud Guard, audit retention, events, and monitori|
-|   - Security plane: Vault/KMS, VSS, Security Zones, ZPR, or network inspection              |
-|   - Operations plane: validation, outputs, and hand-off to platform teams                   |
-+---------------------------------------------------------------------------------------------+
-|   |                                                                                         |
-|   v                                                                                         |
-+---------------------------------------------------------------------------------------------+
-| Outputs and hand-off                                                                        |
-|   resource_ids plus blueprint-specific IDs                                                  |
-|   tfvars reviewed before apply                                                              |
-|   generated Terraform artifacts cleaned after validation                                    |
-+---------------------------------------------------------------------------------------------+
++------------------------------------------------------------------------------------------------------+
+| SCCA Cloud Native Landing Zone                                                                       |
+| Folder: blueprints/compliance/scca-cloud-native                                                      |
+|                                                                                                      |
+| [1] Operator entry                                                                                   |
+| Operator, CI job, or local shell reviews README.md and architecture/README.md, copies                |
+| terraform.tfvars.example to terraform.tfvars, and chooses either direct Terraform or the local       |
+| Ansible wrapper.                                                                                     |
+|                                                                                                      |
+| [2] Local file contract                                                                              |
+| README.md -> run-facing deployment guide.                                                            |
+| architecture/README.md -> detailed text architecture and review notes.                               |
+| main.tf -> Terraform composition for this deployment.                                                |
+| variables.tf -> input contract and defaults.                                                         |
+| outputs.tf -> named hand-off values.                                                                 |
+| providers.tf + versions.tf -> provider setup and version constraints.                                |
+| ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
+|                                                                                                      |
+| [3] Terraform composition from main.tf                                                               |
+| 01. module.core -> ../../../blueprints/core                                                          |
+| 02. module.network -> ../../../blueprints/networking/hub-spoke-with-hub-vcn-net-firewall             |
+| 03. module.os_management -> ../../../modules/operations/os-management                                |
+|                                                                                                      |
+| [4] OCI/resource planes                                                                              |
+| - Control: provider config, tenancy context, naming inputs, and local tfvars.                        |
+| - Governance: stricter security, audit, IAM, logging, segmentation, and guardrail posture.           |
+| - Consumption: compliance-oriented outputs for evidence, runbooks, and downstream workload teams.    |
+| - Operations: Ansible plan/apply/destroy wrappers, validation, and cleanup.                          |
+|                                                                                                      |
+| [5] Output hand-off                                                                                  |
+| - blueprint_name: Blueprint identifier.                                                              |
+| - name_prefix: Standard OCI naming prefix for resources created by this blueprint.                   |
+| - resource_ids: Map of resource identifiers created by this blueprint.                               |
+| - root_compartment_id: OCID of the SCCA landing zone root compartment.                               |
+| - compartment_ids: Map of SCCA landing zone compartment keys to OCIDs.                               |
+| - network_resource_ids: SCCA inspected network resource identifiers.                                 |
+| - os_management_resource_ids: OS Management Hub resource identifiers.                                |
+|                                                                                                      |
+| [6] Deployment close-out                                                                             |
+| terraform output and the Ansible PLAY RECAP are the human and automation hand-off.                   |
+| Generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git.  |
++------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components
 
-- `module core` in `main.tf`: composes the reusable core module or child blueprint.
-- `module network` in `main.tf`: composes the reusable network module or child blueprint.
-- `module os_management` in `main.tf`: composes the reusable os management module or child blueprint.
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Module | `core` | `../../../blueprints/core` |
+| Module | `network` | `../../../blueprints/networking/hub-spoke-with-hub-vcn-net-firewall` |
+| Module | `os_management` | `../../../modules/operations/os-management` |
 
 ## Request And Deployment Flow
 
-- Operator selects compliance posture and enable flags.
-- Core foundation creates compartments, tags, logging, IAM, and guardrail services.
-- Network or ZPR composition adds traffic-path controls.
-- Operations resources such as monitoring, VSS, and OS Management are enabled when approved.
-- Outputs provide evidence points for review and follow-on deployment.
+- Operator reviews the local tfvars contract and chooses the plan/apply runner.
+- Terraform composes the OCI resources declared in `main.tf`.
+- Outputs become the deployment hand-off contract for runbooks and downstream blueprints.
+- Validation checks formatting, init, validate, Ansible syntax, documentation coverage, and cleanup.
 
 ## State, Inputs, And Outputs
 
@@ -99,8 +115,8 @@ Terraform state
 |-- generated .terraform directories, lock files, plans, and state files are cleaned by validation
 |
 Output contract
-|-- blueprint_name and name_prefix identify the deployment
-|-- resource_ids summarizes primary resources in a machine-friendly map
+|-- blueprint_name and name_prefix identify the deployment when declared
+|-- resource_ids summarizes primary resources when declared
 `-- blueprint-specific outputs expose compartment, VCN, subnet, key, policy, service, or DR IDs
 ```
 
@@ -125,7 +141,10 @@ Output contract
 ./scripts/validate-all.sh
 ```
 
-The repository validator checks Terraform formatting, initializes and validates every blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every blueprint-local Ansible runner, and removes generated Terraform artifacts afterward.
+The repository validator checks Terraform formatting, initializes and validates every
+blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every
+blueprint-local Ansible runner, verifies README coverage, and removes generated Terraform
+artifacts afterward.
 
 ## When To Update This Architecture
 
@@ -137,7 +156,9 @@ The repository validator checks Terraform formatting, initializes and validates 
 
 ## Terraform + Ansible Deployment Output
 
-This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper with a clean recap at the end.
+This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph
+and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper
+with a clean recap at the end.
 
 ```text
 $ cd blueprints/compliance/scca-cloud-native
@@ -180,4 +201,7 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=<n> changed=<n> unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
 ```
 
-For Scca Cloud Native, the important hand-off values are `blueprint_name`, `name_prefix`, `resource_ids`, `root_compartment_id`, `compartment_ids`, `network_resource_ids`, `os_management_resource_ids`. Keep those names stable unless a downstream blueprint, runbook, or customer hand-off is updated at the same time.
+For SCCA Cloud Native Landing Zone, the important hand-off values are `blueprint_name`,
+`name_prefix`, `resource_ids`, `root_compartment_id`, `compartment_ids`,
+`network_resource_ids`, `os_management_resource_ids`. Keep those names stable unless a
+downstream blueprint, runbook, or customer hand-off is updated at the same time.

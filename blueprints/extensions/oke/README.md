@@ -2,11 +2,25 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This deployment README belongs only to `blueprints/extensions/oke`. It is the run-facing guide for this blueprint; the detailed ASCII design lives beside it in `architecture/README.md`.
+Use this page as the operator guide for `blueprints/extensions/oke`. It tells you what the
+blueprint builds, which inputs deserve a real review, how to run Terraform or the local
+Ansible wrappers, and where to find the detailed ASCII design.
+
+## At A Glance
+
+| Item | Details |
+| --- | --- |
+| Folder | `blueprints/extensions/oke` |
+| Best fit | Adds OCI Container Engine for Kubernetes as a platform extension with cluster, node pool, subnet, endpoint, IAM, and logging decisions visible. |
+| Terraform shape | `oci_containerengine_cluster.this`, `oci_containerengine_node_pool.this` |
+| Inputs to settle first | `compartment_ocid`, `cluster_id`, `cluster_label`, `kubernetes_version`, `vcn_id`, `endpoint_subnet_id`, `endpoint_nsg_ids`, plus 10 more |
+| Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `cluster_id`, `node_pool_id` |
+| Local runner | `terraform plan` for quick iteration; `ansible/plan.yml` and guarded `ansible/apply.yml` for the repo-standard flow. |
 
 ## Deployment Purpose
 
-Adds OCI Container Engine for Kubernetes as a platform extension with cluster, node pool, subnet, endpoint, IAM, and logging decisions visible.
+Adds OCI Container Engine for Kubernetes as a platform extension with cluster, node pool,
+subnet, endpoint, IAM, and logging decisions visible.
 
 ## When To Use This Deployment
 
@@ -16,18 +30,23 @@ Adds OCI Container Engine for Kubernetes as a platform extension with cluster, n
 
 ## What This Deploys
 
-The Terraform in this folder wires the following local components:
+This folder is self-contained at the deployment level: Terraform composes the OCI resource
+graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere
+in the repo.
 
-- Terraform resource `oci_containerengine_cluster.this`
-- Terraform resource `oci_containerengine_node_pool.this`
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Resource | `oci_containerengine_cluster.this` | Declared directly in `main.tf` |
+| Resource | `oci_containerengine_node_pool.this` | Declared directly in `main.tf` |
 
-The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local ignored `terraform.tfvars` file.
+The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local
+ignored `terraform.tfvars` file.
 
 ## Folder Contract
 
 ```text
 blueprints/extensions/oke/
-|-- README.md                  This deployment guide
+|-- README.md                  Operator guide for this deployment
 |-- architecture/README.md     Detailed ASCII architecture for this deployment
 |-- main.tf                    Terraform modules, resources, and data sources
 |-- variables.tf               Input contract
@@ -43,56 +62,67 @@ blueprints/extensions/oke/
 
 ## Inputs To Decide
 
-Base tenancy and naming inputs:
-- `tenancy_ocid`
-- `current_user_ocid`
-- `region`
-- `home_region`
-- `oci_config_profile`
-- `org`
-- `environment`
-- `region_key`
-- `defined_tags`
-- `freeform_tags`
+Start with `terraform.tfvars.example`, then create a local ignored `terraform.tfvars` with
+real OCIDs, CIDRs, names, recipients, and enable flags.
 
-Deployment-specific inputs to review:
-- `compartment_ocid`
-- `cluster_id`
-- `cluster_label`
-- `kubernetes_version`
-- `vcn_id`
-- `endpoint_subnet_id`
-- `endpoint_public_ip_enabled`
-- `endpoint_nsg_ids`
-- `service_lb_subnet_ids`
-- `cni_type`
-- `node_pool_label`
-- `node_shape`
-- `node_shape_ocpus`
-- `node_shape_memory_in_gbs`
-- `node_subnet_ids`
-- `node_quantity_per_subnet`
-- `node_image_id`
-- `ssh_public_key`
+### Base Tenancy And Naming
 
-Important enable flags and switches:
-- `enable_cluster`
-- `endpoint_public_ip_enabled`
-- `enable_node_pool`
+| Input | What To Decide |
+| --- | --- |
+| `tenancy_ocid` | OCI tenancy OCID. |
+| `current_user_ocid` | OCI user OCID used for local execution or bootstrap. |
+| `region` | OCI region name. |
+| `home_region` | OCI tenancy home region. |
+| `oci_config_profile` | Optional OCI CLI config profile for local execution. |
+| `org` | Short organization prefix used in names. |
+| `environment` | Deployment environment name. |
+| `region_key` | Short OCI region key used in resource names. |
+| `defined_tags` | Defined tags applied to resources. |
+| `freeform_tags` | Freeform tags applied to resources. |
 
-Review `terraform.tfvars.example` first, then create a local ignored `terraform.tfvars` for real OCIDs, CIDRs, names, recipients, and enable flags.
+### Deployment-Specific Decisions
+
+| Input | What To Decide |
+| --- | --- |
+| `compartment_ocid` | Compartment OCID where OKE resources are created. Defaults to tenancy_ocid for validation-only tests. |
+| `cluster_id` | Existing OKE cluster OCID used when creating only a node pool. |
+| `cluster_label` | Short OKE cluster label used in names. |
+| `kubernetes_version` | Kubernetes version for the OKE cluster and node pool. |
+| `vcn_id` | VCN OCID where the OKE cluster is created. |
+| `endpoint_subnet_id` | Optional subnet OCID for the OKE Kubernetes API endpoint. |
+| `endpoint_nsg_ids` | Optional NSG OCIDs for the OKE API endpoint. |
+| `service_lb_subnet_ids` | Optional subnet OCIDs used by OKE service load balancers. |
+| `cni_type` | OKE pod networking CNI type. |
+| `node_pool_label` | Short node pool label used in names. |
+| `node_shape` | OKE worker node shape. |
+| `node_shape_ocpus` | Optional OCPU count for flexible node shapes. |
+| `node_shape_memory_in_gbs` | Optional memory in GB for flexible node shapes. |
+| `node_subnet_ids` | Subnet OCIDs used by the OKE node pool. |
+| `node_quantity_per_subnet` | Number of nodes per node subnet. |
+| `node_image_id` | Optional custom worker node image OCID. |
+| `ssh_public_key` | Optional SSH public key for worker nodes. |
+
+### Enable Flags And Switches
+
+| Input | What To Decide |
+| --- | --- |
+| `enable_cluster` | Create the OKE cluster. Disabled by default to avoid cost in smoke tests. |
+| `endpoint_public_ip_enabled` | Whether the OKE API endpoint receives a public IP. |
+| `enable_node_pool` | Create an OKE node pool. Disabled by default to avoid compute cost. |
 
 ## Outputs And Hand-Off
 
-This deployment exports the following outputs from `outputs.tf`:
+These outputs are the deployment contract for downstream blueprints, runbooks, customer
+notes, or manual hand-off. If an output name changes, update dependent docs and consumers in
+the same change.
 
-- `blueprint_name`
-- `name_prefix`
-- `resource_ids`
-- `cluster_id`
-- `node_pool_id`
-
-Use these outputs as the contract for downstream blueprints, runbooks, customer notes, or manual hand-off. If an output name changes, update dependent documentation and consumers in the same change.
+| Output | Hand-Off Meaning |
+| --- | --- |
+| `blueprint_name` | Blueprint identifier. |
+| `name_prefix` | Standard OCI naming prefix for resources created by this blueprint. |
+| `resource_ids` | Map of resource identifiers created by this blueprint. |
+| `cluster_id` | Created or referenced OKE cluster OCID. |
+| `node_pool_id` | OKE node pool OCID. |
 
 ## Terraform And Ansible Workflow
 
@@ -115,7 +145,8 @@ CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
-`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for customer-facing or shared environments.
+`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for
+customer-facing or shared environments.
 
 ## Deployment Order
 
@@ -133,7 +164,9 @@ The full detailed ASCII architecture is local to this deployment:
 architecture/README.md
 ```
 
-That file documents the ownership boundary, Terraform components, request flow, state and output contract, operational boundaries, review checklist, and the expected Terraform + Ansible output at the end of the deployment.
+That file documents the ownership boundary, Terraform components, request flow, state and
+output contract, operational boundaries, review checklist, and the expected Terraform +
+Ansible output at the end of the deployment.
 
 ## Review Before Apply
 
@@ -151,4 +184,7 @@ From the repository root:
 ./scripts/validate-all.sh
 ```
 
-The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.
+The validator checks Terraform formatting, required deployment README files, required
+architecture README sections, `terraform init -backend=false`, `terraform validate`, root
+Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
+cleanup of generated Terraform artifacts.

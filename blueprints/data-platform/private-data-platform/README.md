@@ -2,11 +2,25 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This deployment README belongs only to `blueprints/data-platform/private-data-platform`. It is the run-facing guide for this blueprint; the detailed ASCII design lives beside it in `architecture/README.md`.
+Use this page as the operator guide for `blueprints/data-platform/private-data-platform`. It
+tells you what the blueprint builds, which inputs deserve a real review, how to run
+Terraform or the local Ansible wrappers, and where to find the detailed ASCII design.
+
+## At A Glance
+
+| Item | Details |
+| --- | --- |
+| Folder | `blueprints/data-platform/private-data-platform` |
+| Best fit | Builds a private data-platform pattern with network placement, vault/KMS, object storage, private endpoint, and streaming hooks. |
+| Terraform shape | `network`, `vault`, `streaming`, `oci_objectstorage_bucket.data`, `oci_objectstorage_private_endpoint.data`, plus 1 more |
+| Inputs to settle first | `compartment_ocid`, `vaults`, `vault_keys`, `data_bucket_name`, `bucket_kms_key_id`, `bucket_auto_tiering`, `bucket_storage_tier`, plus 12 more |
+| Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `vcn_id`, `subnet_ids`, `vault_ids`, `vault_key_ids`, plus 4 more |
+| Local runner | `terraform plan` for quick iteration; `ansible/plan.yml` and guarded `ansible/apply.yml` for the repo-standard flow. |
 
 ## Deployment Purpose
 
-Builds a private data-platform pattern with network placement, vault/KMS, object storage, private endpoint, and streaming hooks.
+Builds a private data-platform pattern with network placement, vault/KMS, object storage,
+private endpoint, and streaming hooks.
 
 ## When To Use This Deployment
 
@@ -16,22 +30,27 @@ Builds a private data-platform pattern with network placement, vault/KMS, object
 
 ## What This Deploys
 
-The Terraform in this folder wires the following local components:
+This folder is self-contained at the deployment level: Terraform composes the OCI resource
+graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere
+in the repo.
 
-- Terraform module `network`
-- Terraform module `vault`
-- Terraform module `streaming`
-- Terraform resource `oci_objectstorage_bucket.data`
-- Terraform resource `oci_objectstorage_private_endpoint.data`
-- Terraform data source `oci_objectstorage_namespace.this`
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Module | `network` | `../../../blueprints/networking/standalone-private-endpoint-only` |
+| Module | `vault` | `../../../modules/security/vault` |
+| Module | `streaming` | `../../../blueprints/extensions/streaming` |
+| Resource | `oci_objectstorage_bucket.data` | Declared directly in `main.tf` |
+| Resource | `oci_objectstorage_private_endpoint.data` | Declared directly in `main.tf` |
+| Data source | `data.oci_objectstorage_namespace.this` | Read during plan/apply |
 
-The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local ignored `terraform.tfvars` file.
+The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local
+ignored `terraform.tfvars` file.
 
 ## Folder Contract
 
 ```text
 blueprints/data-platform/private-data-platform/
-|-- README.md                  This deployment guide
+|-- README.md                  Operator guide for this deployment
 |-- architecture/README.md     Detailed ASCII architecture for this deployment
 |-- main.tf                    Terraform modules, resources, and data sources
 |-- variables.tf               Input contract
@@ -47,68 +66,80 @@ blueprints/data-platform/private-data-platform/
 
 ## Inputs To Decide
 
-Base tenancy and naming inputs:
-- `tenancy_ocid`
-- `current_user_ocid`
-- `region`
-- `home_region`
-- `oci_config_profile`
-- `org`
-- `environment`
-- `region_key`
-- `defined_tags`
-- `freeform_tags`
+Start with `terraform.tfvars.example`, then create a local ignored `terraform.tfvars` with
+real OCIDs, CIDRs, names, recipients, and enable flags.
 
-Deployment-specific inputs to review:
-- `compartment_ocid`
-- `vaults`
-- `vault_keys`
-- `data_bucket_name`
-- `bucket_kms_key_id`
-- `bucket_auto_tiering`
-- `bucket_storage_tier`
-- `private_endpoint_name`
-- `private_endpoint_prefix`
-- `private_endpoint_subnet_id`
-- `private_endpoint_subnet_key`
-- `private_endpoint_nsg_ids`
-- `create_stream_pool`
-- `stream_pool_id`
-- `stream_pool_name`
-- `streaming_kms_key_id`
-- `streaming_private_endpoint_subnet_id`
-- `streaming_private_endpoint_nsg_ids`
-- ... plus 1 more deployment-specific inputs in `variables.tf`
+### Base Tenancy And Naming
 
-Important enable flags and switches:
-- `enable_vault`
-- `enable_default_vault`
-- `enable_default_key`
-- `enable_data_bucket`
-- `enable_bucket_events`
-- `enable_bucket_versioning`
-- `enable_object_storage_private_endpoint`
-- `enable_streaming`
+| Input | What To Decide |
+| --- | --- |
+| `tenancy_ocid` | OCI tenancy OCID. |
+| `current_user_ocid` | OCI user OCID used for local execution or bootstrap. |
+| `region` | OCI region name. |
+| `home_region` | OCI tenancy home region. |
+| `oci_config_profile` | Optional OCI CLI config profile for local execution. |
+| `org` | Short organization prefix used in names. |
+| `environment` | Deployment environment name. |
+| `region_key` | Short OCI region key used in resource names. |
+| `defined_tags` | Defined tags applied to resources. |
+| `freeform_tags` | Freeform tags applied to resources. |
 
-Review `terraform.tfvars.example` first, then create a local ignored `terraform.tfvars` for real OCIDs, CIDRs, names, recipients, and enable flags.
+### Deployment-Specific Decisions
+
+| Input | What To Decide |
+| --- | --- |
+| `compartment_ocid` | Compartment OCID where private data platform resources are created. Defaults to tenancy_ocid. |
+| `vaults` | Additional OCI Vaults keyed by logical name. |
+| `vault_keys` | KMS keys keyed by logical name. |
+| `data_bucket_name` | Optional Object Storage bucket name. |
+| `bucket_kms_key_id` | Optional KMS key OCID for Object Storage bucket encryption. |
+| `bucket_auto_tiering` | Object Storage auto-tiering setting. |
+| `bucket_storage_tier` | Object Storage tier for the data bucket. |
+| `private_endpoint_name` | Optional Object Storage private endpoint name. |
+| `private_endpoint_prefix` | Object Storage private endpoint prefix. |
+| `private_endpoint_subnet_id` | Optional subnet OCID for the Object Storage private endpoint. |
+| `private_endpoint_subnet_key` | Subnet key from the private network module used when private_endpoint_subnet_id is omitted. |
+| `private_endpoint_nsg_ids` | Optional NSG OCIDs for the Object Storage private endpoint. |
+| `create_stream_pool` | Create a stream pool when enable_streaming is true. |
+| `stream_pool_id` | Existing stream pool OCID used when create_stream_pool is false. |
+| `stream_pool_name` | Optional stream pool name. |
+| `streaming_kms_key_id` | Optional KMS key OCID for stream pool encryption. |
+| `streaming_private_endpoint_subnet_id` | Optional subnet OCID for Streaming private endpoint access. |
+| `streaming_private_endpoint_nsg_ids` | Optional NSG OCIDs for the Streaming private endpoint. |
+| `streams` | Streams to create for private data pipelines. |
+
+### Enable Flags And Switches
+
+| Input | What To Decide |
+| --- | --- |
+| `enable_vault` | Create Vault resources for platform encryption. |
+| `enable_default_vault` | Create the default platform vault. |
+| `enable_default_key` | Create the default platform KMS key. |
+| `enable_data_bucket` | Create the private data platform Object Storage bucket. |
+| `enable_bucket_events` | Enable Object Storage events on the data bucket. |
+| `enable_bucket_versioning` | Enable Object Storage bucket versioning. |
+| `enable_object_storage_private_endpoint` | Create an Object Storage private endpoint. |
+| `enable_streaming` | Create OCI Streaming resources for private data pipelines. |
 
 ## Outputs And Hand-Off
 
-This deployment exports the following outputs from `outputs.tf`:
+These outputs are the deployment contract for downstream blueprints, runbooks, customer
+notes, or manual hand-off. If an output name changes, update dependent docs and consumers in
+the same change.
 
-- `blueprint_name`
-- `name_prefix`
-- `resource_ids`
-- `vcn_id`
-- `subnet_ids`
-- `vault_ids`
-- `vault_key_ids`
-- `data_bucket_name`
-- `object_storage_private_endpoint_id`
-- `stream_pool_id`
-- `stream_ids`
-
-Use these outputs as the contract for downstream blueprints, runbooks, customer notes, or manual hand-off. If an output name changes, update dependent documentation and consumers in the same change.
+| Output | Hand-Off Meaning |
+| --- | --- |
+| `blueprint_name` | Blueprint identifier. |
+| `name_prefix` | Standard OCI naming prefix for resources created by this blueprint. |
+| `resource_ids` | Map of resource identifiers created by this blueprint. |
+| `vcn_id` | Private data platform VCN OCID. |
+| `subnet_ids` | Private data platform subnet OCIDs keyed by role. |
+| `vault_ids` | Vault OCIDs keyed by logical name. |
+| `vault_key_ids` | KMS key OCIDs keyed by logical name. |
+| `data_bucket_name` | Private data platform Object Storage bucket name. |
+| `object_storage_private_endpoint_id` | Object Storage private endpoint OCID. |
+| `stream_pool_id` | Streaming stream pool OCID. |
+| `stream_ids` | Stream OCIDs keyed by logical name. |
 
 ## Terraform And Ansible Workflow
 
@@ -131,7 +162,8 @@ CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
-`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for customer-facing or shared environments.
+`apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for
+customer-facing or shared environments.
 
 ## Deployment Order
 
@@ -149,7 +181,9 @@ The full detailed ASCII architecture is local to this deployment:
 architecture/README.md
 ```
 
-That file documents the ownership boundary, Terraform components, request flow, state and output contract, operational boundaries, review checklist, and the expected Terraform + Ansible output at the end of the deployment.
+That file documents the ownership boundary, Terraform components, request flow, state and
+output contract, operational boundaries, review checklist, and the expected Terraform +
+Ansible output at the end of the deployment.
 
 ## Review Before Apply
 
@@ -167,4 +201,7 @@ From the repository root:
 ./scripts/validate-all.sh
 ```
 
-The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.
+The validator checks Terraform formatting, required deployment README files, required
+architecture README sections, `terraform init -backend=false`, `terraform validate`, root
+Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
+cleanup of generated Terraform artifacts.

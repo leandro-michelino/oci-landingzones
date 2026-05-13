@@ -2,18 +2,30 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This architecture page documents the `blueprints/data-platform/private-data-platform` deployment. It is intentionally text-first and ASCII-only so it can be reviewed in terminals, pull requests, and customer notes without a diagramming tool.
+This is the design view for `blueprints/data-platform/private-data-platform`. It stays
+ASCII-first on purpose so you can review the deployment in GitHub, a terminal, a pull
+request, or customer notes without a diagramming tool.
 
 ## Deployment Purpose
 
-This blueprint provides private data platform foundation with private network,
-Vault/KMS, Object Storage, private endpoint, and Streaming.
+Builds a private data-platform pattern with network placement, vault/KMS, object storage,
+private endpoint, and streaming hooks.
+
+## Architecture At A Glance
+
+| Item | Details |
+| --- | --- |
+| Boundary | `blueprints/data-platform/private-data-platform` owns this deployment end to end. |
+| Terraform components | `network`, `vault`, `streaming`, `oci_objectstorage_bucket.data`, `oci_objectstorage_private_endpoint.data`, `data.oci_objectstorage_namespace.this` |
+| Input source | `terraform.tfvars.example` documents the shape; local ignored tfvars provide real values. |
+| Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `vcn_id`, `subnet_ids`, `vault_ids`, `vault_key_ids`, `data_bucket_name`, plus 3 more |
+| Runner contract | `ansible/plan.yml`, guarded `ansible/apply.yml`, and guarded `ansible/destroy.yml`. |
 
 ## Files In This Deployment
 
 ```text
 blueprints/data-platform/private-data-platform/
-|-- README.md                         Human-friendly deployment notes
+|-- README.md                         Operator guide for this deployment
 |-- architecture/README.md            This detailed ASCII architecture
 |-- main.tf                           Terraform resource and module wiring
 |-- variables.tf                      Input contract and defaults
@@ -30,66 +42,75 @@ blueprints/data-platform/private-data-platform/
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------+
-| Private Data Platform Landing Zone                                             |
-| blueprints/data-platform/private-data-platform                                 |
-+--------------------------------------------------------------------------------+
-| Operator / CI / local shell                                                    |
-|   |                                                                            |
-|   v                                                                            |
-+--------------------------------------------------------------------------------+
-| Blueprint folder contract                                                      |
-|   README.md                                                                    |
-|   architecture/README.md                                                       |
-|   main.tf + variables.tf + outputs.tf + providers.tf + versions.tf             |
-|   ansible/plan.yml + apply.yml + destroy.yml                                   |
-+--------------------------------------------------------------------------------+
-|   |                                                                            |
-|   v                                                                            |
-+--------------------------------------------------------------------------------+
-| Terraform composition and OCI resources                                        |
-|  01. data     oci_objectstorage_namespace.this                 (main.tf)       |
-|  02. module   network                                          (main.tf)       |
-|  03. module   vault                                            (main.tf)       |
-|  04. resource oci_objectstorage_bucket.data                    (main.tf)       |
-|  05. resource oci_objectstorage_private_endpoint.data          (main.tf)       |
-|  06. module   streaming                                        (main.tf)       |
-+--------------------------------------------------------------------------------+
-|   |                                                                            |
-|   v                                                                            |
-+--------------------------------------------------------------------------------+
-| Architecture layers                                                            |
-|   - Control plane: Terraform provider and data platform variables              |
-|   - Network plane: private-only VCN, service gateway, and private endpoint subn|
-|   - Data plane: Object Storage bucket, Streaming, and private access targets   |
-|   - Security plane: Vault/KMS, tags, and no-public-access defaults             |
-+--------------------------------------------------------------------------------+
-|   |                                                                            |
-|   v                                                                            |
-+--------------------------------------------------------------------------------+
-| Outputs and hand-off                                                           |
-|   resource_ids plus blueprint-specific IDs                                     |
-|   tfvars reviewed before apply                                                 |
-|   generated Terraform artifacts cleaned after validation                       |
-+--------------------------------------------------------------------------------+
++------------------------------------------------------------------------------------------------------+
+| Private Data Platform Landing Zone                                                                   |
+| Folder: blueprints/data-platform/private-data-platform                                               |
+|                                                                                                      |
+| [1] Operator entry                                                                                   |
+| Operator, CI job, or local shell reviews README.md and architecture/README.md, copies                |
+| terraform.tfvars.example to terraform.tfvars, and chooses either direct Terraform or the local       |
+| Ansible wrapper.                                                                                     |
+|                                                                                                      |
+| [2] Local file contract                                                                              |
+| README.md -> run-facing deployment guide.                                                            |
+| architecture/README.md -> detailed text architecture and review notes.                               |
+| main.tf -> Terraform composition for this deployment.                                                |
+| variables.tf -> input contract and defaults.                                                         |
+| outputs.tf -> named hand-off values.                                                                 |
+| providers.tf + versions.tf -> provider setup and version constraints.                                |
+| ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
+|                                                                                                      |
+| [3] Terraform composition from main.tf                                                               |
+| 01. module.network -> ../../../blueprints/networking/standalone-private-endpoint-only                |
+| 02. module.vault -> ../../../modules/security/vault                                                  |
+| 03. module.streaming -> ../../../blueprints/extensions/streaming                                     |
+| 04. resource.oci_objectstorage_bucket.data                                                           |
+| 05. resource.oci_objectstorage_private_endpoint.data                                                 |
+| 06. data.oci_objectstorage_namespace.this                                                            |
+|                                                                                                      |
+| [4] OCI/resource planes                                                                              |
+| - Control: provider config, tenancy context, naming inputs, and local tfvars.                        |
+| - Data platform: private data, analytics, network, security, and service endpoints required by the   |
+| blueprint.                                                                                           |
+| - Consumption: data, network, and security outputs for data engineering and operations teams.        |
+| - Operations: Ansible plan/apply/destroy wrappers, validation, and cleanup.                          |
+|                                                                                                      |
+| [5] Output hand-off                                                                                  |
+| - blueprint_name: Blueprint identifier.                                                              |
+| - name_prefix: Standard OCI naming prefix for resources created by this blueprint.                   |
+| - resource_ids: Map of resource identifiers created by this blueprint.                               |
+| - vcn_id: Private data platform VCN OCID.                                                            |
+| - subnet_ids: Private data platform subnet OCIDs keyed by role.                                      |
+| - vault_ids: Vault OCIDs keyed by logical name.                                                      |
+| - vault_key_ids: KMS key OCIDs keyed by logical name.                                                |
+| - data_bucket_name: Private data platform Object Storage bucket name.                                |
+| - object_storage_private_endpoint_id: Object Storage private endpoint OCID.                          |
+| - stream_pool_id: Streaming stream pool OCID.                                                        |
+| - stream_ids: Stream OCIDs keyed by logical name.                                                    |
+|                                                                                                      |
+| [6] Deployment close-out                                                                             |
+| terraform output and the Ansible PLAY RECAP are the human and automation hand-off.                   |
+| Generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git.  |
++------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components
 
-- `data oci_objectstorage_namespace.this` in `main.tf`: reads the Object Storage namespace needed by buckets and endpoints.
-- `module network` in `main.tf`: composes the reusable network module or child blueprint.
-- `module vault` in `main.tf`: composes the reusable vault module or child blueprint.
-- `resource oci_objectstorage_bucket.data` in `main.tf`: creates a private Object Storage bucket for data or DR logs.
-- `resource oci_objectstorage_private_endpoint.data` in `main.tf`: creates a private Object Storage endpoint inside the VCN.
-- `module streaming` in `main.tf`: composes the reusable streaming module or child blueprint.
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Module | `network` | `../../../blueprints/networking/standalone-private-endpoint-only` |
+| Module | `vault` | `../../../modules/security/vault` |
+| Module | `streaming` | `../../../blueprints/extensions/streaming` |
+| Resource | `oci_objectstorage_bucket.data` | Declared directly in `main.tf` |
+| Resource | `oci_objectstorage_private_endpoint.data` | Declared directly in `main.tf` |
+| Data source | `data.oci_objectstorage_namespace.this` | Read during plan/apply |
 
 ## Request And Deployment Flow
 
-- Operator supplies compartment and optional subnet/KMS overrides.
-- Private network and service gateway are created first.
-- Vault/KMS is prepared for encryption where enabled.
-- Object Storage bucket, private endpoint, and Streaming resources are created.
-- Outputs hand private endpoint, bucket, stream, and key IDs to data producers and consumers.
+- Operator reviews the local tfvars contract and chooses the plan/apply runner.
+- Terraform composes the OCI resources declared in `main.tf`.
+- Outputs become the deployment hand-off contract for runbooks and downstream blueprints.
+- Validation checks formatting, init, validate, Ansible syntax, documentation coverage, and cleanup.
 
 ## State, Inputs, And Outputs
 
@@ -105,8 +126,8 @@ Terraform state
 |-- generated .terraform directories, lock files, plans, and state files are cleaned by validation
 |
 Output contract
-|-- blueprint_name and name_prefix identify the deployment
-|-- resource_ids summarizes primary resources in a machine-friendly map
+|-- blueprint_name and name_prefix identify the deployment when declared
+|-- resource_ids summarizes primary resources when declared
 `-- blueprint-specific outputs expose compartment, VCN, subnet, key, policy, service, or DR IDs
 ```
 
@@ -133,7 +154,10 @@ Output contract
 ./scripts/validate-all.sh
 ```
 
-The repository validator checks Terraform formatting, initializes and validates every blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every blueprint-local Ansible runner, and removes generated Terraform artifacts afterward.
+The repository validator checks Terraform formatting, initializes and validates every
+blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every
+blueprint-local Ansible runner, verifies README coverage, and removes generated Terraform
+artifacts afterward.
 
 ## When To Update This Architecture
 
@@ -145,7 +169,9 @@ The repository validator checks Terraform formatting, initializes and validates 
 
 ## Terraform + Ansible Deployment Output
 
-This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper with a clean recap at the end.
+This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph
+and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper
+with a clean recap at the end.
 
 ```text
 $ cd blueprints/data-platform/private-data-platform
@@ -192,4 +218,8 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=<n> changed=<n> unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
 ```
 
-For Private Data Platform, the important hand-off values are `blueprint_name`, `name_prefix`, `resource_ids`, `vcn_id`, `subnet_ids`, `vault_ids`, `vault_key_ids`, `data_bucket_name`, and the remaining outputs declared in `outputs.tf`. Keep those names stable unless a downstream blueprint, runbook, or customer hand-off is updated at the same time.
+For Private Data Platform Landing Zone, the important hand-off values are `blueprint_name`,
+`name_prefix`, `resource_ids`, `vcn_id`, `subnet_ids`, `vault_ids`, `vault_key_ids`,
+`data_bucket_name`, `object_storage_private_endpoint_id`, `stream_pool_id`, plus 1 more.
+Keep those names stable unless a downstream blueprint, runbook, or customer hand-off is
+updated at the same time.

@@ -59,10 +59,11 @@
 
     - name: Fail when a blueprint README lacks full deployment guidance
       ansible.builtin.fail:
-        msg: "{{ item.source }} must include full deployment purpose, inputs, outputs, Terraform and Ansible workflow, local ASCII architecture, review, and validation sections."
+        msg: "{{ item.source }} must include at-a-glance guidance, full deployment purpose, inputs, outputs, Terraform and Ansible workflow, local ASCII architecture, review, and validation sections."
       when:
         - >-
           '## Deployment Purpose' not in (item.content | b64decode) or
+          '## At A Glance' not in (item.content | b64decode) or
           '## When To Use This Deployment' not in (item.content | b64decode) or
           '## What This Deploys' not in (item.content | b64decode) or
           '## Folder Contract' not in (item.content | b64decode) or
@@ -104,10 +105,11 @@
 
     - name: Fail when a blueprint architecture README lacks detailed ASCII sections
       ansible.builtin.fail:
-        msg: "{{ item.source }} must include detailed ASCII architecture, Terraform components, deployment flow, review checklist, and Terraform + Ansible deployment output sections."
+        msg: "{{ item.source }} must include architecture at-a-glance guidance, detailed ASCII architecture, Terraform components, deployment flow, review checklist, and Terraform + Ansible deployment output sections."
       when:
         - >-
           '## ASCII Architecture' not in (item.content | b64decode) or
+          '## Architecture At A Glance' not in (item.content | b64decode) or
           '## Terraform Components' not in (item.content | b64decode) or
           '## Request And Deployment Flow' not in (item.content | b64decode) or
           '## Review Checklist' not in (item.content | b64decode) or

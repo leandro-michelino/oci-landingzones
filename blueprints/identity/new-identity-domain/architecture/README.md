@@ -2,17 +2,29 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This architecture page documents the `blueprints/identity/new-identity-domain` deployment. It is intentionally text-first and ASCII-only so it can be reviewed in terminals, pull requests, and customer notes without a diagramming tool.
+This is the design view for `blueprints/identity/new-identity-domain`. It stays ASCII-first
+on purpose so you can review the deployment in GitHub, a terminal, a pull request, or
+customer notes without a diagramming tool.
 
 ## Deployment Purpose
 
-This blueprint provides single OCI IAM identity domain with optional replica regions.
+Creates a new OCI identity domain and optional replicas for a single identity boundary.
+
+## Architecture At A Glance
+
+| Item | Details |
+| --- | --- |
+| Boundary | `blueprints/identity/new-identity-domain` owns this deployment end to end. |
+| Terraform components | `oci_identity_domain.this`, `oci_identity_domain_replication_to_region.replicas` |
+| Input source | `terraform.tfvars.example` documents the shape; local ignored tfvars provide real values. |
+| Output contract | `blueprint_name`, `name_prefix`, `resource_ids`, `identity_domain_id`, `identity_domain_url`, `replica_region_ids` |
+| Runner contract | `ansible/plan.yml`, guarded `ansible/apply.yml`, and guarded `ansible/destroy.yml`. |
 
 ## Files In This Deployment
 
 ```text
 blueprints/identity/new-identity-domain/
-|-- README.md                         Human-friendly deployment notes
+|-- README.md                         Operator guide for this deployment
 |-- architecture/README.md            This detailed ASCII architecture
 |-- main.tf                           Terraform resource and module wiring
 |-- variables.tf                      Input contract and defaults
@@ -29,57 +41,60 @@ blueprints/identity/new-identity-domain/
 ## ASCII Architecture
 
 ```text
-+-----------------------------------------------------------------------------------+
-| New Identity Domain                                                               |
-| blueprints/identity/new-identity-domain                                           |
-+-----------------------------------------------------------------------------------+
-| Operator / CI / local shell                                                       |
-|   |                                                                               |
-|   v                                                                               |
-+-----------------------------------------------------------------------------------+
-| Blueprint folder contract                                                         |
-|   README.md                                                                       |
-|   architecture/README.md                                                          |
-|   main.tf + variables.tf + outputs.tf + providers.tf + versions.tf                |
-|   ansible/plan.yml + apply.yml + destroy.yml                                      |
-+-----------------------------------------------------------------------------------+
-|   |                                                                               |
-|   v                                                                               |
-+-----------------------------------------------------------------------------------+
-| Terraform composition and OCI resources                                           |
-|  01. resource oci_identity_domain.this                         (main.tf)          |
-|  02. resource oci_identity_domain_replication_to_region.replicas (main.tf)        |
-+-----------------------------------------------------------------------------------+
-|   |                                                                               |
-|   v                                                                               |
-+-----------------------------------------------------------------------------------+
-| Architecture layers                                                               |
-|   - Control plane: Terraform provider and identity variables                      |
-|   - Identity plane: domains, groups, dynamic groups, and IAM policies             |
-|   - Governance plane: CIS-oriented audit and least privilege boundaries           |
-|   - Operations plane: outputs for administrators, auditors, and follow-on blueprin|
-+-----------------------------------------------------------------------------------+
-|   |                                                                               |
-|   v                                                                               |
-+-----------------------------------------------------------------------------------+
-| Outputs and hand-off                                                              |
-|   resource_ids plus blueprint-specific IDs                                        |
-|   tfvars reviewed before apply                                                    |
-|   generated Terraform artifacts cleaned after validation                          |
-+-----------------------------------------------------------------------------------+
++------------------------------------------------------------------------------------------------------+
+| New Identity Domain                                                                                  |
+| Folder: blueprints/identity/new-identity-domain                                                      |
+|                                                                                                      |
+| [1] Operator entry                                                                                   |
+| Operator, CI job, or local shell reviews README.md and architecture/README.md, copies                |
+| terraform.tfvars.example to terraform.tfvars, and chooses either direct Terraform or the local       |
+| Ansible wrapper.                                                                                     |
+|                                                                                                      |
+| [2] Local file contract                                                                              |
+| README.md -> run-facing deployment guide.                                                            |
+| architecture/README.md -> detailed text architecture and review notes.                               |
+| main.tf -> Terraform composition for this deployment.                                                |
+| variables.tf -> input contract and defaults.                                                         |
+| outputs.tf -> named hand-off values.                                                                 |
+| providers.tf + versions.tf -> provider setup and version constraints.                                |
+| ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
+|                                                                                                      |
+| [3] Terraform composition from main.tf                                                               |
+| 01. resource.oci_identity_domain.this                                                                |
+| 02. resource.oci_identity_domain_replication_to_region.replicas                                      |
+|                                                                                                      |
+| [4] OCI/resource planes                                                                              |
+| - Control: provider config, tenancy context, naming inputs, and local tfvars.                        |
+| - Identity: domains, groups, dynamic groups, federation hooks, policies, and ownership boundaries.   |
+| - Consumption: IAM and identity outputs for core, workload vending, and customer runbooks.           |
+| - Operations: Ansible plan/apply/destroy wrappers, validation, and cleanup.                          |
+|                                                                                                      |
+| [5] Output hand-off                                                                                  |
+| - blueprint_name: Blueprint identifier.                                                              |
+| - name_prefix: Standard OCI naming prefix for resources created by this blueprint.                   |
+| - resource_ids: Map of resource identifiers created by this blueprint.                               |
+| - identity_domain_id: Created identity domain OCID.                                                  |
+| - identity_domain_url: Created identity domain URL.                                                  |
+| - replica_region_ids: Identity domain replication resource IDs keyed by replica region.              |
+|                                                                                                      |
+| [6] Deployment close-out                                                                             |
+| terraform output and the Ansible PLAY RECAP are the human and automation hand-off.                   |
+| Generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git.  |
++------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components
 
-- `resource oci_identity_domain.this` in `main.tf`: creates or manages an OCI IAM identity domain.
-- `resource oci_identity_domain_replication_to_region.replicas` in `main.tf`: replicates the identity domain to an additional OCI region.
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Resource | `oci_identity_domain.this` | Declared directly in `main.tf` |
+| Resource | `oci_identity_domain_replication_to_region.replicas` | Declared directly in `main.tf` |
 
 ## Request And Deployment Flow
 
-- Operator reviews home region, tenancy, and identity-domain or IAM variables.
-- Terraform applies identity resources through the configured OCI provider.
-- Groups, dynamic groups, policies, domains, or replicas are created according to the blueprint.
-- Outputs expose stable names, OCIDs, and URLs for administrators and follow-on patterns.
+- Operator reviews domain, group, dynamic group, federation, and policy inputs.
+- Terraform composes the identity boundary and any required policy scope.
+- Outputs expose identity IDs and names for core, workload, and operations hand-off.
 
 ## State, Inputs, And Outputs
 
@@ -95,8 +110,8 @@ Terraform state
 |-- generated .terraform directories, lock files, plans, and state files are cleaned by validation
 |
 Output contract
-|-- blueprint_name and name_prefix identify the deployment
-|-- resource_ids summarizes primary resources in a machine-friendly map
+|-- blueprint_name and name_prefix identify the deployment when declared
+|-- resource_ids summarizes primary resources when declared
 `-- blueprint-specific outputs expose compartment, VCN, subnet, key, policy, service, or DR IDs
 ```
 
@@ -123,7 +138,10 @@ Output contract
 ./scripts/validate-all.sh
 ```
 
-The repository validator checks Terraform formatting, initializes and validates every blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every blueprint-local Ansible runner, and removes generated Terraform artifacts afterward.
+The repository validator checks Terraform formatting, initializes and validates every
+blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every
+blueprint-local Ansible runner, verifies README coverage, and removes generated Terraform
+artifacts afterward.
 
 ## When To Update This Architecture
 
@@ -135,7 +153,9 @@ The repository validator checks Terraform formatting, initializes and validates 
 
 ## Terraform + Ansible Deployment Output
 
-This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper with a clean recap at the end.
+This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph
+and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper
+with a clean recap at the end.
 
 ```text
 $ cd blueprints/identity/new-identity-domain
@@ -151,7 +171,7 @@ blueprint_name = "new-identity-domain"
 name_prefix = "<org>-<env>-<region_key>"
 resource_ids = { ... }
 identity_domain_id = "ocid1.<resource>..."
-identity_domain_url = "https://<service-endpoint>"
+identity_domain_url = "https://<endpoint>"
 replica_region_ids = { ... }
 ```
 
@@ -177,4 +197,7 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=<n> changed=<n> unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
 ```
 
-For New Identity Domain, the important hand-off values are `blueprint_name`, `name_prefix`, `resource_ids`, `identity_domain_id`, `identity_domain_url`, `replica_region_ids`. Keep those names stable unless a downstream blueprint, runbook, or customer hand-off is updated at the same time.
+For New Identity Domain, the important hand-off values are `blueprint_name`, `name_prefix`,
+`resource_ids`, `identity_domain_id`, `identity_domain_url`, `replica_region_ids`. Keep
+those names stable unless a downstream blueprint, runbook, or customer hand-off is updated
+at the same time.

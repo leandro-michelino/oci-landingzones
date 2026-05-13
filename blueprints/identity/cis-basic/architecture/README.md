@@ -2,18 +2,30 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This architecture page documents the `blueprints/identity/cis-basic` deployment. It is intentionally text-first and ASCII-only so it can be reviewed in terminals, pull requests, and customer notes without a diagramming tool.
+This is the design view for `blueprints/identity/cis-basic`. It stays ASCII-first on purpose
+so you can review the deployment in GitHub, a terminal, a pull request, or customer notes
+without a diagramming tool.
 
 ## Deployment Purpose
 
-This blueprint provides identity baseline for CIS-oriented groups, dynamic groups, and
-tenancy policies.
+Creates CIS-oriented IAM groups, dynamic groups, and policies without deploying the full
+core landing-zone stack.
+
+## Architecture At A Glance
+
+| Item | Details |
+| --- | --- |
+| Boundary | `blueprints/identity/cis-basic` owns this deployment end to end. |
+| Terraform components | `groups`, `dynamic_groups`, `policies` |
+| Input source | `terraform.tfvars.example` documents the shape; local ignored tfvars provide real values. |
+| Output contract | `blueprint_name`, `name_prefix`, `cis_level`, `resource_ids`, `group_ids`, `group_names`, `dynamic_group_ids`, `policy_ids` |
+| Runner contract | `ansible/plan.yml`, guarded `ansible/apply.yml`, and guarded `ansible/destroy.yml`. |
 
 ## Files In This Deployment
 
 ```text
 blueprints/identity/cis-basic/
-|-- README.md                         Human-friendly deployment notes
+|-- README.md                         Operator guide for this deployment
 |-- architecture/README.md            This detailed ASCII architecture
 |-- main.tf                           Terraform resource and module wiring
 |-- variables.tf                      Input contract and defaults
@@ -30,59 +42,64 @@ blueprints/identity/cis-basic/
 ## ASCII Architecture
 
 ```text
-+-----------------------------------------------------------------------------------+
-| CIS Basic Identity                                                                |
-| blueprints/identity/cis-basic                                                     |
-+-----------------------------------------------------------------------------------+
-| Operator / CI / local shell                                                       |
-|   |                                                                               |
-|   v                                                                               |
-+-----------------------------------------------------------------------------------+
-| Blueprint folder contract                                                         |
-|   README.md                                                                       |
-|   architecture/README.md                                                          |
-|   main.tf + variables.tf + outputs.tf + providers.tf + versions.tf                |
-|   ansible/plan.yml + apply.yml + destroy.yml                                      |
-+-----------------------------------------------------------------------------------+
-|   |                                                                               |
-|   v                                                                               |
-+-----------------------------------------------------------------------------------+
-| Terraform composition and OCI resources                                           |
-|  01. module   groups                                           (main.tf)          |
-|  02. module   dynamic_groups                                   (main.tf)          |
-|  03. module   policies                                         (main.tf)          |
-+-----------------------------------------------------------------------------------+
-|   |                                                                               |
-|   v                                                                               |
-+-----------------------------------------------------------------------------------+
-| Architecture layers                                                               |
-|   - Control plane: Terraform provider and identity variables                      |
-|   - Identity plane: domains, groups, dynamic groups, and IAM policies             |
-|   - Governance plane: CIS-oriented audit and least privilege boundaries           |
-|   - Operations plane: outputs for administrators, auditors, and follow-on blueprin|
-+-----------------------------------------------------------------------------------+
-|   |                                                                               |
-|   v                                                                               |
-+-----------------------------------------------------------------------------------+
-| Outputs and hand-off                                                              |
-|   resource_ids plus blueprint-specific IDs                                        |
-|   tfvars reviewed before apply                                                    |
-|   generated Terraform artifacts cleaned after validation                          |
-+-----------------------------------------------------------------------------------+
++------------------------------------------------------------------------------------------------------+
+| CIS Basic Identity Baseline                                                                          |
+| Folder: blueprints/identity/cis-basic                                                                |
+|                                                                                                      |
+| [1] Operator entry                                                                                   |
+| Operator, CI job, or local shell reviews README.md and architecture/README.md, copies                |
+| terraform.tfvars.example to terraform.tfvars, and chooses either direct Terraform or the local       |
+| Ansible wrapper.                                                                                     |
+|                                                                                                      |
+| [2] Local file contract                                                                              |
+| README.md -> run-facing deployment guide.                                                            |
+| architecture/README.md -> detailed text architecture and review notes.                               |
+| main.tf -> Terraform composition for this deployment.                                                |
+| variables.tf -> input contract and defaults.                                                         |
+| outputs.tf -> named hand-off values.                                                                 |
+| providers.tf + versions.tf -> provider setup and version constraints.                                |
+| ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
+|                                                                                                      |
+| [3] Terraform composition from main.tf                                                               |
+| 01. module.groups -> ../../../modules/iam/groups                                                     |
+| 02. module.dynamic_groups -> ../../../modules/iam/dynamic-groups                                     |
+| 03. module.policies -> ../../../modules/iam/policies                                                 |
+|                                                                                                      |
+| [4] OCI/resource planes                                                                              |
+| - Control: provider config, tenancy context, naming inputs, and local tfvars.                        |
+| - Identity: domains, groups, dynamic groups, federation hooks, policies, and ownership boundaries.   |
+| - Consumption: IAM and identity outputs for core, workload vending, and customer runbooks.           |
+| - Operations: Ansible plan/apply/destroy wrappers, validation, and cleanup.                          |
+|                                                                                                      |
+| [5] Output hand-off                                                                                  |
+| - blueprint_name: Blueprint identifier.                                                              |
+| - name_prefix: Standard OCI naming prefix for resources created by this blueprint.                   |
+| - cis_level: CIS baseline level implemented by this identity blueprint.                              |
+| - resource_ids: Map of resource identifiers created by this blueprint.                               |
+| - group_ids: IAM group OCIDs keyed by logical role.                                                  |
+| - group_names: IAM group names keyed by logical role.                                                |
+| - dynamic_group_ids: Dynamic group OCIDs keyed by logical role.                                      |
+| - policy_ids: IAM policy OCIDs keyed by logical role.                                                |
+|                                                                                                      |
+| [6] Deployment close-out                                                                             |
+| terraform output and the Ansible PLAY RECAP are the human and automation hand-off.                   |
+| Generated .terraform directories, lock files, plans, state files, and local tfvars stay out of git.  |
++------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components
 
-- `module groups` in `main.tf`: composes the reusable groups module or child blueprint.
-- `module dynamic_groups` in `main.tf`: composes the reusable dynamic groups module or child blueprint.
-- `module policies` in `main.tf`: composes the reusable policies module or child blueprint.
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Module | `groups` | `../../../modules/iam/groups` |
+| Module | `dynamic_groups` | `../../../modules/iam/dynamic-groups` |
+| Module | `policies` | `../../../modules/iam/policies` |
 
 ## Request And Deployment Flow
 
-- Operator reviews home region, tenancy, and identity-domain or IAM variables.
-- Terraform applies identity resources through the configured OCI provider.
-- Groups, dynamic groups, policies, domains, or replicas are created according to the blueprint.
-- Outputs expose stable names, OCIDs, and URLs for administrators and follow-on patterns.
+- Operator reviews domain, group, dynamic group, federation, and policy inputs.
+- Terraform composes the identity boundary and any required policy scope.
+- Outputs expose identity IDs and names for core, workload, and operations hand-off.
 
 ## State, Inputs, And Outputs
 
@@ -98,8 +115,8 @@ Terraform state
 |-- generated .terraform directories, lock files, plans, and state files are cleaned by validation
 |
 Output contract
-|-- blueprint_name and name_prefix identify the deployment
-|-- resource_ids summarizes primary resources in a machine-friendly map
+|-- blueprint_name and name_prefix identify the deployment when declared
+|-- resource_ids summarizes primary resources when declared
 `-- blueprint-specific outputs expose compartment, VCN, subnet, key, policy, service, or DR IDs
 ```
 
@@ -126,7 +143,10 @@ Output contract
 ./scripts/validate-all.sh
 ```
 
-The repository validator checks Terraform formatting, initializes and validates every blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every blueprint-local Ansible runner, and removes generated Terraform artifacts afterward.
+The repository validator checks Terraform formatting, initializes and validates every
+blueprint without a backend, syntax-checks the root Ansible playbooks, syntax-checks every
+blueprint-local Ansible runner, verifies README coverage, and removes generated Terraform
+artifacts afterward.
 
 ## When To Update This Architecture
 
@@ -138,7 +158,9 @@ The repository validator checks Terraform formatting, initializes and validates 
 
 ## Terraform + Ansible Deployment Output
 
-This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper with a clean recap at the end.
+This is the deployment finish line for this blueprint. Terraform owns the OCI resource graph
+and named outputs; Ansible gives the local operator a repeatable plan/apply/destroy wrapper
+with a clean recap at the end.
 
 ```text
 $ cd blueprints/identity/cis-basic
@@ -182,4 +204,7 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=<n> changed=<n> unreachable=0 failed=0 skipped=<n> rescued=0 ignored=0
 ```
 
-For CIS Basic, the important hand-off values are `blueprint_name`, `name_prefix`, `cis_level`, `resource_ids`, `group_ids`, `group_names`, `dynamic_group_ids`, `policy_ids`. Keep those names stable unless a downstream blueprint, runbook, or customer hand-off is updated at the same time.
+For CIS Basic Identity Baseline, the important hand-off values are `blueprint_name`,
+`name_prefix`, `cis_level`, `resource_ids`, `group_ids`, `group_names`, `dynamic_group_ids`,
+`policy_ids`. Keep those names stable unless a downstream blueprint, runbook, or customer
+hand-off is updated at the same time.
