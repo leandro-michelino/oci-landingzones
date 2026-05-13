@@ -1,6 +1,6 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 module "network" {
-  source = "../../networking/hub-spoke-with-drg-and-three-tier-vcns"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=v0.2.0"
 
   tenancy_ocid       = var.tenancy_ocid
   current_user_ocid  = var.current_user_ocid
@@ -16,7 +16,7 @@ module "network" {
 }
 
 module "vault" {
-  source = "../../../modules/security/vault"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vault?ref=v0.2.0"
 
   tenancy_ocid         = var.tenancy_ocid
   compartment_ocid     = local.target_compartment_ocid
@@ -32,7 +32,7 @@ module "vault" {
 }
 
 module "oke" {
-  source = "../../extensions/oke"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/extensions/oke?ref=v0.2.0"
 
   tenancy_ocid             = var.tenancy_ocid
   current_user_ocid        = var.current_user_ocid
@@ -60,7 +60,7 @@ module "oke" {
 }
 
 module "monitoring" {
-  source = "../../../modules/operations/monitoring"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/monitoring?ref=v0.2.0"
 
   tenancy_ocid         = var.tenancy_ocid
   compartment_ocid     = local.target_compartment_ocid
@@ -78,7 +78,7 @@ module "monitoring" {
 }
 
 module "os_management" {
-  source = "../../../modules/operations/os-management"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/os-management?ref=v0.2.0"
 
   tenancy_ocid            = var.tenancy_ocid
   compartment_ocid        = local.target_compartment_ocid

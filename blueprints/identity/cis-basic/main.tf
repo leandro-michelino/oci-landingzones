@@ -1,6 +1,6 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 module "groups" {
-  source = "../../../modules/iam/groups"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/groups?ref=v0.2.0"
 
   tenancy_ocid          = var.tenancy_ocid
   compartment_ocid      = local.target_compartment_ocid
@@ -16,7 +16,7 @@ module "groups" {
 }
 
 module "dynamic_groups" {
-  source = "../../../modules/iam/dynamic-groups"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/dynamic-groups?ref=v0.2.0"
 
   tenancy_ocid     = var.tenancy_ocid
   compartment_ocid = local.target_compartment_ocid
@@ -31,7 +31,7 @@ module "dynamic_groups" {
 }
 
 module "policies" {
-  source = "../../../modules/iam/policies"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/policies?ref=v0.2.0"
 
   tenancy_ocid            = var.tenancy_ocid
   compartment_ocid        = local.target_compartment_ocid

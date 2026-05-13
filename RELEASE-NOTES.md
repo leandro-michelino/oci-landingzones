@@ -2,6 +2,31 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
+## Unreleased
+
+### Added
+
+- Repository-level ASCII architecture index under `docs/architecture/`.
+- Text-first implementation roadmap under `docs/ROADMAP.md`.
+- Validation contract notes in `tests/README.md`.
+
+### Changed
+
+- Aligned the default Terraform plan artifact with ignore and cleanup rules by
+  using `tfplan.tfplan`.
+- Normalized remaining composite blueprint module sources to release-pinned Git
+  refs so sparse-checkout and single-folder use stay consistent.
+- Added validation to block local `../` Terraform module sources in deployable
+  blueprints.
+- Extended validation cleanup to remove generated plan files and `.DS_Store`
+  metadata in both Ansible and shell fallback paths.
+- Kept `terraform_tflint` out of the default pre-commit hook set so optional
+  scanner availability stays consistent with the validation script.
+
+### Removed
+
+- Empty test `.gitkeep` placeholders.
+
 ## v0.2.1 - 2026-05-13
 
 ### Changed

@@ -4,6 +4,25 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
+export ANSIBLE_LOCAL_TEMP="${ANSIBLE_LOCAL_TEMP:-${TMPDIR:-/tmp}/ansible-local}"
+export ANSIBLE_REMOTE_TEMP="${ANSIBLE_REMOTE_TEMP:-${ANSIBLE_LOCAL_TEMP}/remote}"
+mkdir -p "$ANSIBLE_LOCAL_TEMP" "$ANSIBLE_REMOTE_TEMP"
+
+cleanup_generated_artifacts() {
+  find "$REPO_ROOT" -name ".terraform" -type d -prune -exec rm -rf {} +
+  find "$REPO_ROOT" \
+    \( -name ".terraform.lock.hcl" \
+    -o -name "terraform.tfstate" \
+    -o -name "terraform.tfstate.backup" \
+    -o -name "tfplan" \
+    -o -name "tfplan.*" \
+    -o -name "*.tfplan" \
+    -o -name ".DS_Store" \) \
+    -type f -delete
+}
+
+trap cleanup_generated_artifacts EXIT
+
 if command -v ansible-playbook >/dev/null 2>&1 && [[ "${VALIDATE_ALL_SHELL_FALLBACK:-0}" != "1" ]]; then
   echo "==> ansible-playbook ansible/playbooks/validate.yml"
   ANSIBLE_CONFIG="$REPO_ROOT/ansible/ansible.cfg" \

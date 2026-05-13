@@ -2,7 +2,54 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Operational procedures will be expanded as Terraform modules are implemented.
+Use this runbook for local repository operations and common landing-zone change
+flows. Pattern-specific design checks live in each blueprint's local
+`architecture/README.md`.
+
+## Validate The Repository
+
+1. Confirm the working tree only contains intended changes.
+2. Run `./scripts/validate-all.sh` from the repository root.
+3. Review Terraform fmt/init/validate output for failed blueprint directories.
+4. Review Ansible syntax-check output for shared and blueprint-local playbooks.
+5. Confirm generated artifacts were cleaned:
+   - `.terraform/`
+   - `.terraform.lock.hcl`
+   - `terraform.tfstate*`
+   - `tfplan` and `*.tfplan`
+   - `.DS_Store`
+6. Re-run validation after fixing any Terraform, Ansible, README, or ASCII
+   architecture contract failures.
+
+## Add Or Change A Blueprint
+
+1. Create or update the deployable Terraform files in the blueprint folder.
+2. Keep `terraform.tfvars.example` safe: no real OCIDs, secrets, email
+   addresses, or customer-specific values.
+3. Update the blueprint `README.md` with purpose, inputs, outputs, workflow,
+   validation, and review notes.
+4. Update `architecture/README.md` with a detailed ASCII diagram, Terraform
+   components, deployment flow, architecture notes, and review checklist.
+5. Add or update local `ansible/plan.yml`, `ansible/apply.yml`, and
+   `ansible/destroy.yml` when the blueprint is deployable.
+6. Run `./scripts/validate-all.sh`.
+7. Update `docs/DEPLOYMENT-PATTERN-CATALOG.md` and the root `README.md` when
+   the blueprint should be visible in the deployment menu.
+
+## Clean Generated Files
+
+1. Prefer `./scripts/validate-all.sh`; it removes generated artifacts on exit.
+2. For manual cleanup, run:
+
+   ```bash
+   find . -name ".terraform" -type d -prune -exec rm -rf {} +
+   find . -name ".terraform.lock.hcl" -type f -delete
+   find . -name "terraform.tfstate*" -type f -delete
+   find . -name "tfplan*" -type f -delete
+   find . -name ".DS_Store" -type f -delete
+   ```
+
+3. Confirm `git status --short` does not show generated local artifacts.
 
 ## Add A New Operating Entity
 

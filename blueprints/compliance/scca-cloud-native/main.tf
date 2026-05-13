@@ -1,6 +1,6 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 module "core" {
-  source = "../../../blueprints/core"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/core?ref=v0.2.0"
 
   tenancy_ocid       = var.tenancy_ocid
   current_user_ocid  = var.current_user_ocid
@@ -37,7 +37,7 @@ module "core" {
 }
 
 module "network" {
-  source = "../../../blueprints/networking/hub-spoke-with-hub-vcn-net-firewall"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-hub-vcn-net-firewall?ref=v0.2.0"
 
   tenancy_ocid            = var.tenancy_ocid
   current_user_ocid       = var.current_user_ocid
@@ -54,7 +54,7 @@ module "network" {
 }
 
 module "os_management" {
-  source = "../../../modules/operations/os-management"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/os-management?ref=v0.2.0"
 
   tenancy_ocid            = var.tenancy_ocid
   compartment_ocid        = module.core.governance_compartment_id

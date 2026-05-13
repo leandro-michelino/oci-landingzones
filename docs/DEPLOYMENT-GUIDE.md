@@ -35,12 +35,16 @@ Use the Ansible-backed validation entry point before commits:
 
 This auto-discovers Terraform blueprints under `blueprints/`,
 validates them without a remote backend, runs Ansible syntax checks, and cleans
-generated Terraform artifacts even when a validation step fails. Blueprint
+generated Terraform artifacts, plan files, and `.DS_Store` files even when a
+validation step fails. Blueprint
 folders with scaffold markers now fail validation, because every architecture is
 expected to have real Terraform wiring. Blueprint-local Ansible playbooks are
 syntax-checked for every
 architecture folder. The Ansible role uses a local Terraform plugin cache and a
 bounded timeout per Terraform command so repeated checks stay predictable.
+
+The default Ansible plan artifact is `tfplan.tfplan`. It is ignored and removed
+by validation cleanup, along with older `tfplan` artifacts from previous runs.
 
 The generic landing zone deployment does not enable CIS behavior by default. To
 deploy a CIS landing zone, start from one of the dedicated folders instead:
@@ -78,6 +82,9 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 Use `docs/DEPLOYMENT-PATTERN-CATALOG.md` as the selection menu before choosing
 a blueprint. The catalog includes core, CIS, identity, operating entity,
 networking, compliance, data platform, industry, and extension patterns.
+The repository-level ASCII map lives in `docs/architecture/README.md`; use each
+blueprint's local `architecture/README.md` for implementation and traffic-flow
+review.
 
 ## Using A Single Blueprint
 
@@ -85,20 +92,57 @@ Blueprints are deployable Terraform entry points. Their module sources are
 pinned Git sources, so each architecture folder can be copied or checked out by
 itself and still fetch the shared modules from the repository release.
 
-The minimal checkout pattern is Git sparse checkout with only the selected
-blueprint path:
+Use this path for customer work when the customer wants one outcome, such as a
+hub-spoke deployment, and should not download or review the whole repository.
+
+For Terraform-only use, sparse-checkout only the selected blueprint path:
 
 ```bash
 git clone --filter=blob:none --sparse https://github.com/leandro-michelino/oci-landingzones.git
 cd oci-landingzones
 
-git sparse-checkout set blueprints/networking/standalone-three-tier-vcn-defaults
+git sparse-checkout set blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns
 
-cd blueprints/networking/standalone-three-tier-vcn-defaults
+cd blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns
 cp terraform.tfvars.example terraform.tfvars
 ```
 
-After editing `terraform.tfvars` with real OCI values, run:
+For blueprint-local Ansible runners, include the shared Terraform runner role
+as the only extra path:
+
+```bash
+git clone --filter=blob:none --sparse https://github.com/leandro-michelino/oci-landingzones.git
+cd oci-landingzones
+
+git sparse-checkout set \
+  blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns \
+  ansible/roles/terraform_runner
+
+cd blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns
+cp terraform.tfvars.example terraform.tfvars
+```
+
+The checked-out working tree stays small:
+
+```text
+blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/
+|-- README.md
+|-- architecture/README.md
+|-- main.tf
+|-- variables.tf
+|-- outputs.tf
+|-- providers.tf
+|-- versions.tf
+|-- terraform.tfvars.example
+`-- ansible/
+    |-- plan.yml
+    |-- apply.yml
+    `-- destroy.yml
+
+ansible/roles/terraform_runner/   optional, only for Ansible plan/apply/destroy
+```
+
+After editing `terraform.tfvars` with real OCI values, run Terraform directly:
 
 ```bash
 terraform init
@@ -107,9 +151,19 @@ terraform plan
 terraform apply
 ```
 
+Or, when the sparse checkout includes `ansible/roles/terraform_runner`, run:
+
+```bash
+ansible-playbook -i localhost, ansible/plan.yml
+CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
+```
+
 For review or CI checks that should not configure remote state, use
 `terraform init -backend=false` before `terraform validate` or `terraform plan`.
 For production use, configure state deliberately before apply.
+
+Validation blocks local `../` Terraform module sources in deployable blueprints.
+This keeps every blueprint portable for sparse-checkout customers.
 
 When cutting a new repository release, update blueprint Git source refs to the
 new release tag in the same commit that will be tagged. Avoid `?ref=main` for

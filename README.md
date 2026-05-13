@@ -22,6 +22,7 @@ deployment folder.
 | I Want To... | Go Here |
 |---|---|
 | Pick the right deployment folder | [Choose A Deployment](#choose-a-deployment) |
+| Download only one deployment, not the whole repo | [Use One Blueprint Only](docs/DEPLOYMENT-GUIDE.md#using-a-single-blueprint) |
 | Compare deployment families | [Deployment Categories](#deployment-categories) |
 | See every blueprint with direct links | [Deployment Menu](#deployment-menu) |
 | Build a complete landing zone | [Build A Full Landing Zone](#build-a-full-landing-zone) |
@@ -32,10 +33,11 @@ deployment folder.
 | Step | What To Do | Where |
 |---|---|
 | 1 | Choose the deployment that matches the outcome. | [Choose A Deployment](#choose-a-deployment) |
-| 2 | Open the deployment folder and read its local guide. | `blueprints/<family>/<deployment>/README.md` |
-| 3 | Review the detailed ASCII component and traffic-flow diagram. | `blueprints/<family>/<deployment>/architecture/README.md` |
-| 4 | Copy the example tfvars, fill in real tenancy values, and run a plan from that folder. | local `terraform` or `ansible/plan.yml` |
-| 5 | Apply only after review and approval. | guarded `ansible/apply.yml` or reviewed Terraform apply |
+| 2 | For one deployment only, sparse-checkout just that blueprint folder. | `docs/DEPLOYMENT-GUIDE.md#using-a-single-blueprint` |
+| 3 | Open the deployment folder and read its local guide. | `blueprints/<family>/<deployment>/README.md` |
+| 4 | Review the detailed ASCII component and traffic-flow diagram. | `blueprints/<family>/<deployment>/architecture/README.md` |
+| 5 | Copy the example tfvars, fill in real tenancy values, and run a plan from that folder. | local `terraform` or optional `ansible/plan.yml` |
+| 6 | Apply only after review and approval. | guarded `ansible/apply.yml` or reviewed Terraform apply |
 
 ## Choose A Deployment
 
@@ -170,13 +172,14 @@ The longer walkthrough lives in `docs/DEPLOYMENT-GUIDE.md`.
 ## Repo Map
 
 ```text
-blueprints/    Deployable architectures. Pick from here when you want a working pattern.
-modules/       Reusable Terraform building blocks used by the blueprints.
-ansible/       Shared roles, inventories, checks, and Terraform orchestration.
-docs/          Guides, catalog, runbooks, naming conventions, and standards.
-environments/  Example backend and tfvars shapes for dev, uat, and prod.
-scripts/       Thin wrappers for repo checks and common local workflows.
-tests/         Test scaffolding.
+blueprints/          Deployable architectures. Pick from here when you want a working pattern.
+modules/             Reusable Terraform building blocks used by the blueprints.
+ansible/             Shared roles, inventories, checks, and Terraform orchestration.
+docs/                Guides, catalog, runbooks, naming conventions, and standards.
+docs/architecture/   Repository-level ASCII architecture index.
+environments/        Example backend and tfvars shapes for dev, uat, and prod.
+scripts/             Thin wrappers for repo checks and common local workflows.
+tests/               Validation contract and future test location.
 ```
 
 ## Requirements
@@ -317,8 +320,10 @@ compose. Remote state belongs to deployable blueprints, not shared modules.
 
 | Doc | Use It For |
 |---|---|
+| `docs/ROADMAP.md` | Planned blueprints by phase: Autonomous DB, GenAI, DevOps, Observability, OIC, OAC, and more. |
 | `docs/DEPLOYMENT-GUIDE.md` | Deployment sequence and operating notes. |
 | `docs/DEPLOYMENT-PATTERN-CATALOG.md` | Blueprint catalog and selection notes. |
+| `docs/architecture/README.md` | Repository-level ASCII architecture and documentation contract. |
 | `docs/CIS-PROFILES.md` | CIS profile behavior. |
 | `docs/ARCH-MAPPING-CIS.md` | CIS mapping notes. |
 | `docs/NAMING-CONVENTIONS.md` | Naming standard. |
@@ -332,6 +337,8 @@ Generated Terraform and local test files are intentionally ignored:
 .terraform/
 .terraform.lock.hcl
 terraform.tfstate*
+tfplan
+tfplan.*
 *.tfplan
 terraform.tfvars
 .codex-local/
@@ -344,6 +351,7 @@ For manual cleanup:
 find . -name ".terraform" -type d -prune -exec rm -rf {} +
 find . -name ".terraform.lock.hcl" -type f -delete
 find . -name "terraform.tfstate*" -type f -delete
+find . -name "tfplan*" -type f -delete
 find . -name ".DS_Store" -type f -delete
 rm -rf .codex-local
 rm -rf .claude

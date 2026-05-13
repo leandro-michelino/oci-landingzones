@@ -139,6 +139,15 @@
       loop_control:
         label: "{{ item.source }}"
 
+    - name: Fail when a Terraform blueprint uses local module sources
+      ansible.builtin.fail:
+        msg: "{{ item.source }} uses a local module source. Use pinned Git sources so customers can sparse-checkout one blueprint folder."
+      when:
+        - (item.content | b64decode) is search('source\\s*=\\s*"[.]{1,2}/')
+      loop: "{{ validation_blueprint_entry_contents.results | default([]) }}"
+      loop_control:
+        label: "{{ item.source }}"
+
     - name: Build implemented Terraform blueprint list
       ansible.builtin.set_fact:
         validation_terraform_directories: >-
@@ -307,9 +316,12 @@
       ansible.builtin.find:
         paths: "{{ validation_repo_root }}"
         patterns:
+          - .DS_Store
           - .terraform.lock.hcl
           - terraform.tfstate
           - terraform.tfstate.backup
+          - tfplan
+          - tfplan.*
           - "*.tfplan"
         file_type: file
         recurse: true
