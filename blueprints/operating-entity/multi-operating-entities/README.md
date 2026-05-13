@@ -37,9 +37,9 @@ in the repo.
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `entity_compartments` | `modules/iam/compartments @ v0.1.0` |
-| Module | `groups` | `modules/iam/groups @ v0.1.0` |
-| Module | `policies` | `modules/iam/policies @ v0.1.0` |
+| Module | `entity_compartments` | `modules/iam/compartments @ v0.2.0` |
+| Module | `groups` | `modules/iam/groups @ v0.2.0` |
+| Module | `policies` | `modules/iam/policies @ v0.2.0` |
 
 The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local
 ignored `terraform.tfvars` file.

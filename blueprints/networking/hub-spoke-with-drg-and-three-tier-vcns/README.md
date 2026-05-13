@@ -37,9 +37,9 @@ in the repo.
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `hub_vcn` | `modules/networking/hub-vcn @ v0.1.0` |
-| Module | `drg` | `modules/networking/drg @ v0.1.0` |
-| Module | `spoke_vcns` | `modules/networking/spoke-vcn @ v0.1.0` |
+| Module | `hub_vcn` | `modules/networking/hub-vcn @ v0.2.0` |
+| Module | `drg` | `modules/networking/drg @ v0.2.0` |
+| Module | `spoke_vcns` | `modules/networking/spoke-vcn @ v0.2.0` |
 | Resource | `oci_core_drg_attachment.hub` | Declared directly in `main.tf` |
 | Resource | `oci_core_drg_attachment.spokes` | Declared directly in `main.tf` |
 

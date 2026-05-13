@@ -2,6 +2,50 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
+## v0.2.0 - 2026-05-13
+
+### Added
+
+- Release `v0.2.0` source references across deployable blueprints and
+  release-facing documentation so single-folder and sparse-checkout users fetch
+  the current repository release.
+- Blueprint-local Ansible `plan.yml`, `apply.yml`, and `destroy.yml` runners
+  for every deployable architecture folder.
+- Full Terraform resource implementation wiring for identity, compliance,
+  disaster recovery, private data platform, telco cloud-native, and remaining
+  service extension blueprints that were previously lighter documentation
+  shapes.
+- OCI OS Management Hub module resources for managed instance groups and
+  scheduled jobs.
+- Detailed, deployment-specific ASCII architecture pages for every blueprint,
+  including Terraform components, request flow, state/input/output contracts,
+  review checklists, and Terraform + Ansible deployment output examples.
+- Operator-friendly deployment READMEs for all 37 blueprint folders, including
+  At A Glance summaries, input decision tables, output hand-off tables,
+  workflow commands, deployment order, review checks, and validation guidance.
+- Main README banner and a cleaner user journey for choosing, reviewing,
+  validating, and running blueprints.
+
+### Changed
+
+- Simplified the README layout to keep only the main README plus each
+  deployment README and each deployment-local `architecture/README.md`.
+- Reworked generated architecture documentation into fixed-width ASCII diagrams
+  that reflect each folder's actual Terraform and Ansible file contract.
+- Updated validation guardrails so every Terraform blueprint must keep its
+  deployment README, architecture README, At A Glance sections, ASCII design,
+  Terraform components, request flow, review checklist, and Terraform + Ansible
+  output sections.
+- Expanded the deployment pattern catalog and root README language to make the
+  repository easier to scan without losing the engineering details.
+
+### Removed
+
+- Redundant category, module, script, Ansible, and shared architecture README
+  files that duplicated the deployment-local documentation.
+- Rendered architecture exports and legacy diagram source files that made the
+  repository heavier without improving reviewability.
+
 ## v0.1.0 - 2026-05-12
 
 ### Added
@@ -68,15 +112,6 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   security handling.
 - Initial documentation for naming conventions, deployment flow, CIS mapping,
   variables, architecture diagrams, runbooks, and the core blueprint.
-- Canonical ASCII architecture diagrams and review checklists for every
-  blueprint-local `architecture/README.md`.
-- Blueprint-local Ansible plan, apply, and destroy runners for every
-  architecture folder.
-- Full Terraform implementation wiring for the identity, compliance, disaster
-  recovery, private data platform, and telco cloud-native blueprints that were
-  previously documentation-only placeholders.
-- OCI OS Management Hub module resources for managed instance groups and
-  scheduled jobs.
 
 ### Changed
 

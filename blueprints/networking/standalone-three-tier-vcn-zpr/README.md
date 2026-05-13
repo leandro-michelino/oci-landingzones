@@ -37,8 +37,8 @@ in the repo.
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `workload_vcn` | `modules/networking/spoke-vcn @ v0.1.0` |
-| Module | `zpr` | `modules/networking/zpr @ v0.1.0` |
+| Module | `workload_vcn` | `modules/networking/spoke-vcn @ v0.2.0` |
+| Module | `zpr` | `modules/networking/zpr @ v0.2.0` |
 
 The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local
 ignored `terraform.tfvars` file.

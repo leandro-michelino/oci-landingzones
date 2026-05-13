@@ -37,9 +37,9 @@ in the repo.
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.1.0` |
-| Module | `fastconnect` | `modules/networking/fastconnect @ v0.1.0` |
-| Module | `ipsec_vpn` | `modules/networking/ipsec-vpn @ v0.1.0` |
+| Module | `network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.2.0` |
+| Module | `fastconnect` | `modules/networking/fastconnect @ v0.2.0` |
+| Module | `ipsec_vpn` | `modules/networking/ipsec-vpn @ v0.2.0` |
 
 The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local
 ignored `terraform.tfvars` file.

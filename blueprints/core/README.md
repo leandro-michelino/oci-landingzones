@@ -36,19 +36,19 @@ in the repo.
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `compartments` | `modules/iam/compartments @ v0.1.0` |
-| Module | `tagging` | `modules/governance/tagging @ v0.1.0` |
-| Module | `logging` | `modules/governance/logging @ v0.1.0` |
-| Module | `cloud_guard` | `modules/security/cloud-guard @ v0.1.0` |
-| Module | `vault` | `modules/security/vault @ v0.1.0` |
-| Module | `security_zones` | `modules/security/security-zones @ v0.1.0` |
-| Module | `vss` | `modules/security/vss @ v0.1.0` |
-| Module | `budgets` | `modules/governance/budgets @ v0.1.0` |
-| Module | `events` | `modules/governance/events @ v0.1.0` |
-| Module | `monitoring` | `modules/operations/monitoring @ v0.1.0` |
-| Module | `groups` | `modules/iam/groups @ v0.1.0` |
-| Module | `dynamic_groups` | `modules/iam/dynamic-groups @ v0.1.0` |
-| Module | `policies` | `modules/iam/policies @ v0.1.0` |
+| Module | `compartments` | `modules/iam/compartments @ v0.2.0` |
+| Module | `tagging` | `modules/governance/tagging @ v0.2.0` |
+| Module | `logging` | `modules/governance/logging @ v0.2.0` |
+| Module | `cloud_guard` | `modules/security/cloud-guard @ v0.2.0` |
+| Module | `vault` | `modules/security/vault @ v0.2.0` |
+| Module | `security_zones` | `modules/security/security-zones @ v0.2.0` |
+| Module | `vss` | `modules/security/vss @ v0.2.0` |
+| Module | `budgets` | `modules/governance/budgets @ v0.2.0` |
+| Module | `events` | `modules/governance/events @ v0.2.0` |
+| Module | `monitoring` | `modules/operations/monitoring @ v0.2.0` |
+| Module | `groups` | `modules/iam/groups @ v0.2.0` |
+| Module | `dynamic_groups` | `modules/iam/dynamic-groups @ v0.2.0` |
+| Module | `policies` | `modules/iam/policies @ v0.2.0` |
 
 The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local
 ignored `terraform.tfvars` file.

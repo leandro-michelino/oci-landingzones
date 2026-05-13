@@ -1,6 +1,6 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 module "workload_vcn" {
-  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.1.0"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0"
 
   tenancy_ocid            = var.tenancy_ocid
   compartment_ocid        = local.target_compartment_ocid
@@ -20,7 +20,7 @@ module "workload_vcn" {
 }
 
 module "zpr" {
-  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/zpr?ref=v0.1.0"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/zpr?ref=v0.2.0"
 
   tenancy_ocid             = var.tenancy_ocid
   compartment_ocid         = local.target_compartment_ocid

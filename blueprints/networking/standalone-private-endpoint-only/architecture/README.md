@@ -61,7 +61,7 @@ blueprints/networking/standalone-private-endpoint-only/
 | ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
 |                                                                                                      |
 | [3] Terraform composition from main.tf                                                               |
-| 01. module.private_vcn -> modules/networking/spoke-vcn @ v0.1.0                                      |
+| 01. module.private_vcn -> modules/networking/spoke-vcn @ v0.2.0                                      |
 |                                                                                                      |
 | [4] OCI/resource planes                                                                              |
 | - Control: provider config, tenancy context, naming inputs, and local tfvars.                        |
@@ -92,7 +92,7 @@ blueprints/networking/standalone-private-endpoint-only/
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `private_vcn` | `modules/networking/spoke-vcn @ v0.1.0` |
+| Module | `private_vcn` | `modules/networking/spoke-vcn @ v0.2.0` |
 
 ## Request And Deployment Flow
 

@@ -61,9 +61,9 @@ blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/
 | ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
 |                                                                                                      |
 | [3] Terraform composition from main.tf                                                               |
-| 01. module.hub_vcn -> modules/networking/hub-vcn @ v0.1.0                                            |
-| 02. module.drg -> modules/networking/drg @ v0.1.0                                                    |
-| 03. module.spoke_vcns -> modules/networking/spoke-vcn @ v0.1.0                                       |
+| 01. module.hub_vcn -> modules/networking/hub-vcn @ v0.2.0                                            |
+| 02. module.drg -> modules/networking/drg @ v0.2.0                                                    |
+| 03. module.spoke_vcns -> modules/networking/spoke-vcn @ v0.2.0                                       |
 | 04. resource.oci_core_drg_attachment.hub                                                             |
 | 05. resource.oci_core_drg_attachment.spokes                                                          |
 |                                                                                                      |
@@ -98,9 +98,9 @@ blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `hub_vcn` | `modules/networking/hub-vcn @ v0.1.0` |
-| Module | `drg` | `modules/networking/drg @ v0.1.0` |
-| Module | `spoke_vcns` | `modules/networking/spoke-vcn @ v0.1.0` |
+| Module | `hub_vcn` | `modules/networking/hub-vcn @ v0.2.0` |
+| Module | `drg` | `modules/networking/drg @ v0.2.0` |
+| Module | `spoke_vcns` | `modules/networking/spoke-vcn @ v0.2.0` |
 | Resource | `oci_core_drg_attachment.hub` | Declared directly in `main.tf` |
 | Resource | `oci_core_drg_attachment.spokes` | Declared directly in `main.tf` |
 

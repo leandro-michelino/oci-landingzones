@@ -1,5 +1,5 @@
 module "core" {
-  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/core?ref=v0.1.0"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/core?ref=v0.2.0"
 
   tenancy_ocid       = var.tenancy_ocid
   current_user_ocid  = var.current_user_ocid

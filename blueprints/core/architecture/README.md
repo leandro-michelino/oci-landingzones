@@ -61,19 +61,19 @@ blueprints/core/
 | ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
 |                                                                                                      |
 | [3] Terraform composition from main.tf                                                               |
-| 01. module.compartments -> modules/iam/compartments @ v0.1.0                                         |
-| 02. module.tagging -> modules/governance/tagging @ v0.1.0                                            |
-| 03. module.logging -> modules/governance/logging @ v0.1.0                                            |
-| 04. module.cloud_guard -> modules/security/cloud-guard @ v0.1.0                                      |
-| 05. module.vault -> modules/security/vault @ v0.1.0                                                  |
-| 06. module.security_zones -> modules/security/security-zones @ v0.1.0                                |
-| 07. module.vss -> modules/security/vss @ v0.1.0                                                      |
-| 08. module.budgets -> modules/governance/budgets @ v0.1.0                                            |
-| 09. module.events -> modules/governance/events @ v0.1.0                                              |
-| 10. module.monitoring -> modules/operations/monitoring @ v0.1.0                                      |
-| 11. module.groups -> modules/iam/groups @ v0.1.0                                                     |
-| 12. module.dynamic_groups -> modules/iam/dynamic-groups @ v0.1.0                                     |
-| 13. module.policies -> modules/iam/policies @ v0.1.0                                                 |
+| 01. module.compartments -> modules/iam/compartments @ v0.2.0                                         |
+| 02. module.tagging -> modules/governance/tagging @ v0.2.0                                            |
+| 03. module.logging -> modules/governance/logging @ v0.2.0                                            |
+| 04. module.cloud_guard -> modules/security/cloud-guard @ v0.2.0                                      |
+| 05. module.vault -> modules/security/vault @ v0.2.0                                                  |
+| 06. module.security_zones -> modules/security/security-zones @ v0.2.0                                |
+| 07. module.vss -> modules/security/vss @ v0.2.0                                                      |
+| 08. module.budgets -> modules/governance/budgets @ v0.2.0                                            |
+| 09. module.events -> modules/governance/events @ v0.2.0                                              |
+| 10. module.monitoring -> modules/operations/monitoring @ v0.2.0                                      |
+| 11. module.groups -> modules/iam/groups @ v0.2.0                                                     |
+| 12. module.dynamic_groups -> modules/iam/dynamic-groups @ v0.2.0                                     |
+| 13. module.policies -> modules/iam/policies @ v0.2.0                                                 |
 |                                                                                                      |
 | [4] OCI/resource planes                                                                              |
 | - Control: provider config, tenancy context, naming inputs, and local tfvars.                        |
@@ -108,19 +108,19 @@ blueprints/core/
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `compartments` | `modules/iam/compartments @ v0.1.0` |
-| Module | `tagging` | `modules/governance/tagging @ v0.1.0` |
-| Module | `logging` | `modules/governance/logging @ v0.1.0` |
-| Module | `cloud_guard` | `modules/security/cloud-guard @ v0.1.0` |
-| Module | `vault` | `modules/security/vault @ v0.1.0` |
-| Module | `security_zones` | `modules/security/security-zones @ v0.1.0` |
-| Module | `vss` | `modules/security/vss @ v0.1.0` |
-| Module | `budgets` | `modules/governance/budgets @ v0.1.0` |
-| Module | `events` | `modules/governance/events @ v0.1.0` |
-| Module | `monitoring` | `modules/operations/monitoring @ v0.1.0` |
-| Module | `groups` | `modules/iam/groups @ v0.1.0` |
-| Module | `dynamic_groups` | `modules/iam/dynamic-groups @ v0.1.0` |
-| Module | `policies` | `modules/iam/policies @ v0.1.0` |
+| Module | `compartments` | `modules/iam/compartments @ v0.2.0` |
+| Module | `tagging` | `modules/governance/tagging @ v0.2.0` |
+| Module | `logging` | `modules/governance/logging @ v0.2.0` |
+| Module | `cloud_guard` | `modules/security/cloud-guard @ v0.2.0` |
+| Module | `vault` | `modules/security/vault @ v0.2.0` |
+| Module | `security_zones` | `modules/security/security-zones @ v0.2.0` |
+| Module | `vss` | `modules/security/vss @ v0.2.0` |
+| Module | `budgets` | `modules/governance/budgets @ v0.2.0` |
+| Module | `events` | `modules/governance/events @ v0.2.0` |
+| Module | `monitoring` | `modules/operations/monitoring @ v0.2.0` |
+| Module | `groups` | `modules/iam/groups @ v0.2.0` |
+| Module | `dynamic_groups` | `modules/iam/dynamic-groups @ v0.2.0` |
+| Module | `policies` | `modules/iam/policies @ v0.2.0` |
 
 ## Request And Deployment Flow
 

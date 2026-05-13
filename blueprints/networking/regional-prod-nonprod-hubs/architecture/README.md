@@ -61,8 +61,8 @@ blueprints/networking/regional-prod-nonprod-hubs/
 | ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
 |                                                                                                      |
 | [3] Terraform composition from main.tf                                                               |
-| 01. module.prod_network -> blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.1.0     |
-| 02. module.nonprod_network -> blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.1.0  |
+| 01. module.prod_network -> blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.2.0     |
+| 02. module.nonprod_network -> blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.2.0  |
 |                                                                                                      |
 | [4] OCI/resource planes                                                                              |
 | - Control: provider config, tenancy context, naming inputs, and local tfvars.                        |
@@ -93,8 +93,8 @@ blueprints/networking/regional-prod-nonprod-hubs/
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `prod_network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.1.0` |
-| Module | `nonprod_network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.1.0` |
+| Module | `prod_network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.2.0` |
+| Module | `nonprod_network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.2.0` |
 
 ## Request And Deployment Flow
 

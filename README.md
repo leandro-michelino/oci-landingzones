@@ -342,7 +342,7 @@ rm -rf .claude
 
 ## Maintainer Notes
 
-Blueprint module sources are pinned to release tags such as `v0.1.0`. When a new release is
+Blueprint module sources are pinned to release tags such as `v0.2.0`. When a new release is
 cut, update blueprint source refs deliberately in the same tagged commit. Avoid `?ref=main`
 for customer-facing architecture folders because it can change module behavior without
 review.

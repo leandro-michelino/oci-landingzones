@@ -61,8 +61,8 @@ blueprints/networking/hub-spoke-with-hub-vcn-net-firewall/
 | ansible/plan.yml, apply.yml, destroy.yml -> repeatable local runners with guarded apply and destroy. |
 |                                                                                                      |
 | [3] Terraform composition from main.tf                                                               |
-| 01. module.network -> blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.1.0          |
-| 02. module.network_firewall -> modules/networking/net-firewall @ v0.1.0                              |
+| 01. module.network -> blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.2.0          |
+| 02. module.network_firewall -> modules/networking/net-firewall @ v0.2.0                              |
 |                                                                                                      |
 | [4] OCI/resource planes                                                                              |
 | - Control: provider config, tenancy context, naming inputs, and local tfvars.                        |
@@ -94,8 +94,8 @@ blueprints/networking/hub-spoke-with-hub-vcn-net-firewall/
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.1.0` |
-| Module | `network_firewall` | `modules/networking/net-firewall @ v0.1.0` |
+| Module | `network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.2.0` |
+| Module | `network_firewall` | `modules/networking/net-firewall @ v0.2.0` |
 
 ## Request And Deployment Flow
 

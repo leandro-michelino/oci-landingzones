@@ -1,6 +1,6 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 module "network" {
-  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=v0.1.0"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=v0.2.0"
 
   tenancy_ocid       = var.tenancy_ocid
   current_user_ocid  = var.current_user_ocid
@@ -16,7 +16,7 @@ module "network" {
 }
 
 module "shared_dns" {
-  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/dns?ref=v0.1.0"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/dns?ref=v0.2.0"
 
   tenancy_ocid                         = var.tenancy_ocid
   compartment_ocid                     = local.target_compartment_ocid
