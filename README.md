@@ -13,16 +13,131 @@ architecture, run a plan, and adapt the inputs to your tenancy. It is a personal
 project, not an official Oracle product, so treat it as a solid accelerator that you still
 review, test, and harden before production.
 
-## Quick Navigation
+## Start Here
 
-| I Want To... | Start Here |
+The fastest path is simple: pick a deployment, open that folder, review the local
+architecture, then run a plan. Everything important for a deployment lives in that
+deployment folder.
+
+| I Want To... | Go Here |
 |---|---|
-| See the full deployment menu | [Blueprint Families](#blueprint-families) |
-| Try one architecture quickly | [Use One Blueprint](#use-one-blueprint) |
-| Build a fuller landing zone | [Use The Full Landing Zone](#use-the-full-landing-zone) |
+| Pick the right deployment folder | [Choose A Deployment](#choose-a-deployment) |
+| See every blueprint with direct links | [Deployment Menu](#deployment-menu) |
+| Build a complete landing zone | [Build A Full Landing Zone](#build-a-full-landing-zone) |
 | Understand the folder contract | [Every Blueprint Is End-To-End](#every-blueprint-is-end-to-end) |
-| Check the ASCII diagrams | [Architecture Experience](#architecture-experience) |
-| Validate everything locally | [Validation](#validation) |
+
+## Customer Flow
+
+| Step | What To Do | Where |
+|---|---|
+| 1 | Choose the deployment that matches the outcome. | [Choose A Deployment](#choose-a-deployment) |
+| 2 | Open the deployment folder and read its local guide. | `blueprints/<family>/<deployment>/README.md` |
+| 3 | Review the detailed ASCII component and traffic-flow diagram. | `blueprints/<family>/<deployment>/architecture/README.md` |
+| 4 | Copy the example tfvars, fill in real tenancy values, and run a plan from that folder. | local `terraform` or `ansible/plan.yml` |
+| 5 | Apply only after review and approval. | guarded `ansible/apply.yml` or reviewed Terraform apply |
+
+## Choose A Deployment
+
+Most customers should start with one of these paths:
+
+| Situation | Best Starting Point | Why |
+|---|---|---|
+| I need the landing-zone baseline first | [Core Landing Zone](blueprints/core/) | Creates the shared compartments, IAM, governance, logging, security, and operations layer. |
+| I need a fast VCN example | [Standalone Three-Tier VCN Defaults](blueprints/networking/standalone-three-tier-vcn-defaults/) | Simple web/app/db network with opinionated defaults. |
+| I need custom networking | [Standalone Three-Tier VCN Custom](blueprints/networking/standalone-three-tier-vcn-custom/) | Lets you control CIDRs, gateways, route tables, subnets, and security lists. |
+| I need enterprise routing | [Hub-Spoke DRG And Three-Tier VCNs](blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/) | Central hub, DRG, and spoke VCNs for shared connectivity. |
+| I need private service access only | [Standalone Private Endpoint Only](blueprints/networking/standalone-private-endpoint-only/) | Keeps traffic private with service gateway and private endpoint patterns. |
+| I need regulated posture | [CIS Level 1](blueprints/cis/level1/) or [CIS Level 2](blueprints/cis/level2/) | Uses the core landing zone with CIS-specific posture. |
+| I need app-team onboarding | [Workload Vending](blueprints/operating-entity/workload-vending/) | Creates a workload compartment boundary with scoped IAM. |
+| I need Kubernetes | [OKE Extension](blueprints/extensions/oke/) | Adds an OKE cluster and optional node pool to supplied network IDs. |
+| I need a private data platform | [Private Data Platform](blueprints/data-platform/private-data-platform/) | Builds private VCN, Vault/KMS, Object Storage private endpoint, and Streaming. |
+| I need disaster recovery | [Full Stack DR](blueprints/disaster-recovery/fsdr/) | Creates FSDR protection groups, log buckets, and an optional DR plan. |
+
+## Deployment Menu
+
+Each link below goes directly to the deployment folder. Inside each folder you get the
+customer-facing `README.md`, the detailed `architecture/README.md`, Terraform files, example
+tfvars, and local Ansible plan/apply/destroy runners.
+
+### Foundation And Compliance
+
+| Deployment | Use It When |
+|---|---|
+| [Core Landing Zone](blueprints/core/) | You want the shared OCI foundation: compartments, IAM, tags, logging, Cloud Guard, Vault/KMS, Security Zones, VSS, budgets, events, and monitoring. |
+| [CIS Level 1](blueprints/cis/level1/) | You want the core foundation with CIS Level 1-oriented defaults and review posture. |
+| [CIS Level 2](blueprints/cis/level2/) | You want a stricter CIS-oriented baseline with stronger evidence and guardrail expectations. |
+| [SCCA Cloud Native](blueprints/compliance/scca-cloud-native/) | You need core governance, firewall-centered hub-spoke networking, and OS management for SCCA-style environments. |
+| [Zero Trust](blueprints/compliance/zero-trust/) | You need core governance plus a three-tier VCN protected by Zero Trust Packet Routing. |
+
+### Networking Deployments
+
+| Deployment | Use It When |
+|---|---|
+| [Standalone Three-Tier VCN Defaults](blueprints/networking/standalone-three-tier-vcn-defaults/) | You want a clean web/app/db VCN with default gateways and route behavior. |
+| [Standalone Three-Tier VCN Custom](blueprints/networking/standalone-three-tier-vcn-custom/) | You need to control CIDRs, subnets, route tables, gateways, and security lists. |
+| [Standalone Private Endpoint Only](blueprints/networking/standalone-private-endpoint-only/) | You want private-only service access without an Internet Gateway. |
+| [Standalone Three-Tier VCN ZPR](blueprints/networking/standalone-three-tier-vcn-zpr/) | You want a standalone web/app/db VCN with Zero Trust Packet Routing policies. |
+| [Externally Managed VCNs](blueprints/networking/externally-managed-vcns/) | You already have VCNs/subnets/DRGs and want a clean output contract for brownfield resources. |
+| [Hub-Spoke DRG And Three-Tier VCNs](blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/) | You need a central hub VCN, DRG, and spoke VCNs for enterprise routing. |
+| [Hub-Spoke Dual Region DR](blueprints/networking/hub-spoke-with-dual-region-dr/) | You need matching hub-spoke foundations in primary and secondary regions. |
+| [Hub-Spoke Bastion Jump Host](blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/) | You need managed private admin access through OCI Bastion. |
+| [Hub-Spoke FastConnect VC](blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc/) | You need private on-premises or provider connectivity through FastConnect. |
+| [Hub-Spoke IPSec VPN](blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn/) | You need encrypted VPN connectivity to on-premises networks. |
+| [Hub-Spoke Network Appliance](blueprints/networking/hub-spoke-with-hub-vcn-net-appliance/) | You need custom appliance route targets inside the hub network. |
+| [Hub-Spoke OCI Network Firewall](blueprints/networking/hub-spoke-with-hub-vcn-net-firewall/) | You need centralized firewall inspection in the hub VCN. |
+| [Hub-Spoke Multicloud Interconnect](blueprints/networking/hub-spoke-with-multicloud-interconnect/) | You need FastConnect plus IPSec paths toward another cloud or remote network. |
+| [Hub-Spoke Private DNS Split Horizon](blueprints/networking/hub-spoke-with-private-dns-split-horizon/) | You need private DNS zones and resolver attachments across hub and spokes. |
+| [Hub-Spoke Transit Routing NVA HA](blueprints/networking/hub-spoke-with-transit-routing-nva-ha/) | You need highly available network virtual appliances for transit routing. |
+| [Hub-Spoke ZPR Micro-Segmentation](blueprints/networking/hub-spoke-with-zpr-micro-segmentation/) | You need ZPR policies layered on a hub-spoke network. |
+| [Multi-Tenancy Shared Services](blueprints/networking/multi-tenancy-shared-services/) | You need shared services and private DNS across multiple tenant/workload spokes. |
+| [Regional Prod Nonprod Hubs](blueprints/networking/regional-prod-nonprod-hubs/) | You need separate prod and nonprod hub-spoke networks in one region. |
+
+### Identity And Operating Entity Deployments
+
+| Deployment | Use It When |
+|---|---|
+| [CIS Basic Identity](blueprints/identity/cis-basic/) | You need baseline IAM groups, dynamic groups, and policies. |
+| [New Identity Domain](blueprints/identity/new-identity-domain/) | You need one OCI IAM identity domain with optional replica regions. |
+| [Custom Identity Domains](blueprints/identity/custom-identity-domain/) | You need multiple identity domains from a structured input map. |
+| [Single Operating Entity](blueprints/operating-entity/) | You need one business unit or operating entity compartment tree with scoped IAM. |
+| [Multi Operating Entities](blueprints/operating-entity/multi-operating-entities/) | You need several operating entity boundaries from one deployment. |
+| [Workload Vending](blueprints/operating-entity/workload-vending/) | You need repeatable app or workload onboarding with compartments and scoped policies. |
+
+### Extension Deployments
+
+| Deployment | Use It When |
+|---|---|
+| [API Gateway](blueprints/extensions/apigw/) | You need managed API exposure and route deployment on top of an existing network. |
+| [Exadata](blueprints/extensions/exadata/) | You need OCI Cloud Exadata Infrastructure capacity. |
+| [OKE](blueprints/extensions/oke/) | You need Kubernetes cluster and node pool resources attached to supplied VCN/subnets. |
+| [Streaming](blueprints/extensions/streaming/) | You need stream pools and streams, optionally with KMS and private endpoints. |
+| [WAF](blueprints/extensions/waf/) | You need WAF policy and Web App Firewall attachment for an existing load balancer. |
+
+### Data, DR, And Industry Deployments
+
+| Deployment | Use It When |
+|---|---|
+| [Private Data Platform](blueprints/data-platform/private-data-platform/) | You need private Object Storage access, Vault/KMS, and optional Streaming. |
+| [Full Stack Disaster Recovery](blueprints/disaster-recovery/fsdr/) | You need FSDR protection groups, DR log buckets, and an optional DR plan. |
+| [Telco Cloud Native](blueprints/industry/telco-cloud-native/) | You need hub-spoke networking, Vault, OKE, monitoring, and OS management for telco-style workloads. |
+
+For a longer pattern-by-pattern catalog, see `docs/DEPLOYMENT-PATTERN-CATALOG.md`.
+
+## Build A Full Landing Zone
+
+For a fuller environment, deploy only what you actually need. A sensible order usually looks
+like this:
+
+| Step | Deployment |
+|---|---|
+| 1 | Bootstrap remote state, OCI CLI access, and tenancy prerequisites. |
+| 2 | Deploy [Core](blueprints/core/) for the shared governance baseline. |
+| 3 | Deploy one [Networking](#networking-deployments) blueprint for the traffic model. |
+| 4 | Add [Operating Entity](#operating-entity-deployments) or workload vending patterns when ownership boundaries matter. |
+| 5 | Add [Extensions](#extension-deployments) such as OKE, WAF, Exadata, API Gateway, or Streaming. |
+| 6 | Run repo and security checks before merge or apply. |
+
+The longer walkthrough lives in `docs/DEPLOYMENT-GUIDE.md`.
 
 ## What You Get
 
@@ -41,10 +156,10 @@ review, test, and harden before production.
 ```text
 blueprints/    Deployable architectures. Pick from here when you want a working pattern.
 modules/       Reusable Terraform building blocks used by the blueprints.
-ansible/       Shared roles, inventories, validation, and Terraform orchestration.
+ansible/       Shared roles, inventories, checks, and Terraform orchestration.
 docs/          Guides, catalog, runbooks, naming conventions, and standards.
 environments/  Example backend and tfvars shapes for dev, uat, and prod.
-scripts/       Thin wrappers for validation and common local workflows.
+scripts/       Thin wrappers for repo checks and common local workflows.
 tests/         Test scaffolding.
 ```
 
@@ -55,105 +170,11 @@ tests/         Test scaffolding.
 | Terraform `1.12.0` or later | Builds and validates the OCI resource graph. |
 | OCI CLI | Supplies local OCI authentication and tenancy context. |
 | Git | Fetches the repo and pinned module sources. |
-| Ansible | Runs repo-wide validation and blueprint-local plan/apply/destroy workflows. |
+| Ansible | Runs repo checks and blueprint-local plan/apply/destroy workflows. |
 | Optional scanners | `tflint`, `tfsec`, `checkov`, `ansible-lint`, and `pre-commit` are used when installed. |
 
-The optional scanners are nice to have, not mandatory. Validation skips them cleanly when
-they are not installed.
-
-## Fastest Safe Check
-
-If you are only exploring, start here:
-
-```bash
-git clone https://github.com/leandro-michelino/oci-landingzones.git
-cd oci-landingzones
-
-./scripts/validate-all.sh
-```
-
-That command checks Terraform formatting, verifies every implemented blueprint, runs root
-and blueprint-local Ansible syntax checks, and removes generated Terraform artifacts
-afterward.
-
-## Use One Blueprint
-
-Blueprints are designed to stand on their own. You can clone the repo normally, or
-sparse-checkout a single deployment folder and still let Terraform fetch the shared modules
-through pinned Git module sources.
-
-Example: run only the default standalone three-tier VCN blueprint.
-
-```bash
-git clone --filter=blob:none --sparse https://github.com/leandro-michelino/oci-landingzones.git
-cd oci-landingzones
-
-git sparse-checkout set blueprints/networking/standalone-three-tier-vcn-defaults
-
-cd blueprints/networking/standalone-three-tier-vcn-defaults
-cp terraform.tfvars.example terraform.tfvars
-terraform init
-terraform validate
-terraform plan
-```
-
-You can also use the blueprint-local Ansible wrapper:
-
-```bash
-cd blueprints/networking/standalone-three-tier-vcn-defaults
-cp terraform.tfvars.example terraform.tfvars
-
-ansible-playbook -i localhost, ansible/plan.yml
-```
-
-For a single networking blueprint, set `compartment_ocid` to the workload compartment where
-resources should land. That compartment can come from `blueprints/core/`, another
-landing-zone process, or an existing tenancy.
-
-## Use The Full Landing Zone
-
-For a fuller environment, deploy only what you actually need. A sensible order usually looks
-like this:
-
-| Step | Deployment |
-|---|---|
-| 1 | Bootstrap remote state, OCI CLI access, and tenancy prerequisites. |
-| 2 | Deploy `blueprints/core/` for the shared governance baseline. |
-| 3 | Deploy one networking blueprint for the traffic model. |
-| 4 | Add operating entity or workload vending patterns when ownership boundaries matter. |
-| 5 | Add optional extensions such as OKE, WAF, Exadata, API Gateway, or Streaming. |
-| 6 | Run validation and security checks before merge or apply. |
-
-The longer walkthrough lives in `docs/DEPLOYMENT-GUIDE.md`.
-
-## Blueprint Families
-
-| Family | Good For | Folders |
-|---|---|---|
-| Core | Shared IAM, governance, security, logging, and operations baseline. | `blueprints/core/` |
-| CIS | Dedicated CIS Level 1 or Level 2 landing-zone behavior. | `blueprints/cis/level1/`, `blueprints/cis/level2/` |
-| Identity | Identity domains, federation, groups, and policy scope. | `blueprints/identity/` |
-| Networking | VCNs, hub-spoke, DRG, VPN, FastConnect, DNS, firewall, NVA, ZPR, multicloud, and regional designs. | `blueprints/networking/` |
-| Operating Entity | Business unit, subsidiary, workload owner, or app-team onboarding. | `blueprints/operating-entity/` |
-| Extensions | Optional service add-ons after the foundation is ready. | `blueprints/extensions/` |
-| Compliance | Stricter regulated-environment landing-zone shapes. | `blueprints/compliance/` |
-| Data Platform | Private data and analytics landing-zone pattern. | `blueprints/data-platform/` |
-| Disaster Recovery | OCI Full Stack Disaster Recovery patterns. | `blueprints/disaster-recovery/` |
-| Industry | Industry-oriented variants, such as telco cloud-native. | `blueprints/industry/` |
-
-For the complete pattern catalog, see `docs/DEPLOYMENT-PATTERN-CATALOG.md`.
-
-## Good First Folders
-
-| If You Are Thinking... | Try This |
-|---|---|
-| I need the baseline first | `blueprints/core/` |
-| I just need a clean VCN example | `blueprints/networking/standalone-three-tier-vcn-defaults/` |
-| I need custom subnet or routing shape | `blueprints/networking/standalone-three-tier-vcn-custom/` |
-| I need hub-spoke with DRG | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/` |
-| I need a stricter CIS build | `blueprints/cis/level1/` or `blueprints/cis/level2/` |
-| I need app-team onboarding | `blueprints/operating-entity/workload-vending/` |
-| I need Kubernetes on top | `blueprints/extensions/oke/` |
+The optional scanners are nice to have, not mandatory. The repo checks skip them cleanly
+when they are not installed.
 
 ## How To Read A Deployment
 
@@ -278,31 +299,6 @@ freeform_tags
 Modules should output stable identifiers such as OCIDs, names, and maps that blueprints can
 compose. Remote state belongs to deployable blueprints, not shared modules.
 
-## Validation
-
-Use this before committing, reviewing, or trusting a local change:
-
-```bash
-./scripts/validate-all.sh
-```
-
-The validator checks:
-
-- Terraform format across the repo.
-- Every blueprint has `README.md`.
-- Every blueprint has `architecture/README.md`.
-- Every deployment README includes at-a-glance guidance, inputs, outputs, workflow, review,
-  and validation sections.
-- Every architecture includes ASCII design, Terraform components, deployment
-  flow, review checklist, and TF + Ansible output sections.
-- Every implemented blueprint runs `terraform init -backend=false` and
-  `terraform validate`.
-- Root Ansible playbooks pass syntax checks.
-- Blueprint-local `ansible/plan.yml`, `ansible/apply.yml`, and
-  `ansible/destroy.yml` pass syntax checks.
-- Optional scanners run when available.
-- Generated Terraform artifacts are cleaned afterward.
-
 ## Useful Docs
 
 | Doc | Use It For |
@@ -328,8 +324,7 @@ terraform.tfvars
 .claude/
 ```
 
-The validation playbook normally cleans generated Terraform artifacts for you. For manual
-cleanup:
+For manual cleanup:
 
 ```bash
 find . -name ".terraform" -type d -prune -exec rm -rf {} +
