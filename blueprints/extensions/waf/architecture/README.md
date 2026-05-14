@@ -80,6 +80,13 @@ These notes expand the diagram with the design details that usually matter durin
 - Traffic evaluation happens on the load balancer path before requests reach backend sets, so policy readiness should be reviewed before association.
 - The policy ID and Web App Firewall ID are the operational hand-offs for security and application teams.
 
+## Operational Boundaries
+
+- Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
+- Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
+- Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
+- Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `oci_waf_web_app_firewall_policy.this`, `oci_waf_web_app_firewall.this`.

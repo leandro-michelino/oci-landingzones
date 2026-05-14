@@ -75,6 +75,13 @@ Deploys an OCI DevOps project with notification topic, code repository, build pi
 - Confirm repository naming and branch strategy.
 - Add stages after project, repository, and pipeline IDs are approved.
 
+## Operational Boundaries
+
+- Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
+- Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
+- Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
+- Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `oci_ons_notification_topic.this`, `oci_devops_project.this`, `oci_devops_repository.this`, `oci_devops_build_pipeline.this`, `oci_devops_deploy_pipeline.this`.

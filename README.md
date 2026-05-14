@@ -8,36 +8,46 @@ This repo is a practical OCI landing-zone toolkit: Terraform modules, ready-to-u
 blueprints, local Ansible automation, and plain-text architecture notes for the OCI patterns
 that come up again and again.
 
-It is meant to be useful in real work: clone it, pick a blueprint, review the ASCII
-architecture, run a plan, and adapt the inputs to your tenancy. It is a personal engineering
-project, not an official Oracle product, so treat it as a solid accelerator that you still
-review, test, and harden before production.
+The goal is simple: make the first 10 minutes useful. You should be able to land here,
+understand what is available, pick a blueprint, review the ASCII architecture, run a plan,
+and know what needs a proper production review.
+
+It is a personal engineering project, not an official Oracle product. Treat it as a strong
+accelerator that still deserves the usual production checks: security review,
+input validation, tenancy-specific decisions, and an approved plan/apply flow.
 
 ## Start Here
 
-The fastest path is simple: pick a deployment, open that folder, review the local
-architecture, then run a plan. Everything important for a deployment lives in that
-deployment folder.
+If you are new here, do not try to read everything in order. Pick the path that matches
+what you are doing, then follow the links. The README is the lobby; the blueprint folders
+are where the real work happens.
 
-| I Want To... | Go Here |
+| I Want To... | Start With |
 |---|---|
-| Pick the right deployment folder | [Choose A Deployment](#choose-a-deployment) |
-| Download only one deployment, not the whole repo | [Use One Blueprint Only](docs/DEPLOYMENT-GUIDE.md#using-a-single-blueprint) |
-| Compare deployment families | [Deployment Categories](#deployment-categories) |
+| Find the best deployment folder quickly | [Choose A Deployment](#choose-a-deployment) |
+| Download only one deployment instead of the whole repo | [Use One Blueprint Only](docs/DEPLOYMENT-GUIDE.md#using-a-single-blueprint) |
+| Compare the big families before choosing | [Deployment Categories](#deployment-categories) |
 | See every blueprint with direct links | [Deployment Menu](#deployment-menu) |
-| Build a complete landing zone | [Build A Full Landing Zone](#build-a-full-landing-zone) |
-| Understand the folder contract | [Every Blueprint Is End-To-End](#every-blueprint-is-end-to-end) |
+| Build a complete landing zone from several pieces | [Build A Full Landing Zone](#build-a-full-landing-zone) |
+| Understand how every blueprint is structured | [Every Blueprint Is End-To-End](#every-blueprint-is-end-to-end) |
+| Validate the repo before trusting a change | [Keep The Repo Clean](#keep-the-repo-clean) |
 
-## Customer Flow
+## First 10 Minutes
 
-| Step | What To Do | Where |
+The normal path is intentionally short. Read enough to make a good decision, then move into
+the deployment folder and let Terraform show you the real diff.
+
+| Step | Action | Where |
 |---|---|
 | 1 | Choose the deployment that matches the outcome. | [Choose A Deployment](#choose-a-deployment) |
-| 2 | For one deployment only, sparse-checkout just that blueprint folder. | `docs/DEPLOYMENT-GUIDE.md#using-a-single-blueprint` |
-| 3 | Open the deployment folder and read its local guide. | `blueprints/<family>/<deployment>/README.md` |
-| 4 | Review the detailed ASCII component and traffic-flow diagram. | `blueprints/<family>/<deployment>/architecture/README.md` |
-| 5 | Copy the example tfvars, fill in real tenancy values, and run a plan from that folder. | local `terraform` or optional `ansible/plan.yml` |
+| 2 | Open the local blueprint guide. | `blueprints/<family>/<deployment>/README.md` |
+| 3 | Review the detailed ASCII component and traffic-flow diagram. | `blueprints/<family>/<deployment>/architecture/README.md` |
+| 4 | Copy the example tfvars and fill in real tenancy values. | `terraform.tfvars.example` -> local ignored `terraform.tfvars` |
+| 5 | Run a plan from the deployment folder. | local `terraform` or optional `ansible/plan.yml` |
 | 6 | Apply only after review and approval. | guarded `ansible/apply.yml` or reviewed Terraform apply |
+
+For demos, discovery, and workshops, sparse-checkout keeps things focused: pull only the
+blueprint you need and ignore the rest until it matters.
 
 ## Choose A Deployment
 
@@ -187,6 +197,39 @@ The longer walkthrough lives in `docs/DEPLOYMENT-GUIDE.md`.
 | Automation | Terraform for infrastructure and Ansible for local plan/apply/destroy orchestration. |
 | Documentation | Each deployment has its own README, detailed ASCII architecture, and local TF + Ansible workflow notes. |
 
+## How It Is Designed To Feel
+
+This repo is built like an operator workspace, not a slide deck. The UI here is mostly
+Markdown, folder names, consistent file contracts, and plain-text diagrams, so the UX has to
+come from predictable paths and low-friction review.
+
+| UX Choice | Why It Matters |
+|---|---|
+| Outcome-first menus | You can start from the thing you need, not from the repo's internal structure. |
+| Same shape in every blueprint | Once you learn one deployment folder, the rest feel familiar. |
+| Local architecture beside local Terraform | Design review stays close to the code that actually creates resources. |
+| ASCII diagrams | Pull requests, terminals, GitHub, and customer notes all show the same architecture without special tooling. |
+| Guarded Ansible apply/destroy | Risky actions ask for explicit confirmation instead of relying on memory. |
+| Optional scanners | Extra lint/security tools improve confidence when installed, but the basic workflow still works without them. |
+
+The best reading flow is:
+
+```text
+choose outcome
+  |
+  v
+open blueprint README
+  |
+  v
+review local ASCII architecture
+  |
+  v
+fill local ignored tfvars
+  |
+  v
+plan, review, then apply only after approval
+```
+
 ## Repo Map
 
 ```text
@@ -255,6 +298,8 @@ that folder's Terraform components, request flow, trust boundaries, and local An
 
 Every `architecture/README.md` is intentionally text-first. You should be able to review it
 in GitHub, a terminal, a pull request, or customer notes without needing a diagramming tool.
+That is the whole trick: the architecture should travel with the code, survive copy/paste,
+and still be useful when someone is reading it over a screen share.
 
 Each architecture page includes:
 

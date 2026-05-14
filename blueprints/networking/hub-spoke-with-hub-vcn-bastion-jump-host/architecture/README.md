@@ -87,6 +87,13 @@ These notes expand the diagram with the design details that usually matter durin
 - Bastion sessions reach private IP targets through the routed hub/spoke network without assigning public IPs to targets.
 - Review the bastion subnet, route tables, NSGs/security lists, and target host access before enabling production sessions.
 
+## Operational Boundaries
+
+- Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
+- Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
+- Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
+- Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `network`, `bastion`.

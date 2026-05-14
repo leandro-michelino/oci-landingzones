@@ -84,6 +84,13 @@ These notes expand the diagram with the design details that usually matter durin
 - Monitoring and OS Management add operational signals and instance management around the telco workload platform.
 - CNF traffic should be reviewed across OKE endpoint access, service load balancer subnets, node subnets, DRG paths, NAT, and service gateway routes.
 
+## Operational Boundaries
+
+- Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
+- Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
+- Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
+- Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `network`, `vault`, `oke`, `monitoring`, `os_management`.

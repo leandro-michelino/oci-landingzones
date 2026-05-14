@@ -79,6 +79,13 @@ These notes expand the diagram with the design details that usually matter durin
 - Cross-region replication, DNS steering, and disaster recovery orchestration are intentionally external layers that consume these network outputs.
 - The key review is CIDR separation and operational parity between primary and secondary regions.
 
+## Operational Boundaries
+
+- Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
+- Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
+- Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
+- Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `primary_network`, `secondary_network`.

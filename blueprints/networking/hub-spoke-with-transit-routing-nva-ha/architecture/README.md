@@ -86,6 +86,13 @@ These notes expand the diagram with the design details that usually matter durin
 - Traffic can be forced through NVAs for inspection or transit before returning to the DRG, hub, spoke, or edge destination.
 - Review route symmetry, appliance HA behavior, health checks, and failover timing before steering production traffic.
 
+## Operational Boundaries
+
+- Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
+- Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
+- Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
+- Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `network`, `nva_ha`.

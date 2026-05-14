@@ -97,6 +97,13 @@ These notes expand the diagram with the design details that usually matter durin
 - Cloud Guard, Security Zones, and VSS protect the root or workload compartments, while logging and monitoring provide the operational signal path.
 - Downstream deployments should consume compartment_ids, policy_ids, log group IDs, vault key IDs, and alarm/topic IDs instead of hard-coding foundation resources.
 
+## Operational Boundaries
+
+- Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
+- Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
+- Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
+- Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `compartments`, `tagging`, `logging`, `cloud_guard`, `vault`, `security_zones`, `vss`, `budgets`, `events`, `monitoring`, `groups`, `dynamic_groups`, `policies`.

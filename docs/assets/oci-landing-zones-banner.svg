@@ -19,15 +19,12 @@
     <filter id="sh" x="-5%" y="-5%" width="115%" height="125%">
       <feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.08"/>
     </filter>
-    <!-- Clip card background to rounded corners -->
     <clipPath id="cc">
       <rect width="720" height="432" rx="16"/>
     </clipPath>
-    <!-- Clip Core Baseline box fill to rounded corners -->
     <clipPath id="cb">
       <rect width="664" height="86" rx="10"/>
     </clipPath>
-    <!-- Clip pillar boxes (200x76) - single definition reused for all three -->
     <clipPath id="pc">
       <rect width="200" height="76" rx="10"/>
     </clipPath>
@@ -42,51 +39,50 @@
     </style>
   </defs>
 
-  <!-- -- White background with subtle dot texture -- -->
+  <!-- White background with dot texture -->
   <rect width="1280" height="520" fill="#ffffff"/>
   <rect width="1280" height="520" fill="url(#dots)"/>
 
-  <!-- -- Left vertical accent bar -- -->
+  <!-- Left vertical accent bar -->
   <rect x="0" y="0" width="6" height="520" fill="url(#vg)"/>
 
-  <!-- ------------------ LEFT PANEL ------------------ -->
+  <!-- LEFT PANEL -->
   <g transform="translate(40,40)">
 
     <!-- Title -->
     <text y="56" class="fa" fill="#0f172a">OCI Landing Zones</text>
-    <!-- Gradient underline -->
     <rect y="66" width="375" height="3" rx="1.5" fill="url(#hg)"/>
 
     <!-- Tagline -->
-    <text y="98" class="fb" fill="#c74634">Blueprints | Automation | Architecture | CIS</text>
+    <text y="98" class="fb" fill="#c74634">Blueprints &#183; Automation &#183; Architecture &#183; CIS</text>
 
     <!-- Description -->
     <text y="124" class="fc" fill="#475569">Pick a blueprint, review the ASCII architecture, run a plan.</text>
     <text y="146" class="fc" fill="#475569">Modules and automation for OCI patterns that come up again.</text>
 
     <!-- Stats line -->
-    <text y="163" class="ff" fill="#94a3b8">40+ blueprints | 12 families | AI | DevOps | phases 5-8 on the roadmap</text>
+    <text y="163" class="ff" fill="#94a3b8">40+ blueprints &#183; 12 families &#183; AI &#183; DevOps &#183; phases 5&#8211;8 on the roadmap</text>
 
     <!-- Author -->
-    <text y="178" class="ff" fill="#94a3b8">Leandro Michelino | ACE | Oracle</text>
+    <text y="178" class="ff" fill="#94a3b8">Leandro Michelino &#183; ACE &#183; Oracle</text>
 
-    <!-- -- Tech-stack badges -- -->
+    <!-- Tech-stack badges -->
     <rect y="194" width="118" height="32" rx="16" fill="#c74634"/>
-    <text x="59"  y="215" class="fg" fill="#fff" text-anchor="middle">--¬¡ Terraform</text>
+    <text x="59"  y="215" class="fg" fill="#fff" text-anchor="middle">Terraform</text>
 
     <rect x="126" y="194" width="100" height="32" rx="16" fill="#0891b2"/>
-    <text x="176" y="215" class="fg" fill="#fff" text-anchor="middle">--š™ Ansible</text>
+    <text x="176" y="215" class="fg" fill="#fff" text-anchor="middle">Ansible</text>
 
     <rect x="234" y="194" width="78"  height="32" rx="16" fill="#4f6bed"/>
-    <text x="273" y="215" class="fg" fill="#fff" text-anchor="middle">--—ˆ OCI</text>
+    <text x="273" y="215" class="fg" fill="#fff" text-anchor="middle">OCI</text>
 
     <rect x="320" y="194" width="70"  height="32" rx="16" fill="#d97706"/>
-    <text x="355" y="215" class="fg" fill="#fff" text-anchor="middle">--œ¦ CIS</text>
+    <text x="355" y="215" class="fg" fill="#fff" text-anchor="middle">CIS</text>
 
     <!-- Divider -->
     <line x1="0" y1="242" x2="425" y2="242" stroke="#e2e8f0" stroke-width="1"/>
 
-    <!-- -- WORKFLOW section -- -->
+    <!-- WORKFLOW section -->
     <rect y="252" width="3" height="11" rx="1.5" fill="#0891b2"/>
     <text x="9" y="262" class="ff" fill="#334155" font-weight="700" letter-spacing="1">WORKFLOW</text>
 
@@ -108,11 +104,11 @@
     <!-- Divider -->
     <line x1="0" y1="316" x2="425" y2="316" stroke="#e2e8f0" stroke-width="1"/>
 
-    <!-- -- BLUEPRINT FAMILIES section -- -->
+    <!-- BLUEPRINT FAMILIES section -->
     <rect y="326" width="3" height="11" rx="1.5" fill="#c74634"/>
     <text x="9" y="336" class="ff" fill="#334155" font-weight="700" letter-spacing="1">BLUEPRINT FAMILIES</text>
 
-    <!-- Row 1 - foundation + networking + entity + extensions -->
+    <!-- Row 1: foundation, networking, entity, extensions -->
     <rect y="344" width="52"  height="20" rx="10" fill="#fff7ed" stroke="#fed7aa"  stroke-width="1"/>
     <text x="26"  y="358" class="ff" fill="#9a3412" text-anchor="middle">core</text>
 
@@ -128,7 +124,7 @@
     <rect x="312" y="344" width="78"  height="20" rx="10" fill="#f5f3ff" stroke="#ddd6fe"  stroke-width="1"/>
     <text x="351" y="358" class="ff" fill="#4c1d95" text-anchor="middle">extensions</text>
 
-    <!-- Row 2 - identity + compliance + data + DR + industry -->
+    <!-- Row 2: identity, compliance, data, DR, industry -->
     <rect y="370" width="62"  height="20" rx="10" fill="#f1f5f9" stroke="#cbd5e1"  stroke-width="1"/>
     <text x="31"  y="384" class="ff" fill="#334155" text-anchor="middle">identity</text>
 
@@ -144,7 +140,7 @@
     <rect x="316" y="370" width="70"  height="20" rx="10" fill="#fff1f2" stroke="#fecdd3"  stroke-width="1"/>
     <text x="351" y="384" class="ff" fill="#881337" text-anchor="middle">industry</text>
 
-    <!-- Row 3 - new families -->
+    <!-- Row 3: new families -->
     <rect y="396" width="36"  height="20" rx="10" fill="#fee2e2" stroke="#fca5a5"  stroke-width="1"/>
     <text x="18"  y="410" class="ff" fill="#991b1b" text-anchor="middle">ai</text>
 
@@ -153,34 +149,33 @@
 
   </g>
 
-  <!-- ------------------ RIGHT PANEL - Architecture Card ------------------ -->
+  <!-- RIGHT PANEL: Architecture Card -->
   <g transform="translate(524,30)" filter="url(#sh)">
 
-    <!-- Card background + gradient top-bar, clipped to rounded rect -->
+    <!-- Card background with gradient top bar -->
     <g clip-path="url(#cc)">
       <rect width="720" height="432" fill="#ffffff"/>
       <rect width="720" height="5"   fill="url(#hg)"/>
     </g>
-    <!-- Card border -->
     <rect width="720" height="432" rx="16" fill="none" stroke="#e2e8f0" stroke-width="1.5"/>
 
     <!-- Card header -->
     <text x="28" y="29" class="fd" fill="#0f172a">Architecture Stack</text>
-    <text x="28" y="46" class="ff" fill="#94a3b8">OCI Tenancy | Any Region | Single or Multi-region</text>
+    <text x="28" y="46" class="ff" fill="#94a3b8">OCI Tenancy &#183; Any Region &#183; Single or Multi-region</text>
     <line x1="28" y1="55" x2="692" y2="55" stroke="#e2e8f0" stroke-width="1"/>
 
-    <!-- -- Layer 0 : Blueprint entry -- -->
+    <!-- Layer 0: Blueprint entry -->
     <g transform="translate(260,67)">
       <rect width="200" height="44" rx="10" fill="#fee2e2" stroke="#fca5a5" stroke-width="1.5"/>
       <rect width="5"   height="44" rx="2"  fill="#c74634"/>
       <text x="100" y="20" class="fd" fill="#991b1b" text-anchor="middle">Blueprint</text>
-      <text x="100" y="35" class="ff" fill="#b91c1c" text-anchor="middle">compartment | region | env</text>
+      <text x="100" y="35" class="ff" fill="#b91c1c" text-anchor="middle">compartment &#183; region &#183; env</text>
     </g>
-    <!-- Arrow Blueprint -> Core -->
+    <!-- Arrow: Blueprint to Core -->
     <line x1="360" y1="111" x2="360" y2="129" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4,2"/>
     <polygon points="354,127 360,137 366,127" fill="#cbd5e1"/>
 
-    <!-- -- Layer 1 : Core Baseline -- -->
+    <!-- Layer 1: Core Baseline -->
     <g transform="translate(28,139)">
       <g clip-path="url(#cb)">
         <rect width="664" height="86" fill="#fff7ed"/>
@@ -194,13 +189,13 @@
       <text x="590" y="18" class="ff" fill="#9a3412" text-anchor="middle" font-weight="700">FOUNDATION LAYER</text>
       <rect x="12"  y="36" width="52"  height="16" rx="8" fill="#ea580c" fill-opacity="0.14"/>
       <text x="38"  y="48" class="ff" fill="#9a3412" text-anchor="middle" font-weight="700">GOVERN</text>
-      <text x="72"  y="48" class="ff" fill="#7c3d2a">compartments | IAM | tagging | logging | monitoring | budgets</text>
+      <text x="72"  y="48" class="ff" fill="#7c3d2a">compartments &#183; IAM &#183; tagging &#183; logging &#183; monitoring &#183; budgets</text>
       <rect x="12"  y="58" width="52"  height="16" rx="8" fill="#ea580c" fill-opacity="0.14"/>
       <text x="38"  y="70" class="ff" fill="#9a3412" text-anchor="middle" font-weight="700">PROTECT</text>
-      <text x="72"  y="70" class="ff" fill="#7c3d2a">Cloud Guard | Vault / KMS | Security Zones | VSS | Events</text>
+      <text x="72"  y="70" class="ff" fill="#7c3d2a">Cloud Guard &#183; Vault / KMS &#183; Security Zones &#183; VSS &#183; Events</text>
     </g>
 
-    <!-- Three arrows Core -> Pillars -->
+    <!-- Arrows: Core to three pillars -->
     <line x1="128" y1="225" x2="128" y2="243" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4,2"/>
     <polygon points="122,241 128,251 134,241" fill="#cbd5e1"/>
     <line x1="360" y1="225" x2="360" y2="243" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4,2"/>
@@ -208,7 +203,7 @@
     <line x1="592" y1="225" x2="592" y2="243" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4,2"/>
     <polygon points="586,241 592,251 598,241" fill="#cbd5e1"/>
 
-    <!-- -- Layer 2 : Three pillars (with header bands matching Core Baseline style) -- -->
+    <!-- Layer 2: Three pillars with header bands -->
 
     <!-- Networking (teal) -->
     <g transform="translate(28,255)">
@@ -220,8 +215,8 @@
       <rect width="200" height="76" rx="10" fill="none" stroke="#a5f3fc" stroke-width="1.5"/>
       <line x1="5" y1="22" x2="195" y2="22" stroke="#a5f3fc" stroke-width="0.8" opacity="0.8"/>
       <text x="103" y="16" class="fd" fill="#155e75" text-anchor="middle">Networking</text>
-      <text x="103" y="39" class="ff" fill="#164e63" text-anchor="middle">VCN | DRG | Hub-Spoke</text>
-      <text x="103" y="54" class="ff" fill="#164e63" text-anchor="middle">NVA | FastConnect | DNS</text>
+      <text x="103" y="39" class="ff" fill="#164e63" text-anchor="middle">VCN &#183; DRG &#183; Hub-Spoke</text>
+      <text x="103" y="54" class="ff" fill="#164e63" text-anchor="middle">NVA &#183; FastConnect &#183; DNS</text>
     </g>
 
     <!-- Operating Entity (blue) -->
@@ -235,7 +230,7 @@
       <line x1="5" y1="22" x2="195" y2="22" stroke="#bfdbfe" stroke-width="0.8" opacity="0.8"/>
       <text x="103" y="16" class="fd" fill="#1e3a8a" text-anchor="middle">Operating Entity</text>
       <text x="103" y="39" class="ff" fill="#1d4ed8" text-anchor="middle">workload vending</text>
-      <text x="103" y="54" class="ff" fill="#1d4ed8" text-anchor="middle">BU | app-team scope</text>
+      <text x="103" y="54" class="ff" fill="#1d4ed8" text-anchor="middle">BU &#183; app-team scope</text>
     </g>
 
     <!-- Security / CIS (amber) -->
@@ -248,26 +243,26 @@
       <rect width="200" height="76" rx="10" fill="none" stroke="#fde68a" stroke-width="1.5"/>
       <line x1="5" y1="22" x2="195" y2="22" stroke="#fde68a" stroke-width="0.8" opacity="0.8"/>
       <text x="103" y="16" class="fd" fill="#78350f" text-anchor="middle">Security / CIS</text>
-      <text x="103" y="39" class="ff" fill="#92400e" text-anchor="middle">guardrails | scanning</text>
-      <text x="103" y="54" class="ff" fill="#92400e" text-anchor="middle">CIS L1 / L2 | compliance</text>
+      <text x="103" y="39" class="ff" fill="#92400e" text-anchor="middle">guardrails &#183; scanning</text>
+      <text x="103" y="54" class="ff" fill="#92400e" text-anchor="middle">CIS L1 / L2 &#183; compliance</text>
     </g>
 
-    <!-- Arrow Pillars -> Extensions -->
+    <!-- Arrow: Pillars to Extensions -->
     <line x1="360" y1="331" x2="360" y2="349" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4,2"/>
     <polygon points="354,347 360,357 366,347" fill="#cbd5e1"/>
 
-    <!-- -- Layer 3 : Extensions (two lines) -- -->
+    <!-- Layer 3: Extensions -->
     <g transform="translate(28,361)">
       <rect width="664" height="52" rx="10" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="1.5"/>
       <rect width="5"   height="52" rx="2"  fill="#7c3aed"/>
       <text x="334" y="17" class="ff" fill="#6d28d9" text-anchor="middle" font-weight="700">Extensions</text>
-      <text x="334" y="33" class="ff" fill="#4c1d95" text-anchor="middle">OKE | WAF | Exadata | API Gateway | Streaming | Full Stack DR</text>
-      <text x="334" y="47" class="ff" fill="#4c1d95" text-anchor="middle">GenAI | DevOps | OIC | OAC | Observability | Service Mesh</text>
+      <text x="334" y="33" class="ff" fill="#4c1d95" text-anchor="middle">OKE &#183; WAF &#183; Exadata &#183; API Gateway &#183; Streaming &#183; Full Stack DR</text>
+      <text x="334" y="47" class="ff" fill="#4c1d95" text-anchor="middle">GenAI &#183; DevOps &#183; OIC &#183; OAC &#183; Observability &#183; Service Mesh</text>
     </g>
 
   </g>
 
-  <!-- -- Bottom rule + accent stripe -- -->
+  <!-- Bottom rule and accent stripe -->
   <line x1="0" y1="513" x2="1280" y2="513" stroke="#e2e8f0" stroke-width="1"/>
   <rect  y="513" width="1280" height="7" fill="url(#hg)"/>
 

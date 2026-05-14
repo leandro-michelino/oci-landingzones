@@ -55,13 +55,43 @@ check_contains() {
   fi
 }
 
+check_min_lines() {
+  local path="$1"
+  local minimum="$2"
+  local actual
+
+  if [[ -f "$path" ]]; then
+    actual="$(wc -l < "$path" | tr -d ' ')"
+    if (( actual < minimum )); then
+      fail "${path#$REPO_ROOT/} must contain at least $minimum lines for a detailed architecture file; found $actual."
+    fi
+  fi
+}
+
+check_architecture_file() {
+  local path="$1"
+
+  check_file "$path"
+  check_min_lines "$path" 60
+  check_contains "$path" "## Deployment Purpose" "Deployment Purpose section"
+  check_contains "$path" "## Architecture At A Glance" "Architecture At A Glance section"
+  check_contains "$path" "## ASCII Architecture" "ASCII Architecture section"
+  check_contains "$path" '```text' "a fenced ASCII diagram"
+  check_contains "$path" "## Terraform Components" "Terraform Components section"
+  check_contains "$path" "## Request And Deployment Flow" "Request And Deployment Flow section"
+  check_contains "$path" "## Traffic And Trust Boundaries" "Traffic And Trust Boundaries section"
+  check_contains "$path" "## Detailed Architecture Notes" "Detailed Architecture Notes section"
+  check_contains "$path" "## Operational Boundaries" "Operational Boundaries section"
+  check_contains "$path" "## Review Checklist" "Review Checklist section"
+}
+
 check_blueprint_contract() {
   local dir="$1"
   local playbook
   local action
 
   check_file "$dir/README.md"
-  check_file "$dir/architecture/README.md"
+  check_architecture_file "$dir/architecture/README.md"
   check_file "$dir/main.tf"
   check_file "$dir/variables.tf"
   check_file "$dir/outputs.tf"

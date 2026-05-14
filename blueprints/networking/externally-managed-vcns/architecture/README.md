@@ -75,6 +75,13 @@ These notes expand the diagram with the design details that usually matter durin
 - Packet paths already exist outside this folder, so the architecture review should confirm the brownfield routes and security controls separately.
 - Downstream deployments can use the exported maps the same way they use outputs from resource-creating network blueprints.
 
+## Operational Boundaries
+
+- Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
+- Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
+- Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
+- Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `locals.external_resource_ids`.

@@ -77,6 +77,13 @@ These notes expand the diagram with the design details that usually matter durin
 - OS Management resources live in the governance compartment and provide patch/group/job control for managed instances that join the landing zone.
 - North-south and east-west traffic should be reviewed against the firewall policy, DRG attachments, subnet route tables, and service gateway paths.
 
+## Operational Boundaries
+
+- Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
+- Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
+- Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
+- Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `core`, `network`, `os_management`.

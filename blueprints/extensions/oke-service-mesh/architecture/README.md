@@ -74,6 +74,13 @@ Deploys the OKE service mesh add-on shell with optional APM domain for distribut
 - Confirm remove_addon_resources_on_delete behavior before destroy.
 - Confirm APM domain ownership and tracing data retention.
 
+## Operational Boundaries
+
+- Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
+- Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
+- Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
+- Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `oci_containerengine_addon.service_mesh`, `oci_apm_apm_domain.tracing`.

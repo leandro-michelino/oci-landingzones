@@ -86,6 +86,13 @@ These notes expand the diagram with the design details that usually matter durin
 - Route tables and DRG attachments still move packets; ZPR decides whether the packet is allowed by policy.
 - Review policy scope and default-deny effects carefully before applying to shared or production compartments.
 
+## Operational Boundaries
+
+- Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
+- Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
+- Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
+- Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `network`, `zpr`.

@@ -80,6 +80,13 @@ These notes expand the diagram with the design details that usually matter durin
 - It does not create network traffic; the important flow is permission delegation from tenancy IAM into the entity compartment tree.
 - Downstream teams should deploy networking, data, and extensions inside the exported entity compartments.
 
+## Operational Boundaries
+
+- Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
+- Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
+- Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
+- Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `compartments`, `groups`, `policies`.

@@ -75,6 +75,13 @@ Deploys a private Autonomous Database pattern for ATP or ADW with optional manua
 - Confirm private endpoint subnet, NSGs, KMS key, workload type, and storage sizing.
 - Confirm backup retention and auto-scaling expectations before apply.
 
+## Operational Boundaries
+
+- Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
+- Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
+- Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
+- Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `oci_database_autonomous_database.this`, `oci_database_autonomous_database_backup.manual`.

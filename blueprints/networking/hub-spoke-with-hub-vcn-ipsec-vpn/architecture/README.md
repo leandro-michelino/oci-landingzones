@@ -86,6 +86,13 @@ These notes expand the diagram with the design details that usually matter durin
 - VPN traffic enters the DRG and can reach hub or spoke CIDRs according to DRG and VCN route tables.
 - Review tunnel status, shared route intent, and return paths before moving workloads onto the VPN path.
 
+## Operational Boundaries
+
+- Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
+- Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
+- Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
+- Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `network`, `ipsec_vpn`.

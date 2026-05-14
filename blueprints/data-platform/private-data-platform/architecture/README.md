@@ -86,6 +86,13 @@ These notes expand the diagram with the design details that usually matter durin
 - Object Storage remains NoPublicAccess; access should flow through the object storage private endpoint, service gateway, and configured NSGs.
 - Streaming can be private-endpoint enabled and should share the same private subnet and key-management review as the bucket path.
 
+## Operational Boundaries
+
+- Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
+- Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
+- Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
+- Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `oci_objectstorage_namespace.this`, `network`, `vault`, `oci_objectstorage_bucket.data`, `oci_objectstorage_private_endpoint.data`, `streaming`.

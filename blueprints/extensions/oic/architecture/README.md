@@ -74,6 +74,13 @@ Deploys an Oracle Integration Cloud instance with optional private outbound conn
 - Confirm private outbound subnet and NSGs.
 - Confirm IDCS/domain authentication inputs when required by tenancy policy.
 
+## Operational Boundaries
+
+- Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
+- Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
+- Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
+- Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+
 ## Review Checklist
 
 - Confirm the diagram matches `main.tf`: `oci_integration_integration_instance.this`, `oci_integration_private_endpoint_outbound_connection.this`.
