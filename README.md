@@ -306,8 +306,8 @@ The longer walkthrough lives in `docs/DEPLOYMENT-GUIDE.md`.
 | Networking | Standalone VCNs, hub-spoke, DRG, VPN, FastConnect, DNS, firewall, network appliance, ZPR, multicloud, and regional patterns. |
 | Operating model | Operating entity and workload vending patterns for team, business unit, or application ownership boundaries. |
 | Operations | Cost optimization with cost-tracking tags, tag defaults, budgets, notifications, optional Optimizer profiles, and FinOps access policy. |
-| Extensions | Optional Container Instances, Oracle Functions, OKE, OKE Service Mesh, WAF, Exadata, API Gateway, Streaming, Observability, OAC, and OIC blueprints. |
-| Data, DR, compliance, and industry | Autonomous Database, APEX on ADB, PostgreSQL, private data platform, FSDR, CIS, Zero Trust, SCCA-style, healthcare/PCI, and telco cloud-native shapes. |
+| Extensions | Optional API Gateway, Container Instances, Event-Driven Platform, Exadata, Oracle Functions, OAC, Observability, OIC, OKE, OKE Service Mesh, Redis Cache, Streaming, and WAF blueprints. |
+| Data, DR, compliance, and industry | Autonomous Database, APEX on ADB, MySQL HeatWave, OpenSearch, PostgreSQL, private data platform, FSDR, CIS, Zero Trust, SCCA-style, healthcare/PCI, security posture automation, Secure Desktops, and telco cloud-native shapes. |
 | Automation | Terraform for infrastructure and Ansible for local plan/apply/destroy orchestration. |
 | Documentation | Each deployment has its own README, detailed ASCII architecture, and local TF + Ansible workflow notes. |
 

@@ -37,6 +37,34 @@ check_forbidden_markdown() {
   fi
 }
 
+check_forbidden_blueprint_tf_regex() {
+  local regex="$1"
+  local description="$2"
+  local matches
+
+  if command -v rg >/dev/null 2>&1; then
+    matches="$(
+      rg -n \
+        --glob "*.tf" \
+        --glob "!**/.terraform/**" \
+        --glob "!**/.git/**" \
+        -- "$regex" "$REPO_ROOT/blueprints" || true
+    )"
+  else
+    matches="$(
+      find "$REPO_ROOT/blueprints" \
+        -path "*/.terraform/*" -prune -o \
+        -path "*/.git/*" -prune -o \
+        -name "*.tf" -type f -exec grep -nHE -- "$regex" {} + || true
+    )"
+  fi
+
+  if [[ -n "$matches" ]]; then
+    echo "$matches" >&2
+    fail "$description"
+  fi
+}
+
 check_file() {
   local path="$1"
 
@@ -114,6 +142,8 @@ check_forbidden_markdown "Input sources"
 check_forbidden_markdown "Terraform state"
 check_forbidden_markdown "Output contract"
 check_forbidden_markdown 'Confirm `terraform output` will expose'
+check_forbidden_blueprint_tf_regex 'source[[:space:]]*=[[:space:]]*"\.\.?/' \
+  "Deployable blueprints must not use local Terraform module source paths."
 
 while IFS= read -r main_tf; do
   check_blueprint_contract "${main_tf%/main.tf}"

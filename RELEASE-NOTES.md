@@ -44,6 +44,9 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 ### Changed
 
+- Updated the repository documentation inventory to reflect 65 deployable
+  blueprints across 13 families and linked each blueprint to its local ASCII
+  architecture review file.
 - Added license-model validation for Autonomous Database and Oracle Analytics
   Cloud, surfaced the Oracle Integration BYOL flag in examples, and wired OCI
   Compute `licensing_configs` through network appliance blueprints for eligible

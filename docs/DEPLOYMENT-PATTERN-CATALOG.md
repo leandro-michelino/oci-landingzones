@@ -11,7 +11,7 @@ Implemented patterns should have a self-contained blueprint folder with its own
 validation notes. The architecture README is the canonical text artifact for the
 pattern and must include an ASCII diagram before the pattern is used in a
 customer review.
-Status `Implementing` means the folder has deployable foundation wiring, even
+Status `Implemented` means the folder has deployable foundation wiring, even
 when some expensive or external resources are disabled by default. Status
 `Planned` is reserved for future patterns that do not yet have a blueprint
 folder.
@@ -20,71 +20,71 @@ folder.
 
 | Family | Pattern | Blueprint | Status |
 | --- | --- | --- | --- |
-| Core | Core landing zone with no application networking | `blueprints/core/` | Implementing |
-| CIS | CIS Level 1 landing zone | `blueprints/cis/level1/` | Implementing |
-| CIS | CIS Level 2 landing zone | `blueprints/cis/level2/` | Implementing |
-| Identity | CIS basic identity baseline | `blueprints/identity/cis-basic/` | Implementing |
-| Identity | New identity domain | `blueprints/identity/new-identity-domain/` | Implementing |
-| Identity | Custom identity domain | `blueprints/identity/custom-identity-domain/` | Implementing |
-| Operating entity | Single operating entity onboarding | `blueprints/operating-entity/` | Implementing |
-| Operating entity | Multi-operating-entity landing zone | `blueprints/operating-entity/multi-operating-entities/` | Implementing |
-| Operating entity | Workload vending / application team onboarding | `blueprints/operating-entity/workload-vending/` | Implementing |
-| Networking | Standalone three-tier VCN defaults | `blueprints/networking/standalone-three-tier-vcn-defaults/` | Implementing |
-| Networking | Standalone three-tier VCN custom | `blueprints/networking/standalone-three-tier-vcn-custom/` | Implementing |
-| Networking | Standalone three-tier VCN with ZPR | `blueprints/networking/standalone-three-tier-vcn-zpr/` | Implementing |
-| Networking | Standalone private endpoint only | `blueprints/networking/standalone-private-endpoint-only/` | Implementing |
-| Networking | Externally managed VCNs | `blueprints/networking/externally-managed-vcns/` | Implementing |
-| Networking | Hub-spoke with DRG and three-tier VCNs | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/` | Implementing |
-| Networking | Hub-spoke with IPSec VPN | `blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn/` | Implementing |
-| Networking | Hub-spoke with FastConnect virtual circuit | `blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc/` | Implementing |
-| Networking | Hub-spoke with network firewall | `blueprints/networking/hub-spoke-with-hub-vcn-net-firewall/` | Implementing |
-| Networking | Hub-spoke with network appliance | `blueprints/networking/hub-spoke-with-hub-vcn-net-appliance/` | Implementing |
-| Networking | Hub-spoke with bastion jump host | `blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/` | Implementing |
-| Networking | Hub-spoke with transit routing NVA HA | `blueprints/networking/hub-spoke-with-transit-routing-nva-ha/` | Implementing |
-| Networking | Hub-spoke with private DNS split horizon | `blueprints/networking/hub-spoke-with-private-dns-split-horizon/` | Implementing |
-| Networking | Hub-spoke with ZPR micro-segmentation | `blueprints/networking/hub-spoke-with-zpr-micro-segmentation/` | Implementing |
-| Networking | Hub-spoke with dual-region DR | `blueprints/networking/hub-spoke-with-dual-region-dr/` | Implementing |
-| Networking | Multi-tenancy shared services | `blueprints/networking/multi-tenancy-shared-services/` | Implementing |
-| Networking | Hub-spoke with multicloud interconnect | `blueprints/networking/hub-spoke-with-multicloud-interconnect/` | Implementing |
-| Networking | Regional prod/nonprod hub separation | `blueprints/networking/regional-prod-nonprod-hubs/` | Implementing |
-| Networking | OCI Network Load Balancer (Layer 4 TCP/UDP, private backend, health checks) | `blueprints/networking/network-load-balancer/` | Implementing |
-| Compliance | SCCA-style cloud-native landing zone | `blueprints/compliance/scca-cloud-native/` | Implementing |
-| Compliance | Zero Trust landing zone | `blueprints/compliance/zero-trust/` | Implementing |
-| Compliance | Healthcare / PCI compliance landing zone | `blueprints/compliance/healthcare-pci/` | Implementing |
-| Compliance | Security posture automation (Cloud Guard + Vuln Scan + auto-remediation) | `blueprints/compliance/security-posture/` | Implementing |
-| Disaster recovery | Full Stack Disaster Recovery | `blueprints/disaster-recovery/fsdr/` | Implementing |
-| Data platform | Autonomous Database ATP / ADW | `blueprints/data-platform/autonomous-database/` | Implementing |
-| Data platform | Private data platform landing zone | `blueprints/data-platform/private-data-platform/` | Implementing |
-| Data platform | PostgreSQL landing zone | `blueprints/data-platform/postgresql/` | Implementing |
-| Data platform | Oracle APEX on Autonomous Database | `blueprints/data-platform/apex-adw/` | Implementing |
-| Data platform | OpenSearch search and vector platform | `blueprints/data-platform/opensearch/` | Implementing |
-| Data platform | MySQL HeatWave | `blueprints/data-platform/mysql-heatwave/` | Implementing |
-| AI | OCI Generative AI private landing zone | `blueprints/ai/genai-private/` | Implementing |
-| AI | OCI AI Services (Vision, Language, Speech, Document Understanding, Anomaly Detection) | `blueprints/ai/ai-services/` | Implementing |
-| AI | GenAI multi-model gateway (API Gateway routing, per-team quotas, cost tagging, audit log) | `blueprints/ai/genai-gateway/` | Implementing |
-| AI | GenAI fine-tuning and dedicated AI cluster (training data bucket, custom model endpoint) | `blueprints/ai/genai-fine-tuning/` | Implementing |
-| AI | GenAI guardrails and observability (PII redaction, token alarms, audit trail, Cloud Guard) | `blueprints/ai/genai-guardrails/` | Implementing |
-| AI | Document intelligence pipeline (Document Understanding + GenAI, intake/output buckets) | `blueprints/ai/document-intelligence/` | Implementing |
-| AI | Embedding and vector ingestion pipeline (chunking, GenAI embedding, OpenSearch index) | `blueprints/ai/embedding-pipeline/` | Implementing |
-| AI | Multi-agent orchestration (orchestrator + specialist agents, Streaming, tool registry, audit) | `blueprints/ai/multi-agent/` | Implementing |
-| AI | AI Agents - RAG landing zone (agents, knowledge base, OpenSearch) | `blueprints/ai/agents/` | Implementing |
-| DevOps | OCI DevOps pipeline | `blueprints/devops/oci-devops-pipeline/` | Implementing |
-| Industry | Telco cloud-native landing zone | `blueprints/industry/telco-cloud-native/` | Implementing |
-| Industry | OCI Secure Desktops (VDI, private network, IAM, session policies) | `blueprints/industry/secure-desktops/` | Implementing |
-| Extensions | OKE extension | `blueprints/extensions/oke/` | Implementing |
-| Extensions | OKE service mesh | `blueprints/extensions/oke-service-mesh/` | Implementing |
-| Extensions | Exadata extension | `blueprints/extensions/exadata/` | Implementing |
-| Extensions | API Gateway extension | `blueprints/extensions/apigw/` | Implementing |
-| Extensions | Oracle Analytics Cloud | `blueprints/extensions/oac/` | Implementing |
-| Extensions | Oracle Integration Cloud | `blueprints/extensions/oic/` | Implementing |
-| Extensions | Observability platform | `blueprints/extensions/observability/` | Implementing |
-| Extensions | Streaming extension | `blueprints/extensions/streaming/` | Implementing |
-| Extensions | WAF extension | `blueprints/extensions/waf/` | Implementing |
-| Extensions | Container Instances | `blueprints/extensions/container-instances/` | Implementing |
-| Extensions | Oracle Functions | `blueprints/extensions/functions/` | Implementing |
-| Extensions | Event-driven application platform (Events, Service Connector Hub, Streaming, Functions, Notifications) | `blueprints/extensions/event-driven-platform/` | Implementing |
-| Extensions | Redis Cache landing zone | `blueprints/extensions/redis-cache/` | Implementing |
-| Operations | Cost optimization | `blueprints/operations/cost-optimization/` | Implementing |
+| Core | Core landing zone with no application networking | `blueprints/core/` | Implemented |
+| CIS | CIS Level 1 landing zone | `blueprints/cis/level1/` | Implemented |
+| CIS | CIS Level 2 landing zone | `blueprints/cis/level2/` | Implemented |
+| Identity | CIS basic identity baseline | `blueprints/identity/cis-basic/` | Implemented |
+| Identity | New identity domain | `blueprints/identity/new-identity-domain/` | Implemented |
+| Identity | Custom identity domain | `blueprints/identity/custom-identity-domain/` | Implemented |
+| Operating entity | Single operating entity onboarding | `blueprints/operating-entity/` | Implemented |
+| Operating entity | Multi-operating-entity landing zone | `blueprints/operating-entity/multi-operating-entities/` | Implemented |
+| Operating entity | Workload vending / application team onboarding | `blueprints/operating-entity/workload-vending/` | Implemented |
+| Networking | Standalone three-tier VCN defaults | `blueprints/networking/standalone-three-tier-vcn-defaults/` | Implemented |
+| Networking | Standalone three-tier VCN custom | `blueprints/networking/standalone-three-tier-vcn-custom/` | Implemented |
+| Networking | Standalone three-tier VCN with ZPR | `blueprints/networking/standalone-three-tier-vcn-zpr/` | Implemented |
+| Networking | Standalone private endpoint only | `blueprints/networking/standalone-private-endpoint-only/` | Implemented |
+| Networking | Externally managed VCNs | `blueprints/networking/externally-managed-vcns/` | Implemented |
+| Networking | Hub-spoke with DRG and three-tier VCNs | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/` | Implemented |
+| Networking | Hub-spoke with IPSec VPN | `blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn/` | Implemented |
+| Networking | Hub-spoke with FastConnect virtual circuit | `blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc/` | Implemented |
+| Networking | Hub-spoke with network firewall | `blueprints/networking/hub-spoke-with-hub-vcn-net-firewall/` | Implemented |
+| Networking | Hub-spoke with network appliance | `blueprints/networking/hub-spoke-with-hub-vcn-net-appliance/` | Implemented |
+| Networking | Hub-spoke with bastion jump host | `blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/` | Implemented |
+| Networking | Hub-spoke with transit routing NVA HA | `blueprints/networking/hub-spoke-with-transit-routing-nva-ha/` | Implemented |
+| Networking | Hub-spoke with private DNS split horizon | `blueprints/networking/hub-spoke-with-private-dns-split-horizon/` | Implemented |
+| Networking | Hub-spoke with ZPR micro-segmentation | `blueprints/networking/hub-spoke-with-zpr-micro-segmentation/` | Implemented |
+| Networking | Hub-spoke with dual-region DR | `blueprints/networking/hub-spoke-with-dual-region-dr/` | Implemented |
+| Networking | Multi-tenancy shared services | `blueprints/networking/multi-tenancy-shared-services/` | Implemented |
+| Networking | Hub-spoke with multicloud interconnect | `blueprints/networking/hub-spoke-with-multicloud-interconnect/` | Implemented |
+| Networking | Regional prod/nonprod hub separation | `blueprints/networking/regional-prod-nonprod-hubs/` | Implemented |
+| Networking | OCI Network Load Balancer (Layer 4 TCP/UDP, private backend, health checks) | `blueprints/networking/network-load-balancer/` | Implemented |
+| Compliance | SCCA-style cloud-native landing zone | `blueprints/compliance/scca-cloud-native/` | Implemented |
+| Compliance | Zero Trust landing zone | `blueprints/compliance/zero-trust/` | Implemented |
+| Compliance | Healthcare / PCI compliance landing zone | `blueprints/compliance/healthcare-pci/` | Implemented |
+| Compliance | Security posture automation (Cloud Guard + Vuln Scan + auto-remediation) | `blueprints/compliance/security-posture/` | Implemented |
+| Disaster recovery | Full Stack Disaster Recovery | `blueprints/disaster-recovery/fsdr/` | Implemented |
+| Data platform | Autonomous Database ATP / ADW | `blueprints/data-platform/autonomous-database/` | Implemented |
+| Data platform | Private data platform landing zone | `blueprints/data-platform/private-data-platform/` | Implemented |
+| Data platform | PostgreSQL landing zone | `blueprints/data-platform/postgresql/` | Implemented |
+| Data platform | Oracle APEX on Autonomous Database | `blueprints/data-platform/apex-adw/` | Implemented |
+| Data platform | OpenSearch search and vector platform | `blueprints/data-platform/opensearch/` | Implemented |
+| Data platform | MySQL HeatWave | `blueprints/data-platform/mysql-heatwave/` | Implemented |
+| AI | OCI Generative AI private landing zone | `blueprints/ai/genai-private/` | Implemented |
+| AI | OCI AI Services (Vision, Language, Speech, Document Understanding, Anomaly Detection) | `blueprints/ai/ai-services/` | Implemented |
+| AI | GenAI multi-model gateway (API Gateway routing, per-team quotas, cost tagging, audit log) | `blueprints/ai/genai-gateway/` | Implemented |
+| AI | GenAI fine-tuning and dedicated AI cluster (training data bucket, custom model endpoint) | `blueprints/ai/genai-fine-tuning/` | Implemented |
+| AI | GenAI guardrails and observability (PII redaction, token alarms, audit trail, Cloud Guard) | `blueprints/ai/genai-guardrails/` | Implemented |
+| AI | Document intelligence pipeline (Document Understanding + GenAI, intake/output buckets) | `blueprints/ai/document-intelligence/` | Implemented |
+| AI | Embedding and vector ingestion pipeline (chunking, GenAI embedding, OpenSearch index) | `blueprints/ai/embedding-pipeline/` | Implemented |
+| AI | Multi-agent orchestration (orchestrator + specialist agents, Streaming, tool registry, audit) | `blueprints/ai/multi-agent/` | Implemented |
+| AI | AI Agents - RAG landing zone (agents, knowledge base, OpenSearch) | `blueprints/ai/agents/` | Implemented |
+| DevOps | OCI DevOps pipeline | `blueprints/devops/oci-devops-pipeline/` | Implemented |
+| Industry | Telco cloud-native landing zone | `blueprints/industry/telco-cloud-native/` | Implemented |
+| Industry | OCI Secure Desktops (VDI, private network, IAM, session policies) | `blueprints/industry/secure-desktops/` | Implemented |
+| Extensions | OKE extension | `blueprints/extensions/oke/` | Implemented |
+| Extensions | OKE service mesh | `blueprints/extensions/oke-service-mesh/` | Implemented |
+| Extensions | Exadata extension | `blueprints/extensions/exadata/` | Implemented |
+| Extensions | API Gateway extension | `blueprints/extensions/apigw/` | Implemented |
+| Extensions | Oracle Analytics Cloud | `blueprints/extensions/oac/` | Implemented |
+| Extensions | Oracle Integration Cloud | `blueprints/extensions/oic/` | Implemented |
+| Extensions | Observability platform | `blueprints/extensions/observability/` | Implemented |
+| Extensions | Streaming extension | `blueprints/extensions/streaming/` | Implemented |
+| Extensions | WAF extension | `blueprints/extensions/waf/` | Implemented |
+| Extensions | Container Instances | `blueprints/extensions/container-instances/` | Implemented |
+| Extensions | Oracle Functions | `blueprints/extensions/functions/` | Implemented |
+| Extensions | Event-driven application platform (Events, Service Connector Hub, Streaming, Functions, Notifications) | `blueprints/extensions/event-driven-platform/` | Implemented |
+| Extensions | Redis Cache landing zone | `blueprints/extensions/redis-cache/` | Implemented |
+| Operations | Cost optimization | `blueprints/operations/cost-optimization/` | Implemented |
 | AI | OCI Data Science (notebooks, model catalog, deployment) | `blueprints/ai/data-science/` | Planned |
 | Data platform | GoldenGate replication hub | `blueprints/data-platform/goldengate/` | Planned |
 | Extensions | Oracle Digital Assistant | `blueprints/extensions/digital-assistant/` | Planned |

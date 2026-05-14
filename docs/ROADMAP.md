@@ -39,39 +39,26 @@ compliance, or workload platform pattern.
 
 ## Already Implemented
 
-The following blueprints are fully implemented and deployable. See each folder for
-operator guide, architecture diagram, and Terraform / Ansible workflow.
+The repository currently contains 65 fully implemented and deployable blueprint
+entry points. See [Architecture Index](architecture/README.md#blueprint-ascii-inventory)
+for the complete folder-by-folder list with links to each local ASCII
+architecture file.
 
-| Blueprint | Folder |
-| --- | --- |
-| Autonomous Database (ATP / ADW) | `blueprints/data-platform/autonomous-database/` |
-| OCI Generative AI private landing zone | `blueprints/ai/genai-private/` |
-| OCI DevOps Pipeline | `blueprints/devops/oci-devops-pipeline/` |
-| Observability platform | `blueprints/extensions/observability/` |
-| Oracle Integration Cloud | `blueprints/extensions/oic/` |
-| Oracle Analytics Cloud | `blueprints/extensions/oac/` |
-| OCI Container Instances | `blueprints/extensions/container-instances/` |
-| PostgreSQL landing zone | `blueprints/data-platform/postgresql/` |
-| Healthcare / PCI compliance | `blueprints/compliance/healthcare-pci/` |
-| OKE service mesh | `blueprints/extensions/oke-service-mesh/` |
-| Cost optimization | `blueprints/operations/cost-optimization/` |
-| Oracle APEX on Autonomous Database | `blueprints/data-platform/apex-adw/` |
-| Oracle Functions | `blueprints/extensions/functions/` |
-| Event-driven application platform | `blueprints/extensions/event-driven-platform/` |
-| OpenSearch search and vector platform | `blueprints/data-platform/opensearch/` |
-| OCI AI Services | `blueprints/ai/ai-services/` |
-| GenAI multi-model gateway | `blueprints/ai/genai-gateway/` |
-| GenAI fine-tuning and dedicated AI cluster | `blueprints/ai/genai-fine-tuning/` |
-| GenAI guardrails and observability | `blueprints/ai/genai-guardrails/` |
-| Document intelligence pipeline | `blueprints/ai/document-intelligence/` |
-| Embedding and vector ingestion pipeline | `blueprints/ai/embedding-pipeline/` |
-| Multi-agent orchestration | `blueprints/ai/multi-agent/` |
-| AI Agents RAG landing zone | `blueprints/ai/agents/` |
-| MySQL HeatWave landing zone | `blueprints/data-platform/mysql-heatwave/` |
-| Redis Cache landing zone | `blueprints/extensions/redis-cache/` |
-| Security posture automation | `blueprints/compliance/security-posture/` |
-| Network Load Balancer landing zone | `blueprints/networking/network-load-balancer/` |
-| OCI Secure Desktops landing zone | `blueprints/industry/secure-desktops/` |
+| Family | Implemented Entry Points |
+| --- | ---: |
+| `blueprints/ai/` | 9 |
+| `blueprints/cis/` | 2 |
+| `blueprints/compliance/` | 4 |
+| `blueprints/core/` | 1 |
+| `blueprints/data-platform/` | 6 |
+| `blueprints/devops/` | 1 |
+| `blueprints/disaster-recovery/` | 1 |
+| `blueprints/extensions/` | 13 |
+| `blueprints/identity/` | 3 |
+| `blueprints/industry/` | 2 |
+| `blueprints/networking/` | 19 |
+| `blueprints/operating-entity/` | 3 |
+| `blueprints/operations/` | 1 |
 
 ---
 
