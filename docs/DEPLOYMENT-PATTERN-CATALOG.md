@@ -53,6 +53,7 @@ folder.
 | Disaster recovery | Full Stack Disaster Recovery | `blueprints/disaster-recovery/fsdr/` | Implementing |
 | Data platform | Autonomous Database ATP / ADW | `blueprints/data-platform/autonomous-database/` | Implementing |
 | Data platform | Private data platform landing zone | `blueprints/data-platform/private-data-platform/` | Implementing |
+| Data platform | PostgreSQL landing zone | `blueprints/data-platform/postgresql/` | Implementing |
 | AI | OCI Generative AI private landing zone | `blueprints/ai/genai-private/` | Implementing |
 | DevOps | OCI DevOps pipeline | `blueprints/devops/oci-devops-pipeline/` | Implementing |
 | Industry | Telco cloud-native landing zone | `blueprints/industry/telco-cloud-native/` | Implementing |
@@ -65,7 +66,7 @@ folder.
 | Extensions | Observability platform | `blueprints/extensions/observability/` | Implementing |
 | Extensions | Streaming extension | `blueprints/extensions/streaming/` | Implementing |
 | Extensions | WAF extension | `blueprints/extensions/waf/` | Implementing |
-| Extensions | Container Instances | `blueprints/extensions/container-instances/` | Planned |
+| Extensions | Container Instances | `blueprints/extensions/container-instances/` | Implementing |
 | Operations | Cost optimization | `blueprints/operations/cost-optimization/` | Planned |
 | Data platform | Oracle APEX on Autonomous Database | `blueprints/data-platform/apex-adw/` | Planned |
 | AI | OCI Data Science (notebooks, model catalog, deployment) | `blueprints/ai/data-science/` | Planned |

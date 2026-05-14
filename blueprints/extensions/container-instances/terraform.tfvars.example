@@ -1,0 +1,38 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "eu-frankfurt-1"
+home_region       = "eu-frankfurt-1"
+org               = "acme"
+environment       = "dev"
+region_key        = "fra"
+compartment_ocid  = "ocid1.compartment.oc1..example"
+
+enable_container_instance = false
+availability_domain       = "example:EU-FRANKFURT-1-AD-1"
+subnet_id                 = "ocid1.subnet.oc1..example"
+shape                     = "CI.Standard.E4.Flex"
+ocpus                     = 1
+memory_in_gbs             = 2
+is_public_ip_assigned     = false
+nsg_ids                   = []
+
+containers = [
+  {
+    display_name          = "app"
+    image_url             = "fra.ocir.io/example-namespace/app/example:latest"
+    environment_variables = {}
+    health_checks = [
+      {
+        health_check_type = "HTTP"
+        path              = "/health"
+        port              = 8080
+      }
+    ]
+  }
+]
+
+image_pull_secrets = []
+policy_statements  = []
+defined_tags       = {}
+freeform_tags      = {}

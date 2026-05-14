@@ -81,11 +81,13 @@ architecture, Terraform files, example tfvars, and local Ansible runners.
 | I need regulated posture | [CIS Level 1](blueprints/cis/level1/) or [CIS Level 2](blueprints/cis/level2/) | Uses the core landing zone with CIS-specific posture. |
 | I need app-team onboarding | [Workload Vending](blueprints/operating-entity/workload-vending/) | Creates a workload compartment boundary with scoped IAM. |
 | I need Kubernetes | [OKE Extension](blueprints/extensions/oke/) | Adds an OKE cluster and optional node pool to supplied network IDs. |
+| I need containers without Kubernetes | [Container Instances](blueprints/extensions/container-instances/) | Runs approved container images with private VNIC, NSGs, optional pull secrets, and no OKE control plane. |
 | I need private GenAI | [OCI Generative AI Private Landing Zone](blueprints/ai/genai-private/) | Adds a private GenAI endpoint, optional archive bucket, and IAM policy shell. |
 | I need CI/CD | [OCI DevOps Pipeline](blueprints/devops/oci-devops-pipeline/) | Adds DevOps project, repository, build pipeline, deploy pipeline, and notifications. |
 | I need analytics or integration services | [Oracle Analytics Cloud](blueprints/extensions/oac/) or [Oracle Integration Cloud](blueprints/extensions/oic/) | Adds OAC or OIC service foundations with private connectivity options. |
 | I need a private data platform | [Private Data Platform](blueprints/data-platform/private-data-platform/) | Builds private VCN, Vault/KMS, Object Storage private endpoint, and Streaming. |
 | I need Autonomous Database | [Autonomous Database](blueprints/data-platform/autonomous-database/) | Adds private ATP/ADW with optional KMS, NSG, private endpoint, and backup controls. |
+| I need PostgreSQL | [PostgreSQL Landing Zone](blueprints/data-platform/postgresql/) | Adds a private managed PostgreSQL DB system with NSGs, backup policy hooks, and secure credential inputs. |
 | I need disaster recovery | [Full Stack DR](blueprints/disaster-recovery/fsdr/) | Creates FSDR protection groups, log buckets, and an optional DR plan. |
 
 ## Deployment Categories
@@ -159,6 +161,7 @@ open folder -> read README.md -> review architecture/README.md -> fill tfvars ->
 | Deployment | Use It When |
 |---|---|
 | [API Gateway](blueprints/extensions/apigw/) | You need managed API exposure and route deployment on top of an existing network. |
+| [Container Instances](blueprints/extensions/container-instances/) | You need serverless container runtime with private VNIC, NSGs, optional pull secrets, and no OKE control plane. |
 | [Exadata](blueprints/extensions/exadata/) | You need OCI Cloud Exadata Infrastructure capacity. |
 | [OKE](blueprints/extensions/oke/) | You need Kubernetes cluster and node pool resources attached to supplied VCN/subnets. |
 | [OKE Service Mesh](blueprints/extensions/oke-service-mesh/) | You need service mesh add-on management and optional APM tracing for an existing OKE cluster. |
@@ -180,6 +183,7 @@ open folder -> read README.md -> review architecture/README.md -> fill tfvars ->
 | Deployment | Use It When |
 |---|---|
 | [Autonomous Database](blueprints/data-platform/autonomous-database/) | You need private ATP or ADW with optional backup, KMS, NSG, and private endpoint controls. |
+| [PostgreSQL Landing Zone](blueprints/data-platform/postgresql/) | You need a private managed PostgreSQL DB system with NSGs, backup/maintenance policy hooks, and secure credential inputs. |
 | [Private Data Platform](blueprints/data-platform/private-data-platform/) | You need private Object Storage access, Vault/KMS, and optional Streaming. |
 | [Full Stack Disaster Recovery](blueprints/disaster-recovery/fsdr/) | You need FSDR protection groups, DR log buckets, and an optional DR plan. |
 | [Telco Cloud Native](blueprints/industry/telco-cloud-native/) | You need hub-spoke networking, Vault, OKE, monitoring, and OS management for telco-style workloads. |
@@ -197,7 +201,7 @@ like this:
 | 2 | Deploy [Core](blueprints/core/) for the shared governance baseline. |
 | 3 | Deploy one [Networking](#networking-deployments) blueprint for the traffic model. |
 | 4 | Add [Operating Entity](#operating-entity-deployments) or workload vending patterns when ownership boundaries matter. |
-| 5 | Add [Extensions](#extension-deployments) such as OKE, WAF, Exadata, API Gateway, or Streaming. |
+| 5 | Add [Extensions](#extension-deployments) such as Container Instances, OKE, WAF, Exadata, API Gateway, Streaming, Observability, OAC, or OIC. |
 | 6 | Run repo and security checks before merge or apply. |
 
 The longer walkthrough lives in `docs/DEPLOYMENT-GUIDE.md`.
@@ -209,8 +213,8 @@ The longer walkthrough lives in `docs/DEPLOYMENT-GUIDE.md`.
 | Core governance | Compartments, IAM, tagging, logging, monitoring, budgets, Cloud Guard, Vault/KMS, Security Zones, VSS, Events, and related controls. |
 | Networking | Standalone VCNs, hub-spoke, DRG, VPN, FastConnect, DNS, firewall, network appliance, ZPR, multicloud, and regional patterns. |
 | Operating model | Operating entity and workload vending patterns for team, business unit, or application ownership boundaries. |
-| Extensions | Optional OKE, WAF, Exadata, API Gateway, and Streaming blueprints. |
-| Compliance and industry | CIS, Zero Trust, SCCA-style, private data platform, FSDR, and telco cloud-native shapes. |
+| Extensions | Optional Container Instances, OKE, OKE Service Mesh, WAF, Exadata, API Gateway, Streaming, Observability, OAC, and OIC blueprints. |
+| Data, DR, compliance, and industry | Autonomous Database, PostgreSQL, private data platform, FSDR, CIS, Zero Trust, SCCA-style, healthcare/PCI, and telco cloud-native shapes. |
 | Automation | Terraform for infrastructure and Ansible for local plan/apply/destroy orchestration. |
 | Documentation | Each deployment has its own README, detailed ASCII architecture, and local TF + Ansible workflow notes. |
 
@@ -399,7 +403,7 @@ compose. Remote state belongs to deployable blueprints, not shared modules.
 
 | Doc | Use It For |
 |---|---|
-| `docs/ROADMAP.md` | Planned blueprints by phase: Autonomous DB, GenAI, DevOps, Observability, OIC, OAC, and more. |
+| `docs/ROADMAP.md` | Implemented blueprint phases and the next architecture candidates. |
 | `docs/DEPLOYMENT-GUIDE.md` | Deployment sequence and operating notes. |
 | `docs/DEPLOYMENT-PATTERN-CATALOG.md` | Blueprint catalog and selection notes. |
 | `docs/architecture/README.md` | Repository-level ASCII architecture and documentation contract. |

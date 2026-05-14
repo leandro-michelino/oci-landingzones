@@ -1,0 +1,33 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "eu-frankfurt-1"
+home_region       = "eu-frankfurt-1"
+org               = "acme"
+environment       = "dev"
+region_key        = "fra"
+compartment_ocid  = "ocid1.compartment.oc1..example"
+
+enable_db_system             = false
+db_version                   = "14"
+shape                        = "PostgreSQL.VM.Standard.E4.Flex"
+system_type                  = "OCI_OPTIMIZED_STORAGE"
+instance_count               = 1
+instance_ocpu_count          = 1
+instance_memory_size_in_gbs  = 16
+admin_username               = "postgres"
+# admin_password             = "replace-with-secure-local-value"
+# admin_password_secret_id   = "ocid1.vaultsecret.oc1..example"
+subnet_id                    = "ocid1.subnet.oc1..example"
+nsg_ids                      = []
+is_reader_endpoint_enabled   = false
+storage_system_type          = "OCI_OPTIMIZED_STORAGE"
+is_regionally_durable        = true
+enable_management_policy     = true
+backup_policy = {
+  kind           = "DAILY"
+  retention_days = 14
+}
+policy_statements = []
+defined_tags      = {}
+freeform_tags     = {}

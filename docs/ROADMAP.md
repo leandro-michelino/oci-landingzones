@@ -39,6 +39,8 @@ operator guide, architecture diagram, and Terraform / Ansible workflow.
 | Observability platform | `blueprints/extensions/observability/` |
 | Oracle Integration Cloud | `blueprints/extensions/oic/` |
 | Oracle Analytics Cloud | `blueprints/extensions/oac/` |
+| OCI Container Instances | `blueprints/extensions/container-instances/` |
+| PostgreSQL landing zone | `blueprints/data-platform/postgresql/` |
 | Healthcare / PCI compliance | `blueprints/compliance/healthcare-pci/` |
 | OKE service mesh | `blueprints/extensions/oke-service-mesh/` |
 
@@ -46,60 +48,7 @@ operator guide, architecture diagram, and Terraform / Ansible workflow.
 
 ## Phase 4 - Specialized (Next Up)
 
-Three blueprints that complete the current catalog.
-
----
-
-### OCI Container Instances
-
-| Attribute | Value |
-| --- | --- |
-| Folder | `blueprints/extensions/container-instances/` |
-| Depends on | Core Landing Zone; VCN from any networking blueprint |
-
-**Why this exists.**
-Not every workload needs an OKE cluster. Container Instances gives serverless
-container runtime on OCI with private VCN attachment, OCIR image pull, Vault
-secret injection, and IAM - without cluster control-plane overhead.
-
-**What it deploys.**
-
-| Resource | Notes |
-| --- | --- |
-| Container Instance | Private VCN subnet, configurable shape and image |
-| OCIR pull secret | Stored in Vault, injected at runtime |
-| NSG | Ingress and egress rules for the workload |
-| IAM policies | Container Instances service principal |
-
-**ASCII Architecture.**
-
-```text
- App Subnet (VCN)
-       |
-       | private subnet attachment
-       v
- +---------------------------------------+
- | Container Instance                   |
- | |--- OCIR image (Vault pull secret)  |
- | |--- NSG (ingress / egress scoped)   |
- | `--- IAM (service principal)         |
- +---------------------------------------+
-```
-
-**Inputs to decide.**
-
-- Container image and OCIR repository
-- VCN subnet and NSG rules for the workload
-- CPU and memory shape
-- Whether to expose via private load balancer or internal only
-
-**Outputs and hand-off.**
-
-```text
-container_instance_id
-private_ip
-nsg_id
-```
+Remaining blueprints that complete the current specialized catalog.
 
 ---
 
@@ -901,11 +850,10 @@ services, and local ASCII architecture for design review.
 | 3 | Batch and Queue Workers | `blueprints/extensions/batch-workers/` | Covers scheduled and burst compute patterns that do not fit OKE, Functions, or Container Instances. |
 | 4 | Object Storage Data Lakehouse | `blueprints/data-platform/object-storage-lakehouse/` | Adds the missing data lake foundation: buckets, KMS, private endpoints, lifecycle, logs, and optional query/processing hooks. |
 | 5 | OpenSearch Search and Vector Platform | `blueprints/data-platform/opensearch/` | Useful as a standalone search, logging, and vector index platform, not only as an AI Agents dependency. |
-| 6 | PostgreSQL Landing Zone | `blueprints/data-platform/postgresql/` | Fills the managed open-source database gap beside Autonomous DB and planned MySQL HeatWave. |
-| 7 | Redis Cache Landing Zone | `blueprints/extensions/redis-cache/` | Adds the common low-latency cache/session layer expected by app teams. |
-| 8 | Ransomware-Resilient Backup | `blueprints/operations/backup-resilience/` | Adds backup policies, immutable archive buckets, monitoring, and restore evidence for regulated tenancies. |
-| 9 | WebLogic / Java App Platform | `blueprints/industry/weblogic-platform/` | Gives enterprise Java workloads a migration-ready pattern with LB, app tier, database, logs, and operations hooks. |
-| 10 | VMware / Hybrid Migration Zone | `blueprints/industry/vmware-hybrid-migration/` | Covers brownfield migration where customers need private connectivity, DNS, backup, and landing-zone guardrails around VMware workloads. |
+| 6 | Redis Cache Landing Zone | `blueprints/extensions/redis-cache/` | Adds the common low-latency cache/session layer expected by app teams. |
+| 7 | Ransomware-Resilient Backup | `blueprints/operations/backup-resilience/` | Adds backup policies, immutable archive buckets, monitoring, and restore evidence for regulated tenancies. |
+| 8 | WebLogic / Java App Platform | `blueprints/industry/weblogic-platform/` | Gives enterprise Java workloads a migration-ready pattern with LB, app tier, database, logs, and operations hooks. |
+| 9 | VMware / Hybrid Migration Zone | `blueprints/industry/vmware-hybrid-migration/` | Covers brownfield migration where customers need private connectivity, DNS, backup, and landing-zone guardrails around VMware workloads. |
 
 ### Public Edge and Ingress Zone
 
@@ -1203,63 +1151,6 @@ nsg_id
 
 ---
 
-### PostgreSQL Landing Zone
-
-| Attribute | Value |
-| --- | --- |
-| Folder | `blueprints/data-platform/postgresql/` |
-| Depends on | Core Landing Zone; VCN from any networking blueprint |
-
-**Why this exists.**
-The database roadmap covers Autonomous DB and MySQL HeatWave, but many
-application teams standardize on PostgreSQL. A landing-zone pattern should
-cover private networking, backups, KMS, credential storage, IAM, and app-team
-hand-off outputs.
-
-**What it deploys.**
-
-| Resource | Notes |
-| --- | --- |
-| PostgreSQL DB system | Private endpoint and configurable shape |
-| NSG | Port 5432 from app subnets only |
-| Vault secret | Admin and app credentials |
-| Backup policy | Retention and restore window |
-| KMS key | Customer-managed encryption when supported |
-| Monitoring alarms | CPU, storage, connections, backup failures |
-
-**ASCII Architecture.**
-
-```text
-App Subnet
-      |
-      | port 5432, NSG-controlled
-      v
-PostgreSQL DB System (private endpoint)
- |--- Vault credentials
- |--- Backup policy
- |--- KMS key
- `--- Monitoring alarms
-```
-
-**Inputs to decide.**
-
-- PostgreSQL version, shape, storage, and high availability mode
-- App subnet allowlist and NSG rules
-- Backup retention and restore point objective
-- Credential split between admin, migration, and app users
-- KMS and tagging requirements for regulated data
-
-**Outputs and hand-off.**
-
-```text
-postgresql_db_system_id
-postgresql_endpoint
-vault_secret_ids
-backup_policy_id
-```
-
----
-
 ### Redis Cache Landing Zone
 
 | Attribute | Value |
@@ -1503,11 +1394,12 @@ Core Landing Zone (implemented)
   |   |--- blueprints/extensions/observability/
   |   |--- blueprints/extensions/oic/
   |   |--- blueprints/extensions/oac/
+  |   |--- blueprints/extensions/container-instances/
+  |   |--- blueprints/data-platform/postgresql/
   |   |--- blueprints/compliance/healthcare-pci/
   |   `--- blueprints/extensions/oke-service-mesh/
   |
   |-- Phase 4 (next up) ----------------------------------------------
-  |   |--- blueprints/extensions/container-instances/
   |   |--- blueprints/operations/cost-optimization/
   |   `--- blueprints/data-platform/apex-adw/
   |
@@ -1537,7 +1429,6 @@ Core Landing Zone (implemented)
       |--- blueprints/extensions/batch-workers/
       |--- blueprints/data-platform/object-storage-lakehouse/
       |--- blueprints/data-platform/opensearch/
-      |--- blueprints/data-platform/postgresql/
       |--- blueprints/extensions/redis-cache/
       |--- blueprints/operations/backup-resilience/
       |--- blueprints/industry/weblogic-platform/
