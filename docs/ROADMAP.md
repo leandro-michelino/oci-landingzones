@@ -887,6 +887,610 @@ cloud_guard_target_id
 
 ---
 
+## Phase 9 - Next Architecture Backlog
+
+These are good next candidates after the current Phase 4-8 queue. They fit the
+repo because they can reuse the existing contracts: Core for governance,
+networking blueprints for traffic paths, extension blueprints for managed
+services, and local ASCII architecture for design review.
+
+| Priority | Blueprint | Folder | Why It Fits |
+| --- | --- | --- | --- |
+| 1 | Public Edge and Ingress Zone | `blueprints/networking/public-edge-ingress/` | Completes the north-south story with DNS, WAF, public/private load balancing, certificates, and route-to-app hand-off. |
+| 2 | Event-Driven Application Platform | `blueprints/extensions/event-driven-platform/` | Composes Events, Service Connector Hub, Streaming, Functions, Notifications, and Object Storage into one reusable async pattern. |
+| 3 | Batch and Queue Workers | `blueprints/extensions/batch-workers/` | Covers scheduled and burst compute patterns that do not fit OKE, Functions, or Container Instances. |
+| 4 | Object Storage Data Lakehouse | `blueprints/data-platform/object-storage-lakehouse/` | Adds the missing data lake foundation: buckets, KMS, private endpoints, lifecycle, logs, and optional query/processing hooks. |
+| 5 | OpenSearch Search and Vector Platform | `blueprints/data-platform/opensearch/` | Useful as a standalone search, logging, and vector index platform, not only as an AI Agents dependency. |
+| 6 | PostgreSQL Landing Zone | `blueprints/data-platform/postgresql/` | Fills the managed open-source database gap beside Autonomous DB and planned MySQL HeatWave. |
+| 7 | Redis Cache Landing Zone | `blueprints/extensions/redis-cache/` | Adds the common low-latency cache/session layer expected by app teams. |
+| 8 | Ransomware-Resilient Backup | `blueprints/operations/backup-resilience/` | Adds backup policies, immutable archive buckets, monitoring, and restore evidence for regulated tenancies. |
+| 9 | WebLogic / Java App Platform | `blueprints/industry/weblogic-platform/` | Gives enterprise Java workloads a migration-ready pattern with LB, app tier, database, logs, and operations hooks. |
+| 10 | VMware / Hybrid Migration Zone | `blueprints/industry/vmware-hybrid-migration/` | Covers brownfield migration where customers need private connectivity, DNS, backup, and landing-zone guardrails around VMware workloads. |
+
+### Public Edge and Ingress Zone
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/networking/public-edge-ingress/` |
+| Depends on | Core Landing Zone; VCN from any networking blueprint; optional WAF blueprint |
+
+**Why this exists.**
+The repo has WAF, API Gateway, hub-spoke, and standalone VCNs, but not one
+opinionated public ingress pattern that shows how Internet traffic enters OCI,
+passes edge controls, reaches a load balancer, and hands off to private app
+subnets. This is usually the first diagram an application owner asks for.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| Public DNS zone or DNS records | Optional, depending on customer DNS ownership |
+| WAF policy and attachment | Reuses WAF rules where possible |
+| Public Load Balancer | HTTPS listener and certificate wiring |
+| Private backend set | Targets private app subnets or API Gateway |
+| NSGs | Edge-to-app traffic only; no admin ingress |
+| Monitoring alarms | 5xx, unhealthy backend, certificate expiry |
+
+**ASCII Architecture.**
+
+```text
+Internet Client
+      |
+      v
+DNS -> WAF Policy
+      |
+      v
+Public Load Balancer (HTTPS)
+      |
+      v
+Private Backend Set
+ |--- App subnet targets
+ |--- API Gateway route (optional)
+ `--- Monitoring alarms and access logs
+```
+
+**Inputs to decide.**
+
+- DNS ownership: OCI DNS zone vs external DNS records
+- Public vs private load balancer hand-off
+- Certificate source and rotation model
+- WAF policy mode: detect-only, block, or custom managed rules
+- Backend target type: app subnet, API Gateway, or private service endpoint
+
+**Outputs and hand-off.**
+
+```text
+public_load_balancer_id
+listener_names
+backend_set_name
+waf_policy_id
+dns_record_fqdn
+```
+
+---
+
+### Event-Driven Application Platform
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/extensions/event-driven-platform/` |
+| Depends on | Core Landing Zone; optional Streaming and Functions blueprints |
+
+**Why this exists.**
+Many OCI workloads are glue: Object Storage events, audit events, stream
+messages, webhook notifications, and small Functions handlers. This blueprint
+would give teams a clean async foundation without hand-wiring each service.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| OCI Events rules | Object Storage, Audit, resource lifecycle, or custom event patterns |
+| Service Connector Hub | Moves events to Streaming, Logging, Functions, or Notifications |
+| Streaming stream pool | Optional durable event backbone |
+| Functions application | Optional event handler runtime |
+| Notifications topic | Email, webhook, or integration target |
+| IAM policies | Event producer, connector, function, and consumer groups |
+
+**ASCII Architecture.**
+
+```text
+OCI Event Sources
+ |--- Object Storage
+ |--- Audit / resource changes
+ `--- Custom application events
+       |
+       v
+Events Rule -> Service Connector Hub
+       |
+       |--- Streaming (durable queue)
+       |--- Functions (handler)
+       `--- Notifications (email / webhook)
+```
+
+**Inputs to decide.**
+
+- Event source types and matching rules
+- Connector targets: stream, function, notification, log, or bucket
+- Message retention and retry behavior
+- Function runtime and image source when handlers are enabled
+- Notification destinations and escalation ownership
+
+**Outputs and hand-off.**
+
+```text
+event_rule_ids
+service_connector_ids
+stream_ids
+function_app_id
+notification_topic_id
+```
+
+---
+
+### Batch and Queue Workers
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/extensions/batch-workers/` |
+| Depends on | Core Landing Zone; VCN from any networking blueprint |
+
+**Why this exists.**
+Some workloads are periodic or bursty: ETL jobs, file processing, report
+generation, model batch scoring, and maintenance tasks. They need private
+workers, queue semantics, logs, and a clean retry model rather than a permanent
+application tier.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| Worker instance pool or container instances | Configurable runtime pattern |
+| Queue or Streaming topic | Work dispatch and retry path |
+| Object Storage bucket | Input/output files and job artifacts |
+| Vault secret | Worker credentials and API tokens |
+| Monitoring alarms | Dead-letter, failed jobs, worker saturation |
+| IAM policies | Job submitter, worker service, operator groups |
+
+**ASCII Architecture.**
+
+```text
+Job Producer
+      |
+      v
+Queue / Stream
+      |
+      v
+Worker Runtime
+ |--- Container Instance or Instance Pool
+ |--- Vault secrets
+ |--- Object Storage input/output
+ `--- Monitoring alarms
+```
+
+**Inputs to decide.**
+
+- Worker runtime: container instance, compute instance pool, or OCI Batch
+- Queue or stream retention and dead-letter behavior
+- Worker subnet and outbound access requirements
+- Artifact bucket layout and lifecycle policy
+- Scaling rules, schedule, and maximum concurrency
+
+**Outputs and hand-off.**
+
+```text
+queue_id
+worker_pool_id
+artifact_bucket_name
+dead_letter_alarm_id
+```
+
+---
+
+### Object Storage Data Lakehouse
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/data-platform/object-storage-lakehouse/` |
+| Depends on | Core Landing Zone; Private Data Platform optional |
+
+**Why this exists.**
+The repo has a private data platform and Autonomous DB, but not a fuller lake
+foundation with bronze/silver/gold zones, KMS, retention, private access,
+catalog hooks, and processing hooks for analytics teams.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| Object Storage buckets | Bronze, silver, gold, quarantine, logs |
+| KMS keys | Separate keys per data zone when required |
+| Private endpoint | Private access to Object Storage |
+| Lifecycle policies | Retention, archive, delete, quarantine handling |
+| Service Connector Hub | Bucket events to logs, stream, or functions |
+| Optional catalog registration | Hand-off to Data Catalog blueprint |
+
+**ASCII Architecture.**
+
+```text
+Data Producers
+      |
+      v
+Object Storage Lake
+ |--- bronze
+ |--- silver
+ |--- gold
+ |--- quarantine
+ `--- logs
+      |
+      |--- KMS keys
+      |--- Lifecycle policies
+      `--- Service Connector events
+```
+
+**Inputs to decide.**
+
+- Zone model: bronze/silver/gold, quarantine, logs, and archive
+- KMS key separation by data classification
+- Private endpoint and producer subnet access
+- Lifecycle retention and archive rules per bucket
+- Catalog and processing hooks to enable immediately vs later
+
+**Outputs and hand-off.**
+
+```text
+bucket_names
+kms_key_ids
+private_endpoint_id
+service_connector_ids
+```
+
+---
+
+### OpenSearch Search and Vector Platform
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/data-platform/opensearch/` |
+| Depends on | Core Landing Zone; VCN from any networking blueprint |
+
+**Why this exists.**
+AI Agents may need OpenSearch for vectors, but many customers also need a
+standalone private search and log analytics pattern. This blueprint can serve
+application search, operational search, and vector indexes with one reusable
+network and IAM model.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| OpenSearch cluster | Private endpoint, shape and node count configurable |
+| NSG | Client subnet access only |
+| Vault secret | Admin or integration credentials |
+| Object Storage bucket | Snapshot repository |
+| IAM policies | Search admins, index writers, read-only consumers |
+| Monitoring alarms | Cluster health, storage pressure, rejected writes |
+
+**ASCII Architecture.**
+
+```text
+App / Analytics Subnet
+      |
+      v
+OpenSearch Cluster (private endpoint)
+ |--- Indexes / vector indexes
+ |--- Snapshot bucket
+ |--- Vault credentials
+ `--- Monitoring alarms
+```
+
+**Inputs to decide.**
+
+- Cluster shape, node count, storage size, and availability domain layout
+- Access model for index writers, readers, and admins
+- Snapshot bucket retention and restore workflow
+- Whether vector indexes are required from day one
+- Client subnet and NSG allowlist
+
+**Outputs and hand-off.**
+
+```text
+opensearch_cluster_id
+opensearch_endpoint
+snapshot_bucket_name
+nsg_id
+```
+
+---
+
+### PostgreSQL Landing Zone
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/data-platform/postgresql/` |
+| Depends on | Core Landing Zone; VCN from any networking blueprint |
+
+**Why this exists.**
+The database roadmap covers Autonomous DB and MySQL HeatWave, but many
+application teams standardize on PostgreSQL. A landing-zone pattern should
+cover private networking, backups, KMS, credential storage, IAM, and app-team
+hand-off outputs.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| PostgreSQL DB system | Private endpoint and configurable shape |
+| NSG | Port 5432 from app subnets only |
+| Vault secret | Admin and app credentials |
+| Backup policy | Retention and restore window |
+| KMS key | Customer-managed encryption when supported |
+| Monitoring alarms | CPU, storage, connections, backup failures |
+
+**ASCII Architecture.**
+
+```text
+App Subnet
+      |
+      | port 5432, NSG-controlled
+      v
+PostgreSQL DB System (private endpoint)
+ |--- Vault credentials
+ |--- Backup policy
+ |--- KMS key
+ `--- Monitoring alarms
+```
+
+**Inputs to decide.**
+
+- PostgreSQL version, shape, storage, and high availability mode
+- App subnet allowlist and NSG rules
+- Backup retention and restore point objective
+- Credential split between admin, migration, and app users
+- KMS and tagging requirements for regulated data
+
+**Outputs and hand-off.**
+
+```text
+postgresql_db_system_id
+postgresql_endpoint
+vault_secret_ids
+backup_policy_id
+```
+
+---
+
+### Redis Cache Landing Zone
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/extensions/redis-cache/` |
+| Depends on | Core Landing Zone; VCN from any networking blueprint |
+
+**Why this exists.**
+Most real application stacks eventually need a cache or session store. This
+blueprint gives app teams a private Redis-compatible cache with subnet, NSG,
+secrets, alarms, and ownership boundaries already handled.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| Redis cache cluster | Private endpoint and configurable capacity |
+| NSG | App subnet access only |
+| Vault secret | Auth token or integration secret where used |
+| IAM policies | Cache admins and app readers/writers |
+| Monitoring alarms | Memory pressure, evictions, connection saturation |
+
+**ASCII Architecture.**
+
+```text
+Application Tier
+      |
+      v
+Redis Cache (private endpoint)
+ |--- NSG app-only access
+ |--- Vault secret
+ `--- Monitoring alarms
+```
+
+**Inputs to decide.**
+
+- Cache capacity, shard/replica model, and maintenance window
+- Auth secret handling and rotation owner
+- App subnet allowlist and NSG rules
+- Eviction policy and memory alarm thresholds
+- Whether this is session state, app cache, or queue-adjacent cache
+
+**Outputs and hand-off.**
+
+```text
+redis_cache_id
+redis_endpoint
+nsg_id
+vault_secret_id
+```
+
+---
+
+### Ransomware-Resilient Backup
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/operations/backup-resilience/` |
+| Depends on | Core Landing Zone; Observability optional |
+
+**Why this exists.**
+Backup configuration is often scattered across compute, databases, buckets, and
+manual runbooks. This blueprint creates a tenancy-level resilience pattern:
+backup policies, immutable archive buckets, restore evidence, alarms, and
+operator hand-off.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| Backup policies | Compute, block volume, and database policy shapes |
+| Immutable archive bucket | Restore evidence and backup reports |
+| Lifecycle rules | Long retention and archive tiering |
+| Monitoring alarms | Failed backup, missing backup, restore test overdue |
+| Events rules | Backup failure to Notifications or Functions |
+| IAM policies | Backup operators and audit readers |
+
+**ASCII Architecture.**
+
+```text
+Protected Resources
+ |--- Compute / Block Volumes
+ |--- Databases
+ `--- Object Storage
+      |
+      v
+Backup Policies and Events
+      |
+      |--- Immutable archive bucket
+      |--- Monitoring alarms
+      `--- Restore evidence reports
+```
+
+**Inputs to decide.**
+
+- Resource scope: tenancy, compartment, or workload-specific backup domains
+- Backup schedule, retention, and restore testing cadence
+- Immutable archive bucket policy and retention lock expectations
+- Notification path for failed or missing backups
+- Evidence format required by auditors or service owners
+
+**Outputs and hand-off.**
+
+```text
+backup_policy_ids
+archive_bucket_name
+backup_alarm_ids
+restore_evidence_bucket_name
+```
+
+---
+
+### WebLogic / Java App Platform
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/industry/weblogic-platform/` |
+| Depends on | Core Landing Zone; VCN from any networking blueprint; database blueprint optional |
+
+**Why this exists.**
+Enterprise Java migrations usually need the same OCI shape: private app
+subnets, load balancer, database endpoint, certificates, logs, alarms, and
+controlled admin access. This pattern would make WebLogic-style migrations
+reviewable and repeatable.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| Private app tier | Compute instances or instance pool |
+| Load balancer | Public or private depending on ingress model |
+| Admin access | Bastion session or private admin subnet |
+| Database hand-off | Autonomous DB, PostgreSQL, MySQL, or Exadata output |
+| Logging and alarms | JVM logs, load balancer health, instance metrics |
+| Vault secrets | Admin passwords, datasource credentials, certs |
+
+**ASCII Architecture.**
+
+```text
+User / Edge Ingress
+      |
+      v
+Load Balancer
+      |
+      v
+WebLogic / Java App Tier (private subnets)
+ |--- Bastion admin path
+ |--- Vault secrets
+ |--- Logs and alarms
+ `--- Database endpoint
+```
+
+**Inputs to decide.**
+
+- Runtime model: compute instances, instance pool, or marketplace image
+- Public vs private ingress and certificate source
+- Admin access pattern through Bastion or private operations subnet
+- Database target and datasource secret model
+- Log locations, JVM metrics, and alarm thresholds
+
+**Outputs and hand-off.**
+
+```text
+load_balancer_id
+app_instance_ids
+admin_bastion_id
+database_endpoint
+```
+
+---
+
+### VMware / Hybrid Migration Zone
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/industry/vmware-hybrid-migration/` |
+| Depends on | Core Landing Zone; FastConnect or IPSec VPN blueprint |
+
+**Why this exists.**
+Some customers land in OCI through migration before modernization. A VMware or
+hybrid migration zone should combine private connectivity, DNS, segmented
+networks, backup, logging, and governance so brownfield workloads enter a clean
+landing zone instead of becoming an exception forever.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| Hybrid connectivity hand-off | FastConnect or IPSec VPN outputs |
+| Migration network segments | Management, vMotion, workload, backup |
+| Private DNS resolver rules | On-premises and OCI name resolution |
+| Backup and archive hooks | Backup Resilience blueprint hand-off |
+| Logging and monitoring | Network, migration, and workload signals |
+| IAM policies | Migration operators and read-only auditors |
+
+**ASCII Architecture.**
+
+```text
+On-Premises / Existing VMware
+      |
+      v
+FastConnect or IPSec VPN
+      |
+      v
+OCI Hybrid Migration Zone
+ |--- management network
+ |--- workload network
+ |--- backup network
+ |--- private DNS
+ `--- logging and monitoring
+```
+
+**Inputs to decide.**
+
+- Connectivity path: FastConnect, IPSec VPN, or both
+- Network segment mapping for management, workload, backup, and migration flows
+- DNS forwarding rules between OCI and on-premises domains
+- Backup hand-off and restore validation model
+- Migration operator groups and audit requirements
+
+**Outputs and hand-off.**
+
+```text
+migration_network_ids
+dns_resolver_rule_ids
+connectivity_attachment_ids
+backup_handoff_outputs
+```
+
+---
+
 ## Implementation Order Summary
 
 ```text
@@ -922,10 +1526,22 @@ Core Landing Zone (implemented)
   |   |--- blueprints/data-platform/data-catalog/
   |   `--- blueprints/extensions/vault-advanced/
   |
-  `-- Phase 8 (Industry Verticals) -----------------------------------
-      |--- blueprints/industry/financial-services/
-      |--- blueprints/industry/hpc-gpu/
-      `--- blueprints/compliance/public-sector/
+  |-- Phase 8 (Industry Verticals) -----------------------------------
+  |   |--- blueprints/industry/financial-services/
+  |   |--- blueprints/industry/hpc-gpu/
+  |   `--- blueprints/compliance/public-sector/
+  |
+  `-- Phase 9 (Next Architecture Backlog) ----------------------------
+      |--- blueprints/networking/public-edge-ingress/
+      |--- blueprints/extensions/event-driven-platform/
+      |--- blueprints/extensions/batch-workers/
+      |--- blueprints/data-platform/object-storage-lakehouse/
+      |--- blueprints/data-platform/opensearch/
+      |--- blueprints/data-platform/postgresql/
+      |--- blueprints/extensions/redis-cache/
+      |--- blueprints/operations/backup-resilience/
+      |--- blueprints/industry/weblogic-platform/
+      `--- blueprints/industry/vmware-hybrid-migration/
 ```
 
 ## Updating the Deployment Menu

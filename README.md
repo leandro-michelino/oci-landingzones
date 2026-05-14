@@ -1,4 +1,4 @@
-![OCI Landing Zones architecture banner](docs/assets/oci-landing-zones-banner.svg)
+![OCI Landing Zones architecture banner](docs/assets/oci-landing-zones-banner.png)
 
 # OCI Landing Zones
 
@@ -19,12 +19,13 @@ input validation, tenancy-specific decisions, and an approved plan/apply flow.
 ## Start Here
 
 If you are new here, do not try to read everything in order. Pick the path that matches
-what you are doing, then follow the links. The README is the lobby; the blueprint folders
-are where the real work happens.
+what you are doing, then follow the links. This README helps you choose; the blueprint
+folders are where you review and run the deployment.
 
 | I Want To... | Start With |
 |---|---|
 | Find the best deployment folder quickly | [Choose A Deployment](#choose-a-deployment) |
+| Walk through the operator flow | [Customer Flow](#customer-flow) |
 | Download only one deployment instead of the whole repo | [Use One Blueprint Only](docs/DEPLOYMENT-GUIDE.md#using-a-single-blueprint) |
 | Compare the big families before choosing | [Deployment Categories](#deployment-categories) |
 | See every blueprint with direct links | [Deployment Menu](#deployment-menu) |
@@ -32,17 +33,33 @@ are where the real work happens.
 | Understand how every blueprint is structured | [Every Blueprint Is End-To-End](#every-blueprint-is-end-to-end) |
 | Validate the repo before trusting a change | [Keep The Repo Clean](#keep-the-repo-clean) |
 
-## First 10 Minutes
+## Customer Flow
 
-The normal path is intentionally short. Read enough to make a good decision, then move into
-the deployment folder and let Terraform show you the real diff.
+The normal path is intentionally short: choose the deployment, review the local architecture,
+fill local inputs, then let Terraform show you the real diff.
+
+```text
+choose blueprint
+  |
+  v
+read local README.md
+  |
+  v
+review architecture/README.md
+  |
+  v
+copy terraform.tfvars.example to ignored terraform.tfvars
+  |
+  v
+plan, review, approve, apply
+```
 
 | Step | Action | Where |
 |---|---|
 | 1 | Choose the deployment that matches the outcome. | [Choose A Deployment](#choose-a-deployment) |
 | 2 | Open the local blueprint guide. | `blueprints/<family>/<deployment>/README.md` |
 | 3 | Review the detailed ASCII component and traffic-flow diagram. | `blueprints/<family>/<deployment>/architecture/README.md` |
-| 4 | Copy the example tfvars and fill in real tenancy values. | `terraform.tfvars.example` -> local ignored `terraform.tfvars` |
+| 4 | Copy the example tfvars and fill in real tenancy values. | `terraform.tfvars.example` to ignored `terraform.tfvars` |
 | 5 | Run a plan from the deployment folder. | local `terraform` or optional `ansible/plan.yml` |
 | 6 | Apply only after review and approval. | guarded `ansible/apply.yml` or reviewed Terraform apply |
 
