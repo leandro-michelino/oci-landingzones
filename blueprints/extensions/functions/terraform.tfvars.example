@@ -1,0 +1,53 @@
+# Example values only. Copy to ignored terraform.tfvars and replace with real tenancy values.
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "eu-madrid-1"
+home_region       = "eu-madrid-1"
+org               = "acme"
+environment       = "prod"
+region_key        = "mad"
+compartment_ocid  = "ocid1.compartment.oc1..example"
+
+enable_container_repository = true
+repository_name             = "hello-python"
+
+enable_application                     = true
+application_subnet_ids                 = ["ocid1.subnet.oc1.eu-madrid-1.example"]
+application_network_security_group_ids = ["ocid1.networksecuritygroup.oc1.eu-madrid-1.example"]
+
+enable_functions = true
+functions = {
+  hello = {
+    image              = "eu-madrid-1.ocir.io/namespace/acme-prod-mad-functions/hello-python:0.1.0"
+    memory_in_mbs      = 256
+    timeout_in_seconds = 30
+    config = {
+      LOG_LEVEL = "INFO"
+    }
+  }
+}
+
+enable_api_gateway            = false
+gateway_subnet_id             = "ocid1.subnet.oc1.eu-madrid-1.example"
+default_api_function_key      = "hello"
+enable_api_gateway_deployment = false
+
+enable_event_rules = false
+# event_rules = {
+#   object_created = {
+#     condition = jsonencode({
+#       eventType = ["com.oraclecloud.objectstorage.createobject"]
+#     })
+#     actions = [
+#       {
+#         function_key = "hello"
+#       }
+#     ]
+#   }
+# }
+
+policy_statements = [
+  "Allow service faas to use virtual-network-family in compartment id ocid1.compartment.oc1..example",
+  "Allow group functions-deployers to manage functions-family in compartment id ocid1.compartment.oc1..example",
+  "Allow group functions-deployers to manage repos in compartment id ocid1.compartment.oc1..example",
+]

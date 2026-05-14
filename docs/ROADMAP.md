@@ -43,6 +43,7 @@ operator guide, architecture diagram, and Terraform / Ansible workflow.
 | OKE service mesh | `blueprints/extensions/oke-service-mesh/` |
 | Cost optimization | `blueprints/operations/cost-optimization/` |
 | Oracle APEX on Autonomous Database | `blueprints/data-platform/apex-adw/` |
+| Oracle Functions | `blueprints/extensions/functions/` |
 
 ---
 
@@ -242,61 +243,6 @@ vault_secret_id
 ## Phase 6 - Platform Services
 
 Serverless and middleware services that round out the application platform.
-
----
-
-### Oracle Functions
-
-| Attribute | Value |
-| --- | --- |
-| Folder | `blueprints/extensions/functions/` |
-| Depends on | Core Landing Zone; VCN from any networking blueprint |
-
-**Why this exists.**
-Not all compute is containerised. Functions is the OCI-native serverless
-runtime. Teams need a private VCN subnet, OCIR-backed function image repository,
-IAM for invokers and the Functions service, and optionally an API Gateway
-front-end - all wired together from day one.
-
-**What it deploys.**
-
-| Resource | Notes |
-| --- | --- |
-| Functions application | Scoped to compartment and VCN subnet |
-| OCIR repository | Container image storage for function code |
-| IAM policies | Functions service principal, invoker group, deploy group |
-| NSG | Egress from function subnet to target services |
-| Optional: API Gateway route | Routes external HTTPS calls to the function |
-| Optional: Events trigger | OCI Events rule -> function invocation |
-
-**ASCII Architecture.**
-
-```text
- OCIR (function image)
-       |
-       v
- Functions Application (private VCN subnet)
- |--- IAM (service principal / invoker / deploy)
- |--- NSG (egress to target services)
- |--- Optional: API Gateway (HTTPS front-end)
- `--- Optional: Events Rule (event-driven trigger)
-```
-
-**Inputs to decide.**
-
-- VCN subnet for function execution
-- OCIR repository name and image tag convention
-- Invoker group: human operators vs service account vs API Gateway
-- Whether to wire an Events trigger for automation (e.g. Object Storage PUT)
-
-**Outputs and hand-off.**
-
-```text
-functions_app_id
-ocir_repository_url
-function_invoke_endpoint
-api_gateway_route_url (if enabled)
-```
 
 ---
 
@@ -1281,7 +1227,8 @@ Core Landing Zone (implemented)
   |   |--- blueprints/compliance/healthcare-pci/
   |   |--- blueprints/extensions/oke-service-mesh/
   |   |--- blueprints/operations/cost-optimization/
-  |   `--- blueprints/data-platform/apex-adw/
+  |   |--- blueprints/data-platform/apex-adw/
+  |   `--- blueprints/extensions/functions/
   |
   |-- Phase 5 (AI/ML Platform) ---------------------------------------
   |   |--- blueprints/ai/data-science/
@@ -1289,7 +1236,6 @@ Core Landing Zone (implemented)
   |   `--- blueprints/data-platform/mysql-heatwave/
   |
   |-- Phase 6 (Platform Services) ------------------------------------
-  |   |--- blueprints/extensions/functions/
   |   |--- blueprints/data-platform/goldengate/
   |   `--- blueprints/extensions/digital-assistant/
   |

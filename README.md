@@ -83,6 +83,7 @@ architecture, Terraform files, example tfvars, and local Ansible runners.
 | I need cost control | [Cost Optimization](blueprints/operations/cost-optimization/) | Adds cost tags, budgets, notifications, Optimizer profiles, and FinOps hand-offs. |
 | I need Kubernetes | [OKE Extension](blueprints/extensions/oke/) | Adds an OKE cluster and optional node pool to supplied network IDs. |
 | I need containers without Kubernetes | [Container Instances](blueprints/extensions/container-instances/) | Runs approved container images with private VNIC, NSGs, optional pull secrets, and no OKE control plane. |
+| I need serverless functions | [Oracle Functions](blueprints/extensions/functions/) | Runs approved function images with private application subnets, optional API Gateway routes, Events triggers, and IAM hand-offs. |
 | I need private GenAI | [OCI Generative AI Private Landing Zone](blueprints/ai/genai-private/) | Adds a private GenAI endpoint, optional archive bucket, and IAM policy shell. |
 | I need CI/CD | [OCI DevOps Pipeline](blueprints/devops/oci-devops-pipeline/) | Adds DevOps project, repository, build pipeline, deploy pipeline, and notifications. |
 | I need analytics or integration services | [Oracle Analytics Cloud](blueprints/extensions/oac/) or [Oracle Integration Cloud](blueprints/extensions/oic/) | Adds OAC or OIC service foundations with private connectivity options. |
@@ -174,6 +175,7 @@ open folder -> read README.md -> review architecture/README.md -> fill tfvars ->
 | [Exadata](blueprints/extensions/exadata/) | You need OCI Cloud Exadata Infrastructure capacity. |
 | [OKE](blueprints/extensions/oke/) | You need Kubernetes cluster and node pool resources attached to supplied VCN/subnets. |
 | [OKE Service Mesh](blueprints/extensions/oke-service-mesh/) | You need service mesh add-on management and optional APM tracing for an existing OKE cluster. |
+| [Oracle Functions](blueprints/extensions/functions/) | You need serverless functions from approved images with optional API Gateway and Events wiring. |
 | [Oracle Analytics Cloud](blueprints/extensions/oac/) | You need private analytics capacity and private access channel wiring. |
 | [Oracle Integration Cloud](blueprints/extensions/oic/) | You need OIC service capacity with optional private outbound connectivity. |
 | [Observability](blueprints/extensions/observability/) | You need Log Analytics, APM, and Operations Insights private endpoint foundations. |
@@ -212,7 +214,7 @@ like this:
 | 3 | Deploy one [Networking](#networking-deployments) blueprint for the traffic model. |
 | 4 | Add [Operating Entity](#operating-entity-deployments) or workload vending patterns when ownership boundaries matter. |
 | 5 | Add [Operations](#operations-deployments) such as Cost Optimization when cost ownership and notification paths matter. |
-| 6 | Add [Extensions](#extension-deployments) such as Container Instances, OKE, WAF, Exadata, API Gateway, Streaming, Observability, OAC, or OIC. |
+| 6 | Add [Extensions](#extension-deployments) such as Container Instances, Functions, OKE, WAF, Exadata, API Gateway, Streaming, Observability, OAC, or OIC. |
 | 7 | Run repo and security checks before merge or apply. |
 
 The longer walkthrough lives in `docs/DEPLOYMENT-GUIDE.md`.
@@ -225,7 +227,7 @@ The longer walkthrough lives in `docs/DEPLOYMENT-GUIDE.md`.
 | Networking | Standalone VCNs, hub-spoke, DRG, VPN, FastConnect, DNS, firewall, network appliance, ZPR, multicloud, and regional patterns. |
 | Operating model | Operating entity and workload vending patterns for team, business unit, or application ownership boundaries. |
 | Operations | Cost optimization with cost-tracking tags, tag defaults, budgets, notifications, optional Optimizer profiles, and FinOps access policy. |
-| Extensions | Optional Container Instances, OKE, OKE Service Mesh, WAF, Exadata, API Gateway, Streaming, Observability, OAC, and OIC blueprints. |
+| Extensions | Optional Container Instances, Oracle Functions, OKE, OKE Service Mesh, WAF, Exadata, API Gateway, Streaming, Observability, OAC, and OIC blueprints. |
 | Data, DR, compliance, and industry | Autonomous Database, APEX on ADB, PostgreSQL, private data platform, FSDR, CIS, Zero Trust, SCCA-style, healthcare/PCI, and telco cloud-native shapes. |
 | Automation | Terraform for infrastructure and Ansible for local plan/apply/destroy orchestration. |
 | Documentation | Each deployment has its own README, detailed ASCII architecture, and local TF + Ansible workflow notes. |

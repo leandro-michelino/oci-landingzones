@@ -23,6 +23,9 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Oracle APEX on Autonomous Database blueprint with ADB metadata lookup,
   optional private load balancer and ORDS backend wiring, optional Vault secret
   hand-off, and APEX/ORDS outputs.
+- Oracle Functions extension blueprint with optional image repository,
+  Functions application, image-based functions, API Gateway routes, Events
+  triggers, IAM policy statements, and a small Python FDK sample.
 
 ### Changed
 

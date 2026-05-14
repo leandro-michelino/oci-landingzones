@@ -68,11 +68,11 @@ folder.
 | Extensions | Streaming extension | `blueprints/extensions/streaming/` | Implementing |
 | Extensions | WAF extension | `blueprints/extensions/waf/` | Implementing |
 | Extensions | Container Instances | `blueprints/extensions/container-instances/` | Implementing |
+| Extensions | Oracle Functions | `blueprints/extensions/functions/` | Implementing |
 | Operations | Cost optimization | `blueprints/operations/cost-optimization/` | Implementing |
 | AI | OCI Data Science (notebooks, model catalog, deployment) | `blueprints/ai/data-science/` | Planned |
 | AI | AI Agents - RAG landing zone (agents, knowledge base, OpenSearch) | `blueprints/ai/agents/` | Planned |
 | Data platform | MySQL HeatWave | `blueprints/data-platform/mysql-heatwave/` | Planned |
-| Extensions | Oracle Functions (serverless, OCIR, API Gateway) | `blueprints/extensions/functions/` | Planned |
 | Data platform | GoldenGate replication hub | `blueprints/data-platform/goldengate/` | Planned |
 | Extensions | Oracle Digital Assistant | `blueprints/extensions/digital-assistant/` | Planned |
 | Compliance | Security posture automation (Cloud Guard + Vuln Scan + auto-remediation) | `blueprints/compliance/security-posture/` | Planned |

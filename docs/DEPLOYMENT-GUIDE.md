@@ -330,7 +330,7 @@ Architecture notes live in each operating-entity blueprint's
 | Phase 3 - Networking | All implemented folders under `blueprints/networking/` | Each implemented networking blueprint is initialized and validated without backend. |
 | Phase 4 - Operating entities | `blueprints/operating-entity/` and child onboarding patterns | Single entity, multi-entity, and workload vending are initialized and validated without backend. |
 | Phase 5 - Operations | `blueprints/operations/cost-optimization` | Cost tags, budgets, notifications, Optimizer profiles, and FinOps policy wiring are initialized and validated without backend. |
-| Phase 6 - Extensions | `blueprints/extensions/oke`, `apigw`, `streaming`, `waf`, `exadata`, `observability`, `oic`, `oac`, and `oke-service-mesh` | Each extension blueprint is initialized and validated without backend. |
+| Phase 6 - Extensions | `blueprints/extensions/oke`, `apigw`, `streaming`, `waf`, `exadata`, `observability`, `oic`, `oac`, `oke-service-mesh`, `container-instances`, and `functions` | Each extension blueprint is initialized and validated without backend. |
 | Phase 7 - Data, AI, DevOps, and regulated services | `blueprints/data-platform/autonomous-database`, `blueprints/data-platform/apex-adw`, `blueprints/ai/genai-private`, `blueprints/devops/oci-devops-pipeline`, and `blueprints/compliance/healthcare-pci` | Service-specific blueprints are initialized and validated without backend. |
 
 Identity, compliance, data platform, disaster recovery, and industry folders are
@@ -378,14 +378,21 @@ Implemented Phase 6 extension entry points:
   private access channel.
 - `blueprints/extensions/oke-service-mesh/` creates an optional OKE service mesh
   add-on shell and optional APM tracing domain.
+- `blueprints/extensions/container-instances/` creates a private serverless
+  container runtime with VNIC, NSGs, optional pull secrets, volumes, and IAM
+  policy statements.
+- `blueprints/extensions/functions/` creates optional OCIR repository,
+  Functions application, functions from approved images, API Gateway routes,
+  Events triggers, and IAM policy statements.
 
 Additional service blueprints now cover Autonomous Database, APEX on Autonomous
 Database, OCI Generative AI, OCI DevOps, and Healthcare / PCI guardrails. They
 follow the same local README, ASCII architecture, Terraform, tfvars, and
 Ansible runner contract.
 
-Keep real subnet, VCN, load balancer, availability domain, image, and SSH values
-in local ignored tfvars files. The committed examples show the shape only.
+Keep real subnet, VCN, load balancer, availability domain, image, event filter,
+and SSH values in local ignored tfvars files. The committed examples show the
+shape only.
 
 ## Ansible Orchestration
 
