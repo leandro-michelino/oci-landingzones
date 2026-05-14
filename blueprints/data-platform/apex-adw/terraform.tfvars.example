@@ -1,0 +1,31 @@
+# Example values only. Copy to ignored terraform.tfvars and replace with real tenancy values.
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "eu-madrid-1"
+home_region       = "eu-madrid-1"
+org               = "acme"
+environment       = "prod"
+region_key        = "mad"
+compartment_ocid  = "ocid1.compartment.oc1..example"
+
+autonomous_database_id = "ocid1.autonomousdatabase.oc1.eu-madrid-1.example"
+
+apex_workspace_name  = "APP_WORKSPACE"
+apex_admin_username  = "APEX_ADMIN"
+apex_fqdn            = "apex.internal.example.com"
+
+enable_load_balancer                     = false
+create_load_balancer                     = true
+load_balancer_subnet_ids                 = ["ocid1.subnet.oc1.eu-madrid-1.example"]
+load_balancer_network_security_group_ids = ["ocid1.networksecuritygroup.oc1.eu-madrid-1.example"]
+listener_certificate_ids                 = ["ocid1.certificate.oc1.eu-madrid-1.example"]
+
+# If the ADB data source cannot return private_endpoint_ip in your tenancy,
+# set the backend IP explicitly:
+# autonomous_database_private_endpoint_ip = "10.10.20.15"
+# ords_backend_ip_addresses = ["10.10.20.15"]
+
+enable_admin_secret = false
+# vault_id = "ocid1.vault.oc1.eu-madrid-1.example"
+# key_id   = "ocid1.key.oc1.eu-madrid-1.example"
+# admin_secret_content_base64 = "base64-json-payload-from-secure-source"

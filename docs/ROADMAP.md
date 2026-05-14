@@ -42,73 +42,15 @@ operator guide, architecture diagram, and Terraform / Ansible workflow.
 | Healthcare / PCI compliance | `blueprints/compliance/healthcare-pci/` |
 | OKE service mesh | `blueprints/extensions/oke-service-mesh/` |
 | Cost optimization | `blueprints/operations/cost-optimization/` |
+| Oracle APEX on Autonomous Database | `blueprints/data-platform/apex-adw/` |
 
 ---
 
-## Phase 4 - Specialized (Next Up)
+## Phase 4 - Specialized (Complete)
 
-Remaining blueprints that complete the current specialized catalog.
-
----
-
-### Oracle APEX on Autonomous Database
-
-| Attribute | Value |
-| --- | --- |
-| Folder | `blueprints/data-platform/apex-adw/` |
-| Depends on | Core Landing Zone; Autonomous Database (existing) |
-
-**Why this exists.**
-APEX on ADW is the dominant OCI low-code pattern. It extends an existing
-Autonomous DB instance by enabling APEX workspace provisioning and exposing ORDS
-(Oracle REST Data Services) through a private load balancer - producing a
-deployable APEX platform from a single `terraform apply`.
-
-**What it deploys.**
-
-| Resource | Notes |
-| --- | --- |
-| ORDS endpoint | Configured on the existing ADW instance |
-| Private Load Balancer | HTTPS listener; no public exposure |
-| NSG | HTTPS from app subnet only |
-| APEX workspace bootstrap | Script-driven workspace and admin account creation |
-| Vault secret | APEX admin credentials |
-
-**ASCII Architecture.**
-
-```text
- App Subnet (VCN)
-       |
-       | HTTPS (NSG-controlled)
-       v
- Private Load Balancer
-       |
-       v
- ORDS endpoint (on Autonomous DB)
-       |
-       v
- APEX workspace
-       |
-       `--- Vault (admin credentials)
-```
-
-**Inputs to decide.**
-
-- Existing Autonomous DB OCID (from `autonomous-database` blueprint outputs)
-- APEX workspace name and admin username
-- Load balancer shape and bandwidth
-- NSG source CIDR for HTTPS access
-
-**Outputs and hand-off.**
-
-```text
-apex_url
-ords_endpoint
-load_balancer_id
-vault_secret_id
-```
-
----
+The specialized Phase 4 queue is now implemented. New specialized candidates
+should be added under the architecture backlog until they are ready to become a
+phase-level commitment.
 
 ## Phase 5 - AI / ML Platform
 
@@ -1338,9 +1280,7 @@ Core Landing Zone (implemented)
   |   |--- blueprints/data-platform/postgresql/
   |   |--- blueprints/compliance/healthcare-pci/
   |   |--- blueprints/extensions/oke-service-mesh/
-  |   `--- blueprints/operations/cost-optimization/
-  |
-  |-- Phase 4 (next up) ----------------------------------------------
+  |   |--- blueprints/operations/cost-optimization/
   |   `--- blueprints/data-platform/apex-adw/
   |
   |-- Phase 5 (AI/ML Platform) ---------------------------------------

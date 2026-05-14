@@ -20,6 +20,9 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Cost Optimization operations blueprint with cost-tracking tags, optional tag
   defaults, budgets, notifications, optional Monitoring alarms, optional
   Optimizer profiles, and FinOps IAM policy wiring.
+- Oracle APEX on Autonomous Database blueprint with ADB metadata lookup,
+  optional private load balancer and ORDS backend wiring, optional Vault secret
+  hand-off, and APEX/ORDS outputs.
 
 ### Changed
 

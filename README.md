@@ -88,6 +88,7 @@ architecture, Terraform files, example tfvars, and local Ansible runners.
 | I need analytics or integration services | [Oracle Analytics Cloud](blueprints/extensions/oac/) or [Oracle Integration Cloud](blueprints/extensions/oic/) | Adds OAC or OIC service foundations with private connectivity options. |
 | I need a private data platform | [Private Data Platform](blueprints/data-platform/private-data-platform/) | Builds private VCN, Vault/KMS, Object Storage private endpoint, and Streaming. |
 | I need Autonomous Database | [Autonomous Database](blueprints/data-platform/autonomous-database/) | Adds private ATP/ADW with optional KMS, NSG, private endpoint, and backup controls. |
+| I need APEX on Autonomous Database | [Oracle APEX On Autonomous Database](blueprints/data-platform/apex-adw/) | Adds private APEX/ORDS ingress, optional Vault secret hand-off, and ADB URL outputs. |
 | I need PostgreSQL | [PostgreSQL Landing Zone](blueprints/data-platform/postgresql/) | Adds a private managed PostgreSQL DB system with NSGs, backup policy hooks, and secure credential inputs. |
 | I need disaster recovery | [Full Stack DR](blueprints/disaster-recovery/fsdr/) | Creates FSDR protection groups, log buckets, and an optional DR plan. |
 
@@ -191,6 +192,7 @@ open folder -> read README.md -> review architecture/README.md -> fill tfvars ->
 | Deployment | Use It When |
 |---|---|
 | [Autonomous Database](blueprints/data-platform/autonomous-database/) | You need private ATP or ADW with optional backup, KMS, NSG, and private endpoint controls. |
+| [Oracle APEX On Autonomous Database](blueprints/data-platform/apex-adw/) | You need private APEX/ORDS access for an existing Autonomous Database, with optional load balancer and Vault secret hand-off. |
 | [PostgreSQL Landing Zone](blueprints/data-platform/postgresql/) | You need a private managed PostgreSQL DB system with NSGs, backup/maintenance policy hooks, and secure credential inputs. |
 | [Private Data Platform](blueprints/data-platform/private-data-platform/) | You need private Object Storage access, Vault/KMS, and optional Streaming. |
 | [Full Stack Disaster Recovery](blueprints/disaster-recovery/fsdr/) | You need FSDR protection groups, DR log buckets, and an optional DR plan. |
@@ -224,7 +226,7 @@ The longer walkthrough lives in `docs/DEPLOYMENT-GUIDE.md`.
 | Operating model | Operating entity and workload vending patterns for team, business unit, or application ownership boundaries. |
 | Operations | Cost optimization with cost-tracking tags, tag defaults, budgets, notifications, optional Optimizer profiles, and FinOps access policy. |
 | Extensions | Optional Container Instances, OKE, OKE Service Mesh, WAF, Exadata, API Gateway, Streaming, Observability, OAC, and OIC blueprints. |
-| Data, DR, compliance, and industry | Autonomous Database, PostgreSQL, private data platform, FSDR, CIS, Zero Trust, SCCA-style, healthcare/PCI, and telco cloud-native shapes. |
+| Data, DR, compliance, and industry | Autonomous Database, APEX on ADB, PostgreSQL, private data platform, FSDR, CIS, Zero Trust, SCCA-style, healthcare/PCI, and telco cloud-native shapes. |
 | Automation | Terraform for infrastructure and Ansible for local plan/apply/destroy orchestration. |
 | Documentation | Each deployment has its own README, detailed ASCII architecture, and local TF + Ansible workflow notes. |
 
