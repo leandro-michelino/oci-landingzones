@@ -47,15 +47,18 @@ folder.
 | Networking | Multi-tenancy shared services | `blueprints/networking/multi-tenancy-shared-services/` | Implementing |
 | Networking | Hub-spoke with multicloud interconnect | `blueprints/networking/hub-spoke-with-multicloud-interconnect/` | Implementing |
 | Networking | Regional prod/nonprod hub separation | `blueprints/networking/regional-prod-nonprod-hubs/` | Implementing |
+| Networking | OCI Network Load Balancer (Layer 4 TCP/UDP, private backend, health checks) | `blueprints/networking/network-load-balancer/` | Implementing |
 | Compliance | SCCA-style cloud-native landing zone | `blueprints/compliance/scca-cloud-native/` | Implementing |
 | Compliance | Zero Trust landing zone | `blueprints/compliance/zero-trust/` | Implementing |
 | Compliance | Healthcare / PCI compliance landing zone | `blueprints/compliance/healthcare-pci/` | Implementing |
+| Compliance | Security posture automation (Cloud Guard + Vuln Scan + auto-remediation) | `blueprints/compliance/security-posture/` | Implementing |
 | Disaster recovery | Full Stack Disaster Recovery | `blueprints/disaster-recovery/fsdr/` | Implementing |
 | Data platform | Autonomous Database ATP / ADW | `blueprints/data-platform/autonomous-database/` | Implementing |
 | Data platform | Private data platform landing zone | `blueprints/data-platform/private-data-platform/` | Implementing |
 | Data platform | PostgreSQL landing zone | `blueprints/data-platform/postgresql/` | Implementing |
 | Data platform | Oracle APEX on Autonomous Database | `blueprints/data-platform/apex-adw/` | Implementing |
 | Data platform | OpenSearch search and vector platform | `blueprints/data-platform/opensearch/` | Implementing |
+| Data platform | MySQL HeatWave | `blueprints/data-platform/mysql-heatwave/` | Implementing |
 | AI | OCI Generative AI private landing zone | `blueprints/ai/genai-private/` | Implementing |
 | AI | OCI AI Services (Vision, Language, Speech, Document Understanding, Anomaly Detection) | `blueprints/ai/ai-services/` | Implementing |
 | AI | GenAI multi-model gateway (API Gateway routing, per-team quotas, cost tagging, audit log) | `blueprints/ai/genai-gateway/` | Implementing |
@@ -64,8 +67,10 @@ folder.
 | AI | Document intelligence pipeline (Document Understanding + GenAI, intake/output buckets) | `blueprints/ai/document-intelligence/` | Implementing |
 | AI | Embedding and vector ingestion pipeline (chunking, GenAI embedding, OpenSearch index) | `blueprints/ai/embedding-pipeline/` | Implementing |
 | AI | Multi-agent orchestration (orchestrator + specialist agents, Streaming, tool registry, audit) | `blueprints/ai/multi-agent/` | Implementing |
+| AI | AI Agents - RAG landing zone (agents, knowledge base, OpenSearch) | `blueprints/ai/agents/` | Implementing |
 | DevOps | OCI DevOps pipeline | `blueprints/devops/oci-devops-pipeline/` | Implementing |
 | Industry | Telco cloud-native landing zone | `blueprints/industry/telco-cloud-native/` | Implementing |
+| Industry | OCI Secure Desktops (VDI, private network, IAM, session policies) | `blueprints/industry/secure-desktops/` | Implementing |
 | Extensions | OKE extension | `blueprints/extensions/oke/` | Implementing |
 | Extensions | OKE service mesh | `blueprints/extensions/oke-service-mesh/` | Implementing |
 | Extensions | Exadata extension | `blueprints/extensions/exadata/` | Implementing |
@@ -78,13 +83,11 @@ folder.
 | Extensions | Container Instances | `blueprints/extensions/container-instances/` | Implementing |
 | Extensions | Oracle Functions | `blueprints/extensions/functions/` | Implementing |
 | Extensions | Event-driven application platform (Events, Service Connector Hub, Streaming, Functions, Notifications) | `blueprints/extensions/event-driven-platform/` | Implementing |
+| Extensions | Redis Cache landing zone | `blueprints/extensions/redis-cache/` | Implementing |
 | Operations | Cost optimization | `blueprints/operations/cost-optimization/` | Implementing |
 | AI | OCI Data Science (notebooks, model catalog, deployment) | `blueprints/ai/data-science/` | Planned |
-| AI | AI Agents - RAG landing zone (agents, knowledge base, OpenSearch) | `blueprints/ai/agents/` | Planned |
-| Data platform | MySQL HeatWave | `blueprints/data-platform/mysql-heatwave/` | Planned |
 | Data platform | GoldenGate replication hub | `blueprints/data-platform/goldengate/` | Planned |
 | Extensions | Oracle Digital Assistant | `blueprints/extensions/digital-assistant/` | Planned |
-| Compliance | Security posture automation (Cloud Guard + Vuln Scan + auto-remediation) | `blueprints/compliance/security-posture/` | Planned |
 | Data platform | Data Catalog and lineage | `blueprints/data-platform/data-catalog/` | Planned |
 | Extensions | Vault Advanced / BYOK (HSM, key rotation, break-glass) | `blueprints/extensions/vault-advanced/` | Planned |
 | Industry | Financial services landing zone (PCI DSS + SOC 2 + Data Safe) | `blueprints/industry/financial-services/` | Planned |
@@ -93,11 +96,9 @@ folder.
 | Networking | Public edge and ingress zone (DNS, WAF, public LB, cert, route-to-app) | `blueprints/networking/public-edge-ingress/` | Planned |
 | Extensions | Batch and queue workers (instance pool or container instances, queue, retry) | `blueprints/extensions/batch-workers/` | Planned |
 | Data platform | Object Storage data lakehouse (bronze/silver/gold zones, KMS, lifecycle, private endpoint) | `blueprints/data-platform/object-storage-lakehouse/` | Planned |
-| Extensions | Redis Cache landing zone | `blueprints/extensions/redis-cache/` | Planned |
 | Operations | Ransomware-resilient backup (backup policies, immutable archive, restore evidence) | `blueprints/operations/backup-resilience/` | Planned |
 | Industry | WebLogic / Java app platform (LB, app tier, database, logs, bastion) | `blueprints/industry/weblogic-platform/` | Planned |
 | Industry | VMware / hybrid migration zone (FastConnect or VPN, DNS, migration segments) | `blueprints/industry/vmware-hybrid-migration/` | Planned |
-| Industry | OCI Secure Desktops (VDI, private network, IAM, session policies) | `blueprints/industry/secure-desktops/` | Planned |
 | Data platform | OCI NoSQL Database (key-value / document store, private endpoint, IAM) | `blueprints/data-platform/nosql/` | Planned |
 | Data platform | OCI Data Flow (managed Spark, private subnet, Object Storage lake, IAM) | `blueprints/data-platform/data-flow/` | Planned |
 | Data platform | OCI Data Integration (ETL/ELT pipelines, workspace, private endpoint) | `blueprints/data-platform/data-integration/` | Planned |
@@ -105,7 +106,6 @@ folder.
 | Extensions | OCI Certificates Service (managed PKI / CA, TLS lifecycle, Vault integration) | `blueprints/extensions/certificates/` | Planned |
 | Industry | Oracle Cloud VMware Solution (OCVS, baremetal VMware, private connectivity, DNS) | `blueprints/industry/ocvs/` | Planned |
 | Extensions | OCI Process Automation (low-code workflow, Oracle SaaS integration, IAM) | `blueprints/extensions/process-automation/` | Planned |
-| Networking | OCI Network Load Balancer (Layer 4 TCP/UDP, private backend, health checks) | `blueprints/networking/network-load-balancer/` | Planned |
 | Extensions | OCI Email Delivery (SMTP relay, approved sender, IAM, NSG) | `blueprints/extensions/email-delivery/` | Planned |
 | Compliance | OCI Threat Intelligence (IoC feeds, Cloud Guard integration, event rules) | `blueprints/compliance/threat-intelligence/` | Planned |
 

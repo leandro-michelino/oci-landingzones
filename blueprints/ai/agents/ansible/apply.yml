@@ -1,0 +1,11 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+---
+- name: Apply AI Agents RAG Landing Zone
+  hosts: localhost
+  gather_facts: false
+  vars:
+    terraform_action: apply
+    terraform_backend_enabled: false
+    terraform_working_dir: "{{ playbook_dir }}/.."
+  roles:
+    - terraform_runner

@@ -1,0 +1,25 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid       = "ocid1.tenancy.oc1..example"
+current_user_ocid  = "ocid1.user.oc1..example"
+region             = "eu-frankfurt-1"
+home_region        = "eu-frankfurt-1"
+oci_config_profile = "DEFAULT"
+
+org         = "acme"
+environment = "dev"
+region_key  = "fra"
+
+compartment_ocid   = "ocid1.compartment.oc1..example"
+availability_domain = "example:EU-FRANKFURT-1-AD-1"
+subnet_id          = "ocid1.subnet.oc1.eu-frankfurt-1.example"
+nsg_ids            = []
+
+create_db_system         = false
+create_heatwave_cluster  = false
+create_lakehouse_bucket  = false
+enable_heatwave_lakehouse = false
+
+admin_username = "admin"
+admin_password = "REPLACE_WITH_LOCAL_SECRET"
+
+policy_statements = []

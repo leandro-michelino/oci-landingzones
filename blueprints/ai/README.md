@@ -10,6 +10,7 @@ Ansible runners, operator README, and ASCII architecture notes.
 
 | Deployment | Use It When |
 |---|---|
+| [AI Agents RAG Landing Zone](agents/) | You need a GenAI Agent, knowledge base, Object Storage data source, ingestion job, and private endpoint hand-off. |
 | [OCI AI Services](ai-services/) | You need pretrained Vision, Language, and Document Understanding project wiring. |
 | [Document Intelligence Pipeline](document-intelligence/) | You need Object Storage intake, Document Understanding, Functions orchestration, and structured outputs. |
 | [Embedding And Vector Ingestion Pipeline](embedding-pipeline/) | You need documents chunked, embedded with GenAI, and sent to OpenSearch or another vector target. |

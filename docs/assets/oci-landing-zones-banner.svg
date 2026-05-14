@@ -45,92 +45,72 @@
     <rect y="66" width="375" height="3" rx="1.5" fill="url(#hg)"/>
 
     <!-- Tagline -->
-    <text y="98" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="600" fill="#c74634">Blueprints &#183; Automation &#183; Architecture &#183; CIS</text>
+    <text y="96" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="600" fill="#c74634">Repeatable OCI cloud foundations, by blueprint</text>
 
     <!-- Description -->
-    <text y="124" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="500" fill="#475569">Pick a blueprint, review the ASCII architecture, run a plan.</text>
-    <text y="146" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="500" fill="#475569">Modules and automation for OCI patterns that come up again.</text>
-
-    <!-- Stats line -->
-    <text y="163" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#94a3b8">88+ blueprints &#183; 13 families &#183; GenAI &#183; Multi-Agent</text>
-
-    <!-- Tech-stack badges -->
-    <rect y="194" width="118" height="32" rx="16" fill="#c74634"/>
-    <text x="59"  y="215" font-family="Menlo, Consolas, monospace" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">Terraform</text>
-
-    <rect x="126" y="194" width="100" height="32" rx="16" fill="#0891b2"/>
-    <text x="176" y="215" font-family="Menlo, Consolas, monospace" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">Ansible</text>
-
-    <rect x="234" y="194" width="78"  height="32" rx="16" fill="#4f6bed"/>
-    <text x="273" y="215" font-family="Menlo, Consolas, monospace" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">OCI</text>
-
-    <rect x="320" y="194" width="70"  height="32" rx="16" fill="#d97706"/>
-    <text x="355" y="215" font-family="Menlo, Consolas, monospace" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">CIS</text>
+    <text y="120" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="500" fill="#475569">Pick a pattern. Review the ASCII architecture. Run the plan.</text>
+    <text y="140" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#94a3b8">90+ blueprints &#183; 13 families &#183; Core to GenAI &#183; Multi-Agent</text>
 
     <!-- Divider -->
-    <line x1="0" y1="242" x2="425" y2="242" stroke="#e2e8f0" stroke-width="1"/>
+    <line x1="0" y1="160" x2="425" y2="160" stroke="#e2e8f0" stroke-width="1"/>
 
-    <!-- KPI metrics -->
-    <rect y="252" width="128" height="46" rx="8" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
-    <text x="64"  y="273" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="800" fill="#c74634" text-anchor="middle">88+</text>
-    <text x="64"  y="289" font-family="Arial, Helvetica, sans-serif" font-size="11" fill="#9a3412"  text-anchor="middle">Blueprints</text>
+    <!-- KPI cards -->
+    <rect y="172" width="196" height="46" rx="8" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
+    <text x="98"  y="192" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="800" fill="#c74634" text-anchor="middle">IaC Native</text>
+    <text x="98"  y="208" font-family="Arial, Helvetica, sans-serif" font-size="11" fill="#9a3412"  text-anchor="middle">Terraform &#183; Ansible</text>
 
-    <rect x="136" y="252" width="128" height="46" rx="8" fill="#ecfeff" stroke="#a5f3fc" stroke-width="1.5"/>
-    <text x="200" y="273" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="800" fill="#0891b2" text-anchor="middle">13</text>
-    <text x="200" y="289" font-family="Arial, Helvetica, sans-serif" font-size="11" fill="#155e75" text-anchor="middle">Families</text>
-
-    <rect x="272" y="252" width="128" height="46" rx="8" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="1.5"/>
-    <text x="336" y="273" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="800" fill="#7c3aed" text-anchor="middle">11</text>
-    <text x="336" y="289" font-family="Arial, Helvetica, sans-serif" font-size="11" fill="#4c1d95" text-anchor="middle">Phases</text>
+    <rect x="208" y="172" width="196" height="46" rx="8" fill="#ecfeff" stroke="#a5f3fc" stroke-width="1.5"/>
+    <text x="306" y="192" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="800" fill="#0891b2" text-anchor="middle">CIS Aligned</text>
+    <text x="306" y="208" font-family="Arial, Helvetica, sans-serif" font-size="11" fill="#155e75" text-anchor="middle">Level 1 &#183; Level 2</text>
 
     <!-- Divider -->
-    <line x1="0" y1="312" x2="425" y2="312" stroke="#e2e8f0" stroke-width="1"/>
+    <line x1="0" y1="232" x2="425" y2="232" stroke="#e2e8f0" stroke-width="1"/>
 
-    <!-- BLUEPRINT FAMILIES section -->
-    <rect y="322" width="3" height="11" rx="1.5" fill="#c74634"/>
-    <text x="9" y="332" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#334155" font-weight="700" letter-spacing="1">BLUEPRINT FAMILIES</text>
+    <!-- BLUEPRINT FAMILIES -->
+    <rect y="242" width="3" height="11" rx="1.5" fill="#c74634"/>
+    <text x="9" y="252" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#334155" font-weight="700" letter-spacing="1">BLUEPRINT FAMILIES</text>
 
     <!-- Row 1 -->
-    <rect y="342" width="52"  height="20" rx="10" fill="#fff7ed" stroke="#fed7aa"  stroke-width="1"/>
-    <text x="26"  y="356" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#9a3412" text-anchor="middle">core</text>
+    <rect y="264" width="52"  height="20" rx="10" fill="#fff7ed" stroke="#fed7aa"  stroke-width="1"/>
+    <text x="26"  y="278" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#9a3412" text-anchor="middle">core</text>
 
-    <rect x="58"  y="342" width="44"  height="20" rx="10" fill="#fffbeb" stroke="#fde68a"  stroke-width="1"/>
-    <text x="80"  y="356" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#78350f" text-anchor="middle">CIS</text>
+    <rect x="58"  y="264" width="44"  height="20" rx="10" fill="#fffbeb" stroke="#fde68a"  stroke-width="1"/>
+    <text x="80"  y="278" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#78350f" text-anchor="middle">CIS</text>
 
-    <rect x="108" y="342" width="84"  height="20" rx="10" fill="#ecfeff" stroke="#a5f3fc"  stroke-width="1"/>
-    <text x="150" y="356" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#155e75" text-anchor="middle">networking</text>
+    <rect x="108" y="264" width="84"  height="20" rx="10" fill="#ecfeff" stroke="#a5f3fc"  stroke-width="1"/>
+    <text x="150" y="278" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#155e75" text-anchor="middle">networking</text>
 
-    <rect x="198" y="342" width="108" height="20" rx="10" fill="#eff6ff" stroke="#bfdbfe"  stroke-width="1"/>
-    <text x="252" y="356" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1e3a8a" text-anchor="middle">operating-entity</text>
+    <rect x="198" y="264" width="108" height="20" rx="10" fill="#eff6ff" stroke="#bfdbfe"  stroke-width="1"/>
+    <text x="252" y="278" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1e3a8a" text-anchor="middle">operating-entity</text>
 
-    <rect x="312" y="342" width="78"  height="20" rx="10" fill="#f5f3ff" stroke="#ddd6fe"  stroke-width="1"/>
-    <text x="351" y="356" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#4c1d95" text-anchor="middle">extensions</text>
+    <rect x="312" y="264" width="78"  height="20" rx="10" fill="#f5f3ff" stroke="#ddd6fe"  stroke-width="1"/>
+    <text x="351" y="278" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#4c1d95" text-anchor="middle">extensions</text>
 
     <!-- Row 2 -->
-    <rect y="368" width="62"  height="20" rx="10" fill="#f1f5f9" stroke="#cbd5e1"  stroke-width="1"/>
-    <text x="31"  y="382" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#334155" text-anchor="middle">identity</text>
+    <rect y="290" width="62"  height="20" rx="10" fill="#f1f5f9" stroke="#cbd5e1"  stroke-width="1"/>
+    <text x="31"  y="304" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#334155" text-anchor="middle">identity</text>
 
-    <rect x="68"  y="368" width="84"  height="20" rx="10" fill="#fee2e2" stroke="#fca5a5"  stroke-width="1"/>
-    <text x="110" y="382" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#991b1b" text-anchor="middle">compliance</text>
+    <rect x="68"  y="290" width="84"  height="20" rx="10" fill="#fee2e2" stroke="#fca5a5"  stroke-width="1"/>
+    <text x="110" y="304" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#991b1b" text-anchor="middle">compliance</text>
 
-    <rect x="158" y="368" width="100" height="20" rx="10" fill="#f0fdf4" stroke="#bbf7d0"  stroke-width="1"/>
-    <text x="208" y="382" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#14532d" text-anchor="middle">data-platform</text>
+    <rect x="158" y="290" width="100" height="20" rx="10" fill="#f0fdf4" stroke="#bbf7d0"  stroke-width="1"/>
+    <text x="208" y="304" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#14532d" text-anchor="middle">data-platform</text>
 
-    <rect x="264" y="368" width="46"  height="20" rx="10" fill="#eef2ff" stroke="#c7d2fe"  stroke-width="1"/>
-    <text x="287" y="382" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#312e81" text-anchor="middle">DR</text>
+    <rect x="264" y="290" width="46"  height="20" rx="10" fill="#eef2ff" stroke="#c7d2fe"  stroke-width="1"/>
+    <text x="287" y="304" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#312e81" text-anchor="middle">DR</text>
 
-    <rect x="316" y="368" width="70"  height="20" rx="10" fill="#fff1f2" stroke="#fecdd3"  stroke-width="1"/>
-    <text x="351" y="382" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#881337" text-anchor="middle">industry</text>
+    <rect x="316" y="290" width="70"  height="20" rx="10" fill="#fff1f2" stroke="#fecdd3"  stroke-width="1"/>
+    <text x="351" y="304" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#881337" text-anchor="middle">industry</text>
 
     <!-- Row 3 -->
-    <rect y="394" width="36"  height="20" rx="10" fill="#fdf4ff" stroke="#e9d5ff"  stroke-width="1"/>
-    <text x="18"  y="408" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#581c87" text-anchor="middle">ai</text>
+    <rect y="316" width="36"  height="20" rx="10" fill="#fdf4ff" stroke="#e9d5ff"  stroke-width="1"/>
+    <text x="18"  y="330" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#581c87" text-anchor="middle">ai</text>
 
-    <rect x="42"  y="394" width="62"  height="20" rx="10" fill="#ecfeff" stroke="#a5f3fc"  stroke-width="1"/>
-    <text x="73"  y="408" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#155e75" text-anchor="middle">devops</text>
+    <rect x="42"  y="316" width="62"  height="20" rx="10" fill="#ecfeff" stroke="#a5f3fc"  stroke-width="1"/>
+    <text x="73"  y="330" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#155e75" text-anchor="middle">devops</text>
 
-    <rect x="110" y="394" width="82"  height="20" rx="10" fill="#f0f9ff" stroke="#bae6fd"  stroke-width="1"/>
-    <text x="151" y="408" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#0c4a6e" text-anchor="middle">operations</text>
+    <rect x="110" y="316" width="82"  height="20" rx="10" fill="#f0f9ff" stroke="#bae6fd"  stroke-width="1"/>
+    <text x="151" y="330" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#0c4a6e" text-anchor="middle">operations</text>
 
   </g>
 

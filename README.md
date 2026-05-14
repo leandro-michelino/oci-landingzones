@@ -1,12 +1,18 @@
 ![OCI Landing Zones architecture banner](docs/assets/oci-landing-zones-banner.png)
 
-# OCI Landing Zones
+# OCI Landing Zones For Oracle Cloud Infrastructure
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This repo is a practical OCI landing-zone toolkit: Terraform modules, ready-to-use
-blueprints, local Ansible automation, and plain-text architecture notes for the OCI patterns
-that come up again and again.
+This repo is a practical **Oracle Cloud Infrastructure (OCI) landing zones**
+toolkit: Terraform modules, ready-to-use OCI blueprints, local Ansible
+automation, and plain-text architecture notes for the cloud patterns that come
+up again and again.
+
+If you are looking for **OCI Terraform blueprints**, **Oracle Cloud landing zone
+examples**, **OCI networking architectures**, **OCI security guardrails**,
+**GenAI landing zones**, or a clean way to run Terraform with Ansible, you are
+in the right place.
 
 The goal is simple: make the first 10 minutes useful. You should be able to land here,
 understand what is available, pick a blueprint, review the ASCII architecture, run a plan,
@@ -15,6 +21,16 @@ and know what needs a proper production review.
 It is a personal engineering project, not an official Oracle product. Treat it as a strong
 accelerator that still deserves the usual production checks: security review,
 input validation, tenancy-specific decisions, and an approved plan/apply flow.
+
+## Search-Friendly Summary
+
+This GitHub repository contains deployable Oracle Cloud Infrastructure landing
+zone patterns for Terraform and Ansible. It covers OCI Core governance, CIS,
+networking, identity, operating entities, OKE, Functions, API Gateway, WAF,
+OpenSearch, Autonomous Database, MySQL HeatWave, Redis, Secure Desktops,
+security posture automation, disaster recovery, DevOps, and AI/GenAI patterns
+such as OCI Generative AI, RAG agents, embeddings, guardrails, fine-tuning, and
+multi-agent orchestration.
 
 ## Start Here
 
@@ -32,6 +48,7 @@ folders are where you review and run the deployment.
 | See every blueprint with direct links | [Deployment Menu](#deployment-menu) |
 | Build a complete landing zone from several pieces | [Build A Full Landing Zone](#build-a-full-landing-zone) |
 | Understand how every blueprint is structured | [Every Blueprint Is End-To-End](#every-blueprint-is-end-to-end) |
+| Make the repo easier to find in Google, Bing, and GitHub search | [Search Discoverability](docs/SEARCH-DISCOVERABILITY.md) |
 | Validate the repo before trusting a change | [Keep The Repo Clean](#keep-the-repo-clean) |
 
 ## Customer Flow
@@ -87,6 +104,7 @@ architecture, Terraform files, example tfvars, and local Ansible runners.
 | I need serverless functions | [Oracle Functions](blueprints/extensions/functions/) | Runs approved function images with private application subnets, optional API Gateway routes, Events triggers, and IAM hand-offs. |
 | I need private GenAI | [OCI Generative AI Private Landing Zone](blueprints/ai/genai-private/) | Adds a private GenAI endpoint, optional archive bucket, and IAM policy shell. |
 | I need a GenAI API front door | [GenAI Multi-Model Gateway](blueprints/ai/genai-gateway/) | Adds API Gateway routing, usage plans, quotas, audit bucket, log group, and IAM hand-offs. |
+| I need RAG agents | [AI Agents RAG Landing Zone](blueprints/ai/agents/) | Adds a GenAI Agent, knowledge base, Object Storage data source, ingestion job, endpoint, and IAM hand-offs. |
 | I need RAG/vector search | [OpenSearch Search And Vector Platform](blueprints/data-platform/opensearch/) plus [Embedding Pipeline](blueprints/ai/embedding-pipeline/) | Adds managed OpenSearch and a chunk/embed/index ingestion path. |
 | I need agent orchestration | [Multi-Agent Orchestration](blueprints/ai/multi-agent/) | Adds orchestrator and specialist agents, Streaming task hand-off, tool registry, and session audit. |
 | I need CI/CD | [OCI DevOps Pipeline](blueprints/devops/oci-devops-pipeline/) | Adds DevOps project, repository, build pipeline, deploy pipeline, and notifications. |
@@ -95,6 +113,9 @@ architecture, Terraform files, example tfvars, and local Ansible runners.
 | I need Autonomous Database | [Autonomous Database](blueprints/data-platform/autonomous-database/) | Adds private ATP/ADW with optional KMS, NSG, private endpoint, and backup controls. |
 | I need APEX on Autonomous Database | [Oracle APEX On Autonomous Database](blueprints/data-platform/apex-adw/) | Adds private APEX/ORDS ingress, optional Vault secret hand-off, and ADB URL outputs. |
 | I need PostgreSQL | [PostgreSQL Landing Zone](blueprints/data-platform/postgresql/) | Adds a private managed PostgreSQL DB system with NSGs, backup policy hooks, and secure credential inputs. |
+| I need MySQL analytics | [MySQL HeatWave](blueprints/data-platform/mysql-heatwave/) | Adds private MySQL DB System, optional HeatWave cluster, lakehouse bucket, backup, and IAM controls. |
+| I need private cache | [Redis Cache](blueprints/extensions/redis-cache/) | Adds private OCI Cache with Redis, endpoint outputs, alarm hooks, Vault hand-off, and IAM controls. |
+| I need managed desktops | [Secure Desktops](blueprints/industry/secure-desktops/) | Adds OCI Secure Desktops pool wiring with image, session, device, network, BYOL, and IAM controls. |
 | I need disaster recovery | [Full Stack DR](blueprints/disaster-recovery/fsdr/) | Creates FSDR protection groups, log buckets, and an optional DR plan. |
 
 ## Deployment Categories
@@ -129,6 +150,7 @@ open folder -> read README.md -> review architecture/README.md -> fill tfvars ->
 | [SCCA Cloud Native](blueprints/compliance/scca-cloud-native/) | You need core governance, firewall-centered hub-spoke networking, and OS management for SCCA-style environments. |
 | [Zero Trust](blueprints/compliance/zero-trust/) | You need core governance plus a three-tier VCN protected by Zero Trust Packet Routing. |
 | [Healthcare PCI Compliance](blueprints/compliance/healthcare-pci/) | You need regulated workload guardrails, budget alerts, and optional Data Safe target registration. |
+| [Security Posture Automation](blueprints/compliance/security-posture/) | You need Cloud Guard target wiring, Vulnerability Scanning, event-driven response hooks, report buckets, alarms, and IAM. |
 
 ### Networking Deployments
 
@@ -152,6 +174,7 @@ open folder -> read README.md -> review architecture/README.md -> fill tfvars ->
 | [Hub-Spoke ZPR Micro-Segmentation](blueprints/networking/hub-spoke-with-zpr-micro-segmentation/) | You need ZPR policies layered on a hub-spoke network. |
 | [Multi-Tenancy Shared Services](blueprints/networking/multi-tenancy-shared-services/) | You need shared services and private DNS across multiple tenant/workload spokes. |
 | [Regional Prod Nonprod Hubs](blueprints/networking/regional-prod-nonprod-hubs/) | You need separate prod and nonprod hub-spoke networks in one region. |
+| [Network Load Balancer](blueprints/networking/network-load-balancer/) | You need Layer 4 TCP/UDP load balancing with backend sets, health checks, and listener hand-offs. |
 
 ### Identity And Operating Entity Deployments
 
@@ -181,6 +204,7 @@ open folder -> read README.md -> review architecture/README.md -> fill tfvars ->
 | [OKE Service Mesh](blueprints/extensions/oke-service-mesh/) | You need service mesh add-on management and optional APM tracing for an existing OKE cluster. |
 | [Oracle Functions](blueprints/extensions/functions/) | You need serverless functions from approved images with optional API Gateway and Events wiring. |
 | [Event-Driven Application Platform](blueprints/extensions/event-driven-platform/) | You need Events, Streaming, Service Connector, Notifications, and archive storage for async apps or AI automation. |
+| [Redis Cache](blueprints/extensions/redis-cache/) | You need a private Redis-compatible cache or session layer with alarms and IAM hand-offs. |
 | [Oracle Analytics Cloud](blueprints/extensions/oac/) | You need private analytics capacity and private access channel wiring. |
 | [Oracle Integration Cloud](blueprints/extensions/oic/) | You need OIC service capacity with optional private outbound connectivity. |
 | [Observability](blueprints/extensions/observability/) | You need Log Analytics, APM, and Operations Insights private endpoint foundations. |
@@ -197,6 +221,7 @@ open folder -> read README.md -> review architecture/README.md -> fill tfvars ->
 | [GenAI Fine-Tuning And Dedicated AI Cluster](blueprints/ai/genai-fine-tuning/) | You need training data, dedicated AI capacity, a fine-tuned model, and optional endpoint. |
 | [GenAI Guardrails And Observability](blueprints/ai/genai-guardrails/) | You need prompt audit storage, log routing, alarms, and Cloud Guard hooks around GenAI usage. |
 | [GenAI Multi-Model Gateway](blueprints/ai/genai-gateway/) | You need a governed API Gateway front door with routes, usage plans, quotas, and audit controls. |
+| [AI Agents RAG Landing Zone](blueprints/ai/agents/) | You need a GenAI Agent, knowledge base, document source, ingestion job, and private endpoint hand-off. |
 | [OCI Generative AI Private Landing Zone](blueprints/ai/genai-private/) | You need private OCI Generative AI access with archive and IAM controls. |
 | [Multi-Agent Orchestration](blueprints/ai/multi-agent/) | You need orchestrator and specialist agents, task streams, tools, and session audit. |
 | [OCI DevOps Pipeline](blueprints/devops/oci-devops-pipeline/) | You need native OCI CI/CD with project, repository, build pipeline, deploy pipeline, and notifications. |
@@ -210,7 +235,9 @@ open folder -> read README.md -> review architecture/README.md -> fill tfvars ->
 | [PostgreSQL Landing Zone](blueprints/data-platform/postgresql/) | You need a private managed PostgreSQL DB system with NSGs, backup/maintenance policy hooks, and secure credential inputs. |
 | [Private Data Platform](blueprints/data-platform/private-data-platform/) | You need private Object Storage access, Vault/KMS, and optional Streaming. |
 | [OpenSearch Search And Vector Platform](blueprints/data-platform/opensearch/) | You need managed OpenSearch for search, semantic search, vectors, or RAG dependencies. |
+| [MySQL HeatWave](blueprints/data-platform/mysql-heatwave/) | You need private MySQL with optional HeatWave analytics and Lakehouse bucket hand-off. |
 | [Full Stack Disaster Recovery](blueprints/disaster-recovery/fsdr/) | You need FSDR protection groups, DR log buckets, and an optional DR plan. |
+| [Secure Desktops](blueprints/industry/secure-desktops/) | You need managed VDI with private networking, session controls, device policy, Windows 10/11 BYOL acknowledgement, and IAM. |
 | [Telco Cloud Native](blueprints/industry/telco-cloud-native/) | You need hub-spoke networking, Vault, OKE, monitoring, and OS management for telco-style workloads. |
 
 For a longer pattern-by-pattern catalog, see `docs/DEPLOYMENT-PATTERN-CATALOG.md`.
@@ -482,6 +509,7 @@ compose. Remote state belongs to deployable blueprints, not shared modules.
 | `docs/DEPLOYMENT-GUIDE.md` | Deployment sequence and operating notes. |
 | `docs/DEPLOYMENT-PATTERN-CATALOG.md` | Blueprint catalog and selection notes. |
 | `docs/architecture/README.md` | Repository-level ASCII architecture and documentation contract. |
+| `docs/SEARCH-DISCOVERABILITY.md` | Recommended GitHub description, topics, and search-friendly summary text. |
 | `VARIABLES.md` | Shared variable reference plus notable blueprint-specific inputs. |
 | `docs/CIS-PROFILES.md` | CIS profile behavior. |
 | `docs/ARCH-MAPPING-CIS.md` | CIS mapping notes. |

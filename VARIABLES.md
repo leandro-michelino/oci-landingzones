@@ -80,6 +80,9 @@ READMEs may define additional variables for local behavior.
 | `existing_route_target_private_ip_ids` | `map(string)` | For NVA blueprints | Existing appliance private IP OCIDs used for route steering. |
 | `secondary_region` | `string` | For dual-region DR | Secondary OCI region for DR networking. |
 | `secondary_region_key` | `string` | For dual-region DR | Short region key for the DR region. |
+| `create_network_load_balancer` | `bool` | For Network Load Balancer | Creates the OCI Network Load Balancer. Disabled by default. |
+| `backend_sets` | `map(object)` | For Network Load Balancer | Backend set definitions, health checks, and backend targets. |
+| `listeners` | `map(object)` | For Network Load Balancer | Layer 4 listener definitions keyed by logical name. |
 
 ## Operating Entities
 
@@ -154,6 +157,10 @@ READMEs may define additional variables for local behavior.
 | `create_stream_pool` | `bool` | For Event-Driven Platform | Creates a stream pool instead of using `stream_pool_id`. |
 | `create_topic` | `bool` | For Event-Driven Platform | Creates an ONS notification topic instead of using `topic_id`. |
 | `create_service_connector` | `bool` | For Event-Driven Platform | Creates Service Connector Hub wiring from a stream to an archive/function/topic/stream target. |
+| `create_cluster` | `bool` | For Redis Cache | Creates the OCI Cache with Redis cluster. Disabled by default. |
+| `node_count` | `number` | For Redis Cache | Redis node count. |
+| `node_memory_in_gbs` | `number` | For Redis Cache | Memory per Redis node in GB. |
+| `shard_count` | `number` | For Redis Cache | Optional shard count for cluster-mode designs. |
 
 ## AI And GenAI
 
@@ -179,6 +186,10 @@ READMEs may define additional variables for local behavior.
 | `create_orchestrator_agent` | `bool` | For Multi-Agent | Creates the top-level orchestrator agent. |
 | `specialist_agents` | `map(object)` | For Multi-Agent | Specialist agents keyed by logical name. |
 | `agent_tools` | `map(object)` | For Multi-Agent | Agent tools keyed by logical name. |
+| `create_data_source` | `bool` | For AI Agents | Creates an Object Storage data source for a RAG knowledge base. |
+| `create_ingestion_job` | `bool` | For AI Agents | Creates a GenAI Agent data ingestion job. |
+| `create_agent` | `bool` | For AI Agents | Creates the RAG GenAI Agent. |
+| `create_agent_endpoint` | `bool` | For AI Agents | Creates the RAG agent endpoint. |
 | `enable_document_project` | `bool` | For OCI AI Services | Creates a Document Understanding project. |
 | `enable_language_project` | `bool` | For OCI AI Services | Creates a Language project. |
 | `enable_vision_project` | `bool` | For OCI AI Services | Creates a Vision project. |
@@ -188,6 +199,19 @@ READMEs may define additional variables for local behavior.
 | `master_node_count` | `number` | For OpenSearch | OpenSearch master node count. |
 | `data_node_count` | `number` | For OpenSearch | OpenSearch data node count. |
 | `opendashboard_node_count` | `number` | For OpenSearch | OpenSearch Dashboard node count. |
+
+## Data Platform And Industry Services
+
+| Variable | Type | Required | Description |
+|---|---|---:|---|
+| `create_db_system` | `bool` | For MySQL HeatWave | Creates the MySQL DB System. Disabled by default. |
+| `create_heatwave_cluster` | `bool` | For MySQL HeatWave | Creates a HeatWave cluster attached to the DB System. |
+| `enable_heatwave_lakehouse` | `bool` | For MySQL HeatWave | Enables HeatWave Lakehouse on the HeatWave cluster. |
+| `create_lakehouse_bucket` | `bool` | For MySQL HeatWave | Creates an Object Storage bucket for Lakehouse tables or exports. |
+| `create_desktop_pool` | `bool` | For Secure Desktops | Creates the Secure Desktops pool. Disabled by default. |
+| `device_policy` | `object` | For Secure Desktops | Controls clipboard, drive mapping, audio, printing, display, and input behavior. |
+| `windows_10_11_byol_acknowledged` | `bool` | For Secure Desktops | Required acknowledgement for Windows 10/11 BYOL images; adds the Secure Desktops BYOL pool tag. |
+| `maximum_size` | `number` | For Secure Desktops | Maximum desktop pool size. |
 
 ## Security And Governance
 
@@ -204,6 +228,9 @@ READMEs may define additional variables for local behavior.
 | `cloud_guard_detector_recipe_ids` | `set(string)` | No | Detector recipe OCIDs attached to the default Cloud Guard target. |
 | `cloud_guard_responder_recipe_ids` | `set(string)` | No | Responder recipe OCIDs attached to the default Cloud Guard target. |
 | `cloud_guard_targets` | `map(object)` | No | Additional Cloud Guard targets keyed by logical name. |
+| `create_cloud_guard_target` | `bool` | For Security Posture | Creates a Cloud Guard target for the protected scope. |
+| `detector_recipe_ids` | `set(string)` | For Security Posture | Detector recipe OCIDs attached to the Cloud Guard target. |
+| `responder_recipe_ids` | `set(string)` | For Security Posture | Responder recipe OCIDs attached to the Cloud Guard target. |
 | `vault_enabled` | `bool` | No | Create OCI Vault and KMS keys. Disabled by default. |
 | `vaults` | `map(object)` | No | Additional OCI Vaults keyed by logical name. |
 | `vault_keys` | `map(object)` | No | KMS keys keyed by logical name. |
@@ -213,6 +240,8 @@ READMEs may define additional variables for local behavior.
 | `vss_enabled` | `bool` | No | Create Vulnerability Scanning Service host and container scan resources. Disabled by default. |
 | `host_scan_recipes` | `map(object)` | No | VSS host scan recipes keyed by logical name. |
 | `host_scan_targets` | `map(object)` | No | VSS host scan targets keyed by logical name. |
+| `create_host_scan_recipe` | `bool` | For Security Posture | Creates a Vulnerability Scanning host scan recipe. |
+| `create_host_scan_target` | `bool` | For Security Posture | Creates a Vulnerability Scanning host scan target. |
 | `container_scan_recipes` | `map(object)` | No | VSS container image scan recipes keyed by logical name. |
 | `container_scan_targets` | `map(object)` | No | VSS container image scan targets keyed by logical name. |
 | `enable_budgets` | `bool` | No | Create OCI Budgets resources. Generic core disables this by default; CIS wrappers create budgets only when thresholds are supplied. |

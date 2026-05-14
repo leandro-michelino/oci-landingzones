@@ -1,0 +1,33 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid       = "ocid1.tenancy.oc1..example"
+current_user_ocid  = "ocid1.user.oc1..example"
+region             = "eu-frankfurt-1"
+home_region        = "eu-frankfurt-1"
+oci_config_profile = "DEFAULT"
+
+org         = "acme"
+environment = "dev"
+region_key  = "fra"
+
+compartment_ocid    = "ocid1.compartment.oc1..example"
+availability_domain = "example:EU-FRANKFURT-1-AD-1"
+vcn_id              = "ocid1.vcn.oc1.eu-frankfurt-1.example"
+subnet_id           = "ocid1.subnet.oc1.eu-frankfurt-1.example"
+
+create_desktop_pool      = false
+image_id                 = "ocid1.image.oc1.eu-frankfurt-1.example"
+image_name               = "approved-secure-desktop-image"
+image_operating_system   = "Oracle Linux"
+storage_backup_policy_id = "ocid1.volumebackuppolicy.oc1.eu-frankfurt-1.example"
+
+maximum_size = 2
+standby_size = 0
+
+# As of 2026-05-14, OCI Secure Desktops requires customer BYOL licensing for Windows 10/11.
+# Set this to true only after the customer confirms Microsoft licensing rights.
+# Terraform then adds the required immutable pool tag oci:desktops:enable_byol=true.
+windows_10_11_byol_acknowledged = false
+
+alarms = {}
+
+policy_statements = []

@@ -1,0 +1,21 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid       = "ocid1.tenancy.oc1..example"
+current_user_ocid  = "ocid1.user.oc1..example"
+region             = "eu-frankfurt-1"
+home_region        = "eu-frankfurt-1"
+oci_config_profile = "DEFAULT"
+
+org         = "acme"
+environment = "dev"
+region_key  = "fra"
+
+compartment_ocid = "ocid1.compartment.oc1..example"
+subnet_id        = "ocid1.subnet.oc1.eu-frankfurt-1.example"
+nsg_ids          = []
+
+create_cluster = false
+node_count     = 2
+
+alarms = {}
+
+policy_statements = []

@@ -476,11 +476,12 @@ Implemented Phase 6 extension entry points:
   Connector, and IAM policy statements for async app and AI automation patterns.
 
 Additional service blueprints now cover Autonomous Database, APEX on Autonomous
-Database, OpenSearch, OCI Generative AI, GenAI gateway, fine-tuning, guardrails,
-document intelligence, embedding pipelines, multi-agent orchestration, OCI AI
-Services, OCI DevOps, and Healthcare / PCI guardrails. They follow the same
-local README, ASCII architecture, Terraform, tfvars, and Ansible runner
-contract.
+Database, OpenSearch, MySQL HeatWave, OCI Generative AI, GenAI gateway,
+fine-tuning, guardrails, document intelligence, embedding pipelines, AI Agents
+RAG, multi-agent orchestration, OCI AI Services, OCI DevOps, Redis Cache,
+Security Posture Automation, Network Load Balancer, Secure Desktops, and
+Healthcare / PCI guardrails. They follow the same local README, ASCII
+architecture, Terraform, tfvars, and Ansible runner contract.
 
 Keep real subnet, VCN, load balancer, availability domain, image, event filter,
 and SSH values in local ignored tfvars files. The committed examples show the

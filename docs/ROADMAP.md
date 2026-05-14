@@ -53,6 +53,12 @@ operator guide, architecture diagram, and Terraform / Ansible workflow.
 | Document intelligence pipeline | `blueprints/ai/document-intelligence/` |
 | Embedding and vector ingestion pipeline | `blueprints/ai/embedding-pipeline/` |
 | Multi-agent orchestration | `blueprints/ai/multi-agent/` |
+| AI Agents RAG landing zone | `blueprints/ai/agents/` |
+| MySQL HeatWave landing zone | `blueprints/data-platform/mysql-heatwave/` |
+| Redis Cache landing zone | `blueprints/extensions/redis-cache/` |
+| Security posture automation | `blueprints/compliance/security-posture/` |
+| Network Load Balancer landing zone | `blueprints/networking/network-load-balancer/` |
+| OCI Secure Desktops landing zone | `blueprints/industry/secure-desktops/` |
 
 ---
 
@@ -64,9 +70,8 @@ phase-level commitment.
 
 ## Phase 5 - AI / ML Platform
 
-AI workloads beyond a single GenAI endpoint. These three blueprints cover the
-ML development lifecycle (Data Science), agentic RAG patterns (AI Agents), and
-purpose-built in-memory analytics (MySQL HeatWave).
+AI workloads beyond a single GenAI endpoint. AI Agents and MySQL HeatWave are
+now implemented; Data Science remains as the next ML lifecycle platform gap.
 
 ---
 
@@ -124,127 +129,6 @@ data_science_project_id
 model_deployment_endpoint
 notebook_session_subnet_id
 artifact_bucket_name
-```
-
----
-
-### AI Agents (RAG Landing Zone)
-
-| Attribute | Value |
-| --- | --- |
-| Folder | `blueprints/ai/agents/` |
-| Depends on | Core Landing Zone; `genai-private` (inference endpoint) |
-
-**Why this exists.**
-Agentic RAG patterns need more infrastructure than a plain GenAI endpoint:
-a knowledge base backed by vector search, Document Understanding for ingestion,
-and an Object Storage pipeline for source documents. This blueprint provisions
-the full private data path from documents to agent response.
-
-**What it deploys.**
-
-| Resource | Notes |
-| --- | --- |
-| OCI Generative AI Agent | Private endpoint; connects to knowledge base |
-| Knowledge base | Backed by OCI OpenSearch or Object Storage index |
-| OCI OpenSearch cluster | Private VCN cluster for vector search (optional) |
-| Document Understanding | Extracts text from PDFs, images for ingestion |
-| Object Storage buckets | Source documents bucket; processed chunks bucket |
-| IAM policies | Agent service, ingestion pipeline, caller group |
-| Logging | Audit log of all agent sessions and tool calls |
-
-**ASCII Architecture.**
-
-```text
- Source Documents (Object Storage)
-       |
-       v (Document Understanding)
- Processed Chunks (Object Storage)
-       |
-       v (indexing pipeline)
- OCI OpenSearch (vector index, private VCN)
-       |
-       v
- Knowledge Base
-       |
-       v
- OCI Generative AI Agent (private endpoint)
-       |
-       v
- App / API caller (VCN-routed)
-```
-
-**Inputs to decide.**
-
-- Document types to ingest (PDF, HTML, plain text)
-- Vector search backend: OCI OpenSearch vs Object Storage index
-- Chunking strategy and embedding model
-- Which GenAI model the agent uses for reasoning
-- Source document bucket lifecycle policy
-
-**Outputs and hand-off.**
-
-```text
-agent_id
-agent_endpoint_url
-knowledge_base_id
-opensearch_cluster_id
-source_bucket_name
-```
-
----
-
-### MySQL HeatWave
-
-| Attribute | Value |
-| --- | --- |
-| Folder | `blueprints/data-platform/mysql-heatwave/` |
-| Depends on | Core Landing Zone; VCN from any networking blueprint |
-
-**Why this exists.**
-The repo has Autonomous Database but no MySQL pattern. MySQL HeatWave is the
-most common OCI MySQL deployment - adding in-memory analytics and optional
-HeatWave ML or Lakehouse features without a separate analytics engine.
-
-**What it deploys.**
-
-| Resource | Notes |
-| --- | --- |
-| MySQL HeatWave DB System | Private endpoint; HA with standby option |
-| HeatWave cluster | In-memory analytics nodes; size configurable |
-| NSG | Port 3306 from app subnets only |
-| Vault secret | DB admin credentials |
-| IAM policies | DBA group, read-only group, app group |
-| Optional: Lakehouse | Object Storage external tables for HeatWave Lakehouse |
-
-**ASCII Architecture.**
-
-```text
- App Subnet (VCN)
-       |
-       | port 3306, NSG-controlled
-       v
- MySQL HeatWave DB System (private endpoint)
- |--- HeatWave cluster (in-memory analytics)
- |--- Vault (admin credentials)
- `--- Optional: Lakehouse (Object Storage tables)
-```
-
-**Inputs to decide.**
-
-- MySQL version and shape
-- HeatWave cluster node count and shape
-- HA: standalone vs HA pair with standby
-- Whether to enable HeatWave Lakehouse and Object Storage bucket
-- Backup window and retention
-
-**Outputs and hand-off.**
-
-```text
-mysql_db_system_id
-heatwave_cluster_id
-mysql_endpoint_ip
-vault_secret_id
 ```
 
 ---
@@ -356,69 +240,6 @@ vault_secret_id
 
 Blueprints that extend the compliance baseline with automated detection,
 response, and data governance.
-
----
-
-### Security Posture Automation
-
-| Attribute | Value |
-| --- | --- |
-| Folder | `blueprints/compliance/security-posture/` |
-| Depends on | Core Landing Zone (Cloud Guard and logging baseline) |
-
-**Why this exists.**
-Core Landing Zone enables Cloud Guard and basic alarms. Enterprises need
-custom detector recipes, Vulnerability Scanning scheduled targets, and
-event-driven auto-remediation via OCI Functions - closing the loop from
-detection to fix without human intervention.
-
-**What it deploys.**
-
-| Resource | Notes |
-| --- | --- |
-| Cloud Guard custom detector recipe | Customer-managed rules layered on Oracle-managed |
-| Cloud Guard custom responder recipe | Automated remediation actions |
-| Vulnerability Scanning targets | Compute, container images, host scans |
-| Event rule -> Functions trigger | Cloud Guard problem -> auto-remediation function |
-| Object Storage report bucket | Scheduled scan and problem exports |
-| IAM policies | Security admin group, responder service principal |
-
-**ASCII Architecture.**
-
-```text
- OCI Resources (Compute / Containers / Config)
-       |
-       v
- Cloud Guard (custom detector + responder recipes)
- |--- Problem detected
- |         |
- |         v
- |    OCI Events Rule
- |         |
- |         v
- |    Functions (auto-remediation)
- `--- Problem report -> Object Storage bucket
-
- Vulnerability Scanning (scheduled)
- `--- Report -> Object Storage bucket
-```
-
-**Inputs to decide.**
-
-- Which detector rule categories to enable (config, activity, threat intel)
-- Auto-remediation actions: notify-only vs enforce (stop instance, revoke key)
-- Scan schedule and target compartments
-- Report retention and bucket lifecycle
-
-**Outputs and hand-off.**
-
-```text
-cloud_guard_target_id
-detector_recipe_id
-responder_recipe_id
-vulnerability_scanning_target_id
-report_bucket_name
-```
 
 ---
 
@@ -687,7 +508,7 @@ services, and local ASCII architecture for design review.
 | 3 | Batch and Queue Workers | `blueprints/extensions/batch-workers/` | Covers scheduled and burst compute patterns that do not fit OKE, Functions, or Container Instances. |
 | 4 | Object Storage Data Lakehouse | `blueprints/data-platform/object-storage-lakehouse/` | Adds the missing data lake foundation: buckets, KMS, private endpoints, lifecycle, logs, and optional query/processing hooks. |
 | 5 | OpenSearch Search and Vector Platform | `blueprints/data-platform/opensearch/` | Implemented. Useful as a standalone search, logging, and vector index platform, not only as an AI Agents dependency. |
-| 6 | Redis Cache Landing Zone | `blueprints/extensions/redis-cache/` | Adds the common low-latency cache/session layer expected by app teams. |
+| 6 | Redis Cache Landing Zone | `blueprints/extensions/redis-cache/` | Implemented. Adds the common low-latency cache/session layer expected by app teams. |
 | 7 | Ransomware-Resilient Backup | `blueprints/operations/backup-resilience/` | Adds backup policies, immutable archive buckets, monitoring, and restore evidence for regulated tenancies. |
 | 8 | WebLogic / Java App Platform | `blueprints/industry/weblogic-platform/` | Gives enterprise Java workloads a migration-ready pattern with LB, app tier, database, logs, and operations hooks. |
 | 9 | VMware / Hybrid Migration Zone | `blueprints/industry/vmware-hybrid-migration/` | Covers brownfield migration where customers need private connectivity, DNS, backup, and landing-zone guardrails around VMware workloads. |
@@ -988,59 +809,6 @@ nsg_id
 
 ---
 
-### Redis Cache Landing Zone
-
-| Attribute | Value |
-| --- | --- |
-| Folder | `blueprints/extensions/redis-cache/` |
-| Depends on | Core Landing Zone; VCN from any networking blueprint |
-
-**Why this exists.**
-Most real application stacks eventually need a cache or session store. This
-blueprint gives app teams a private Redis-compatible cache with subnet, NSG,
-secrets, alarms, and ownership boundaries already handled.
-
-**What it deploys.**
-
-| Resource | Notes |
-| --- | --- |
-| Redis cache cluster | Private endpoint and configurable capacity |
-| NSG | App subnet access only |
-| Vault secret | Auth token or integration secret where used |
-| IAM policies | Cache admins and app readers/writers |
-| Monitoring alarms | Memory pressure, evictions, connection saturation |
-
-**ASCII Architecture.**
-
-```text
-Application Tier
-      |
-      v
-Redis Cache (private endpoint)
- |--- NSG app-only access
- |--- Vault secret
- `--- Monitoring alarms
-```
-
-**Inputs to decide.**
-
-- Cache capacity, shard/replica model, and maintenance window
-- Auth secret handling and rotation owner
-- App subnet allowlist and NSG rules
-- Eviction policy and memory alarm thresholds
-- Whether this is session state, app cache, or queue-adjacent cache
-
-**Outputs and hand-off.**
-
-```text
-redis_cache_id
-redis_endpoint
-nsg_id
-vault_secret_id
-```
-
----
-
 ### Ransomware-Resilient Backup
 
 | Attribute | Value |
@@ -1229,14 +997,14 @@ existing Core, networking, and IAM contracts.
 | --- | --- | --- | --- |
 | 1 | OCI NoSQL Database | `blueprints/data-platform/nosql/` | Key-value and document store; most app teams eventually need one. Private endpoint, NSG, and IAM are all the same pattern as other databases. |
 | 2 | OCI Data Safe | `blueprints/compliance/data-safe/` | Database activity monitoring, auditing, and data masking. Comes up in every regulated engagement alongside Autonomous DB, MySQL, or PostgreSQL. |
-| 3 | OCI Secure Desktops | `blueprints/industry/secure-desktops/` | Managed VDI; enterprise staple for contractors and regulated-data workers. Needs private network, session policies, and image management wiring. |
+| 3 | OCI Secure Desktops | `blueprints/industry/secure-desktops/` | Implemented. Managed VDI pattern with private network, session policies, BYOL-aware Windows 10/11 guardrail, and image management wiring. |
 | 4 | OCI Data Flow | `blueprints/data-platform/data-flow/` | Managed Apache Spark for batch analytics and ETL. Fills the analytics gap between Autonomous DB and a full Lakehouse. |
 | 5 | OCI Data Integration | `blueprints/data-platform/data-integration/` | Managed ELT/ETL workspace. Complements GoldenGate for non-CDC integration patterns and connects to Autonomous DB and Object Storage. |
 | 6 | OCI Certificates Service | `blueprints/extensions/certificates/` | Managed PKI and certificate authority. TLS lifecycle is always a gap in first-deployment reviews and works across LB, API Gateway, and OKE. |
 | 7 | OCI AI Services | `blueprints/ai/ai-services/` | Implemented. Pre-trained Vision, Language, Speech, Document Understanding, and Anomaly Detection. Distinct from GenAI; pairs well with ODA and OIC integration patterns. |
 | 8 | Oracle Cloud VMware Solution (OCVS) | `blueprints/industry/ocvs/` | Native VMware baremetal on OCI. Different from the hybrid migration zone; covers customers running VMware on OCI long-term rather than transitioning off it. |
 | 9 | OCI Process Automation | `blueprints/extensions/process-automation/` | Low-code workflow automation connecting Oracle SaaS, OCI services, and custom REST APIs. Common in ERP and CX integration projects. |
-| 10 | OCI Network Load Balancer | `blueprints/networking/network-load-balancer/` | Layer 4 TCP/UDP load balancing. Several networking patterns imply it for database and non-HTTP traffic but none wire it explicitly. |
+| 10 | OCI Network Load Balancer | `blueprints/networking/network-load-balancer/` | Implemented. Layer 4 TCP/UDP load balancing with private backend sets, listeners, and health checks. |
 | 11 | OCI Email Delivery | `blueprints/extensions/email-delivery/` | SMTP relay and approved sender service. App teams always need it; requires IAM, NSG, and SPF/DKIM configuration. |
 | 12 | OCI Threat Intelligence | `blueprints/compliance/threat-intelligence/` | Indicator-of-compromise feeds integrated with Cloud Guard custom detector recipes and event rules. Natural companion to security-posture blueprint. |
 
@@ -1358,65 +1126,6 @@ private_endpoint_id
 security_assessment_id
 masking_policy_id
 audit_trail_id
-```
-
----
-
-### OCI Secure Desktops
-
-| Attribute | Value |
-| --- | --- |
-| Folder | `blueprints/industry/secure-desktops/` |
-| Depends on | Core Landing Zone; VCN from any networking blueprint |
-
-**Why this exists.**
-Enterprise customers with contractors, regulated-data workers, or bring-your-own-
-device policies need a managed virtual desktop that does not route sensitive data
-through end-user devices. OCI Secure Desktops provides managed Windows or Linux
-desktops in private subnets - but the image policy, session limits, NSG, IAM,
-and private VCN wiring need explicit landing zone treatment.
-
-**What it deploys.**
-
-| Resource | Notes |
-| --- | --- |
-| Secure Desktops pool | Shape-configurable; max session limits set |
-| Desktop image | Marketplace or custom OCID |
-| Private subnet attachment | No public route; desktop traffic stays inside VCN |
-| NSG | Desktop service ports from corporate network CIDR only |
-| IAM policies | Desktop pool admin, end-user desktop access group |
-| Vault secret | Optional image or join-domain credentials |
-| Monitoring alarm | Session count, failed provisioning |
-
-**ASCII Architecture.**
-
-```text
-End User (corporate network / VPN)
-      |
-      v (HTTPS, NSG-controlled)
-OCI Secure Desktops Pool (private subnet)
- |--- Desktop images (Windows / Linux)
- |--- Session limits and idle timeout
- |--- Vault (domain join / image credentials)
- `--- Monitoring (session count, failures)
-```
-
-**Inputs to decide.**
-
-- Desktop OS and image OCID
-- Pool size, max concurrent sessions, and idle timeout
-- Corporate network CIDR for NSG ingress
-- Domain join or directory service integration
-- Storage: local desktop storage vs Object Storage home folder
-
-**Outputs and hand-off.**
-
-```text
-desktop_pool_id
-desktop_subnet_id
-nsg_id
-desktop_service_url
-vault_secret_id
 ```
 
 ---

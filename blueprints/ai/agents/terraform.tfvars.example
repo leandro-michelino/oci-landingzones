@@ -1,0 +1,32 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid       = "ocid1.tenancy.oc1..example"
+current_user_ocid  = "ocid1.user.oc1..example"
+region             = "eu-frankfurt-1"
+home_region        = "eu-frankfurt-1"
+oci_config_profile = "DEFAULT"
+
+org         = "acme"
+environment = "dev"
+region_key  = "fra"
+
+compartment_ocid = "ocid1.compartment.oc1..example"
+
+create_buckets        = false
+create_knowledge_base = false
+create_data_source    = false
+create_ingestion_job  = false
+create_agent          = false
+create_agent_endpoint = false
+
+opensearch_cluster_id = "ocid1.opensearchcluster.oc1.eu-frankfurt-1.example"
+agent_model_id        = "ocid1.generativeaimodel.oc1.eu-frankfurt-1.example"
+
+data_source_prefixes = [
+  {
+    namespace = "example_namespace"
+    bucket    = "rag-source-documents"
+    prefix    = "approved/"
+  }
+]
+
+policy_statements = []

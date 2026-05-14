@@ -29,6 +29,11 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - AI-first blueprint wave with GenAI gateway, fine-tuning, guardrails, document
   intelligence, embedding pipeline, multi-agent orchestration, OCI AI Services,
   OpenSearch search/vector platform, and event-driven application platform.
+- Roadmap service-gap blueprint wave with AI Agents RAG, MySQL HeatWave, Redis
+  Cache, Security Posture Automation, Network Load Balancer, and Secure
+  Desktops, including the dated Windows 10/11 BYOL guardrail for Secure Desktops.
+- Search discoverability guide with recommended GitHub repository description,
+  topics, and search-friendly summary text for Google, Bing, and GitHub search.
 - Phase 10 roadmap section for OCI service-gap candidates, including NoSQL,
   Data Safe, Secure Desktops, Data Flow, Data Integration, Certificates,
   AI Services, OCVS, Process Automation, Network Load Balancer, Email Delivery,
