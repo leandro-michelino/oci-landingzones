@@ -23,32 +23,38 @@ Adds network appliance route targets and reserved route IPs to a hub-spoke netwo
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Hub-Spoke Network Appliance                                                                       |
-|                                                                                                  |
-|  Hub-spoke network foundation                                                                     |
-|       |                                                                                          |
-|       v                                                                                          |
-|  +-------------------------------- Hub VCN -----------------------------------+                  |
-|  | DMZ, firewall, shared subnets                                                |                  |
-|  | Route tables can point selected traffic at appliance private IPs             |                  |
-|  | Reserved route IPs are created when enable_reserved_route_ips is true         |                  |
-|  +-------------------------------+--------------------------------------------+                  |
-|                                  |                                                                  |
-|                                  v                                                                  |
-|  +--------------------------- Network Appliances ------------------------------+                  |
-|  | appliances map defines appliance instances/private IP route targets           |                  |
-|  | existing_route_target_private_ip_ids can reuse prebuilt appliance targets     |                  |
-|  +-------------------------------+--------------------------------------------+                  |
-|                                  | inspected/custom routed traffic                               |
-|                                  v                                                                  |
-|  +-------------------- DRG -------------------+      +-----------------------+                  |
-|  | hub and spoke route exchange               |<---->| Spoke web/app/db tiers |                  |
-|  +--------------------------------------------+      +-----------------------+                  |
-|                                                                                                  |
-|  Traffic: spoke or hub route table -> appliance route target -> DRG/hub/spoke destination.        |
-|  Control: network outputs are created first; appliance module creates or accepts route targets.    |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Hub-Spoke Network Appliance                                                                              |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Network compartment / selected region}                                                                  |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Hub VCN]                                                                                                |
+|         |-- [dmz subnet]      -> public ingress/egress only when approved                                |
+|         |-- [firewall subnet] -> inspection or appliance insertion point                                 |
+|         |-- [shared subnet]   -> shared services, endpoints, DNS, or bastion                             |
+|         `-- [gateway set]     -> IGW / NAT / SGW according to route design                               |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
+|   |             |                    |                                                                   |
+|   |             |                    +--> [spoke VCN A] web -> app -> db                                 |
+|   |             |                    +--> [spoke VCN B] web -> app -> db                                 |
+|   |             |                    `--> [future spoke] same attachment contract                        |
+|   |                                                                                                      |
+|   `--> [network appliance] -> private IP route targets -> inspected spoke paths                          |
+|                                                                                                          |
+| Pattern extension: route tables steer selected traffic through appliance private IPs.                    |
+| North-south: external or service traffic enters the hub, then routes through DRG attachments to spokes.  |
+| East-west: spoke-to-spoke traffic centralizes through the DRG and any hub inspection controls.           |
+| Hand-off: hub/spoke VCN IDs, DRG IDs, attachment IDs, subnet maps, route targets, and service edge IDs.  |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

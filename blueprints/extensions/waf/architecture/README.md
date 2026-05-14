@@ -23,31 +23,32 @@ Creates or attaches an OCI Web Application Firewall policy and binds WAF enforce
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| WAF Extension                                                                                     |
-|                                                                                                  |
-|  Internet clients                                                                                 |
-|      | HTTPS                                                                                      |
-|      v                                                                                           |
-|  +------------------------- Existing OCI Load Balancer -------------------------+                 |
-|  | load_balancer_id is supplied by the caller                                  |                 |
-|  | backend_type controls how WAF attaches                                      |                 |
-|  +-------------------------------+---------------------------------------------+                 |
-|                                  | WAF association                                               |
-|                                  v                                                                  |
-|  +-------------------------- OCI Web Application Firewall ---------------------+                 |
-|  | WAF Policy                                                                 |                 |
-|  | - created here or existing waf_policy_id is used                             |                 |
-|  | Web App Firewall                                                           |                 |
-|  | - binds the policy to the load balancer                                     |                 |
-|  +-------------------------------+---------------------------------------------+                 |
-|                                  | allowed traffic after WAF policy evaluation                    |
-|                                  v                                                                  |
-|                            Application backend sets                                             |
-|                                                                                                  |
-|  Traffic: client -> load balancer -> WAF policy evaluation -> backend application.                |
-|  Control: Terraform creates the policy first, then binds web_app_firewall to the load balancer.    |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| WAF Extension                                                                                            |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Existing compartment / VCN / subnet / service boundary as required}                                     |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Web Application Firewall]                                                                               |
+|         |-- WAF policy with access, protection, and rule configuration                                   |
+|         |-- web app firewall attachment to the supplied load balancer or web application target          |
+|         |-- logging/monitoring integration handled by operational layers                                 |
+|         `-- tags, compartment scope, and optional private access controls                                |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [internet clients] -> [WAF policy] -> [web app firewall] -> [load balancer / web application]            |
+|                                                                                                          |
+| Review focus: policy mode, target ID, rule actions, TLS/header behavior, logging, and false-positive     |
+| review path.                                                                                             |
+| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
+| teams.                                                                                                   |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

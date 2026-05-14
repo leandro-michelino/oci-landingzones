@@ -23,28 +23,28 @@ Documents and exports existing VCN, subnet, DRG, and route target OCIDs so brown
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Externally Managed VCNs                                                                           |
-|                                                                                                  |
-|  Existing OCI network estate                                                                      |
-|       |                                                                                          |
-|       | supplied as variables                                                                     |
-|       v                                                                                          |
-|  +----------------------------- Brownfield Inputs -----------------------------+                 |
-|  | vcn_ids: logical name -> existing VCN OCID                                  |                 |
-|  | subnet_ids: logical name -> existing subnet OCID                            |                 |
-|  | drg_id: existing DRG OCID when present                                      |                 |
-|  | route_target_ids: firewall, NVA, DRG, or private IP route target OCIDs       |                 |
-|  +-------------------------------+---------------------------------------------+                 |
-|                                  | normalize into local.external_resource_ids                    |
-|                                  v                                                                  |
-|  +----------------------------- Output Contract ------------------------------+                 |
-|  | resource_ids, vcn_ids, subnet_ids, drg_id, route_target_ids                  |                 |
-|  | lets other blueprints consume brownfield resources without creating them      |                 |
-|  +----------------------------------------------------------------------------+                 |
-|                                                                                                  |
-|  Traffic: no packet path is created here; this folder documents and exports already-built paths.   |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Externally Managed VCNs                                                                                  |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| (Brownfield VCNs, subnets, DRGs, route targets, DNS, and gateway IDs)                                    |
+|         |                                                                                                |
+|         v                                                                                                |
+| [locals.external_resource_ids]                                                                           |
+|         |-- normalizes supplied network IDs                                                              |
+|         |-- preserves ownership outside Terraform management                                             |
+|         `-- publishes stable hand-off maps for downstream modules                                        |
+|                                                                                                          |
+| No OCI network resources are created here; this blueprint documents and packages external references.    |
+| Review focus: ownership, lifecycle boundaries, ID accuracy, naming, route intent, and downstream         |
+| assumptions.                                                                                             |
+| Hand-off: normalized brownfield network maps without adopting resource lifecycle.                        |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

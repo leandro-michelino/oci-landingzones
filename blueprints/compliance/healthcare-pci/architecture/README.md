@@ -20,25 +20,31 @@ Deploys a regulated landing-zone control pack with IAM guardrail policy, budget 
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Healthcare PCI Compliance                                                                        |
-|                                                                                                  |
-|  Regulated workload compartment
-|         |
-|         v
-|  IAM guardrail policy
-|         |
-|         v
-|  Budget and alert rule
-|         |
-|         v
-|  optional Data Safe target database
-|         |
-|         v
-|  Audit evidence hand-off
-|                                                                                                  |
-|  Control: Terraform creates enabled resources from variables and returns stable hand-off outputs. |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Healthcare PCI Compliance                                                                                |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Compliance landing-zone boundary}                                                                       |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Healthcare / PCI guardrail, budget, and Data Safe controls]                                             |
+|         |-- identity and compartment guardrails                                                          |
+|         |-- logging, monitoring, budget, and evidence paths                                              |
+|         |-- private or inspected network path where applicable                                           |
+|         `-- workload-specific security service attachments                                               |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [review evidence lane] findings -> logs -> alarms -> operator action                                     |
+|                                                                                                          |
+| Control flow: foundation controls first, then network or workload-specific compliance services.          |
+| Trust boundary: the compliance scope is explicit; exceptions should be documented before apply.          |
+| Hand-off: guardrail policies, budget and alert IDs, network/security IDs, and review evidence locations. |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

@@ -23,31 +23,39 @@ Creates a hub-spoke shared services network and private DNS view that can serve 
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Multi-Tenancy Shared Services                                                                     |
-|                                                                                                  |
-|  Tenant/workload spokes                                                                           |
-|       | DRG route exchange and DNS queries                                                        |
-|       v                                                                                          |
-|  +---------------------------- Hub-Spoke Network -----------------------------+                  |
-|  | Hub VCN: shared subnet for services, DMZ/firewall subnet options             |                  |
-|  | Spoke VCNs: tenant or workload networks                                      |                  |
-|  | DRG: centralized connectivity between hub and spokes                         |                  |
-|  +-------------------------------+--------------------------------------------+                  |
-|                                  |                                                                  |
-|                                  v                                                                  |
-|  +--------------------------- Shared Private DNS -----------------------------+                  |
-|  | Private view named shared                                                   |                  |
-|  | Private zones from var.private_zones                                         |                  |
-|  | View is attached to hub and spoke VCN resolvers                              |                  |
-|  +-------------------------------+--------------------------------------------+                  |
-|                                  |                                                                  |
-|                                  v                                                                  |
-|  Shared services endpoints, private application records, service discovery                          |
-|                                                                                                  |
-|  Traffic: tenants route to shared services through DRG and resolve shared names through the        |
-|  attached private DNS view.                                                                        |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Multi-Tenancy Shared Services                                                                            |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Network compartment / selected region}                                                                  |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Hub VCN]                                                                                                |
+|         |-- [dmz subnet]      -> public ingress/egress only when approved                                |
+|         |-- [firewall subnet] -> inspection or appliance insertion point                                 |
+|         |-- [shared subnet]   -> shared services, endpoints, DNS, or bastion                             |
+|         `-- [gateway set]     -> IGW / NAT / SGW according to route design                               |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
+|   |             |                    |                                                                   |
+|   |             |                    +--> [spoke VCN A] web -> app -> db                                 |
+|   |             |                    +--> [spoke VCN B] web -> app -> db                                 |
+|   |             |                    `--> [future spoke] same attachment contract                        |
+|   |                                                                                                      |
+|   `--> [shared services] -> private DNS -> tenant/workload spokes                                        |
+|                                                                                                          |
+| Pattern extension: shared services stay in the hub while tenant spokes keep independent workload         |
+| boundaries.                                                                                              |
+| North-south: external or service traffic enters the hub, then routes through DRG attachments to spokes.  |
+| East-west: spoke-to-spoke traffic centralizes through the DRG and any hub inspection controls.           |
+| Hand-off: hub/spoke VCN IDs, DRG IDs, attachment IDs, subnet maps, route targets, and service edge IDs.  |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

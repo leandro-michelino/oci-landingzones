@@ -23,39 +23,37 @@ Creates a hub VCN, DRG, spoke VCNs, hub and spoke DRG attachments, and tiered su
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Hub-Spoke DRG And Three-Tier VCNs                                                                 |
-|                                                                                                  |
-|  Internet / OCI Services / On-Premises                                                            |
-|       |             |                    |                                                       |
-|       | IGW/NAT/SGW |                    | DRG route attachments                                  |
-|       v             v                    v                                                       |
-|  +-------------------------------- Hub VCN -----------------------------------+                  |
-|  | CIDR var.hub_vcn_cidr_block, default 10.0.0.0/16                            |                  |
-|  | DMZ subnet       -> public ingress/egress through Internet Gateway           |                  |
-|  | Firewall subnet  -> inspection appliance or firewall placement               |                  |
-|  | Shared subnet    -> shared services and endpoints                            |                  |
-|  | NAT Gateway      -> private outbound internet                                |                  |
-|  | Service Gateway  -> private OCI service access                               |                  |
-|  +---------------------------+-------------------------------------------------+                  |
-|                              | hub DRG attachment                                                |
-|                              v                                                                  |
-|  +------------------------------ DRG -----------------------------------------+                  |
-|  | Central route exchange between hub and all spoke VCN attachments             |                  |
-|  +------------------+----------------------+----------------+-----------------+                  |
-|                     |                      |                |                                    |
-|                     v                      v                v                                    |
-|       +----------------------+  +----------------------+  +----------------------+                 |
-|       | Spoke VCN app1       |  | Spoke VCN appN       |  | Future spoke         |                 |
-|       | web subnet           |  | web subnet           |  | web/app/db tiers     |                 |
-|       | app subnet           |  | app subnet           |  | via var.spoke_vcns   |                 |
-|       | db subnet            |  | db subnet            |  |                      |                 |
-|       | SGW for OCI services |  | SGW for OCI services |  |                      |                 |
-|       +----------------------+  +----------------------+  +----------------------+                 |
-|                                                                                                  |
-|  Traffic: north-south enters hub, routes through DRG to spokes; east-west spoke traffic crosses   |
-|  the DRG so it can be centralized, inspected, or extended by companion blueprints.                 |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Hub-Spoke DRG And Three-Tier VCN                                                                         |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Network compartment / selected region}                                                                  |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Hub VCN]                                                                                                |
+|         |-- [dmz subnet]      -> public ingress/egress only when approved                                |
+|         |-- [firewall subnet] -> inspection or appliance insertion point                                 |
+|         |-- [shared subnet]   -> shared services, endpoints, DNS, or bastion                             |
+|         `-- [gateway set]     -> IGW / NAT / SGW according to route design                               |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
+|   |             |                    |                                                                   |
+|   |             |                    +--> [spoke VCN A] web -> app -> db                                 |
+|   |             |                    +--> [spoke VCN B] web -> app -> db                                 |
+|   |             |                    `--> [future spoke] same attachment contract                        |
+|   |                                                                                                      |
+|   `--> [central route exchange] hub, spokes, and future external attachments meet at the DRG             |
+|                                                                                                          |
+| North-south: external or service traffic enters the hub, then routes through DRG attachments to spokes.  |
+| East-west: spoke-to-spoke traffic centralizes through the DRG and any hub inspection controls.           |
+| Hand-off: hub/spoke VCN IDs, DRG IDs, attachment IDs, subnet maps, route targets, and service edge IDs.  |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

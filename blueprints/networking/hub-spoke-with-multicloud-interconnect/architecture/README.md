@@ -23,28 +23,38 @@ Adds both FastConnect and IPSec connectivity to a hub-spoke DRG for private and 
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Hub-Spoke Multicloud Interconnect                                                                 |
-|                                                                                                  |
-|  Remote cloud / on-prem network                                                                   |
-|        | primary private path                         | backup or alternate encrypted path       |
-|        v                                              v                                          |
-|  +---------------- OCI FastConnect VC ----------------+   +---------------- OCI IPSec VPN ------+|
-|  | provider service ID/key, BGP ASN, bandwidth        |   | CPE IP + remote cloud CIDR routes    ||
-|  +-----------------------------+----------------------+   +------------------+------------------+|
-|                                |                                             |                   |
-|                                +-------------------+-------------------------+                   |
-|                                                    v                                             |
-|  +-------------------------------------------- DRG ---------------------------------------------+|
-|  | Route exchange between FastConnect, IPSec, hub VCN, and all spoke attachments                 ||
-|  +------------------------------+----------------------------------------------+----------------+|
-|                                 |                                              |                 |
-|                                 v                                              v                 |
-|                     Hub VCN DMZ/firewall/shared                    Spoke web/app/db tiers         |
-|                                                                                                  |
-|  Traffic: remote cloud routes prefer FastConnect when designed that way; IPSec can provide        |
-|  encrypted backup or separate CIDR reachability through the same DRG.                             |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Hub-Spoke Multicloud Interconnect                                                                        |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Network compartment / selected region}                                                                  |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Hub VCN]                                                                                                |
+|         |-- [dmz subnet]      -> public ingress/egress only when approved                                |
+|         |-- [firewall subnet] -> inspection or appliance insertion point                                 |
+|         |-- [shared subnet]   -> shared services, endpoints, DNS, or bastion                             |
+|         `-- [gateway set]     -> IGW / NAT / SGW according to route design                               |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
+|   |             |                    |                                                                   |
+|   |             |                    +--> [spoke VCN A] web -> app -> db                                 |
+|   |             |                    +--> [spoke VCN B] web -> app -> db                                 |
+|   |             |                    `--> [future spoke] same attachment contract                        |
+|   |                                                                                                      |
+|   `--> (remote cloud / provider edge) -> FastConnect + IPSec backup -> DRG                               |
+|                                                                                                          |
+| Pattern extension: dual connectivity paths support private multicloud routing and failover review.       |
+| North-south: external or service traffic enters the hub, then routes through DRG attachments to spokes.  |
+| East-west: spoke-to-spoke traffic centralizes through the DRG and any hub inspection controls.           |
+| Hand-off: hub/spoke VCN IDs, DRG IDs, attachment IDs, subnet maps, route targets, and service edge IDs.  |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

@@ -20,25 +20,32 @@ Deploys an observability layer with optional Log Analytics namespace and group, 
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Observability Platform                                                                           |
-|                                                                                                  |
-|  OCI audit, VCN flow, OS, app logs
-|         |
-|         v
-|  Log Analytics namespace and log group
-|         |
-|         v
-|  APM domain
-|         |
-|         v
-|  Operations Insights private endpoint
-|         |
-|         v
-|  ONS and downstream alerts
-|                                                                                                  |
-|  Control: Terraform creates enabled resources from variables and returns stable hand-off outputs. |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Observability Platform                                                                                   |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Existing compartment / VCN / subnet / service boundary as required}                                     |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Observability Platform]                                                                                 |
+|         |-- Log Analytics namespace and log group                                                        |
+|         |-- APM domain for tracing                                                                       |
+|         |-- Operations Insights private endpoint for private telemetry paths                             |
+|         `-- tags, compartment scope, and optional private access controls                                |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [logs/metrics/traces] -> [Log Analytics / APM / Ops Insights] -> [operator dashboards and alarms]        |
+|                                                                                                          |
+| Review focus: namespace ownership, log-group naming, APM data keys, private endpoint subnet, NSGs, and   |
+| telemetry tenancy boundaries.                                                                            |
+| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
+| teams.                                                                                                   |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

@@ -20,25 +20,32 @@ Deploys an Oracle Analytics Cloud instance with optional private access channel.
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Oracle Analytics Cloud                                                                           |
-|                                                                                                  |
-|  Analytics users
-|         |
-|         v
-|  OAC instance
-|         |
-|         v
-|  private access channel
-|         |
-|         v
-|  VCN subnet and DNS zones
-|         |
-|         v
-|  Autonomous DB or private data sources
-|                                                                                                  |
-|  Control: Terraform creates enabled resources from variables and returns stable hand-off outputs. |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Oracle Analytics Cloud                                                                                   |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Existing compartment / VCN / subnet / service boundary as required}                                     |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Oracle Analytics Cloud]                                                                                 |
+|         |-- analytics instance with feature set, license type, and capacity                              |
+|         |-- private access channel with supplied VCN/subnet/NSGs when enabled                            |
+|         |-- DNS and private data source path for databases or application endpoints                      |
+|         `-- tags, compartment scope, and optional private access controls                                |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [analytics users] -> [OAC instance] -> [private access channel] -> [private data sources]                |
+|                                                                                                          |
+| Review focus: capacity, identity integration, private access channel subnet, DNS zones, NSGs, and        |
+| data-source reachability.                                                                                |
+| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
+| teams.                                                                                                   |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

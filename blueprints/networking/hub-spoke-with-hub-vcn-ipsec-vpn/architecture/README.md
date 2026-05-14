@@ -23,30 +23,38 @@ Adds an OCI IPSec VPN and customer-premises equipment definition to the hub-spok
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Hub-Spoke IPSec VPN                                                                               |
-|                                                                                                  |
-|  On-premises network CIDRs                                                                        |
-|       | static routes: var.on_premises_cidr_blocks                                               |
-|       v                                                                                          |
-|  +---------------- Customer-Premises Equipment ----------------+                                 |
-|  | cpe_ip_address, cpe_is_private                              |                                 |
-|  +----------------------------+--------------------------------+                                 |
-|                               | IPSec tunnels                                                    |
-|                               v                                                                  |
-|  +------------------------- OCI IPSec VPN ---------------------+                                  |
-|  | VPN connection bound to module.network.drg_id                |                                  |
-|  +----------------------------+--------------------------------+                                  |
-|                               | route propagation/static routes                                  |
-|                               v                                                                  |
-|  +------------------------------ DRG -----------------------------------------+                  |
-|  | connects VPN, hub VCN, and spoke VCN attachments                            |                  |
-|  +------------------+-------------------------------------------+--------------+                  |
-|                     v                                           v                                 |
-|              Hub VCN DMZ/firewall/shared                 Spoke VCN web/app/db tiers               |
-|                                                                                                  |
-|  Traffic: on-prem -> IPSec tunnel -> DRG -> hub/spoke; return traffic follows DRG VPN routes.     |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Hub-Spoke IPSec VPN                                                                                      |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Network compartment / selected region}                                                                  |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Hub VCN]                                                                                                |
+|         |-- [dmz subnet]      -> public ingress/egress only when approved                                |
+|         |-- [firewall subnet] -> inspection or appliance insertion point                                 |
+|         |-- [shared subnet]   -> shared services, endpoints, DNS, or bastion                             |
+|         `-- [gateway set]     -> IGW / NAT / SGW according to route design                               |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
+|   |             |                    |                                                                   |
+|   |             |                    +--> [spoke VCN A] web -> app -> db                                 |
+|   |             |                    +--> [spoke VCN B] web -> app -> db                                 |
+|   |             |                    `--> [future spoke] same attachment contract                        |
+|   |                                                                                                      |
+|   `--> (customer network) -> [CPE] -> [IPSec tunnels] -> DRG                                             |
+|                                                                                                          |
+| Pattern extension: encrypted tunnel routing joins the hub-spoke network through the DRG.                 |
+| North-south: external or service traffic enters the hub, then routes through DRG attachments to spokes.  |
+| East-west: spoke-to-spoke traffic centralizes through the DRG and any hub inspection controls.           |
+| Hand-off: hub/spoke VCN IDs, DRG IDs, attachment IDs, subnet maps, route targets, and service edge IDs.  |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

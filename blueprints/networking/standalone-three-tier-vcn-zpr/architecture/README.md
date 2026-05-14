@@ -23,30 +23,32 @@ Creates a standalone three-tier VCN and applies Zero Trust Packet Routing config
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Standalone Three-Tier VCN ZPR                                                                     |
-|                                                                                                  |
-|  Application traffic                                                                              |
-|       |                                                                                            |
-|       v                                                                                            |
-|  +----------------------------- Workload VCN -----------------------------+                     |
-|  | Internet Gateway, NAT Gateway, and Service Gateway enabled              |                     |
-|  | Web subnet -> App subnet -> DB subnet                                  |                     |
-|  | Subnets from var.subnets                                               |                     |
-|  +------------------------------+----------------------------------------+                     |
-|                                 | protected by ZPR configuration/policies                     |
-|                                 v                                                               |
-|  +-------------------------- Zero Trust Packet Routing -------------------+                     |
-|  | enable_zpr_configuration controls tenancy/network configuration         |                     |
-|  | enable_zpr_policies controls policy creation                           |                     |
-|  | var.zpr_policies describes allowed subjects/resources/flows             |                     |
-|  +------------------------------+----------------------------------------+                     |
-|                                 |                                                               |
-|                                 v                                                               |
-|  Allowed flows: client -> web, web -> app, app -> db, private tiers -> OCI services               |
-|                                                                                                  |
-|  Traffic: normal VCN routes carry packets; ZPR policies decide which packets are authorized.      |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Standalone Three-Tier VCN ZPR                                                                            |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Workload compartment / selected region}                                                                 |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Workload VCN]                                                                                           |
+|         |-- [public web subnet]  -> route table -> Internet Gateway when enabled                         |
+|         |-- [private app subnet] -> route table -> NAT Gateway / Service Gateway                         |
+|         `-- [private db subnet]  -> route table -> private east-west only                                |
+|              |                                                                                           |
+|              +--> [security lists / NSGs] gate tier-to-tier traffic                                      |
+|              +--> [gateway set] IGW / NAT / SGW according to blueprint variables                         |
+|                                                                                                          |
+| ZPR overlay: security attributes and policies add packet-level micro-segmentation above subnet routing.  |
+| North-south: client -> web tier -> app tier -> database tier.                                            |
+| Service path: private subnets -> service gateway for OCI services; outbound updates use NAT when         |
+| enabled.                                                                                                 |
+| Hand-off: VCN, subnet, route table, security, and gateway IDs for workloads or later extensions.         |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

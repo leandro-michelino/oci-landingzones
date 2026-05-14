@@ -23,34 +23,32 @@ Creates OCI Full Stack Disaster Recovery protection groups, log buckets, and an 
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Full Stack Disaster Recovery                                                                      |
-|                                                                                                  |
-|  Operator / CI                                                                                    |
-|       | uses primary OCI provider and standby OCI provider aliases                                |
-|       v                                                                                          |
-|  +--------------------------- Primary Region ---------------------------+                        |
-|  | Object Storage namespace                                            |                        |
-|  | DR log bucket: primary_dr_logs                                      |                        |
-|  | DR Protection Group: primary                                        |                        |
-|  |   members: compute, volume groups, databases, or app resources       |                        |
-|  | DR Plan: switchover/failover/start-stop plan                         |                        |
-|  +------------------------------+---------------------------------------+                        |
-|                                 | protection relationship and plan orchestration                  |
-|                                 v                                                                  |
-|  +--------------------------- Standby Region ---------------------------+                        |
-|  | Object Storage namespace                                            |                        |
-|  | DR log bucket: standby_dr_logs                                      |                        |
-|  | DR Protection Group: standby                                        |                        |
-|  |   members mirror standby-side app resources                          |                        |
-|  +------------------------------+---------------------------------------+                        |
-|                                 |                                                                  |
-|                                 v                                                                  |
-|  Outputs: primary/standby DRPG IDs, log bucket names, and primary DR plan ID                       |
-|                                                                                                  |
-|  Flow: Terraform prepares log locations, creates both DR protection groups, then creates the plan. |
-|  Runtime traffic is application-specific; FSDR controls recovery orchestration between regions.    |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Full Stack Disaster Recovery                                                                             |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Primary OCI provider alias}                         {Standby OCI provider alias}                        |
+|         |                                                       |                                        |
+|         v                                                       v                                        |
+| [primary region]                                      [standby region]                                   |
+|         |-- [Object Storage namespace]                         |-- [Object Storage namespace]            |
+|         |-- [primary DR log bucket]                             |-- [standby DR log bucket]              |
+|         `-- [primary DR protection group] <---- peer ---->       `-- [standby DR protection group]       |
+|                          |                                                                               |
+|                          v                                                                               |
+|                  [primary DR plan]                                                                       |
+|                  |-- switchover / failover / start-stop orchestration                                    |
+|                  `-- members supplied from application resource IDs                                      |
+|                                                                                                          |
+| Control flow: log buckets first, both protection groups second, DR plan last.                            |
+| Runtime flow: application replication remains outside this folder; FSDR orchestrates recovery actions.   |
+| Hand-off: primary/standby protection group IDs, log bucket names, and DR plan ID.                        |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

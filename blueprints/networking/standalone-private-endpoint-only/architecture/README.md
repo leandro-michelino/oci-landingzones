@@ -23,28 +23,30 @@ Creates a private-only VCN pattern with service gateway access and optional NAT,
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Standalone Private Endpoint Only                                                                  |
-|                                                                                                  |
-|  Private workloads or service consumers                                                           |
-|       |                                                                                          |
-|       v                                                                                          |
-|  +------------------------------ Private VCN ------------------------------+                    |
-|  | VCN CIDR from var.vcn_cidr_block                                          |                    |
-|  | No Internet Gateway                                                       |                    |
-|  | Subnets from var.subnets, normally private endpoint/service subnets         |                    |
-|  | Route tables from var.route_tables                                        |                    |
-|  | Security lists from var.security_lists                                    |                    |
-|  +-------------------+-----------------------------------+------------------+                    |
-|                      |                                   |                                       |
-|                      | Service Gateway                   | optional NAT Gateway                  |
-|                      v                                   v                                       |
-|             Private OCI services                 controlled outbound updates                     |
-|             Object Storage, Streaming, etc.      if enable_nat_gateway is true                   |
-|                                                                                                  |
-|  Traffic: workload -> private subnet -> service gateway/private endpoint -> OCI service.          |
-|  Control: module.private_vcn creates the VCN, subnets, route tables, gateways, and security lists. |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Standalone Private Endpoint Only                                                                         |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Private workload compartment / selected region}                                                         |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Private VCN - no Internet Gateway]                                                                      |
+|         |-- [private endpoint subnet] -> NSGs -> private service endpoints                               |
+|         |-- [private workload subnet] -> route table -> Service Gateway                                  |
+|         `-- [optional NAT route]     -> controlled outbound only when explicitly enabled                 |
+|              |                                                                                           |
+|              v                                                                                           |
+| (OCI managed services: Object Storage, databases, APIs, analytics, or app endpoints)                     |
+|                                                                                                          |
+| Traffic stance: private-by-default; no public ingress path is created by this blueprint.                 |
+| Review focus: endpoint subnet, DNS, NSGs, service gateway route rules, and any optional NAT egress.      |
+| Hand-off: private VCN, subnet, route table, gateway, and endpoint-ready IDs.                             |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

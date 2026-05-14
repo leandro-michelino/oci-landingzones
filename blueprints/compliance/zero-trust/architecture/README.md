@@ -23,36 +23,31 @@ Composes the core landing-zone foundation with a standalone three-tier VCN prote
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Zero Trust Landing Zone                                                                           |
-|                                                                                                  |
-|  Operator / CI                                                                                    |
-|       |                                                                                          |
-|       v                                                                                          |
-|  +--------------------------- Core Level 2 Foundation ---------------------------+                |
-|  | Compartments, IAM, Cloud Guard, Vault/KMS, VSS, logging, events, monitoring   |                |
-|  +----------------------------+--------------------------------------------------+                |
-|                               | network_compartment_id                                           |
-|                               v                                                                  |
-|  +-------------------------- Standalone Three-Tier VCN -------------------------+                |
-|  | VCN CIDR from var.vcn_cidr_block                                              |                |
-|  |                                                                                              |
-|  |  Internet -> IGW -> public route table -> web subnet                          |                |
-|  |  web subnet -> app subnet -> db subnet                                        |                |
-|  |  private tiers -> NAT Gateway for controlled outbound internet                |                |
-|  |  private tiers -> Service Gateway for private OCI service access              |                |
-|  +----------------------------+--------------------------------------------------+                |
-|                               |                                                                  |
-|                               v                                                                  |
-|  +--------------------------- Zero Trust Packet Routing -------------------------+                |
-|  | ZPR configuration                                                             |                |
-|  | ZPR policies describing which subjects, compartments, and endpoints may talk   |                |
-|  | Micro-segmentation overlays route/security-list decisions for east-west paths  |                |
-|  +----------------------------+--------------------------------------------------+                |
-|                               |                                                                  |
-|                               v                                                                  |
-|  Outputs: vcn_id, subnet_ids, zpr_policy_ids, compartment_ids, governance/security hand-offs      |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Zero Trust Compliance                                                                                    |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Compliance landing-zone boundary}                                                                       |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Zero Trust Packet Routing foundation and workload network controls]                                     |
+|         |-- identity and compartment guardrails                                                          |
+|         |-- logging, monitoring, budget, and evidence paths                                              |
+|         |-- private or inspected network path where applicable                                           |
+|         `-- workload-specific security service attachments                                               |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [review evidence lane] findings -> logs -> alarms -> operator action                                     |
+|                                                                                                          |
+| Control flow: foundation controls first, then network or workload-specific compliance services.          |
+| Trust boundary: the compliance scope is explicit; exceptions should be documented before apply.          |
+| Hand-off: guardrail policies, budget and alert IDs, network/security IDs, and review evidence locations. |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

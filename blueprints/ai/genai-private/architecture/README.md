@@ -20,25 +20,30 @@ Deploys a private OCI Generative AI endpoint pattern with optional archive bucke
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| OCI Generative AI Private Landing Zone                                                           |
-|                                                                                                  |
-|  App or notebook subnet
-|         |
-|         v
-|  private endpoint and service gateway route
-|         |
-|         v
-|  OCI Generative AI
-|         |
-|         v
-|  archive bucket for prompts and datasets
-|         |
-|         v
-|  IAM policy scope
-|                                                                                                  |
-|  Control: Terraform creates enabled resources from variables and returns stable hand-off outputs. |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| OCI Generative AI Private Landing Zone                                                                   |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {AI workload compartment / private subnet}                                                               |
+|         |                                                                                                |
+|         +--> [Generative AI private endpoint]                                                            |
+|         |      private DNS prefix, subnet, NSGs, and service attachment controls                         |
+|         |                                                                                                |
+|         +--> [archive bucket]                                                                            |
+|         |      prompt, dataset, and response archive path when enabled                                   |
+|         |                                                                                                |
+|         `--> [IAM access policy]                                                                         |
+|                approved groups and service principals only                                               |
+|                                                                                                          |
+| Data path: notebook or app subnet -> private endpoint -> OCI Generative AI service.                      |
+| Governance path: archive bucket and IAM policy preserve approved storage and access boundaries.          |
+| Hand-off: private endpoint ID, archive bucket name, access policy ID, and resource map.                  |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

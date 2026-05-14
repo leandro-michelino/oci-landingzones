@@ -23,34 +23,33 @@ Creates an OCI Container Engine for Kubernetes cluster and optional node pool at
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| OKE Extension                                                                                     |
-|                                                                                                  |
-|  kubectl / CI / platform operators                                                                |
-|        |                                                                                         |
-|        v                                                                                         |
-|  +----------------------------- Existing VCN ----------------------------+                       |
-|  | VCN ID is supplied by var.vcn_id                                     |                       |
-|  |                                                                      |                       |
-|  |  endpoint subnet + endpoint NSGs                                      |                       |
-|  |       ^                                                              |                       |
-|  |       | Kubernetes API endpoint, public or private per variable        |                       |
-|  |       v                                                              |                       |
-|  |  +----------------------- OKE Cluster -----------------------+        |                       |
-|  |  | Kubernetes version, CNI option, cluster endpoint config    |        |                       |
-|  |  +-------------------+-------------------+------------------+        |                       |
-|  |                      |                   |                           |                       |
-|  |                      v                   v                           |                       |
-|  |          service LB subnets             node pool subnets             |                       |
-|  |          LoadBalancers for Services     worker nodes per subnet       |                       |
-|  +----------------------+-------------------+---------------------------+                       |
-|                         | workload pod traffic and service traffic                               |
-|                         v                                                                       |
-|                 Applications running on worker nodes                                              |
-|                                                                                                  |
-|  Traffic: operators -> API endpoint; clients -> service load balancers; pods -> VCN routes.       |
-|  Control: Terraform creates the cluster first, then node pools against the cluster ID.             |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| OKE Extension                                                                                            |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Existing compartment / VCN / subnet / service boundary as required}                                     |
+|         |                                                                                                |
+|         v                                                                                                |
+| [OKE Cluster]                                                                                            |
+|         |-- cluster endpoint, CNI, Kubernetes version, and endpoint subnet/NSGs                          |
+|         |-- node pool with node subnets, image, shape, SSH key, and size                                 |
+|         |-- service load balancer subnet choices for Kubernetes Services                                 |
+|         `-- tags, compartment scope, and optional private access controls                                |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [operators] -> [Kubernetes API endpoint] -> [cluster control plane]                                      |
+| [clients]   -> [service load balancers]  -> [pods on worker nodes]                                       |
+|                                                                                                          |
+| Review focus: endpoint exposure, node subnet routing, NSGs, service LB subnets, CNI mode, image/shape,   |
+| and autoscaling assumptions.                                                                             |
+| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
+| teams.                                                                                                   |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

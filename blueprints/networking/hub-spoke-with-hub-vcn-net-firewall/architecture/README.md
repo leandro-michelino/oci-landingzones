@@ -23,32 +23,38 @@ Adds OCI Network Firewall in the hub VCN firewall subnet for centralized north-s
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Hub-Spoke OCI Network Firewall                                                                    |
-|                                                                                                  |
-|  Internet / On-prem / Spoke traffic                                                               |
-|             |                                                                                    |
-|             v                                                                                    |
-|  +-------------------------------- Hub VCN -----------------------------------+                  |
-|  | DMZ subnet       -> ingress/egress edge                                      |                  |
-|  | Firewall subnet  -> OCI Network Firewall private endpoint                    |                  |
-|  | Shared subnet    -> shared services                                          |                  |
-|  | IGW, NAT Gateway, Service Gateway                                            |                  |
-|  +------------------------------+---------------------------------------------+                  |
-|                                 | traffic selected by route tables                              |
-|                                 v                                                                  |
-|  +----------------------- OCI Network Firewall -------------------------------+                  |
-|  | network_firewall_policy_id is supplied by the caller                         |                  |
-|  | network_firewall_private_ip becomes the inspection route target              |                  |
-|  +------------------------------+---------------------------------------------+                  |
-|                                 | allowed traffic                                                |
-|                                 v                                                                  |
-|  +---------------- DRG ----------------+       +---------------- Spoke VCNs ----------------+    |
-|  | hub/spoke attachments                |<----->| web, app, database tiers                  |    |
-|  +--------------------------------------+       +------------------------------------------+    |
-|                                                                                                  |
-|  Traffic: route tables steer north-south and east-west packets through the firewall private IP.    |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Hub-Spoke OCI Network Firewall                                                                           |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Network compartment / selected region}                                                                  |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Hub VCN]                                                                                                |
+|         |-- [dmz subnet]      -> public ingress/egress only when approved                                |
+|         |-- [firewall subnet] -> inspection or appliance insertion point                                 |
+|         |-- [shared subnet]   -> shared services, endpoints, DNS, or bastion                             |
+|         `-- [gateway set]     -> IGW / NAT / SGW according to route design                               |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
+|   |             |                    |                                                                   |
+|   |             |                    +--> [spoke VCN A] web -> app -> db                                 |
+|   |             |                    +--> [spoke VCN B] web -> app -> db                                 |
+|   |             |                    `--> [future spoke] same attachment contract                        |
+|   |                                                                                                      |
+|   `--> [OCI Network Firewall] -> firewall policy -> inspected north-south/east-west paths                |
+|                                                                                                          |
+| Pattern extension: firewall subnet and policy become the approved inspection point.                      |
+| North-south: external or service traffic enters the hub, then routes through DRG attachments to spokes.  |
+| East-west: spoke-to-spoke traffic centralizes through the DRG and any hub inspection controls.           |
+| Hand-off: hub/spoke VCN IDs, DRG IDs, attachment IDs, subnet maps, route targets, and service edge IDs.  |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

@@ -23,30 +23,38 @@ Adds an OCI FastConnect virtual circuit to the hub-spoke DRG for private on-prem
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Hub-Spoke FastConnect Virtual Circuit                                                             |
-|                                                                                                  |
-|  Customer router / provider edge                                                                  |
-|       | private peering, BGP ASN, provider service key                                            |
-|       v                                                                                          |
-|  +--------------------------- OCI FastConnect ---------------------------+                       |
-|  | Virtual Circuit                                                       |                       |
-|  | - bandwidth_shape_name and virtual_circuit_type from variables        |                       |
-|  | - customer_bgp_asn and provider service details                       |                       |
-|  +-------------------------------+---------------------------------------+                       |
-|                                  | attaches to DRG                                                |
-|                                  v                                                                  |
-|  +-------------------------------- DRG ---------------------------------------+                  |
-|  | central route exchange between FastConnect, hub VCN, and spokes             |                  |
-|  +-------------------------------+--------------------------------------------+                  |
-|                                  |                                                                  |
-|  +-------------------- Hub VCN --------------------+   +-------------------- Spoke VCNs --------+|
-|  | DMZ, firewall, shared, IGW, NAT, SGW             |<->| web/app/db workload tiers             ||
-|  +--------------------------------------------------+   +---------------------------------------+|
-|                                                                                                  |
-|  Traffic: on-prem/private provider routes -> FastConnect VC -> DRG -> hub/spoke CIDRs.            |
-|  Control: hub-spoke network exposes drg_id; FastConnect module creates the virtual circuit.        |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Hub-Spoke FastConnect Virtual Circuit                                                                    |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Network compartment / selected region}                                                                  |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Hub VCN]                                                                                                |
+|         |-- [dmz subnet]      -> public ingress/egress only when approved                                |
+|         |-- [firewall subnet] -> inspection or appliance insertion point                                 |
+|         |-- [shared subnet]   -> shared services, endpoints, DNS, or bastion                             |
+|         `-- [gateway set]     -> IGW / NAT / SGW according to route design                               |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
+|   |             |                    |                                                                   |
+|   |             |                    +--> [spoke VCN A] web -> app -> db                                 |
+|   |             |                    +--> [spoke VCN B] web -> app -> db                                 |
+|   |             |                    `--> [future spoke] same attachment contract                        |
+|   |                                                                                                      |
+|   `--> (on-premises / provider edge) -> [FastConnect virtual circuit] -> DRG                             |
+|                                                                                                          |
+| Pattern extension: private circuit routing joins the hub-spoke network through the DRG.                  |
+| North-south: external or service traffic enters the hub, then routes through DRG attachments to spokes.  |
+| East-west: spoke-to-spoke traffic centralizes through the DRG and any hub inspection controls.           |
+| Hand-off: hub/spoke VCN IDs, DRG IDs, attachment IDs, subnet maps, route targets, and service edge IDs.  |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

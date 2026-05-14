@@ -23,30 +23,39 @@ Adds OCI Bastion access to the hub-spoke landing-zone network so administrators 
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Hub-Spoke Bastion Jump Host                                                                       |
-|                                                                                                  |
-|  Administrator workstation                                                                        |
-|       | allowed by client_cidr_block_allow_list                                                   |
-|       v                                                                                          |
-|  +----------------------------- OCI Bastion -----------------------------+                       |
-|  | Bastion service endpoint created in selected hub subnet                |                       |
-|  | max_session_ttl_in_seconds controls session lifetime                   |                       |
-|  +-------------------------------+---------------------------------------+                       |
-|                                  | managed session to private targets                             |
-|                                  v                                                                  |
-|  +-------------------------------- Hub VCN -----------------------------------+                  |
-|  | DMZ/firewall/shared subnets, gateways, DRG attachment                       |                  |
-|  +-------------------------------+--------------------------------------------+                  |
-|                                  | DRG                                                               |
-|                                  v                                                                  |
-|  +------------------------------- Spoke VCNs ---------------------------------+                  |
-|  | private web/app/db hosts stay without public SSH/RDP exposure               |                  |
-|  +----------------------------------------------------------------------------+                  |
-|                                                                                                  |
-|  Traffic: admin -> Bastion session -> private IP target in hub or spoke through routed network.    |
-|  Control: hub-spoke network is created first; Bastion uses module.network.hub_subnet_ids.          |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Hub-Spoke Bastion Jump Host                                                                              |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Network compartment / selected region}                                                                  |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Hub VCN]                                                                                                |
+|         |-- [dmz subnet]      -> public ingress/egress only when approved                                |
+|         |-- [firewall subnet] -> inspection or appliance insertion point                                 |
+|         |-- [shared subnet]   -> shared services, endpoints, DNS, or bastion                             |
+|         `-- [gateway set]     -> IGW / NAT / SGW according to route design                               |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
+|   |             |                    |                                                                   |
+|   |             |                    +--> [spoke VCN A] web -> app -> db                                 |
+|   |             |                    +--> [spoke VCN B] web -> app -> db                                 |
+|   |             |                    `--> [future spoke] same attachment contract                        |
+|   |                                                                                                      |
+|   `--> [Bastion service] -> private endpoint sessions -> target private hosts                            |
+|                                                                                                          |
+| Pattern extension: administrative access terminates in the hub and reaches private targets without       |
+| public host exposure.                                                                                    |
+| North-south: external or service traffic enters the hub, then routes through DRG attachments to spokes.  |
+| East-west: spoke-to-spoke traffic centralizes through the DRG and any hub inspection controls.           |
+| Hand-off: hub/spoke VCN IDs, DRG IDs, attachment IDs, subnet maps, route targets, and service edge IDs.  |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

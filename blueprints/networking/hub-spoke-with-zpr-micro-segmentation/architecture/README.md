@@ -23,29 +23,38 @@ Adds Zero Trust Packet Routing configuration and policies to a hub-spoke network
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Hub-Spoke ZPR Micro-Segmentation                                                                  |
-|                                                                                                  |
-|  Hub-spoke network                                                                                |
-|       | hub and spoke VCN IDs                                                                     |
-|       v                                                                                          |
-|  +----------------------------- Network Data Plane ----------------------------+                 |
-|  | Hub VCN: DMZ/firewall/shared subnets, gateways, DRG attachment              |                 |
-|  | Spoke VCNs: web/app/db tiers, spoke DRG attachments                         |                 |
-|  +-------------------------------+---------------------------------------------+                 |
-|                                  | protected resource scope                                      |
-|                                  v                                                                  |
-|  +------------------------- Zero Trust Packet Routing -------------------------+                 |
-|  | ZPR configuration                                                           |                 |
-|  | ZPR policies from var.zpr_policies                                          |                 |
-|  | Controls allowed communication between resources, networks, and services     |                 |
-|  +-------------------------------+---------------------------------------------+                 |
-|                                  | allowed flows only                                             |
-|                                  v                                                                  |
-|  Workload flows: web -> app, app -> db, spoke -> shared services, hub -> OCI services              |
-|                                                                                                  |
-|  Traffic: route tables still move packets; ZPR policies provide additional packet authorization.   |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Hub-Spoke ZPR Micro-Segmentation                                                                         |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Network compartment / selected region}                                                                  |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Hub VCN]                                                                                                |
+|         |-- [dmz subnet]      -> public ingress/egress only when approved                                |
+|         |-- [firewall subnet] -> inspection or appliance insertion point                                 |
+|         |-- [shared subnet]   -> shared services, endpoints, DNS, or bastion                             |
+|         `-- [gateway set]     -> IGW / NAT / SGW according to route design                               |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
+|   |             |                    |                                                                   |
+|   |             |                    +--> [spoke VCN A] web -> app -> db                                 |
+|   |             |                    +--> [spoke VCN B] web -> app -> db                                 |
+|   |             |                    `--> [future spoke] same attachment contract                        |
+|   |                                                                                                      |
+|   `--> [ZPR configuration] -> security attributes -> micro-segmentation policies                         |
+|                                                                                                          |
+| Pattern extension: ZPR policy decisions layer on top of hub-spoke routing.                               |
+| North-south: external or service traffic enters the hub, then routes through DRG attachments to spokes.  |
+| East-west: spoke-to-spoke traffic centralizes through the DRG and any hub inspection controls.           |
+| Hand-off: hub/spoke VCN IDs, DRG IDs, attachment IDs, subnet maps, route targets, and service edge IDs.  |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

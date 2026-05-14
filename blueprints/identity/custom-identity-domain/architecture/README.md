@@ -23,28 +23,32 @@ Creates one or more OCI IAM identity domains with optional replica regions from 
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Custom Identity Domains                                                                           |
-|                                                                                                  |
-|  Identity administrators                                                                          |
-|        | var.identity_domains map                                                                 |
-|        v                                                                                          |
-|  +---------------------------- OCI IAM Identity Domains ------------------------+                 |
-|  | for_each identity_domains                                                   |                 |
-|  |                                                                            |                 |
-|  |  +---------------- Identity Domain: key A ----------------+                 |                 |
-|  |  | compartment, display name, home region, license type    |                 |                 |
-|  |  | admin email/name/user, login visibility, email rules    |                 |                 |
-|  |  +---------------------------+-----------------------------+                 |                 |
-|  |                              | replica regions from domain map                                |                 |
-|  |                              v                                                                 |                 |
-|  |  +---------------- Identity Domain Replication ----------------------------+ |                 |
-|  |  | one oci_identity_domain_replication_to_region per configured replica    | |                 |
-|  |  +-----------------------------------------------------------------------+ |                 |
-|  +----------------------------------------------------------------------------+                 |
-|                                                                                                  |
-|  Flow: Terraform creates each identity domain, then creates regional replicas for that domain.     |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Custom Identity Domain                                                                                   |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {OCI IAM home region / identity domain boundary}                                                         |
+|         |                                                                                                |
+|         v                                                                                                |
+| [identity domains for_each map]                                                                          |
+|         |-- display name, description, license type, admin contact                                       |
+|         |-- login visibility, primary email, notification behavior                                       |
+|         `-- compartment placement and lifecycle controls                                                 |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [domain replication to regions]                                                                          |
+|         |-- one replica resource per requested region                                                    |
+|         `-- depends on the domain ID created above                                                       |
+|                                                                                                          |
+| Control flow: create domain first, then regional replicas.                                               |
+| Trust boundary: authentication, federation, and application onboarding begin at the domain edge.         |
+| Hand-off: domain IDs, URLs, names, and replica region IDs for identity operations.                       |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

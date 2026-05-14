@@ -23,30 +23,28 @@ Creates separate prod and nonprod hub-spoke networks in the same region with dis
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Regional Prod Nonprod Hubs                                                                        |
-|                                                                                                  |
-|  Single OCI region                                                                                |
-|       |                                                                                          |
-|       v                                                                                          |
-|  +----------------------------- Production Network ----------------------------+                 |
-|  | Environment tag: prod                                                     |                 |
-|  | Hub CIDR 10.40.0.0/16                                                     |                 |
-|  | Hub subnets: dmz 10.40.0.0/24, firewall 10.40.1.0/24, shared 10.40.2.0/24 |                 |
-|  | Spoke prodapp CIDR 10.41.0.0/16 with web/app/db subnets                    |                 |
-|  | Dedicated prod DRG and attachments                                         |                 |
-|  +----------------------------------------------------------------------------+                 |
-|                                                                                                  |
-|  +---------------------------- Nonproduction Network -------------------------+                 |
-|  | Environment tag: nonprod                                                  |                 |
-|  | Hub CIDR 10.50.0.0/16                                                     |                 |
-|  | Hub subnets: dmz 10.50.0.0/24, firewall 10.50.1.0/24, shared 10.50.2.0/24 |                 |
-|  | Spoke nonprodapp CIDR 10.51.0.0/16 with web/app/db subnets                 |                 |
-|  | Dedicated nonprod DRG and attachments                                      |                 |
-|  +----------------------------------------------------------------------------+                 |
-|                                                                                                  |
-|  Traffic: prod and nonprod do not share a DRG in this deployment; each hub controls its own flows. |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Regional Prod Nonprod Hubs                                                                               |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {One OCI region / separated operating environments}                                                      |
+|         |                                                                                                |
+|         +--> [prod hub-spoke network]                                                                    |
+|         |      hub VCN -> DRG -> prod spokes -> prod route/security controls                             |
+|         |                                                                                                |
+|         `--> [nonprod hub-spoke network]                                                                 |
+|                hub VCN -> DRG -> nonprod spokes -> nonprod route/security controls                       |
+|                                                                                                          |
+| Boundary: prod and nonprod keep separate hubs, DRGs, route tables, gateways, and attachment maps.        |
+| Review focus: CIDR non-overlap, policy separation, shared-service exceptions, and promotion path         |
+| controls.                                                                                                |
+| Hand-off: environment-specific hub, DRG, spoke, subnet, route, and gateway IDs.                          |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

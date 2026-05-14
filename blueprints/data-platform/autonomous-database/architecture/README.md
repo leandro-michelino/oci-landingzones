@@ -20,25 +20,33 @@ Deploys a private Autonomous Database pattern for ATP or ADW with optional manua
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Autonomous Database                                                                              |
-|                                                                                                  |
-|  App subnet / private client
-|         |
-|         v
-|  private SQL over subnet and NSG
-|         |
-|         v
-|  Autonomous Database
-|         |
-|         v
-|  optional manual backup
-|         |
-|         v
-|  Object Storage managed backup plane
-|                                                                                                  |
-|  Control: Terraform creates enabled resources from variables and returns stable hand-off outputs. |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Autonomous Database                                                                                      |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Existing compartment / VCN / subnet / service boundary as required}                                     |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Autonomous Database]                                                                                    |
+|         |-- ATP/ADW database configuration, workload type, sizing, backup retention                      |
+|         |-- private endpoint, NSGs, subnet, and optional KMS key controls                                |
+|         |-- manual backup resource when enabled                                                          |
+|         `-- tags, compartment scope, and optional private access controls                                |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [private application subnet] -> [ADB private endpoint] -> [Autonomous Database]                          |
+| [backup operation]          -> [manual backup]       -> [Object Storage managed service]                 |
+|                                                                                                          |
+| Review focus: database workload type, private endpoint DNS, NSGs, KMS key, backup policy, and admin      |
+| password handling.                                                                                       |
+| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
+| teams.                                                                                                   |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

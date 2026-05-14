@@ -20,25 +20,32 @@ Deploys an Oracle Integration Cloud instance with optional private outbound conn
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Oracle Integration Cloud                                                                         |
-|                                                                                                  |
-|  Integration users and adapters
-|         |
-|         v
-|  OIC instance
-|         |
-|         v
-|  private outbound connection
-|         |
-|         v
-|  VCN subnet and NSGs
-|         |
-|         v
-|  SaaS or private application endpoints
-|                                                                                                  |
-|  Control: Terraform creates enabled resources from variables and returns stable hand-off outputs. |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Oracle Integration Cloud                                                                                 |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Existing compartment / VCN / subnet / service boundary as required}                                     |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Oracle Integration Cloud]                                                                               |
+|         |-- integration instance with edition, message packs, and access type                            |
+|         |-- private outbound connection when enabled                                                     |
+|         |-- network path toward private SaaS, app, database, or API endpoints                            |
+|         `-- tags, compartment scope, and optional private access controls                                |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [integration designers] -> [OIC instance] -> [private outbound connection] -> [private endpoints/APIs]   |
+|                                                                                                          |
+| Review focus: edition, endpoint access type, outbound subnet/NSGs, route tables, DNS, and integration    |
+| IAM scope.                                                                                               |
+| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
+| teams.                                                                                                   |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

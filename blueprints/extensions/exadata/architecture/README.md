@@ -23,28 +23,32 @@ Creates OCI Cloud Exadata Infrastructure in a selected availability domain for d
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Exadata Extension                                                                                 |
-|                                                                                                  |
-|  Operator / database platform team                                                                |
-|       |                                                                                          |
-|       v                                                                                          |
-|  +--------------------------- OCI Region / AD --------------------------+                        |
-|  | Compartment selected by compartment_ocid or tenancy fallback          |                        |
-|  |                                                                       |                        |
-|  |  +---------------- OCI Cloud Exadata Infrastructure ----------------+ |                        |
-|  |  | shape, compute_count, storage_count                              | |                        |
-|  |  | database_server_type and storage_server_type when supplied         | |                        |
-|  |  | customer contacts for Oracle service communications                | |                        |
-|  |  +-----------------------------+------------------------------------+ |                        |
-|  |                                |                                      |                        |
-|  |                                v                                      |                        |
-|  |  Future hand-off: VM clusters, databases, backup, and network attach  |                        |
-|  +-----------------------------------------------------------------------+                        |
-|                                                                                                  |
-|  Traffic: this deployment creates infrastructure capacity; application/database traffic starts     |
-|  after VM clusters and database resources are attached by follow-on work.                         |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Exadata Extension                                                                                        |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Existing compartment / VCN / subnet / service boundary as required}                                     |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Cloud Exadata Infrastructure]                                                                           |
+|         |-- infrastructure shape, availability domain, and compute/storage capacity                      |
+|         |-- maintenance window and contacts                                                              |
+|         |-- network attachment decisions owned by database platform design                               |
+|         `-- tags, compartment scope, and optional private access controls                                |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [DB platform operators] -> [Exadata infrastructure] -> [VM clusters and databases added by later layers] |
+|                                                                                                          |
+| Review focus: capacity, AD placement, maintenance policy, support contacts, and downstream VM cluster    |
+| ownership.                                                                                               |
+| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
+| teams.                                                                                                   |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

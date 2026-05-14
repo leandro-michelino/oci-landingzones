@@ -23,32 +23,31 @@ Creates a workload compartment tree, workload IAM groups, and scoped policies fo
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Workload Vending                                                                                  |
-|                                                                                                  |
-|  App onboarding request                                                                           |
-|       | workload_code, workload_name, child_compartments                                          |
-|       v                                                                                          |
-|  +---------------------------- Workload Root -----------------------------+                      |
-|  | Parent compartment or supplied parent_compartment_ocid                  |                      |
-|  |   `-- Workload root compartment                                        |                      |
-|  |       |-- network                                                      |                      |
-|  |       |-- app                                                          |                      |
-|  |       |-- data                                                         |                      |
-|  |       `-- custom children from var.child_compartments                   |                      |
-|  +-------------------------------+----------------------------------------+                      |
-|                                  | compartment_names                                           |
-|                                  v                                                                |
-|  +------------------------------- IAM ------------------------------------+                      |
-|  | Workload admin/operator/viewer groups                                   |                      |
-|  | Policies scoped to the workload compartment tree                         |                      |
-|  +-------------------------------+----------------------------------------+                      |
-|                                  | permissions                                               |
-|                                  v                                                                |
-|  Workload team deploys VCN, platform extensions, and app resources using the vended boundary       |
-|                                                                                                  |
-|  Flow: Terraform creates the workload boundary and then exports IDs for the app pipeline.          |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Workload Vending                                                                                         |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Operating model compartment boundary}                                                                   |
+|         |                                                                                                |
+|         v                                                                                                |
+| [repeatable workload vending compartment structure]                                                      |
+|         |-- parent or entity compartment                                                                 |
+|         |-- workload compartments and optional child boundaries                                          |
+|         `-- naming and tag alignment for ownership reporting                                             |
+|                  |                                                                                       |
+|                  +--> [groups] admin, operator, auditor, and workload-facing groups                      |
+|                  `--> [policies] scoped permissions for the owned compartment tree                       |
+|                                                                                                          |
+| Control flow: compartment tree -> groups -> policies.                                                    |
+| Ownership flow: platform creates the boundary, then hands the approved scope to the operating entity or  |
+| workload team.                                                                                           |
+| Hand-off: compartment IDs/names, group IDs/names, policy IDs, and policy statement review material.      |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

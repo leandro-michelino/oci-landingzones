@@ -23,41 +23,39 @@ Builds the core landing-zone foundation with stricter CIS Level 2-oriented guard
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| CIS Level 2 Landing Zone                                                                                |
-|                                                                                                  |
-|  Operator / CI / Ansible                                                                         |
-|          | terraform plan/apply                                                                  |
-|          v                                                                                       |
-|  +-------------------------- OCI Tenancy / Home Region IAM ---------------------------+          |
-|  | Compartments                                                                       |          |
-|  |   root/parent -> governance, security, network, workloads                          |          |
-|  | IAM                                                                                |          |
-|  |   admin groups + dynamic groups -> policies scoped to compartments                 |          |
-|  | Tagging                                                                            |          |
-|  |   namespace, tag definitions, tag defaults applied to landing-zone compartments     |          |
-|  +-------------------------------+----------------------------------------------------+          |
-|                                  |                                                               |
-|                                  v                                                               |
-|  +---------------------- Governance Compartment ----------------------+                           |
-|  | Logging: log groups, service logs, VCN flow-log targets, saved searches            |           |
-|  | Audit retention: tenancy audit configuration                                       |           |
-|  | Budgets: cost targets and alert rules                                              |           |
-|  | Events + Notifications: event rules -> ONS topics/subscriptions                    |           |
-|  | Monitoring: alarms -> notification topics/subscriptions                            |           |
-|  +-------------------------------+----------------------------------------------------+          |
-|                                  | signals, alarms, events                                      |
-|                                  v                                                               |
-|  +----------------------- Security Compartment -----------------------+                           |
-|  | Cloud Guard configuration and targets watch the root/landing-zone compartments      |           |
-|  | Vault/KMS creates vaults and master encryption keys for downstream resources        |           |
-|  | Security zones, Cloud Guard, VSS, audit retention, and stricter evidence controls are expected review points                |           |
-|  | Vulnerability Scanning Service creates host/container scan recipes and targets      |           |
-|  +-------------------------------+----------------------------------------------------+          |
-|                                  | outputs consumed by network, app, data, compliance blueprints |
-|                                  v                                                               |
-|  resource_ids, compartment_ids, policy_ids, vault_key_ids, log_group_ids, alarm_ids               |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| CIS Level 2 Landing Zone                                                                                 |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {OCI tenancy / home region IAM / target region services}                                                 |
+|         |                                                                                                |
+|         +--> [compartment tree]                                                                          |
+|         |      root or parent compartment                                                                |
+|         |      +-- governance                                                                            |
+|         |      +-- security                                                                              |
+|         |      +-- network                                                                               |
+|         |      `-- workloads                                                                             |
+|         |                                                                                                |
+|         +--> [identity layer]                                                                            |
+|         |      groups -> dynamic groups -> scoped IAM policies                                           |
+|         |                                                                                                |
+|         +--> [governance layer]                                                                          |
+|         |      tags -> log groups -> service logs -> events -> monitoring -> budgets                     |
+|         |                                                                                                |
+|         +--> [security layer]                                                                            |
+|                Cloud Guard -> Vault/KMS -> Security Zones -> Vulnerability Scanning                      |
+|                                                                                                          |
+| CIS overlay: Level 2 defaults bias toward evidence, audit retention, Cloud Guard, and tighter review     |
+| gates.                                                                                                   |
+| Control flow: compartments first, then tagging/governance/security, then IAM policy bindings.            |
+| Signal flow: logs, events, alarms, findings, and budget alerts return to governance operators.           |
+| Hand-off: compartment IDs, IAM names, policy IDs, log groups, topics, vault/key IDs, and guardrail IDs.  |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

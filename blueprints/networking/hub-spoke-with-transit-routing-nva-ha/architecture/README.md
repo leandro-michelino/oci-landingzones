@@ -23,32 +23,38 @@ Adds highly available network virtual appliances and route target private IPs to
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Hub-Spoke Transit Routing NVA HA                                                                  |
-|                                                                                                  |
-|  Spoke VCNs / on-prem / hub services                                                              |
-|          | selected route table targets                                                           |
-|          v                                                                                        |
-|  +-------------------------------- Hub VCN -----------------------------------+                  |
-|  | Appliance subnets host two or more NVA instances                             |                  |
-|  | Reserved route IPs provide stable next-hop targets                           |                  |
-|  | Hub DRG attachment exchanges routes with spokes                              |                  |
-|  +-------------------------------+--------------------------------------------+                  |
-|                                  |                                                                  |
-|                                  v                                                                  |
-|  +----------------------- HA Network Virtual Appliances ----------------------+                  |
-|  | appliance_instance_ids from var.appliances                                  |                  |
-|  | route_target_private_ip_ids expose private IPs for route tables             |                  |
-|  | existing_route_target_private_ip_ids can import prebuilt HA targets          |                  |
-|  +-------------------------------+--------------------------------------------+                  |
-|                                  | inspected/transit forwarding                                  |
-|                                  v                                                                  |
-|  +------------------------ DRG and Spoke Attachments -------------------------+                  |
-|  | east-west and north-south transit paths can be forced through the NVAs       |                  |
-|  +----------------------------------------------------------------------------+                  |
-|                                                                                                  |
-|  Traffic: route table -> reserved route IP/NVA -> next hop through DRG, hub, spoke, or edge.      |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Hub-Spoke Transit Routing NVA HA                                                                         |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Network compartment / selected region}                                                                  |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Hub VCN]                                                                                                |
+|         |-- [dmz subnet]      -> public ingress/egress only when approved                                |
+|         |-- [firewall subnet] -> inspection or appliance insertion point                                 |
+|         |-- [shared subnet]   -> shared services, endpoints, DNS, or bastion                             |
+|         `-- [gateway set]     -> IGW / NAT / SGW according to route design                               |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
+|   |             |                    |                                                                   |
+|   |             |                    +--> [spoke VCN A] web -> app -> db                                 |
+|   |             |                    +--> [spoke VCN B] web -> app -> db                                 |
+|   |             |                    `--> [future spoke] same attachment contract                        |
+|   |                                                                                                      |
+|   `--> [NVA HA pair] -> active/standby route targets -> centralized transit inspection                   |
+|                                                                                                          |
+| Pattern extension: route symmetry and failover behavior depend on appliance private IP targets.          |
+| North-south: external or service traffic enters the hub, then routes through DRG attachments to spokes.  |
+| East-west: spoke-to-spoke traffic centralizes through the DRG and any hub inspection controls.           |
+| Hand-off: hub/spoke VCN IDs, DRG IDs, attachment IDs, subnet maps, route targets, and service edge IDs.  |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

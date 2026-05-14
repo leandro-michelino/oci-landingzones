@@ -23,31 +23,31 @@ Creates multiple operating entity compartment trees, shared IAM groups, and poli
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Multi Operating Entities                                                                          |
-|                                                                                                  |
-|  Platform owner                                                                                   |
-|       | entities map / default_workload_compartments                                             |
-|       v                                                                                          |
-|  +-------------------------- Entity Compartment Forest --------------------+                     |
-|  | for_each local.entities                                                 |                     |
-|  |                                                                        |                     |
-|  | Entity A root -> child workload compartments                            |                     |
-|  | Entity B root -> child workload compartments                            |                     |
-|  | Entity N root -> child workload compartments                            |                     |
-|  +-------------------------------+----------------------------------------+                     |
-|                                  | entity compartment names and IDs                           |
-|                                  v                                                               |
-|  +------------------------------- IAM ------------------------------------+                     |
-|  | Shared groups generated for each entity                                 |                     |
-|  | Policies scope each group to its matching entity compartments           |                     |
-|  +-------------------------------+----------------------------------------+                     |
-|                                  | permissions                                              |
-|                                  v                                                               |
-|  Entity teams receive isolated roots while central operators keep one repeatable vending pattern   |
-|                                                                                                  |
-|  Flow: all entity compartment trees are created, then groups, then entity-scoped policies.         |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Multi Operating Entities                                                                                 |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Operating model compartment boundary}                                                                   |
+|         |                                                                                                |
+|         v                                                                                                |
+| [multi-entity compartment structure]                                                                     |
+|         |-- parent or entity compartment                                                                 |
+|         |-- workload compartments and optional child boundaries                                          |
+|         `-- naming and tag alignment for ownership reporting                                             |
+|                  |                                                                                       |
+|                  +--> [groups] admin, operator, auditor, and workload-facing groups                      |
+|                  `--> [policies] scoped permissions for the owned compartment tree                       |
+|                                                                                                          |
+| Control flow: compartment tree -> groups -> policies.                                                    |
+| Ownership flow: platform creates the boundary, then hands the approved scope to the operating entity or  |
+| workload team.                                                                                           |
+| Hand-off: compartment IDs/names, group IDs/names, policy IDs, and policy statement review material.      |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

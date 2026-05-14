@@ -20,25 +20,32 @@ Deploys the OKE service mesh add-on shell with optional APM domain for distribut
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| OKE Service Mesh                                                                                 |
-|                                                                                                  |
-|  Existing OKE cluster
-|         |
-|         v
-|  Container Engine add-on
-|         |
-|         v
-|  service mesh control plane
-|         |
-|         v
-|  APM tracing domain
-|         |
-|         v
-|  workload namespaces and gateways
-|                                                                                                  |
-|  Control: Terraform creates enabled resources from variables and returns stable hand-off outputs. |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| OKE Service Mesh                                                                                         |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Existing compartment / VCN / subnet / service boundary as required}                                     |
+|         |                                                                                                |
+|         v                                                                                                |
+| [OKE Service Mesh]                                                                                       |
+|         |-- service mesh add-on attached to an existing OKE cluster                                      |
+|         |-- APM domain for tracing when enabled                                                          |
+|         |-- mesh policies and workload namespace choices handled by platform operations                  |
+|         `-- tags, compartment scope, and optional private access controls                                |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [services in OKE] -> [mesh sidecars/policies] -> [APM tracing] -> [operator review]                      |
+|                                                                                                          |
+| Review focus: cluster ID, add-on version, namespace selection, mTLS posture, tracing destination, and    |
+| rollout order.                                                                                           |
+| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
+| teams.                                                                                                   |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

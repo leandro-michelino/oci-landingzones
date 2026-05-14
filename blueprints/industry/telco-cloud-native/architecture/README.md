@@ -23,32 +23,33 @@ Combines hub-spoke networking, Vault/KMS, OKE, monitoring, and OS management for
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Telco Cloud Native                                                                                |
-|                                                                                                  |
-|  Operators / CNF platform teams                                                                   |
-|       |                                                                                          |
-|       v                                                                                          |
-|  +---------------------------- Hub-Spoke Network -----------------------------+                  |
-|  | Hub VCN + DRG + DMZ/firewall/shared subnets                                 |                  |
-|  | Spoke VCNs with web/app/db style tiers                                      |                  |
-|  | IGW/NAT/SGW provide controlled internet and OCI service paths                |                  |
-|  +--------------------+--------------------------+-----------------------------+                  |
-|                       |                          |                                                |
-|                       v                          v                                                |
-|  +--------------------------+       +----------------------------+                                |
-|  | OKE Cluster              |       | Vault / KMS                 |                                |
-|  | endpoint in hub subnet   |       | keys for platform services  |                                |
-|  | service LB subnet        |       +----------------------------+                                |
-|  | node pool subnet         |                                                                  |
-|  +-----------+--------------+       +----------------------------+                                |
-|              |                      | Monitoring + OS Management  |                                |
-|              v                      | alarms, topics, jobs, groups|                                |
-|       CNF workloads                 +----------------------------+                                |
-|                                                                                                  |
-|  Traffic: operators -> OKE endpoint; clients -> service LB; nodes -> VCN routes and OCI services. |
-|  Control: network outputs feed OKE subnet IDs; Vault, Monitoring, and OS Management share tags.    |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Telco Cloud Native                                                                                       |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Telco cloud-native landing-zone boundary}                                                               |
+|         |                                                                                                |
+|         +--> [hub-spoke network]                                                                         |
+|         |      DRG, hub subnets, spoke subnets, service gateway, and controlled egress                   |
+|         |                                                                                                |
+|         +--> [Vault/KMS]                                                                                 |
+|         |      key material for platform and workload services                                           |
+|         |                                                                                                |
+|         +--> [OKE cluster and node pool]                                                                 |
+|         |      private worker placement, service load balancer subnet decisions, CNI review              |
+|         |                                                                                                |
+|         +--> [monitoring alarms] -> notification path for platform operators                             |
+|         `--> [OS Management]    -> managed groups and scheduled patch jobs                               |
+|                                                                                                          |
+| Traffic flow: ingress/shared services -> hub -> DRG -> spoke/OKE workloads.                              |
+| Operations flow: alarms and patch jobs return to platform owners for closed-loop operations.             |
+| Hand-off: network IDs, OKE IDs, vault/key IDs, monitoring IDs, and OS management IDs.                    |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

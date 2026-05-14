@@ -23,30 +23,31 @@ Creates matching hub-spoke network foundations in primary and secondary OCI regi
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Dual Region Hub-Spoke DR                                                                          |
-|                                                                                                  |
-|  Operator / CI                                                                                    |
-|       | creates two independent hub-spoke stacks                                                  |
-|       v                                                                                          |
-|  +--------------------------- Primary Region ---------------------------+                        |
-|  | Hub VCN, DRG, hub DRG attachment                                    |                        |
-|  | DMZ/firewall/shared hub subnets                                     |                        |
-|  | Spoke VCNs with web/app/db subnets and spoke DRG attachments         |                        |
-|  | Gateways: IGW, NAT Gateway, Service Gateway                          |                        |
-|  +------------------------------+---------------------------------------+                        |
-|                                 | outputs consumed by app/DR runbooks                            |
-|                                 |                                                                  |
-|                                 v                                                                  |
-|  +-------------------------- Secondary Region --------------------------+                        |
-|  | Separate Hub VCN, DRG, attachments, hub subnets, spoke VCNs           |                        |
-|  | Region key and compartment can differ from primary                    |                        |
-|  | Tagged RegionRole = secondary                                        |                        |
-|  +----------------------------------------------------------------------+                        |
-|                                                                                                  |
-|  Traffic: each region routes internally through its own hub and DRG. Cross-region replication,     |
-|  DNS failover, or FSDR orchestration can be layered on top using the exported network IDs.         |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Dual Region Hub-Spoke DR                                                                                 |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Primary region}                                      {Secondary region}                                 |
+|         |                                                     |                                          |
+|         v                                                     v                                          |
+| [primary hub-spoke network]                         [secondary hub-spoke network]                        |
+|         |-- hub VCN / DRG / spoke VCNs                       |-- hub VCN / DRG / spoke VCNs              |
+|         |-- primary route tables and gateways                 |-- secondary route tables and gateways    |
+|         `-- primary hand-off IDs                              `-- secondary hand-off IDs                 |
+|                 |                                                     |                                  |
+|                 +---------------- paired design review ----------------+                                 |
+|                                                                                                          |
+| Traffic stance: regional traffic stays local until a DR, replication, or routing layer intentionally     |
+| links regions.                                                                                           |
+| Review focus: CIDR non-overlap, route symmetry, DNS strategy, failover runbooks, and region-specific     |
+| service limits.                                                                                          |
+| Hand-off: primary and secondary network IDs for DR, replication, and application deployment layers.      |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

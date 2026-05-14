@@ -18,6 +18,9 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 ### Changed
 
+- Enhanced every deployment-local ASCII architecture with a consistent legend,
+  control lane, trust boundary, dependency flow, traffic or signal path, review
+  focus, and hand-off lane.
 - Aligned the default Terraform plan artifact with ignore and cleanup rules by
   using `tfplan.tfplan`.
 - Normalized remaining composite blueprint module sources to release-pinned Git

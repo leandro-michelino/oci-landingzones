@@ -23,32 +23,31 @@ Adds OCI API Gateway and deployment routes so application APIs can be exposed th
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| API Gateway Extension                                                                             |
-|                                                                                                  |
-|  API clients                                                                                      |
-|      | HTTPS                                                                                      |
-|      v                                                                                           |
-|  +------------------------ OCI API Gateway -------------------------+                            |
-|  | Gateway                                                                               |       |
-|  | - endpoint_type from variables: public or private                                      |       |
-|  | - subnet_id places private gateways inside a selected subnet                           |       |
-|  | - NSG IDs and certificate ID attach when provided                                      |       |
-|  +--------------------------+---------------------------------------+                            |
-|                             | path_prefix + route rules                                          |
-|                             v                                                                  |
-|  +------------------------ API Deployment --------------------------+                            |
-|  | routes[*].path + methods                                                              |       |
-|  | backend.type: HTTP, STOCK_RESPONSE, or other API Gateway-supported backend shape        |       |
-|  | backend.url/status/timeouts from variables                                             |       |
-|  +--------------------------+---------------------------------------+                            |
-|                             |                                                                  |
-|                             v                                                                  |
-|        Private service, public HTTPS backend, function endpoint, or mock response                 |
-|                                                                                                  |
-|  Traffic: client -> gateway endpoint -> deployment route -> configured backend.                   |
-|  Control: Terraform may create a gateway or attach the deployment to an existing gateway_id.       |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| API Gateway Extension                                                                                    |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Existing compartment / VCN / subnet / service boundary as required}                                     |
+|         |                                                                                                |
+|         v                                                                                                |
+| [API Gateway]                                                                                            |
+|         |-- gateway endpoint in supplied subnet/network context                                          |
+|         |-- deployment with path prefix and route definitions                                            |
+|         |-- backend targets owned by application teams                                                   |
+|         `-- tags, compartment scope, and optional private access controls                                |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [clients] -> [gateway endpoint] -> [deployment routes] -> [private or public backends]                   |
+|                                                                                                          |
+| Review focus: gateway endpoint type, route auth, backend URLs, subnet/NSG posture, and IAM policy scope. |
+| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
+| teams.                                                                                                   |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

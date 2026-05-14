@@ -23,28 +23,33 @@ Creates an OCI Streaming stream pool and streams, with optional KMS encryption a
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Streaming Extension                                                                               |
-|                                                                                                  |
-|  Producers                                                   Consumers                            |
-|      | put messages                                             ^ get messages                    |
-|      v                                                          |                                 |
-|  +----------------------------- OCI Streaming -----------------------------+                     |
-|  | Stream Pool                                                             |                     |
-|  | - created or referenced by stream_pool_id                                |                     |
-|  | - optional custom encryption key from KMS                                 |                     |
-|  | - optional private endpoint settings: subnet_id + NSG IDs                 |                     |
-|  | - optional Kafka-compatible settings                                      |                     |
-|  |                                                                         |                     |
-|  |  stream: each key in var.streams -> partitions + retention hours          |                     |
-|  +------------------------------+------------------------------------------+                     |
-|                                 | private endpoint path when configured                           |
-|                                 v                                                                 |
-|                         Existing VCN subnet / NSGs                                                |
-|                                                                                                  |
-|  Traffic: app producers -> stream endpoint; consumer groups read from stream partitions.           |
-|  Control: Terraform creates the stream pool first, then one stream per var.streams entry.          |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Streaming Extension                                                                                      |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Existing compartment / VCN / subnet / service boundary as required}                                     |
+|         |                                                                                                |
+|         v                                                                                                |
+| [OCI Streaming]                                                                                          |
+|         |-- stream pool with optional custom encryption key                                              |
+|         |-- one or more streams with configured partitions and retention                                 |
+|         |-- optional private endpoint path through supplied VCN/subnet/NSGs                              |
+|         `-- tags, compartment scope, and optional private access controls                                |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [producers] -> [stream endpoint / private endpoint] -> [stream pool] -> [streams]                        |
+| [consumers] <- [stream endpoint / private endpoint] <- [consumer group offsets]                          |
+|                                                                                                          |
+| Review focus: partition count, retention, KMS key, private endpoint subnet, NSGs, and producer/consumer  |
+| IAM policies.                                                                                            |
+| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
+| teams.                                                                                                   |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

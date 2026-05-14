@@ -20,25 +20,30 @@ Deploys an OCI DevOps project with notification topic, code repository, build pi
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| OCI DevOps Pipeline                                                                              |
-|                                                                                                  |
-|  Developer push
-|         |
-|         v
-|  OCI DevOps repository
-|         |
-|         v
-|  Build pipeline
-|         |
-|         v
-|  Deploy pipeline
-|         |
-|         v
-|  ONS notifications
-|                                                                                                  |
-|  Control: Terraform creates enabled resources from variables and returns stable hand-off outputs. |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| OCI DevOps Pipeline                                                                                      |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {OCI DevOps compartment / selected region}                                                               |
+|         |                                                                                                |
+|         +--> [notification topic] -> build/deploy event subscribers                                      |
+|         |                                                                                                |
+|         +--> [DevOps project]                                                                            |
+|         |      |-- [code repository]                                                                     |
+|         |      |-- [build pipeline]  source -> stages -> artifacts                                       |
+|         |      `-- [deploy pipeline] environment -> stages -> approval/release path                      |
+|         |                                                                                                |
+|         `--> [IAM policies outside this folder] must permit project, build, deploy, and artifact actions |
+|                                                                                                          |
+| Control flow: topic first, project second, repository/pipelines after the project ID exists.             |
+| Delivery flow: commit or manual trigger -> build pipeline -> deploy pipeline -> notification topic.      |
+| Hand-off: project, repository, build pipeline, deploy pipeline, and notification topic IDs.              |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

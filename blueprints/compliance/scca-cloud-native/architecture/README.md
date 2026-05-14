@@ -23,40 +23,28 @@ Composes the core landing-zone foundation, a firewall-centered hub-spoke network
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| SCCA Cloud Native                                                                                 |
-|                                                                                                  |
-|  Operator / CI                                                                                    |
-|       |                                                                                          |
-|       v                                                                                          |
-|  +--------------------------- Core Level 2 Foundation ---------------------------+                |
-|  | Compartments: governance, security, network, workloads                        |                |
-|  | IAM: groups, dynamic groups, policies                                         |                |
-|  | Security: Cloud Guard, Vault/KMS, Security Zones, VSS                         |                |
-|  | Governance/Ops: logging, audit retention, budgets, events, monitoring         |                |
-|  +----------------------------+--------------------------------------------------+                |
-|                               | network_compartment_id, security outputs                         |
-|                               v                                                                  |
-|  +----------------------------- Hub VCN ----------------------------------------+                |
-|  | DMZ subnet -> IGW for approved public ingress/egress                          |                |
-|  | Firewall subnet -> OCI Network Firewall + firewall policy                     |                |
-|  | Shared subnet -> shared services and operational endpoints                    |                |
-|  | NAT Gateway + Service Gateway for controlled outbound and OCI service access  |                |
-|  +-----------------------------+------------------------------------------------+                |
-|                                | DRG attachments                                                 |
-|                                v                                                                 |
-|  +------------------- DRG -------------------+        +-------------------------+                |
-|  | routes on-prem, hub, and spokes            |<------>| Spoke VCNs              |                |
-|  | east-west paths are centralized through hub |        | web -> app -> db tiers  |                |
-|  +-------------------+------------------------+        +------------+------------+                |
-|                      | inspection path                                    |                      |
-|                      v                                                    v                      |
-|              OCI Network Firewall                              OS Management Hub                 |
-|              policy checks traffic                            managed groups + jobs              |
-|                                                                                                  |
-|  Traffic: internet/on-prem -> DRG or IGW -> hub -> firewall -> spoke web/app/db tiers.            |
-|  Ops: instance patching jobs and security signals return to governance outputs.                   |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| SCCA Cloud Native Compliance                                                                             |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {SCCA-style cloud-native boundary}                                                                       |
+|         |                                                                                                |
+|         +--> [core Level 2 foundation] compartments, IAM, logging, Cloud Guard, Vault, VSS, monitoring   |
+|         |                                                                                                |
+|         +--> [firewall-centered hub-spoke network]                                                       |
+|         |      ingress/egress -> hub -> OCI Network Firewall -> DRG -> spoke web/app/db tiers            |
+|         |                                                                                                |
+|         `--> [OS Management Hub] managed instance groups -> scheduled patch jobs -> operator evidence    |
+|                                                                                                          |
+| Traffic flow: internet/on-prem -> DRG or hub edge -> firewall policy -> spoke workloads.                 |
+| Operations flow: patch jobs, findings, logs, and alarms return to governance operators.                  |
+| Hand-off: foundation IDs, network/firewall IDs, and OS management resource IDs.                          |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

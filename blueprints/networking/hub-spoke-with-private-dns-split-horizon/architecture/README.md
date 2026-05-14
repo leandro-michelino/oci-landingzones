@@ -23,29 +23,38 @@ Adds private DNS zones, a private view, and resolver attachments across the hub 
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Hub-Spoke Private DNS Split Horizon                                                               |
-|                                                                                                  |
-|  Workloads in hub and spoke VCNs                                                                  |
-|       | DNS query for private zone names                                                          |
-|       v                                                                                          |
-|  +---------------------------- VCN DNS Resolvers -----------------------------+                 |
-|  | Hub resolver and each spoke resolver                                        |                 |
-|  | Resolver IDs come from the created hub/spoke network                        |                 |
-|  +-------------------------------+---------------------------------------------+                 |
-|                                  | private view attachment                                       |
-|                                  v                                                                  |
-|  +---------------------------- OCI Private DNS -------------------------------+                 |
-|  | Private view                                                              |                 |
-|  | Private zones from var.private_zones                                       |                 |
-|  | attach_private_view_to_vcn_resolvers controls resolver associations         |                 |
-|  +-------------------------------+---------------------------------------------+                 |
-|                                  | answer differs from public DNS                                 |
-|                                  v                                                                  |
-|  Private service endpoints, shared services, and spoke workloads                                   |
-|                                                                                                  |
-|  Traffic: workload -> VCN resolver -> private view/zone -> private IP target in hub or spoke.      |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Hub-Spoke Private DNS Split Horizon                                                                      |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Network compartment / selected region}                                                                  |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Hub VCN]                                                                                                |
+|         |-- [dmz subnet]      -> public ingress/egress only when approved                                |
+|         |-- [firewall subnet] -> inspection or appliance insertion point                                 |
+|         |-- [shared subnet]   -> shared services, endpoints, DNS, or bastion                             |
+|         `-- [gateway set]     -> IGW / NAT / SGW according to route design                               |
+|                  |                                                                                       |
+|                  v                                                                                       |
+| [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
+|   |             |                    |                                                                   |
+|   |             |                    +--> [spoke VCN A] web -> app -> db                                 |
+|   |             |                    +--> [spoke VCN B] web -> app -> db                                 |
+|   |             |                    `--> [future spoke] same attachment contract                        |
+|   |                                                                                                      |
+|   `--> [private DNS view] -> zones -> resolver attachments -> hub/spoke name resolution                  |
+|                                                                                                          |
+| Pattern extension: split-horizon DNS aligns private names with hub and spoke resolver behavior.          |
+| North-south: external or service traffic enters the hub, then routes through DRG attachments to spokes.  |
+| East-west: spoke-to-spoke traffic centralizes through the DRG and any hub inspection controls.           |
+| Hand-off: hub/spoke VCN IDs, DRG IDs, attachment IDs, subnet maps, route targets, and service edge IDs.  |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

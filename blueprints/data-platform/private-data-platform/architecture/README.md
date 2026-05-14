@@ -23,36 +23,34 @@ Creates a private data landing zone with a private VCN, Vault/KMS, Object Storag
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Private Data Platform                                                                             |
-|                                                                                                  |
-|  Data producers / analytics jobs / private applications                                           |
-|                 |                                                                                |
-|                 v                                                                                |
-|  +----------------------------- Private VCN -----------------------------+                       |
-|  | No Internet Gateway; service access stays private                     |                       |
-|  | Private endpoint subnet hosts Object Storage private endpoint          |                       |
-|  | Optional NAT Gateway supports controlled outbound updates if enabled   |                       |
-|  | Service Gateway supports private OCI service access                    |                       |
-|  +------------------+-------------------------------+--------------------+                       |
-|                     |                               |                                            |
-|                     | bucket private access          | stream private access when configured      |
-|                     v                               v                                            |
-|  +---------------------------+        +-------------------------------+                         |
-|  | Object Storage Bucket     |        | OCI Streaming                 |                         |
-|  | NoPublicAccess            |        | Stream Pool                   |                         |
-|  | versioning/events optional|        | Streams with partitions       |                         |
-|  | KMS key from Vault or var |        | Optional private endpoint     |                         |
-|  +-------------+-------------+        +---------------+---------------+                         |
-|                |                                      |                                         |
-|                v                                      v                                         |
-|        +---------------+                      +---------------+                                  |
-|        | Vault / KMS   | encrypts bucket and stream pool when keys are enabled                    |
-|        +---------------+                                                                          |
-|                                                                                                  |
-|  Traffic: private subnet workload -> private endpoint/service gateway -> Object Storage/Streaming.|
-|  Control: Terraform creates network first, then Vault/KMS, then bucket/private endpoint/streams.  |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Private Data Platform                                                                                    |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Private data compartment / selected region}                                                             |
+|         |                                                                                                |
+|         +--> [private endpoint VCN]                                                                      |
+|         |      no Internet Gateway; private subnet, NSGs, route tables, SGW, optional NAT                |
+|         |                                                                                                |
+|         +--> [Vault/KMS]                                                                                 |
+|         |      key path for bucket and stream encryption when enabled                                    |
+|         |                                                                                                |
+|         +--> [Object Storage bucket]                                                                     |
+|         |      NoPublicAccess -> private endpoint -> service gateway path                                |
+|         |                                                                                                |
+|         `--> [Streaming]                                                                                 |
+|                stream pool -> streams -> optional private endpoint -> optional KMS key                   |
+|                                                                                                          |
+| Data path: private workload subnet -> private endpoint or service gateway -> Object Storage / Streaming. |
+| Control flow: network first, Vault/KMS second, data services last.                                       |
+| Hand-off: private network IDs, bucket name, private endpoint ID, vault/key IDs, stream pool, and stream  |
+| IDs.                                                                                                     |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

@@ -23,28 +23,25 @@ Creates baseline IAM groups, dynamic groups, and policies suitable for CIS-align
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| CIS Basic Identity                                                                                |
-|                                                                                                  |
-|  Human administrators, break-glass users, automation principals                                    |
-|                 |                                                                                |
-|                 v                                                                                |
-|  +---------------------------- OCI IAM Home Region ----------------------------+                  |
-|  | Groups                                                                     |                  |
-|  | - default CIS-aligned admin, security, network, app, auditor groups         |                  |
-|  |                                                                            |                  |
-|  | Dynamic Groups                                                              |                  |
-|  | - workload/resource principal matching rules                                |                  |
-|  |                                                                            |                  |
-|  | Policies                                                                    |                  |
-|  | - group_names + dynamic_group_names -> tenancy/compartment permissions      |                  |
-|  +-------------------------------+--------------------------------------------+                  |
-|                                  | permissions gate all resource plane actions                    |
-|                                  v                                                                  |
-|                         Landing-zone compartments and OCI services                                |
-|                                                                                                  |
-|  Flow: create groups and dynamic groups first, then policies referencing those names.              |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| CIS Basic Identity                                                                                       |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {OCI IAM home region / target tenancy}                                                                   |
+|         |                                                                                                |
+|         +--> [groups module]         platform, security, network, workload, and auditor roles            |
+|         +--> [dynamic groups module] resource principals and workload automation identities              |
+|         `--> [policies module]       least-privilege statements scoped to approved compartments          |
+|                                                                                                          |
+| Control flow: named groups first, dynamic matching rules second, policy statements last.                 |
+| Trust boundary: human and resource principals receive only the scope described by the policy layer.      |
+| Hand-off: group IDs/names, dynamic group IDs/names, policy IDs, and statements for review.               |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

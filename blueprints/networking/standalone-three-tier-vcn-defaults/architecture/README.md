@@ -23,32 +23,33 @@ Creates a straightforward standalone three-tier workload VCN using opinionated d
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Standalone Three-Tier VCN Defaults                                                                |
-|                                                                                                  |
-|  Internet clients                                                                                 |
-|       |                                                                                            |
-|       v                                                                                            |
-|  +----------------------------- Workload VCN -----------------------------+                     |
-|  | Default CIDR from var.vcn_cidr_block                                   |                     |
-|  | Internet Gateway enabled                                               |                     |
-|  | NAT Gateway enabled                                                    |                     |
-|  | Service Gateway enabled                                                |                     |
-|  |                                                                       |                     |
-|  |  Web subnet  <----- public ingress through IGW                          |                     |
-|  |      |                                                                |                     |
-|  |      v                                                                |                     |
-|  |  App subnet  -----> outbound updates through NAT Gateway               |                     |
-|  |      |                                                                |                     |
-|  |      v                                                                |                     |
-|  |  DB subnet   -----> private OCI service access through Service Gateway |                     |
-|  +------------------------------+----------------------------------------+                     |
-|                                 |                                                               |
-|                                 v                                                               |
-|        Outputs: vcn_id, subnet_ids, route_table_ids, gateway_ids                                  |
-|                                                                                                  |
-|  Traffic: web -> app -> db for application tiers; private egress uses NAT/SGW instead of public IPs.|
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Standalone Three-Tier VCN Defaults                                                                       |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Workload compartment / selected region}                                                                 |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Workload VCN]                                                                                           |
+|         |-- [public web subnet]  -> route table -> Internet Gateway when enabled                         |
+|         |-- [private app subnet] -> route table -> NAT Gateway / Service Gateway                         |
+|         `-- [private db subnet]  -> route table -> private east-west only                                |
+|              |                                                                                           |
+|              +--> [security lists / NSGs] gate tier-to-tier traffic                                      |
+|              +--> [gateway set] IGW / NAT / SGW according to blueprint variables                         |
+|                                                                                                          |
+| Default stance: opinionated CIDRs, default subnet tiers, and default gateway behavior are supplied for   |
+| fast review.                                                                                             |
+| North-south: client -> web tier -> app tier -> database tier.                                            |
+| Service path: private subnets -> service gateway for OCI services; outbound updates use NAT when         |
+| enabled.                                                                                                 |
+| Hand-off: VCN, subnet, route table, security, and gateway IDs for workloads or later extensions.         |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components

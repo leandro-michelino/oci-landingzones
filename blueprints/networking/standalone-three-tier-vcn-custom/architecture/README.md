@@ -23,28 +23,32 @@ Creates a configurable standalone three-tier workload VCN with caller-controlled
 ## ASCII Architecture
 
 ```text
-+--------------------------------------------------------------------------------------------------+
-| Standalone Three-Tier VCN Custom                                                                  |
-|                                                                                                  |
-|  Internet clients / private workloads / OCI services                                              |
-|       |                       |                         |                                       |
-|       | IGW when enabled      | NAT when enabled        | SGW when enabled                       |
-|       v                       v                         v                                       |
-|  +--------------------------- Workload VCN ---------------------------+                         |
-|  | VCN CIDR blocks from var.vcn_cidr_blocks                            |                         |
-|  | DNS label from var.vcn_dns_label                                    |                         |
-|  |                                                                    |                         |
-|  |  public or private web subnet -> app subnet -> database subnet       |                         |
-|  |  additional/custom subnets from var.subnets                          |                         |
-|  |  route_tables and security_lists are caller-defined                  |                         |
-|  +---------------------------+----------------------------------------+                         |
-|                              |                                                                  |
-|                              v                                                                  |
-|          Downstream apps consume vcn_id, subnet_ids, route_table_ids, gateway_ids                 |
-|                                                                                                  |
-|  Traffic: exactly follows caller-defined subnet, route table, gateway, and security-list maps.     |
-|  Control: one spoke-vcn module owns all network resources for this standalone deployment.          |
-+--------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| Standalone Three-Tier VCN Custom                                                                         |
++----------------------------------------------------------------------------------------------------------+
+| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
+|                                                                                                          |
+| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
+|         |                    |                         |                                                 |
+|         | validates docs      | init/validate/plan      | OCI API calls                                  |
+|         v                    v                         v                                                 |
+| {Workload compartment / selected region}                                                                 |
+|         |                                                                                                |
+|         v                                                                                                |
+| [Workload VCN]                                                                                           |
+|         |-- [public web subnet]  -> route table -> Internet Gateway when enabled                         |
+|         |-- [private app subnet] -> route table -> NAT Gateway / Service Gateway                         |
+|         `-- [private db subnet]  -> route table -> private east-west only                                |
+|              |                                                                                           |
+|              +--> [security lists / NSGs] gate tier-to-tier traffic                                      |
+|              +--> [gateway set] IGW / NAT / SGW according to blueprint variables                         |
+|                                                                                                          |
+| Custom stance: caller controls CIDRs, subnet maps, route tables, gateways, and security-list behavior.   |
+| North-south: client -> web tier -> app tier -> database tier.                                            |
+| Service path: private subnets -> service gateway for OCI services; outbound updates use NAT when         |
+| enabled.                                                                                                 |
+| Hand-off: VCN, subnet, route table, security, and gateway IDs for workloads or later extensions.         |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ## Terraform Components
