@@ -17,6 +17,9 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   blueprint file completeness, and blueprint-local Ansible runner wiring.
 - Changed-scope validation entry point for focused blueprint, architecture,
   module, and Ansible edits.
+- Cost Optimization operations blueprint with cost-tracking tags, optional tag
+  defaults, budgets, notifications, optional Monitoring alarms, optional
+  Optimizer profiles, and FinOps IAM policy wiring.
 
 ### Changed
 

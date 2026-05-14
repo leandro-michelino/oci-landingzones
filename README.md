@@ -80,6 +80,7 @@ architecture, Terraform files, example tfvars, and local Ansible runners.
 | I need private service access only | [Standalone Private Endpoint Only](blueprints/networking/standalone-private-endpoint-only/) | Keeps traffic private with service gateway and private endpoint patterns. |
 | I need regulated posture | [CIS Level 1](blueprints/cis/level1/) or [CIS Level 2](blueprints/cis/level2/) | Uses the core landing zone with CIS-specific posture. |
 | I need app-team onboarding | [Workload Vending](blueprints/operating-entity/workload-vending/) | Creates a workload compartment boundary with scoped IAM. |
+| I need cost control | [Cost Optimization](blueprints/operations/cost-optimization/) | Adds cost tags, budgets, notifications, Optimizer profiles, and FinOps hand-offs. |
 | I need Kubernetes | [OKE Extension](blueprints/extensions/oke/) | Adds an OKE cluster and optional node pool to supplied network IDs. |
 | I need containers without Kubernetes | [Container Instances](blueprints/extensions/container-instances/) | Runs approved container images with private VNIC, NSGs, optional pull secrets, and no OKE control plane. |
 | I need private GenAI | [OCI Generative AI Private Landing Zone](blueprints/ai/genai-private/) | Adds a private GenAI endpoint, optional archive bucket, and IAM policy shell. |
@@ -99,6 +100,7 @@ Use this when you know the family, but not the exact blueprint yet.
 | Foundation and compliance | [Core Landing Zone](blueprints/core/) | [Foundation And Compliance](#foundation-and-compliance) |
 | Networking | [Hub-Spoke DRG And Three-Tier VCNs](blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/) | [Networking Deployments](#networking-deployments) |
 | Identity and entity onboarding | [Workload Vending](blueprints/operating-entity/workload-vending/) | [Identity And Operating Entity Deployments](#identity-and-operating-entity-deployments) |
+| Operations | [Cost Optimization](blueprints/operations/cost-optimization/) | [Operations Deployments](#operations-deployments) |
 | Service extensions | [OKE](blueprints/extensions/oke/) | [Extension Deployments](#extension-deployments) |
 | AI and DevOps | [OCI Generative AI Private Landing Zone](blueprints/ai/genai-private/) | [AI And DevOps Deployments](#ai-and-devops-deployments) |
 | Data, DR, and industry | [Private Data Platform](blueprints/data-platform/private-data-platform/) | [Data, DR, And Industry Deployments](#data-dr-and-industry-deployments) |
@@ -156,6 +158,12 @@ open folder -> read README.md -> review architecture/README.md -> fill tfvars ->
 | [Multi Operating Entities](blueprints/operating-entity/multi-operating-entities/) | You need several operating entity boundaries from one deployment. |
 | [Workload Vending](blueprints/operating-entity/workload-vending/) | You need repeatable app or workload onboarding with compartments and scoped policies. |
 
+### Operations Deployments
+
+| Deployment | Use It When |
+|---|---|
+| [Cost Optimization](blueprints/operations/cost-optimization/) | You need cost-tracking tags, tag defaults, budgets, alert recipients, FinOps notifications, optional Optimizer profiles, and a clean finance/platform hand-off. |
+
 ### Extension Deployments
 
 | Deployment | Use It When |
@@ -201,8 +209,9 @@ like this:
 | 2 | Deploy [Core](blueprints/core/) for the shared governance baseline. |
 | 3 | Deploy one [Networking](#networking-deployments) blueprint for the traffic model. |
 | 4 | Add [Operating Entity](#operating-entity-deployments) or workload vending patterns when ownership boundaries matter. |
-| 5 | Add [Extensions](#extension-deployments) such as Container Instances, OKE, WAF, Exadata, API Gateway, Streaming, Observability, OAC, or OIC. |
-| 6 | Run repo and security checks before merge or apply. |
+| 5 | Add [Operations](#operations-deployments) such as Cost Optimization when cost ownership and notification paths matter. |
+| 6 | Add [Extensions](#extension-deployments) such as Container Instances, OKE, WAF, Exadata, API Gateway, Streaming, Observability, OAC, or OIC. |
+| 7 | Run repo and security checks before merge or apply. |
 
 The longer walkthrough lives in `docs/DEPLOYMENT-GUIDE.md`.
 
@@ -213,6 +222,7 @@ The longer walkthrough lives in `docs/DEPLOYMENT-GUIDE.md`.
 | Core governance | Compartments, IAM, tagging, logging, monitoring, budgets, Cloud Guard, Vault/KMS, Security Zones, VSS, Events, and related controls. |
 | Networking | Standalone VCNs, hub-spoke, DRG, VPN, FastConnect, DNS, firewall, network appliance, ZPR, multicloud, and regional patterns. |
 | Operating model | Operating entity and workload vending patterns for team, business unit, or application ownership boundaries. |
+| Operations | Cost optimization with cost-tracking tags, tag defaults, budgets, notifications, optional Optimizer profiles, and FinOps access policy. |
 | Extensions | Optional Container Instances, OKE, OKE Service Mesh, WAF, Exadata, API Gateway, Streaming, Observability, OAC, and OIC blueprints. |
 | Data, DR, compliance, and industry | Autonomous Database, PostgreSQL, private data platform, FSDR, CIS, Zero Trust, SCCA-style, healthcare/PCI, and telco cloud-native shapes. |
 | Automation | Terraform for infrastructure and Ansible for local plan/apply/destroy orchestration. |

@@ -1,7 +1,5 @@
 # Deployment Guide
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This guide describes the intended deployment sequence. Every blueprint has real
 Terraform wiring now; use the enable flags and tfvars examples to decide which
 resources should be created in a specific tenancy.
@@ -331,19 +329,35 @@ Architecture notes live in each operating-entity blueprint's
 | Phase 2 - IAM | Reusable IAM modules composed by `blueprints/core/` and CIS wrappers | Covered through core, CIS Level 1, and CIS Level 2 validation. |
 | Phase 3 - Networking | All implemented folders under `blueprints/networking/` | Each implemented networking blueprint is initialized and validated without backend. |
 | Phase 4 - Operating entities | `blueprints/operating-entity/` and child onboarding patterns | Single entity, multi-entity, and workload vending are initialized and validated without backend. |
-| Phase 5 - Extensions | `blueprints/extensions/oke`, `apigw`, `streaming`, `waf`, `exadata`, `observability`, `oic`, `oac`, and `oke-service-mesh` | Each extension blueprint is initialized and validated without backend. |
-| Phase 6 - Data, AI, DevOps, and regulated services | `blueprints/data-platform/autonomous-database`, `blueprints/ai/genai-private`, `blueprints/devops/oci-devops-pipeline`, and `blueprints/compliance/healthcare-pci` | Service-specific blueprints are initialized and validated without backend. |
+| Phase 5 - Operations | `blueprints/operations/cost-optimization` | Cost tags, budgets, notifications, Optimizer profiles, and FinOps policy wiring are initialized and validated without backend. |
+| Phase 6 - Extensions | `blueprints/extensions/oke`, `apigw`, `streaming`, `waf`, `exadata`, `observability`, `oic`, `oac`, and `oke-service-mesh` | Each extension blueprint is initialized and validated without backend. |
+| Phase 7 - Data, AI, DevOps, and regulated services | `blueprints/data-platform/autonomous-database`, `blueprints/ai/genai-private`, `blueprints/devops/oci-devops-pipeline`, and `blueprints/compliance/healthcare-pci` | Service-specific blueprints are initialized and validated without backend. |
 
 Identity, compliance, data platform, disaster recovery, and industry folders are
 now included in automated Terraform validation with the rest of the blueprint
 catalog.
 
-## Phase 5 - Extensions
+## Phase 5 - Operations
+
+Operations blueprints sit after core and before most workload add-ons. They
+help the landing zone stay understandable after resources start to multiply.
+
+Implemented Phase 5 operations entry points:
+
+- `blueprints/operations/cost-optimization/` creates cost-tracking tags, optional
+  tag defaults, budgets, budget alert rules, FinOps ONS notifications, optional
+  Monitoring alarms, optional Optimizer profiles, and optional FinOps IAM
+  policy statements.
+
+Keep real budget amounts, recipients, webhook targets, Optimizer enrollment IDs,
+and IAM group names in local ignored tfvars files.
+
+## Phase 6 - Extensions
 
 Deploy extensions only after core and the required networking foundation exist.
 Each extension must include its own architecture notes.
 
-Implemented Phase 5 extension entry points:
+Implemented Phase 6 extension entry points:
 
 - `blueprints/extensions/oke/` creates an optional OKE cluster and optional node
   pool. Both are disabled by default.
@@ -372,7 +386,7 @@ ASCII architecture, Terraform, tfvars, and Ansible runner contract.
 Keep real subnet, VCN, load balancer, availability domain, image, and SSH values
 in local ignored tfvars files. The committed examples show the shape only.
 
-## Phase 6 - Ansible Orchestration
+## Ansible Orchestration
 
 Ansible is the local orchestration layer for bootstrap checks, repository
 validation, Terraform plan, guarded apply, guarded destroy, and ephemeral test

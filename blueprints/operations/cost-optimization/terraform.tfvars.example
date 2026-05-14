@@ -1,0 +1,65 @@
+# Example values only. Copy to ignored terraform.tfvars and replace with real tenancy values.
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "eu-madrid-1"
+home_region       = "eu-madrid-1"
+org               = "acme"
+environment       = "prod"
+region_key        = "mad"
+compartment_ocid  = "ocid1.compartment.oc1..example"
+
+default_cost_center = "shared-services"
+default_owner       = "platform"
+
+enable_tagging      = true
+enable_tag_defaults = true
+
+tag_default_compartment_ids = {
+  governance = "ocid1.compartment.oc1..governance"
+  workloads  = "ocid1.compartment.oc1..workloads"
+}
+
+required_tag_defaults = [
+  "CostCenter",
+  "Owner",
+]
+
+enable_budgets        = true
+default_budget_amount = 5000
+
+default_budget_alert_recipients = [
+  "finops@example.com",
+]
+
+budgets = {
+  workloads = {
+    amount  = 2500
+    targets = ["ocid1.compartment.oc1..workloads"]
+    alert_rules = {
+      eighty_percent = {
+        recipients = "finops@example.com,platform@example.com"
+        threshold  = 80
+        message    = "Workloads budget is over 80 percent."
+      }
+    }
+  }
+}
+
+enable_notifications = true
+
+notification_subscriptions = {
+  finops_email = {
+    protocol = "EMAIL"
+    endpoint = "finops@example.com"
+  }
+}
+
+enable_optimizer_profiles         = true
+optimizer_target_compartment_ids  = ["ocid1.compartment.oc1..workloads"]
+optimizer_aggregation_interval_in_days = 30
+
+finops_policy_statements = [
+  "Allow group finops-admins to manage budgets in tenancy",
+  "Allow group finops-admins to read usage-reports in tenancy",
+  "Allow group finops-admins to manage ons-topics in compartment id ocid1.compartment.oc1..example",
+]

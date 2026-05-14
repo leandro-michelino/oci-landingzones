@@ -1,7 +1,5 @@
 # OCI Landing Zones - Implementation Roadmap
 
-Author: Leandro Michelino | ACE | <leandro.michelino@oracle.com>
-
 This document tracks planned blueprint work. Implemented blueprints are listed
 briefly - their full specs live in the individual blueprint folders. Only
 blueprints without a folder yet carry detailed planning notes here.
@@ -43,71 +41,13 @@ operator guide, architecture diagram, and Terraform / Ansible workflow.
 | PostgreSQL landing zone | `blueprints/data-platform/postgresql/` |
 | Healthcare / PCI compliance | `blueprints/compliance/healthcare-pci/` |
 | OKE service mesh | `blueprints/extensions/oke-service-mesh/` |
+| Cost optimization | `blueprints/operations/cost-optimization/` |
 
 ---
 
 ## Phase 4 - Specialized (Next Up)
 
 Remaining blueprints that complete the current specialized catalog.
-
----
-
-### Cost Optimization
-
-| Attribute | Value |
-| --- | --- |
-| Folder | `blueprints/operations/cost-optimization/` |
-| New family | `blueprints/operations/` |
-| Depends on | Core Landing Zone (tagging, budgets baseline) |
-
-**Why this exists.**
-Multi-team tenancies without explicit cost attribution drift into uncontrolled
-spend. This blueprint turns cost governance from a manual review into an
-automated control loop.
-
-**What it deploys.**
-
-| Resource | Notes |
-| --- | --- |
-| Defined tag namespace | cost-centre and owner tags with tag defaults |
-| Per-compartment budgets | Configurable thresholds per compartment |
-| OCI Optimizer subscriptions | Recommendation categories and actions |
-| Monitoring composite alarm | Budget overrun alert |
-| ONS topic | Email or webhook notification on threshold breach |
-
-**ASCII Architecture.**
-
-```text
- Tag defaults (cost-centre / owner)
-       |
-       v (enforced on new resources)
- Compartment budgets
-       |
-       v (threshold crossed)
- Monitoring composite alarm
-       |
-       v
- ONS topic -> Email / Webhook
-       |
-       v
- OCI Optimizer (recommendations feed)
-```
-
-**Inputs to decide.**
-
-- Tag taxonomy: which cost-centre values are valid
-- Budget amounts and alert thresholds per compartment
-- Notification destinations (email, PagerDuty, Slack webhook)
-- Optimizer recommendation categories to subscribe to
-
-**Outputs and hand-off.**
-
-```text
-tag_namespace_id
-budget_ids
-alarm_id
-ons_topic_id
-```
 
 ---
 
@@ -1397,10 +1337,10 @@ Core Landing Zone (implemented)
   |   |--- blueprints/extensions/container-instances/
   |   |--- blueprints/data-platform/postgresql/
   |   |--- blueprints/compliance/healthcare-pci/
-  |   `--- blueprints/extensions/oke-service-mesh/
+  |   |--- blueprints/extensions/oke-service-mesh/
+  |   `--- blueprints/operations/cost-optimization/
   |
   |-- Phase 4 (next up) ----------------------------------------------
-  |   |--- blueprints/operations/cost-optimization/
   |   `--- blueprints/data-platform/apex-adw/
   |
   |-- Phase 5 (AI/ML Platform) ---------------------------------------
@@ -1449,4 +1389,4 @@ New families introduced by this roadmap:
 | --- | --- | --- |
 | `blueprints/ai/` | `genai-private/` | Implemented |
 | `blueprints/devops/` | `oci-devops-pipeline/` | Implemented |
-| `blueprints/operations/` | `cost-optimization/` | Planned (Phase 4) |
+| `blueprints/operations/` | `cost-optimization/` | Implemented |

@@ -67,7 +67,7 @@ folder.
 | Extensions | Streaming extension | `blueprints/extensions/streaming/` | Implementing |
 | Extensions | WAF extension | `blueprints/extensions/waf/` | Implementing |
 | Extensions | Container Instances | `blueprints/extensions/container-instances/` | Implementing |
-| Operations | Cost optimization | `blueprints/operations/cost-optimization/` | Planned |
+| Operations | Cost optimization | `blueprints/operations/cost-optimization/` | Implementing |
 | Data platform | Oracle APEX on Autonomous Database | `blueprints/data-platform/apex-adw/` | Planned |
 | AI | OCI Data Science (notebooks, model catalog, deployment) | `blueprints/ai/data-science/` | Planned |
 | AI | AI Agents - RAG landing zone (agents, knowledge base, OpenSearch) | `blueprints/ai/agents/` | Planned |

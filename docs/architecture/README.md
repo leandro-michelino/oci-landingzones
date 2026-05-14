@@ -39,6 +39,7 @@ architecture for a deployable pattern still lives beside that pattern at
 |      +--> blueprints/networking/*                                              |
 |      +--> blueprints/identity/*                                                |
 |      +--> blueprints/operating-entity/*                                        |
+|      +--> blueprints/operations/*                                              |
 |      +--> blueprints/compliance/*                                              |
 |      +--> blueprints/extensions/*                                              |
 |      +--> blueprints/data-platform/*                                           |

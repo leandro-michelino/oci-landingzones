@@ -52,7 +52,7 @@
     <text y="146" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="500" fill="#475569">Modules and automation for OCI patterns that come up again.</text>
 
     <!-- Stats line -->
-    <text y="163" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#94a3b8">40+ blueprints &#183; 12 families &#183; AI &#183; DevOps &#183; phases 5&#8211;8 on the roadmap</text>
+    <text y="163" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#94a3b8">45+ blueprints &#183; 12 families &#183; AI &#183; DevOps</text>
 
     <!-- Author -->
     <text y="178" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#94a3b8">Leandro Michelino &#183; ACE &#183; Oracle</text>
