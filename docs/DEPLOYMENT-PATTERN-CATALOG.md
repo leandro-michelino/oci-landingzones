@@ -81,6 +81,33 @@ folder.
 | Industry | Financial services landing zone (PCI DSS + SOC 2 + Data Safe) | `blueprints/industry/financial-services/` | Planned |
 | Industry | HPC / GPU cluster (RDMA, cluster network, NFS) | `blueprints/industry/hpc-gpu/` | Planned |
 | Compliance | Public sector / FedRAMP alignment | `blueprints/compliance/public-sector/` | Planned |
+| Networking | Public edge and ingress zone (DNS, WAF, public LB, cert, route-to-app) | `blueprints/networking/public-edge-ingress/` | Planned |
+| Extensions | Event-driven application platform (Events, Service Connector Hub, Streaming, Functions, Notifications) | `blueprints/extensions/event-driven-platform/` | Planned |
+| Extensions | Batch and queue workers (instance pool or container instances, queue, retry) | `blueprints/extensions/batch-workers/` | Planned |
+| Data platform | Object Storage data lakehouse (bronze/silver/gold zones, KMS, lifecycle, private endpoint) | `blueprints/data-platform/object-storage-lakehouse/` | Planned |
+| Data platform | OpenSearch search and vector platform | `blueprints/data-platform/opensearch/` | Planned |
+| Extensions | Redis Cache landing zone | `blueprints/extensions/redis-cache/` | Planned |
+| Operations | Ransomware-resilient backup (backup policies, immutable archive, restore evidence) | `blueprints/operations/backup-resilience/` | Planned |
+| Industry | WebLogic / Java app platform (LB, app tier, database, logs, bastion) | `blueprints/industry/weblogic-platform/` | Planned |
+| Industry | VMware / hybrid migration zone (FastConnect or VPN, DNS, migration segments) | `blueprints/industry/vmware-hybrid-migration/` | Planned |
+| Industry | OCI Secure Desktops (VDI, private network, IAM, session policies) | `blueprints/industry/secure-desktops/` | Planned |
+| Data platform | OCI NoSQL Database (key-value / document store, private endpoint, IAM) | `blueprints/data-platform/nosql/` | Planned |
+| Data platform | OCI Data Flow (managed Spark, private subnet, Object Storage lake, IAM) | `blueprints/data-platform/data-flow/` | Planned |
+| Data platform | OCI Data Integration (ETL/ELT pipelines, workspace, private endpoint) | `blueprints/data-platform/data-integration/` | Planned |
+| Compliance | OCI Data Safe (database activity monitoring, auditing, data masking, assessment) | `blueprints/compliance/data-safe/` | Planned |
+| Extensions | OCI Certificates Service (managed PKI / CA, TLS lifecycle, Vault integration) | `blueprints/extensions/certificates/` | Planned |
+| AI | OCI AI Services (Vision, Language, Speech, Document Understanding, Anomaly Detection) | `blueprints/ai/ai-services/` | Planned |
+| Industry | Oracle Cloud VMware Solution (OCVS, baremetal VMware, private connectivity, DNS) | `blueprints/industry/ocvs/` | Planned |
+| Extensions | OCI Process Automation (low-code workflow, Oracle SaaS integration, IAM) | `blueprints/extensions/process-automation/` | Planned |
+| Networking | OCI Network Load Balancer (Layer 4 TCP/UDP, private backend, health checks) | `blueprints/networking/network-load-balancer/` | Planned |
+| Extensions | OCI Email Delivery (SMTP relay, approved sender, IAM, NSG) | `blueprints/extensions/email-delivery/` | Planned |
+| Compliance | OCI Threat Intelligence (IoC feeds, Cloud Guard integration, event rules) | `blueprints/compliance/threat-intelligence/` | Planned |
+| AI | GenAI multi-model gateway (API Gateway routing, per-team quotas, cost tagging, audit log) | `blueprints/ai/genai-gateway/` | Planned |
+| AI | GenAI fine-tuning and dedicated AI cluster (training data bucket, custom model endpoint) | `blueprints/ai/genai-fine-tuning/` | Planned |
+| AI | GenAI guardrails and observability (PII redaction, token alarms, audit trail, Cloud Guard) | `blueprints/ai/genai-guardrails/` | Planned |
+| AI | Document intelligence pipeline (Document Understanding + GenAI, intake/output buckets) | `blueprints/ai/document-intelligence/` | Planned |
+| AI | Embedding and vector ingestion pipeline (chunking, GenAI embedding, OpenSearch index) | `blueprints/ai/embedding-pipeline/` | Planned |
+| AI | Multi-agent orchestration (orchestrator + specialist agents, Streaming, tool registry, audit) | `blueprints/ai/multi-agent/` | Planned |
 
 ## Selection Notes
 
@@ -93,6 +120,12 @@ folder.
   mapping drives the design.
 - Use data platform and industry patterns when the workload shape needs its own
   landing zone conventions.
+- Use extension-only mode when the customer already has the base OCI estate and
+  only needs one add-on service. Supply existing compartment, network, service,
+  and IAM identifiers through local tfvars.
+- Use base-plus-extension mode when this repo should create the foundation
+  first. Deploy Core or CIS, Networking, optional ownership and operations
+  blueprints, then pass their outputs into the selected extension.
 - Use a single `blueprints/...` folder when consuming one architecture. The
   blueprint's pinned Git module sources fetch shared modules during
   `terraform init`.

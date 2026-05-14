@@ -160,6 +160,9 @@ and scoped IAM policy hand-offs.
 
 ## Operational Boundaries
 
+- This extension can run extension-only with supplied brownfield OCI IDs, or as
+  base-plus-extension using outputs from core, networking, ownership, or
+  operations blueprints.
 - Keep customer-specific OCIDs, DNS names, event filters, image URLs, IAM group
   names, contacts, and secrets in ignored local tfvars or approved pipeline
   variables.

@@ -26,6 +26,10 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Oracle Functions extension blueprint with optional image repository,
   Functions application, image-based functions, API Gateway routes, Events
   triggers, IAM policy statements, and a small Python FDK sample.
+- Phase 10 roadmap section for OCI service-gap candidates, including NoSQL,
+  Data Safe, Secure Desktops, Data Flow, Data Integration, Certificates,
+  AI Services, OCVS, Process Automation, Network Load Balancer, Email Delivery,
+  Threat Intelligence, and follow-on backlog patterns.
 
 ### Changed
 
@@ -59,6 +63,12 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   so blueprint-local runners resolve shared roles consistently.
 - Replaced the optional `tfsec` validation path with Trivy config scanning and
   added explicit scanner configs for TFLint, Checkov, Trivy, and Ansible Lint.
+- Refreshed repository documentation around the Oracle Functions blueprint,
+  including variable references, security expectations, and blueprint
+  implementation checklist guidance.
+- Clarified customer usage paths for extension-only deployments and full
+  base-plus-extension deployments across the main guide, runbook, catalog, and
+  architecture index.
 
 ### Removed
 

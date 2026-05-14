@@ -78,7 +78,12 @@ and still run `terraform init` from that folder.
 choose blueprint
   |
   v
-sparse-checkout only that blueprint folder
+choose customer path
+  |-- extension-only: bring existing compartment/network/service IDs
+  `-- base-plus-extension: deploy base outputs before extension inputs
+  |
+  v
+sparse-checkout only the needed blueprint folders
   |
   v
 read blueprint README.md

@@ -110,8 +110,32 @@ commands launched through the repository scripts or Ansible roles.
    Ansible check.
 7. Run `./scripts/validate-all.sh` before final release or when shared
    behavior changed.
-8. Update `docs/DEPLOYMENT-PATTERN-CATALOG.md` and the root `README.md` when
-   the blueprint should be visible in the deployment menu.
+8. Update `docs/DEPLOYMENT-PATTERN-CATALOG.md`, `docs/ROADMAP.md`,
+   `docs/DEPLOYMENT-GUIDE.md`, `VARIABLES.md`, `RELEASE-NOTES.md`, and the
+   root `README.md` when the blueprint should be visible in the deployment
+   menu or introduces new operator-facing inputs.
+
+## Plan Extension Adoption
+
+Use this when a customer asks whether they can consume only an extension or
+should deploy the full base first.
+
+1. Choose extension-only when compartments, IAM boundaries, VCNs, subnets, NSGs,
+   service dependencies, and policy ownership already exist outside this repo.
+2. Choose base-plus-extension when this repo should create the shared
+   governance, networking, ownership, and operations foundation before the
+   add-on service.
+3. For extension-only, sparse-checkout the extension folder, add
+   `ansible/roles/terraform_runner` only when local Ansible runners are needed,
+   and populate local tfvars with existing OCIDs and service values.
+4. For base-plus-extension, deploy Core or CIS, Networking, optional Operating
+   Entity or Workload Vending, optional Operations, then pass reviewed outputs
+   into the extension tfvars.
+5. Review the extension `architecture/README.md` before apply so trust
+   boundaries, public exposure, IAM statements, DNS, certificates, image tags,
+   and event triggers are intentional.
+6. Keep remote state and cross-blueprint output wiring in the customer pipeline
+   or environment layer, not as committed local tfvars.
 
 ## Clean Generated Files
 

@@ -140,7 +140,13 @@ customer-facing or shared environments.
 
 ## Deployment Order
 
-1. Deploy core and the required network foundation first.
+This extension supports extension-only and base-plus-extension customer paths.
+For extension-only use, supply existing compartment, stream pool, subnet, NSG,
+KMS, and private endpoint values in local tfvars and run this folder directly.
+For base-plus-extension use, deploy core and networking first, then pass their
+outputs here.
+
+1. Confirm the target compartment, network/service dependencies, and ownership model.
 2. Confirm service-specific quotas, cost, and dependencies.
 3. Populate `terraform.tfvars` with subnet, compartment, and service values.
 4. Run plan and review optional resource enable flags.

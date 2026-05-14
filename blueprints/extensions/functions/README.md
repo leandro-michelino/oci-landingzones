@@ -192,7 +192,13 @@ customer-facing or shared environments.
 
 ## Deployment Order
 
-1. Deploy core and the required private networking foundation first.
+This extension supports extension-only and base-plus-extension customer paths.
+For extension-only use, supply existing compartment, subnet, NSG, repository,
+gateway, event, and IAM values in local tfvars and run this folder directly.
+For base-plus-extension use, deploy core and private networking first, then pass
+their outputs here.
+
+1. Confirm the target compartment, network/service dependencies, and ownership model.
 2. Confirm subnet routing, NSGs, service gateway or NAT behavior, and registry
    access for the function runtime.
 3. Build and push the function image to the approved OCIR repository.

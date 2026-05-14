@@ -123,7 +123,13 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 
 ## Deployment Order
 
-1. Deploy core and the required network foundation first.
+This extension supports extension-only and base-plus-extension customer paths.
+For extension-only use, supply existing compartment, subnet, NSG, image, and
+registry values in local tfvars and run this folder directly. For
+base-plus-extension use, deploy core and networking first, then pass their
+outputs here.
+
+1. Confirm the target compartment, network/service dependencies, and ownership model.
 2. Confirm the target subnet, NSGs, image registry, and image pull secret approach.
 3. Populate `terraform.tfvars` with real values from approved sources.
 4. Run plan and review container image, VNIC, NSGs, public IP setting, and IAM policy statements.

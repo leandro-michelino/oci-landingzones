@@ -55,6 +55,9 @@ documentation.
 
 Do not add real OCI resources or apply Terraform for a blueprint until its local
 architecture notes describe the intended design, scope, and review assumptions.
+For extension blueprints, document both usage modes when they apply:
+extension-only with existing customer OCIDs and base-plus-extension with outputs
+from core, networking, ownership, or operations blueprints.
 
 ## Pull Request Checklist
 

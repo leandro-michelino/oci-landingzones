@@ -27,6 +27,7 @@ folders are where you review and run the deployment.
 | Find the best deployment folder quickly | [Choose A Deployment](#choose-a-deployment) |
 | Walk through the operator flow | [Customer Flow](#customer-flow) |
 | Download only one deployment instead of the whole repo | [Use One Blueprint Only](docs/DEPLOYMENT-GUIDE.md#using-a-single-blueprint) |
+| Add only an extension to an existing tenancy | [Use Extensions Only](#use-extensions-only-or-with-a-base) |
 | Compare the big families before choosing | [Deployment Categories](#deployment-categories) |
 | See every blueprint with direct links | [Deployment Menu](#deployment-menu) |
 | Build a complete landing zone from several pieces | [Build A Full Landing Zone](#build-a-full-landing-zone) |
@@ -202,10 +203,28 @@ open folder -> read README.md -> review architecture/README.md -> fill tfvars ->
 
 For a longer pattern-by-pattern catalog, see `docs/DEPLOYMENT-PATTERN-CATALOG.md`.
 
+## Use Extensions Only Or With A Base
+
+Extensions are not locked to one customer journey. They can be used on their
+own against existing OCI resources, or layered on top of the core and networking
+blueprints when you are building the full landing zone here.
+
+| Customer Path | Use It When | How It Works |
+|---|---|---|
+| Extensions only | The customer already has compartments, VCNs, subnets, load balancers, gateways, registries, or databases. | Open only the extension folder, fill local `terraform.tfvars` with existing OCIDs and reviewed service values, then run plan/apply from that folder. |
+| Base plus extensions | The customer wants this repo to create the foundation and the add-on service. | Deploy Core, Networking, optional Operating Entity and Operations blueprints first, then pass their output IDs into the selected extension tfvars. |
+
+The extension READMEs call out the service-specific inputs to bring from either
+path. For the longer walkthrough, see
+`docs/DEPLOYMENT-GUIDE.md#using-extensions-only` and
+`docs/DEPLOYMENT-GUIDE.md#using-base-plus-extensions`.
+
 ## Build A Full Landing Zone
 
-For a fuller environment, deploy only what you actually need. A sensible order usually looks
-like this:
+For a fuller environment, deploy only what you actually need. The full path is
+base plus extensions: first create or identify the shared foundation, then layer
+on the services the customer actually wants. A sensible order usually looks like
+this:
 
 | Step | Deployment |
 |---|---|
@@ -451,6 +470,7 @@ compose. Remote state belongs to deployable blueprints, not shared modules.
 | `docs/DEPLOYMENT-GUIDE.md` | Deployment sequence and operating notes. |
 | `docs/DEPLOYMENT-PATTERN-CATALOG.md` | Blueprint catalog and selection notes. |
 | `docs/architecture/README.md` | Repository-level ASCII architecture and documentation contract. |
+| `VARIABLES.md` | Shared variable reference plus notable blueprint-specific inputs. |
 | `docs/CIS-PROFILES.md` | CIS profile behavior. |
 | `docs/ARCH-MAPPING-CIS.md` | CIS mapping notes. |
 | `docs/NAMING-CONVENTIONS.md` | Naming standard. |

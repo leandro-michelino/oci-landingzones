@@ -122,6 +122,34 @@ READMEs may define additional variables for local behavior.
 | `enable_exadata_infrastructure` | `bool` | For Exadata | Creates Exadata Cloud Infrastructure when explicitly enabled. Disabled by default. |
 | `availability_domain` | `string` | For Exadata | Availability domain for Exadata placement. |
 | `shape` | `string` | For Exadata | Exadata infrastructure shape. |
+| `enable_container_repository` | `bool` | For Oracle Functions | Creates an Artifact Registry container repository for function images. Disabled by default. |
+| `repository_name` | `string` | For Oracle Functions | Repository leaf name used by the default Functions image repository path. |
+| `repository_display_name` | `string` | For Oracle Functions | Optional full repository display name, including slash-separated paths when needed. |
+| `repository_url` | `string` | For Oracle Functions | Existing OCIR-compatible repository URL when Terraform does not create the repository. |
+| `repository_is_immutable` | `bool` | For Oracle Functions | Makes function image tags immutable when the repository is created by Terraform. |
+| `repository_is_public` | `bool` | For Oracle Functions | Makes the repository public. Keep this disabled unless public image access is intentional. |
+| `enable_application` | `bool` | For Oracle Functions | Creates or references a Functions application. Disabled by default. |
+| `create_application` | `bool` | For Oracle Functions | Creates the Functions application instead of using `application_id`. |
+| `application_id` | `string` | For Oracle Functions | Existing Functions application OCID used when `create_application` is false. |
+| `application_subnet_ids` | `list(string)` | For Oracle Functions | Subnet OCIDs used by the Functions application runtime. Required when creating the application. |
+| `application_network_security_group_ids` | `set(string)` | For Oracle Functions | NSG OCIDs attached to the Functions application. |
+| `application_config` | `map(string)` | For Oracle Functions | Application-level configuration values exposed to functions. |
+| `image_policy_enabled` | `bool` | For Oracle Functions | Enables signed image policy for the Functions application. |
+| `image_policy_kms_key_ids` | `set(string)` | For Oracle Functions | KMS key OCIDs trusted by the signed image policy. |
+| `enable_functions` | `bool` | For Oracle Functions | Creates function resources from approved image URLs. Disabled by default. |
+| `functions` | `map(object)` | For Oracle Functions | Functions keyed by logical name, including image URL, memory, timeout, config, tracing, concurrency, and async destinations. |
+| `enable_api_gateway` | `bool` | For Oracle Functions | Creates or references an API Gateway for function routes. Disabled by default. |
+| `create_gateway` | `bool` | For Oracle Functions | Creates the API Gateway instead of using `gateway_id`. |
+| `gateway_id` | `string` | For Oracle Functions | Existing API Gateway OCID used when `create_gateway` is false. |
+| `gateway_endpoint_type` | `string` | For Oracle Functions | API Gateway endpoint type, `PRIVATE` or `PUBLIC`. Defaults to `PRIVATE`. |
+| `gateway_subnet_id` | `string` | For Oracle Functions | Subnet OCID for API Gateway placement when creating a gateway. |
+| `gateway_network_security_group_ids` | `set(string)` | For Oracle Functions | NSG OCIDs for the API Gateway. |
+| `enable_api_gateway_deployment` | `bool` | For Oracle Functions | Creates an API Gateway deployment that routes to functions. Disabled by default. |
+| `default_api_function_key` | `string` | For Oracle Functions | Function key used to create the default route. Must match a key in `functions`. |
+| `api_routes` | `map(object)` | For Oracle Functions | API Gateway routes keyed by logical name, each pointing at exactly one `function_key` or `function_id`. |
+| `enable_event_rules` | `bool` | For Oracle Functions | Creates OCI Events rules that invoke functions. Disabled by default. |
+| `event_rules` | `map(object)` | For Oracle Functions | Events rules keyed by logical name, with FAAS actions pointing at `function_key` or `function_id`. |
+| `policy_statements` | `list(string)` | For Oracle Functions | Optional IAM policy statements for Functions, repository, gateway, Events, deployers, and invokers. |
 
 ## Security And Governance
 

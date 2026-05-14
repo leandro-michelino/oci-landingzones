@@ -81,6 +81,9 @@ These notes expand the diagram with the design details that usually matter durin
 
 ## Operational Boundaries
 
+- This extension can run extension-only with supplied brownfield OCI IDs, or as
+  base-plus-extension using outputs from core, networking, ownership, or
+  operations blueprints.
 - Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
 - Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
 - Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.

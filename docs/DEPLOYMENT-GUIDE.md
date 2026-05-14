@@ -187,6 +187,90 @@ new release tag in the same commit that will be tagged. Avoid `?ref=main` for
 customer-facing blueprints because it makes copied architecture folders change
 under users without review.
 
+## Using Extensions Only
+
+Use this path when the customer already has the base landing-zone pieces and
+only wants one extension from this repository. In this mode, the extension
+blueprint is the whole deployment. It does not need the core blueprint to run,
+as long as the customer supplies the existing OCI identifiers the extension
+requires.
+
+Typical extension-only inputs are existing compartment OCIDs, VCN IDs, subnet
+IDs, NSG IDs, load balancer IDs, gateway IDs, registry image URLs, database
+OCIDs, certificate IDs, identity group names, and policy scope decisions. Keep
+those values in ignored local `terraform.tfvars` or approved pipeline variables.
+
+```text
+existing customer tenancy
+  |
+  |-- existing compartments / IAM / tags
+  |-- existing VCNs / subnets / NSGs / gateways
+  |-- existing service dependencies, when required
+  |
+  `-- selected extension folder
+        |-- terraform.tfvars.example -> terraform.tfvars
+        |-- terraform init && terraform plan
+        `-- optional ansible/plan.yml and guarded ansible/apply.yml
+```
+
+Sparse-checkout just the extension and, if Ansible is needed, the shared runner
+role:
+
+```bash
+git clone --filter=blob:none --sparse https://github.com/leandro-michelino/oci-landingzones.git
+cd oci-landingzones
+
+git sparse-checkout set \
+  blueprints/extensions/functions \
+  ansible/roles/terraform_runner
+
+cd blueprints/extensions/functions
+cp terraform.tfvars.example terraform.tfvars
+```
+
+Review the extension README for the exact brownfield hand-off. For example,
+Functions needs application subnet IDs, image URLs, optional API Gateway values,
+Events conditions, and IAM statements; WAF needs an existing load balancer or
+web application target; OKE needs VCN and subnet IDs.
+
+## Using Base Plus Extensions
+
+Use this path when the customer wants this repository to create the foundation
+and then add services on top. In this mode, deploy the base first and pass its
+outputs into the extension tfvars. The hand-off is explicit: outputs from one
+blueprint become reviewed inputs to the next one.
+
+```text
+Core or CIS baseline
+  |
+  v
+Networking blueprint
+  |
+  v
+Operating Entity / Workload Vending, when ownership boundaries matter
+  |
+  v
+Operations, when cost ownership and notifications matter
+  |
+  v
+Selected extensions
+```
+
+Typical base-plus-extension hand-offs:
+
+| Source | Values The Extension Usually Needs |
+|---|---|
+| Core or CIS | Tenancy, home region, compartments, governance tags, IAM policy scope. |
+| Networking | VCN IDs, subnet IDs, NSG IDs, gateway or route context, private endpoint decisions. |
+| Operating Entity | Workload compartment OCIDs and delegated group names. |
+| Operations | Budget, alerting, notification, and cost-owner context. |
+| Service blueprint | Database OCIDs, load balancer OCIDs, registry image URLs, certificates, or endpoint outputs. |
+
+Remote state can be used by a customer pipeline, but the reusable blueprint
+folders do not force a production backend. That keeps sparse-checkout and local
+review simple while still allowing a full deployment pipeline to wire outputs
+through a controlled state or variable hand-off.
+
 ## Phase 1 - Core Structure
 
 Deploy the core blueprint first. The implemented foundation creates the landing
@@ -354,8 +438,11 @@ and IAM group names in local ignored tfvars files.
 
 ## Phase 6 - Extensions
 
-Deploy extensions only after core and the required networking foundation exist.
-Each extension must include its own architecture notes.
+Extensions support two customer paths. For extension-only brownfield use,
+identify the existing compartment, network, service, and IAM values and run the
+extension folder directly. For base-plus-extension use, deploy core and the
+required networking foundation first, then pass their outputs into the extension
+tfvars. Each extension must include its own architecture notes.
 
 Implemented Phase 6 extension entry points:
 
