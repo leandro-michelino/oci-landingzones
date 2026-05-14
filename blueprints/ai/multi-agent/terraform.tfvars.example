@@ -1,0 +1,28 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "us-ashburn-1"
+home_region       = "us-ashburn-1"
+org               = "acme"
+environment       = "dev"
+region_key        = "iad"
+
+create_buckets               = false
+create_stream_pool           = false
+create_task_stream           = false
+create_knowledge_base        = false
+create_orchestrator_agent    = false
+create_orchestrator_endpoint = false
+
+opensearch_cluster_id   = "ocid1.opensearchcluster.oc1..example"
+orchestrator_model_id   = "ocid1.generativeaimodel.oc1..example"
+routing_instruction     = "Route requests to the most suitable specialist agent."
+
+specialist_agents = {
+  search = {
+    description = "Search and retrieval specialist."
+  }
+}
+
+agent_tools = {}
+policy_statements = []

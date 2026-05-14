@@ -150,6 +150,44 @@ READMEs may define additional variables for local behavior.
 | `enable_event_rules` | `bool` | For Oracle Functions | Creates OCI Events rules that invoke functions. Disabled by default. |
 | `event_rules` | `map(object)` | For Oracle Functions | Events rules keyed by logical name, with FAAS actions pointing at `function_key` or `function_id`. |
 | `policy_statements` | `list(string)` | For Oracle Functions | Optional IAM policy statements for Functions, repository, gateway, Events, deployers, and invokers. |
+| `create_archive_bucket` | `bool` | For Event-Driven Platform | Creates an event archive bucket. Disabled by default. |
+| `create_stream_pool` | `bool` | For Event-Driven Platform | Creates a stream pool instead of using `stream_pool_id`. |
+| `create_topic` | `bool` | For Event-Driven Platform | Creates an ONS notification topic instead of using `topic_id`. |
+| `create_service_connector` | `bool` | For Event-Driven Platform | Creates Service Connector Hub wiring from a stream to an archive/function/topic/stream target. |
+
+## AI And GenAI
+
+| Variable | Type | Required | Description |
+|---|---|---:|---|
+| `create_gateway` | `bool` | For GenAI Gateway | Creates an API Gateway front door. Disabled by default. |
+| `create_deployment` | `bool` | For GenAI Gateway | Creates API Gateway routes to GenAI endpoints or routing functions. |
+| `create_usage_plans` | `bool` | For GenAI Gateway | Creates per-team usage plans, quota, and rate-limit controls. |
+| `routes` | `map(object)` | For GenAI Gateway | Route definitions keyed by logical name, including path, methods, and backend URL. |
+| `usage_plans` | `map(object)` | For GenAI Gateway | Usage plans keyed by team or app name. |
+| `create_training_bucket` | `bool` | For GenAI Fine-Tuning | Creates a private Object Storage bucket for training data. |
+| `create_dedicated_ai_cluster` | `bool` | For GenAI Fine-Tuning | Creates the dedicated AI cluster used by fine-tuning. |
+| `create_fine_tuned_model` | `bool` | For GenAI Fine-Tuning | Creates a fine-tuned model from `base_model_id` and the training dataset. |
+| `create_endpoint` | `bool` | For GenAI Fine-Tuning | Creates an endpoint for the fine-tuned model. |
+| `create_cloud_guard_recipe` | `bool` | For GenAI Guardrails | Creates a Cloud Guard detector recipe shell for GenAI signals. |
+| `alarms` | `map(object)` | For GenAI Guardrails | Monitoring alarms keyed by logical name. |
+| `create_document_project` | `bool` | For Document Intelligence | Creates an OCI Document Understanding project. |
+| `handler_function_id` | `string` | For Document Intelligence | Function OCID that orchestrates extraction, GenAI calls, and output writes. |
+| `chunking_function_id` | `string` | For Embedding Pipeline | Function OCID that chunks source documents. |
+| `embedding_model_id` | `string` | For Embedding Pipeline | OCI GenAI embedding model OCID. |
+| `opensearch_endpoint` | `string` | For Embedding Pipeline | Vector target endpoint used by the indexing function. |
+| `create_knowledge_base` | `bool` | For Multi-Agent | Creates a GenAI Agent knowledge base. |
+| `create_orchestrator_agent` | `bool` | For Multi-Agent | Creates the top-level orchestrator agent. |
+| `specialist_agents` | `map(object)` | For Multi-Agent | Specialist agents keyed by logical name. |
+| `agent_tools` | `map(object)` | For Multi-Agent | Agent tools keyed by logical name. |
+| `enable_document_project` | `bool` | For OCI AI Services | Creates a Document Understanding project. |
+| `enable_language_project` | `bool` | For OCI AI Services | Creates a Language project. |
+| `enable_vision_project` | `bool` | For OCI AI Services | Creates a Vision project. |
+| `create_vision_private_endpoint` | `bool` | For OCI AI Services | Creates an OCI Vision private endpoint. |
+| `create_cluster` | `bool` | For OpenSearch | Creates an OCI Search with OpenSearch cluster. Disabled by default. |
+| `software_version` | `string` | For OpenSearch | OpenSearch software version. |
+| `master_node_count` | `number` | For OpenSearch | OpenSearch master node count. |
+| `data_node_count` | `number` | For OpenSearch | OpenSearch data node count. |
+| `opendashboard_node_count` | `number` | For OpenSearch | OpenSearch Dashboard node count. |
 
 ## Security And Governance
 

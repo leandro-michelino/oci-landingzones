@@ -1,0 +1,24 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "us-ashburn-1"
+home_region       = "us-ashburn-1"
+org               = "acme"
+environment       = "dev"
+region_key        = "iad"
+
+create_audit_bucket       = false
+create_log_group          = false
+create_service_connector  = false
+create_cloud_guard_recipe = false
+
+notification_topic_id = "ocid1.onstopic.oc1..example"
+alarms = {
+  token_budget = {
+    namespace = "oci_generative_ai"
+    query     = "TokenCount[1h].sum() > 100000"
+    severity  = "WARNING"
+  }
+}
+
+policy_statements = []

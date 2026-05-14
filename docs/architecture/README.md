@@ -105,6 +105,10 @@ terraform plan or ansible/plan.yml
 
 - Keep this file focused on repository-level structure.
 - Keep pattern-specific diagrams in the local blueprint architecture folder.
+- AI platform patterns now have their own deployable ASCII architecture files
+  under `blueprints/ai/*/architecture/`, plus OpenSearch under
+  `blueprints/data-platform/opensearch/architecture/` and event-driven
+  foundations under `blueprints/extensions/event-driven-platform/architecture/`.
 - Run `./scripts/validate-changed.sh` after adding or changing a blueprint; it
   checks the repository contract plus the touched Terraform and Ansible surface.
 - Run `./scripts/validate-all.sh` before release work or broad shared changes

@@ -86,6 +86,9 @@ architecture, Terraform files, example tfvars, and local Ansible runners.
 | I need containers without Kubernetes | [Container Instances](blueprints/extensions/container-instances/) | Runs approved container images with private VNIC, NSGs, optional pull secrets, and no OKE control plane. |
 | I need serverless functions | [Oracle Functions](blueprints/extensions/functions/) | Runs approved function images with private application subnets, optional API Gateway routes, Events triggers, and IAM hand-offs. |
 | I need private GenAI | [OCI Generative AI Private Landing Zone](blueprints/ai/genai-private/) | Adds a private GenAI endpoint, optional archive bucket, and IAM policy shell. |
+| I need a GenAI API front door | [GenAI Multi-Model Gateway](blueprints/ai/genai-gateway/) | Adds API Gateway routing, usage plans, quotas, audit bucket, log group, and IAM hand-offs. |
+| I need RAG/vector search | [OpenSearch Search And Vector Platform](blueprints/data-platform/opensearch/) plus [Embedding Pipeline](blueprints/ai/embedding-pipeline/) | Adds managed OpenSearch and a chunk/embed/index ingestion path. |
+| I need agent orchestration | [Multi-Agent Orchestration](blueprints/ai/multi-agent/) | Adds orchestrator and specialist agents, Streaming task hand-off, tool registry, and session audit. |
 | I need CI/CD | [OCI DevOps Pipeline](blueprints/devops/oci-devops-pipeline/) | Adds DevOps project, repository, build pipeline, deploy pipeline, and notifications. |
 | I need analytics or integration services | [Oracle Analytics Cloud](blueprints/extensions/oac/) or [Oracle Integration Cloud](blueprints/extensions/oic/) | Adds OAC or OIC service foundations with private connectivity options. |
 | I need a private data platform | [Private Data Platform](blueprints/data-platform/private-data-platform/) | Builds private VCN, Vault/KMS, Object Storage private endpoint, and Streaming. |
@@ -105,7 +108,7 @@ Use this when you know the family, but not the exact blueprint yet.
 | Identity and entity onboarding | [Workload Vending](blueprints/operating-entity/workload-vending/) | [Identity And Operating Entity Deployments](#identity-and-operating-entity-deployments) |
 | Operations | [Cost Optimization](blueprints/operations/cost-optimization/) | [Operations Deployments](#operations-deployments) |
 | Service extensions | [OKE](blueprints/extensions/oke/) | [Extension Deployments](#extension-deployments) |
-| AI and DevOps | [OCI Generative AI Private Landing Zone](blueprints/ai/genai-private/) | [AI And DevOps Deployments](#ai-and-devops-deployments) |
+| AI and DevOps | [GenAI Multi-Model Gateway](blueprints/ai/genai-gateway/) | [AI And DevOps Deployments](#ai-and-devops-deployments) |
 | Data, DR, and industry | [Private Data Platform](blueprints/data-platform/private-data-platform/) | [Data, DR, And Industry Deployments](#data-dr-and-industry-deployments) |
 
 ## Deployment Menu
@@ -177,6 +180,7 @@ open folder -> read README.md -> review architecture/README.md -> fill tfvars ->
 | [OKE](blueprints/extensions/oke/) | You need Kubernetes cluster and node pool resources attached to supplied VCN/subnets. |
 | [OKE Service Mesh](blueprints/extensions/oke-service-mesh/) | You need service mesh add-on management and optional APM tracing for an existing OKE cluster. |
 | [Oracle Functions](blueprints/extensions/functions/) | You need serverless functions from approved images with optional API Gateway and Events wiring. |
+| [Event-Driven Application Platform](blueprints/extensions/event-driven-platform/) | You need Events, Streaming, Service Connector, Notifications, and archive storage for async apps or AI automation. |
 | [Oracle Analytics Cloud](blueprints/extensions/oac/) | You need private analytics capacity and private access channel wiring. |
 | [Oracle Integration Cloud](blueprints/extensions/oic/) | You need OIC service capacity with optional private outbound connectivity. |
 | [Observability](blueprints/extensions/observability/) | You need Log Analytics, APM, and Operations Insights private endpoint foundations. |
@@ -187,7 +191,14 @@ open folder -> read README.md -> review architecture/README.md -> fill tfvars ->
 
 | Deployment | Use It When |
 |---|---|
+| [OCI AI Services](blueprints/ai/ai-services/) | You need pretrained Vision, Language, and Document Understanding service project wiring. |
+| [Document Intelligence Pipeline](blueprints/ai/document-intelligence/) | You need document intake, extraction, optional GenAI reasoning, and structured output buckets. |
+| [Embedding And Vector Ingestion Pipeline](blueprints/ai/embedding-pipeline/) | You need to chunk documents, call GenAI embeddings, and feed OpenSearch or another vector target. |
+| [GenAI Fine-Tuning And Dedicated AI Cluster](blueprints/ai/genai-fine-tuning/) | You need training data, dedicated AI capacity, a fine-tuned model, and optional endpoint. |
+| [GenAI Guardrails And Observability](blueprints/ai/genai-guardrails/) | You need prompt audit storage, log routing, alarms, and Cloud Guard hooks around GenAI usage. |
+| [GenAI Multi-Model Gateway](blueprints/ai/genai-gateway/) | You need a governed API Gateway front door with routes, usage plans, quotas, and audit controls. |
 | [OCI Generative AI Private Landing Zone](blueprints/ai/genai-private/) | You need private OCI Generative AI access with archive and IAM controls. |
+| [Multi-Agent Orchestration](blueprints/ai/multi-agent/) | You need orchestrator and specialist agents, task streams, tools, and session audit. |
 | [OCI DevOps Pipeline](blueprints/devops/oci-devops-pipeline/) | You need native OCI CI/CD with project, repository, build pipeline, deploy pipeline, and notifications. |
 
 ### Data, DR, And Industry Deployments
@@ -198,6 +209,7 @@ open folder -> read README.md -> review architecture/README.md -> fill tfvars ->
 | [Oracle APEX On Autonomous Database](blueprints/data-platform/apex-adw/) | You need private APEX/ORDS access for an existing Autonomous Database, with optional load balancer and Vault secret hand-off. |
 | [PostgreSQL Landing Zone](blueprints/data-platform/postgresql/) | You need a private managed PostgreSQL DB system with NSGs, backup/maintenance policy hooks, and secure credential inputs. |
 | [Private Data Platform](blueprints/data-platform/private-data-platform/) | You need private Object Storage access, Vault/KMS, and optional Streaming. |
+| [OpenSearch Search And Vector Platform](blueprints/data-platform/opensearch/) | You need managed OpenSearch for search, semantic search, vectors, or RAG dependencies. |
 | [Full Stack Disaster Recovery](blueprints/disaster-recovery/fsdr/) | You need FSDR protection groups, DR log buckets, and an optional DR plan. |
 | [Telco Cloud Native](blueprints/industry/telco-cloud-native/) | You need hub-spoke networking, Vault, OKE, monitoring, and OS management for telco-style workloads. |
 

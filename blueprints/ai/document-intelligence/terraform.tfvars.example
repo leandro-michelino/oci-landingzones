@@ -1,0 +1,17 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "us-ashburn-1"
+home_region       = "us-ashburn-1"
+org               = "acme"
+environment       = "dev"
+region_key        = "iad"
+
+create_buckets          = false
+create_document_project = false
+create_event_rule       = false
+
+handler_function_id = "ocid1.fnfunc.oc1..example"
+event_rule_condition = "{\"eventType\":[\"com.oraclecloud.objectstorage.createobject\"]}"
+
+policy_statements = []

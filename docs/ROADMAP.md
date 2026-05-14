@@ -44,6 +44,15 @@ operator guide, architecture diagram, and Terraform / Ansible workflow.
 | Cost optimization | `blueprints/operations/cost-optimization/` |
 | Oracle APEX on Autonomous Database | `blueprints/data-platform/apex-adw/` |
 | Oracle Functions | `blueprints/extensions/functions/` |
+| Event-driven application platform | `blueprints/extensions/event-driven-platform/` |
+| OpenSearch search and vector platform | `blueprints/data-platform/opensearch/` |
+| OCI AI Services | `blueprints/ai/ai-services/` |
+| GenAI multi-model gateway | `blueprints/ai/genai-gateway/` |
+| GenAI fine-tuning and dedicated AI cluster | `blueprints/ai/genai-fine-tuning/` |
+| GenAI guardrails and observability | `blueprints/ai/genai-guardrails/` |
+| Document intelligence pipeline | `blueprints/ai/document-intelligence/` |
+| Embedding and vector ingestion pipeline | `blueprints/ai/embedding-pipeline/` |
+| Multi-agent orchestration | `blueprints/ai/multi-agent/` |
 
 ---
 
@@ -674,10 +683,10 @@ services, and local ASCII architecture for design review.
 | Priority | Blueprint | Folder | Why It Fits |
 | --- | --- | --- | --- |
 | 1 | Public Edge and Ingress Zone | `blueprints/networking/public-edge-ingress/` | Completes the north-south story with DNS, WAF, public/private load balancing, certificates, and route-to-app hand-off. |
-| 2 | Event-Driven Application Platform | `blueprints/extensions/event-driven-platform/` | Composes Events, Service Connector Hub, Streaming, Functions, Notifications, and Object Storage into one reusable async pattern. |
+| 2 | Event-Driven Application Platform | `blueprints/extensions/event-driven-platform/` | Implemented. Composes Events, Service Connector Hub, Streaming, Functions, Notifications, and Object Storage into one reusable async pattern. |
 | 3 | Batch and Queue Workers | `blueprints/extensions/batch-workers/` | Covers scheduled and burst compute patterns that do not fit OKE, Functions, or Container Instances. |
 | 4 | Object Storage Data Lakehouse | `blueprints/data-platform/object-storage-lakehouse/` | Adds the missing data lake foundation: buckets, KMS, private endpoints, lifecycle, logs, and optional query/processing hooks. |
-| 5 | OpenSearch Search and Vector Platform | `blueprints/data-platform/opensearch/` | Useful as a standalone search, logging, and vector index platform, not only as an AI Agents dependency. |
+| 5 | OpenSearch Search and Vector Platform | `blueprints/data-platform/opensearch/` | Implemented. Useful as a standalone search, logging, and vector index platform, not only as an AI Agents dependency. |
 | 6 | Redis Cache Landing Zone | `blueprints/extensions/redis-cache/` | Adds the common low-latency cache/session layer expected by app teams. |
 | 7 | Ransomware-Resilient Backup | `blueprints/operations/backup-resilience/` | Adds backup policies, immutable archive buckets, monitoring, and restore evidence for regulated tenancies. |
 | 8 | WebLogic / Java App Platform | `blueprints/industry/weblogic-platform/` | Gives enterprise Java workloads a migration-ready pattern with LB, app tier, database, logs, and operations hooks. |
@@ -1224,7 +1233,7 @@ existing Core, networking, and IAM contracts.
 | 4 | OCI Data Flow | `blueprints/data-platform/data-flow/` | Managed Apache Spark for batch analytics and ETL. Fills the analytics gap between Autonomous DB and a full Lakehouse. |
 | 5 | OCI Data Integration | `blueprints/data-platform/data-integration/` | Managed ELT/ETL workspace. Complements GoldenGate for non-CDC integration patterns and connects to Autonomous DB and Object Storage. |
 | 6 | OCI Certificates Service | `blueprints/extensions/certificates/` | Managed PKI and certificate authority. TLS lifecycle is always a gap in first-deployment reviews and works across LB, API Gateway, and OKE. |
-| 7 | OCI AI Services | `blueprints/ai/ai-services/` | Pre-trained Vision, Language, Speech, Document Understanding, and Anomaly Detection. Distinct from GenAI; pairs well with ODA and OIC integration patterns. |
+| 7 | OCI AI Services | `blueprints/ai/ai-services/` | Implemented. Pre-trained Vision, Language, Speech, Document Understanding, and Anomaly Detection. Distinct from GenAI; pairs well with ODA and OIC integration patterns. |
 | 8 | Oracle Cloud VMware Solution (OCVS) | `blueprints/industry/ocvs/` | Native VMware baremetal on OCI. Different from the hybrid migration zone; covers customers running VMware on OCI long-term rather than transitioning off it. |
 | 9 | OCI Process Automation | `blueprints/extensions/process-automation/` | Low-code workflow automation connecting Oracle SaaS, OCI services, and custom REST APIs. Common in ERP and CX integration projects. |
 | 10 | OCI Network Load Balancer | `blueprints/networking/network-load-balancer/` | Layer 4 TCP/UDP load balancing. Several networking patterns imply it for database and non-HTTP traffic but none wire it explicitly. |
@@ -1651,14 +1660,18 @@ blueprints. These address the operational, governance, and architectural gaps
 that appear once a team moves from a single GenAI endpoint to a production AI
 platform.
 
+These Phase 11 patterns are now implemented as deployable blueprint folders.
+The details below remain as architecture intent notes; the folder-level README
+and `architecture/README.md` files are the source of truth for operators.
+
 | Priority | Blueprint | Folder | Why It Fits |
 | --- | --- | --- | --- |
-| 1 | GenAI multi-model gateway | `blueprints/ai/genai-gateway/` | Routes prompts to the right OCI GenAI model based on rules; adds rate limiting, cost tagging, and per-team IAM. The pattern every platform team builds manually. |
-| 2 | Fine-tuning and dedicated AI cluster | `blueprints/ai/genai-fine-tuning/` | Customer-managed fine-tuning using the OCI GenAI fine-tuning API with a dedicated AI cluster, training data bucket, and experiment tracking. |
-| 3 | GenAI guardrails and observability | `blueprints/ai/genai-guardrails/` | Prompt logging, PII detection via AI Language, output filtering, token usage alarms, and responsible-AI audit trail. Governance layer on top of any GenAI endpoint. |
-| 4 | Document intelligence pipeline | `blueprints/ai/document-intelligence/` | Document Understanding + GenAI summarization/classification pipeline: intake bucket, extraction, GenAI reasoning, structured output bucket. |
-| 5 | Embedding and vector ingestion pipeline | `blueprints/ai/embedding-pipeline/` | Functions-based pipeline that takes documents, calls GenAI embedding models, and loads vectors into OpenSearch or a dedicated vector store. |
-| 6 | Multi-agent orchestration | `blueprints/ai/multi-agent/` | Orchestrator agent with specialist sub-agents (code, search, data), shared knowledge base, tool registry, and session audit trail. |
+| 1 | GenAI multi-model gateway | `blueprints/ai/genai-gateway/` | Implemented. Routes prompts to the right OCI GenAI model based on rules; adds rate limiting, cost tagging, and per-team IAM. |
+| 2 | Fine-tuning and dedicated AI cluster | `blueprints/ai/genai-fine-tuning/` | Implemented. Customer-managed fine-tuning using OCI GenAI with a dedicated AI cluster, training data bucket, and endpoint hand-off. |
+| 3 | GenAI guardrails and observability | `blueprints/ai/genai-guardrails/` | Implemented. Prompt logging, PII-aware audit flow, token alarms, and Cloud Guard hook points. |
+| 4 | Document intelligence pipeline | `blueprints/ai/document-intelligence/` | Implemented. Document Understanding + GenAI-oriented intake, extraction, and structured output foundation. |
+| 5 | Embedding and vector ingestion pipeline | `blueprints/ai/embedding-pipeline/` | Implemented. Functions-based chunk/embed/index foundation for OpenSearch or another vector target. |
+| 6 | Multi-agent orchestration | `blueprints/ai/multi-agent/` | Implemented. Orchestrator and specialist agents, Streaming task hand-off, tool registry, and session audit. |
 
 ---
 
@@ -2058,7 +2071,16 @@ Core Landing Zone (implemented)
   |   |--- blueprints/extensions/oke-service-mesh/
   |   |--- blueprints/operations/cost-optimization/
   |   |--- blueprints/data-platform/apex-adw/
-  |   `--- blueprints/extensions/functions/
+  |   |--- blueprints/extensions/functions/
+  |   |--- blueprints/extensions/event-driven-platform/
+  |   |--- blueprints/data-platform/opensearch/
+  |   |--- blueprints/ai/ai-services/
+  |   |--- blueprints/ai/genai-gateway/
+  |   |--- blueprints/ai/genai-fine-tuning/
+  |   |--- blueprints/ai/genai-guardrails/
+  |   |--- blueprints/ai/document-intelligence/
+  |   |--- blueprints/ai/embedding-pipeline/
+  |   `--- blueprints/ai/multi-agent/
   |
   |-- Phase 5 (AI/ML Platform) ---------------------------------------
   |   |--- blueprints/ai/data-science/
@@ -2081,10 +2103,8 @@ Core Landing Zone (implemented)
   |
   |-- Phase 9 (Next Architecture Backlog) ----------------------------
   |   |--- blueprints/networking/public-edge-ingress/
-  |   |--- blueprints/extensions/event-driven-platform/
   |   |--- blueprints/extensions/batch-workers/
   |   |--- blueprints/data-platform/object-storage-lakehouse/
-  |   |--- blueprints/data-platform/opensearch/
   |   |--- blueprints/extensions/redis-cache/
   |   |--- blueprints/operations/backup-resilience/
   |   |--- blueprints/industry/weblogic-platform/
@@ -2097,7 +2117,6 @@ Core Landing Zone (implemented)
   |   |--- blueprints/data-platform/data-flow/
   |   |--- blueprints/data-platform/data-integration/
   |   |--- blueprints/extensions/certificates/
-  |   |--- blueprints/ai/ai-services/
   |   |--- blueprints/industry/ocvs/
   |   |--- blueprints/extensions/process-automation/
   |   |--- blueprints/networking/network-load-balancer/
@@ -2105,12 +2124,7 @@ Core Landing Zone (implemented)
   |   `--- blueprints/compliance/threat-intelligence/
   |
   `-- Phase 11 (GenAI Platform Patterns) ----------------------------
-      |--- blueprints/ai/genai-gateway/
-      |--- blueprints/ai/genai-fine-tuning/
-      |--- blueprints/ai/genai-guardrails/
-      |--- blueprints/ai/document-intelligence/
-      |--- blueprints/ai/embedding-pipeline/
-      `--- blueprints/ai/multi-agent/
+      `--- implemented; see Already Implemented above
 ```
 
 ## Updating the Deployment Menu

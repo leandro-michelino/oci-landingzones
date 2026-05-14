@@ -1,0 +1,39 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "us-ashburn-1"
+home_region       = "us-ashburn-1"
+org               = "acme"
+environment       = "dev"
+region_key        = "iad"
+
+# compartment_ocid = "ocid1.compartment.oc1..example"
+
+create_gateway     = false
+gateway_subnet_id  = "ocid1.subnet.oc1..example"
+gateway_endpoint_type = "PRIVATE"
+
+create_deployment = false
+routes = {
+  command = {
+    path    = "/command"
+    methods = ["POST"]
+    url     = "https://inference.generativeai.us-ashburn-1.oci.oraclecloud.com/20231130/actions/chat"
+  }
+}
+
+create_usage_plans = false
+usage_plans = {
+  platform = {
+    entitlement_name = "platform"
+    quota_value      = 10000
+    quota_unit       = "DAY"
+    rate_limit_value = 10
+    rate_limit_unit  = "SECOND"
+  }
+}
+
+create_audit_bucket = false
+create_log_group    = false
+
+policy_statements = []

@@ -26,6 +26,9 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Oracle Functions extension blueprint with optional image repository,
   Functions application, image-based functions, API Gateway routes, Events
   triggers, IAM policy statements, and a small Python FDK sample.
+- AI-first blueprint wave with GenAI gateway, fine-tuning, guardrails, document
+  intelligence, embedding pipeline, multi-agent orchestration, OCI AI Services,
+  OpenSearch search/vector platform, and event-driven application platform.
 - Phase 10 roadmap section for OCI service-gap candidates, including NoSQL,
   Data Safe, Secure Desktops, Data Flow, Data Integration, Certificates,
   AI Services, OCVS, Process Automation, Network Load Balancer, Email Delivery,
@@ -69,6 +72,9 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Clarified customer usage paths for extension-only deployments and full
   base-plus-extension deployments across the main guide, runbook, catalog, and
   architecture index.
+- Promoted the AI / GenAI roadmap entries from planned-only notes into
+  deployable blueprint folders with Terraform, Ansible runners, README files,
+  and detailed ASCII architecture pages.
 
 ### Removed
 

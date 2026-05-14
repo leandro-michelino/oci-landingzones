@@ -1,0 +1,22 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "us-ashburn-1"
+home_region       = "us-ashburn-1"
+org               = "acme"
+environment       = "dev"
+region_key        = "iad"
+
+create_training_bucket      = false
+create_dedicated_ai_cluster = false
+create_fine_tuned_model     = false
+create_endpoint             = false
+
+base_model_id                  = "ocid1.generativeaimodel.oc1..example"
+training_dataset_bucket        = "approved-training-data"
+training_dataset_namespace     = "namespace"
+training_dataset_object        = "datasets/training.jsonl"
+dedicated_ai_cluster_id        = "ocid1.generativeaidedicatedaicluster.oc1..example"
+generative_ai_private_endpoint_id = "ocid1.generativeaiprivateendpoint.oc1..example"
+
+policy_statements = []
