@@ -48,6 +48,7 @@ folders are where you review and run the deployment.
 | See every blueprint with direct links | [Deployment Menu](#deployment-menu) |
 | Build a complete landing zone from several pieces | [Build A Full Landing Zone](#build-a-full-landing-zone) |
 | Understand how every blueprint is structured | [Every Blueprint Is End-To-End](#every-blueprint-is-end-to-end) |
+| Review BYOL and license-model support | [BYOL And License Model Matrix](docs/BYOL-LICENSING-MATRIX.md) |
 | Make the repo easier to find in Google, Bing, and GitHub search | [Search Discoverability](docs/SEARCH-DISCOVERABILITY.md) |
 | Validate the repo before trusting a change | [Keep The Repo Clean](#keep-the-repo-clean) |
 
@@ -257,6 +258,26 @@ The extension READMEs call out the service-specific inputs to bring from either
 path. For the longer walkthrough, see
 `docs/DEPLOYMENT-GUIDE.md#using-extensions-only` and
 `docs/DEPLOYMENT-GUIDE.md#using-base-plus-extensions`.
+
+## Choose The Right Boundary
+
+The deployable unit is a customer outcome, not every individual OCI resource.
+Keep full blueprint folders for outcomes that have their own lifecycle,
+ownership boundary, review path, or state boundary. Examples include Core, CIS,
+hub-spoke networking, OKE, Functions, Secure Desktops, and Telco Cloud Native.
+
+Do not create a new full deployment for every topic or subtopic. Keep supporting
+pieces such as a single notification topic, event rule, private endpoint, alarm
+set, NSG choice, API route group, or optional policy inside the owning
+blueprint. If that implementation starts being copied across several
+blueprints, promote the repeated logic into `modules/` and keep each blueprint
+as the thin deployable wrapper.
+
+Curated full landing-zone bundles are still welcome when they describe a common
+real journey, such as an industry landing zone, a regulated compliance pattern,
+or a workload platform. They should compose existing base, networking,
+operations, and extension decisions instead of duplicating every subtopic as its
+own Terraform root.
 
 ## Build A Full Landing Zone
 
@@ -508,6 +529,7 @@ compose. Remote state belongs to deployable blueprints, not shared modules.
 | `docs/ROADMAP.md` | Implemented blueprint phases and the next architecture candidates. |
 | `docs/DEPLOYMENT-GUIDE.md` | Deployment sequence and operating notes. |
 | `docs/DEPLOYMENT-PATTERN-CATALOG.md` | Blueprint catalog and selection notes. |
+| `docs/BYOL-LICENSING-MATRIX.md` | BYOL, BYOI, license-included, and license-model guidance for supported service families. |
 | `docs/architecture/README.md` | Repository-level ASCII architecture and documentation contract. |
 | `docs/SEARCH-DISCOVERABILITY.md` | Recommended GitHub description, topics, and search-friendly summary text. |
 | `VARIABLES.md` | Shared variable reference plus notable blueprint-specific inputs. |

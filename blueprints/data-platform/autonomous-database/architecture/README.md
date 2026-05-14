@@ -6,7 +6,7 @@ This page is the deployment architecture for `blueprints/data-platform/autonomou
 
 ## Deployment Purpose
 
-Deploys a private Autonomous Database pattern for ATP or ADW with optional manual backup, KMS, NSG, and private endpoint inputs.
+Deploys a private Autonomous Database pattern for ATP or ADW with optional manual backup, KMS, NSG, private endpoint inputs, and explicit license model selection.
 
 ## Architecture At A Glance
 
@@ -33,7 +33,7 @@ Deploys a private Autonomous Database pattern for ATP or ADW with optional manua
 |         |                                                                                                |
 |         v                                                                                                |
 | [Autonomous Database]                                                                                    |
-|         |-- ATP/ADW database configuration, workload type, sizing, backup retention                      |
+|         |-- ATP/ADW database configuration, workload type, license model, sizing, backup retention       |
 |         |-- private endpoint, NSGs, subnet, and optional KMS key controls                                |
 |         |-- manual backup resource when enabled                                                          |
 |         `-- tags, compartment scope, and optional private access controls                                |
@@ -72,6 +72,7 @@ Deploys a private Autonomous Database pattern for ATP or ADW with optional manua
 ## Detailed Architecture Notes
 
 - Confirm admin password handling uses a secure variable source.
+- Confirm `license_model` matches approved Oracle Database licensing rights.
 - Confirm private endpoint subnet, NSGs, KMS key, workload type, and storage sizing.
 - Confirm backup retention and auto-scaling expectations before apply.
 

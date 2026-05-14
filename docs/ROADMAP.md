@@ -22,6 +22,19 @@ blueprints/<family>/<deployment>/
     `-- destroy.yml
 ```
 
+Add a new deployable blueprint only when it represents a customer outcome with
+its own lifecycle, owner, approval path, state boundary, or architecture review.
+Do not create a full deployment for every topic or subtopic. Supporting pieces
+such as a single notification topic, event rule, alarm set, NSG choice, private
+endpoint, API route group, or optional IAM policy should stay inside the owning
+blueprint.
+
+When planned work repeats Terraform behavior already needed by several
+blueprints, extract that behavior into `modules/` and keep the blueprint as the
+customer-facing wrapper. Curated full landing-zone bundles belong on the
+roadmap only when they describe a common real journey, such as an industry,
+compliance, or workload platform pattern.
+
 ---
 
 ## Already Implemented

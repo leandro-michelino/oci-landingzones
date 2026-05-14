@@ -129,6 +129,21 @@ folder.
 - Use a single `blueprints/...` folder when consuming one architecture. The
   blueprint's pinned Git module sources fetch shared modules during
   `terraform init`.
+- Treat the deployable blueprint as a customer outcome. Create a full folder
+  only when the pattern has its own lifecycle, owner, approval path, state
+  boundary, or architecture review.
+- Keep narrow subtopics inside the owning blueprint. A single topic, event rule,
+  alarm set, NSG choice, private endpoint, API route group, or optional IAM
+  policy should not become its own deployment unless it represents an
+  independently operated customer outcome.
+- Promote repeated Terraform implementation into `modules/` when several
+  blueprints need the same behavior, then keep each blueprint as a thin
+  customer-facing wrapper with its own README, architecture, inputs, and
+  outputs.
+- Add curated full landing-zone bundles only for common real journeys, such as
+  industry, compliance, or workload platform patterns, and compose existing
+  base, networking, operations, and extension decisions instead of duplicating
+  every subtopic.
 - Review the blueprint-local ASCII architecture diagram before plan/apply so
   ownership boundaries, traffic paths, DNS, IAM, logging, and monitoring are
   aligned with the target environment.

@@ -105,9 +105,14 @@ variable "is_free_tier" {
   default     = false
 }
 variable "license_model" {
-  description = "Autonomous Database license model."
+  description = "Autonomous Database license model: LICENSE_INCLUDED or BRING_YOUR_OWN_LICENSE."
   type        = string
   default     = "LICENSE_INCLUDED"
+
+  validation {
+    condition     = contains(["LICENSE_INCLUDED", "BRING_YOUR_OWN_LICENSE"], var.license_model)
+    error_message = "license_model must be LICENSE_INCLUDED or BRING_YOUR_OWN_LICENSE."
+  }
 }
 variable "subnet_id" {
   description = "Private endpoint subnet OCID."

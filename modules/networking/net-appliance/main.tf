@@ -35,6 +35,15 @@ resource "oci_core_instance" "appliance" {
     source_type = "image"
   }
 
+  dynamic "licensing_configs" {
+    for_each = try(each.value.licensing_configs, [])
+
+    content {
+      type         = licensing_configs.value.type
+      license_type = licensing_configs.value.license_type
+    }
+  }
+
   metadata = try(each.value.user_data, null) == null ? {} : {
     user_data = each.value.user_data
   }

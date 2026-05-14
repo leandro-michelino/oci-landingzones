@@ -33,7 +33,7 @@ Deploys an Oracle Integration Cloud instance with optional private outbound conn
 |         |                                                                                                |
 |         v                                                                                                |
 | [Oracle Integration Cloud]                                                                               |
-|         |-- integration instance with edition, message packs, and access type                            |
+|         |-- integration instance with edition, message packs, BYOL flag, and access type                 |
 |         |-- private outbound connection when enabled                                                     |
 |         |-- network path toward private SaaS, app, database, or API endpoints                            |
 |         `-- tags, compartment scope, and optional private access controls                                |
@@ -70,7 +70,7 @@ Deploys an Oracle Integration Cloud instance with optional private outbound conn
 
 ## Detailed Architecture Notes
 
-- Confirm edition, message packs, BYOL, and file server decisions.
+- Confirm edition, message packs, `is_byol`, and file server decisions.
 - Confirm private outbound subnet and NSGs.
 - Confirm IDCS/domain authentication inputs when required by tenancy policy.
 

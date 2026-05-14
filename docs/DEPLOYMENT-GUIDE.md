@@ -99,6 +99,9 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 Use `docs/DEPLOYMENT-PATTERN-CATALOG.md` as the selection menu before choosing
 a blueprint. The catalog includes core, CIS, identity, operating entity,
 networking, compliance, data platform, industry, and extension patterns.
+Use `docs/BYOL-LICENSING-MATRIX.md` before enabling BYOL, BYOI,
+license-included, or customer-image options for databases, Windows instances,
+Red Hat images, analytics, integration, middleware, or VMware-related patterns.
 The repository-level ASCII map lives in `docs/architecture/README.md`; use each
 blueprint's local `architecture/README.md` for implementation and traffic-flow
 review.
@@ -270,6 +273,32 @@ Remote state can be used by a customer pipeline, but the reusable blueprint
 folders do not force a production backend. That keeps sparse-checkout and local
 review simple while still allowing a full deployment pipeline to wire outputs
 through a controlled state or variable hand-off.
+
+## Choosing Deployment Boundaries
+
+Use a full deployable blueprint when the folder represents a customer outcome
+with its own lifecycle, owner, approval path, state boundary, or architecture
+review. Good examples are a core governance baseline, a CIS profile, a hub-spoke
+network, an OKE cluster foundation, a Functions platform, a secure desktop
+landing zone, or an industry-specific platform.
+
+Keep subtopics inside the owning blueprint when they only support that outcome.
+Examples include one notification topic, event rule, alarm family, NSG decision,
+private endpoint, API route group, service connector, or optional IAM policy.
+Splitting those into independent Terraform roots makes customer review,
+state management, validation, and documentation harder without creating a
+clearer outcome.
+
+When repeated implementation appears in more than one blueprint, promote the
+shared resource graph into `modules/` and keep the blueprint folder as the
+customer-facing wrapper. The wrapper owns the operator README, architecture
+diagram, input defaults, outputs, Ansible runners, and sparse-checkout contract;
+the module owns reusable Terraform behavior.
+
+Curated full landing-zone bundles should be added only for common journeys that
+customers recognize as one deployable pattern. Compose them from existing base,
+networking, operations, and extension decisions, and avoid creating one bundle
+per minor feature toggle.
 
 ## Phase 1 - Core Structure
 

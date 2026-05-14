@@ -86,7 +86,7 @@ real OCIDs, CIDRs, names, recipients, and enable flags.
 | Input | What To Decide |
 | --- | --- |
 | `compartment_ocid` | Compartment OCID where networking resources are deployed. Defaults to tenancy_ocid for simple tests. |
-| `appliances` | Network virtual appliances keyed by logical name. |
+| `appliances` | Network virtual appliances keyed by logical name, including image, shape, NSG, optional user data, and optional `licensing_configs` for eligible Windows BYOL images. |
 | `reserved_route_ips` | Reserved private IP route targets keyed by logical name. |
 | `existing_route_target_private_ip_ids` | Existing private IP OCIDs for customer-managed appliances. |
 
@@ -161,6 +161,7 @@ Ansible output at the end of the deployment.
 ## Review Before Apply
 
 - Confirm appliance image, shape, and lifecycle ownership.
+- Confirm Windows BYOL or marketplace image licensing before setting appliance `licensing_configs`.
 - Review route targets and asymmetric routing risk.
 - Validate failover behavior before production traffic.
 - Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.

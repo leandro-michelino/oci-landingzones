@@ -38,9 +38,16 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   Data Safe, Secure Desktops, Data Flow, Data Integration, Certificates,
   AI Services, OCVS, Process Automation, Network Load Balancer, Email Delivery,
   Threat Intelligence, and follow-on backlog patterns.
+- BYOL and license-model matrix covering database, analytics, integration,
+  Windows Compute, RHEL BYOI/BYOS, Secure Desktops, Exadata follow-on database
+  layers, WebLogic, GoldenGate, Content Management, and OCVS guidance.
 
 ### Changed
 
+- Added license-model validation for Autonomous Database and Oracle Analytics
+  Cloud, surfaced the Oracle Integration BYOL flag in examples, and wired OCI
+  Compute `licensing_configs` through network appliance blueprints for eligible
+  Windows BYOL images.
 - Enhanced every deployment-local ASCII architecture with a consistent legend,
   control lane, trust boundary, dependency flow, traffic or signal path, review
   focus, and hand-off lane.

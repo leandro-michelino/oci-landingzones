@@ -49,6 +49,8 @@ Adds highly available network virtual appliances and route target private IPs to
 |   |             |                    `--> [future spoke] same attachment contract                        |
 |   |                                                                                                      |
 |   `--> [NVA HA pair] -> active/standby route targets -> centralized transit inspection                   |
+|             |                                                                                            |
+|             `-- optional Windows BYOL licensing config when approved for the image                      |
 |                                                                                                          |
 | Pattern extension: route symmetry and failover behavior depend on appliance private IP targets.          |
 | North-south: external or service traffic enters the hub, then routes through DRG attachments to spokes.  |
@@ -84,6 +86,7 @@ These notes expand the diagram with the design details that usually matter durin
 - The hub-spoke network is created first, then HA NVA instances and route target private IPs are created or referenced.
 - Reserved route IPs provide stable next-hop targets that route tables can use during appliance failover.
 - Traffic can be forced through NVAs for inspection or transit before returning to the DRG, hub, spoke, or edge destination.
+- Appliance `licensing_configs` passes through OCI Compute license settings for eligible images, such as Windows BYOL. RHEL remains a bring-your-own-image/subscription workflow unless the selected marketplace image documents a different model.
 - Review route symmetry, appliance HA behavior, health checks, and failover timing before steering production traffic.
 
 ## Operational Boundaries

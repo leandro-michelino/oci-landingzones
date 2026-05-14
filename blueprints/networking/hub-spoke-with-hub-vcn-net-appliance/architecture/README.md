@@ -49,6 +49,8 @@ Adds network appliance route targets and reserved route IPs to a hub-spoke netwo
 |   |             |                    `--> [future spoke] same attachment contract                        |
 |   |                                                                                                      |
 |   `--> [network appliance] -> private IP route targets -> inspected spoke paths                          |
+|             |                                                                                            |
+|             `-- optional Windows BYOL licensing config when approved for the image                      |
 |                                                                                                          |
 | Pattern extension: route tables steer selected traffic through appliance private IPs.                    |
 | North-south: external or service traffic enters the hub, then routes through DRG attachments to spokes.  |
@@ -84,6 +86,7 @@ These notes expand the diagram with the design details that usually matter durin
 - The hub-spoke network is created first, then appliance route targets and reserved route IPs are created or referenced.
 - Route tables can point selected traffic at appliance private IPs for inspection, NAT, routing, or third-party services.
 - Existing route target private IP IDs let the pattern integrate with appliances created outside this folder.
+- Appliance `licensing_configs` passes through OCI Compute license settings for eligible images, such as Windows BYOL. RHEL remains a bring-your-own-image/subscription workflow unless the selected marketplace image documents a different model.
 - Review failover, route symmetry, appliance health checks, and security policy before steering production traffic.
 
 ## Operational Boundaries

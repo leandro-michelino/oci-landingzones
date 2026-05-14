@@ -208,6 +208,10 @@ READMEs may define additional variables for local behavior.
 | `create_heatwave_cluster` | `bool` | For MySQL HeatWave | Creates a HeatWave cluster attached to the DB System. |
 | `enable_heatwave_lakehouse` | `bool` | For MySQL HeatWave | Enables HeatWave Lakehouse on the HeatWave cluster. |
 | `create_lakehouse_bucket` | `bool` | For MySQL HeatWave | Creates an Object Storage bucket for Lakehouse tables or exports. |
+| `license_model` | `string` | For Autonomous Database | `LICENSE_INCLUDED` or `BRING_YOUR_OWN_LICENSE`; confirm Oracle Database rights before BYOL. |
+| `license_type` | `string` | For Oracle Analytics Cloud | `LICENSE_INCLUDED` or `BRING_YOUR_OWN_LICENSE`; confirm Oracle Analytics rights before BYOL. |
+| `is_byol` | `bool` | For Oracle Integration Cloud | Uses BYOL licensing when the customer has eligible OIC rights. |
+| `licensing_configs` | `list(object)` | For NVA Compute appliances | Optional OCI Compute licensing config, mainly for eligible Windows BYOL images. |
 | `create_desktop_pool` | `bool` | For Secure Desktops | Creates the Secure Desktops pool. Disabled by default. |
 | `device_policy` | `object` | For Secure Desktops | Controls clipboard, drive mapping, audio, printing, display, and input behavior. |
 | `windows_10_11_byol_acknowledged` | `bool` | For Secure Desktops | Required acknowledgement for Windows 10/11 BYOL images; adds the Secure Desktops BYOL pool tag. |

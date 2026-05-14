@@ -69,9 +69,14 @@ variable "feature_set" {
   default     = "ENTERPRISE_ANALYTICS"
 }
 variable "license_type" {
-  description = "OAC license type."
+  description = "OAC license type: LICENSE_INCLUDED or BRING_YOUR_OWN_LICENSE."
   type        = string
   default     = "LICENSE_INCLUDED"
+
+  validation {
+    condition     = contains(["LICENSE_INCLUDED", "BRING_YOUR_OWN_LICENSE"], var.license_type)
+    error_message = "license_type must be LICENSE_INCLUDED or BRING_YOUR_OWN_LICENSE."
+  }
 }
 variable "capacity_type" {
   description = "OAC capacity type."

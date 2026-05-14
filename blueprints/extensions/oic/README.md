@@ -76,6 +76,10 @@ Start with `terraform.tfvars.example`, then create a local ignored `terraform.tf
 
 Review every variable after the base section in `variables.tf`, especially enable flags, private endpoint IDs, policy statements, notification recipients, and service-specific sizing values.
 
+| Input | What To Decide |
+|---|---|
+| `is_byol` | Set true only after the integration owner and commercial team confirm eligible Oracle Integration licensing. |
+
 ### Enable Flags And Switches
 
 All cost-bearing resources are disabled by default where possible. Turn on only the resources approved for the target environment.
@@ -131,7 +135,7 @@ architecture/README.md
 
 ## Review Before Apply
 
-- Confirm edition, message packs, BYOL, and file server decisions.
+- Confirm edition, message packs, `is_byol`, and file server decisions.
 - Confirm private outbound subnet and NSGs.
 - Confirm IDCS/domain authentication inputs when required by tenancy policy.
 - Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.

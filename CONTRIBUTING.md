@@ -59,6 +59,21 @@ For extension blueprints, document both usage modes when they apply:
 extension-only with existing customer OCIDs and base-plus-extension with outputs
 from core, networking, ownership, or operations blueprints.
 
+## Blueprint Boundary Gate
+
+Before adding a new `blueprints/<family>/<deployment>/` folder, confirm that the
+folder represents a customer outcome with its own lifecycle, owner, approval
+path, state boundary, or architecture review. Do not split every topic or
+subtopic into a full deployment. Supporting pieces such as one notification
+topic, event rule, alarm set, NSG choice, private endpoint, API route group, or
+optional IAM policy should stay inside the owning blueprint.
+
+If the same Terraform behavior is needed by multiple blueprints, promote that
+behavior into `modules/` and keep the blueprint as the thin deployable wrapper.
+Curated full landing-zone bundles are appropriate only when they map to common
+real customer journeys, such as industry, compliance, or workload platform
+patterns.
+
 ## Pull Request Checklist
 
 - The change is scoped to one blueprint, module family, or documentation area.

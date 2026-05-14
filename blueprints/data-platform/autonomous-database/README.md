@@ -17,7 +17,7 @@ Use this page as the operator guide for `blueprints/data-platform/autonomous-dat
 
 ## Deployment Purpose
 
-Deploys a private Autonomous Database pattern for ATP or ADW with optional manual backup, KMS, NSG, and private endpoint inputs.
+Deploys a private Autonomous Database pattern for ATP or ADW with optional manual backup, KMS, NSG, private endpoint inputs, and explicit license model selection.
 
 ## When To Use This Deployment
 
@@ -76,6 +76,10 @@ Start with `terraform.tfvars.example`, then create a local ignored `terraform.tf
 
 Review every variable after the base section in `variables.tf`, especially enable flags, private endpoint IDs, policy statements, notification recipients, and service-specific sizing values.
 
+| Input | What To Decide |
+|---|---|
+| `license_model` | Use `LICENSE_INCLUDED` or `BRING_YOUR_OWN_LICENSE` after DBA and commercial review. |
+
 ### Enable Flags And Switches
 
 All cost-bearing resources are disabled by default where possible. Turn on only the resources approved for the target environment.
@@ -127,6 +131,7 @@ architecture/README.md
 ## Review Before Apply
 
 - Confirm admin password handling uses a secure variable source.
+- Confirm `license_model` matches approved Oracle Database licensing rights.
 - Confirm private endpoint subnet, NSGs, KMS key, workload type, and storage sizing.
 - Confirm backup retention and auto-scaling expectations before apply.
 - Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.

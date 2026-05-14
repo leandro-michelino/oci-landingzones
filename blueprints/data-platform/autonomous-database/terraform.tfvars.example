@@ -11,6 +11,7 @@ compartment_ocid  = "ocid1.compartment.oc1..example"
 enable_autonomous_database = false
 db_name                    = "LZADB"
 db_workload                = "OLTP"
+license_model              = "LICENSE_INCLUDED"
 compute_count              = 2
 data_storage_size_in_tbs   = 1
 # subnet_id                = "ocid1.subnet.oc1..example"

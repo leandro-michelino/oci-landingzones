@@ -38,6 +38,7 @@ rag
 opensearch
 autonomous-database
 mysql-heatwave
+byol
 devops
 disaster-recovery
 ```
@@ -58,6 +59,7 @@ OCI GenAI landing zone
 Terraform and Ansible OCI automation
 OCI RAG agents and OpenSearch
 OCI disaster recovery blueprint
+OCI BYOL licensing matrix
 ```
 
 ## Practical Search Checklist

@@ -70,7 +70,7 @@ Deploys an Oracle Analytics Cloud instance with optional private access channel.
 
 ## Detailed Architecture Notes
 
-- Confirm feature set, license type, and capacity.
+- Confirm feature set, `license_type`, and capacity.
 - Confirm private access channel subnet, VCN, NSGs, and DNS zones.
 - Confirm KMS and identity-domain decisions.
 

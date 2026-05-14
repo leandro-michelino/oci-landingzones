@@ -76,6 +76,10 @@ Start with `terraform.tfvars.example`, then create a local ignored `terraform.tf
 
 Review every variable after the base section in `variables.tf`, especially enable flags, private endpoint IDs, policy statements, notification recipients, and service-specific sizing values.
 
+| Input | What To Decide |
+|---|---|
+| `license_type` | Use `LICENSE_INCLUDED` or `BRING_YOUR_OWN_LICENSE` after analytics owner and commercial review. |
+
 ### Enable Flags And Switches
 
 All cost-bearing resources are disabled by default where possible. Turn on only the resources approved for the target environment.
@@ -131,7 +135,7 @@ architecture/README.md
 
 ## Review Before Apply
 
-- Confirm feature set, license type, and capacity.
+- Confirm feature set, `license_type`, and capacity.
 - Confirm private access channel subnet, VCN, NSGs, and DNS zones.
 - Confirm KMS and identity-domain decisions.
 - Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.

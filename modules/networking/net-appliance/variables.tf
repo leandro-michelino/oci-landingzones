@@ -66,8 +66,22 @@ variable "appliances" {
     assign_public_ip    = optional(bool, false)
     nsg_ids             = optional(list(string), [])
     user_data           = optional(string)
+    licensing_configs = optional(list(object({
+      type         = string
+      license_type = optional(string)
+    })), [])
   }))
   default = {}
+
+  validation {
+    condition = alltrue(flatten([
+      for appliance in values(var.appliances) : [
+        for config in try(appliance.licensing_configs, []) :
+        config.license_type == null || contains(["OCI_PROVIDED", "BRING_YOUR_OWN_LICENSE"], config.license_type)
+      ]
+    ]))
+    error_message = "appliances[*].licensing_configs[*].license_type must be OCI_PROVIDED or BRING_YOUR_OWN_LICENSE when set."
+  }
 }
 
 variable "reserved_route_ips" {
