@@ -18,16 +18,26 @@ pattern.
 
 ## Local Validation
 
-Run these checks before opening a pull request:
+For normal blueprint, architecture, module, or local runner edits, start with
+the changed-scope validator:
+
+```bash
+./scripts/validate-changed.sh
+```
+
+It compares the branch and working tree to `origin/main`, runs the repository
+contract guard, then validates only the touched Terraform roots and Ansible
+playbooks. Use the full validator before broad refactors, release work, or
+changes to shared validation behavior:
 
 ```bash
 ./scripts/validate-all.sh
 ```
 
-The validation helper delegates to Ansible when available. It runs Terraform
-formatting, discovers implemented blueprints, initializes and validates them
-without a backend, runs optional local linters when installed, checks Ansible
-playbook syntax, and removes generated Terraform artifacts.
+The full validation helper runs Terraform formatting, discovers implemented
+blueprints, initializes and validates them without a backend, runs optional
+local scanners when installed, checks Ansible playbook syntax, and removes
+generated Terraform artifacts.
 
 For a focused local check from a single blueprint directory:
 

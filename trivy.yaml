@@ -1,0 +1,15 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+exit-code: 1
+quiet: true
+scan:
+  disable-telemetry: true
+  skip-dirs:
+    - .git
+    - .terraform
+    - .codex-local
+    - .claude
+misconfiguration:
+  terraform:
+    exclude-downloaded-modules: true
+rego:
+  skip-check-update: true

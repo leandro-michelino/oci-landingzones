@@ -15,6 +15,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Validation contract notes in `tests/README.md`.
 - Fast repository contract guard for repeated documentation fragments,
   blueprint file completeness, and blueprint-local Ansible runner wiring.
+- Changed-scope validation entry point for focused blueprint, architecture,
+  module, and Ansible edits.
 
 ### Changed
 
@@ -46,6 +48,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   plugin-cache, and guarded TLS compatibility settings.
 - Injected the repository Ansible configuration into validation syntax checks
   so blueprint-local runners resolve shared roles consistently.
+- Replaced the optional `tfsec` validation path with Trivy config scanning and
+  added explicit scanner configs for TFLint, Checkov, Trivy, and Ansible Lint.
 
 ### Removed
 

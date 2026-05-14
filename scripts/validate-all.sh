@@ -82,10 +82,14 @@ fi
 
 cd "$REPO_ROOT"
 
-run_if_available tflint --recursive
-run_if_available tfsec .
+# Keep optional scanners focused on repository source instead of downloaded
+# provider/module artifacts created during terraform init.
+cleanup_generated_artifacts
+
+run_if_available tflint --config "$REPO_ROOT/.tflint.hcl" --recursive
+run_if_available trivy config .
 run_if_available checkov -d . --framework terraform --compact
-run_if_available ansible-lint ansible
+ANSIBLE_CONFIG="$REPO_ROOT/ansible/ansible.cfg" run_if_available ansible-lint ansible
 
 if command -v ansible-playbook >/dev/null 2>&1; then
   echo "==> ansible-playbook syntax checks"

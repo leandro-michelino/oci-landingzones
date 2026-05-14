@@ -27,20 +27,29 @@ Local validation can create `.terraform/`, `.terraform.lock.hcl`, plans, and
 state files in many blueprint folders. They are intentionally ignored and should
 be removed from the workspace before committing.
 
-Use the validation entry point before commits:
+Use the changed-scope validation entry point while iterating:
+
+```bash
+./scripts/validate-changed.sh
+```
+
+This first runs a fast repository contract guard, then maps changed files to the
+nearest touched Terraform root and local Ansible playbook. It validates only
+that changed surface and cleans generated Terraform artifacts, plan files, and
+`.DS_Store` files even when a validation step fails.
+
+Run the full validation entry point before broad refactors, release work, or
+changes to shared validation behavior:
 
 ```bash
 ./scripts/validate-all.sh
 ```
 
-This first runs a fast repository contract guard, then auto-discovers Terraform
-blueprints under `blueprints/`, validates them without a remote backend, runs
-Ansible syntax checks, and cleans generated Terraform artifacts, plan files, and
-`.DS_Store` files even when a validation step fails. Blueprint folders with
-scaffold markers fail validation, because every architecture is expected to have
-real Terraform wiring. Blueprint-local Ansible playbooks are syntax-checked for
-every architecture folder. The Ansible role uses a local Terraform plugin cache
-and a bounded timeout per Terraform command so repeated checks stay predictable.
+The full validator auto-discovers Terraform blueprints under `blueprints/`,
+validates them without a remote backend, runs optional scanners when installed,
+syntax-checks Ansible playbooks, and cleans generated artifacts. Blueprint
+folders with scaffold markers fail validation, because every architecture is
+expected to have real Terraform wiring.
 
 For quick feedback while editing docs or blueprint wrappers, run only the
 contract guard:

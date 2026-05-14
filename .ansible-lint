@@ -1,0 +1,5 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+profile: basic
+skip_list:
+  - var-naming[no-role-prefix]
+  - yaml[line-length]

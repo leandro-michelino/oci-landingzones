@@ -204,18 +204,18 @@
         label: "{{ item | regex_replace('^' ~ validation_repo_root ~ '/', '') }}"
 
     - name: Run tflint when available
-      ansible.builtin.command: tflint --recursive
+      ansible.builtin.command: "tflint --config {{ validation_repo_root }}/.tflint.hcl --recursive"
       args:
         chdir: "{{ validation_repo_root }}"
       changed_when: false
       when: validation_available_tools["tflint"] | default(false)
 
-    - name: Run tfsec when available
-      ansible.builtin.command: tfsec .
+    - name: Run Trivy config scan when available
+      ansible.builtin.command: trivy config .
       args:
         chdir: "{{ validation_repo_root }}"
       changed_when: false
-      when: validation_available_tools["tfsec"] | default(false)
+      when: validation_available_tools["trivy"] | default(false)
 
     - name: Run checkov when available
       ansible.builtin.command: checkov -d . --framework terraform --compact

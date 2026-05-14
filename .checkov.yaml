@@ -1,0 +1,20 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+compact: true
+framework:
+  - terraform
+quiet: true
+skip-download: true
+skip-path:
+  - .terraform
+  - .git
+skip-check:
+  - CKV_TF_1
+  - CKV_OCI_4
+  - CKV_OCI_5
+  - CKV_OCI_9
+  - CKV_OCI_17
+  - CKV_OCI_19
+  - CKV_OCI_20
+  - CKV2_OCI_3
+  - CKV2_OCI_5
+  - CKV2_OCI_6

@@ -49,7 +49,7 @@ validation_playbooks:
 
 validation_optional_tools:
   - tflint
-  - tfsec
+  - trivy
   - checkov
   - ansible-lint
   - pre-commit

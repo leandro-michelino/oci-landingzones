@@ -272,10 +272,40 @@ tests/               Validation contract and future test location.
 | OCI CLI | Supplies local OCI authentication and tenancy context. |
 | Git | Fetches the repo and pinned module sources. |
 | Ansible | Runs repo checks and blueprint-local plan/apply/destroy workflows. |
-| Optional scanners | `tflint`, `tfsec`, `checkov`, `ansible-lint`, and `pre-commit` are used when installed. |
+| Ansible dev tools | Provides `ansible-lint` for the optional Ansible quality gate. |
+| Optional scanners | `tflint`, `trivy`, `checkov`, `ansible-lint`, and `pre-commit` are used when installed. |
 
 The optional scanners are nice to have, not mandatory. The repo checks skip them cleanly
 when they are not installed.
+
+Recommended local install on macOS:
+
+```bash
+brew install trivy
+pipx install checkov
+pipx install ansible-dev-tools
+pipx inject ansible-dev-tools ansible-lint --include-apps --force
+pipx install pre-commit
+pre-commit install
+```
+
+Install `tflint` from the official Terraform Linters release for your platform when your
+package manager does not provide it. The validation command uses the repo-local
+`.tflint.hcl` config so the standard blueprint input contract is handled consistently.
+
+## Faster Change Checks
+
+Use changed-scope validation while editing a small blueprint, architecture, module, or
+Ansible runner:
+
+```bash
+./scripts/validate-changed.sh
+```
+
+That script compares the branch and working tree to `origin/main`, runs the fast repository
+contract guard, then validates only the touched Terraform roots and Ansible playbooks. Use
+`./scripts/validate-all.sh` before broad refactors, release cuts, or changes to shared
+validation behavior.
 
 ## How To Read A Deployment
 

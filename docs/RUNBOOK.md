@@ -9,19 +9,47 @@ flows. Pattern-specific design checks live in each blueprint's local
 ## Validate The Repository
 
 1. Confirm the working tree only contains intended changes.
-2. Run `./scripts/validate-all.sh` from the repository root.
-3. Fix any repository contract guard failures before investigating slower
+2. Run `./scripts/validate-changed.sh` for a focused iteration check.
+3. Run `./scripts/validate-all.sh` from the repository root before broad
+   refactors, release cuts, or final merge/push when shared behavior changed.
+4. Fix any repository contract guard failures before investigating slower
    Terraform or Ansible failures.
-4. Review Terraform fmt/init/validate output for failed blueprint directories.
-5. Review Ansible syntax-check output for shared and blueprint-local playbooks.
-6. Confirm generated artifacts were cleaned:
+5. Review Terraform fmt/init/validate output for failed blueprint directories.
+6. Review Ansible syntax-check output for shared and blueprint-local playbooks.
+7. Confirm generated artifacts were cleaned:
    - `.terraform/`
    - `.terraform.lock.hcl`
    - `terraform.tfstate*`
    - `tfplan` and `*.tfplan`
    - `.DS_Store`
-7. Re-run validation after fixing any Terraform, Ansible, README, or ASCII
+8. Re-run validation after fixing any Terraform, Ansible, README, or ASCII
    architecture contract failures.
+
+## Validate Only Changed Work
+
+Use this while iterating on a small architecture, blueprint, module, or local
+Ansible runner:
+
+```bash
+./scripts/validate-changed.sh
+```
+
+The changed-scope validator compares committed, staged, unstaged, and untracked
+files against `origin/main`, then maps changed files to the nearest deployable
+Terraform root. It always runs `scripts/check-repo-contracts.sh`, but only runs
+Terraform `fmt/init/validate`, blueprint-local Ansible syntax checks, and
+TFLint for the touched roots.
+
+To compare against another branch or commit:
+
+```bash
+./scripts/validate-changed.sh --base main
+VALIDATE_CHANGED_BASE=origin/release ./scripts/validate-changed.sh
+```
+
+Escalate to `./scripts/validate-all.sh` when shared modules, shared Ansible
+roles, validation scripts, scanner configs, or repo-wide docs changed enough
+that a focused check would miss the blast radius.
 
 ## Review The Whole Project
 
@@ -78,8 +106,10 @@ commands launched through the repository scripts or Ansible roles.
    components, deployment flow, architecture notes, and review checklist.
 5. Add or update local `ansible/plan.yml`, `ansible/apply.yml`, and
    `ansible/destroy.yml` when the blueprint is deployable.
-6. Run `./scripts/check-repo-contracts.sh` for a fast contract check.
-7. Run `./scripts/validate-all.sh`.
+6. Run `./scripts/validate-changed.sh` for a focused contract, Terraform, and
+   Ansible check.
+7. Run `./scripts/validate-all.sh` before final release or when shared
+   behavior changed.
 8. Update `docs/DEPLOYMENT-PATTERN-CATALOG.md` and the root `README.md` when
    the blueprint should be visible in the deployment menu.
 
