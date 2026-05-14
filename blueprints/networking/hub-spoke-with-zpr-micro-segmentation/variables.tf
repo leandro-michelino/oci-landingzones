@@ -69,7 +69,7 @@ variable "zpr_policies" {
   default = {
     hub_spoke_microsegmentation = {
       name        = "hub-spoke-microsegmentation"
-      description = "Starter ZPR policy placeholder for hub/spoke east-west controls."
+      description = "Starter ZPR policy definition for hub/spoke east-west controls."
       statements  = []
     }
   }

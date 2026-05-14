@@ -37,13 +37,11 @@ validation_terraform_command_environment:
   TF_IN_AUTOMATION: "true"
   TF_PLUGIN_CACHE_DIR: "{{ validation_terraform_plugin_cache_dir }}"
   GODEBUG: "{{ validation_terraform_godebug_effective }}"
-validation_terraform_command_timeout_seconds: 180
-validation_terraform_command_poll_seconds: 5
+validation_run_terraform_commands: false
 
 validation_playbooks:
   - ansible/playbooks/site.yml
   - ansible/playbooks/bootstrap.yml
-  - ansible/playbooks/validate.yml
   - ansible/playbooks/terraform-plan.yml
   - ansible/playbooks/terraform-apply.yml
   - ansible/playbooks/terraform-destroy.yml

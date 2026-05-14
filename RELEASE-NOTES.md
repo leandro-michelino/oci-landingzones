@@ -21,6 +21,16 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Enhanced every deployment-local ASCII architecture with a consistent legend,
   control lane, trust boundary, dependency flow, traffic or signal path, review
   focus, and hand-off lane.
+- Cleaned stale setup-marker wording from contribution, FSDR, and ZPR
+  documentation surfaces so they match the current deployable blueprint state.
+- Added a whole-project review runbook flow and ignored local Ansible async
+  artifacts.
+- Guarded validation against self-invocation by keeping `validate.yml` out of
+  the playbook syntax-check loop it executes.
+- Made `scripts/validate-all.sh` shell-native by default for Terraform,
+  contract checks, optional scanners, and shared/blueprint-local Ansible syntax
+  checks so full validation does not depend on a long-running Ansible role
+  subprocess.
 - Aligned the default Terraform plan artifact with ignore and cleanup rules by
   using `tfplan.tfplan`.
 - Normalized remaining composite blueprint module sources to release-pinned Git

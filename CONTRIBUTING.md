@@ -2,17 +2,18 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This project creates Terraform and Ansible scaffolding first, then requires
-architecture notes and documentation before scaffolds become deployable OCI
-resources. The goal is to keep infrastructure patterns explainable before they
-are applied.
+This project keeps Terraform, Ansible, and architecture documentation moving
+together. A blueprint is considered ready only when its Terraform resources,
+local runners, README, and ASCII architecture describe the same deployable OCI
+pattern.
 
 ## Workflow
 
-1. Add or update Terraform and Ansible scaffold files.
-2. Create or update the relevant `architecture/README.md` before real resources.
+1. Add or update Terraform and local Ansible runner files.
+2. Create or update the relevant `architecture/README.md` with the intended
+   control flow, trust boundary, traffic or signal path, and review assumptions.
 3. Update the blueprint or module README.
-4. Implement Terraform in the smallest useful scope.
+4. Keep Terraform changes in the smallest useful scope.
 5. Run local validation.
 
 ## Local Validation
@@ -48,7 +49,7 @@ architecture notes describe the intended design, scope, and review assumptions.
 ## Pull Request Checklist
 
 - The change is scoped to one blueprint, module family, or documentation area.
-- Architecture notes and rendered review artifacts are updated when relevant.
+- Architecture notes are updated when relevant.
 - Naming follows `docs/NAMING-CONVENTIONS.md`.
 - New variables are documented in `VARIABLES.md` or the blueprint README.
 - Security-sensitive defaults are conservative.

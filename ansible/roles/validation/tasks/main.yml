@@ -167,12 +167,19 @@
       ansible.builtin.debug:
         msg: "Validating {{ validation_terraform_directories | length }} Terraform blueprints."
 
+    - name: Show Terraform command runner mode
+      ansible.builtin.debug:
+        msg: "Terraform init/validate command execution is handled by scripts/validate-all.sh."
+      when: not validation_run_terraform_commands | bool
+
     - name: Prepare Terraform plugin cache
       ansible.builtin.file:
         path: "{{ validation_terraform_plugin_cache_dir }}"
         state: directory
         mode: "0755"
-      when: validation_terraform_directories | length > 0
+      when:
+        - validation_run_terraform_commands | bool
+        - validation_terraform_directories | length > 0
 
     - name: Run terraform init without backend for implemented blueprints
       ansible.builtin.command: terraform init -backend=false -input=false -no-color
@@ -180,8 +187,7 @@
         chdir: "{{ item }}"
       changed_when: false
       environment: "{{ validation_terraform_command_environment }}"
-      async: "{{ validation_terraform_command_timeout_seconds }}"
-      poll: "{{ validation_terraform_command_poll_seconds }}"
+      when: validation_run_terraform_commands | bool
       loop: "{{ validation_terraform_directories | sort }}"
       loop_control:
         label: "{{ item | regex_replace('^' ~ validation_repo_root ~ '/', '') }}"
@@ -192,8 +198,7 @@
         chdir: "{{ item }}"
       changed_when: false
       environment: "{{ validation_terraform_command_environment }}"
-      async: "{{ validation_terraform_command_timeout_seconds }}"
-      poll: "{{ validation_terraform_command_poll_seconds }}"
+      when: validation_run_terraform_commands | bool
       loop: "{{ validation_terraform_directories | sort }}"
       loop_control:
         label: "{{ item | regex_replace('^' ~ validation_repo_root ~ '/', '') }}"
@@ -228,7 +233,11 @@
       when: validation_available_tools["ansible-lint"] | default(false)
 
     - name: Run Ansible playbook syntax checks
-      ansible.builtin.command: "ansible-playbook --syntax-check {{ item }}"
+      ansible.builtin.command:
+        argv:
+          - ansible-playbook
+          - --syntax-check
+          - "{{ item }}"
       args:
         chdir: "{{ validation_repo_root }}"
       changed_when: false
@@ -279,7 +288,11 @@
         msg: "Validating {{ validation_blueprint_ansible_playbook_paths | length }} blueprint-local Ansible playbooks."
 
     - name: Run blueprint-local Ansible syntax checks
-      ansible.builtin.command: "ansible-playbook --syntax-check {{ item }}"
+      ansible.builtin.command:
+        argv:
+          - ansible-playbook
+          - --syntax-check
+          - "{{ item }}"
       args:
         chdir: "{{ validation_repo_root }}"
       changed_when: false

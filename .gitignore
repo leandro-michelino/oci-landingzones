@@ -37,6 +37,7 @@ checkov-report.*
 tfsec-report.*
 *.retry
 .ansible/
+.ansible_async/
 ansible/vault-password*
 
 # Editors

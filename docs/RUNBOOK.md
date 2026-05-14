@@ -23,6 +23,35 @@ flows. Pattern-specific design checks live in each blueprint's local
 7. Re-run validation after fixing any Terraform, Ansible, README, or ASCII
    architecture contract failures.
 
+## Review The Whole Project
+
+Use this when doing a repository hygiene pass rather than a single blueprint
+change.
+
+1. Run `./scripts/check-repo-contracts.sh` to catch missing blueprint files,
+   forbidden repeated documentation fragments, and local Ansible runner drift.
+2. Confirm no generated artifacts are present with `git status --short` and the
+   cleanup patterns in [Clean Generated Files](#clean-generated-files).
+3. Search for stale markers before committing:
+
+   ```bash
+   rg -n 'T(O)DO|F(I)XME|X(X)X|scaff[o]ld|placeh[o]lder|source\s*=\s*"\.\.?' . \
+     --glob "!RELEASE-NOTES.md" \
+     --glob "!docs/DEPLOYMENT-GUIDE.md" \
+     --glob "!ansible/roles/validation/tasks/main.yml"
+   ```
+
+4. Review any broad network defaults such as `0.0.0.0/0` against the blueprint
+   purpose. Public web-tier examples may intentionally allow HTTP/HTTPS, but
+   administrative access should use specific CIDRs.
+5. Run `./scripts/validate-all.sh` for Terraform fmt/init/validate and Ansible
+   syntax checks across every deployable blueprint. The validation playbook is
+   intentionally not part of its own syntax-check loop; it is parsed at the
+   start of the run, which avoids recursive Ansible execution. Terraform
+   init/validate and Ansible syntax checks are driven directly by
+   `scripts/validate-all.sh`; set `VALIDATE_ALL_ANSIBLE_ROLE=1` only when
+   deliberately testing the validation role itself.
+
 ### Terraform Registry TLS Behind Corporate Proxies
 
 Prefer installing the corporate root CA so Terraform can verify

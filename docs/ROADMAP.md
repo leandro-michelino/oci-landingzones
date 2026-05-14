@@ -2,30 +2,19 @@
 
 Author: Leandro Michelino | ACE | <leandro.michelino@oracle.com>
 
-This document defines roadmap blueprint families and deployments, organized by
-implementation priority and dependency order. The first eight recommendations
-are now implemented as deployable blueprint folders:
+This document tracks planned blueprint work. Implemented blueprints are listed
+briefly - their full specs live in the individual blueprint folders. Only
+blueprints without a folder yet carry detailed planning notes here.
 
-```text
-blueprints/data-platform/autonomous-database/
-blueprints/ai/genai-private/
-blueprints/devops/oci-devops-pipeline/
-blueprints/extensions/observability/
-blueprints/extensions/oic/
-blueprints/extensions/oac/
-blueprints/compliance/healthcare-pci/
-blueprints/extensions/oke-service-mesh/
-```
-
-Each planned blueprint will follow the same folder contract as existing blueprints:
+Each planned blueprint follows the same folder contract as existing ones:
 
 ```text
 blueprints/<family>/<deployment>/
-|-- README.md                  Human-friendly deployment notes
+|-- README.md                  Operator guide
 |-- architecture/README.md     Detailed ASCII architecture
 |-- main.tf                    Terraform composition
 |-- variables.tf               Input contract
-|-- outputs.tf                 Named hand-off values
+|-- outputs.tf                 Hand-off values
 |-- providers.tf               OCI provider configuration
 |-- versions.tf                Terraform / provider constraints
 |-- terraform.tfvars.example   Local input example
@@ -37,410 +26,27 @@ blueprints/<family>/<deployment>/
 
 ---
 
-## Phase 1 - High Demand, Clear Pattern
+## Already Implemented
 
-Both blueprints have an obvious OCI resource shape, fill the most-requested gaps in the repo,
-and need only the Core Landing Zone as a prerequisite. Build these first.
+The following blueprints are fully implemented and deployable. See each folder for
+operator guide, architecture diagram, and Terraform / Ansible workflow.
+
+| Blueprint | Folder |
+| --- | --- |
+| Autonomous Database (ATP / ADW) | `blueprints/data-platform/autonomous-database/` |
+| OCI Generative AI private landing zone | `blueprints/ai/genai-private/` |
+| OCI DevOps Pipeline | `blueprints/devops/oci-devops-pipeline/` |
+| Observability platform | `blueprints/extensions/observability/` |
+| Oracle Integration Cloud | `blueprints/extensions/oic/` |
+| Oracle Analytics Cloud | `blueprints/extensions/oac/` |
+| Healthcare / PCI compliance | `blueprints/compliance/healthcare-pci/` |
+| OKE service mesh | `blueprints/extensions/oke-service-mesh/` |
 
 ---
 
-### Autonomous Database (ATP / ADW)
+## Phase 4 - Specialized (Next Up)
 
-| Attribute | Value |
-| --- | --- |
-| Folder | `blueprints/data-platform/autonomous-database/` |
-| Depends on | Core Landing Zone (compartment, IAM, Vault/KMS) |
-| Terraform modules | `modules/autonomous-database`, `modules/networking` (existing) |
-
-**Why this exists.**
-No database blueprint is in the repo today. Autonomous Database is the most common OCI
-database pattern by volume, and every data or application landing zone eventually needs one.
-
-**What it deploys.**
-
-| Resource | Notes |
-| --- | --- |
-| Autonomous Database instance | ATP (OLTP) or ADW (analytics), shared or dedicated, ECPU shape |
-| Private endpoint | No public IP; accessible only from within the VCN |
-| Network Security Group | Allows 1521 / 1522 from app subnets only |
-| Customer-managed encryption key | Vault/KMS integration, key rotation policy |
-| IAM policies | DBA group (full), read-only group (query), app group (connect) |
-| Optional: scheduled backup | Configurable retention and backup destination |
-| Optional: auto-scaling | ECPU-based auto-scaling flag |
-
-**ASCII Architecture.**
-
-```text
- App Subnet (VCN)
-       |
-       | private endpoint (port 1521/1522, NSG-controlled)
-       v
- +-----------------------------------------+
- | Autonomous Database                     |
- | |--- Vault/KMS (customer-managed key)   |
- | |--- NSG (ingress from app subnet only) |
- | `--- IAM (DBA / read-only / app)        |
- +-----------------------------------------+
-       |
-       v
- Object Storage (automated backups, private)
-```
-
-**Inputs to decide.**
-
-- ATP (OLTP) vs ADW (analytics / data warehouse)
-- Shared (serverless) vs dedicated infrastructure
-- ECPU count and auto-scaling upper bound
-- Backup retention window and destination bucket
-- Whether to expose ORDS for APEX use (links to Phase 4 `apex-adw` blueprint)
-
-**Outputs and hand-off.**
-
-```text
-autonomous_database_id
-autonomous_database_connection_string
-private_endpoint_ip
-nsg_id
-kms_key_id
-```
-
----
-
-### OCI Generative AI Landing Zone
-
-| Attribute | Value |
-| --- | --- |
-| Folder | `blueprints/ai/genai-private/` |
-| New family | `blueprints/ai/` - introduce this folder |
-| Depends on | Core Landing Zone (compartment, IAM, Vault/KMS) |
-| Terraform modules | `modules/networking` (existing), new `modules/genai` |
-
-**Why this exists.**
-OCI Generative AI is the highest-demand OCI service in 2025. Customers need private endpoint
-access, scoped IAM (who can call which model), audit logging, and Object Storage for prompt
-and response archiving - from day one, not retrofitted later.
-
-**What it deploys.**
-
-| Resource | Notes |
-| --- | --- |
-| OCI Generative AI private endpoint | No public access; VCN-routed only |
-| IAM policies | Per-group model access: read-only inference vs full (fine-tuning) |
-| Vault/KMS | Optional customer-managed key for stored embeddings or fine-tune data |
-| Object Storage bucket | Private bucket for prompt logs, response archives, and fine-tune datasets |
-| VCN Service Gateway | Routes OCI service traffic without internet |
-| Logging | Audit logging for all inference calls |
-
-**ASCII Architecture.**
-
-```text
- App / Notebook Subnet (VCN)
-       |
-       | private endpoint (service gateway route)
-       v
- +---------------------------------------------+
- | OCI Generative AI                           |
- | |--- IAM (inference group / fine-tune group) |
- | |--- Audit logging (all calls)              |
- | `--- Vault/KMS (optional embedding key)     |
- +---------------------------------------------+
-       |
-       v
- Object Storage (private)
- |--- prompt-response-archive/
- `--- fine-tune-datasets/
-```
-
-**Inputs to decide.**
-
-- Which model families to expose (Cohere, Meta Llama, etc.)
-- Inference-only vs fine-tuning access per group
-- Whether to enable dedicated AI cluster or use shared capacity
-- Log retention and Object Storage lifecycle policy
-- Whether to attach to an OKE cluster or standalone app subnet
-
-**Outputs and hand-off.**
-
-```text
-genai_endpoint_url
-private_endpoint_id
-iam_inference_policy_id
-log_bucket_name
-```
-
----
-
-## Phase 2 - Foundation Tooling
-
-These two blueprints fill tooling gaps that every serious enterprise deployment eventually
-hits. They depend on Core and optionally connect to Phase 1 outputs.
-
----
-
-### OCI DevOps Pipeline
-
-| Attribute | Value |
-| --- | --- |
-| Folder | `blueprints/devops/oci-devops-pipeline/` |
-| New family | `blueprints/devops/` - introduce this folder |
-| Depends on | Core Landing Zone; optionally OKE (extensions) |
-| Terraform modules | New `modules/devops` |
-
-**Why this exists.**
-CI/CD is foundational. Every team deploying to OKE, Functions, or Compute needs a repeatable
-pipeline. OCI DevOps is native, IAM-integrated, and avoids the complexity of bringing an
-external CI/CD tool into a new tenancy.
-
-**What it deploys.**
-
-| Resource | Notes |
-| --- | --- |
-| OCI Code Repository | Git repository hosted in the tenancy |
-| Build Pipeline | Multi-stage build with managed build runner |
-| Artifact Registry | Container image or generic artifact storage |
-| Deployment Pipeline | Rolling or blue/green deployment to OKE or Compute |
-| Notification topic | ONS topic for build/deploy success and failure alerts |
-| IAM policies | DevOps service, build runner, and deployment runner policies |
-| Optional: trigger | GitHub mirror trigger or OCI Events trigger |
-
-**ASCII Architecture.**
-
-```text
- Developer Push
-       |
-       v
- OCI Code Repository
-       |
-       v (trigger)
- Build Pipeline
- |--- Stage 1: Managed Build (compile, test, scan)
- |--- Stage 2: Push to Artifact Registry
- `--- Stage 3: Trigger Deployment Pipeline
-                    |
-                    v
-           Deployment Pipeline
-           |--- OKE (rolling / blue-green)
-           `--- Compute / Functions
-                    |
-                    v
-           ONS Notification (success / failure)
-```
-
-**Inputs to decide.**
-
-- Build runner shape (managed vs custom)
-- Target: OKE cluster ID, Compute instance group, or Function
-- Deployment strategy: rolling, canary, or blue/green
-- Whether to enable GitHub or GitLab mirror as the upstream remote
-- Artifact Registry compartment and retention policy
-
-**Outputs and hand-off.**
-
-```text
-devops_project_id
-code_repository_ssh_url
-artifact_registry_url
-build_pipeline_id
-deployment_pipeline_id
-```
-
----
-
-### Observability Platform
-
-| Attribute | Value |
-| --- | --- |
-| Folder | `blueprints/extensions/observability/` |
-| Depends on | Core Landing Zone (logging and monitoring baseline) |
-| Terraform modules | New `modules/observability` |
-
-**Why this exists.**
-Core Landing Zone enables basic logging, monitoring alarms, and Cloud Guard. Enterprises
-need a deeper layer: log analytics with query capability, application performance
-monitoring, and database/infrastructure insight - all in one scoped deployment.
-
-**What it deploys.**
-
-| Resource | Notes |
-| --- | --- |
-| Logging Analytics log group | Scoped to tenancy or compartment |
-| Log Analytics log source mappings | Maps OCI Audit, VCN Flow Logs, and OS syslog |
-| APM domain | Application Performance Monitoring for app instrumentation |
-| Ops Insights | Database and host capacity and performance analysis |
-| Monitoring alarm composite rules | CPU, memory, disk, and error-rate thresholds |
-| ONS topic and subscriptions | Email or PagerDuty integration |
-
-**ASCII Architecture.**
-
-```text
- OCI Resources (VCN Flow Logs, Audit, OS Agent)
-       |
-       v
- Logging Analytics
- |--- Log Groups (audit / vcn-flow / app)
- |--- Dashboards (security / network / app)
- `--- Scheduled saved searches (anomaly detection)
-
- Application (instrumented with APM agent)
-       |
-       v
- APM Domain
- |--- Trace explorer
- `--- Synthetic monitors
-
- Databases / Compute
-       |
-       v
- Ops Insights
- |--- SQL analysis
- |--- Capacity planning
- `--- News reports
-
- Alarms -> ONS -> Email / PagerDuty
-```
-
-**Inputs to decide.**
-
-- Log retention window for each log group
-- APM agent deployment method (OKE DaemonSet vs Compute cloud-init)
-- Ops Insights target: Autonomous DB, DB System, or host
-- Alarm notification destinations
-
-**Outputs and hand-off.**
-
-```text
-log_analytics_namespace
-apm_domain_id
-apm_data_upload_endpoint
-ops_insights_warehouse_id
-monitoring_alarm_ids
-```
-
----
-
-## Phase 3 - Enterprise Patterns
-
-These blueprints target common enterprise service layers and regulated-industry compliance
-shapes. They build on Core and Phase 1-2 outputs.
-
----
-
-### Oracle Integration Cloud (OIC)
-
-| Attribute | Value |
-| --- | --- |
-| Folder | `blueprints/extensions/oic/` |
-| Depends on | Core Landing Zone; VCN from any networking blueprint |
-
-**Why this exists.**
-OIC is the integration backbone for most Oracle ERP and SaaS customers. It needs a private
-VCN attachment, scoped IAM, Vault for connection credentials, and a clear output for other
-teams to consume the integration endpoint.
-
-**What it deploys.**
-
-| Resource | Notes |
-| --- | --- |
-| OIC instance | Standard or Enterprise edition, private endpoint |
-| Private endpoint | Accessible from VCN only |
-| Vault secret | OIC admin credentials or OAuth client secret |
-| NSG | Allows HTTPS from app subnets; blocks all other ingress |
-| IAM policies | Integration admin, monitoring read, connector access |
-
-**Inputs to decide.**
-
-- OIC edition (Standard vs Enterprise) and message pack count
-- Disaster recovery replica region (optional)
-- Whether to enable File Server (embedded FTP) feature
-- VPN or FastConnect requirement for on-premises adapter connectivity
-
-**Outputs and hand-off.**
-
-```text
-oic_instance_id
-oic_endpoint_url
-private_endpoint_ip
-vault_secret_id (admin credentials)
-```
-
----
-
-### Oracle Analytics Cloud (OAC)
-
-| Attribute | Value |
-| --- | --- |
-| Folder | `blueprints/extensions/oac/` |
-| Depends on | Core Landing Zone; Autonomous DB (Phase 1) for data source |
-
-**What it deploys.**
-Private OAC instance with VLAN attachment, private endpoint, Vault for connection
-credentials, NSG allowing HTTPS from analytics subnet, and IAM for analytics admin and
-consumer groups.
-
-**Inputs to decide.**
-
-- OAC edition and OCPU count
-- Private access channel vs public with IP allowlist
-- Autonomous DB connection (from Phase 1 outputs)
-- Whether to enable Embedded ML and AI features
-
-**Outputs and hand-off.**
-
-```text
-oac_instance_id
-oac_endpoint_url
-private_endpoint_ip
-```
-
----
-
-### Healthcare / PCI Compliance
-
-| Attribute | Value |
-| --- | --- |
-| Folder | `blueprints/compliance/healthcare-pci/` |
-| Depends on | Core Landing Zone; extends SCCA and Zero Trust patterns |
-
-**What it deploys.**
-Core Landing Zone baseline tightened for regulated environments: mandatory defined tags for
-data classification, stricter IAM (no wildcards), dedicated Vault keys per data class, OCI
-Security Zones with custom recipes, Logging Analytics retention enforcement, and a review
-checklist tuned for HIPAA and PCI DSS control families.
-
-**Inputs to decide.**
-
-- Compliance target: HIPAA, PCI DSS, or both
-- Data classification tag taxonomy
-- Log retention window (HIPAA: 6 years, PCI DSS: 1 year minimum)
-- Break-glass access model and audit trail destination
-
----
-
-### Service Mesh on OKE
-
-| Attribute | Value |
-| --- | --- |
-| Folder | `blueprints/extensions/oke-service-mesh/` |
-| Depends on | Core Landing Zone; OKE (extensions) |
-
-**What it deploys.**
-OCI Service Mesh or Istio deployed into the existing OKE cluster: mesh control plane,
-sidecar injection namespace configuration, mTLS peer authentication policy, APM integration
-for distributed tracing, and Grafana/Prometheus if self-managed observability is preferred.
-
-**Inputs to decide.**
-
-- OCI Service Mesh (managed) vs self-managed Istio
-- mTLS mode: strict or permissive
-- Whether APM domain comes from Phase 2 Observability outputs or a new instance
-- Ingress gateway: OCI Load Balancer or NGINX
-
----
-
-## Phase 4 - Specialized
-
-These blueprints serve specific runtime or operational needs. They are lower urgency but
-complete the catalog meaningfully.
+Three blueprints that complete the current catalog.
 
 ---
 
@@ -452,34 +58,107 @@ complete the catalog meaningfully.
 | Depends on | Core Landing Zone; VCN from any networking blueprint |
 
 **Why this exists.**
-Not every workload needs an OKE cluster. Container Instances gives serverless container
-runtime on OCI with private VCN attachment, OCIR image pull, Vault secret injection, and
-IAM - without the cluster control plane overhead.
+Not every workload needs an OKE cluster. Container Instances gives serverless
+container runtime on OCI with private VCN attachment, OCIR image pull, Vault
+secret injection, and IAM - without cluster control-plane overhead.
 
 **What it deploys.**
-Container Instance with private VCN subnet, OCIR pull secret from Vault, NSG for workload
-ingress and egress, and IAM policies for the Container Instances service principal.
+
+| Resource | Notes |
+| --- | --- |
+| Container Instance | Private VCN subnet, configurable shape and image |
+| OCIR pull secret | Stored in Vault, injected at runtime |
+| NSG | Ingress and egress rules for the workload |
+| IAM policies | Container Instances service principal |
+
+**ASCII Architecture.**
+
+```text
+ App Subnet (VCN)
+       |
+       | private subnet attachment
+       v
+ +---------------------------------------+
+ | Container Instance                   |
+ | |--- OCIR image (Vault pull secret)  |
+ | |--- NSG (ingress / egress scoped)   |
+ | `--- IAM (service principal)         |
+ +---------------------------------------+
+```
+
+**Inputs to decide.**
+
+- Container image and OCIR repository
+- VCN subnet and NSG rules for the workload
+- CPU and memory shape
+- Whether to expose via private load balancer or internal only
+
+**Outputs and hand-off.**
+
+```text
+container_instance_id
+private_ip
+nsg_id
+```
 
 ---
 
-### Cost Optimization Blueprint
+### Cost Optimization
 
 | Attribute | Value |
 | --- | --- |
 | Folder | `blueprints/operations/cost-optimization/` |
-| New family | `blueprints/operations/` - introduce this folder |
+| New family | `blueprints/operations/` |
 | Depends on | Core Landing Zone (tagging, budgets baseline) |
 
 **Why this exists.**
-Multi-team tenancies without explicit cost attribution drift into uncontrolled spend. This
-blueprint formalizes tagging policy enforcement, per-compartment budgets, OCI Optimizer
-recommendations review, and alert thresholds with ONS - turning cost governance from a
-manual review into an automated control.
+Multi-team tenancies without explicit cost attribution drift into uncontrolled
+spend. This blueprint turns cost governance from a manual review into an
+automated control loop.
 
 **What it deploys.**
-Defined tag namespace with cost-centre and owner tags enforced by tag defaults, per-
-compartment budgets with alert thresholds, OCI Optimizer recommendation subscriptions,
-and a Monitoring composite alarm for budget overrun.
+
+| Resource | Notes |
+| --- | --- |
+| Defined tag namespace | cost-centre and owner tags with tag defaults |
+| Per-compartment budgets | Configurable thresholds per compartment |
+| OCI Optimizer subscriptions | Recommendation categories and actions |
+| Monitoring composite alarm | Budget overrun alert |
+| ONS topic | Email or webhook notification on threshold breach |
+
+**ASCII Architecture.**
+
+```text
+ Tag defaults (cost-centre / owner)
+       |
+       v (enforced on new resources)
+ Compartment budgets
+       |
+       v (threshold crossed)
+ Monitoring composite alarm
+       |
+       v
+ ONS topic -> Email / Webhook
+       |
+       v
+ OCI Optimizer (recommendations feed)
+```
+
+**Inputs to decide.**
+
+- Tag taxonomy: which cost-centre values are valid
+- Budget amounts and alert thresholds per compartment
+- Notification destinations (email, PagerDuty, Slack webhook)
+- Optimizer recommendation categories to subscribe to
+
+**Outputs and hand-off.**
+
+```text
+tag_namespace_id
+budget_ids
+alarm_id
+ons_topic_id
+```
 
 ---
 
@@ -488,71 +167,779 @@ and a Monitoring composite alarm for budget overrun.
 | Attribute | Value |
 | --- | --- |
 | Folder | `blueprints/data-platform/apex-adw/` |
-| Depends on | Core Landing Zone; Autonomous DB (Phase 1) |
+| Depends on | Core Landing Zone; Autonomous Database (existing) |
 
 **Why this exists.**
-APEX on ADW is the dominant pattern for internal OCI low-code applications. It extends the
-Phase 1 Autonomous DB blueprint by enabling APEX workspace provisioning, ORDS (Oracle REST
-Data Services) endpoint configuration, private load balancer for ORDS, and Vault for admin
-credentials - producing a deployable APEX platform from a single `terraform apply`.
+APEX on ADW is the dominant OCI low-code pattern. It extends an existing
+Autonomous DB instance by enabling APEX workspace provisioning and exposing ORDS
+(Oracle REST Data Services) through a private load balancer - producing a
+deployable APEX platform from a single `terraform apply`.
 
 **What it deploys.**
-ORDS endpoint on the existing ADW instance, private Load Balancer with HTTPS listener,
-NSG allowing HTTPS from app subnet, APEX workspace bootstrap, and Vault secret for the
-APEX admin account.
+
+| Resource | Notes |
+| --- | --- |
+| ORDS endpoint | Configured on the existing ADW instance |
+| Private Load Balancer | HTTPS listener; no public exposure |
+| NSG | HTTPS from app subnet only |
+| APEX workspace bootstrap | Script-driven workspace and admin account creation |
+| Vault secret | APEX admin credentials |
+
+**ASCII Architecture.**
+
+```text
+ App Subnet (VCN)
+       |
+       | HTTPS (NSG-controlled)
+       v
+ Private Load Balancer
+       |
+       v
+ ORDS endpoint (on Autonomous DB)
+       |
+       v
+ APEX workspace
+       |
+       `--- Vault (admin credentials)
+```
+
+**Inputs to decide.**
+
+- Existing Autonomous DB OCID (from `autonomous-database` blueprint outputs)
+- APEX workspace name and admin username
+- Load balancer shape and bandwidth
+- NSG source CIDR for HTTPS access
+
+**Outputs and hand-off.**
+
+```text
+apex_url
+ords_endpoint
+load_balancer_id
+vault_secret_id
+```
+
+---
+
+## Phase 5 - AI / ML Platform
+
+AI workloads beyond a single GenAI endpoint. These three blueprints cover the
+ML development lifecycle (Data Science), agentic RAG patterns (AI Agents), and
+purpose-built in-memory analytics (MySQL HeatWave).
+
+---
+
+### OCI Data Science
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/ai/data-science/` |
+| Depends on | Core Landing Zone; VCN from any networking blueprint |
+
+**Why this exists.**
+The `genai-private` blueprint covers managed inference. Teams building and
+training custom models need a separate landing zone: notebook sessions with GPU
+shapes, a model catalog, a private model deployment endpoint, and scoped IAM so
+data scientists and pipeline service accounts can operate independently.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| OCI Data Science project | Scoped to compartment |
+| Notebook session config | Shape options including GPU; private VCN subnet |
+| Model catalog | Versioned model storage in the project |
+| Model deployment | Private HTTP endpoint for online inference |
+| Object Storage bucket | Training datasets and experiment artifacts |
+| Vault secret | Optional API key or token for external data sources |
+| IAM policies | Data science service, notebook sessions, model deploy |
+
+**ASCII Architecture.**
+
+```text
+ Data Scientist (notebook session, private VCN)
+       |
+       v
+ OCI Data Science Project
+ |--- Notebook Sessions (GPU / CPU shapes)
+ |--- Model Catalog (versioned artifacts)
+ `--- Model Deployment (private endpoint)
+       |
+       `--- Object Storage (datasets / artifacts)
+       `--- Vault (credentials for external sources)
+```
+
+**Inputs to decide.**
+
+- Notebook session shape (CPU or GPU) and block volume size
+- VCN subnet for notebook and model deployment
+- Object Storage bucket for training data
+- Whether to expose model deployment endpoint to a specific app subnet
+
+**Outputs and hand-off.**
+
+```text
+data_science_project_id
+model_deployment_endpoint
+notebook_session_subnet_id
+artifact_bucket_name
+```
+
+---
+
+### AI Agents (RAG Landing Zone)
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/ai/agents/` |
+| Depends on | Core Landing Zone; `genai-private` (inference endpoint) |
+
+**Why this exists.**
+Agentic RAG patterns need more infrastructure than a plain GenAI endpoint:
+a knowledge base backed by vector search, Document Understanding for ingestion,
+and an Object Storage pipeline for source documents. This blueprint provisions
+the full private data path from documents to agent response.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| OCI Generative AI Agent | Private endpoint; connects to knowledge base |
+| Knowledge base | Backed by OCI OpenSearch or Object Storage index |
+| OCI OpenSearch cluster | Private VCN cluster for vector search (optional) |
+| Document Understanding | Extracts text from PDFs, images for ingestion |
+| Object Storage buckets | Source documents bucket; processed chunks bucket |
+| IAM policies | Agent service, ingestion pipeline, caller group |
+| Logging | Audit log of all agent sessions and tool calls |
+
+**ASCII Architecture.**
+
+```text
+ Source Documents (Object Storage)
+       |
+       v (Document Understanding)
+ Processed Chunks (Object Storage)
+       |
+       v (indexing pipeline)
+ OCI OpenSearch (vector index, private VCN)
+       |
+       v
+ Knowledge Base
+       |
+       v
+ OCI Generative AI Agent (private endpoint)
+       |
+       v
+ App / API caller (VCN-routed)
+```
+
+**Inputs to decide.**
+
+- Document types to ingest (PDF, HTML, plain text)
+- Vector search backend: OCI OpenSearch vs Object Storage index
+- Chunking strategy and embedding model
+- Which GenAI model the agent uses for reasoning
+- Source document bucket lifecycle policy
+
+**Outputs and hand-off.**
+
+```text
+agent_id
+agent_endpoint_url
+knowledge_base_id
+opensearch_cluster_id
+source_bucket_name
+```
+
+---
+
+### MySQL HeatWave
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/data-platform/mysql-heatwave/` |
+| Depends on | Core Landing Zone; VCN from any networking blueprint |
+
+**Why this exists.**
+The repo has Autonomous Database but no MySQL pattern. MySQL HeatWave is the
+most common OCI MySQL deployment - adding in-memory analytics and optional
+HeatWave ML or Lakehouse features without a separate analytics engine.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| MySQL HeatWave DB System | Private endpoint; HA with standby option |
+| HeatWave cluster | In-memory analytics nodes; size configurable |
+| NSG | Port 3306 from app subnets only |
+| Vault secret | DB admin credentials |
+| IAM policies | DBA group, read-only group, app group |
+| Optional: Lakehouse | Object Storage external tables for HeatWave Lakehouse |
+
+**ASCII Architecture.**
+
+```text
+ App Subnet (VCN)
+       |
+       | port 3306, NSG-controlled
+       v
+ MySQL HeatWave DB System (private endpoint)
+ |--- HeatWave cluster (in-memory analytics)
+ |--- Vault (admin credentials)
+ `--- Optional: Lakehouse (Object Storage tables)
+```
+
+**Inputs to decide.**
+
+- MySQL version and shape
+- HeatWave cluster node count and shape
+- HA: standalone vs HA pair with standby
+- Whether to enable HeatWave Lakehouse and Object Storage bucket
+- Backup window and retention
+
+**Outputs and hand-off.**
+
+```text
+mysql_db_system_id
+heatwave_cluster_id
+mysql_endpoint_ip
+vault_secret_id
+```
+
+---
+
+## Phase 6 - Platform Services
+
+Serverless and middleware services that round out the application platform.
+
+---
+
+### Oracle Functions
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/extensions/functions/` |
+| Depends on | Core Landing Zone; VCN from any networking blueprint |
+
+**Why this exists.**
+Not all compute is containerised. Functions is the OCI-native serverless
+runtime. Teams need a private VCN subnet, OCIR-backed function image repository,
+IAM for invokers and the Functions service, and optionally an API Gateway
+front-end - all wired together from day one.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| Functions application | Scoped to compartment and VCN subnet |
+| OCIR repository | Container image storage for function code |
+| IAM policies | Functions service principal, invoker group, deploy group |
+| NSG | Egress from function subnet to target services |
+| Optional: API Gateway route | Routes external HTTPS calls to the function |
+| Optional: Events trigger | OCI Events rule -> function invocation |
+
+**ASCII Architecture.**
+
+```text
+ OCIR (function image)
+       |
+       v
+ Functions Application (private VCN subnet)
+ |--- IAM (service principal / invoker / deploy)
+ |--- NSG (egress to target services)
+ |--- Optional: API Gateway (HTTPS front-end)
+ `--- Optional: Events Rule (event-driven trigger)
+```
+
+**Inputs to decide.**
+
+- VCN subnet for function execution
+- OCIR repository name and image tag convention
+- Invoker group: human operators vs service account vs API Gateway
+- Whether to wire an Events trigger for automation (e.g. Object Storage PUT)
+
+**Outputs and hand-off.**
+
+```text
+functions_app_id
+ocir_repository_url
+function_invoke_endpoint
+api_gateway_route_url (if enabled)
+```
+
+---
+
+### GoldenGate Replication Hub
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/data-platform/goldengate/` |
+| Depends on | Core Landing Zone; source database blueprint (Autonomous DB or MySQL) |
+
+**Why this exists.**
+Cross-region replication, real-time ETL, and hybrid-cloud data sync are common
+enterprise requirements. GoldenGate needs a private VCN deployment, Vault for
+source and target connection credentials, and IAM so pipeline operators can
+manage trails and extracts without tenancy-admin access.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| GoldenGate deployment | Private VCN attachment; tech type configurable |
+| Vault secrets | Source DB credentials, target DB credentials |
+| NSG | Allows GoldenGate console HTTPS; blocks all other ingress |
+| IAM policies | GoldenGate operator group, service principal |
+| Optional: Object Storage trail bucket | For cross-region trail file transfer |
+
+**ASCII Architecture.**
+
+```text
+ Source Database (Autonomous DB / MySQL / on-prem)
+       |
+       v (extract trail)
+ GoldenGate Deployment (private VCN)
+ |--- Vault (source + target credentials)
+ |--- NSG (HTTPS for admin console only)
+ `--- Object Storage trail bucket (cross-region)
+       |
+       v (replicat trail)
+ Target Database (any OCI or external endpoint)
+```
+
+**Inputs to decide.**
+
+- GoldenGate technology type (Oracle, MySQL, PostgreSQL, BigData)
+- Source and target connection OCIDs or hostnames
+- OCPU count and auto-scaling
+- Whether to enable cross-region Object Storage trail
+- Admin group for GoldenGate console access
+
+**Outputs and hand-off.**
+
+```text
+goldengate_deployment_id
+goldengate_console_url
+trail_bucket_name
+vault_secret_ids
+```
+
+---
+
+### Oracle Digital Assistant (ODA)
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/extensions/digital-assistant/` |
+| Depends on | Core Landing Zone; optionally `genai-private` for LLM integration |
+
+**Why this exists.**
+ODA is the conversational AI layer for Oracle SaaS and custom app integrations.
+It requires a private VCN-attached instance, Vault for OAuth client secrets,
+IAM for bot operators and channel webhook callers, and optionally a GenAI
+backend for LLM-powered intent handling.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| ODA instance | Enterprise edition; private endpoint |
+| Vault secret | OAuth client secret for channel webhooks |
+| IAM policies | ODA administrator, bot developer, channel caller |
+| NSG | HTTPS from app subnet and webhook callback sources |
+| Optional: GenAI integration | Wires ODA LLM service to the `genai-private` endpoint |
+
+**Inputs to decide.**
+
+- ODA edition (development vs enterprise)
+- Channel type: Web, MS Teams, Slack, or custom webhook
+- Whether to enable LLM backend via GenAI private endpoint
+- Webhook callback CIDR allowlist
+
+**Outputs and hand-off.**
+
+```text
+oda_instance_id
+oda_endpoint_url
+vault_secret_id
+```
+
+---
+
+## Phase 7 - Security & Governance Automation
+
+Blueprints that extend the compliance baseline with automated detection,
+response, and data governance.
+
+---
+
+### Security Posture Automation
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/compliance/security-posture/` |
+| Depends on | Core Landing Zone (Cloud Guard and logging baseline) |
+
+**Why this exists.**
+Core Landing Zone enables Cloud Guard and basic alarms. Enterprises need
+custom detector recipes, Vulnerability Scanning scheduled targets, and
+event-driven auto-remediation via OCI Functions - closing the loop from
+detection to fix without human intervention.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| Cloud Guard custom detector recipe | Customer-managed rules layered on Oracle-managed |
+| Cloud Guard custom responder recipe | Automated remediation actions |
+| Vulnerability Scanning targets | Compute, container images, host scans |
+| Event rule -> Functions trigger | Cloud Guard problem -> auto-remediation function |
+| Object Storage report bucket | Scheduled scan and problem exports |
+| IAM policies | Security admin group, responder service principal |
+
+**ASCII Architecture.**
+
+```text
+ OCI Resources (Compute / Containers / Config)
+       |
+       v
+ Cloud Guard (custom detector + responder recipes)
+ |--- Problem detected
+ |         |
+ |         v
+ |    OCI Events Rule
+ |         |
+ |         v
+ |    Functions (auto-remediation)
+ `--- Problem report -> Object Storage bucket
+
+ Vulnerability Scanning (scheduled)
+ `--- Report -> Object Storage bucket
+```
+
+**Inputs to decide.**
+
+- Which detector rule categories to enable (config, activity, threat intel)
+- Auto-remediation actions: notify-only vs enforce (stop instance, revoke key)
+- Scan schedule and target compartments
+- Report retention and bucket lifecycle
+
+**Outputs and hand-off.**
+
+```text
+cloud_guard_target_id
+detector_recipe_id
+responder_recipe_id
+vulnerability_scanning_target_id
+report_bucket_name
+```
+
+---
+
+### Data Catalog and Lineage
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/data-platform/data-catalog/` |
+| Depends on | Core Landing Zone; Autonomous Database or MySQL HeatWave |
+
+**Why this exists.**
+Data governance starts with knowing what data exists and where it flows.
+OCI Data Catalog provides automated metadata harvesting from Autonomous DB,
+Object Storage, and other sources - with a business glossary and lineage graph
+that satisfies GDPR data-mapping requirements and internal data governance
+programmes.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| Data Catalog instance | Scoped to compartment |
+| Data assets | Autonomous DB, Object Storage, and optionally MySQL |
+| Harvest schedule | Automated metadata sync on configurable cadence |
+| Business glossary | Seed categories and terms |
+| IAM policies | Catalog admin, data steward, read-only consumer groups |
+
+**ASCII Architecture.**
+
+```text
+ Data Sources
+ |--- Autonomous DB
+ |--- Object Storage buckets
+ `--- MySQL HeatWave (optional)
+       |
+       v (harvest schedule)
+ OCI Data Catalog
+ |--- Data Assets and entities
+ |--- Business Glossary
+ |--- Lineage graph
+ `--- IAM (admin / steward / read-only)
+```
+
+**Inputs to decide.**
+
+- Data assets to register (Autonomous DB OCID, bucket names)
+- Harvest frequency
+- Business glossary seed terms
+- Which groups get steward vs read-only access
+
+**Outputs and hand-off.**
+
+```text
+data_catalog_id
+data_asset_keys
+glossary_key
+```
+
+---
+
+### Vault Advanced / BYOK
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/extensions/vault-advanced/` |
+| Depends on | Core Landing Zone (Vault baseline) |
+
+**Why this exists.**
+Core Landing Zone creates a Vault and basic keys. Regulated industries need
+HSM-backed (Virtual Private Vault) keys, customer-managed key import (BYOK),
+key rotation policies with automated alarms, and a break-glass access model
+with audit trail - none of which the baseline Vault wires by default.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| Virtual Private Vault | HSM-backed; dedicated partition |
+| Master encryption key | RSA or AES; customer-imported (BYOK) |
+| Key rotation policy | Rotation schedule + alarm on approaching expiry |
+| Break-glass IAM policy | Time-limited emergency access with mandatory logging |
+| Monitoring alarm | Key expiry warning, failed decrypt events |
+| Object Storage audit export | Key usage audit log archive |
+
+**Inputs to decide.**
+
+- Vault type: Virtual Private (HSM) vs software
+- Key algorithm and length
+- BYOK: whether to import existing key material or generate in OCI
+- Key rotation interval
+- Break-glass group and approval workflow
+
+**Outputs and hand-off.**
+
+```text
+vault_id
+master_key_id
+key_version_id
+rotation_alarm_id
+audit_bucket_name
+```
+
+---
+
+## Phase 8 - Industry Verticals
+
+Vertical-specific landing zones that combine Core + compliance + workload
+patterns into a single deployable shape for a target industry.
+
+---
+
+### Financial Services Landing Zone
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/industry/financial-services/` |
+| Depends on | Core Landing Zone; extends `healthcare-pci` compliance controls |
+
+**Why this exists.**
+Financial services customers face PCI DSS, SOC 2, and often local regulatory
+requirements simultaneously. This blueprint composes the Core baseline with
+strict compartment isolation (front office / back office / DMZ), dedicated HSM
+keys per data class, Data Safe integration for database activity monitoring, and
+an audit trail pipeline that satisfies regulators.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| Compartment hierarchy | Front office, back office, DMZ with strict IAM boundaries |
+| Security Zone | Custom recipe: no public IPs, mandatory encryption |
+| Data Safe target registration | Autonomous DB and MySQL activity monitoring |
+| Dedicated HSM key per compartment | Vault Advanced integration |
+| Audit pipeline | Audit log -> Logging Analytics -> Object Storage (7-year retention) |
+| Network: Zero Trust micro-segmentation | ZPR policies layered on VCN subnets |
+
+**Inputs to decide.**
+
+- Regulatory targets: PCI DSS, SOC 2, or local (DORA, MAS TRM)
+- Data classification: which compartment holds cardholder vs operational data
+- Data Safe alert policies
+- Audit log retention window
+
+**Outputs and hand-off.**
+
+```text
+compartment_ids (front_office / back_office / dmz)
+security_zone_id
+data_safe_target_id
+audit_bucket_name
+```
+
+---
+
+### HPC / GPU Cluster
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/industry/hpc-gpu/` |
+| Depends on | Core Landing Zone; VCN from any networking blueprint |
+
+**Why this exists.**
+AI training, scientific simulation, and rendering workloads need RDMA cluster
+networking, GPU or BM shapes, and high-throughput shared storage - a pattern
+entirely different from the web/API tiers the other blueprints cover. No HPC
+blueprint exists in the repo today.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| Cluster Network | RDMA-connected BM.GPU or BM.HPC shapes |
+| Instance Pool | Uniform GPU nodes managed as a group |
+| Shared NFS mount target | Block Volume or File Storage for checkpoint storage |
+| Bastion session | Private access to cluster nodes |
+| IAM policies | HPC administrator, job submission, read-only monitor |
+| Object Storage bucket | Job input / output archiving |
+
+**ASCII Architecture.**
+
+```text
+ Researcher / Scheduler (bastion session)
+       |
+       v
+ Cluster Network (RDMA)
+ |--- GPU / HPC instances (Instance Pool)
+ |--- Shared NFS (File Storage mount target)
+ `--- Object Storage (job I/O archive)
+       |
+       `--- IAM (admin / job-submit / monitor)
+```
+
+**Inputs to decide.**
+
+- Compute shape: BM.GPU4.8, BM.HPC2.36, or other
+- Cluster node count and autoscale bounds
+- Shared storage type: File Storage (NAS) vs Block Volume (iSCSI per node)
+- Job scheduler: SLURM on Compute vs OCI Batch (future)
+- Whether to expose cluster via dedicated VPN or FastConnect
+
+**Outputs and hand-off.**
+
+```text
+cluster_network_id
+instance_pool_id
+nfs_mount_target_ip
+bastion_session_endpoint
+```
+
+---
+
+### Public Sector / FedRAMP Alignment
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/compliance/public-sector/` |
+| Depends on | Core Landing Zone; extends `scca-cloud-native` |
+
+**Why this exists.**
+Government and public sector customers need the SCCA architecture hardened
+further: IL2-compatible network isolation, FedRAMP-aligned control mapping,
+mandatory FIPS-140-2 key usage, and a break-glass access model with mandatory
+SOC review. The `scca-cloud-native` blueprint provides the base; this one adds
+the control-family overlay and audit pipeline.
+
+**What it deploys.**
+
+| Resource | Notes |
+| --- | --- |
+| FedRAMP control tag set | Defined tags mapping resources to NIST 800-53 controls |
+| FIPS-compliant Vault keys | RSA-3072 / AES-256 only; no software keys |
+| Enhanced audit pipeline | Audit + VCN Flow + OS logs -> Logging Analytics (2-year hot) |
+| Cloud Guard enhanced recipe | IL2 network isolation checks + public exposure alerts |
+| Break-glass access model | Emergency IAM policy + mandatory audit trail |
+| Security assessment schedule | Quarterly Vulnerability Scanning across all compartments |
+
+**Inputs to decide.**
+
+- IL level: IL2, IL4, or IL5 (drives NSG strictness and encryption requirements)
+- FedRAMP impact level: Low, Moderate, or High
+- Audit log retention: hot (Logging Analytics) vs cold (Object Storage archive)
+- Break-glass group and mandatory notification destination
+
+**Outputs and hand-off.**
+
+```text
+fedram_tag_namespace_id
+fips_vault_id
+audit_log_group_id
+cloud_guard_target_id
+```
 
 ---
 
 ## Implementation Order Summary
 
 ```text
-Core Landing Zone (already implemented)
+Core Landing Zone (implemented)
   |
-  |-- Phase 1 ------------------------------------------------------
+  |-- Already Implemented --------------------------------------------
   |   |--- blueprints/data-platform/autonomous-database/
-  |   `--- blueprints/ai/genai-private/
-  |
-  |-- Phase 2 ------------------------------------------------------
+  |   |--- blueprints/ai/genai-private/
   |   |--- blueprints/devops/oci-devops-pipeline/
-  |   `--- blueprints/extensions/observability/
-  |
-  |-- Phase 3 ------------------------------------------------------
+  |   |--- blueprints/extensions/observability/
   |   |--- blueprints/extensions/oic/
   |   |--- blueprints/extensions/oac/
   |   |--- blueprints/compliance/healthcare-pci/
   |   `--- blueprints/extensions/oke-service-mesh/
   |
-  `-- Phase 4 ------------------------------------------------------
-      |--- blueprints/extensions/container-instances/
-      |--- blueprints/operations/cost-optimization/
-      `--- blueprints/data-platform/apex-adw/
+  |-- Phase 4 (next up) ----------------------------------------------
+  |   |--- blueprints/extensions/container-instances/
+  |   |--- blueprints/operations/cost-optimization/
+  |   `--- blueprints/data-platform/apex-adw/
+  |
+  |-- Phase 5 (AI/ML Platform) ---------------------------------------
+  |   |--- blueprints/ai/data-science/
+  |   |--- blueprints/ai/agents/
+  |   `--- blueprints/data-platform/mysql-heatwave/
+  |
+  |-- Phase 6 (Platform Services) ------------------------------------
+  |   |--- blueprints/extensions/functions/
+  |   |--- blueprints/data-platform/goldengate/
+  |   `--- blueprints/extensions/digital-assistant/
+  |
+  |-- Phase 7 (Security and Governance) ------------------------------
+  |   |--- blueprints/compliance/security-posture/
+  |   |--- blueprints/data-platform/data-catalog/
+  |   `--- blueprints/extensions/vault-advanced/
+  |
+  `-- Phase 8 (Industry Verticals) -----------------------------------
+      |--- blueprints/industry/financial-services/
+      |--- blueprints/industry/hpc-gpu/
+      `--- blueprints/compliance/public-sector/
 ```
 
-Each phase can begin as soon as Core is stable. Phases 3 and 4 benefit from Phase 1-2
-outputs (Autonomous DB ID, APM domain ID, OKE cluster ID) but can be started independently
-with externally supplied input values.
-
-## New Folder Families
-
-This roadmap introduces three new top-level blueprint families not yet in the repo:
-
-| New Family | First Blueprint |
-| --- | --- |
-| `blueprints/ai/` | `genai-private/` |
-| `blueprints/devops/` | `oci-devops-pipeline/` |
-| `blueprints/operations/` | `cost-optimization/` |
-
-Each new family follows the same catalogue pattern as existing ones: a family-level
-`README.md` that explains when to choose blueprints in that family, and individual
-deployment folders underneath.
-
-## Updating The Deployment Menu
+## Updating the Deployment Menu
 
 When each blueprint is implemented, add it to:
 
 1. `README.md` - Deployment Menu table under the appropriate section
 2. `docs/DEPLOYMENT-PATTERN-CATALOG.md` - full pattern catalog
-3. `blueprints/<new-family>/README.md` - create if family is new
+3. `blueprints/<new-family>/README.md` - create if the family is new
 
-For new families (`ai/`, `devops/`, `operations/`), also add a row to the
-Deployment Categories table in `README.md`.
+New families introduced by this roadmap:
+
+| New Family | First Blueprint | Status |
+| --- | --- | --- |
+| `blueprints/ai/` | `genai-private/` | Implemented |
+| `blueprints/devops/` | `oci-devops-pipeline/` | Implemented |
+| `blueprints/operations/` | `cost-optimization/` | Planned (Phase 4) |

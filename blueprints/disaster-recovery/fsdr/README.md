@@ -11,7 +11,7 @@ local Ansible wrappers, and where to find the detailed ASCII design.
 | Item | Details |
 | --- | --- |
 | Folder | `blueprints/disaster-recovery/fsdr` |
-| Best fit | Creates the OCI Full Stack Disaster Recovery scaffolding for primary and standby protection groups, log buckets, and DR plan wiring. |
+| Best fit | Creates OCI Full Stack Disaster Recovery primary and standby protection groups, log buckets, and DR plan wiring. |
 | Terraform shape | `oci_objectstorage_bucket.primary_dr_logs`, `oci_objectstorage_bucket.standby_dr_logs`, `oci_disaster_recovery_dr_protection_group.primary`, `oci_disaster_recovery_dr_protection_group.standby`, `oci_disaster_recovery_dr_plan.primary`, plus 2 more |
 | Inputs to settle first | `standby_region`, `standby_region_key`, `compartment_ocid`, `primary_compartment_ocid`, `standby_compartment_ocid`, `primary_log_bucket_name`, `standby_log_bucket_name`, plus 7 more |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `standby_name_prefix`, `resource_ids`, `primary_dr_protection_group_id`, `standby_dr_protection_group_id`, `primary_log_bucket_name`, plus 2 more |
@@ -19,8 +19,8 @@ local Ansible wrappers, and where to find the detailed ASCII design.
 
 ## Deployment Purpose
 
-Creates the OCI Full Stack Disaster Recovery scaffolding for primary and standby protection
-groups, log buckets, and DR plan wiring.
+Creates OCI Full Stack Disaster Recovery primary and standby protection groups, log
+buckets, and DR plan wiring.
 
 ## When To Use This Deployment
 

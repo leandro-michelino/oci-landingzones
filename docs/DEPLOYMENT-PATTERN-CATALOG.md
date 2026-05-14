@@ -1,6 +1,6 @@
 # Deployment Pattern Catalog
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+Author: Leandro Michelino | ACE | <leandro.michelino@oracle.com>
 
 This catalog keeps the deployment menu broader than a single reference
 implementation. It borrows from OCI landing zone repositories, OCI reference
@@ -19,7 +19,7 @@ folder.
 ## Pattern Families
 
 | Family | Pattern | Blueprint | Status |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Core | Core landing zone with no application networking | `blueprints/core/` | Implementing |
 | CIS | CIS Level 1 landing zone | `blueprints/cis/level1/` | Implementing |
 | CIS | CIS Level 2 landing zone | `blueprints/cis/level2/` | Implementing |
@@ -65,6 +65,21 @@ folder.
 | Extensions | Observability platform | `blueprints/extensions/observability/` | Implementing |
 | Extensions | Streaming extension | `blueprints/extensions/streaming/` | Implementing |
 | Extensions | WAF extension | `blueprints/extensions/waf/` | Implementing |
+| Extensions | Container Instances | `blueprints/extensions/container-instances/` | Planned |
+| Operations | Cost optimization | `blueprints/operations/cost-optimization/` | Planned |
+| Data platform | Oracle APEX on Autonomous Database | `blueprints/data-platform/apex-adw/` | Planned |
+| AI | OCI Data Science (notebooks, model catalog, deployment) | `blueprints/ai/data-science/` | Planned |
+| AI | AI Agents - RAG landing zone (agents, knowledge base, OpenSearch) | `blueprints/ai/agents/` | Planned |
+| Data platform | MySQL HeatWave | `blueprints/data-platform/mysql-heatwave/` | Planned |
+| Extensions | Oracle Functions (serverless, OCIR, API Gateway) | `blueprints/extensions/functions/` | Planned |
+| Data platform | GoldenGate replication hub | `blueprints/data-platform/goldengate/` | Planned |
+| Extensions | Oracle Digital Assistant | `blueprints/extensions/digital-assistant/` | Planned |
+| Compliance | Security posture automation (Cloud Guard + Vuln Scan + auto-remediation) | `blueprints/compliance/security-posture/` | Planned |
+| Data platform | Data Catalog and lineage | `blueprints/data-platform/data-catalog/` | Planned |
+| Extensions | Vault Advanced / BYOK (HSM, key rotation, break-glass) | `blueprints/extensions/vault-advanced/` | Planned |
+| Industry | Financial services landing zone (PCI DSS + SOC 2 + Data Safe) | `blueprints/industry/financial-services/` | Planned |
+| Industry | HPC / GPU cluster (RDMA, cluster network, NFS) | `blueprints/industry/hpc-gpu/` | Planned |
+| Compliance | Public sector / FedRAMP alignment | `blueprints/compliance/public-sector/` | Planned |
 
 ## Selection Notes
 

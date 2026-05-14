@@ -117,7 +117,7 @@ variable "zpr_policies" {
   default = {
     tier_guardrails = {
       name        = "three-tier-zpr-guardrails"
-      description = "Starter ZPR policy placeholder for customer-specific micro-segmentation."
+      description = "Starter ZPR policy definition for customer-specific micro-segmentation."
       statements  = []
     }
   }
