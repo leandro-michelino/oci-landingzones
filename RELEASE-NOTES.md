@@ -44,6 +44,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 ### Changed
 
+- Reworked the main README into a friendlier outcome-first landing page with
+  quicker navigation, lighter prose, and clearer operator paths.
 - Removed redundant family-level blueprint README files that duplicated the
   central deployment catalog and architecture inventory.
 - Normalized blueprint `local.name_prefix` values to the standard
