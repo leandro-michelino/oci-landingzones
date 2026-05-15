@@ -9,19 +9,26 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Welcome. This repo is a practical Oracle Cloud Infrastructure toolkit: Terraform
+Welcome. This repo is a hands-on Oracle Cloud Infrastructure toolkit: Terraform
 blueprints, reusable modules, local Ansible runners, and plain-text architecture
 notes for common OCI landing-zone patterns.
 
-It is built for the first useful 10 minutes:
+The goal is simple: help you get to a useful plan quickly, without hiding the
+architecture details you still need to review.
+
+## Friendly Heads-Up
+
+This is my personal engineering project. It is not an official Oracle product,
+Oracle reference architecture, or Oracle-supported deployment package. I built
+it to share practical landing-zone patterns, useful defaults, and reviewable
+examples for OCI teams.
+
+Use it as a strong starting point: helpful, opinionated, and still something
+you should review carefully before you point it at a real tenancy.
 
 ```text
 pick a blueprint -> read its README -> review ASCII architecture -> fill tfvars -> plan
 ```
-
-This is a personal engineering project, not an official Oracle product. Treat it
-as a strong accelerator: useful, opinionated, and still something you should
-review before pointing at a real tenancy.
 
 ## What Is Inside
 
@@ -50,8 +57,8 @@ For the complete menu, use the generated [Blueprint Index](BLUEPRINTS.md), the
 
 ## Quick Start
 
-Use the repo like a set of workbenches. Open only the one you need, inspect it,
-then run a plan from there.
+Use the repo like a set of workbenches. Pick the blueprint that matches your
+outcome, open that folder, skim the local notes, then run a plan from there.
 
 ```bash
 git clone https://github.com/leandro-michelino/oci-landingzones.git
@@ -62,8 +69,8 @@ terraform validate
 terraform plan
 ```
 
-For a single-folder customer hand-off, sparse checkout works well. The blueprint
-module sources use pinned Git references, so a deployment folder can be consumed
+For a single-folder customer hand-off, sparse checkout works well. Blueprint
+module sources use pinned Git references, so a deployment folder can be used
 without cloning the whole project. See
 [Using A Single Blueprint](docs/DEPLOYMENT-GUIDE.md#using-a-single-blueprint).
 
@@ -91,7 +98,7 @@ terraform plan or ansible/plan.yml
 review, approve, apply
 ```
 
-The local architecture file matters. It is where the traffic paths, trust
+Do not skip the local architecture file. That is where the traffic paths, trust
 boundaries, Terraform components, and review checklist live.
 
 ## Browse By Family
@@ -114,10 +121,10 @@ boundaries, Terraform components, and review checklist live.
 
 ## Extension-Only Is Fine
 
-You do not need to deploy the whole foundation to use an extension. If a
-customer already has compartments, VCNs, subnets, load balancers, gateways,
-registries, or databases, open the extension folder and pass those existing
-OCIDs in local tfvars.
+You do not need to deploy the whole foundation to use an extension. If the OCI
+estate already has compartments, VCNs, subnets, load balancers, gateways,
+registries, or databases, open the extension folder and pass the existing OCIDs
+in local tfvars.
 
 | Path | When It Fits |
 |---|---|
@@ -148,12 +155,13 @@ blueprints/<family>/<deployment>/
     `-- destroy.yml            Guarded destroy
 ```
 
-Once you learn one folder, the rest should feel familiar. That is deliberate.
+Once you learn one folder, the rest should feel familiar. That consistency is
+deliberate.
 
 ## Why ASCII Architecture
 
-The diagrams are text on purpose. They work in GitHub, terminals, pull
-requests, customer notes, and screen shares without special tooling.
+The diagrams are plain text on purpose. They work in GitHub, terminals, pull
+requests, customer notes, and screen shares without extra tooling.
 
 Each `architecture/README.md` includes:
 
@@ -170,8 +178,8 @@ Each `architecture/README.md` includes:
 
 ## Local Workflow
 
-Terraform is the infrastructure engine. Ansible is the local runner for people
-who want a consistent plan/apply/destroy wrapper.
+Terraform does the infrastructure work. Ansible gives you a consistent local
+plan/apply/destroy wrapper when you want one.
 
 ```bash
 # From a blueprint folder
@@ -188,7 +196,7 @@ CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
-Apply and destroy are guarded so risky actions require an explicit confirmation
+Apply and destroy are guarded, so risky actions require an explicit confirmation
 flag.
 
 ## Requirements
@@ -201,8 +209,8 @@ flag.
 | Ansible | Runs local plan/apply/destroy workflows. |
 | Optional scanners | `tflint`, `trivy`, `checkov`, `ansible-lint`, and `pre-commit` add extra confidence when installed. |
 
-Optional tooling is optional. The validation scripts skip missing scanners
-cleanly.
+Optional tooling is exactly that: optional. The validation scripts skip missing
+scanners cleanly.
 
 Recommended local helper setup on macOS:
 
@@ -251,7 +259,7 @@ security scanners when available.
 | `make blueprints` | Regenerates `BLUEPRINTS.md` from discovered blueprint folders. |
 | `make links` | Checks local Markdown links and anchors. |
 
-New blueprint example:
+Scaffold a new blueprint like this:
 
 ```bash
 make blueprint family=networking name=private-service-edge title="Private Service Edge"
@@ -287,7 +295,7 @@ tests/               Validation contract notes and future test home
 ## Search-Friendly Summary
 
 This repository contains deployable Oracle Cloud Infrastructure landing-zone
-patterns for Terraform and Ansible. It covers OCI Core governance, CIS,
+patterns for Terraform and Ansible. It covers OCI core governance, CIS,
 networking, identity, operating entities, OKE, Functions, API Gateway, WAF,
 OpenSearch, Autonomous Database, MySQL HeatWave, Redis, Secure Desktops,
 security posture automation, disaster recovery, DevOps, and AI/GenAI patterns
