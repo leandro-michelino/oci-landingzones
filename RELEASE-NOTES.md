@@ -44,6 +44,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 ### Changed
 
+- Removed redundant family-level blueprint README files that duplicated the
+  central deployment catalog and architecture inventory.
 - Normalized blueprint `local.name_prefix` values to the standard
   `org-environment-region_key` OCI naming prefix and added an automated naming
   convention guard to the repository contract checks.
