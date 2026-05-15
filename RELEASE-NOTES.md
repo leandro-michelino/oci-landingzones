@@ -41,6 +41,13 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - BYOL and license-model matrix covering database, analytics, integration,
   Windows Compute, RHEL BYOI/BYOS, Secure Desktops, Exadata follow-on database
   layers, WebLogic, GoldenGate, Content Management, and OCVS guidance.
+- Blueprint generator for naming-compliant Terraform, Ansible, README,
+  architecture README, and tfvars scaffolds.
+- Generated `BLUEPRINTS.md` index backed by discovered deployable blueprint
+  folders.
+- Markdown link checker for local README, catalog, and architecture links.
+- Make targets for validation, changed-scope checks, cleanup, blueprint
+  scaffolding, index generation, and Markdown link checks.
 
 ### Changed
 
@@ -97,6 +104,10 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Promoted the AI / GenAI roadmap entries from planned-only notes into
   deployable blueprint folders with Terraform, Ansible runners, README files,
   and detailed ASCII architecture pages.
+- Added README badges for license, Terraform version, validation, and optional
+  security scanners.
+- Wired the generated blueprint index and Markdown link checker into repository
+  contract validation.
 
 ### Removed
 

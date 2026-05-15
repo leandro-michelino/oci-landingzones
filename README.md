@@ -2,6 +2,11 @@
 
 # OCI Landing Zones
 
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+![Terraform >= 1.12.0](https://img.shields.io/badge/terraform-%3E%3D1.12.0-844FBA.svg)
+![Validation: validate-all](https://img.shields.io/badge/validation-validate--all-brightgreen.svg)
+![Security: TFLint Trivy Checkov](https://img.shields.io/badge/security-tflint%20%7C%20trivy%20%7C%20checkov-2f855a.svg)
+
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 Welcome. This repo is a practical Oracle Cloud Infrastructure toolkit: Terraform
@@ -39,8 +44,8 @@ review before pointing at a real tenancy.
 | Disaster recovery | [Full Stack DR](blueprints/disaster-recovery/fsdr/) |
 | Desktops | [Secure Desktops](blueprints/industry/secure-desktops/) |
 
-For the complete menu, use the
-[Deployment Pattern Catalog](docs/DEPLOYMENT-PATTERN-CATALOG.md) or the
+For the complete menu, use the generated [Blueprint Index](BLUEPRINTS.md), the
+[Deployment Pattern Catalog](docs/DEPLOYMENT-PATTERN-CATALOG.md), or the
 [Architecture Index](docs/architecture/README.md).
 
 ## Quick Start
@@ -219,17 +224,38 @@ For small edits:
 
 ```bash
 ./scripts/validate-changed.sh
+# same thing, shorter
+make changed
 ```
 
 For broad changes or release work:
 
 ```bash
 ./scripts/validate-all.sh
+# same thing, shorter
+make validate
 ```
 
 The validation flow checks naming conventions, documentation contracts,
 Terraform formatting, Terraform validation, Ansible syntax, and optional
 security scanners when available.
+
+## Handy Make Targets
+
+| Target | What It Does |
+|---|---|
+| `make validate` | Runs the full repository validation flow. |
+| `make changed` | Validates the changed scope against `origin/main`. |
+| `make clean` | Removes local Terraform, plan, state, cache, and editor artifacts. |
+| `make blueprint family=<family> name=<name>` | Creates a new deployable blueprint scaffold. |
+| `make blueprints` | Regenerates `BLUEPRINTS.md` from discovered blueprint folders. |
+| `make links` | Checks local Markdown links and anchors. |
+
+New blueprint example:
+
+```bash
+make blueprint family=networking name=private-service-edge title="Private Service Edge"
+```
 
 ## Repo Map
 
@@ -247,6 +273,7 @@ tests/               Validation contract notes and future test home
 
 | Doc | Use It For |
 |---|---|
+| [Blueprint Index](BLUEPRINTS.md) | Generated list of deployable blueprint folders, README links, and architecture links. |
 | [Deployment Guide](docs/DEPLOYMENT-GUIDE.md) | End-to-end deployment flow and operating notes. |
 | [Deployment Pattern Catalog](docs/DEPLOYMENT-PATTERN-CATALOG.md) | Full blueprint menu and planned patterns. |
 | [Architecture Index](docs/architecture/README.md) | Repository-level ASCII map and every blueprint architecture link. |
@@ -256,34 +283,6 @@ tests/               Validation contract notes and future test home
 | [CIS Profiles](docs/CIS-PROFILES.md) | CIS profile behavior. |
 | [Runbook](docs/RUNBOOK.md) | Operational flow for maintainers and reviewers. |
 | [Roadmap](docs/ROADMAP.md) | Implemented phases and future candidates. |
-
-## Keep Local Runs Tidy
-
-Generated local files are intentionally ignored:
-
-```text
-.terraform/
-.terraform.lock.hcl
-terraform.tfstate*
-tfplan
-tfplan.*
-*.tfplan
-terraform.tfvars
-.codex-local/
-.claude/
-```
-
-Cleanup when needed:
-
-```bash
-find . -name ".terraform" -type d -prune -exec rm -rf {} +
-find . -name ".terraform.lock.hcl" -type f -delete
-find . -name "terraform.tfstate*" -type f -delete
-find . -name "tfplan*" -type f -delete
-find . -name ".DS_Store" -type f -delete
-rm -rf .codex-local
-rm -rf .claude
-```
 
 ## Search-Friendly Summary
 
