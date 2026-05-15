@@ -96,7 +96,7 @@ resource "oci_optimizer_profile" "this" {
   for_each = local.optimizer_profiles
 
   compartment_id               = coalesce(each.value.compartment_ocid, local.target_compartment_ocid)
-  name                         = coalesce(each.value.name, "${local.name_prefix}-optimizer-${each.key}")
+  name                         = coalesce(each.value.name, "${local.name_prefix}-opt-${each.key}")
   description                  = coalesce(each.value.description, "Optimizer profile ${each.key} managed by Terraform.")
   aggregation_interval_in_days = each.value.aggregation_interval_in_days
   defined_tags                 = var.defined_tags
@@ -148,7 +148,7 @@ resource "oci_identity_policy" "finops_access" {
 
   provider       = oci.home
   compartment_id = local.policy_compartment_ocid
-  name           = "${local.name_prefix}-finops-access"
+  name           = "${local.name_prefix}-pol-finops"
   description    = "FinOps access policy for cost optimization operations."
   statements     = var.finops_policy_statements
   defined_tags   = var.defined_tags

@@ -3,7 +3,7 @@ resource "oci_identity_domain" "this" {
   for_each = local.identity_domains
 
   compartment_id            = coalesce(each.value.compartment_ocid, local.target_compartment_ocid)
-  display_name              = coalesce(each.value.display_name, "${local.name_prefix}-id-domain-${each.key}")
+  display_name              = coalesce(each.value.display_name, "${local.name_prefix}-idd-${each.key}")
   description               = each.value.description
   home_region               = coalesce(each.value.home_region, var.home_region, var.region)
   license_type              = each.value.license_type

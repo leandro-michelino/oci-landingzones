@@ -3,7 +3,7 @@ locals {
   blueprint_name          = "identity-new-identity-domain"
   name_prefix             = "${var.org}-${var.environment}-${var.region_key}"
   target_compartment_ocid = coalesce(var.compartment_ocid, var.tenancy_ocid)
-  domain_display_name     = coalesce(var.domain_display_name, "${local.name_prefix}-identity-domain")
+  domain_display_name     = coalesce(var.domain_display_name, "${local.name_prefix}-idd")
 
   common_freeform_tags = merge(
     var.freeform_tags,

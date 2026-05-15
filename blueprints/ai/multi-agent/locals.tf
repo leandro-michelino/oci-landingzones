@@ -1,12 +1,12 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 locals {
   blueprint_name          = "multi-agent"
-  name_prefix             = lower(join("-", compact([var.org, var.environment, var.region_key, "multi-agent"])))
+  name_prefix             = "${var.org}-${var.environment}-${var.region_key}"
   target_compartment_ocid = coalesce(var.compartment_ocid, var.tenancy_ocid)
   policy_compartment_ocid = coalesce(var.policy_compartment_ocid, var.tenancy_ocid)
   bucket_names = {
-    audit = coalesce(var.audit_bucket_name, "${local.name_prefix}-audit")
-    tools = coalesce(var.tool_registry_bucket_name, "${local.name_prefix}-tools")
+    audit = coalesce(var.audit_bucket_name, "${local.name_prefix}-bkt-audit")
+    tools = coalesce(var.tool_registry_bucket_name, "${local.name_prefix}-bkt-tools")
   }
   stream_pool_name         = coalesce(var.stream_pool_name, "${local.name_prefix}-pool")
   stream_pool_id           = var.create_stream_pool ? try(oci_streaming_stream_pool.this[0].id, null) : var.stream_pool_id

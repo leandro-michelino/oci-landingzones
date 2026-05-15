@@ -20,7 +20,7 @@ resource "oci_network_load_balancer_backend_set" "this" {
   for_each = var.backend_sets
 
   network_load_balancer_id = local.network_load_balancer_id
-  name                     = coalesce(each.value.name, "${local.name_prefix}-${each.key}")
+  name                     = coalesce(each.value.name, "${local.name_prefix}-bset-${each.key}")
   policy                   = each.value.policy
   is_preserve_source       = each.value.is_preserve_source
   is_fail_open             = each.value.is_fail_open
@@ -61,7 +61,7 @@ resource "oci_network_load_balancer_listener" "this" {
   for_each = var.listeners
 
   network_load_balancer_id = local.network_load_balancer_id
-  name                     = coalesce(each.value.name, "${local.name_prefix}-${each.key}")
+  name                     = coalesce(each.value.name, "${local.name_prefix}-lis-${each.key}")
   default_backend_set_name = coalesce(each.value.default_backend_set_name, try(oci_network_load_balancer_backend_set.this[each.value.backend_set_key].name, null))
   port                     = each.value.port
   protocol                 = each.value.protocol
@@ -77,7 +77,7 @@ resource "oci_identity_policy" "access" {
 
   provider       = oci.home
   compartment_id = local.policy_compartment_ocid
-  name           = "${local.name_prefix}-access"
+  name           = "${local.name_prefix}-pol-access"
   description    = "Network Load Balancer access policy for ${local.name_prefix}."
   statements     = var.policy_statements
   defined_tags   = var.defined_tags

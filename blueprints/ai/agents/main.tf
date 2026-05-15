@@ -59,7 +59,7 @@ resource "oci_generative_ai_agent_data_source" "this" {
 
   compartment_id    = local.target_compartment_ocid
   knowledge_base_id = local.knowledge_base_id
-  display_name      = coalesce(var.data_source_display_name, "${local.name_prefix}-documents")
+  display_name      = coalesce(var.data_source_display_name, "${local.name_prefix}-aip-documents")
   description       = var.data_source_description
   metadata          = var.data_source_metadata
   defined_tags      = var.defined_tags
@@ -85,7 +85,7 @@ resource "oci_generative_ai_agent_data_ingestion_job" "this" {
 
   compartment_id = local.target_compartment_ocid
   data_source_id = local.data_source_id
-  display_name   = coalesce(var.ingestion_job_display_name, "${local.name_prefix}-ingestion")
+  display_name   = coalesce(var.ingestion_job_display_name, "${local.name_prefix}-job-ingestion")
   description    = var.ingestion_job_description
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
@@ -95,7 +95,7 @@ resource "oci_generative_ai_agent_agent" "this" {
   count = var.create_agent ? 1 : 0
 
   compartment_id     = local.target_compartment_ocid
-  display_name       = coalesce(var.agent_display_name, "${local.name_prefix}-rag-agent")
+  display_name       = coalesce(var.agent_display_name, "${local.name_prefix}-agent-rag")
   description        = var.agent_description
   welcome_message    = var.agent_welcome_message
   knowledge_base_ids = compact(concat(var.agent_knowledge_base_ids, [local.knowledge_base_id]))
@@ -124,7 +124,7 @@ resource "oci_generative_ai_agent_agent_endpoint" "this" {
 
   compartment_id         = local.target_compartment_ocid
   agent_id               = local.agent_id
-  display_name           = coalesce(var.agent_endpoint_display_name, "${local.name_prefix}-endpoint")
+  display_name           = coalesce(var.agent_endpoint_display_name, "${local.name_prefix}-ep-default")
   description            = var.agent_endpoint_description
   should_enable_session  = var.enable_endpoint_session
   should_enable_trace    = var.enable_endpoint_trace
@@ -138,7 +138,7 @@ resource "oci_identity_policy" "access" {
 
   provider       = oci.home
   compartment_id = local.policy_compartment_ocid
-  name           = "${local.name_prefix}-access"
+  name           = "${local.name_prefix}-pol-access"
   description    = "AI Agents RAG access policy for ${local.name_prefix}."
   statements     = var.policy_statements
   defined_tags   = var.defined_tags

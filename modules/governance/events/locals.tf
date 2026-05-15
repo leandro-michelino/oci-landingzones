@@ -6,7 +6,7 @@ locals {
 
   default_topics = var.enable_events && var.enable_default_topic ? {
     default = {
-      name             = "${local.name_prefix}-topic-governance-events"
+      name             = "${local.name_prefix}-top-governance-events"
       description      = "Landing zone governance event notifications managed by Terraform."
       compartment_ocid = var.compartment_ocid
     }
@@ -28,7 +28,7 @@ locals {
 
   default_event_rules = var.enable_events && var.enable_default_event_rules && contains(keys(local.notification_topics), "default") ? {
     iam_policy_changes = {
-      display_name     = "${local.name_prefix}-event-iam-policy-changes"
+      display_name     = "${local.name_prefix}-evt-iam-policy-changes"
       description      = "Governance notification for IAM policy changes."
       compartment_ocid = var.tenancy_ocid
       condition = jsonencode({
@@ -42,7 +42,7 @@ locals {
       actions    = local.default_event_action
     }
     iam_group_membership_changes = {
-      display_name     = "${local.name_prefix}-event-iam-group-membership"
+      display_name     = "${local.name_prefix}-evt-iam-group-membership"
       description      = "Governance notification for IAM group membership changes."
       compartment_ocid = var.tenancy_ocid
       condition = jsonencode({
@@ -55,7 +55,7 @@ locals {
       actions    = local.default_event_action
     }
     iam_credential_changes = {
-      display_name     = "${local.name_prefix}-event-iam-credential-changes"
+      display_name     = "${local.name_prefix}-evt-iam-credential-changes"
       description      = "Governance notification for IAM credential changes."
       compartment_ocid = var.tenancy_ocid
       condition = jsonencode({

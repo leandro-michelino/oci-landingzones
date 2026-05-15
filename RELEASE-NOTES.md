@@ -44,6 +44,9 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 ### Changed
 
+- Normalized blueprint `local.name_prefix` values to the standard
+  `org-environment-region_key` OCI naming prefix and added an automated naming
+  convention guard to the repository contract checks.
 - Updated the repository documentation inventory to reflect 65 deployable
   blueprints across 13 families and linked each blueprint to its local ASCII
   architecture review file.

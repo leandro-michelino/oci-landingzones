@@ -10,7 +10,7 @@ locals {
 
   default_budgets = var.enable_budgets && var.enable_default_budget && var.default_budget_amount != null ? {
     landing_zone = {
-      display_name                          = "${local.name_prefix}-budget-landing-zone"
+      display_name                          = "${local.name_prefix}-bgt-landing-zone"
       description                           = "Landing zone budget managed by Terraform."
       compartment_ocid                      = var.compartment_ocid
       amount                                = var.default_budget_amount
@@ -31,7 +31,7 @@ locals {
     "landing_zone.default" = {
       budget_key     = "landing_zone"
       rule_key       = "default"
-      display_name   = "${local.name_prefix}-budget-alert-landing-zone"
+      display_name   = "${local.name_prefix}-bgtal-landing-zone"
       description    = "Default alert for the landing zone budget."
       message        = "Landing zone budget threshold exceeded."
       recipients     = join(",", sort(tolist(var.default_budget_alert_recipients)))

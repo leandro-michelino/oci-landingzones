@@ -6,7 +6,7 @@ locals {
 
   default_topics = var.enable_monitoring && var.enable_default_topic ? {
     default = {
-      name             = "${local.name_prefix}-topic-monitoring"
+      name             = "${local.name_prefix}-top-monitoring"
       description      = "Landing zone monitoring notifications managed by Terraform."
       compartment_ocid = var.compartment_ocid
     }

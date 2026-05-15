@@ -137,6 +137,8 @@ check_blueprint_contract() {
 
 echo "==> Checking repository documentation and blueprint contracts"
 
+"$REPO_ROOT/scripts/check-naming-conventions.sh"
+
 check_forbidden_markdown "State, Inputs, And Outputs"
 check_forbidden_markdown "Input sources"
 check_forbidden_markdown "Terraform state"

@@ -10,7 +10,7 @@ locals {
       name                  = coalesce(try(entity.name, null), upper(coalesce(try(entity.code, null), key)))
       parent_compartment_id = coalesce(try(entity.parent_compartment_ocid, null), local.parent_compartment_ocid)
       policy_compartment_id = coalesce(try(entity.policy_compartment_ocid, null), try(entity.parent_compartment_ocid, null), local.parent_compartment_ocid)
-      root_name             = coalesce(try(entity.root_compartment_name, null), "${local.name_prefix}-oe-${replace(lower(coalesce(try(entity.code, null), key)), "/[^a-z0-9]/", "-")}")
+      root_name             = coalesce(try(entity.root_compartment_name, null), "${local.name_prefix}-cmp-oe-${replace(lower(coalesce(try(entity.code, null), key)), "/[^a-z0-9]/", "-")}")
       child_compartments    = coalesce(try(entity.workload_compartments, null), var.default_workload_compartments)
     }
   }

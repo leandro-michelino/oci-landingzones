@@ -73,7 +73,7 @@ resource "oci_monitoring_alarm" "this" {
   for_each = var.alarms
 
   compartment_id        = local.target_compartment_ocid
-  display_name          = coalesce(each.value.display_name, "${local.name_prefix}-${each.key}")
+  display_name          = coalesce(each.value.display_name, "${local.name_prefix}-alm-${each.key}")
   is_enabled            = coalesce(each.value.is_enabled, true)
   metric_compartment_id = coalesce(each.value.metric_compartment_id, local.target_compartment_ocid)
   namespace             = each.value.namespace
@@ -89,7 +89,7 @@ resource "oci_identity_policy" "access" {
 
   provider       = oci.home
   compartment_id = local.policy_compartment_ocid
-  name           = "${local.name_prefix}-access"
+  name           = "${local.name_prefix}-pol-access"
   description    = "GenAI guardrails access policy for ${local.name_prefix}."
   statements     = var.policy_statements
   defined_tags   = var.defined_tags

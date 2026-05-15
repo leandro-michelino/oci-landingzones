@@ -1,7 +1,7 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 locals {
   blueprint_name                = "operations-cost-optimization"
-  name_prefix                   = lower(join("-", compact([var.org, var.environment, var.region_key, "costopt"])))
+  name_prefix                   = "${var.org}-${var.environment}-${var.region_key}"
   target_compartment_ocid       = coalesce(var.compartment_ocid, var.tenancy_ocid)
   notification_compartment_ocid = coalesce(var.notification_compartment_ocid, local.target_compartment_ocid)
   policy_compartment_ocid       = coalesce(var.policy_compartment_ocid, var.tenancy_ocid)
@@ -19,7 +19,7 @@ locals {
 
   default_notification_topics = var.enable_notifications ? {
     finops = {
-      name             = "${local.name_prefix}-topic-finops"
+      name             = "${local.name_prefix}-top-finops"
       description      = "FinOps notifications for budget, anomaly, and cost-governance events."
       compartment_ocid = local.notification_compartment_ocid
     }
@@ -31,7 +31,7 @@ locals {
 
   default_optimizer_profiles = var.enable_default_optimizer_profile ? {
     finops = {
-      name                         = "${local.name_prefix}-optimizer-finops"
+      name                         = "${local.name_prefix}-opt-finops"
       description                  = "FinOps optimizer profile scoped to approved landing-zone compartments."
       compartment_ocid             = local.target_compartment_ocid
       aggregation_interval_in_days = var.optimizer_aggregation_interval_in_days
@@ -52,7 +52,7 @@ locals {
 
   default_budget_alarm = var.enable_budget_alarm && var.budget_alarm_query != null && length(local.budget_alarm_destinations) > 0 ? {
     budget_spend = {
-      display_name                                  = "${local.name_prefix}-alarm-budget-spend"
+      display_name                                  = "${local.name_prefix}-alm-budget-spend"
       body                                          = "Budget or cost threshold breached for ${local.name_prefix}."
       compartment_ocid                              = local.target_compartment_ocid
       metric_compartment_ocid                       = coalesce(var.budget_alarm_metric_compartment_ocid, local.target_compartment_ocid)

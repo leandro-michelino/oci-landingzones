@@ -66,13 +66,13 @@ variable "enable_container_repository" {
 }
 
 variable "repository_name" {
-  description = "Container repository leaf name used in the default display name."
+  description = "Container repository leaf name appended after the default OCI naming prefix."
   type        = string
   default     = "hello-python"
 }
 
 variable "repository_display_name" {
-  description = "Optional Artifact Registry container repository display name. OCIR-style repositories can include slash-separated paths."
+  description = "Optional Artifact Registry container repository display name."
   type        = string
   default     = null
 }

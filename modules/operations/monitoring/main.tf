@@ -3,7 +3,7 @@ resource "oci_ons_notification_topic" "this" {
   for_each = local.notification_topics
 
   compartment_id = coalesce(each.value.compartment_ocid, var.compartment_ocid)
-  name           = coalesce(each.value.name, "${local.name_prefix}-topic-monitoring-${each.key}")
+  name           = coalesce(each.value.name, "${local.name_prefix}-top-monitoring-${each.key}")
   description    = coalesce(each.value.description, "Landing zone monitoring topic ${each.key} managed by Terraform.")
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
@@ -27,7 +27,7 @@ resource "oci_monitoring_alarm" "this" {
   compartment_id                                = coalesce(each.value.compartment_ocid, var.compartment_ocid)
   metric_compartment_id                         = coalesce(each.value.metric_compartment_ocid, var.compartment_ocid)
   metric_compartment_id_in_subtree              = each.value.metric_compartment_id_in_subtree
-  display_name                                  = coalesce(each.value.display_name, "${local.name_prefix}-alarm-${each.key}")
+  display_name                                  = coalesce(each.value.display_name, "${local.name_prefix}-alm-${each.key}")
   body                                          = coalesce(each.value.body, "Landing zone monitoring alarm ${each.key}.")
   destinations                                  = local.alarm_destinations[each.key]
   namespace                                     = each.value.namespace

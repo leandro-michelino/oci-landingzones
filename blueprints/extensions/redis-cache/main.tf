@@ -21,7 +21,7 @@ resource "oci_monitoring_alarm" "this" {
   for_each = var.alarms
 
   compartment_id        = local.target_compartment_ocid
-  display_name          = coalesce(each.value.display_name, "${local.name_prefix}-${each.key}")
+  display_name          = coalesce(each.value.display_name, "${local.name_prefix}-alm-${each.key}")
   namespace             = each.value.namespace
   query                 = each.value.query
   severity              = each.value.severity
@@ -38,7 +38,7 @@ resource "oci_identity_policy" "access" {
 
   provider       = oci.home
   compartment_id = local.policy_compartment_ocid
-  name           = "${local.name_prefix}-access"
+  name           = "${local.name_prefix}-pol-access"
   description    = "Redis Cache access policy for ${local.name_prefix}."
   statements     = var.policy_statements
   defined_tags   = var.defined_tags

@@ -95,7 +95,7 @@ resource "oci_identity_policy" "access" {
   count = length(var.policy_statements) > 0 ? 1 : 0
 
   compartment_id = local.policy_compartment_ocid
-  name           = "${local.name_prefix}-postgresql-policy"
+  name           = "${local.name_prefix}-pol-postgresql"
   description    = "Scoped PostgreSQL access for ${local.name_prefix}."
   statements     = var.policy_statements
   defined_tags   = var.defined_tags

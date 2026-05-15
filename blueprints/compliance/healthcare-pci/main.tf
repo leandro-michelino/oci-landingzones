@@ -3,7 +3,7 @@ resource "oci_identity_policy" "guardrails" {
   count = length(var.guardrail_policy_statements) > 0 ? 1 : 0
 
   compartment_id = local.policy_compartment_ocid
-  name           = "${local.name_prefix}-regulated-guardrails"
+  name           = "${local.name_prefix}-pol-regulated-guardrails"
   description    = "Healthcare and PCI landing-zone guardrail policy for ${local.name_prefix}."
   statements     = var.guardrail_policy_statements
   defined_tags   = var.defined_tags
@@ -18,7 +18,7 @@ resource "oci_budget_budget" "this" {
   target_type           = "COMPARTMENT"
   reset_period          = var.budget_reset_period
   amount                = var.budget_amount
-  display_name          = "${local.name_prefix}-regulated-budget"
+  display_name          = "${local.name_prefix}-bgt-regulated"
   description           = "Regulated workload budget for ${local.name_prefix}."
   defined_tags          = var.defined_tags
   freeform_tags         = local.common_freeform_tags
@@ -28,7 +28,7 @@ resource "oci_budget_alert_rule" "this" {
   count = var.enable_budget && var.budget_alert_recipients != null ? 1 : 0
 
   budget_id      = oci_budget_budget.this[0].id
-  display_name   = "${local.name_prefix}-regulated-budget-alert"
+  display_name   = "${local.name_prefix}-bgtal-regulated"
   description    = "Regulated workload budget alert."
   threshold      = var.budget_alert_threshold
   threshold_type = var.budget_alert_threshold_type
@@ -43,7 +43,7 @@ resource "oci_data_safe_target_database" "this" {
   count = var.enable_data_safe_target_database ? 1 : 0
 
   compartment_id = local.target_compartment_ocid
-  display_name   = "${local.name_prefix}-datasafe-target"
+  display_name   = "${local.name_prefix}-dst-regulated"
   description    = "Data Safe target database registration for regulated workloads."
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags

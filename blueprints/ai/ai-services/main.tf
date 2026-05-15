@@ -23,7 +23,7 @@ resource "oci_ai_document_project" "document" {
   count = var.enable_document_project ? 1 : 0
 
   compartment_id = local.target_compartment_ocid
-  display_name   = "${local.name_prefix}-document"
+  display_name   = "${local.name_prefix}-aip-document"
   description    = var.project_description
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
@@ -33,7 +33,7 @@ resource "oci_ai_language_project" "language" {
   count = var.enable_language_project ? 1 : 0
 
   compartment_id = local.target_compartment_ocid
-  display_name   = "${local.name_prefix}-language"
+  display_name   = "${local.name_prefix}-aip-language"
   description    = var.project_description
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
@@ -43,7 +43,7 @@ resource "oci_ai_vision_project" "vision" {
   count = var.enable_vision_project ? 1 : 0
 
   compartment_id = local.target_compartment_ocid
-  display_name   = "${local.name_prefix}-vision"
+  display_name   = "${local.name_prefix}-aip-vision"
   description    = var.project_description
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
@@ -54,7 +54,7 @@ resource "oci_ai_vision_vision_private_endpoint" "this" {
 
   compartment_id = local.target_compartment_ocid
   subnet_id      = var.vision_private_endpoint_subnet_id
-  display_name   = coalesce(var.vision_private_endpoint_display_name, "${local.name_prefix}-vision-pe")
+  display_name   = coalesce(var.vision_private_endpoint_display_name, "${local.name_prefix}-pe-vision")
   description    = "Private endpoint for OCI Vision workloads."
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
@@ -65,7 +65,7 @@ resource "oci_identity_policy" "access" {
 
   provider       = oci.home
   compartment_id = local.policy_compartment_ocid
-  name           = "${local.name_prefix}-access"
+  name           = "${local.name_prefix}-pol-access"
   description    = "OCI AI Services access policy for ${local.name_prefix}."
   statements     = var.policy_statements
   defined_tags   = var.defined_tags

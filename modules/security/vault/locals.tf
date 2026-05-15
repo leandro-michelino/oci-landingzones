@@ -6,7 +6,7 @@ locals {
 
   default_vaults = var.enable_vault && var.enable_default_vault ? {
     default = {
-      display_name     = "${local.name_prefix}-vault"
+      display_name     = "${local.name_prefix}-vlt"
       compartment_ocid = var.compartment_ocid
       vault_type       = var.default_vault_type
     }

@@ -40,7 +40,7 @@ resource "oci_streaming_stream" "tasks" {
   count = var.create_task_stream ? 1 : 0
 
   compartment_id     = local.target_compartment_ocid
-  name               = "${local.name_prefix}-tasks"
+  name               = "${local.name_prefix}-stream-tasks"
   partitions         = var.task_stream_partitions
   retention_in_hours = var.task_stream_retention_in_hours
   stream_pool_id     = local.stream_pool_id
@@ -67,7 +67,7 @@ resource "oci_generative_ai_agent_agent" "orchestrator" {
   count = var.create_orchestrator_agent ? 1 : 0
 
   compartment_id     = local.target_compartment_ocid
-  display_name       = coalesce(var.orchestrator_display_name, "${local.name_prefix}-orchestrator")
+  display_name       = coalesce(var.orchestrator_display_name, "${local.name_prefix}-agent-orchestrator")
   description        = var.orchestrator_description
   welcome_message    = var.orchestrator_welcome_message
   knowledge_base_ids = local.orchestrator_kb_ids
@@ -95,7 +95,7 @@ resource "oci_generative_ai_agent_agent" "specialist" {
   for_each = var.specialist_agents
 
   compartment_id     = local.target_compartment_ocid
-  display_name       = coalesce(each.value.display_name, "${local.name_prefix}-${each.key}")
+  display_name       = coalesce(each.value.display_name, "${local.name_prefix}-agent-${each.key}")
   description        = coalesce(each.value.description, "Specialist agent ${each.key}.")
   welcome_message    = coalesce(each.value.welcome_message, "Ready for ${each.key} tasks.")
   knowledge_base_ids = coalesce(each.value.knowledge_base_ids, [])
@@ -124,7 +124,7 @@ resource "oci_generative_ai_agent_agent_endpoint" "orchestrator" {
 
   compartment_id         = local.target_compartment_ocid
   agent_id               = local.orchestrator_agent_id
-  display_name           = coalesce(var.endpoint_display_name, "${local.name_prefix}-endpoint")
+  display_name           = coalesce(var.endpoint_display_name, "${local.name_prefix}-ep-default")
   description            = "Endpoint for ${local.name_prefix} orchestrator."
   should_enable_session  = var.enable_endpoint_session
   should_enable_trace    = var.enable_endpoint_trace
@@ -163,7 +163,7 @@ resource "oci_identity_policy" "access" {
 
   provider       = oci.home
   compartment_id = local.policy_compartment_ocid
-  name           = "${local.name_prefix}-access"
+  name           = "${local.name_prefix}-pol-access"
   description    = "Multi-agent orchestration access policy for ${local.name_prefix}."
   statements     = var.policy_statements
   defined_tags   = var.defined_tags

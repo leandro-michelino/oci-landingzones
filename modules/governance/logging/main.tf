@@ -37,7 +37,7 @@ resource "oci_logging_log_saved_search" "this" {
   for_each = var.enable_logging ? var.saved_searches : {}
 
   compartment_id = coalesce(each.value.compartment_ocid, var.compartment_ocid)
-  name           = coalesce(each.value.name, "${local.name_prefix}-search-${each.key}")
+  name           = coalesce(each.value.name, "${local.name_prefix}-log-search-${each.key}")
   query          = each.value.query
   description    = coalesce(each.value.description, "Landing zone logging saved search ${each.key}.")
   defined_tags   = var.defined_tags

@@ -70,7 +70,7 @@ resource "oci_functions_function" "this" {
   for_each = var.enable_functions ? var.functions : {}
 
   application_id                   = local.application_id
-  display_name                     = coalesce(each.value.display_name, "${local.name_prefix}-${each.key}")
+  display_name                     = coalesce(each.value.display_name, "${local.name_prefix}-fn-${each.key}")
   image                            = each.value.image
   image_digest                     = each.value.image_digest
   memory_in_mbs                    = tostring(each.value.memory_in_mbs)
@@ -169,7 +169,7 @@ resource "oci_events_rule" "this" {
   for_each = var.enable_event_rules ? var.event_rules : {}
 
   compartment_id = coalesce(each.value.compartment_ocid, local.target_compartment_ocid)
-  display_name   = coalesce(each.value.display_name, "${local.name_prefix}-event-${each.key}")
+  display_name   = coalesce(each.value.display_name, "${local.name_prefix}-evt-${each.key}")
   description    = coalesce(each.value.description, "Function event trigger ${each.key} managed by Terraform.")
   condition      = each.value.condition
   is_enabled     = each.value.is_enabled
@@ -195,7 +195,7 @@ resource "oci_identity_policy" "access" {
 
   provider       = oci.home
   compartment_id = local.policy_compartment_ocid
-  name           = "${local.name_prefix}-access"
+  name           = "${local.name_prefix}-pol-access"
   description    = "Oracle Functions access policy for ${local.name_prefix}."
   statements     = var.policy_statements
   defined_tags   = var.defined_tags

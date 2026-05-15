@@ -3,7 +3,7 @@ resource "oci_kms_vault" "this" {
   for_each = local.vaults
 
   compartment_id = coalesce(each.value.compartment_ocid, var.compartment_ocid)
-  display_name   = coalesce(each.value.display_name, "${local.name_prefix}-vault-${each.key}")
+  display_name   = coalesce(each.value.display_name, "${local.name_prefix}-vlt-${each.key}")
   vault_type     = upper(each.value.vault_type)
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags

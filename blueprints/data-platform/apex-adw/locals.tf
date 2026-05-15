@@ -1,7 +1,7 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 locals {
   blueprint_name          = "data-platform-apex-adw"
-  name_prefix             = lower(join("-", compact([var.org, var.environment, var.region_key, "apex-adw"])))
+  name_prefix             = "${var.org}-${var.environment}-${var.region_key}"
   adb_compartment_ocid    = try(data.oci_database_autonomous_database.this[0].compartment_id, null)
   target_compartment_ocid = coalesce(var.compartment_ocid, local.adb_compartment_ocid, var.tenancy_ocid)
 
@@ -17,8 +17,8 @@ locals {
 
   load_balancer_display_name = coalesce(var.load_balancer_display_name, "${local.name_prefix}-lb")
   load_balancer_id           = var.create_load_balancer ? try(oci_load_balancer_load_balancer.this[0].id, null) : var.load_balancer_id
-  backend_set_name           = coalesce(var.backend_set_name, "${replace(local.name_prefix, "-", "_")}_ords")
-  listener_name              = coalesce(var.listener_name, "${replace(local.name_prefix, "-", "_")}_listener")
+  backend_set_name           = coalesce(var.backend_set_name, "${local.name_prefix}-bset-ords")
+  listener_name              = coalesce(var.listener_name, "${local.name_prefix}-lis-ords")
 
   direct_apex_url = coalesce(
     var.apex_url,

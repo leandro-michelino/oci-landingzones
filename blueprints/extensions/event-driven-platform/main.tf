@@ -40,7 +40,7 @@ resource "oci_streaming_stream" "this" {
   for_each = var.create_streams ? var.streams : {}
 
   compartment_id     = local.target_compartment_ocid
-  name               = "${local.name_prefix}-${each.key}"
+  name               = "${local.name_prefix}-stream-${each.key}"
   partitions         = each.value.partitions
   retention_in_hours = each.value.retention_in_hours
   stream_pool_id     = local.stream_pool_id
@@ -62,7 +62,7 @@ resource "oci_events_rule" "this" {
   for_each = var.create_event_rules ? var.event_rules : {}
 
   compartment_id = local.target_compartment_ocid
-  display_name   = coalesce(each.value.display_name, "${local.name_prefix}-${each.key}")
+  display_name   = coalesce(each.value.display_name, "${local.name_prefix}-evt-${each.key}")
   description    = coalesce(each.value.description, "Event-driven platform rule ${each.key}.")
   condition      = each.value.condition
   is_enabled     = coalesce(each.value.is_enabled, true)
@@ -89,7 +89,7 @@ resource "oci_sch_service_connector" "this" {
   count = var.create_service_connector ? 1 : 0
 
   compartment_id = local.target_compartment_ocid
-  display_name   = coalesce(var.connector_display_name, "${local.name_prefix}-connector")
+  display_name   = coalesce(var.connector_display_name, "${local.name_prefix}-sch-connector")
   description    = "Event-driven platform connector for ${local.name_prefix}."
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
@@ -115,7 +115,7 @@ resource "oci_identity_policy" "access" {
 
   provider       = oci.home
   compartment_id = local.policy_compartment_ocid
-  name           = "${local.name_prefix}-access"
+  name           = "${local.name_prefix}-pol-access"
   description    = "Event-driven platform access policy for ${local.name_prefix}."
   statements     = var.policy_statements
   defined_tags   = var.defined_tags

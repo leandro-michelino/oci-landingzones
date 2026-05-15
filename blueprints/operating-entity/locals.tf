@@ -5,7 +5,7 @@ locals {
   parent_compartment_ocid = coalesce(var.parent_compartment_ocid, var.tenancy_ocid)
   entity_key              = replace(lower(var.entity_code), "/[^a-z0-9]/", "-")
   entity_name             = coalesce(var.entity_name, upper(var.entity_code))
-  root_compartment_name   = coalesce(var.root_compartment_name, "${local.name_prefix}-oe-${local.entity_key}")
+  root_compartment_name   = coalesce(var.root_compartment_name, "${local.name_prefix}-cmp-oe-${local.entity_key}")
 
   workload_compartments = {
     for key, compartment in var.workload_compartments : key => {

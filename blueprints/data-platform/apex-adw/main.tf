@@ -114,7 +114,7 @@ resource "oci_vault_secret" "apex_admin" {
   compartment_id = local.target_compartment_ocid
   vault_id       = var.vault_id
   key_id         = var.key_id
-  secret_name    = coalesce(var.admin_secret_name, "${local.name_prefix}-admin")
+  secret_name    = coalesce(var.admin_secret_name, "${local.name_prefix}-sec-admin")
   description    = "APEX workspace bootstrap and admin material for ${local.name_prefix}."
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags

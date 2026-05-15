@@ -23,7 +23,7 @@ resource "oci_ons_notification_topic" "this" {
   count = var.create_topic ? 1 : 0
 
   compartment_id = local.target_compartment_ocid
-  name           = coalesce(var.topic_name, "${local.name_prefix}-topic")
+  name           = coalesce(var.topic_name, "${local.name_prefix}-top")
   description    = var.topic_description
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
@@ -33,7 +33,7 @@ resource "oci_cloud_guard_target" "this" {
   count = var.create_cloud_guard_target ? 1 : 0
 
   compartment_id       = local.target_compartment_ocid
-  display_name         = coalesce(var.cloud_guard_target_display_name, "${local.name_prefix}-target")
+  display_name         = coalesce(var.cloud_guard_target_display_name, "${local.name_prefix}-cg-target")
   description          = var.cloud_guard_target_description
   target_resource_id   = coalesce(var.cloud_guard_target_resource_id, local.target_compartment_ocid)
   target_resource_type = var.cloud_guard_target_resource_type
@@ -61,7 +61,7 @@ resource "oci_vulnerability_scanning_host_scan_recipe" "this" {
   count = var.create_host_scan_recipe ? 1 : 0
 
   compartment_id = local.target_compartment_ocid
-  display_name   = coalesce(var.host_scan_recipe_display_name, "${local.name_prefix}-host-recipe")
+  display_name   = coalesce(var.host_scan_recipe_display_name, "${local.name_prefix}-vss-host-recipe")
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
 
@@ -93,7 +93,7 @@ resource "oci_vulnerability_scanning_host_scan_target" "this" {
   count = var.create_host_scan_target ? 1 : 0
 
   compartment_id        = local.target_compartment_ocid
-  display_name          = coalesce(var.host_scan_target_display_name, "${local.name_prefix}-host-target")
+  display_name          = coalesce(var.host_scan_target_display_name, "${local.name_prefix}-vss-host-target")
   description           = var.host_scan_target_description
   host_scan_recipe_id   = local.host_scan_recipe_id
   target_compartment_id = coalesce(var.host_scan_target_compartment_id, local.target_compartment_ocid)
@@ -106,7 +106,7 @@ resource "oci_events_rule" "this" {
   for_each = var.event_rules
 
   compartment_id = local.target_compartment_ocid
-  display_name   = coalesce(each.value.display_name, "${local.name_prefix}-${each.key}")
+  display_name   = coalesce(each.value.display_name, "${local.name_prefix}-evt-${each.key}")
   description    = each.value.description
   condition      = each.value.condition
   is_enabled     = each.value.is_enabled
@@ -133,7 +133,7 @@ resource "oci_monitoring_alarm" "this" {
   for_each = var.alarms
 
   compartment_id        = local.target_compartment_ocid
-  display_name          = coalesce(each.value.display_name, "${local.name_prefix}-${each.key}")
+  display_name          = coalesce(each.value.display_name, "${local.name_prefix}-alm-${each.key}")
   namespace             = each.value.namespace
   query                 = each.value.query
   severity              = each.value.severity
@@ -150,7 +150,7 @@ resource "oci_identity_policy" "access" {
 
   provider       = oci.home
   compartment_id = local.policy_compartment_ocid
-  name           = "${local.name_prefix}-access"
+  name           = "${local.name_prefix}-pol-access"
   description    = "Security posture automation access policy for ${local.name_prefix}."
   statements     = var.policy_statements
   defined_tags   = var.defined_tags

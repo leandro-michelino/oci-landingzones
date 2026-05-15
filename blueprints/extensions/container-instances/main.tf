@@ -139,7 +139,7 @@ resource "oci_identity_policy" "access" {
   count = length(var.policy_statements) > 0 ? 1 : 0
 
   compartment_id = local.policy_compartment_ocid
-  name           = "${local.name_prefix}-container-instances-policy"
+  name           = "${local.name_prefix}-pol-container-instances"
   description    = "Scoped OCI Container Instances access for ${local.name_prefix}."
   statements     = var.policy_statements
   defined_tags   = var.defined_tags

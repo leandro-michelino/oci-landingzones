@@ -77,7 +77,7 @@ resource "oci_apigateway_usage_plan" "this" {
   for_each = var.create_usage_plans ? var.usage_plans : {}
 
   compartment_id = local.target_compartment_ocid
-  display_name   = coalesce(each.value.display_name, "${local.name_prefix}-${each.key}")
+  display_name   = coalesce(each.value.display_name, "${local.name_prefix}-up-${each.key}")
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
 
@@ -116,7 +116,7 @@ resource "oci_identity_policy" "access" {
 
   provider       = oci.home
   compartment_id = local.policy_compartment_ocid
-  name           = "${local.name_prefix}-access"
+  name           = "${local.name_prefix}-pol-access"
   description    = "GenAI gateway access policy for ${local.name_prefix}."
   statements     = var.policy_statements
   defined_tags   = var.defined_tags

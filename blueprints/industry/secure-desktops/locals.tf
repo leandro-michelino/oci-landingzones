@@ -1,7 +1,7 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 locals {
   blueprint_name          = "secure-desktops"
-  name_prefix             = lower(join("-", compact([var.org, var.environment, var.region_key, "desktops"])))
+  name_prefix             = "${var.org}-${var.environment}-${var.region_key}"
   target_compartment_ocid = coalesce(var.compartment_ocid, var.tenancy_ocid)
   policy_compartment_ocid = coalesce(var.policy_compartment_ocid, var.tenancy_ocid)
   desktop_pool_name       = coalesce(var.desktop_pool_display_name, "${local.name_prefix}-pool")

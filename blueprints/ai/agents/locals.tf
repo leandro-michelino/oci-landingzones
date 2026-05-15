@@ -1,14 +1,14 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 locals {
   blueprint_name          = "agents"
-  name_prefix             = lower(join("-", compact([var.org, var.environment, var.region_key, "agents"])))
+  name_prefix             = "${var.org}-${var.environment}-${var.region_key}"
   target_compartment_ocid = coalesce(var.compartment_ocid, var.tenancy_ocid)
   policy_compartment_ocid = coalesce(var.policy_compartment_ocid, var.tenancy_ocid)
 
   bucket_names = {
-    source    = coalesce(var.source_bucket_name, "${local.name_prefix}-source")
-    processed = coalesce(var.processed_bucket_name, "${local.name_prefix}-processed")
-    audit     = coalesce(var.audit_bucket_name, "${local.name_prefix}-audit")
+    source    = coalesce(var.source_bucket_name, "${local.name_prefix}-bkt-source")
+    processed = coalesce(var.processed_bucket_name, "${local.name_prefix}-bkt-processed")
+    audit     = coalesce(var.audit_bucket_name, "${local.name_prefix}-bkt-audit")
   }
 
   created_source_prefix = var.create_buckets && var.create_data_source ? [{
