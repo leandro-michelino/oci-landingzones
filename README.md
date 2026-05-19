@@ -161,6 +161,8 @@ blueprints/<family>/<deployment>/
 |-- README.md                  Operator guide
 |-- architecture/
 |   `-- README.md              Detailed ASCII architecture
+|-- hello-world/
+|   `-- index.html             Simple application smoke-test page
 |-- main.tf                    Terraform composition
 |-- variables.tf               Input contract
 |-- outputs.tf                 Hand-off values

@@ -120,6 +120,7 @@ check_blueprint_contract() {
 
   check_file "$dir/README.md"
   check_architecture_file "$dir/architecture/README.md"
+  check_file "$dir/hello-world/index.html"
   check_file "$dir/main.tf"
   check_file "$dir/variables.tf"
   check_file "$dir/outputs.tf"

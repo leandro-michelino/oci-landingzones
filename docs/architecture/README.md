@@ -65,6 +65,7 @@ Each deployable blueprint must include:
 |---|---|
 | `README.md` | Operator-facing deployment purpose, inputs, outputs, workflow, validation, and review notes. |
 | `architecture/README.md` | Detailed ASCII architecture, Terraform components, request flow, design notes, trust boundaries, and review checklist. |
+| `hello-world/index.html` | Minimal application page used for smoke tests, DNS cutovers, and runbook validation. |
 | `main.tf` | The Terraform composition that matches the documented architecture. |
 | `terraform.tfvars.example` | Safe input shape without real tenancy secrets or OCIDs. |
 | `ansible/plan.yml`, `ansible/apply.yml`, `ansible/destroy.yml` | Local orchestration entry points for the blueprint. |
