@@ -45,6 +45,8 @@ pick a blueprint -> read its README -> review ASCII architecture -> fill tfvars 
 | Functions and events | [Oracle Functions](blueprints/extensions/functions/) |
 | Private GenAI | [OCI Generative AI Private Landing Zone](blueprints/ai/genai-private/) |
 | GenAI API front door | [GenAI Multi-Model Gateway](blueprints/ai/genai-gateway/) |
+| Azure + OCI DR | [Azure + OCI Cross-Cloud DR](blueprints/disaster-recovery/azure-oci-cross-cloud-dr/) |
+| Azure + OCI Kubernetes | [AKS + OKE Active Active](blueprints/extensions/aks-oke-active-active/) |
 | RAG agents | [AI Agents RAG Landing Zone](blueprints/ai/agents/) |
 | Vector search | [OpenSearch](blueprints/data-platform/opensearch/) plus [Embedding Pipeline](blueprints/ai/embedding-pipeline/) |
 | Databases | [Autonomous Database](blueprints/data-platform/autonomous-database/), [PostgreSQL](blueprints/data-platform/postgresql/), or [MySQL HeatWave](blueprints/data-platform/mysql-heatwave/) |
@@ -55,6 +57,21 @@ For the complete menu, use the generated [Blueprint Index](BLUEPRINTS.md), the
 [Deployment Pattern Catalog](docs/DEPLOYMENT-PATTERN-CATALOG.md), or the
 [Architecture Index](docs/architecture/README.md).
 For multicloud planning, see [Azure + OCI draft blueprints](docs/multicloud/README.md).
+
+## Azure + OCI
+
+Implemented multicloud blueprints:
+
+| Pattern | Blueprint |
+|---|---|
+| Active/active Kubernetes with OCI primary and interconnect-only contract | [AKS + OKE Active Active](blueprints/extensions/aks-oke-active-active/) |
+| Cross-cloud DR with OCI primary, DNS failover runbooks, and connectivity mode support | [Azure + OCI Cross-Cloud DR](blueprints/disaster-recovery/azure-oci-cross-cloud-dr/) |
+
+Planning and architecture drafts:
+
+| Draft | Link |
+|---|---|
+| Azure + OCI multicloud blueprint drafts | [docs/multicloud/README.md](docs/multicloud/README.md) |
 
 ## Quick Start
 
