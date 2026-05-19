@@ -105,7 +105,7 @@ terraform plan or ansible/plan.yml
 
 ## Blueprint Architecture Inventory
 
-The current catalog has 68 deployable blueprint entry points across 13
+The current catalog has 70 deployable blueprint entry points across 13
 families. Each entry point owns its local Architecture in
 `architecture/README.md`.
 
@@ -131,6 +131,7 @@ families. Each entry point owns its local Architecture in
 | data-platform | [Oracle APEX On Autonomous Database](../../blueprints/data-platform/apex-adw/) | [Architecture](../../blueprints/data-platform/apex-adw/architecture/) |
 | data-platform | [Autonomous Database](../../blueprints/data-platform/autonomous-database/) | [Architecture](../../blueprints/data-platform/autonomous-database/architecture/) |
 | data-platform | [MySQL HeatWave Landing Zone](../../blueprints/data-platform/mysql-heatwave/) | [Architecture](../../blueprints/data-platform/mysql-heatwave/architecture/) |
+| data-platform | [OCI NoSQL Database](../../blueprints/data-platform/nosql/) | [Architecture](../../blueprints/data-platform/nosql/architecture/) |
 | data-platform | [OpenSearch Search And Vector Platform](../../blueprints/data-platform/opensearch/) | [Architecture](../../blueprints/data-platform/opensearch/architecture/) |
 | data-platform | [PostgreSQL Landing Zone](../../blueprints/data-platform/postgresql/) | [Architecture](../../blueprints/data-platform/postgresql/architecture/) |
 | data-platform | [Private Data Platform Landing Zone](../../blueprints/data-platform/private-data-platform/) | [Architecture](../../blueprints/data-platform/private-data-platform/architecture/) |
@@ -144,6 +145,7 @@ families. Each entry point owns its local Architecture in
 | extensions | [Exadata Extension](../../blueprints/extensions/exadata/) | [Architecture](../../blueprints/extensions/exadata/architecture/) |
 | extensions | [Oracle Functions Extension](../../blueprints/extensions/functions/) | [Architecture](../../blueprints/extensions/functions/architecture/) |
 | extensions | [Oracle Analytics Cloud](../../blueprints/extensions/oac/) | [Architecture](../../blueprints/extensions/oac/architecture/) |
+| extensions | [Oracle Digital Assistant](../../blueprints/extensions/digital-assistant/) | [Architecture](../../blueprints/extensions/digital-assistant/architecture/) |
 | extensions | [Observability Platform](../../blueprints/extensions/observability/) | [Architecture](../../blueprints/extensions/observability/architecture/) |
 | extensions | [Oracle Integration Cloud](../../blueprints/extensions/oic/) | [Architecture](../../blueprints/extensions/oic/architecture/) |
 | extensions | [OKE Extension](../../blueprints/extensions/oke/) | [Architecture](../../blueprints/extensions/oke/architecture/) |

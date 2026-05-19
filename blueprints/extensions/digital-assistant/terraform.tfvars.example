@@ -1,0 +1,42 @@
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "eu-madrid-1"
+home_region       = "eu-madrid-1"
+
+org         = "acme"
+environment = "dev"
+region_key  = "mad"
+
+compartment_ocid = "ocid1.compartment.oc1..example"
+
+enable_oda_network      = true
+oda_vcn_cidr            = "10.86.0.0/16"
+oda_subnet_cidr         = "10.86.10.0/24"
+oda_ingress_allowed_cidr = "10.0.0.0/8"
+
+create_oda_instance      = true
+oda_display_name         = "acme-dev-mad-app-oda"
+oda_description          = "Digital assistant for enterprise channels"
+oda_shape_name           = "DEVELOPMENT"
+oda_identity_domain      = null
+oda_is_role_based_access = true
+
+create_oda_private_endpoint         = true
+oda_private_endpoint_display_name   = "acme-dev-mad-pe-oda"
+oda_private_endpoint_description    = "Private endpoint for ODA traffic"
+oda_private_endpoint_subnet_id      = null
+oda_private_endpoint_additional_nsg_ids = []
+attach_private_endpoint_to_instance = true
+
+create_alert_topic = true
+alert_topic_name   = "acme-dev-mad-top-oda-alert"
+
+policy_statements = [
+  "Allow group oda-admins to manage oda-family in compartment id ocid1.compartment.oc1..example",
+  "Allow group oda-developers to use oda-instances in compartment id ocid1.compartment.oc1..example",
+  "Allow group oda-channel-callers to read oda-instances in compartment id ocid1.compartment.oc1..example"
+]
+
+freeform_tags = {
+  Owner = "conversation-platform-team"
+}

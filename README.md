@@ -50,7 +50,8 @@ pick a blueprint -> read its README -> review Architecture -> fill tfvars -> pla
 | Azure + OCI Kubernetes | [AKS + OKE Active Active](blueprints/extensions/aks-oke-active-active/) |
 | RAG agents | [AI Agents RAG Landing Zone](blueprints/ai/agents/) |
 | Vector search | [OpenSearch](blueprints/data-platform/opensearch/) plus [Embedding Pipeline](blueprints/ai/embedding-pipeline/) |
-| Databases | [Autonomous Database](blueprints/data-platform/autonomous-database/), [PostgreSQL](blueprints/data-platform/postgresql/), or [MySQL HeatWave](blueprints/data-platform/mysql-heatwave/) |
+| Databases | [Autonomous Database](blueprints/data-platform/autonomous-database/), [PostgreSQL](blueprints/data-platform/postgresql/), [MySQL HeatWave](blueprints/data-platform/mysql-heatwave/), or [OCI NoSQL Database](blueprints/data-platform/nosql/) |
+| Conversational AI | [Oracle Digital Assistant](blueprints/extensions/digital-assistant/) |
 | Disaster recovery | [Full Stack DR](blueprints/disaster-recovery/fsdr/) |
 | Desktops | [Secure Desktops](blueprints/industry/secure-desktops/) |
 
@@ -150,9 +151,9 @@ boundaries, Terraform components, and review checklist live.
 | [identity](blueprints/identity/) | IAM groups, policies, dynamic groups, and identity domains. |
 | [operating-entity](blueprints/operating-entity/) | Business-unit and workload onboarding boundaries. |
 | [operations](blueprints/operations/) | Cost optimization, budgets, tags, notifications, and FinOps hand-offs. |
-| [extensions](blueprints/extensions/) | OKE, Functions, API Gateway, WAF, Streaming, OAC, OIC, Observability, Redis, Container Instances, and more. |
+| [extensions](blueprints/extensions/) | OKE, Functions, API Gateway, WAF, Streaming, OAC, OIC, Oracle Digital Assistant, Observability, Redis, Container Instances, and more. |
 | [ai](blueprints/ai/) | GenAI, agents, gateway, guardrails, fine-tuning, embeddings, document intelligence, and multi-agent orchestration. |
-| [data-platform](blueprints/data-platform/) | Autonomous Database, APEX on ADB, PostgreSQL, MySQL HeatWave, OpenSearch, and private data platform patterns. |
+| [data-platform](blueprints/data-platform/) | Autonomous Database, APEX on ADB, OCI NoSQL Database, PostgreSQL, MySQL HeatWave, OpenSearch, and private data platform patterns. |
 | [compliance](blueprints/compliance/) | SCCA, Zero Trust, Healthcare/PCI, and security posture automation. |
 | [disaster-recovery](blueprints/disaster-recovery/) | Full Stack Disaster Recovery wiring. |
 | [devops](blueprints/devops/) | OCI DevOps project, repository, build pipeline, deploy pipeline, and notifications. |

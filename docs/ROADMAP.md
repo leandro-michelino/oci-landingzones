@@ -39,7 +39,7 @@ compliance, or workload platform pattern.
 
 ## Already Implemented
 
-The repository currently contains 68 fully implemented and deployable blueprint
+The repository currently contains 70 fully implemented and deployable blueprint
 entry points. See [Architecture Index](architecture/README.md#blueprint-architecture-inventory)
 for the complete folder-by-folder list with links to each local Architecture
 file.
@@ -50,10 +50,10 @@ file.
 | `blueprints/cis/` | 2 |
 | `blueprints/compliance/` | 4 |
 | `blueprints/core/` | 1 |
-| `blueprints/data-platform/` | 6 |
+| `blueprints/data-platform/` | 7 |
 | `blueprints/devops/` | 1 |
 | `blueprints/disaster-recovery/` | 2 |
-| `blueprints/extensions/` | 14 |
+| `blueprints/extensions/` | 15 |
 | `blueprints/identity/` | 3 |
 | `blueprints/industry/` | 2 |
 | `blueprints/networking/` | 19 |
@@ -196,42 +196,45 @@ vault_secret_ids
 
 ---
 
-### Oracle Digital Assistant (ODA)
+### Oracle Digital Assistant (ODA) (Implemented)
 
 | Attribute | Value |
 | --- | --- |
 | Folder | `blueprints/extensions/digital-assistant/` |
-| Depends on | Core Landing Zone; optionally `genai-private` for LLM integration |
+| Depends on | Core Landing Zone; optional existing network IDs for extension-only mode |
+| Status | Implemented and deployable in `blueprints/extensions/digital-assistant/` |
 
 **Why this exists.**
 ODA is the conversational AI layer for Oracle SaaS and custom app integrations.
-It requires a private VCN-attached instance, Vault for OAuth client secrets,
-IAM for bot operators and channel webhook callers, and optionally a GenAI
-backend for LLM-powered intent handling.
+The implemented blueprint covers ODA instance lifecycle, optional private
+endpoint lifecycle, deploy-and-use network wiring, optional IAM policy
+statements, and operational outputs for channel integration runbooks.
 
 **What it deploys.**
 
 | Resource | Notes |
 | --- | --- |
-| ODA instance | Enterprise edition; private endpoint |
-| Vault secret | OAuth client secret for channel webhooks |
-| IAM policies | ODA administrator, bot developer, channel caller |
-| NSG | HTTPS from app subnet and webhook callback sources |
-| Optional: GenAI integration | Wires ODA LLM service to the `genai-private` endpoint |
+| ODA instance | `oci_oda_oda_instance.this` with role-based access and identity-domain inputs |
+| ODA private endpoint | `oci_oda_oda_private_endpoint.this` with subnet + NSG placement |
+| ODA private endpoint attachment | `oci_oda_oda_private_endpoint_attachment.this` for instance/endpoint binding |
+| ODA network foundation | Optional VCN, route table, security list, subnet, and NSG resources |
+| IAM + alert operations | Optional `oci_identity_policy.access` and `oci_ons_notification_topic.alert` |
 
 **Inputs to decide.**
 
-- ODA edition (development vs enterprise)
-- Channel type: Web, MS Teams, Slack, or custom webhook
-- Whether to enable LLM backend via GenAI private endpoint
-- Webhook callback CIDR allowlist
+- ODA shape and role-based access mode (`oda_shape_name`, `oda_is_role_based_access`)
+- Whether to create instance, private endpoint, and attachment in one run
+- Whether to create network resources or pass existing subnet and NSG IDs
+- Ingress CIDR allowlist for endpoint HTTPS traffic
 
 **Outputs and hand-off.**
 
 ```text
 oda_instance_id
-oda_endpoint_url
-vault_secret_id
+oda_instance_connector_url
+oda_private_endpoint_id
+oda_network_contract
+oda_operational_contract
 ```
 
 ---
@@ -1242,13 +1245,13 @@ backup_handoff_outputs
 
 ## OCI Service Gaps
 
-Services that have full Terraform provider support but no blueprint in the repo
-yet. All are commonly requested in customer conversations and can reuse the
-existing Core, networking, and IAM contracts.
+Service gap watchlist based on customer demand. Entries marked `Implemented`
+already have deployable blueprint folders; the rest remain backlog candidates
+that can reuse existing Core, networking, and IAM contracts.
 
 | Priority | Blueprint | Folder | Why It Fits |
 | --- | --- | --- | --- |
-| 1 | OCI NoSQL Database | `blueprints/data-platform/nosql/` | Key-value and document store; most app teams eventually need one. Private endpoint, NSG, and IAM are all the same pattern as other databases. |
+| 1 | OCI NoSQL Database | `blueprints/data-platform/nosql/` | Implemented. Key-value and document store with table capacity contract, optional index, optional cross-region replica, optional app network, and optional IAM/alerts. |
 | 2 | OCI Data Safe | `blueprints/compliance/data-safe/` | Database activity monitoring, auditing, and data masking. Comes up in every regulated engagement alongside Autonomous DB, MySQL, or PostgreSQL. |
 | 3 | OCI Secure Desktops | `blueprints/industry/secure-desktops/` | Implemented. Managed VDI pattern with private network, session policies, BYOL-aware Windows 10/11 guardrail, and image management wiring. |
 | 4 | OCI Data Flow | `blueprints/data-platform/data-flow/` | Managed Apache Spark for batch analytics and ETL. Fills the analytics gap between Autonomous DB and a full Lakehouse. |
@@ -1263,59 +1266,59 @@ existing Core, networking, and IAM contracts.
 
 ---
 
-### OCI NoSQL Database
+### OCI NoSQL Database (Implemented)
 
 | Attribute | Value |
 | --- | --- |
 | Folder | `blueprints/data-platform/nosql/` |
-| Depends on | Core Landing Zone; VCN from any networking blueprint |
+| Depends on | Core Landing Zone; optional existing network IDs for extension-only mode |
+| Status | Implemented and deployable in `blueprints/data-platform/nosql/` |
 
 **Why this exists.**
 Many application teams need a low-latency key-value or document store that
-does not require a relational schema. OCI NoSQL Database is fully managed,
-scales throughput independently of storage, and supports private VCN endpoints
-- but the IAM and networking wiring is not obvious and there is no landing zone
-pattern for it today.
+does not require a relational schema. The implemented blueprint provides the
+NoSQL table contract with explicit capacity settings, plus optional index,
+optional cross-region replica, optional deploy-and-use app network resources,
+and optional IAM/alert operations wiring.
 
 **What it deploys.**
 
 | Resource | Notes |
 | --- | --- |
-| NoSQL table | Configurable capacity model: on-demand or provisioned |
-| Private endpoint | VCN attachment; no public route to the service |
-| NSG | App subnet to NoSQL port only |
-| Vault secret | SDK credentials for app-tier access |
-| IAM policies | Table admin, read-write app group, read-only group |
-| Monitoring alarms | Throttled reads, throttled writes, storage pressure |
+| NoSQL table | `oci_nosql_table.this` with explicit read/write/storage limits |
+| NoSQL secondary index | Optional `oci_nosql_index.secondary` |
+| NoSQL table replica | Optional `oci_nosql_table_replica.this` for cross-region resilience |
+| App network foundation | Optional VCN, route table, security list, and subnet resources |
+| IAM + alert operations | Optional `oci_identity_policy.access` and `oci_ons_notification_topic.alert` |
 
 **Architecture.**
 
 ```text
-App Tier (private subnet)
+App Tier (optional app subnet)
       |
-      | NSG-controlled
+      | OCI SDK/API calls
       v
-OCI NoSQL Table (private endpoint)
- |--- on-demand or provisioned capacity
- |--- Vault SDK credentials
- `--- Monitoring alarms
+OCI NoSQL Table
+ |--- capacity mode + read/write/storage limits
+ |--- optional secondary index
+ `--- optional cross-region replica
 ```
 
 **Inputs to decide.**
 
-- Capacity model: on-demand vs provisioned read/write units
-- Table schema: fixed or schema-free JSON
-- App subnet CIDR for NSG allow rule
-- Vault secret rotation and access model
+- Table DDL schema and key design (`table_ddl_statement`)
+- Capacity mode and limits (`table_capacity_mode`, read/write/storage)
+- Whether to create secondary index and table replica
+- Whether to create app network resources or use existing app networking
 
 **Outputs and hand-off.**
 
 ```text
 nosql_table_id
 nosql_table_name
-nosql_endpoint
-nsg_id
-vault_secret_id
+nosql_capacity_contract
+app_network_contract
+nosql_replica_region
 ```
 
 ---
