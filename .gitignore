@@ -39,6 +39,8 @@ tfsec-report.*
 .ansible/
 .ansible_async/
 ansible/vault-password*
+**/hello-world/server.pid
+**/hello-world/server.log
 
 # Editors
 .idea/

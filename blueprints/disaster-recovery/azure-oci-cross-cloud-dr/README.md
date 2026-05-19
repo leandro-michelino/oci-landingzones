@@ -171,6 +171,8 @@ CONFIRM_AZURE_DESTROY=true ansible-playbook -i localhost, ansible/azure-destroy.
 ```
 
 For required Azure variables and parameters, review `azure/README.md`.
+Azure session playbooks use the shared role
+`ansible/roles/azure_deployment_runner` for consistent behavior.
 
 ## Deployment Order
 

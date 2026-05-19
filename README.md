@@ -78,6 +78,9 @@ Ansible wrappers:
 - `ansible/azure-apply.yml` (create/update)
 - `ansible/azure-destroy.yml` (teardown)
 
+The Azure wrappers are standardized through the shared role
+`ansible/roles/azure_deployment_runner`.
+
 Planning and architecture drafts:
 
 | Draft | Link |

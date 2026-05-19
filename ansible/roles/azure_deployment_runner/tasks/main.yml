@@ -1,0 +1,125 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+---
+- name: Normalize Azure deployment action
+  ansible.builtin.set_fact:
+    azure_action_normalized: "{{ azure_action | lower }}"
+
+- name: Validate Azure deployment action
+  ansible.builtin.assert:
+    that:
+      - azure_action_normalized in ["plan", "apply", "destroy"]
+    fail_msg: "azure_action must be one of: plan, apply, destroy."
+
+- name: Require explicit Azure apply confirmation
+  ansible.builtin.assert:
+    that:
+      - lookup('env', 'CONFIRM_AZURE_APPLY') == 'true'
+    fail_msg: "Refusing Azure apply without CONFIRM_AZURE_APPLY=true."
+  when: azure_action_normalized == "apply"
+
+- name: Require explicit Azure destroy confirmation
+  ansible.builtin.assert:
+    that:
+      - lookup('env', 'CONFIRM_AZURE_DESTROY') == 'true'
+    fail_msg: "Refusing Azure destroy without CONFIRM_AZURE_DESTROY=true."
+  when: azure_action_normalized == "destroy"
+
+- name: Validate Azure CLI availability
+  ansible.builtin.command: az version
+  changed_when: false
+
+- name: Validate Azure CLI login context
+  ansible.builtin.command: az account show
+  changed_when: false
+
+- name: Ensure Azure parameters file exists
+  ansible.builtin.stat:
+    path: "{{ azure_parameters_file }}"
+  register: azure_parameters_status
+  when: azure_action_normalized in ["plan", "apply"]
+
+- name: Fail when Azure parameters file is missing
+  ansible.builtin.assert:
+    that:
+      - azure_parameters_status.stat.exists
+    fail_msg: "Azure parameters file not found: {{ azure_parameters_file }}"
+  when: azure_action_normalized in ["plan", "apply"]
+
+- name: Ensure Azure resource group exists
+  ansible.builtin.command:
+    argv:
+      - az
+      - group
+      - create
+      - --name
+      - "{{ azure_resource_group }}"
+      - --location
+      - "{{ azure_location }}"
+  changed_when: false
+  when: azure_action_normalized in ["plan", "apply"]
+
+- name: Run Azure what-if
+  ansible.builtin.command:
+    argv:
+      - az
+      - deployment
+      - group
+      - what-if
+      - --resource-group
+      - "{{ azure_resource_group }}"
+      - --name
+      - "{{ azure_deployment_name }}"
+      - --template-file
+      - "{{ azure_template_file }}"
+      - --parameters
+      - "@{{ azure_parameters_file }}"
+      - --result-format
+      - ResourceIdOnly
+  changed_when: false
+  when: azure_action_normalized == "plan"
+
+- name: Apply Azure deployment
+  ansible.builtin.command:
+    argv:
+      - az
+      - deployment
+      - group
+      - create
+      - --resource-group
+      - "{{ azure_resource_group }}"
+      - --name
+      - "{{ azure_deployment_name }}"
+      - --template-file
+      - "{{ azure_template_file }}"
+      - --parameters
+      - "@{{ azure_parameters_file }}"
+      - --query
+      - properties.outputs
+      - --output
+      - json
+  register: azure_apply_outputs
+  changed_when: true
+  when: azure_action_normalized == "apply"
+
+- name: Show Azure deployment outputs
+  ansible.builtin.debug:
+    var: azure_apply_outputs.stdout
+  when: azure_action_normalized == "apply"
+
+- name: Delete Azure resource group
+  ansible.builtin.command:
+    argv:
+      - az
+      - group
+      - delete
+      - --name
+      - "{{ azure_resource_group }}"
+      - --yes
+      - --no-wait
+  changed_when: true
+  when: azure_action_normalized == "destroy"
+
+- name: Confirm Azure deletion request accepted
+  ansible.builtin.debug:
+    msg: "Deletion requested for resource group {{ azure_resource_group }}."
+  when: azure_action_normalized == "destroy"
