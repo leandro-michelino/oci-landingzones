@@ -5,18 +5,18 @@ locals {
   target_compartment_ocid = coalesce(var.compartment_ocid, var.tenancy_ocid)
 
   db_vcn_name         = "${local.name_prefix}-vcn-mysql-primary"
-  db_subnet_name      = "${local.name_prefix}-snet-mysql-primary"
+  db_subnet_name      = "${local.name_prefix}-sn-mysql-primary"
   db_route_table_name = "${local.name_prefix}-rt-mysql-primary"
   db_security_name    = "${local.name_prefix}-sl-mysql-primary"
   db_igw_name         = "${local.name_prefix}-igw-mysql-primary"
   drg_name            = "${local.name_prefix}-drg-mysql-primary"
   drg_attachment_name = "${local.name_prefix}-drga-mysql-primary"
   cpe_name            = "${local.name_prefix}-cpe-aws"
-  ipsec_name          = "${local.name_prefix}-ipsec-aws"
+  ipsec_name          = "${local.name_prefix}-vpn-aws"
 
-  db_system_display_name = "${local.name_prefix}-mysql-primary"
+  db_system_display_name = "${local.name_prefix}-db-mysql-primary"
   lakehouse_bucket_name  = coalesce(var.lakehouse_bucket_name, "${local.name_prefix}-bkt-lakehouse")
-  alert_topic_name       = coalesce(var.dr_alert_topic_name, "${local.name_prefix}-topic-mysql-dr-alert")
+  alert_topic_name       = coalesce(var.dr_alert_topic_name, "${local.name_prefix}-top-mysql-dr-alert")
 
   db_subnet_id_effective = var.enable_oci_primary_network ? try(oci_core_subnet.primary_db[0].id, null) : null
   db_system_id_effective = var.create_db_system ? try(oci_mysql_mysql_db_system.primary[0].id, null) : var.existing_db_system_id

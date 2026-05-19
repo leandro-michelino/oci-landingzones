@@ -168,21 +168,21 @@ Cloud-specific wrappers in multicloud blueprints:
 | [devops](blueprints/devops/) | OCI DevOps CI/CD foundation. |
 | [industry](blueprints/industry/) | Vertical patterns (telco, secure desktops). |
 
-## Validation and Quality Gates
+## Quality Checks
 
-For changed work:
+Run checks for changed work:
 
 ```bash
 ./scripts/validate-changed.sh
 ```
 
-For full repo validation:
+Run checks for the full repository:
 
 ```bash
 ./scripts/validate-all.sh
 ```
 
-Validation speed tips:
+Performance tips:
 - Shared Terraform provider cache is enabled by default with `TF_PLUGIN_CACHE_DIR`.
 - Validation keeps local `.terraform` workdirs by default for faster reruns.
 - Force full cleanup when needed:
@@ -191,6 +191,8 @@ Validation speed tips:
 Networking lifecycle tests (create then destroy):
 - `scripts/test-networking-lifecycle.sh --blueprint blueprints/networking/aws-oci-hybrid-network-backbone --providers oci,aws`
 - `scripts/test-networking-lifecycle.sh --all-networking --providers oci` (heavy run)
+
+Maintainer-focused validation details live in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Contributing
 
