@@ -126,7 +126,7 @@
 
     <!-- Card header -->
     <text x="28" y="29" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#0f172a">Architecture Stack</text>
-    <text x="28" y="46" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#94a3b8">OCI Tenancy &#183; Any Region &#183; Single or Multi-region</text>
+    <text x="28" y="46" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#94a3b8">OCI Tenancy &#183; Any Region &#183; Multi-cloud: Azure &#183; AWS</text>
     <line x1="28" y1="55" x2="692" y2="55" stroke="#e2e8f0" stroke-width="1"/>
 
     <!-- Layer 0: Blueprint entry -->
@@ -180,8 +180,8 @@
       <rect width="200" height="76" rx="10" fill="none" stroke="#a5f3fc" stroke-width="1.5"/>
       <line x1="5" y1="22" x2="195" y2="22" stroke="#a5f3fc" stroke-width="0.8" opacity="0.8"/>
       <text x="103" y="16" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#155e75" text-anchor="middle">Networking</text>
-      <text x="103" y="39" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#164e63" text-anchor="middle">VCN &#183; DRG &#183; Hub-Spoke</text>
-      <text x="103" y="54" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#164e63" text-anchor="middle">NVA &#183; FastConnect &#183; DNS</text>
+      <text x="103" y="39" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#164e63" text-anchor="middle">VCN &#183; DRG &#183; Hub-Spoke &#183; ZPR</text>
+      <text x="103" y="54" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#164e63" text-anchor="middle">FastConnect &#183; Azure &#183; AWS</text>
     </g>
 
     <!-- Operating Entity (blue) -->
@@ -194,7 +194,7 @@
       <rect width="200" height="76" rx="10" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
       <line x1="5" y1="22" x2="195" y2="22" stroke="#bfdbfe" stroke-width="0.8" opacity="0.8"/>
       <text x="103" y="16" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#1e3a8a" text-anchor="middle">Operating Entity</text>
-      <text x="103" y="39" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1d4ed8" text-anchor="middle">workload vending</text>
+      <text x="103" y="39" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1d4ed8" text-anchor="middle">workload vending &#183; multi-OE</text>
       <text x="103" y="54" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1d4ed8" text-anchor="middle">BU &#183; app-team scope</text>
     </g>
 
