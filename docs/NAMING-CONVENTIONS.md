@@ -1,8 +1,10 @@
-# OCI Naming Conventions
+# Cloud Naming Conventions (OCI, Azure, AWS)
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-## Format
+These naming conventions are mandatory for this repository.
+
+## OCI Format
 
 ```text
 <org>-<env>-<region-key>-<resource-type>[-<description>[-<index>]]
@@ -163,3 +165,34 @@ Run the naming guard before committing broad blueprint changes:
 
 The repository contract check also runs this guard through
 `./scripts/check-repo-contracts.sh`.
+
+## Azure Naming Baseline
+
+For Azure deployment artifacts in this repository (Bicep parameters and default
+resource names), use this baseline:
+
+- Lowercase only.
+- Use letters, numbers, and hyphens.
+- Start with a letter or number.
+- End with a letter or number.
+- Avoid spaces and underscores in resource names.
+
+Repository checks enforce this baseline for Azure deployment parameter names and
+default Bicep resource names under `blueprints/**/azure/`.
+
+Reference: [Azure naming rules](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules).
+
+## AWS Naming Baseline
+
+For AWS Terraform in this repository (current or future blueprints/modules), use
+this baseline:
+
+- Terraform AWS resource labels must use `snake_case`.
+- User-defined AWS tag keys must not use the reserved `aws:` prefix.
+- Prefer lowercase letters, numbers, and hyphens for custom resource names
+  wherever the target AWS service allows it.
+
+Reference examples:
+
+- [AWS CloudFormation custom naming constraints](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-name.html)
+- [AWS tagging guidance for reserved `aws:` prefix](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html)

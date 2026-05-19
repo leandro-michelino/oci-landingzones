@@ -111,6 +111,109 @@ check_nonstandard_prefix_rewrites() {
   fi
 }
 
+check_azure_parameter_name_values() {
+  local file
+  local matches=""
+
+  while IFS= read -r file; do
+    local file_matches
+    file_matches="$(
+      perl -0777 -ne '
+        while (/"(logAnalyticsWorkspaceName|managedEnvironmentName|containerAppName|vnetName|containerAppSubnetName|routeTableName|networkSecurityGroupName|clusterName|nodePoolName|aksSubnetName|openAiAccountName|openAiCustomSubdomain|apimServiceName|dnsPrefix)"\s*:\s*\{\s*"value"\s*:\s*"([^"]+)"/sg) {
+          $key = $1;
+          $value = $2;
+          if ($value !~ /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/) {
+            print "$ARGV:$key=$value\n";
+          }
+        }
+      ' "$file"
+    )"
+    if [[ -n "$file_matches" ]]; then
+      matches+="$file_matches"$'\n'
+    fi
+  done < <(
+    find "$REPO_ROOT/blueprints" \
+      -path "*/.terraform/*" -prune -o \
+      -path "*/.git/*" -prune -o \
+      -path "*/azure/parameters.example.json" -type f -print | sort
+  )
+
+  if [[ -n "$matches" ]]; then
+    echo "$matches" >&2
+    fail "Azure deployment parameter names must use lowercase alphanumeric and hyphen conventions."
+  fi
+}
+
+check_azure_bicep_default_names() {
+  local file
+  local matches=""
+
+  while IFS= read -r file; do
+    local file_matches
+    file_matches="$(
+      perl -ne '
+        if (/^param[[:space:]]+(vnetName|containerAppSubnetName|routeTableName|networkSecurityGroupName|nodePoolName)[[:space:]]+string[[:space:]]*=[[:space:]]*'\''([^'\'']+)'\''/) {
+          $key = $1;
+          $value = $2;
+          if ($value !~ /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/) {
+            print "$ARGV:$.:$key=$value\n";
+          }
+        }
+      ' "$file"
+    )"
+    if [[ -n "$file_matches" ]]; then
+      matches+="$file_matches"$'\n'
+    fi
+  done < <(
+    find "$REPO_ROOT/blueprints" \
+      -path "*/.terraform/*" -prune -o \
+      -path "*/.git/*" -prune -o \
+      -path "*/azure/main.bicep" -type f -print | sort
+  )
+
+  if [[ -n "$matches" ]]; then
+    echo "$matches" >&2
+    fail "Azure Bicep default resource names must use lowercase alphanumeric and hyphen conventions."
+  fi
+}
+
+check_aws_resource_labels() {
+  local matches
+
+  matches="$(
+    perl -ne '
+      if (/^[[:space:]]*resource[[:space:]]+"(aws_[^"]+)"[[:space:]]+"([^"]+)"/) {
+        $label = $2;
+        if ($label !~ /^[a-z][a-z0-9_]*$/) {
+          print "$ARGV:$.:$label\n";
+        }
+      }
+    ' $(rg --files -g '*.tf' "$REPO_ROOT/blueprints" "$REPO_ROOT/modules") || true
+  )"
+
+  if [[ -n "$matches" ]]; then
+    echo "$matches" >&2
+    fail "AWS Terraform resource labels must use snake_case."
+  fi
+}
+
+check_aws_tag_key_prefix() {
+  local matches
+
+  matches="$(
+    rg -n \
+      --glob '*.tf' \
+      --glob '!**/.terraform/**' \
+      --glob '!**/.git/**' \
+      -- '"aws:[^"]+"' "$REPO_ROOT/blueprints" "$REPO_ROOT/modules" || true
+  )"
+
+  if [[ -n "$matches" ]]; then
+    echo "$matches" >&2
+    fail "AWS user-defined tag keys must not use the reserved aws: prefix."
+  fi
+}
+
 check_tfvars_examples() {
   local file
   local value
@@ -148,16 +251,20 @@ check_tfvars_examples() {
   )
 }
 
-echo "==> Checking OCI naming conventions"
+echo "==> Checking OCI, Azure, and AWS naming conventions"
 
 check_standard_name_prefix_locals
 check_generated_name_literals
 check_generated_name_resource_types
 check_nonstandard_prefix_rewrites
+check_azure_parameter_name_values
+check_azure_bicep_default_names
+check_aws_resource_labels
+check_aws_tag_key_prefix
 check_tfvars_examples
 
 if [[ "$failures" -ne 0 ]]; then
   exit 1
 fi
 
-echo "OCI naming conventions look consistent."
+echo "OCI, Azure, and AWS naming conventions look consistent."
