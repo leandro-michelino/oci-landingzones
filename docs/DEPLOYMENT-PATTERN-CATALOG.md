@@ -161,4 +161,4 @@ The catalog should continue to evolve from:
 - OCI reference architectures for hub-spoke, DRG, network firewall, FastConnect,
   VPN, private DNS, OKE, Exadata, Zero Trust, and SCCA.
 - Customer-specific requirements seen during real OCI landing zone work.
-- Azure + OCI draft blueprint notes under `docs/multicloud/`.
+- Azure + OCI architecture notes and backlog under `docs/multicloud/`.

@@ -1,10 +1,12 @@
-# Azure + OCI Cross-Cloud Disaster Recovery Blueprint Draft
+# Azure + OCI Cross-Cloud Disaster Recovery Design Record
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This document defines a concrete disaster recovery blueprint draft for active
-or warm workloads in one cloud with standby recovery capability in the other,
-including recovery orchestration, data replication, and failover governance.
+This document preserves the original architecture design that was later
+implemented in `blueprints/disaster-recovery/azure-oci-cross-cloud-dr/`.
+
+Use the blueprint folder as the deployment source of truth. Keep this file as
+design history and rationale context.
 
 ## Deployment Purpose
 

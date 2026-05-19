@@ -45,7 +45,7 @@ without-interconnect operation modes.
 |               |-- DNS failover: app FQDN, primary endpoint, standby endpoint                            |
 |               `-- runbook: drill cadence, RTO/RPO, failover/failback steps                              |
 |                                                                                                          |
-| {Azure standby cloud boundary (external in this variant)}                                                |
+| {Azure standby cloud boundary}                                                                            |
 |         |                                                                                                |
 |         v                                                                                                |
 | (Standby app endpoint)                                                                                   |

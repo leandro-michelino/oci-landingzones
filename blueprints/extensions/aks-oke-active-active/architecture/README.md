@@ -46,7 +46,7 @@ weighted traffic steering contracts, while explicitly excluding IPSec backup.
 |    |-- gitops: Argo CD or Flux repo/branch orchestration                                                 |
 |    `-- traffic steering: FQDN and weighted primary/secondary endpoints                                   |
 |                                                                                                          |
-| {Azure secondary cloud boundary (external in this variant)}                                              |
+| {Azure secondary cloud boundary}                                                                          |
 |         |                                                                                                |
 |         v                                                                                                |
 | (AKS cluster, supplied by ID) -> (Azure ingress endpoint)                                                |
@@ -90,7 +90,7 @@ These notes expand the diagram with the design details that usually matter
 at review, plan, and hand-off time.
 
 - The blueprint creates OCI routing and security primitives for deploy-and-use cluster networking and still allows external OCI network IDs when needed.
-- The blueprint intentionally models Azure resources as externally managed in Terraform, while still publishing a strict active/active operations contract.
+- Azure-side deployment is provisioned by the same blueprint folder through `azure/main.bicep` and `ansible/azure-*.yml` sessions.
 - OKE resource creation is optional so customers can run extension-only mode with existing cluster IDs or base-plus-extension mode with new OKE resources.
 - `interconnect_mode` and `enable_ipsec_backup` validations keep the deployment constrained to partner interconnect without VPN fallback.
 - The traffic steering contract is weighted by `oci_primary_traffic_percent`, with the remaining weight assigned to Azure.

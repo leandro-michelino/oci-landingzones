@@ -56,7 +56,8 @@ pick a blueprint -> read its README -> review ASCII architecture -> fill tfvars 
 For the complete menu, use the generated [Blueprint Index](BLUEPRINTS.md), the
 [Deployment Pattern Catalog](docs/DEPLOYMENT-PATTERN-CATALOG.md), or the
 [Architecture Index](docs/architecture/README.md).
-For multicloud planning, see [Azure + OCI draft blueprints](docs/multicloud/README.md).
+For multicloud architecture notes and remaining backlog items, see
+[Azure + OCI multicloud notes](docs/multicloud/README.md).
 
 ## Azure + OCI
 
@@ -85,11 +86,11 @@ Both blueprints now ship deploy-and-use networking stacks on both sides:
 OCI VCN/subnets/route tables/security lists and Azure VNet/subnets/route
 tables/NSGs wired into the workload resources.
 
-Planning and architecture drafts:
+Additional architecture notes and backlog:
 
 | Draft | Link |
 |---|---|
-| Azure + OCI multicloud blueprint drafts | [docs/multicloud/README.md](docs/multicloud/README.md) |
+| Azure + OCI multicloud notes | [docs/multicloud/README.md](docs/multicloud/README.md) |
 
 ## Quick Start
 
