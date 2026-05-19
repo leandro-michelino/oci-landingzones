@@ -29,6 +29,10 @@ Docs in this folder stay as design records and backlog notes.
 | [Identity Federation](AZURE-OCI-IDENTITY-FEDERATION.md) | Microsoft Entra ID federation into OCI IAM with mapped RBAC and conditional access alignment. | `blueprints/identity/azure-entra-federation/` |
 | [Hybrid Networking](AZURE-OCI-HYBRID-NETWORKING.md) | Azure hub/vWAN to OCI DRG with private + encrypted paths, route governance, and DNS integration. | `blueprints/networking/azure-oci-hybrid-networking/` |
 | [Cross-Cloud DR (design record)](AZURE-OCI-CROSS-CLOUD-DR.md) | Historical architecture draft retained as design context after delivery. | `blueprints/disaster-recovery/azure-oci-cross-cloud-dr/` |
+| [AWS + OCI Hybrid Network Backbone](AWS-OCI-HYBRID-NETWORK-BACKBONE.md) | OCI DRG-primary hybrid backbone with AWS Transit Gateway, optional VPN, and Direct Connect + FastConnect contract metadata. | `blueprints/networking/aws-oci-hybrid-network-backbone/` |
+| [AWS + OCI Cross-Cloud DR](AWS-OCI-CROSS-CLOUD-DR.md) | OCI-primary, AWS-standby DR design record with DNS failover, evidence, alerting, and runbook contracts. | `blueprints/disaster-recovery/aws-oci-cross-cloud-dr/` |
+| [EKS + OKE Active Active](EKS-OKE-ACTIVE-ACTIVE.md) | OCI-primary OKE and AWS-secondary EKS active/active design record with GitOps and weighted traffic steering contracts. | `blueprints/extensions/eks-oke-active-active/` |
+| [OCI + AWS MySQL HeatWave DR](OCI-AWS-MYSQL-HEATWAVE-IPSEC-DR.md) | OCI-primary MySQL HeatWave DR over IPSec with AWS standby database, replication, and failover contracts. | `blueprints/data-platform/oci-aws-mysql-heatwave-dr/` |
 
 ## How To Use This Folder
 
