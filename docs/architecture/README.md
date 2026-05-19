@@ -105,7 +105,7 @@ terraform plan or ansible/plan.yml
 
 ## Blueprint Architecture Inventory
 
-The current catalog has 67 deployable blueprint entry points across 13
+The current catalog has 68 deployable blueprint entry points across 13
 families. Each entry point owns its local Architecture in
 `architecture/README.md`.
 
@@ -113,6 +113,7 @@ families. Each entry point owns its local Architecture in
 |---|---|---|
 | ai | [AI Agents RAG Landing Zone](../../blueprints/ai/agents/) | [Architecture](../../blueprints/ai/agents/architecture/) |
 | ai | [OCI AI Services](../../blueprints/ai/ai-services/) | [Architecture](../../blueprints/ai/ai-services/architecture/) |
+| ai | [Azure + OCI AI Gateway](../../blueprints/ai/azure-oci-ai-gateway/) | [Architecture](../../blueprints/ai/azure-oci-ai-gateway/architecture/) |
 | ai | [Document Intelligence Pipeline](../../blueprints/ai/document-intelligence/) | [Architecture](../../blueprints/ai/document-intelligence/architecture/) |
 | ai | [Embedding And Vector Ingestion Pipeline](../../blueprints/ai/embedding-pipeline/) | [Architecture](../../blueprints/ai/embedding-pipeline/architecture/) |
 | ai | [GenAI Fine-Tuning And Dedicated AI Cluster](../../blueprints/ai/genai-fine-tuning/) | [Architecture](../../blueprints/ai/genai-fine-tuning/architecture/) |

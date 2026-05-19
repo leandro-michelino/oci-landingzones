@@ -18,6 +18,7 @@ Run `make blueprints` after adding, moving, or removing a blueprint.
 |---|---|---|
 | [AI Agents RAG Landing Zone](blueprints/ai/agents/) | Agentic RAG over approved enterprise documents. | [Architecture](blueprints/ai/agents/architecture/README.md) |
 | [OCI AI Services](blueprints/ai/ai-services/) | Pretrained Vision, Language, and Document Understanding service setup. | [Architecture](blueprints/ai/ai-services/architecture/README.md) |
+| [Azure + OCI AI Gateway](blueprints/ai/azure-oci-ai-gateway/) | End-to-end Azure + OCI AI gateway where OCI API Gateway routes requests to OCI Generative AI and Azure OpenAI by region, cost, or data residency policy. | [Architecture](blueprints/ai/azure-oci-ai-gateway/architecture/README.md) |
 | [Document Intelligence Pipeline](blueprints/ai/document-intelligence/) | Intake, extraction, reasoning, and structured output for PDFs, images, contracts, invoices, claims, and reports. | [Architecture](blueprints/ai/document-intelligence/architecture/README.md) |
 | [Embedding And Vector Ingestion Pipeline](blueprints/ai/embedding-pipeline/) | Standalone embedding ingestion for RAG, semantic search, and knowledge-base refresh. | [Architecture](blueprints/ai/embedding-pipeline/architecture/README.md) |
 | [GenAI Fine-Tuning And Dedicated AI Cluster](blueprints/ai/genai-fine-tuning/) | Domain-specific model customization with controlled dataset, cluster, model, and endpoint hand-offs. | [Architecture](blueprints/ai/genai-fine-tuning/architecture/README.md) |

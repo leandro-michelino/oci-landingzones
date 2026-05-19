@@ -1,0 +1,71 @@
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "eu-madrid-1"
+home_region       = "eu-madrid-1"
+
+org         = "acme"
+environment = "dev"
+region_key  = "mad"
+
+compartment_ocid = "ocid1.compartment.oc1..example"
+
+enable_oci_gateway_network        = true
+oci_gateway_vcn_cidr              = "10.82.0.0/16"
+oci_gateway_subnet_cidr           = "10.82.10.0/24"
+oci_gateway_ingress_allowed_cidr  = "0.0.0.0/0"
+
+connectivity_mode                = "interconnect"
+fastconnect_virtual_circuit_id   = "ocid1.virtualcircuit.oc1..example"
+expressroute_circuit_id          = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-net/providers/Microsoft.Network/expressRouteCircuits/erc-prod"
+
+create_oci_api_gateway           = true
+oci_gateway_endpoint_type        = "PUBLIC"
+create_oci_gateway_deployment    = true
+gateway_path_prefix              = "/ai"
+route_methods                    = ["POST"]
+
+oci_generative_ai_inference_url  = "https://inference.generativeai.eu-madrid-1.oci.oraclecloud.com/20231130/actions/chat"
+azure_openai_inference_url       = "https://aoai-oci-gateway-dev.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-10-21"
+
+routing_strategy_region_provider         = "oci"
+routing_strategy_cost_provider           = "azure"
+routing_strategy_data_residency_provider = "oci"
+
+oci_region_label            = "eu-madrid-1"
+azure_region_label          = "westeurope"
+oci_data_residency_regions  = ["eu-madrid-1", "uk-london-1"]
+azure_data_residency_regions = ["westeurope", "uksouth"]
+
+create_oci_usage_plans = true
+usage_plans = {
+  platform = {
+    entitlement_name = "platform-callers"
+    description      = "Platform engineering usage policy"
+    quota_value      = 200000
+    quota_unit       = "DAY"
+    rate_limit_value = 100
+    rate_limit_unit  = "SECOND"
+  }
+}
+
+create_oci_audit_bucket      = true
+create_oci_routing_log_group = true
+
+policy_statements = [
+  "Allow group ai-gateway-admins to manage api-gateway-family in compartment id ocid1.compartment.oc1..example",
+  "Allow group ai-gateway-callers to use api-gateway-deployments in compartment id ocid1.compartment.oc1..example",
+  "Allow group ai-gateway-auditors to read buckets in compartment id ocid1.compartment.oc1..example"
+]
+
+azure_openai_account_id         = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-ai-gateway/providers/Microsoft.CognitiveServices/accounts/aoai-oci-gateway-dev"
+azure_openai_endpoint           = "https://aoai-oci-gateway-dev.openai.azure.com/"
+azure_api_management_gateway_url = "https://apim-oci-gateway-dev.azure-api.net"
+azure_hello_world_endpoint      = "https://ca-oci-azure-ai-gw-dev.westeurope.azurecontainerapps.io"
+
+defined_tags = {
+  "Operations.CostCenter" = "42"
+}
+
+freeform_tags = {
+  Owner = "platform-team"
+}

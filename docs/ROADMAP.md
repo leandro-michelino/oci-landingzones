@@ -668,7 +668,7 @@ standards, normalized cost datasets, and anomaly detection across Azure and OCI.
 
 ---
 
-### AI Gateway (Azure OpenAI + OCI Generative AI Routing)
+### AI Gateway (Azure OpenAI + OCI Generative AI Routing) - Implemented
 
 | Attribute | Value |
 | --- | --- |
@@ -679,6 +679,9 @@ standards, normalized cost datasets, and anomaly detection across Azure and OCI.
 Enterprises need model routing based on latency, cost, sovereignty, or policy.
 This blueprint defines a multi-provider AI gateway across Azure OpenAI and OCI
 Generative AI.
+
+Implementation status: now deployed as
+`blueprints/ai/azure-oci-ai-gateway/` with full OCI + Azure session wiring.
 
 **Scope highlights.**
 

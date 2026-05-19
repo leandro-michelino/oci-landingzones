@@ -65,6 +65,7 @@ folder.
 | AI | OCI Generative AI private landing zone | `blueprints/ai/genai-private/` | Implemented |
 | AI | OCI AI Services (Vision, Language, Speech, Document Understanding, Anomaly Detection) | `blueprints/ai/ai-services/` | Implemented |
 | AI | GenAI multi-model gateway (API Gateway routing, per-team quotas, cost tagging, audit log) | `blueprints/ai/genai-gateway/` | Implemented |
+| AI | Azure + OCI AI gateway (Azure OpenAI + OCI Generative AI routing by region, cost, and data residency) | `blueprints/ai/azure-oci-ai-gateway/` | Implemented |
 | AI | GenAI fine-tuning and dedicated AI cluster (training data bucket, custom model endpoint) | `blueprints/ai/genai-fine-tuning/` | Implemented |
 | AI | GenAI guardrails and observability (PII redaction, token alarms, audit trail, Cloud Guard) | `blueprints/ai/genai-guardrails/` | Implemented |
 | AI | Document intelligence pipeline (Document Understanding + GenAI, intake/output buckets) | `blueprints/ai/document-intelligence/` | Implemented |

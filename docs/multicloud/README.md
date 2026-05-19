@@ -11,7 +11,8 @@ kept for design history and for patterns that are not yet implemented.
 ## Implemented Blueprints
 
 | Pattern | Implemented Path |
-| --- | --- | --- |
+| --- | --- |
+| Azure + OCI AI gateway | `blueprints/ai/azure-oci-ai-gateway/` |
 | AKS + OKE active/active | `blueprints/extensions/aks-oke-active-active/` |
 | Azure + OCI cross-cloud DR | `blueprints/disaster-recovery/azure-oci-cross-cloud-dr/` |
 

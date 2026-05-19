@@ -1,0 +1,16 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+---
+- name: Azure apply session for Azure OpenAI gateway deployment
+  hosts: localhost
+  gather_facts: false
+  vars:
+    azure_action: apply
+    azure_resource_group: "{{ lookup('env', 'AZURE_AI_GW_RESOURCE_GROUP') | default('rg-oci-azure-ai-gw-dev', true) }}"
+    azure_location: "{{ lookup('env', 'AZURE_AI_GW_LOCATION') | default('westeurope', true) }}"
+    azure_deployment_name: "{{ lookup('env', 'AZURE_AI_GW_DEPLOYMENT_NAME') | default('oci-azure-ai-gw-apply', true) }}"
+    azure_template_file: "{{ playbook_dir }}/../azure/main.bicep"
+    azure_parameters_file: "{{ lookup('env', 'AZURE_AI_GW_PARAMETERS_FILE') | default(playbook_dir ~ '/../azure/parameters.example.json', true) }}"
+  tasks:
+    - name: Run shared Azure deployment runner
+      ansible.builtin.import_role:
+        name: ../../../../ansible/roles/azure_deployment_runner

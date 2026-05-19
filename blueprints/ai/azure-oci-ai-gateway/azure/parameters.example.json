@@ -1,0 +1,78 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "logAnalyticsWorkspaceName": {
+      "value": "law-oci-azure-ai-gw-dev"
+    },
+    "managedEnvironmentName": {
+      "value": "cae-oci-azure-ai-gw-dev"
+    },
+    "containerAppName": {
+      "value": "ca-oci-azure-ai-gw-dev"
+    },
+    "helloWorldImage": {
+      "value": "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest"
+    },
+    "vnetName": {
+      "value": "vnet-oci-azure-ai-gw-dev"
+    },
+    "vnetCidr": {
+      "value": "10.92.0.0/16"
+    },
+    "containerAppSubnetName": {
+      "value": "snet-oci-azure-ai-gw-dev"
+    },
+    "containerAppSubnetCidr": {
+      "value": "10.92.10.0/23"
+    },
+    "routeTableName": {
+      "value": "rt-oci-azure-ai-gw-dev"
+    },
+    "networkSecurityGroupName": {
+      "value": "nsg-oci-azure-ai-gw-dev"
+    },
+    "openAiAccountName": {
+      "value": "aoaiocigwdev001"
+    },
+    "openAiCustomSubdomain": {
+      "value": "aoaiocigwdev001"
+    },
+    "openAiSkuName": {
+      "value": "S0"
+    },
+    "deployOpenAiModel": {
+      "value": false
+    },
+    "openAiModelDeploymentName": {
+      "value": "gpt4omini"
+    },
+    "openAiModelName": {
+      "value": "gpt-4o-mini"
+    },
+    "openAiModelFormat": {
+      "value": "OpenAI"
+    },
+    "openAiModelVersion": {
+      "value": "2024-07-18"
+    },
+    "openAiModelCapacity": {
+      "value": 20
+    },
+    "apimServiceName": {
+      "value": "apim-oci-azure-ai-gw-dev"
+    },
+    "apimPublisherName": {
+      "value": "Platform Team"
+    },
+    "apimPublisherEmail": {
+      "value": "platform@example.com"
+    },
+    "tags": {
+      "value": {
+        "Blueprint": "azure-oci-ai-gateway",
+        "ManagedBy": "bicep"
+      }
+    }
+  }
+}

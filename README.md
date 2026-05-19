@@ -45,6 +45,7 @@ pick a blueprint -> read its README -> review Architecture -> fill tfvars -> pla
 | Functions and events | [Oracle Functions](blueprints/extensions/functions/) |
 | Private GenAI | [OCI Generative AI Private Landing Zone](blueprints/ai/genai-private/) |
 | GenAI API front door | [GenAI Multi-Model Gateway](blueprints/ai/genai-gateway/) |
+| Azure + OCI AI gateway | [Azure + OCI AI Gateway](blueprints/ai/azure-oci-ai-gateway/) |
 | Azure + OCI DR | [Azure + OCI Cross-Cloud DR](blueprints/disaster-recovery/azure-oci-cross-cloud-dr/) |
 | Azure + OCI Kubernetes | [AKS + OKE Active Active](blueprints/extensions/aks-oke-active-active/) |
 | RAG agents | [AI Agents RAG Landing Zone](blueprints/ai/agents/) |
@@ -65,14 +66,15 @@ Implemented multicloud blueprints:
 
 | Pattern | Blueprint |
 |---|---|
+| AI gateway routing by region, cost, and data residency across OCI Generative AI and Azure OpenAI | [Azure + OCI AI Gateway](blueprints/ai/azure-oci-ai-gateway/) |
 | Active/active Kubernetes with OCI primary and interconnect-only contract | [AKS + OKE Active Active](blueprints/extensions/aks-oke-active-active/) |
 | Cross-cloud DR with OCI primary, DNS failover runbooks, and connectivity mode support | [Azure + OCI Cross-Cloud DR](blueprints/disaster-recovery/azure-oci-cross-cloud-dr/) |
 
-Both Azure+OCI deployments include a `hello-world/index.html` sample plus
+All Azure+OCI deployments include a `hello-world/index.html` sample plus
 `ansible/serve-hello-world.yml` and `ansible/stop-hello-world.yml` so you can
 run a real local endpoint during demos, smoke checks, and runbook drills.
 
-Both now also include full Azure deployment sessions with Bicep templates and
+All now also include full Azure deployment sessions with Bicep templates and
 Ansible wrappers:
 
 - `ansible/azure-plan.yml` (what-if)
@@ -82,7 +84,7 @@ Ansible wrappers:
 The Azure wrappers are standardized through the shared role
 `ansible/roles/azure_deployment_runner`.
 
-Both blueprints now ship deploy-and-use networking stacks on both sides:
+All three blueprints now ship deploy-and-use networking stacks on both sides:
 OCI VCN/subnets/route tables/security lists and Azure VNet/subnets/route
 tables/NSGs wired into the workload resources.
 
