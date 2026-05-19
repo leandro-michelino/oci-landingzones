@@ -1,0 +1,50 @@
+[
+  {
+    "ParameterKey": "VpcCidr",
+    "ParameterValue": "10.84.0.0/16"
+  },
+  {
+    "ParameterKey": "SubnetOneCidr",
+    "ParameterValue": "10.84.10.0/24"
+  },
+  {
+    "ParameterKey": "SubnetTwoCidr",
+    "ParameterValue": "10.84.20.0/24"
+  },
+  {
+    "ParameterKey": "OciReplicationCidr",
+    "ParameterValue": "10.74.0.0/16"
+  },
+  {
+    "ParameterKey": "CreateRdsStandby",
+    "ParameterValue": "true"
+  },
+  {
+    "ParameterKey": "DbIdentifier",
+    "ParameterValue": "oci-aws-mysql-standby"
+  },
+  {
+    "ParameterKey": "DbName",
+    "ParameterValue": "appdr"
+  },
+  {
+    "ParameterKey": "DbInstanceClass",
+    "ParameterValue": "db.t4g.micro"
+  },
+  {
+    "ParameterKey": "DbAllocatedStorage",
+    "ParameterValue": "20"
+  },
+  {
+    "ParameterKey": "DbMasterUsername",
+    "ParameterValue": "adminuser"
+  },
+  {
+    "ParameterKey": "DbMasterUserPassword",
+    "ParameterValue": "ChangeMe123!"
+  },
+  {
+    "ParameterKey": "DbPort",
+    "ParameterValue": "3306"
+  }
+]

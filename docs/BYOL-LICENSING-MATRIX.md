@@ -10,7 +10,7 @@ availability, and the current Oracle or vendor contract before apply.
 Oracle licensing language changes over time. Re-check the current Oracle
 documentation before adding new license flags or changing defaults.
 
-## Implementation Rule
+## Delivery Rule
 
 Do not add a generic `byol = true` flag to every blueprint. Use the service's
 real OCI API field when it exists, and document image/subscription workflows

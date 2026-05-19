@@ -211,7 +211,7 @@ EOF
 read -r -d '' main_tf <<EOF || true
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 # Add OCI resources and release-pinned module sources here as the blueprint
-# moves from scaffold to implementation.
+# moves from scaffold to delivery.
 EOF
 
 read -r -d '' outputs_tf <<EOF || true
@@ -227,7 +227,7 @@ output "name_prefix" {
 }
 
 output "example_resource_name" {
-  description = "Naming-compliant example resource name for implementation work."
+  description = "Naming-compliant example resource name for delivery work."
   value       = local.example_resource_name
 }
 EOF
@@ -269,7 +269,7 @@ resources are added.
 ## Deployment Purpose
 
 Use this scaffold when a new OCI landing-zone pattern needs a consistent folder
-shape before the service-specific resources are implemented.
+shape before the service-specific resources are deployed.
 
 ## Folder Contract
 
@@ -327,7 +327,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ## Deployment Purpose
 
 This architecture page starts the review record for \`$relative_dir\`. The
-scaffold is intentionally small so the first implementation can add real OCI
+scaffold is intentionally small so the first delivery can add real OCI
 resources without changing the repository contract.
 
 ## Architecture At A Glance
@@ -361,7 +361,7 @@ resources without changing the repository contract.
 +-------------------------+
 | OCI Tenancy             |
 | service resources added |
-| during implementation   |
+| during delivery   |
 +-------------------------+
 \`\`\`
 
@@ -373,14 +373,14 @@ resources without changing the repository contract.
 | \`providers.tf\` | Connects Terraform to the target OCI tenancy and region. |
 | \`variables.tf\` | Holds the shared input shape used across blueprints. |
 | \`locals.tf\` | Defines \`blueprint_name\`, \`name_prefix\`, tags, and an example generated resource name. |
-| \`main.tf\` | Implementation home for OCI resources and release-pinned modules. |
+| \`main.tf\` | Delivery home for OCI resources and release-pinned modules. |
 | \`outputs.tf\` | Exposes stable hand-off values for downstream documentation and automation. |
 
 ## Request And Deployment Flow
 
 1. The operator creates a local ignored \`terraform.tfvars\` from the example.
 2. Terraform loads the OCI provider, standard identity inputs, and naming locals.
-3. Implementation resources use \`local.name_prefix\` plus a resource-type token.
+3. Delivery resources use \`local.name_prefix\` plus a resource-type token.
 4. \`terraform plan\` shows the proposed OCI changes for review.
 5. A guarded Ansible apply can run the same working directory after approval.
 
@@ -403,7 +403,7 @@ the pattern.
 
 Prefer small, reviewable Terraform modules or direct resources that follow the
 repository naming convention. Customer-facing blueprint module sources should
-use release tags once the implementation is ready for reuse.
+use release tags once the delivery is ready for reuse.
 
 Keep the README focused on operator workflow and this file focused on design
 review. That split keeps the first page easy to scan while preserving the
@@ -472,4 +472,4 @@ write_file "$target_dir/architecture/README.md" "$architecture_md"
 "$REPO_ROOT/scripts/generate-blueprints-index.sh"
 
 echo "Created $relative_dir."
-echo "Next: edit the Terraform implementation, then run make changed."
+echo "Next: edit the Terraform delivery, then run make changed."

@@ -1,0 +1,189 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  AWS secondary stack for OCI-primary MySQL HeatWave DR. Creates VPC networking,
+  security boundaries, and optional MySQL-compatible RDS standby endpoint.
+
+Parameters:
+  VpcCidr:
+    Type: String
+    Default: 10.84.0.0/16
+  SubnetOneCidr:
+    Type: String
+    Default: 10.84.10.0/24
+  SubnetTwoCidr:
+    Type: String
+    Default: 10.84.20.0/24
+  OciReplicationCidr:
+    Type: String
+    Default: 10.74.0.0/16
+  CreateRdsStandby:
+    Type: String
+    AllowedValues: ['true', 'false']
+    Default: 'true'
+  DbIdentifier:
+    Type: String
+    Default: oci-aws-mysql-standby
+  DbName:
+    Type: String
+    Default: appdr
+  DbInstanceClass:
+    Type: String
+    Default: db.t4g.micro
+  DbAllocatedStorage:
+    Type: Number
+    Default: 20
+    MinValue: 20
+  DbMasterUsername:
+    Type: String
+    Default: adminuser
+  DbMasterUserPassword:
+    Type: String
+    NoEcho: true
+    Default: ChangeMe123!
+  DbPort:
+    Type: Number
+    Default: 3306
+
+Conditions:
+  EnableRdsStandby: !Equals [!Ref CreateRdsStandby, 'true']
+
+Resources:
+  AwsDrVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCidr
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: oci-aws-mysql-dr-vpc
+
+  AwsDrRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref AwsDrVpc
+      Tags:
+        - Key: Name
+          Value: oci-aws-mysql-dr-rt
+
+  AwsDrSubnetOne:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref AwsDrVpc
+      CidrBlock: !Ref SubnetOneCidr
+      AvailabilityZone: !Select [0, !GetAZs '']
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: oci-aws-mysql-dr-subnet-1
+
+  AwsDrSubnetTwo:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref AwsDrVpc
+      CidrBlock: !Ref SubnetTwoCidr
+      AvailabilityZone: !Select [1, !GetAZs '']
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: oci-aws-mysql-dr-subnet-2
+
+  AwsDrSubnetOneRouteAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref AwsDrSubnetOne
+      RouteTableId: !Ref AwsDrRouteTable
+
+  AwsDrSubnetTwoRouteAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref AwsDrSubnetTwo
+      RouteTableId: !Ref AwsDrRouteTable
+
+  AwsDrDatabaseSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow OCI replication and application traffic to MySQL standby.
+      GroupName: oci-aws-mysql-dr-sg
+      VpcId: !Ref AwsDrVpc
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: !Ref DbPort
+          ToPort: !Ref DbPort
+          CidrIp: !Ref OciReplicationCidr
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: oci-aws-mysql-dr-sg
+
+  AwsDrDbSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Condition: EnableRdsStandby
+    Properties:
+      DBSubnetGroupDescription: Subnets for AWS MySQL standby in OCI-primary DR pattern.
+      DBSubnetGroupName: oci-aws-mysql-dr-subnet-group
+      SubnetIds:
+        - !Ref AwsDrSubnetOne
+        - !Ref AwsDrSubnetTwo
+
+  AwsDrMySqlStandby:
+    Type: AWS::RDS::DBInstance
+    Condition: EnableRdsStandby
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      DBInstanceIdentifier: !Ref DbIdentifier
+      Engine: mysql
+      EngineVersion: '8.0'
+      DBName: !Ref DbName
+      DBInstanceClass: !Ref DbInstanceClass
+      AllocatedStorage: !Ref DbAllocatedStorage
+      MasterUsername: !Ref DbMasterUsername
+      MasterUserPassword: !Ref DbMasterUserPassword
+      PubliclyAccessible: false
+      MultiAZ: false
+      DeletionProtection: false
+      BackupRetentionPeriod: 7
+      Port: !Ref DbPort
+      DBSubnetGroupName: !Ref AwsDrDbSubnetGroup
+      VPCSecurityGroups:
+        - !Ref AwsDrDatabaseSecurityGroup
+      StorageEncrypted: true
+      CopyTagsToSnapshot: true
+      Tags:
+        - Key: Name
+          Value: oci-aws-mysql-standby
+
+Outputs:
+  AwsDrVpcId:
+    Description: AWS VPC ID for DR standby networking.
+    Value: !Ref AwsDrVpc
+
+  AwsDrRouteTableId:
+    Description: AWS route table ID associated with standby subnets.
+    Value: !Ref AwsDrRouteTable
+
+  AwsDrSubnetIds:
+    Description: AWS subnet IDs used by the standby data tier.
+    Value: !Join [",", [!Ref AwsDrSubnetOne, !Ref AwsDrSubnetTwo]]
+
+  AwsDrSecurityGroupId:
+    Description: Security group ID controlling MySQL standby ingress and egress.
+    Value: !Ref AwsDrDatabaseSecurityGroup
+
+  AwsStandbyEngine:
+    Description: Secondary database engine provisioned by CloudFormation in AWS.
+    Value: !If [EnableRdsStandby, "mysql-rds", "external-managed"]
+
+  AwsStandbyEndpoint:
+    Description: AWS standby endpoint for replication and failover contracts.
+    Value: !If
+      - EnableRdsStandby
+      - !GetAtt AwsDrMySqlStandby.Endpoint.Address
+      - "set-externally"
+
+  AwsStandbyPort:
+    Description: AWS standby MySQL port.
+    Value: !Ref DbPort

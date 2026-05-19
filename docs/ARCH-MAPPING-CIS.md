@@ -3,7 +3,7 @@
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 This document maps target landing zone capabilities to CIS OCI Benchmark
-requirements. The mapping starts as an implementation guide and should become a
+requirements. The mapping starts as an delivery guide and should become a
 traceability record as modules are added.
 
 The generic landing zone blueprints do not enable CIS behavior by default. Use
@@ -15,7 +15,7 @@ the dedicated CIS landing zone folders when a CIS profile is required:
 
 | CIS Section | Requirement | Module | Blueprint | Applies To | Priority | Status |
 |---|---|---|---|---|---|---|
-| 1.1 | Avoid root compartment usage | `iam/compartments` | `core` | Level 1, Level 2 | P0 | Implemented |
+| 1.1 | Avoid root compartment usage | `iam/compartments` | `core` | Level 1, Level 2 | P0 | Deployed |
 | 1.2 | Local service admin account | `iam/groups`, `iam/policies` | `core` | Level 1, Level 2 | P0 | Partial |
 | 1.3 | MFA enforced | `iam/policies` | `core` | Level 1, Level 2 | P0 | Planned |
 | 1.7 | API keys rotated before 90 days | `governance/events` | `core` | Level 1, Level 2 | P1 | Partial |
@@ -24,19 +24,19 @@ the dedicated CIS landing zone folders when a CIS profile is required:
 | 2.1 | No broad ingress except approved DMZ patterns | `networking/*` | Networking blueprints | Level 1, Level 2 | P0 | Planned |
 | 2.2 | SSH not open to the internet | `networking/*/nsg` | Networking blueprints | Level 1, Level 2 | P0 | Planned |
 | 2.5 | Default security list blocks SSH/RDP | `networking/*` | Networking blueprints | Level 1, Level 2 | P0 | Planned |
-| 3.1 | Audit log retention configured | `governance/logging` | `core` | Level 1, Level 2 | P0 | Implemented |
-| 3.2 | Object Storage write logs enabled | `governance/logging` | `core` | Level 1, Level 2 | P1 | Implementing |
-| 3.3-3.6 | VCN flow logs enabled | `governance/logging` | Networking blueprints | Level 1, Level 2 | P1 | Implementing |
-| 3.7 | Load balancer access logs enabled | `governance/logging` | Networking blueprints | Level 1, Level 2 | P1 | Implementing |
-| 3.14 | Cloud Guard enabled | `security/cloud-guard` | `core` | Level 1, Level 2 | P0 | Implemented |
-| 3.17 | Vault with customer-managed keys | `security/vault` | `core` | Level 1, Level 2 | P1 | Implemented |
+| 3.1 | Audit log retention configured | `governance/logging` | `core` | Level 1, Level 2 | P0 | Deployed |
+| 3.2 | Object Storage write logs enabled | `governance/logging` | `core` | Level 1, Level 2 | P1 | In delivery |
+| 3.3-3.6 | VCN flow logs enabled | `governance/logging` | Networking blueprints | Level 1, Level 2 | P1 | In delivery |
+| 3.7 | Load balancer access logs enabled | `governance/logging` | Networking blueprints | Level 1, Level 2 | P1 | In delivery |
+| 3.14 | Cloud Guard enabled | `security/cloud-guard` | `core` | Level 1, Level 2 | P0 | Deployed |
+| 3.17 | Vault with customer-managed keys | `security/vault` | `core` | Level 1, Level 2 | P1 | Deployed |
 | 4.1 | Object Storage buckets not public | `iam/policies` | `core` | Level 1, Level 2 | P0 | Planned |
 | 4.2 | Pre-authenticated request audit alarms | `governance/events`, `operations/monitoring` | `core` | Level 1, Level 2 | P1 | Partial |
-| 5.1 | Host scanning enabled | `security/vss` | `core` | Level 1, Level 2 | P1 | Implemented |
-| 5.2 | Container image scanning enabled | `security/vss` | `extensions/oke` | Level 1, Level 2 | P2 | Implemented |
+| 5.1 | Host scanning enabled | `security/vss` | `core` | Level 1, Level 2 | P1 | Deployed |
+| 5.2 | Container image scanning enabled | `security/vss` | `extensions/oke` | Level 1, Level 2 | P2 | Deployed |
 
 `governance/events` now provides default IAM policy, group membership, and
 credential-change event rules for CIS wrappers. Time-based API key rotation and
 Object Storage pre-authenticated request alarms now have the Events and
 Monitoring foundations, but still need service-specific log/event wiring before
-they can be marked fully implemented.
+they can be marked fully deployed.

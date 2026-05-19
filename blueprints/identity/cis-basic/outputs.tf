@@ -10,7 +10,7 @@ output "name_prefix" {
 }
 
 output "cis_level" {
-  description = "CIS baseline level implemented by this identity blueprint."
+  description = "CIS baseline level deployed by this identity blueprint."
   value       = local.cis_level
 }
 

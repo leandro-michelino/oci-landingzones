@@ -7,7 +7,7 @@ architecture for a deployable pattern still lives beside that pattern at
 `blueprints/<family>/<deployment>/architecture/README.md`.
 
 If you are new here, start with this file to understand how the repo is wired,
-then jump into a specific blueprint Architecture file for implementation detail.
+then jump into a specific blueprint Architecture file for delivery detail.
 
 ## Repository Architecture
 
@@ -108,7 +108,7 @@ terraform plan or ansible/plan.yml
 
 ## Blueprint Architecture Inventory
 
-The current catalog has 73 deployable blueprint entry points across 13
+The current catalog has 74 deployable blueprint entry points across 13
 families. Each entry point owns its local Architecture in
 `architecture/README.md`.
 
@@ -134,6 +134,7 @@ families. Each entry point owns its local Architecture in
 | data-platform | [Oracle APEX On Autonomous Database](../../blueprints/data-platform/apex-adw/) | [Architecture](../../blueprints/data-platform/apex-adw/architecture/) |
 | data-platform | [Autonomous Database](../../blueprints/data-platform/autonomous-database/) | [Architecture](../../blueprints/data-platform/autonomous-database/architecture/) |
 | data-platform | [MySQL HeatWave Landing Zone](../../blueprints/data-platform/mysql-heatwave/) | [Architecture](../../blueprints/data-platform/mysql-heatwave/architecture/) |
+| data-platform | [OCI + AWS MySQL HeatWave DR](../../blueprints/data-platform/oci-aws-mysql-heatwave-dr/) | [Architecture](../../blueprints/data-platform/oci-aws-mysql-heatwave-dr/architecture/) |
 | data-platform | [OCI NoSQL Database](../../blueprints/data-platform/nosql/) | [Architecture](../../blueprints/data-platform/nosql/architecture/) |
 | data-platform | [OpenSearch Search And Vector Platform](../../blueprints/data-platform/opensearch/) | [Architecture](../../blueprints/data-platform/opensearch/architecture/) |
 | data-platform | [PostgreSQL Landing Zone](../../blueprints/data-platform/postgresql/) | [Architecture](../../blueprints/data-platform/postgresql/architecture/) |

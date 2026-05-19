@@ -16,7 +16,7 @@ Rules:
 - Use hyphens as delimiters.
 - Do not use underscores.
 - Keep names below 100 characters.
-- Prefer stable semantic descriptions over implementation details.
+- Prefer stable semantic descriptions over delivery details.
 
 Terraform code uses `local.name_prefix` for the shared OCI prefix only:
 

@@ -96,7 +96,7 @@ Events-based response paths, report archives, alarms, and IAM policy hand-offs.
 ## Operational Boundaries
 
 - Terraform does not author Cloud Guard detector rule logic.
-- Terraform does not implement remediation function code.
+- Terraform does not build remediation function code.
 - Scan exceptions and false-positive tuning stay with security operations.
 - Evidence retention policy must be aligned with legal and audit requirements.
 - Automatic responders require a separate change-management approval.

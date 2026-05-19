@@ -53,7 +53,7 @@ output "provider_endpoints" {
 }
 
 output "gateway_route_map" {
-  description = "Operator-readable route map exposing provider and strategy URI paths implemented by this gateway deployment."
+  description = "Operator-readable route map exposing provider and strategy URI paths deployed by this gateway deployment."
   value = {
     path_prefix = var.gateway_path_prefix
     routes = {

@@ -11,7 +11,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   Cloud, Oracle Analytics Cloud, Healthcare / PCI compliance, and OKE Service
   Mesh.
 - Repository-level Architecture index under `docs/architecture/`.
-- Text-first implementation roadmap under `docs/ROADMAP.md`.
+- Text-first delivery roadmap under `docs/ROADMAP.md`.
 - Validation contract notes in `tests/README.md`.
 - Fast repository contract guard for repeated documentation fragments,
   blueprint file completeness, and blueprint-local Ansible runner wiring.
@@ -97,7 +97,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   added explicit scanner configs for TFLint, Checkov, Trivy, and Ansible Lint.
 - Refreshed repository documentation around the Oracle Functions blueprint,
   including variable references, security expectations, and blueprint
-  implementation checklist guidance.
+  delivery checklist guidance.
 - Clarified customer usage paths for extension-only deployments and full
   base-plus-extension deployments across the main guide, runbook, catalog, and
   architecture index.
@@ -134,7 +134,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   the current repository release.
 - Blueprint-local Ansible `plan.yml`, `apply.yml`, and `destroy.yml` runners
   for every deployable architecture folder.
-- Full Terraform resource implementation wiring for identity, compliance,
+- Full Terraform resource delivery wiring for identity, compliance,
   disaster recovery, private data platform, telco cloud-native, and remaining
   service extension blueprints that were previously lighter documentation
   shapes.
@@ -180,38 +180,38 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Initial Ansible inventories, playbooks, roles, and local orchestration
   structure.
 - Dedicated opt-in CIS Level 1 and Level 2 landing zone blueprint folders.
-- CIS Level 1 and Level 2 wrappers wired to the implemented core/IAM
+- CIS Level 1 and Level 2 wrappers wired to the deployed core/IAM
   foundation while remaining opt-in.
 - Repository cleanup guidance for generated state, lock, plan, cache,
   and local test artifacts.
-- Core implementation for landing zone compartments and governance
+- Core delivery for landing zone compartments and governance
   tagging.
-- Governance logging implementation for core log groups, optional service logs,
+- Governance logging delivery for core log groups, optional service logs,
   VCN flow-log shortcuts, saved searches, and opt-in tenancy audit retention.
-- Cloud Guard implementation for tenancy configuration, default landing zone
+- Cloud Guard delivery for tenancy configuration, default landing zone
   target, optional detector/responder recipe attachments, and additional
   targets.
-- Vault/KMS implementation for opt-in landing zone vaults and master encryption
+- Vault/KMS delivery for opt-in landing zone vaults and master encryption
   keys.
-- Security Zones implementation for opt-in landing zone compartment guardrails
+- Security Zones delivery for opt-in landing zone compartment guardrails
   using approved security recipes.
-- Vulnerability Scanning Service implementation for opt-in host and container
+- Vulnerability Scanning Service delivery for opt-in host and container
   scan recipes and targets.
-- Governance budgets implementation for opt-in landing zone budgets and budget
+- Governance budgets delivery for opt-in landing zone budgets and budget
   alert rules.
-- Governance Events implementation for ONS notification topics, subscriptions,
+- Governance Events delivery for ONS notification topics, subscriptions,
   default IAM change rules, and custom Events rules.
-- Monitoring implementation for opt-in alarms, notification topics, and
+- Monitoring delivery for opt-in alarms, notification topics, and
   subscriptions.
-- IAM foundation implementation for IAM groups, dynamic groups, and
+- IAM foundation delivery for IAM groups, dynamic groups, and
   scoped policies.
-- Networking foundation implementation for reusable hub VCN, spoke VCN,
+- Networking foundation delivery for reusable hub VCN, spoke VCN,
   DRG, IPSec VPN, OCI Network Firewall, FastConnect, private DNS, ZPR, Bastion,
   and network virtual appliance modules.
-- Operating entity implementation for single operating entity,
+- Operating entity delivery for single operating entity,
   multi-operating-entity, and workload vending blueprints using reusable
   compartment, group, and policy modules.
-- Extension implementation for opt-in OKE, API Gateway, Streaming, WAF,
+- Extension delivery for opt-in OKE, API Gateway, Streaming, WAF,
   and Exadata blueprints with resource creation disabled by default.
 - Deployable networking foundations for standalone three-tier, standalone
   private-only, custom standalone, standalone ZPR, brownfield VCN references,
@@ -220,7 +220,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   services, transit NVA HA, and regional prod/nonprod hub blueprints.
 - Example tfvars and deployment notes for operating entity onboarding,
   multi-entity onboarding, and workload vending.
-- Ansible-backed validation that discovers implemented Terraform blueprints,
+- Ansible-backed validation that discovers deployed Terraform blueprints,
   uses a Terraform plugin cache, bounds slow Terraform checks with timeouts, and
   cleans generated Terraform artifacts after validation.
 - Standalone-consumable blueprint architecture folders that use pinned Git

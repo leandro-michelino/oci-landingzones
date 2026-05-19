@@ -44,7 +44,7 @@ terraform plan
 | CIS controls | [CIS Level 1](blueprints/cis/level1/) or [CIS Level 2](blueprints/cis/level2/) |
 | Kubernetes platform | [OKE Extension](blueprints/extensions/oke/) |
 | DR pattern | [Full Stack DR](blueprints/disaster-recovery/fsdr/) |
-| Data platform foundations | [Autonomous DB](blueprints/data-platform/autonomous-database/), [PostgreSQL](blueprints/data-platform/postgresql/), [MySQL HeatWave](blueprints/data-platform/mysql-heatwave/), [OCI NoSQL](blueprints/data-platform/nosql/) |
+| Data platform foundations | [Autonomous DB](blueprints/data-platform/autonomous-database/), [PostgreSQL](blueprints/data-platform/postgresql/), [MySQL HeatWave](blueprints/data-platform/mysql-heatwave/), [OCI NoSQL](blueprints/data-platform/nosql/), [OCI + AWS MySQL HeatWave DR](blueprints/data-platform/oci-aws-mysql-heatwave-dr/) |
 | AI workloads | [GenAI Private](blueprints/ai/genai-private/), [GenAI Gateway](blueprints/ai/genai-gateway/), [AI Agents](blueprints/ai/agents/) |
 | Conversational AI | [Oracle Digital Assistant](blueprints/extensions/digital-assistant/) |
 
@@ -55,7 +55,7 @@ Full inventory:
 
 ## Multicloud (OCI Primary)
 
-### Azure + OCI (Implemented)
+### Azure + OCI (Deployed)
 
 | Pattern | Blueprint |
 |---|---|
@@ -63,13 +63,14 @@ Full inventory:
 | Active/active Kubernetes (OCI-primary OKE, AKS secondary) | [AKS + OKE Active Active](blueprints/extensions/aks-oke-active-active/) |
 | Cross-cloud DR (OCI primary, Azure standby) | [Azure + OCI Cross-Cloud DR](blueprints/disaster-recovery/azure-oci-cross-cloud-dr/) |
 
-### AWS + OCI (Implemented)
+### AWS + OCI (Deployed)
 
 | Pattern | Blueprint |
 |---|---|
 | Hybrid backbone (OCI DRG primary) | [AWS + OCI Hybrid Network Backbone](blueprints/networking/aws-oci-hybrid-network-backbone/) |
 | Cross-cloud DR (OCI primary, AWS standby) | [AWS + OCI Cross-Cloud DR](blueprints/disaster-recovery/aws-oci-cross-cloud-dr/) |
 | Active/active Kubernetes (OCI-primary OKE, EKS secondary) | [EKS + OKE Active Active](blueprints/extensions/eks-oke-active-active/) |
+| MySQL DR over IPSec (OCI primary) | [OCI + AWS MySQL HeatWave DR](blueprints/data-platform/oci-aws-mysql-heatwave-dr/) |
 
 AWS deployment quick paths:
 - Plan only:

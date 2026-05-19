@@ -106,7 +106,7 @@ the same change.
 | --- | --- |
 | `blueprint_name` | Blueprint identifier. |
 | `name_prefix` | Standard OCI naming prefix for resources created by this blueprint. |
-| `cis_level` | CIS baseline level implemented by this identity blueprint. |
+| `cis_level` | CIS baseline level deployed by this identity blueprint. |
 | `resource_ids` | Map of resource identifiers created by this blueprint. |
 | `group_ids` | IAM group OCIDs keyed by logical role. |
 | `group_names` | IAM group names keyed by logical role. |

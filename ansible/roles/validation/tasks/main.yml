@@ -130,7 +130,7 @@
       loop_control:
         label: "{{ item.path }}"
 
-    - name: Reset implemented Terraform blueprint list
+    - name: Reset deployed Terraform blueprint list
       ansible.builtin.set_fact:
         validation_terraform_directories: []
 
@@ -152,7 +152,7 @@
       loop_control:
         label: "{{ item.source }}"
 
-    - name: Build implemented Terraform blueprint list
+    - name: Build deployed Terraform blueprint list
       ansible.builtin.set_fact:
         validation_terraform_directories: >-
           {{
@@ -181,7 +181,7 @@
         - validation_run_terraform_commands | bool
         - validation_terraform_directories | length > 0
 
-    - name: Run terraform init without backend for implemented blueprints
+    - name: Run terraform init without backend for deployed blueprints
       ansible.builtin.command: terraform init -backend=false -input=false -no-color
       args:
         chdir: "{{ item }}"
@@ -192,7 +192,7 @@
       loop_control:
         label: "{{ item | regex_replace('^' ~ validation_repo_root ~ '/', '') }}"
 
-    - name: Run terraform validate for implemented blueprints
+    - name: Run terraform validate for deployed blueprints
       ansible.builtin.command: terraform validate -no-color
       args:
         chdir: "{{ item }}"

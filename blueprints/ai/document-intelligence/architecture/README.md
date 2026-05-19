@@ -78,7 +78,7 @@ Downstream App / Data Catalog / Analytics
 This blueprint does not prescribe one processor type because invoices, receipts,
 contracts, claims, and general PDFs have different extraction needs. It creates
 the common landing-zone wiring and leaves processor/job specifics to the
-handler implementation.
+handler delivery.
 
 The failed bucket is part of the architecture on purpose. Production document
 pipelines need retry evidence, malformed-file review, and a place to preserve
