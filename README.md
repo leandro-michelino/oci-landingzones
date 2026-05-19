@@ -81,6 +81,10 @@ Ansible wrappers:
 The Azure wrappers are standardized through the shared role
 `ansible/roles/azure_deployment_runner`.
 
+Both blueprints now ship deploy-and-use networking stacks on both sides:
+OCI VCN/subnets/route tables/security lists and Azure VNet/subnets/route
+tables/NSGs wired into the workload resources.
+
 Planning and architecture drafts:
 
 | Draft | Link |

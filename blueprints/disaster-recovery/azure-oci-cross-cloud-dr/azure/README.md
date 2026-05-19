@@ -7,6 +7,9 @@ This folder contains the Azure standby deployment artifacts for the
 
 ## What It Deploys
 
+- Azure VNet and delegated Container Apps subnet
+- Azure route table associated to the standby subnet
+- Azure network security group associated to the standby subnet
 - Log Analytics workspace
 - Azure Container Apps managed environment
 - Public Azure Container App running hello-world image
@@ -30,6 +33,8 @@ Start from `parameters.example.json` and copy to a local file (for example
 Use Azure deployment output in Terraform tfvars:
 
 - `azureStandbyEndpoint` -> `azure_standby_endpoint`
+- `standbyVnetId`, `standbySubnetId`, `standbyRouteTableId`, and
+  `standbyNetworkSecurityGroupId` for network operations and DR runbooks.
 
 ## Session Commands
 

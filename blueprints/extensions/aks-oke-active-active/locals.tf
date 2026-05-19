@@ -7,6 +7,20 @@ locals {
   oke_cluster_name   = "${local.name_prefix}-cluster-${var.oke_cluster_label}"
   oke_node_pool_name = "${local.name_prefix}-np-${var.oke_node_pool_label}"
 
+  oke_vcn_name               = "${local.name_prefix}-vcn-oke"
+  oke_igw_name               = "${local.name_prefix}-igw-oke"
+  oke_route_table_name       = "${local.name_prefix}-rt-oke"
+  oke_endpoint_sl_name       = "${local.name_prefix}-sl-oke-endpoint"
+  oke_node_sl_name           = "${local.name_prefix}-sl-oke-node"
+  oke_endpoint_subnet_name   = "${local.name_prefix}-sn-oke-endpoint"
+  oke_service_lb_subnet_name = "${local.name_prefix}-sn-oke-lb"
+  oke_node_subnet_base_name  = "${local.name_prefix}-sn-oke-node"
+
+  effective_oke_vcn_id                = var.enable_oke_networking ? try(oci_core_vcn.oke[0].id, null) : var.oke_vcn_id
+  effective_oke_endpoint_subnet_id    = var.enable_oke_networking ? try(oci_core_subnet.oke_endpoint[0].id, null) : var.oke_endpoint_subnet_id
+  effective_oke_service_lb_subnet_ids = var.enable_oke_networking ? try([oci_core_subnet.oke_service_lb[0].id], []) : var.oke_service_lb_subnet_ids
+  effective_oke_node_subnet_ids       = var.enable_oke_networking ? [for subnet in oci_core_subnet.oke_nodes : subnet.id] : var.oke_node_subnet_ids
+
   effective_oke_cluster_id = var.oke_cluster_id != null ? var.oke_cluster_id : try(oci_containerengine_cluster.oci_primary[0].id, null)
 
   traffic_weights = {

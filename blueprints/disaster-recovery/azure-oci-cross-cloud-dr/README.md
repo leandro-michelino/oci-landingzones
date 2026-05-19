@@ -13,7 +13,7 @@ the local Ansible wrappers, and where to find the detailed ASCII design.
 | --- | --- |
 | Folder | `blueprints/disaster-recovery/azure-oci-cross-cloud-dr` |
 | Best fit | Cross-cloud DR contract with OCI primary and Azure standby, DNS failover runbook metadata, and interconnect or no-interconnect connectivity modes. |
-| Terraform shape | `oci_objectstorage_bucket.dr_evidence`, `oci_ons_notification_topic.dr_alert`, `terraform_data.connectivity_contract`, `terraform_data.dns_failover_contract`, `terraform_data.runbook_contract` |
+| Terraform shape | `oci_core_vcn.primary`, `oci_core_route_table.primary`, `oci_core_security_list.primary_app`, `oci_core_subnet.primary_app`, `oci_objectstorage_bucket.dr_evidence`, `oci_ons_notification_topic.dr_alert`, `terraform_data.connectivity_contract`, `terraform_data.dns_failover_contract`, `terraform_data.runbook_contract` |
 | Inputs to settle first | `connectivity_mode`, `fastconnect_virtual_circuit_id`, `expressroute_circuit_id`, `app_fqdn`, `oci_primary_endpoint`, `azure_standby_endpoint`, `target_rto_minutes`, `target_rpo_minutes` |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `primary_target`, `standby_target`, `connectivity_contract`, `dns_failover_contract`, `runbook_contract` |
 | Local runner | `terraform plan` for quick iteration; `ansible/plan.yml` and guarded `ansible/apply.yml` for the repo-standard flow. |
@@ -42,6 +42,7 @@ provide the same plan/apply/destroy rhythm everywhere in the repo.
 | Data source | `data.oci_objectstorage_namespace.this` | Read during plan/apply for evidence bucket namespace. |
 | Resource | `oci_objectstorage_bucket.dr_evidence` | Optional DR drill and incident evidence bucket. |
 | Resource | `oci_ons_notification_topic.dr_alert` | Optional DR alert topic for runbook notifications. |
+| Resource | `oci_core_vcn.primary`, `oci_core_route_table.primary`, `oci_core_security_list.primary_app`, `oci_core_subnet.primary_app` | Optional OCI primary networking stack with wired routes and security controls. |
 | Resource | `terraform_data.connectivity_contract` | Connectivity contract for interconnect or no-interconnect mode. |
 | Resource | `terraform_data.dns_failover_contract` | DNS failover contract with primary/standby endpoints and TTL assumptions. |
 | Resource | `terraform_data.runbook_contract` | Failover/failback execution contract with RTO/RPO metadata. |
@@ -102,6 +103,10 @@ Start with `terraform.tfvars.example`, then create a local ignored
 | Input | What To Decide |
 | --- | --- |
 | `oci_is_primary` | Must remain `true` in this blueprint variant. |
+| `enable_oci_primary_network` | When true, creates OCI primary VCN, route table, security list, and app subnet. |
+| `oci_primary_vcn_cidr` | CIDR for OCI primary VCN. |
+| `oci_primary_app_subnet_cidr` | CIDR for OCI primary application subnet. |
+| `oci_primary_ingress_allowed_cidr` | Allowed source CIDR for OCI primary application ingress. |
 | `connectivity_mode` | Select `interconnect` or `without-interconnect`. |
 | `fastconnect_virtual_circuit_id` | FastConnect virtual circuit OCID when using interconnect mode. |
 | `expressroute_circuit_id` | ExpressRoute circuit ID when using interconnect mode. |

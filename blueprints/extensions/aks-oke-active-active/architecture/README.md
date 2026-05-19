@@ -19,7 +19,7 @@ weighted traffic steering contracts, while explicitly excluding IPSec backup.
 | --- | --- |
 | Boundary | `blueprints/extensions/aks-oke-active-active` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | OCI-primary active/active AKS + OKE pattern with interconnect-only connectivity and contract outputs for GitOps and traffic steering. |
-| Terraform components | `oci_containerengine_cluster.oci_primary`, `oci_containerengine_node_pool.oci_primary`, `terraform_data.interconnect_contract`, `terraform_data.gitops_contract`, `terraform_data.traffic_steering_contract` |
+| Terraform components | `oci_core_vcn.oke`, `oci_core_route_table.oke`, `oci_core_security_list.oke_*`, `oci_core_subnet.oke_*`, `oci_containerengine_cluster.oci_primary`, `oci_containerengine_node_pool.oci_primary`, `terraform_data.interconnect_contract`, `terraform_data.gitops_contract`, `terraform_data.traffic_steering_contract` |
 | Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
 
 ## ASCII Architecture
@@ -37,7 +37,7 @@ weighted traffic steering contracts, while explicitly excluding IPSec backup.
 | {OCI primary cloud boundary}                                                                             |
 |         |                                                                                                |
 |         v                                                                                                |
-| [OKE cluster + node pool] -> [OCI ingress endpoint]                                                      |
+| [OCI VCN + route table + security lists + OKE subnets] -> [OKE cluster + node pool] -> [OCI ingress endpoint] |
 |         |                                                                                                |
 |         +--> primary traffic target (weighted)                                                           |
 |         |                                                                                                |
@@ -62,8 +62,10 @@ weighted traffic steering contracts, while explicitly excluding IPSec backup.
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
+| Resource | `oci_core_vcn.oke`, `oci_core_route_table.oke`, `oci_core_security_list.oke_*`, `oci_core_subnet.oke_*` | Deploy-and-use OCI networking stack for OKE control plane, nodes, and service load balancers. |
 | Resource | `oci_containerengine_cluster.oci_primary` | Optional OCI primary OKE cluster when enabled. |
 | Resource | `oci_containerengine_node_pool.oci_primary` | Optional OCI primary OKE node pool when enabled. |
+| Resource | `terraform_data.oke_network_contract` | Validation contract for either managed or supplied OKE networking identifiers. |
 | Resource | `terraform_data.interconnect_contract` | Interconnect-only contract for ExpressRoute + FastConnect and no IPSec fallback. |
 | Resource | `terraform_data.gitops_contract` | GitOps operating contract for multi-cluster rollout. |
 | Resource | `terraform_data.traffic_steering_contract` | Weighted traffic steering contract for OCI primary and AKS secondary endpoints. |
@@ -71,6 +73,7 @@ weighted traffic steering contracts, while explicitly excluding IPSec backup.
 ## Request And Deployment Flow
 
 - Operator supplies existing AKS IDs, interconnect IDs, and endpoint targets in local tfvars.
+- Terraform can create OCI OKE networking (VCN, route table, security lists, subnets) or validate supplied networking IDs.
 - Terraform optionally creates OKE primary resources and always publishes interconnect, GitOps, and traffic steering contracts.
 - Outputs expose primary/secondary cluster metadata, contract IDs, and steering weights for operations runbooks.
 
@@ -86,7 +89,8 @@ weighted traffic steering contracts, while explicitly excluding IPSec backup.
 These notes expand the diagram with the design details that usually matter
 at review, plan, and hand-off time.
 
-- The blueprint intentionally models Azure resources as externally managed in this variant, while still publishing a strict active/active operations contract.
+- The blueprint creates OCI routing and security primitives for deploy-and-use cluster networking and still allows external OCI network IDs when needed.
+- The blueprint intentionally models Azure resources as externally managed in Terraform, while still publishing a strict active/active operations contract.
 - OKE resource creation is optional so customers can run extension-only mode with existing cluster IDs or base-plus-extension mode with new OKE resources.
 - `interconnect_mode` and `enable_ipsec_backup` validations keep the deployment constrained to partner interconnect without VPN fallback.
 - The traffic steering contract is weighted by `oci_primary_traffic_percent`, with the remaining weight assigned to Azure.
@@ -102,7 +106,7 @@ at review, plan, and hand-off time.
 
 ## Review Checklist
 
-- Confirm the diagram matches `main.tf`: `oci_containerengine_cluster.oci_primary`, `oci_containerengine_node_pool.oci_primary`, `terraform_data.interconnect_contract`, `terraform_data.gitops_contract`, `terraform_data.traffic_steering_contract`.
+- Confirm the diagram matches `main.tf`: `oci_core_vcn.oke`, `oci_core_route_table.oke`, `oci_core_security_list.oke_*`, `oci_core_subnet.oke_*`, `oci_containerengine_cluster.oci_primary`, `oci_containerengine_node_pool.oci_primary`, `terraform_data.interconnect_contract`, `terraform_data.gitops_contract`, `terraform_data.traffic_steering_contract`.
 - Confirm OCI remains primary and IPSec backup remains disabled.
 - Confirm interconnect IDs match the intended ExpressRoute + FastConnect partner path.
 - Confirm the described traffic path is the path you want before apply.

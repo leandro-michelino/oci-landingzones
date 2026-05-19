@@ -12,6 +12,14 @@ output "name_prefix" {
 output "resource_ids" {
   description = "Map of resource identifiers created by this blueprint."
   value = {
+    oci_network_contract      = terraform_data.oke_network_contract.id
+    oci_vcn                   = try(oci_core_vcn.oke[0].id, null)
+    oci_route_table           = try(oci_core_route_table.oke[0].id, null)
+    oci_endpoint_securitylist = try(oci_core_security_list.oke_endpoint[0].id, null)
+    oci_node_securitylist     = try(oci_core_security_list.oke_node[0].id, null)
+    oci_endpoint_subnet       = local.effective_oke_endpoint_subnet_id
+    oci_node_subnets          = local.effective_oke_node_subnet_ids
+    oci_lb_subnets            = local.effective_oke_service_lb_subnet_ids
     oci_primary_cluster       = try(oci_containerengine_cluster.oci_primary[0].id, null)
     oci_primary_node_pool     = try(oci_containerengine_node_pool.oci_primary[0].id, null)
     interconnect_contract     = terraform_data.interconnect_contract.id

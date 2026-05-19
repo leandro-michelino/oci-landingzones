@@ -47,6 +47,48 @@ variable "compartment_ocid" {
   default     = null
 }
 
+variable "enable_oke_networking" {
+  description = "Create OCI networking (VCN, route table, security lists, and subnets) for OKE deployment."
+  type        = bool
+  default     = true
+}
+
+variable "oke_vcn_cidr" {
+  description = "CIDR block for the OCI VCN created when enable_oke_networking is true."
+  type        = string
+  default     = "10.42.0.0/16"
+}
+
+variable "oke_endpoint_subnet_cidr" {
+  description = "CIDR block for the OKE control plane endpoint subnet when enable_oke_networking is true."
+  type        = string
+  default     = "10.42.10.0/24"
+}
+
+variable "oke_node_subnet_cidrs" {
+  description = "CIDR blocks for OKE worker node subnets when enable_oke_networking is true."
+  type        = list(string)
+  default     = ["10.42.20.0/24"]
+}
+
+variable "oke_service_lb_subnet_cidr" {
+  description = "CIDR block for OKE service load balancer subnet when enable_oke_networking is true."
+  type        = string
+  default     = "10.42.30.0/24"
+}
+
+variable "oke_api_allowed_cidr" {
+  description = "Source CIDR allowed to reach the OKE API endpoint subnet security list."
+  type        = string
+  default     = "0.0.0.0/0"
+}
+
+variable "oke_node_ssh_allowed_cidr" {
+  description = "Optional CIDR allowed for SSH ingress to OKE worker nodes."
+  type        = string
+  default     = null
+}
+
 variable "interconnect_mode" {
   description = "Cross-cloud interconnect mode. This blueprint supports partner ExpressRoute + FastConnect only."
   type        = string
@@ -129,13 +171,13 @@ variable "oke_kubernetes_version" {
 }
 
 variable "oke_vcn_id" {
-  description = "VCN OCID where OKE resources are created."
+  description = "Existing VCN OCID used when enable_oke_networking is false."
   type        = string
   default     = null
 }
 
 variable "oke_endpoint_subnet_id" {
-  description = "Optional subnet OCID for the OKE Kubernetes API endpoint."
+  description = "Existing subnet OCID for OKE Kubernetes API endpoint when enable_oke_networking is false."
   type        = string
   default     = null
 }
@@ -153,7 +195,7 @@ variable "oke_endpoint_nsg_ids" {
 }
 
 variable "oke_service_lb_subnet_ids" {
-  description = "Optional subnet OCIDs used by OKE service load balancers."
+  description = "Existing subnet OCIDs used by OKE service load balancers when enable_oke_networking is false."
   type        = list(string)
   default     = []
 }
@@ -183,7 +225,7 @@ variable "oke_node_shape_memory_in_gbs" {
 }
 
 variable "oke_node_subnet_ids" {
-  description = "Subnet OCIDs used by the OKE node pool."
+  description = "Existing subnet OCIDs used by the OKE node pool when enable_oke_networking is false."
   type        = list(string)
   default     = []
 }

@@ -12,11 +12,16 @@ output "name_prefix" {
 output "resource_ids" {
   description = "Map of resource identifiers created by this blueprint."
   value = {
-    dr_evidence_bucket  = try(oci_objectstorage_bucket.dr_evidence[0].id, null)
-    dr_alert_topic      = try(oci_ons_notification_topic.dr_alert[0].id, null)
-    connectivity_data   = terraform_data.connectivity_contract.id
-    dns_failover_data   = try(terraform_data.dns_failover_contract[0].id, null)
-    runbook_contract_id = try(terraform_data.runbook_contract[0].id, null)
+    oci_network_contract = terraform_data.oci_network_contract.id
+    oci_primary_vcn      = try(oci_core_vcn.primary[0].id, null)
+    oci_primary_rt       = try(oci_core_route_table.primary[0].id, null)
+    oci_primary_sl       = try(oci_core_security_list.primary_app[0].id, null)
+    oci_primary_subnet   = try(oci_core_subnet.primary_app[0].id, null)
+    dr_evidence_bucket   = try(oci_objectstorage_bucket.dr_evidence[0].id, null)
+    dr_alert_topic       = try(oci_ons_notification_topic.dr_alert[0].id, null)
+    connectivity_data    = terraform_data.connectivity_contract.id
+    dns_failover_data    = try(terraform_data.dns_failover_contract[0].id, null)
+    runbook_contract_id  = try(terraform_data.runbook_contract[0].id, null)
   }
 }
 

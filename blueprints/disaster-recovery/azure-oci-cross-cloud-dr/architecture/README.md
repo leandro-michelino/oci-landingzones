@@ -19,7 +19,7 @@ without-interconnect operation modes.
 | --- | --- |
 | Boundary | `blueprints/disaster-recovery/azure-oci-cross-cloud-dr` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | OCI-primary to Azure-standby DR with contract outputs for connectivity, DNS failover, and runbook execution. |
-| Terraform components | `oci_objectstorage_namespace.this`, `oci_objectstorage_bucket.dr_evidence`, `oci_ons_notification_topic.dr_alert`, `terraform_data.connectivity_contract`, `terraform_data.dns_failover_contract`, `terraform_data.runbook_contract` |
+| Terraform components | `oci_core_vcn.primary`, `oci_core_route_table.primary`, `oci_core_security_list.primary_app`, `oci_core_subnet.primary_app`, `oci_objectstorage_namespace.this`, `oci_objectstorage_bucket.dr_evidence`, `oci_ons_notification_topic.dr_alert`, `terraform_data.connectivity_contract`, `terraform_data.dns_failover_contract`, `terraform_data.runbook_contract` |
 | Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
 
 ## ASCII Architecture
@@ -36,6 +36,7 @@ without-interconnect operation modes.
 |         v                    v                         v                                                 |
 | {OCI primary cloud boundary}                                                                             |
 |         |                                                                                                |
+|         |-- [Primary VCN + route table + security list + app subnet]                                    |
 |         |-- [Object Storage namespace]                                                                   |
 |         |-- [DR evidence bucket]                                                                         |
 |         |-- [DR alert topic]                                                                             |
@@ -60,6 +61,8 @@ without-interconnect operation modes.
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
+| Resource | `oci_core_vcn.primary`, `oci_core_route_table.primary`, `oci_core_security_list.primary_app`, `oci_core_subnet.primary_app` | Deploy-and-use OCI primary networking stack for DR workloads. |
+| Resource | `terraform_data.oci_network_contract` | OCI network contract output for operations and downstream hand-off. |
 | Data source | `oci_objectstorage_namespace.this` | Read during plan/apply for evidence bucket namespace. |
 | Resource | `oci_objectstorage_bucket.dr_evidence` | Optional evidence bucket for drills and incidents. |
 | Resource | `oci_ons_notification_topic.dr_alert` | Optional DR alert topic for operator notifications. |
@@ -70,7 +73,7 @@ without-interconnect operation modes.
 ## Request And Deployment Flow
 
 - Operator sets connectivity mode and endpoint assumptions in local tfvars.
-- Terraform creates optional OCI evidence and alert resources.
+- Terraform creates optional OCI primary networking, evidence, and alert resources.
 - Terraform publishes connectivity, DNS failover, and runbook contracts as outputs.
 - Runbook owners consume outputs for drills, failover, and failback procedures.
 
@@ -90,7 +93,7 @@ during review, plan, and hand-off.
 - Connectivity can run with partner interconnect (`interconnect`) or explicitly without interconnect (`without-interconnect`) for staged or constrained environments.
 - The DNS failover contract captures endpoint and TTL assumptions so operational teams can align cutover timing with runbook tests.
 - The runbook contract stores drill cadence and RTO/RPO targets so governance checks can compare planned versus measured recovery behavior.
-- Azure resources remain externally managed in this variant and are referenced by endpoint values in local tfvars.
+- Azure resources are provisioned through the local Azure session artifacts (`azure/main.bicep` and `ansible/azure-*.yml`) and referenced in Terraform by standby endpoint values.
 - `hello-world/index.html` is included as a lightweight drill/demo status page that mirrors the same primary/standby assumptions.
 
 ## Operational Boundaries
@@ -103,7 +106,7 @@ during review, plan, and hand-off.
 
 ## Review Checklist
 
-- Confirm the diagram matches `main.tf`: `oci_objectstorage_namespace.this`, `oci_objectstorage_bucket.dr_evidence`, `oci_ons_notification_topic.dr_alert`, `terraform_data.connectivity_contract`, `terraform_data.dns_failover_contract`, `terraform_data.runbook_contract`.
+- Confirm the diagram matches `main.tf`: `oci_core_vcn.primary`, `oci_core_route_table.primary`, `oci_core_security_list.primary_app`, `oci_core_subnet.primary_app`, `oci_objectstorage_namespace.this`, `oci_objectstorage_bucket.dr_evidence`, `oci_ons_notification_topic.dr_alert`, `terraform_data.connectivity_contract`, `terraform_data.dns_failover_contract`, `terraform_data.runbook_contract`.
 - Confirm OCI is primary and Azure is standby for this environment.
 - Confirm connectivity mode selection and interconnect IDs where applicable.
 - Confirm DNS endpoint and TTL assumptions support the intended cutover model.

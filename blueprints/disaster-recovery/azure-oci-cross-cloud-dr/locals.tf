@@ -6,6 +6,11 @@ locals {
 
   evidence_bucket_name = coalesce(var.dr_evidence_bucket_name, "${local.name_prefix}-bkt-dr-evidence")
   alert_topic_name     = coalesce(var.dr_alert_topic_name, "${local.name_prefix}-top-dr-alert")
+  primary_vcn_name     = "${local.name_prefix}-vcn-dr-primary"
+  primary_igw_name     = "${local.name_prefix}-igw-dr-primary"
+  primary_rt_name      = "${local.name_prefix}-rt-dr-primary"
+  primary_sl_name      = "${local.name_prefix}-sl-dr-primary-app"
+  primary_subnet_name  = "${local.name_prefix}-sn-dr-primary-app"
 
   effective_interconnect = {
     mode                           = var.connectivity_mode

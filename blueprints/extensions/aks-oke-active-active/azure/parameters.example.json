@@ -17,6 +17,24 @@
     "nodeVmSize": {
       "value": "Standard_D4ds_v5"
     },
+    "vnetName": {
+      "value": "vnet-aks-oci-secondary-dev"
+    },
+    "vnetCidr": {
+      "value": "10.62.0.0/16"
+    },
+    "aksSubnetName": {
+      "value": "snet-aks-oci-secondary-dev"
+    },
+    "aksSubnetCidr": {
+      "value": "10.62.10.0/24"
+    },
+    "routeTableName": {
+      "value": "rt-aks-oci-secondary-dev"
+    },
+    "networkSecurityGroupName": {
+      "value": "nsg-aks-oci-secondary-dev"
+    },
     "tags": {
       "value": {
         "Blueprint": "aks-oke-active-active",

@@ -47,6 +47,30 @@ variable "compartment_ocid" {
   default     = null
 }
 
+variable "enable_oci_primary_network" {
+  description = "Create OCI primary networking (VCN, route table, security list, and application subnet) for DR workloads."
+  type        = bool
+  default     = true
+}
+
+variable "oci_primary_vcn_cidr" {
+  description = "CIDR block for OCI primary VCN when enable_oci_primary_network is true."
+  type        = string
+  default     = "10.52.0.0/16"
+}
+
+variable "oci_primary_app_subnet_cidr" {
+  description = "CIDR block for OCI primary application subnet when enable_oci_primary_network is true."
+  type        = string
+  default     = "10.52.10.0/24"
+}
+
+variable "oci_primary_ingress_allowed_cidr" {
+  description = "Source CIDR allowed for OCI primary application ingress."
+  type        = string
+  default     = "0.0.0.0/0"
+}
+
 variable "oci_is_primary" {
   description = "Set to true. This variant keeps OCI as the primary application target."
   type        = bool

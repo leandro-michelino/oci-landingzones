@@ -7,6 +7,9 @@ of the `aks-oke-active-active` blueprint.
 
 ## What It Deploys
 
+- Azure VNet and AKS subnet
+- Azure route table associated to AKS subnet
+- Azure network security group associated to AKS subnet
 - `Microsoft.ContainerService/managedClusters` AKS cluster
 - System node pool
 - Control-plane endpoint and cluster ID outputs
@@ -28,6 +31,8 @@ Use the Azure outputs from deployment and map them into Terraform tfvars:
 
 - `aksClusterId` -> `aks_cluster_id`
 - `aksClusterName` -> `aks_cluster_name`
+- `aksVnetId`, `aksSubnetId`, `aksRouteTableId`, and `aksNetworkSecurityGroupId`
+  as network hand-off IDs for operations and runbooks.
 
 You can derive `aks_resource_group_name` from the RG used by the Azure session.
 

@@ -13,8 +13,8 @@ ASCII design.
 | --- | --- |
 | Folder | `blueprints/extensions/aks-oke-active-active` |
 | Best fit | Active/active AKS + OKE operating model with OCI as primary, partner interconnect, GitOps contract, and weighted traffic steering contract. |
-| Terraform shape | `oci_containerengine_cluster.oci_primary`, `oci_containerengine_node_pool.oci_primary`, `terraform_data.interconnect_contract`, `terraform_data.gitops_contract`, `terraform_data.traffic_steering_contract` |
-| Inputs to settle first | `compartment_ocid`, `oke_vcn_id`, `oke_kubernetes_version`, `fastconnect_virtual_circuit_id`, `expressroute_circuit_id`, `aks_cluster_id`, `app_fqdn`, `oci_primary_endpoint`, `azure_secondary_endpoint` |
+| Terraform shape | `oci_core_vcn.oke`, `oci_core_route_table.oke`, `oci_core_security_list.oke_*`, `oci_core_subnet.oke_*`, `oci_containerengine_cluster.oci_primary`, `oci_containerengine_node_pool.oci_primary`, `terraform_data.interconnect_contract`, `terraform_data.gitops_contract`, `terraform_data.traffic_steering_contract` |
+| Inputs to settle first | `compartment_ocid`, `enable_oke_networking`, `oke_vcn_cidr`, `oke_node_subnet_cidrs`, `oke_kubernetes_version`, `fastconnect_virtual_circuit_id`, `expressroute_circuit_id`, `aks_cluster_id`, `app_fqdn`, `oci_primary_endpoint`, `azure_secondary_endpoint` |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `primary_cluster`, `secondary_cluster`, `interconnect_contract`, `traffic_steering_contract`, `gitops_contract` |
 | Local runner | `terraform plan` for quick iteration; `ansible/plan.yml` and guarded `ansible/apply.yml` for the repo-standard flow. |
 
@@ -39,6 +39,7 @@ files provide the same plan/apply/destroy rhythm everywhere in the repo.
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
+| Resource | `oci_core_vcn.oke`, `oci_core_route_table.oke`, `oci_core_security_list.oke_*`, `oci_core_subnet.oke_*` | Optional OCI networking stack for deploy-and-use OKE routing and security defaults. |
 | Resource | `oci_containerengine_cluster.oci_primary` | Optional OCI primary OKE cluster when `enable_oke_cluster=true`. |
 | Resource | `oci_containerengine_node_pool.oci_primary` | Optional OCI primary OKE node pool when `enable_oke_node_pool=true`. |
 | Resource | `terraform_data.interconnect_contract` | Interconnect-only contract for FastConnect + ExpressRoute and no IPSec backup. |
@@ -101,6 +102,13 @@ Start with `terraform.tfvars.example`, then create a local ignored
 | Input | What To Decide |
 | --- | --- |
 | `compartment_ocid` | Compartment OCID where OKE resources are created. Defaults to tenancy_ocid for validation-only tests. |
+| `enable_oke_networking` | When true, creates VCN, route table, security lists, and required OKE subnets. |
+| `oke_vcn_cidr` | CIDR for OCI VCN created in deploy-and-use mode. |
+| `oke_endpoint_subnet_cidr` | CIDR for OKE API endpoint subnet. |
+| `oke_node_subnet_cidrs` | CIDR list for OKE worker node subnets. |
+| `oke_service_lb_subnet_cidr` | CIDR for OKE load balancer subnet. |
+| `oke_api_allowed_cidr` | Allowed source CIDR to reach the OKE API endpoint. |
+| `oke_node_ssh_allowed_cidr` | Optional SSH source CIDR for worker node access. |
 | `interconnect_mode` | Must remain `expressroute-fastconnect-partner` for this pattern. |
 | `fastconnect_virtual_circuit_id` | OCI FastConnect virtual circuit OCID for the partner interconnect. |
 | `expressroute_circuit_id` | Azure ExpressRoute circuit ID paired to FastConnect through partner exchange. |
