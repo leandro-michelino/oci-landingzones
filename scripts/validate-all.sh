@@ -12,10 +12,13 @@ export ANSIBLE_REMOTE_TEMP="${ANSIBLE_REMOTE_TEMP:-${ANSIBLE_LOCAL_TEMP}/remote}
 mkdir -p "$ANSIBLE_LOCAL_TEMP" "$ANSIBLE_REMOTE_TEMP"
 
 cleanup_generated_artifacts() {
-  find "$REPO_ROOT" -name ".terraform" -type d -prune -exec rm -rf {} +
+  if [[ "${VALIDATION_CLEAN_TERRAFORM_WORKDIRS:-0}" == "1" ]]; then
+    find "$REPO_ROOT" -name ".terraform" -type d -prune -exec rm -rf {} +
+    find "$REPO_ROOT" -name ".terraform.lock.hcl" -type f -delete
+  fi
+
   find "$REPO_ROOT" \
-    \( -name ".terraform.lock.hcl" \
-    -o -name "terraform.tfstate" \
+    \( -name "terraform.tfstate" \
     -o -name "terraform.tfstate.backup" \
     -o -name "tfplan" \
     -o -name "tfplan.*" \
@@ -25,6 +28,13 @@ cleanup_generated_artifacts() {
 }
 
 trap cleanup_generated_artifacts EXIT
+
+echo "==> Terraform cache: TF_PLUGIN_CACHE_DIR=${TF_PLUGIN_CACHE_DIR}"
+if [[ "${VALIDATION_CLEAN_TERRAFORM_WORKDIRS:-0}" == "1" ]]; then
+  echo "==> Cleanup mode: full (.terraform and .terraform.lock.hcl will be removed)"
+else
+  echo "==> Cleanup mode: fast (keeping .terraform and .terraform.lock.hcl for reuse)"
+fi
 
 "$REPO_ROOT/scripts/check-repo-contracts.sh"
 
@@ -82,13 +92,9 @@ fi
 
 cd "$REPO_ROOT"
 
-# Keep optional scanners focused on repository source instead of downloaded
-# provider/module artifacts created during terraform init.
-cleanup_generated_artifacts
-
 run_if_available tflint --config "$REPO_ROOT/.tflint.hcl" --recursive
-run_if_available trivy config .
-run_if_available checkov -d . --framework terraform --compact
+run_if_available trivy config . --skip-dirs .terraform --skip-dirs .git
+run_if_available checkov -d . --framework terraform --compact --skip-path .terraform --skip-path .git
 ANSIBLE_CONFIG="$REPO_ROOT/ansible/ansible.cfg" run_if_available ansible-lint ansible
 
 if command -v ansible-playbook >/dev/null 2>&1; then

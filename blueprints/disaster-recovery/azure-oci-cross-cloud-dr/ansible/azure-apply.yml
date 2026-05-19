@@ -2,6 +2,7 @@
 ---
 - name: Azure apply session for DR standby deployment
   hosts: localhost
+  connection: local
   gather_facts: false
   vars:
     azure_action: apply

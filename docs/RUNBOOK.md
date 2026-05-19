@@ -16,7 +16,8 @@ flows. Pattern-specific design checks live in each blueprint's local
    Terraform or Ansible failures.
 5. Review Terraform fmt/init/validate output for failed blueprint directories.
 6. Review Ansible syntax-check output for shared and blueprint-local playbooks.
-7. Confirm generated artifacts were cleaned:
+7. Confirm generated artifacts are either intentionally retained for local
+   Terraform speed or cleaned when required:
    - `.terraform/`
    - `.terraform.lock.hcl`
    - `terraform.tfstate*`
@@ -50,6 +51,28 @@ VALIDATE_CHANGED_BASE=origin/release ./scripts/validate-changed.sh
 Escalate to `./scripts/validate-all.sh` when shared modules, shared Ansible
 roles, validation scripts, scanner configs, or repo-wide docs changed enough
 that a focused check would miss the blast radius.
+
+## Ephemeral Networking Tests (OCI, Azure, AWS)
+
+Use this when networking components should be created for testing and deleted
+immediately afterward.
+
+```bash
+scripts/test-networking-lifecycle.sh \
+  --blueprint blueprints/networking/aws-oci-hybrid-network-backbone \
+  --providers oci,aws
+```
+
+Run against all networking blueprints (careful: this can create many resources):
+
+```bash
+scripts/test-networking-lifecycle.sh --all-networking --providers oci
+```
+
+Behavior:
+- Runs `plan -> apply -> destroy` per provider lifecycle playbooks.
+- Always attempts provider destroy after apply attempts.
+- Uses explicit confirmation env vars internally (`CONFIRM_*`).
 
 ## Review The Whole Project
 
@@ -115,6 +138,21 @@ commands launched through the repository scripts or Ansible roles.
    root `README.md` when the blueprint should be visible in the deployment
    menu or introduces new operator-facing inputs.
 
+## Read Terraform And Ansible Outputs Clearly
+
+Use the following output categories consistently in blueprint operations:
+
+1. `blueprint_name`:
+Treat as the stable deployment identifier for reports and automation.
+2. `name_prefix`:
+Use for deterministic naming across follow-on resources and scripts.
+3. `resource_ids`:
+Treat as the machine-readable hand-off map for integration, import, and cleanup.
+4. `*_contract` outputs:
+Use these as runbook contracts (connectivity, routing, failover, traffic, or GitOps intent).
+5. provider-runner summaries:
+AWS and Azure runners now emit explicit plan/apply/destroy summaries and JSON outputs so operators can capture results without parsing raw CLI output.
+
 ## Plan Extension Adoption
 
 Use this when a customer asks whether they can consume only an extension or
@@ -139,7 +177,13 @@ should deploy the full base first.
 
 ## Clean Generated Files
 
-1. Prefer `./scripts/validate-all.sh`; it removes generated artifacts on exit.
+1. Validation keeps local `.terraform/` and `.terraform.lock.hcl` by default
+   for faster reruns. Force cleanup when required:
+
+   ```bash
+   VALIDATION_CLEAN_TERRAFORM_WORKDIRS=1 ./scripts/validate-all.sh
+   VALIDATION_CLEAN_TERRAFORM_WORKDIRS=1 ./scripts/validate-changed.sh
+   ```
 2. For manual cleanup, run:
 
    ```bash

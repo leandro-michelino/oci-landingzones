@@ -1,16 +1,16 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 output "blueprint_name" {
-  description = "Blueprint identifier."
+  description = "Stable blueprint deployment identifier used for reporting, runbooks, and cross-blueprint automation hand-offs."
   value       = local.blueprint_name
 }
 
 output "name_prefix" {
-  description = "Standard OCI naming prefix for resources created by this blueprint."
+  description = "Resolved OCI naming prefix applied to resources and contracts in this blueprint; reuse it for consistent naming in downstream automation."
   value       = local.name_prefix
 }
 
 output "resource_ids" {
-  description = "Map of resource identifiers created by this blueprint."
+  description = "Consolidated map of resource and contract identifiers produced by this blueprint; use it as the primary machine-readable hand-off for integration and runbook steps."
   value = {
     oci_network_contract      = terraform_data.oke_network_contract.id
     oci_vcn                   = try(oci_core_vcn.oke[0].id, null)
@@ -29,7 +29,7 @@ output "resource_ids" {
 }
 
 output "primary_cluster" {
-  description = "OCI primary cluster hand-off details."
+  description = "Primary-cluster hand-off object for OCI OKE, including cluster and node pool identifiers used by platform operations and GitOps onboarding."
   value = {
     cloud      = "oci"
     cluster_id = local.effective_oke_cluster_id
@@ -38,7 +38,7 @@ output "primary_cluster" {
 }
 
 output "secondary_cluster" {
-  description = "Azure AKS secondary cluster hand-off details."
+  description = "Secondary-cluster hand-off object for Azure AKS, including cluster identity fields required for DR and active/active routing operations."
   value = {
     cloud               = "azure"
     cluster_id          = var.aks_cluster_id
@@ -48,12 +48,12 @@ output "secondary_cluster" {
 }
 
 output "interconnect_contract" {
-  description = "OCI and Azure interconnect contract details for ExpressRoute + FastConnect partner connectivity."
+  description = "Cross-cloud interconnect contract documenting OCI-to-Azure private-connectivity assumptions, partner identifiers, and operational boundaries."
   value       = local.interconnect_contract
 }
 
 output "traffic_steering_contract" {
-  description = "Weighted traffic steering contract with OCI primary and Azure secondary weights."
+  description = "Traffic steering contract with endpoint and weight metadata used by global traffic controls to keep OCI primary and Azure secondary."
   value = var.enable_traffic_steering_contract ? {
     app_fqdn                 = var.app_fqdn
     oci_primary_endpoint     = var.oci_primary_endpoint
@@ -64,7 +64,7 @@ output "traffic_steering_contract" {
 }
 
 output "gitops_contract" {
-  description = "GitOps contract metadata for multi-cluster deployment orchestration."
+  description = "GitOps hand-off metadata for multi-cluster delivery pipelines, including tool, repository, branch, and primary/secondary cluster references."
   value = var.enable_gitops_contract ? {
     tool      = lower(var.gitops_tool)
     repo_url  = var.gitops_repo_url

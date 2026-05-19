@@ -6,6 +6,9 @@ This folder is the repository-level architecture index. The authoritative
 architecture for a deployable pattern still lives beside that pattern at
 `blueprints/<family>/<deployment>/architecture/README.md`.
 
+If you are new here, start with this file to understand how the repo is wired,
+then jump into a specific blueprint Architecture file for implementation detail.
+
 ## Repository Architecture
 
 ```text
@@ -105,7 +108,7 @@ terraform plan or ansible/plan.yml
 
 ## Blueprint Architecture Inventory
 
-The current catalog has 70 deployable blueprint entry points across 13
+The current catalog has 73 deployable blueprint entry points across 13
 families. Each entry point owns its local Architecture in
 `architecture/README.md`.
 
@@ -137,9 +140,11 @@ families. Each entry point owns its local Architecture in
 | data-platform | [Private Data Platform Landing Zone](../../blueprints/data-platform/private-data-platform/) | [Architecture](../../blueprints/data-platform/private-data-platform/architecture/) |
 | devops | [OCI DevOps Pipeline](../../blueprints/devops/oci-devops-pipeline/) | [Architecture](../../blueprints/devops/oci-devops-pipeline/architecture/) |
 | disaster-recovery | [Azure + OCI Cross-Cloud DR](../../blueprints/disaster-recovery/azure-oci-cross-cloud-dr/) | [Architecture](../../blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/) |
+| disaster-recovery | [AWS + OCI Cross-Cloud DR](../../blueprints/disaster-recovery/aws-oci-cross-cloud-dr/) | [Architecture](../../blueprints/disaster-recovery/aws-oci-cross-cloud-dr/architecture/) |
 | disaster-recovery | [Full Stack Disaster Recovery](../../blueprints/disaster-recovery/fsdr/) | [Architecture](../../blueprints/disaster-recovery/fsdr/architecture/) |
 | extensions | [API Gateway Extension](../../blueprints/extensions/apigw/) | [Architecture](../../blueprints/extensions/apigw/architecture/) |
 | extensions | [AKS + OKE Active Active](../../blueprints/extensions/aks-oke-active-active/) | [Architecture](../../blueprints/extensions/aks-oke-active-active/architecture/) |
+| extensions | [EKS + OKE Active Active](../../blueprints/extensions/eks-oke-active-active/) | [Architecture](../../blueprints/extensions/eks-oke-active-active/architecture/) |
 | extensions | [OCI Container Instances](../../blueprints/extensions/container-instances/) | [Architecture](../../blueprints/extensions/container-instances/architecture/) |
 | extensions | [Event-Driven Application Platform](../../blueprints/extensions/event-driven-platform/) | [Architecture](../../blueprints/extensions/event-driven-platform/architecture/) |
 | extensions | [Exadata Extension](../../blueprints/extensions/exadata/) | [Architecture](../../blueprints/extensions/exadata/architecture/) |
@@ -159,6 +164,7 @@ families. Each entry point owns its local Architecture in
 | industry | [Secure Desktops Landing Zone](../../blueprints/industry/secure-desktops/) | [Architecture](../../blueprints/industry/secure-desktops/architecture/) |
 | industry | [Telco Cloud Native Landing Zone](../../blueprints/industry/telco-cloud-native/) | [Architecture](../../blueprints/industry/telco-cloud-native/architecture/) |
 | networking | [Externally Managed VCNs](../../blueprints/networking/externally-managed-vcns/) | [Architecture](../../blueprints/networking/externally-managed-vcns/architecture/) |
+| networking | [AWS + OCI Hybrid Network Backbone](../../blueprints/networking/aws-oci-hybrid-network-backbone/) | [Architecture](../../blueprints/networking/aws-oci-hybrid-network-backbone/architecture/) |
 | networking | [Hub-Spoke With DRG And Three-Tier VCNs](../../blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/) | [Architecture](../../blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/architecture/) |
 | networking | [Hub-Spoke With Dual Region DR](../../blueprints/networking/hub-spoke-with-dual-region-dr/) | [Architecture](../../blueprints/networking/hub-spoke-with-dual-region-dr/architecture/) |
 | networking | [Hub-Spoke With Bastion Jump Host](../../blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/) | [Architecture](../../blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/architecture/) |

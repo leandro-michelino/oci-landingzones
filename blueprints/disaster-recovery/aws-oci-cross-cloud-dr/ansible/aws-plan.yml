@@ -1,0 +1,17 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+---
+- name: AWS CloudFormation plan session for DR standby deployment
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    aws_action: plan
+    aws_stack_name: "{{ lookup('env', 'AWS_DR_STACK_NAME') | default('oci-aws-dr-standby-dev', true) }}"
+    aws_region: "{{ lookup('env', 'AWS_DR_REGION') | default('eu-west-1', true) }}"
+    aws_template_file: "{{ playbook_dir }}/../aws/main.yaml"
+    aws_parameters_file: "{{ lookup('env', 'AWS_DR_PARAMETERS_FILE') | default(playbook_dir ~ '/../aws/parameters.example.json', true) }}"
+    aws_capabilities: "CAPABILITY_NAMED_IAM"
+  tasks:
+    - name: Run shared AWS deployment runner
+      ansible.builtin.import_role:
+        name: ../../../../ansible/roles/aws_deployment_runner

@@ -1,0 +1,265 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+---
+- name: Normalize AWS deployment action
+  ansible.builtin.set_fact:
+    aws_action_normalized: "{{ aws_action | lower }}"
+
+- name: Validate AWS deployment action
+  ansible.builtin.assert:
+    that:
+      - aws_action_normalized in ["plan", "apply", "destroy"]
+    fail_msg: "aws_action must be one of: plan, apply, destroy."
+
+- name: Require explicit AWS apply confirmation
+  ansible.builtin.assert:
+    that:
+      - lookup('env', 'CONFIRM_AWS_APPLY') == 'true'
+    fail_msg: "Refusing AWS apply without CONFIRM_AWS_APPLY=true."
+  when: aws_action_normalized == "apply"
+
+- name: Require explicit AWS destroy confirmation
+  ansible.builtin.assert:
+    that:
+      - lookup('env', 'CONFIRM_AWS_DESTROY') == 'true'
+    fail_msg: "Refusing AWS destroy without CONFIRM_AWS_DESTROY=true."
+  when: aws_action_normalized == "destroy"
+
+- name: Validate AWS CLI availability
+  ansible.builtin.command: aws --version
+  changed_when: false
+
+- name: Validate AWS CLI login context
+  ansible.builtin.command:
+    argv:
+      - aws
+      - sts
+      - get-caller-identity
+      - --output
+      - json
+  changed_when: false
+
+- name: Ensure AWS template file exists
+  ansible.builtin.stat:
+    path: "{{ aws_template_file }}"
+  register: aws_template_status
+  when: aws_action_normalized in ["plan", "apply"]
+
+- name: Fail when AWS template file is missing
+  ansible.builtin.assert:
+    that:
+      - aws_template_status.stat.exists
+    fail_msg: "AWS template file not found: {{ aws_template_file }}"
+  when: aws_action_normalized in ["plan", "apply"]
+
+- name: Ensure AWS parameters file exists
+  ansible.builtin.stat:
+    path: "{{ aws_parameters_file }}"
+  register: aws_parameters_status
+  when: aws_action_normalized in ["plan", "apply"]
+
+- name: Fail when AWS parameters file is missing
+  ansible.builtin.assert:
+    that:
+      - aws_parameters_status.stat.exists
+    fail_msg: "AWS parameters file not found: {{ aws_parameters_file }}"
+  when: aws_action_normalized in ["plan", "apply"]
+
+- name: Validate AWS CloudFormation template
+  ansible.builtin.command:
+    argv:
+      - aws
+      - cloudformation
+      - validate-template
+      - --region
+      - "{{ aws_region }}"
+      - --template-body
+      - "file://{{ aws_template_file }}"
+  changed_when: false
+  when: aws_action_normalized in ["plan", "apply"]
+
+- name: Run AWS CloudFormation plan
+  ansible.builtin.command:
+    argv:
+      - aws
+      - cloudformation
+      - deploy
+      - --stack-name
+      - "{{ aws_stack_name }}"
+      - --region
+      - "{{ aws_region }}"
+      - --template-file
+      - "{{ aws_template_file }}"
+      - --parameter-overrides
+      - "file://{{ aws_parameters_file }}"
+      - --capabilities
+      - "{{ aws_capabilities }}"
+      - --no-execute-changeset
+      - --no-fail-on-empty-changeset
+  register: aws_plan_result
+  changed_when: false
+  when: aws_action_normalized == "plan"
+
+- name: Check AWS CloudFormation stack status after plan
+  ansible.builtin.command:
+    argv:
+      - aws
+      - cloudformation
+      - describe-stacks
+      - --stack-name
+      - "{{ aws_stack_name }}"
+      - --region
+      - "{{ aws_region }}"
+      - --query
+      - "Stacks[0].StackStatus"
+      - --output
+      - text
+  register: aws_stack_status_after_plan
+  changed_when: false
+  failed_when: false
+  when: aws_action_normalized == "plan"
+
+- name: Remove CloudFormation review-only stack left by plan
+  ansible.builtin.command:
+    argv:
+      - aws
+      - cloudformation
+      - delete-stack
+      - --stack-name
+      - "{{ aws_stack_name }}"
+      - --region
+      - "{{ aws_region }}"
+  changed_when: true
+  when:
+    - aws_action_normalized == "plan"
+    - aws_stack_status_after_plan.rc == 0
+    - aws_stack_status_after_plan.stdout is search("REVIEW_IN_PROGRESS")
+
+- name: Wait for review-only stack deletion completion
+  ansible.builtin.command:
+    argv:
+      - aws
+      - cloudformation
+      - wait
+      - stack-delete-complete
+      - --stack-name
+      - "{{ aws_stack_name }}"
+      - --region
+      - "{{ aws_region }}"
+  changed_when: false
+  failed_when: false
+  when:
+    - aws_action_normalized == "plan"
+    - aws_stack_status_after_plan.rc == 0
+    - aws_stack_status_after_plan.stdout is search("REVIEW_IN_PROGRESS")
+
+- name: Summarize AWS plan output
+  ansible.builtin.debug:
+    msg:
+      - "AWS plan completed for stack {{ aws_stack_name }} in {{ aws_region }}."
+      - "Mode: no-execute changeset (validation only)."
+      - >-
+        {{
+          (
+            aws_stack_status_after_plan.rc == 0 and
+            (aws_stack_status_after_plan.stdout is search('REVIEW_IN_PROGRESS'))
+          )
+          | ternary(
+            'Plan created a review stack; auto-cleanup was executed.',
+            'Plan did not leave a review stack behind.'
+          )
+        }}
+  when: aws_action_normalized == "plan"
+
+- name: Apply AWS CloudFormation stack
+  ansible.builtin.command:
+    argv:
+      - aws
+      - cloudformation
+      - deploy
+      - --stack-name
+      - "{{ aws_stack_name }}"
+      - --region
+      - "{{ aws_region }}"
+      - --template-file
+      - "{{ aws_template_file }}"
+      - --parameter-overrides
+      - "file://{{ aws_parameters_file }}"
+      - --capabilities
+      - "{{ aws_capabilities }}"
+      - --no-fail-on-empty-changeset
+  changed_when: true
+  when: aws_action_normalized == "apply"
+
+- name: Show AWS CloudFormation stack outputs
+  ansible.builtin.command:
+    argv:
+      - aws
+      - cloudformation
+      - describe-stacks
+      - --stack-name
+      - "{{ aws_stack_name }}"
+      - --region
+      - "{{ aws_region }}"
+      - --query
+      - "Stacks[0].Outputs"
+      - --output
+      - json
+  register: aws_stack_outputs
+  changed_when: false
+  when: aws_action_normalized == "apply"
+
+- name: Parse AWS stack outputs
+  ansible.builtin.set_fact:
+    aws_stack_outputs_parsed: "{{ aws_stack_outputs.stdout | from_json }}"
+  when: aws_action_normalized == "apply"
+
+- name: Summarize AWS apply output
+  ansible.builtin.debug:
+    msg:
+      - "AWS apply completed for stack {{ aws_stack_name }} in {{ aws_region }}."
+      - "Returned output count: {{ aws_stack_outputs_parsed | length }}."
+      - "Outputs (JSON): {{ aws_stack_outputs_parsed | to_nice_json }}"
+  when: aws_action_normalized == "apply"
+
+- name: Delete AWS CloudFormation stack
+  ansible.builtin.command:
+    argv:
+      - aws
+      - cloudformation
+      - delete-stack
+      - --stack-name
+      - "{{ aws_stack_name }}"
+      - --region
+      - "{{ aws_region }}"
+  changed_when: true
+  when: aws_action_normalized == "destroy"
+
+- name: Wait for AWS stack delete completion
+  ansible.builtin.command:
+    argv:
+      - aws
+      - cloudformation
+      - wait
+      - stack-delete-complete
+      - --stack-name
+      - "{{ aws_stack_name }}"
+      - --region
+      - "{{ aws_region }}"
+  register: aws_destroy_wait
+  changed_when: false
+  failed_when: false
+  when: aws_action_normalized == "destroy"
+
+- name: Confirm AWS deletion request accepted
+  ansible.builtin.debug:
+    msg:
+      - "AWS destroy completed for stack {{ aws_stack_name }} in {{ aws_region }}."
+      - >-
+        {{
+          ((aws_destroy_wait.rc | default(1)) == 0)
+          | ternary(
+            'CloudFormation reported stack-delete-complete.',
+            'CloudFormation wait did not confirm completion; verify stack status manually.'
+          )
+        }}
+  when: aws_action_normalized == "destroy"

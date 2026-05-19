@@ -71,6 +71,7 @@ Run `make blueprints` after adding, moving, or removing a blueprint.
 
 | Blueprint | Summary | Architecture |
 |---|---|---|
+| [AWS + OCI Cross-Cloud DR](blueprints/disaster-recovery/aws-oci-cross-cloud-dr/) | Cross-cloud DR contract with OCI primary and AWS standby, DNS failover runbook metadata, and interconnect or no-interconnect connectivity modes. | [Architecture](blueprints/disaster-recovery/aws-oci-cross-cloud-dr/architecture/README.md) |
 | [Azure + OCI Cross-Cloud DR](blueprints/disaster-recovery/azure-oci-cross-cloud-dr/) | Cross-cloud DR contract with OCI primary and Azure standby, DNS failover runbook metadata, and interconnect or no-interconnect connectivity modes. | [Architecture](blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/README.md) |
 | [Full Stack Disaster Recovery](blueprints/disaster-recovery/fsdr/) | Creates OCI Full Stack Disaster Recovery primary and standby protection groups, log buckets, and DR plan wiring. | [Architecture](blueprints/disaster-recovery/fsdr/architecture/README.md) |
 
@@ -82,6 +83,7 @@ Run `make blueprints` after adding, moving, or removing a blueprint.
 | [API Gateway Extension](blueprints/extensions/apigw/) | Adds OCI API Gateway resources to an existing landing zone so API exposure, routing, and deployment outputs are managed consistently. | [Architecture](blueprints/extensions/apigw/architecture/README.md) |
 | [OCI Container Instances](blueprints/extensions/container-instances/) | Serverless container runtime for private app workers, APIs, and small services that do not need OKE. | [Architecture](blueprints/extensions/container-instances/architecture/README.md) |
 | [Oracle Digital Assistant](blueprints/extensions/digital-assistant/) | Oracle Digital Assistant landing zone with optional deploy-and-use private endpoint network, ODA instance, private endpoint attachment, and IAM/alert contracts. | [Architecture](blueprints/extensions/digital-assistant/architecture/README.md) |
+| [EKS + OKE Active Active](blueprints/extensions/eks-oke-active-active/) | Active/active EKS + OKE operating model with OCI as primary, partner interconnect, GitOps contract, and weighted traffic steering contract. | [Architecture](blueprints/extensions/eks-oke-active-active/architecture/README.md) |
 | [Event-Driven Application Platform](blueprints/extensions/event-driven-platform/) | Event-driven apps, AI automation, integration pipelines, and async workload hand-offs. | [Architecture](blueprints/extensions/event-driven-platform/architecture/README.md) |
 | [Exadata Extension](blueprints/extensions/exadata/) | Adds OCI Cloud Exadata Infrastructure as an optional service extension after the landing-zone network and compartments are ready. | [Architecture](blueprints/extensions/exadata/architecture/README.md) |
 | [Oracle Functions Extension](blueprints/extensions/functions/) | OCI-native serverless functions with optional OCIR repository, private application subnet, API Gateway routes, Events triggers, and scoped IAM. | [Architecture](blueprints/extensions/functions/architecture/README.md) |
@@ -113,6 +115,7 @@ Run `make blueprints` after adding, moving, or removing a blueprint.
 
 | Blueprint | Summary | Architecture |
 |---|---|---|
+| [AWS + OCI Hybrid Network Backbone](blueprints/networking/aws-oci-hybrid-network-backbone/) | OCI DRG-primary hybrid network backbone with AWS Transit Gateway pairing, optional site-to-site VPN, and optional Direct Connect + FastConnect partner interconnect contract. | [Architecture](blueprints/networking/aws-oci-hybrid-network-backbone/architecture/README.md) |
 | [Externally Managed VCNs](blueprints/networking/externally-managed-vcns/) | Normalizes existing VCN, subnet, DRG, and route-target IDs so downstream blueprints can consume brownfield networking cleanly. | [Architecture](blueprints/networking/externally-managed-vcns/architecture/README.md) |
 | [Hub-Spoke With DRG And Three-Tier VCNs](blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/) | Builds a hub VCN, DRG, spoke VCNs, and DRG attachments for a classic routed hub-spoke landing-zone network. | [Architecture](blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/architecture/README.md) |
 | [Hub-Spoke With Dual Region DR](blueprints/networking/hub-spoke-with-dual-region-dr/) | Creates paired primary and secondary hub-spoke networking for disaster-recovery-ready regional separation. | [Architecture](blueprints/networking/hub-spoke-with-dual-region-dr/architecture/README.md) |

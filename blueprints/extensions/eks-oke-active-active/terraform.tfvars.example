@@ -1,0 +1,70 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid       = "ocid1.tenancy.oc1..example"
+current_user_ocid  = "ocid1.user.oc1..example"
+region             = "eu-madrid-1"
+home_region        = "eu-madrid-1"
+oci_config_profile = "DEFAULT"
+
+org         = "acme"
+environment = "prod"
+region_key  = "mad"
+
+# OCI stays primary in this pattern.
+oci_is_primary = true
+
+# Interconnect only. Keep IPSec backup disabled.
+interconnect_mode             = "direct-connect-fastconnect-partner"
+enable_ipsec_backup           = false
+# fastconnect_virtual_circuit_id = "ocid1.virtualcircuit.oc1..example"
+# direct_connect_connection_id = "dxcon-example123456"
+
+# OKE creation disabled by default for safe validation runs.
+enable_oke_cluster   = false
+enable_oke_node_pool = false
+oke_cluster_label    = "oci-primary"
+oke_node_pool_label  = "oci-workers"
+
+# OCI networking defaults are deploy-and-use and create:
+# VCN + route table + security lists + endpoint/node/LB subnets.
+enable_oke_networking      = true
+oke_vcn_cidr               = "10.42.0.0/16"
+oke_endpoint_subnet_cidr   = "10.42.10.0/24"
+oke_node_subnet_cidrs      = ["10.42.20.0/24"]
+oke_service_lb_subnet_cidr = "10.42.30.0/24"
+oke_api_allowed_cidr       = "0.0.0.0/0"
+# oke_node_ssh_allowed_cidr = "203.0.113.0/24"
+
+# Required when creating OKE resources if enable_oke_networking=false.
+# compartment_ocid       = "ocid1.compartment.oc1..example"
+# oke_vcn_id             = "ocid1.vcn.oc1..example"
+# oke_endpoint_subnet_id = "ocid1.subnet.oc1..example"
+# oke_kubernetes_version = "v1.31.1"
+# oke_node_subnet_ids    = ["ocid1.subnet.oc1..example"]
+
+# EKS is referenced as existing secondary cluster in this blueprint variant.
+# eks_cluster_id   = "arn:aws:eks:eu-west-1:123456789012:cluster/eks-oci-secondary"
+# eks_cluster_name = "eks-oci-secondary"
+# eks_stack_name   = "eks-oci-secondary-dev"
+
+# GitOps and traffic steering contracts.
+enable_gitops_contract           = true
+gitops_tool                      = "argocd"
+# gitops_repo_url                = "https://github.com/example/platform-gitops.git"
+gitops_branch                    = "main"
+
+enable_traffic_steering_contract = true
+app_fqdn                         = "apps.example.com"
+# oci_primary_endpoint           = "oci.apps.example.com"
+# aws_secondary_endpoint       = "aws.apps.example.com"
+oci_primary_traffic_percent      = 100
+
+defined_tags = {
+  "acme-tags.Environment" = "prod"
+  "acme-tags.ManagedBy"   = "terraform"
+  "acme-tags.Owner"       = "platform-team"
+  "acme-tags.Project"     = "landingzone"
+}
+
+freeform_tags = {
+  Extension = "eks-oke-active-active"
+}

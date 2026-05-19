@@ -1,0 +1,129 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS network backbone resources paired with OCI-primary DRG backbone.
+
+Parameters:
+  BackboneVpcCidr:
+    Type: String
+    Default: 10.94.0.0/16
+  BackboneSubnetCidr:
+    Type: String
+    Default: 10.94.10.0/24
+  AllowedIngressCidr:
+    Type: String
+    Default: 10.0.0.0/8
+
+Resources:
+  BackboneVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref BackboneVpcCidr
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-vpc-backbone'
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-igw-backbone'
+
+  VpcIgwAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref BackboneVpc
+      InternetGatewayId: !Ref InternetGateway
+
+  BackboneRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref BackboneVpc
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-rt-backbone'
+
+  DefaultRoute:
+    Type: AWS::EC2::Route
+    DependsOn: VpcIgwAttachment
+    Properties:
+      RouteTableId: !Ref BackboneRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  BackboneSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref BackboneVpc
+      CidrBlock: !Ref BackboneSubnetCidr
+      AvailabilityZone: !Select [0, !GetAZs '']
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-sn-backbone'
+
+  SubnetRouteAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref BackboneSubnet
+      RouteTableId: !Ref BackboneRouteTable
+
+  BackboneSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: AWS backbone security group for OCI hybrid interconnect demos.
+      VpcId: !Ref BackboneVpc
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: !Ref AllowedIngressCidr
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-sg-backbone'
+
+  TransitGateway:
+    Type: AWS::EC2::TransitGateway
+    Properties:
+      Description: !Sub '${AWS::StackName} transit gateway for OCI backbone interconnect'
+      DefaultRouteTableAssociation: enable
+      DefaultRouteTablePropagation: enable
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-tgw-backbone'
+
+  TransitGatewayAttachment:
+    Type: AWS::EC2::TransitGatewayAttachment
+    Properties:
+      TransitGatewayId: !Ref TransitGateway
+      VpcId: !Ref BackboneVpc
+      SubnetIds:
+        - !Ref BackboneSubnet
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-tgw-attach-backbone'
+
+Outputs:
+  AwsTransitGatewayId:
+    Description: Transit Gateway ID for OCI DRG attachment contracts.
+    Value: !Ref TransitGateway
+  AwsTransitGatewayAttachmentId:
+    Description: Transit Gateway attachment ID.
+    Value: !Ref TransitGatewayAttachment
+  AwsBackboneVpcId:
+    Description: AWS backbone VPC ID.
+    Value: !Ref BackboneVpc
+  AwsBackboneSubnetId:
+    Description: AWS backbone subnet ID.
+    Value: !Ref BackboneSubnet
+  AwsBackboneRouteTableId:
+    Description: AWS backbone route table ID.
+    Value: !Ref BackboneRouteTable
+  AwsBackboneSecurityGroupId:
+    Description: AWS backbone security group ID.
+    Value: !Ref BackboneSecurityGroup

@@ -1,8 +1,8 @@
-# OCI Landing Zones - Implementation Roadmap
+# OCI Landing Zones Roadmap
 
-This document tracks planned blueprint work. Implemented blueprints are listed
-briefly - their full specs live in the individual blueprint folders. Only
-blueprints without a folder yet carry detailed planning notes here.
+This document tracks what is already implemented and what is next.
+Implemented blueprints are summarized here, with full specs in each blueprint
+folder. Detailed planning notes stay only for items that are not implemented yet.
 
 Each planned blueprint follows the same folder contract as existing ones:
 
@@ -22,8 +22,8 @@ blueprints/<family>/<deployment>/
     `-- destroy.yml
 ```
 
-Add a new deployable blueprint only when it represents a customer outcome with
-its own lifecycle, owner, approval path, state boundary, or architecture review.
+Add a new deployable blueprint only when it represents a real customer outcome
+with its own lifecycle, owner, approval path, state boundary, or architecture review.
 Do not create a full deployment for every topic or subtopic. Supporting pieces
 such as a single notification topic, event rule, alarm set, NSG choice, private
 endpoint, API route group, or optional IAM policy should stay inside the owning
@@ -39,7 +39,7 @@ compliance, or workload platform pattern.
 
 ## Already Implemented
 
-The repository currently contains 70 fully implemented and deployable blueprint
+The repository currently contains 73 fully implemented and deployable blueprint
 entry points. See [Architecture Index](architecture/README.md#blueprint-architecture-inventory)
 for the complete folder-by-folder list with links to each local Architecture
 file.
@@ -52,11 +52,11 @@ file.
 | `blueprints/core/` | 1 |
 | `blueprints/data-platform/` | 7 |
 | `blueprints/devops/` | 1 |
-| `blueprints/disaster-recovery/` | 2 |
-| `blueprints/extensions/` | 15 |
+| `blueprints/disaster-recovery/` | 3 |
+| `blueprints/extensions/` | 16 |
 | `blueprints/identity/` | 3 |
 | `blueprints/industry/` | 2 |
-| `blueprints/networking/` | 19 |
+| `blueprints/networking/` | 20 |
 | `blueprints/operating-entity/` | 3 |
 | `blueprints/operations/` | 1 |
 
@@ -737,11 +737,11 @@ clouds.
 
 ### AWS + OCI Idea Bullets
 
+- Implemented: Hybrid network backbone (OCI DRG primary) with AWS Transit Gateway pairing contracts, optional site-to-site VPN resources, and optional Direct Connect/FastConnect interconnect mode in `blueprints/networking/aws-oci-hybrid-network-backbone/`.
+- Implemented: Multi-cloud DR (OCI primary, AWS standby) with DNS failover runbook metadata, RTO/RPO contracts, and drill evidence hooks in `blueprints/disaster-recovery/aws-oci-cross-cloud-dr/`.
+- Implemented: EKS + OKE active/active with OCI-primary OKE, AWS EKS secondary contract, weighted traffic steering, and GitOps hand-off in `blueprints/extensions/eks-oke-active-active/`.
 - Identity federation baseline: Central IdP and AWS IAM Identity Center with OCI IAM federation for SSO and centralized RBAC mapping.
-- Hybrid network backbone: OCI-primary backbone with OCI DRG connected to AWS Transit Gateway using site-to-site VPN or Direct Connect/FastConnect partner interconnect.
-- Multi-cloud DR: OCI primary with AWS standby and DNS failover runbooks with drill evidence capture.
 - Data replication and analytics split: AWS RDS/S3 ingestion into OCI Object Storage + Autonomous Database (or reverse path) for analytics domains.
-- EKS + OKE active/active: OCI-primary OKE with AWS EKS secondary, GitOps promotion, weighted traffic steering, and policy-based failover.
 - Unified security baseline: AWS Config/Security Hub/GuardDuty mapping to OCI Cloud Guard/Security Zones with shared controls matrix.
 - Centralized observability: CloudWatch/CloudTrail + OCI Logging/Audit into unified SIEM pipelines and correlated alerting.
 - FinOps governance: Cross-cloud tagging taxonomy, allocation dimensions, and anomaly detection across AWS and OCI.

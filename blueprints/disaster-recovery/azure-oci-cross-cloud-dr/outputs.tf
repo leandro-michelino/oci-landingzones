@@ -1,16 +1,16 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 output "blueprint_name" {
-  description = "Blueprint identifier."
+  description = "Stable blueprint deployment identifier used for reporting, runbooks, and cross-blueprint automation hand-offs."
   value       = local.blueprint_name
 }
 
 output "name_prefix" {
-  description = "Standard OCI naming prefix for resources created by this blueprint."
+  description = "Resolved OCI naming prefix applied to resources and contracts in this blueprint; reuse it for consistent naming in downstream automation."
   value       = local.name_prefix
 }
 
 output "resource_ids" {
-  description = "Map of resource identifiers created by this blueprint."
+  description = "Consolidated map of resource and contract identifiers produced by this blueprint; use it as the primary machine-readable hand-off for integration and runbook steps."
   value = {
     oci_network_contract = terraform_data.oci_network_contract.id
     oci_primary_vcn      = try(oci_core_vcn.primary[0].id, null)
@@ -26,7 +26,7 @@ output "resource_ids" {
 }
 
 output "primary_target" {
-  description = "Primary workload target in this DR variant."
+  description = "Declared primary workload target for this DR pattern. In this variant OCI remains primary and is the expected steady-state endpoint."
   value = {
     cloud    = "oci"
     endpoint = var.oci_primary_endpoint
@@ -34,7 +34,7 @@ output "primary_target" {
 }
 
 output "standby_target" {
-  description = "Standby workload target in this DR variant."
+  description = "Declared standby workload target for failover. In this variant Azure is the secondary endpoint activated by DR runbooks."
   value = {
     cloud    = "azure"
     endpoint = var.azure_standby_endpoint
@@ -42,26 +42,26 @@ output "standby_target" {
 }
 
 output "connectivity_contract" {
-  description = "Connectivity mode contract for interconnect or no-interconnect operation."
+  description = "Connectivity contract recording whether DR traffic is expected through partner interconnect or through the no-interconnect operating mode."
   value       = local.effective_interconnect
 }
 
 output "dns_failover_contract" {
-  description = "DNS failover contract metadata for primary/standby cutover."
+  description = "DNS cutover metadata consumed by failover automation and runbooks, including primary/standby records and health-check intent."
   value       = var.enable_dns_failover_contract ? local.dns_failover_contract : null
 }
 
 output "runbook_contract" {
-  description = "Failover and failback runbook contract metadata."
+  description = "Operational contract for DR execution steps, ownership, and sequencing used by failover and failback procedures."
   value       = var.enable_runbook_contract ? local.runbook_contract : null
 }
 
 output "dr_evidence_bucket_name" {
-  description = "DR evidence bucket name."
+  description = "Object Storage bucket name for DR evidence artifacts such as drill logs, timing reports, approvals, and reconciliation records."
   value       = try(oci_objectstorage_bucket.dr_evidence[0].name, null)
 }
 
 output "dr_alert_topic_id" {
-  description = "DR alert Notifications topic OCID."
+  description = "OCI Notifications topic OCID used by DR alarms and runbook event signaling."
   value       = try(oci_ons_notification_topic.dr_alert[0].id, null)
 }

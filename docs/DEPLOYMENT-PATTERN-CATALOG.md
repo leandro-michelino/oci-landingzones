@@ -6,6 +6,9 @@ This catalog keeps the deployment menu broader than a single reference
 implementation. It borrows from OCI landing zone repositories, OCI reference
 architectures, and patterns that show up in real customer conversations.
 
+Use this as a menu: pick the pattern that matches your outcome, then move to
+the linked blueprint folder for deployable artifacts.
+
 Implemented patterns should have a self-contained blueprint folder with its own
 `README.md`, `architecture/README.md`, Terraform files, variables example, and
 validation notes. The architecture README is the canonical text artifact for the
@@ -47,6 +50,7 @@ folder.
 | Networking | Hub-spoke with dual-region DR | `blueprints/networking/hub-spoke-with-dual-region-dr/` | Implemented |
 | Networking | Multi-tenancy shared services | `blueprints/networking/multi-tenancy-shared-services/` | Implemented |
 | Networking | Hub-spoke with multicloud interconnect | `blueprints/networking/hub-spoke-with-multicloud-interconnect/` | Implemented |
+| Networking | AWS + OCI hybrid network backbone (OCI DRG primary, VPN and Direct Connect/FastConnect contracts) | `blueprints/networking/aws-oci-hybrid-network-backbone/` | Implemented |
 | Networking | Azure + OCI hybrid networking (ExpressRoute/FastConnect + IPSec backup) | `blueprints/networking/azure-oci-hybrid-networking/` | Planned |
 | Networking | Regional prod/nonprod hub separation | `blueprints/networking/regional-prod-nonprod-hubs/` | Implemented |
 | Networking | OCI Network Load Balancer (Layer 4 TCP/UDP, private backend, health checks) | `blueprints/networking/network-load-balancer/` | Implemented |
@@ -56,6 +60,7 @@ folder.
 | Compliance | Security posture automation (Cloud Guard + Vuln Scan + auto-remediation) | `blueprints/compliance/security-posture/` | Implemented |
 | Disaster recovery | Full Stack Disaster Recovery | `blueprints/disaster-recovery/fsdr/` | Implemented |
 | Disaster recovery | Azure + OCI cross-cloud DR | `blueprints/disaster-recovery/azure-oci-cross-cloud-dr/` | Implemented |
+| Disaster recovery | AWS + OCI cross-cloud DR | `blueprints/disaster-recovery/aws-oci-cross-cloud-dr/` | Implemented |
 | Data platform | Autonomous Database ATP / ADW | `blueprints/data-platform/autonomous-database/` | Implemented |
 | Data platform | Private data platform landing zone | `blueprints/data-platform/private-data-platform/` | Implemented |
 | Data platform | PostgreSQL landing zone | `blueprints/data-platform/postgresql/` | Implemented |
@@ -77,6 +82,7 @@ folder.
 | Industry | OCI Secure Desktops (VDI, private network, IAM, session policies) | `blueprints/industry/secure-desktops/` | Implemented |
 | Extensions | OKE extension | `blueprints/extensions/oke/` | Implemented |
 | Extensions | AKS + OKE active/active (OCI primary, interconnect-only, no IPSec backup) | `blueprints/extensions/aks-oke-active-active/` | Implemented |
+| Extensions | EKS + OKE active/active (OCI primary, interconnect-only, no IPSec backup) | `blueprints/extensions/eks-oke-active-active/` | Implemented |
 | Extensions | OKE service mesh | `blueprints/extensions/oke-service-mesh/` | Implemented |
 | Extensions | Exadata extension | `blueprints/extensions/exadata/` | Implemented |
 | Extensions | API Gateway extension | `blueprints/extensions/apigw/` | Implemented |

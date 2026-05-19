@@ -1,16 +1,16 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 output "blueprint_name" {
-  description = "Blueprint identifier."
+  description = "Stable blueprint deployment identifier used for reporting, runbooks, and cross-blueprint automation hand-offs."
   value       = local.blueprint_name
 }
 
 output "name_prefix" {
-  description = "Standard OCI naming prefix for resources created by this blueprint."
+  description = "Resolved OCI naming prefix applied to resources and contracts in this blueprint; reuse it for consistent naming in downstream automation."
   value       = local.name_prefix
 }
 
 output "resource_ids" {
-  description = "Map of resource identifiers created by this blueprint."
+  description = "Consolidated map of resource and contract identifiers produced by this blueprint; use it as the primary machine-readable hand-off for integration and runbook steps."
   value = {
     oci_network_contract      = terraform_data.oci_network_contract.id
     oci_gateway_vcn           = try(oci_core_vcn.gateway[0].id, null)
@@ -30,22 +30,22 @@ output "resource_ids" {
 }
 
 output "oci_network_contract" {
-  description = "Deploy-and-use OCI gateway network contract."
+  description = "OCI gateway network hand-off contract containing effective VCN, subnet, route table, and security-list references for the API front door."
   value       = terraform_data.oci_network_contract.input
 }
 
 output "connectivity_contract" {
-  description = "Cross-cloud connectivity mode and interconnect identifiers."
+  description = "Cross-cloud connectivity contract with selected mode and partner interconnect identifiers that operations teams can verify during cutover drills."
   value       = local.connectivity_contract
 }
 
 output "routing_contract" {
-  description = "AI gateway routing policy contract for region, cost, and data residency routes."
+  description = "Routing-policy contract for provider selection by region, cost, and data-residency intent, used by runbooks and policy review workflows."
   value       = local.routing_contract
 }
 
 output "provider_endpoints" {
-  description = "Configured provider endpoints for OCI and Azure AI backends."
+  description = "Resolved backend inference endpoints for OCI Generative AI and Azure OpenAI that the gateway routes requests toward."
   value = {
     oci_inference_url   = var.oci_generative_ai_inference_url
     azure_inference_url = var.azure_openai_inference_url
@@ -53,7 +53,7 @@ output "provider_endpoints" {
 }
 
 output "gateway_route_map" {
-  description = "OCI API Gateway route map for provider and strategy paths."
+  description = "Operator-readable route map exposing provider and strategy URI paths implemented by this gateway deployment."
   value = {
     path_prefix = var.gateway_path_prefix
     routes = {
@@ -71,36 +71,36 @@ output "gateway_route_map" {
 }
 
 output "oci_gateway_id" {
-  description = "OCI API Gateway OCID."
+  description = "OCI API Gateway OCID for the primary ingress surface in this multicloud AI pattern."
   value       = local.oci_gateway_id_effective
 }
 
 output "oci_gateway_deployment_id" {
-  description = "OCI API Gateway deployment OCID."
+  description = "OCI API Gateway deployment OCID for the active route configuration."
   value       = local.oci_deployment_id_effective
 }
 
 output "oci_usage_plan_ids" {
-  description = "OCI API Gateway usage plan OCIDs keyed by logical name."
+  description = "OCI API Gateway usage-plan OCIDs keyed by logical plan name, used for quota and throttling operations."
   value       = { for key, plan in oci_apigateway_usage_plan.this : key => plan.id }
 }
 
 output "oci_audit_bucket_name" {
-  description = "OCI audit bucket name for AI gateway evidence."
+  description = "Object Storage bucket name used for gateway audit and evidence artifacts."
   value       = try(oci_objectstorage_bucket.audit[0].name, null)
 }
 
 output "oci_routing_log_group_id" {
-  description = "OCI logging log group OCID for AI gateway routing logs."
+  description = "OCI Logging log-group OCID where routing and decision telemetry for this AI gateway is retained."
   value       = try(oci_logging_log_group.routing[0].id, null)
 }
 
 output "oci_access_policy_id" {
-  description = "OCI IAM policy OCID for AI gateway operators and callers."
+  description = "OCI IAM policy OCID granting scoped access needed by AI gateway operators and service callers."
   value       = try(oci_identity_policy.access[0].id, null)
 }
 
 output "azure_contract" {
-  description = "Azure-side hand-off metadata from Azure deployment session outputs."
+  description = "Azure-side hand-off metadata captured from Azure deployment outputs, including endpoint and deployment identifiers."
   value       = local.azure_contract
 }

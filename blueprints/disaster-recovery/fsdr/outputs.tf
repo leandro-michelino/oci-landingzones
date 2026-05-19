@@ -1,6 +1,6 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 output "blueprint_name" {
-  description = "Blueprint identifier."
+  description = "Stable blueprint deployment identifier used for reporting, runbooks, and cross-blueprint automation hand-offs."
   value       = local.blueprint_name
 }
 
@@ -15,7 +15,7 @@ output "standby_name_prefix" {
 }
 
 output "resource_ids" {
-  description = "Map of resource identifiers created by this blueprint."
+  description = "Consolidated map of resource and contract identifiers produced by this blueprint; use it as the primary machine-readable hand-off for integration and runbook steps."
   value = merge(
     var.enable_dr_log_buckets ? {
       primary_log_bucket = oci_objectstorage_bucket.primary_dr_logs[0].id

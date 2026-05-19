@@ -1,0 +1,32 @@
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "eu-madrid-1"
+home_region       = "eu-madrid-1"
+
+org         = "acme"
+environment = "dev"
+region_key  = "mad"
+
+compartment_ocid = "ocid1.compartment.oc1..example"
+
+oci_is_primary = true
+
+enable_oci_backbone_network    = true
+oci_backbone_vcn_cidr          = "10.54.0.0/16"
+oci_backbone_subnet_cidr       = "10.54.10.0/24"
+oci_backbone_ingress_allowed_cidr = "10.0.0.0/8"
+
+connectivity_mode                = "interconnect"
+fastconnect_virtual_circuit_id   = "ocid1.virtualcircuit.oc1..example"
+direct_connect_connection_id     = "dxcon-example123456"
+
+enable_site_to_site_vpn = true
+aws_cpe_public_ip       = "203.0.113.10"
+aws_backbone_cidrs      = ["10.94.0.0/16"]
+
+enable_backbone_alert_topic = true
+backbone_alert_topic_name   = "acme-dev-mad-top-hybrid-alert"
+
+freeform_tags = {
+  Owner = "network-platform-team"
+}

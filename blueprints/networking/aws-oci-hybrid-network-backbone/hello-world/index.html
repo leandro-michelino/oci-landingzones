@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AWS + OCI Hybrid Network Backbone</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+    main {
+      max-width: 860px;
+      margin: 40px auto;
+      padding: 24px;
+      background: #111827;
+      border: 1px solid #334155;
+      border-radius: 12px;
+    }
+    h1 { margin-top: 0; color: #7dd3fc; }
+    .ok { color: #86efac; }
+    ul { line-height: 1.8; }
+    code { color: #fbbf24; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Hello from AWS + OCI Hybrid Network Backbone</h1>
+    <p class="ok">Application: Cross-cloud hybrid network backbone status page</p>
+    <ul>
+      <li>Primary cloud: <strong>OCI</strong> (DRG hub)</li>
+      <li>Secondary cloud: <strong>AWS</strong> (Transit Gateway / Direct Connect)</li>
+      <li>Connectivity modes: <code>interconnect</code> or <code>without-interconnect</code></li>
+      <li>Optional VPN: OCI IPSec and AWS endpoint through CPE contract</li>
+    </ul>
+  </main>
+</body>
+</html>

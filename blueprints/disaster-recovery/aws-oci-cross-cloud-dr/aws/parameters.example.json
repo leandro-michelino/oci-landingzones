@@ -1,0 +1,18 @@
+[
+  {
+    "ParameterKey": "VpcCidr",
+    "ParameterValue": "10.82.0.0/16"
+  },
+  {
+    "ParameterKey": "StandbySubnetCidr",
+    "ParameterValue": "10.82.10.0/24"
+  },
+  {
+    "ParameterKey": "InstanceType",
+    "ParameterValue": "t3.micro"
+  },
+  {
+    "ParameterKey": "AllowedIngressCidr",
+    "ParameterValue": "0.0.0.0/0"
+  }
+]

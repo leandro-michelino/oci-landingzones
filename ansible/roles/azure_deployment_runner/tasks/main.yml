@@ -75,7 +75,16 @@
       - "@{{ azure_parameters_file }}"
       - --result-format
       - ResourceIdOnly
+  register: azure_plan_result
   changed_when: false
+  when: azure_action_normalized == "plan"
+
+- name: Summarize Azure plan output
+  ansible.builtin.debug:
+    msg:
+      - "Azure what-if completed for deployment {{ azure_deployment_name }} in resource group {{ azure_resource_group }}."
+      - "Mode: planning only (no resources created by this step)."
+      - "What-if output lines: {{ azure_plan_result.stdout_lines | default([]) | length }}."
   when: azure_action_normalized == "plan"
 
 - name: Apply Azure deployment
@@ -102,8 +111,16 @@
   when: azure_action_normalized == "apply"
 
 - name: Show Azure deployment outputs
+  ansible.builtin.set_fact:
+    azure_apply_outputs_parsed: "{{ azure_apply_outputs.stdout | from_json }}"
+  when: azure_action_normalized == "apply"
+
+- name: Summarize Azure deployment outputs
   ansible.builtin.debug:
-    var: azure_apply_outputs.stdout
+    msg:
+      - "Azure apply completed for deployment {{ azure_deployment_name }} in resource group {{ azure_resource_group }}."
+      - "Returned output keys: {{ azure_apply_outputs_parsed.keys() | list | length }}."
+      - "Outputs (JSON): {{ azure_apply_outputs_parsed | to_nice_json }}"
   when: azure_action_normalized == "apply"
 
 - name: Delete Azure resource group
@@ -119,7 +136,30 @@
   changed_when: true
   when: azure_action_normalized == "destroy"
 
+- name: Wait for Azure resource group deletion completion
+  ansible.builtin.command:
+    argv:
+      - az
+      - group
+      - wait
+      - --deleted
+      - --name
+      - "{{ azure_resource_group }}"
+  register: azure_destroy_wait
+  changed_when: false
+  failed_when: false
+  when: azure_action_normalized == "destroy"
+
 - name: Confirm Azure deletion request accepted
   ansible.builtin.debug:
-    msg: "Deletion requested for resource group {{ azure_resource_group }}."
+    msg:
+      - "Azure destroy completed for resource group {{ azure_resource_group }}."
+      - >-
+        {{
+          ((azure_destroy_wait.rc | default(1)) == 0)
+          | ternary(
+            'Azure CLI wait confirmed resource-group deletion.',
+            'Azure CLI wait did not confirm completion; verify resource-group status manually.'
+          )
+        }}
   when: azure_action_normalized == "destroy"

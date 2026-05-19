@@ -1,0 +1,53 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+---
+- name: Serve the AWS + OCI hybrid backbone hello-world page locally
+  hosts: localhost
+  gather_facts: false
+  vars:
+    hello_world_bind: "0.0.0.0"
+    hello_world_port: 18082
+    hello_world_dir: "{{ playbook_dir }}/../hello-world"
+    hello_world_pid_file: "{{ hello_world_dir }}/server.pid"
+    hello_world_log_file: "{{ hello_world_dir }}/server.log"
+  tasks:
+    - name: Ensure hello-world page exists
+      ansible.builtin.stat:
+        path: "{{ hello_world_dir }}/index.html"
+      register: hello_world_page
+
+    - name: Fail when hello-world page is missing
+      ansible.builtin.fail:
+        msg: "Expected file {{ hello_world_dir }}/index.html not found."
+      when: not hello_world_page.stat.exists
+
+    - name: Stop previous local hello-world server if present
+      ansible.builtin.shell: |
+        if [ -f "{{ hello_world_pid_file }}" ]; then
+          pid="$(cat "{{ hello_world_pid_file }}")"
+          if kill -0 "$pid" 2>/dev/null; then
+            kill "$pid"
+          fi
+          rm -f "{{ hello_world_pid_file }}"
+        fi
+      changed_when: false
+
+    - name: Start local hello-world server
+      ansible.builtin.shell: |
+        cd "{{ hello_world_dir }}"
+        nohup python3 -m http.server "{{ hello_world_port }}" --bind "{{ hello_world_bind }}" > "{{ hello_world_log_file }}" 2>&1 &
+        echo $! > "{{ hello_world_pid_file }}"
+      changed_when: true
+
+    - name: Wait for local hello-world endpoint
+      ansible.builtin.wait_for:
+        host: "127.0.0.1"
+        port: "{{ hello_world_port }}"
+        timeout: 10
+
+    - name: Show access URLs
+      ansible.builtin.debug:
+        msg:
+          - "AWS + OCI hybrid backbone hello-world started"
+          - "Local URL: http://127.0.0.1:{{ hello_world_port }}"
+          - "LAN URL: http://<this-host-ip>:{{ hello_world_port }}"
+          - "Log file: {{ hello_world_log_file }}"

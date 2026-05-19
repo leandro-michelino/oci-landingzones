@@ -2,6 +2,7 @@
 ---
 - name: Azure destroy session for Azure OpenAI gateway deployment
   hosts: localhost
+  connection: local
   gather_facts: false
   vars:
     azure_action: destroy

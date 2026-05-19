@@ -33,8 +33,9 @@ Use the changed-scope validation entry point while iterating:
 
 This first runs a fast repository contract guard, then maps changed files to the
 nearest touched Terraform root and local Ansible playbook. It validates only
-that changed surface and cleans generated Terraform artifacts, plan files, and
-`.DS_Store` files even when a validation step fails.
+that changed surface. By default it keeps local `.terraform/` and
+`.terraform.lock.hcl` for faster reruns; use
+`VALIDATION_CLEAN_TERRAFORM_WORKDIRS=1` when you want full local cleanup.
 
 Run the full validation entry point before broad refactors, release work, or
 changes to shared validation behavior:
@@ -45,7 +46,7 @@ changes to shared validation behavior:
 
 The full validator auto-discovers Terraform blueprints under `blueprints/`,
 validates them without a remote backend, runs optional scanners when installed,
-syntax-checks Ansible playbooks, and cleans generated artifacts. Blueprint
+and syntax-checks Ansible playbooks. Blueprint
 folders with scaffold markers fail validation, because every architecture is
 expected to have real Terraform wiring.
 

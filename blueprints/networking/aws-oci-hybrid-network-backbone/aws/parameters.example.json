@@ -1,0 +1,14 @@
+[
+  {
+    "ParameterKey": "BackboneVpcCidr",
+    "ParameterValue": "10.94.0.0/16"
+  },
+  {
+    "ParameterKey": "BackboneSubnetCidr",
+    "ParameterValue": "10.94.10.0/24"
+  },
+  {
+    "ParameterKey": "AllowedIngressCidr",
+    "ParameterValue": "10.0.0.0/8"
+  }
+]

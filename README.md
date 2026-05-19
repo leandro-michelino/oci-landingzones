@@ -9,96 +9,23 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Welcome. This repo is a hands-on Oracle Cloud Infrastructure toolkit: Terraform
-blueprints, reusable modules, local Ansible runners, and plain-text architecture
-notes for common OCI landing-zone patterns.
+Build OCI landing zones fast, with clear architecture and real deploy flows.
 
-The goal is simple: help you get to a useful plan quickly, without hiding the
-architecture details you still need to review.
+This repo is a practical toolkit: Terraform blueprints, reusable modules, and
+local Ansible wrappers for plan/apply/destroy sessions. It is opinionated,
+reviewable, and built for real platform work.
 
-## Friendly Heads-Up
+## Heads-Up
 
-This is my personal engineering project. It is not an official Oracle product,
-Oracle reference architecture, or Oracle-supported deployment package. I built
-it to share practical landing-zone patterns, useful defaults, and reviewable
-examples for OCI teams.
+This is a personal engineering project, not an official Oracle product or
+Oracle-supported package. Use it as a strong starting point, then tune it to
+your tenancy, controls, and operating model.
 
-Use it as a strong starting point: helpful, opinionated, and still something
-you should review carefully before you point it at a real tenancy.
+## Start Here (2 Minutes)
 
 ```text
-pick a blueprint -> read its README -> review Architecture -> fill tfvars -> plan
+pick a blueprint -> read README -> review Architecture -> fill tfvars -> plan
 ```
-
-## What Is Inside
-
-| You Need | Good Place To Start |
-|---|---|
-| A clean OCI foundation | [Core Landing Zone](blueprints/core/) |
-| CIS-oriented posture | [CIS Level 1](blueprints/cis/level1/) or [CIS Level 2](blueprints/cis/level2/) |
-| Enterprise networking | [Hub-Spoke DRG And Three-Tier VCNs](blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/) |
-| A simple VCN | [Standalone Three-Tier VCN Defaults](blueprints/networking/standalone-three-tier-vcn-defaults/) |
-| App-team onboarding | [Workload Vending](blueprints/operating-entity/workload-vending/) |
-| Cost controls | [Cost Optimization](blueprints/operations/cost-optimization/) |
-| Kubernetes | [OKE Extension](blueprints/extensions/oke/) |
-| Serverless containers | [Container Instances](blueprints/extensions/container-instances/) |
-| Functions and events | [Oracle Functions](blueprints/extensions/functions/) |
-| Private GenAI | [OCI Generative AI Private Landing Zone](blueprints/ai/genai-private/) |
-| GenAI API front door | [GenAI Multi-Model Gateway](blueprints/ai/genai-gateway/) |
-| Azure + OCI AI gateway | [Azure + OCI AI Gateway](blueprints/ai/azure-oci-ai-gateway/) |
-| Azure + OCI DR | [Azure + OCI Cross-Cloud DR](blueprints/disaster-recovery/azure-oci-cross-cloud-dr/) |
-| Azure + OCI Kubernetes | [AKS + OKE Active Active](blueprints/extensions/aks-oke-active-active/) |
-| RAG agents | [AI Agents RAG Landing Zone](blueprints/ai/agents/) |
-| Vector search | [OpenSearch](blueprints/data-platform/opensearch/) plus [Embedding Pipeline](blueprints/ai/embedding-pipeline/) |
-| Databases | [Autonomous Database](blueprints/data-platform/autonomous-database/), [PostgreSQL](blueprints/data-platform/postgresql/), [MySQL HeatWave](blueprints/data-platform/mysql-heatwave/), or [OCI NoSQL Database](blueprints/data-platform/nosql/) |
-| Conversational AI | [Oracle Digital Assistant](blueprints/extensions/digital-assistant/) |
-| Disaster recovery | [Full Stack DR](blueprints/disaster-recovery/fsdr/) |
-| Desktops | [Secure Desktops](blueprints/industry/secure-desktops/) |
-
-For the complete menu, use the generated [Blueprint Index](BLUEPRINTS.md), the
-[Deployment Pattern Catalog](docs/DEPLOYMENT-PATTERN-CATALOG.md), or the
-[Architecture Index](docs/architecture/README.md).
-For multicloud architecture notes and remaining backlog items, see
-[Azure + OCI multicloud notes](docs/multicloud/README.md).
-
-## Azure + OCI
-
-Implemented multicloud blueprints:
-
-| Pattern | Blueprint |
-|---|---|
-| AI gateway routing by region, cost, and data residency across OCI Generative AI and Azure OpenAI | [Azure + OCI AI Gateway](blueprints/ai/azure-oci-ai-gateway/) |
-| Active/active Kubernetes with OCI primary and interconnect-only contract | [AKS + OKE Active Active](blueprints/extensions/aks-oke-active-active/) |
-| Cross-cloud DR with OCI primary, DNS failover runbooks, and connectivity mode support | [Azure + OCI Cross-Cloud DR](blueprints/disaster-recovery/azure-oci-cross-cloud-dr/) |
-
-All Azure + OCI deployments include a `hello-world/index.html` sample plus
-`ansible/serve-hello-world.yml` and `ansible/stop-hello-world.yml` so you can
-run a real local endpoint during demos, smoke checks, and runbook drills.
-
-All now also include full Azure deployment sessions with Bicep templates and
-Ansible wrappers:
-
-- `ansible/azure-plan.yml` (what-if)
-- `ansible/azure-apply.yml` (create/update)
-- `ansible/azure-destroy.yml` (teardown)
-
-The Azure wrappers are standardized through the shared role
-`ansible/roles/azure_deployment_runner`.
-
-All three blueprints now ship deploy-and-use networking stacks on both sides:
-OCI VCN/subnets/route tables/security lists and Azure VNet/subnets/route
-tables/NSGs wired into the workload resources.
-
-Additional architecture notes and backlog:
-
-| Draft | Link |
-|---|---|
-| Azure + OCI multicloud notes | [docs/multicloud/README.md](docs/multicloud/README.md) |
-
-## Quick Start
-
-Use the repo like a set of workbenches. Pick the blueprint that matches your
-outcome, open that folder, skim the local notes, then run a plan from there.
 
 ```bash
 git clone https://github.com/leandro-michelino/oci-landingzones.git
@@ -109,126 +36,108 @@ terraform validate
 terraform plan
 ```
 
-For a single-folder customer hand-off, sparse checkout works well. Blueprint
-module sources use pinned Git references, so a deployment folder can be used
-without cloning the whole project. See
-[Using A Single Blueprint](docs/DEPLOYMENT-GUIDE.md#using-a-single-blueprint).
+## What You Can Deploy
 
-## The Normal Flow
+| If you need... | Start here |
+|---|---|
+| A full OCI baseline | [Core Landing Zone](blueprints/core/) |
+| CIS controls | [CIS Level 1](blueprints/cis/level1/) or [CIS Level 2](blueprints/cis/level2/) |
+| Kubernetes platform | [OKE Extension](blueprints/extensions/oke/) |
+| DR pattern | [Full Stack DR](blueprints/disaster-recovery/fsdr/) |
+| Data platform foundations | [Autonomous DB](blueprints/data-platform/autonomous-database/), [PostgreSQL](blueprints/data-platform/postgresql/), [MySQL HeatWave](blueprints/data-platform/mysql-heatwave/), [OCI NoSQL](blueprints/data-platform/nosql/) |
+| AI workloads | [GenAI Private](blueprints/ai/genai-private/), [GenAI Gateway](blueprints/ai/genai-gateway/), [AI Agents](blueprints/ai/agents/) |
+| Conversational AI | [Oracle Digital Assistant](blueprints/extensions/digital-assistant/) |
+
+Full inventory:
+- [Blueprint Index](BLUEPRINTS.md)
+- [Deployment Pattern Catalog](docs/DEPLOYMENT-PATTERN-CATALOG.md)
+- [Architecture Index](docs/architecture/README.md)
+
+## Multicloud (OCI Primary)
+
+### Azure + OCI (Implemented)
+
+| Pattern | Blueprint |
+|---|---|
+| AI gateway routing by region, cost, or residency | [Azure + OCI AI Gateway](blueprints/ai/azure-oci-ai-gateway/) |
+| Active/active Kubernetes (OCI-primary OKE, AKS secondary) | [AKS + OKE Active Active](blueprints/extensions/aks-oke-active-active/) |
+| Cross-cloud DR (OCI primary, Azure standby) | [Azure + OCI Cross-Cloud DR](blueprints/disaster-recovery/azure-oci-cross-cloud-dr/) |
+
+### AWS + OCI (Implemented)
+
+| Pattern | Blueprint |
+|---|---|
+| Hybrid backbone (OCI DRG primary) | [AWS + OCI Hybrid Network Backbone](blueprints/networking/aws-oci-hybrid-network-backbone/) |
+| Cross-cloud DR (OCI primary, AWS standby) | [AWS + OCI Cross-Cloud DR](blueprints/disaster-recovery/aws-oci-cross-cloud-dr/) |
+| Active/active Kubernetes (OCI-primary OKE, EKS secondary) | [EKS + OKE Active Active](blueprints/extensions/eks-oke-active-active/) |
+
+AWS deployment quick paths:
+- Plan only:
+  `ansible-playbook -i localhost, blueprints/networking/aws-oci-hybrid-network-backbone/ansible/aws-plan.yml`
+- Full lifecycle (create + delete for test):
+  `scripts/test-networking-lifecycle.sh --blueprint blueprints/networking/aws-oci-hybrid-network-backbone --providers aws`
+
+All Azure+OCI and AWS+OCI blueprints include:
+- deployable cloud-side sessions (`azure-*.yml` or `aws-*.yml`)
+- local `hello-world/index.html`
+- `ansible/serve-hello-world.yml` and `ansible/stop-hello-world.yml`
+
+Design notes and backlog:
+- [Multicloud Notes](docs/multicloud/README.md)
+
+## Repo Structure
+
+```text
+blueprints/<family>/<deployment>/
+|-- README.md
+|-- architecture/README.md
+|-- main.tf
+|-- variables.tf
+|-- outputs.tf
+|-- providers.tf
+|-- versions.tf
+|-- terraform.tfvars.example
+`-- ansible/
+    |-- plan.yml
+    |-- apply.yml
+    `-- destroy.yml
+```
+
+Consistency is deliberate: once you know one blueprint, you can work in all of
+them.
+
+## Typical Operator Flow
 
 ```text
 choose outcome
   |
   v
-open blueprints/<family>/<deployment>/
+open blueprint folder
   |
   v
-read README.md
+read README + Architecture
   |
   v
-review architecture/README.md
-  |
-  v
-copy terraform.tfvars.example -> terraform.tfvars
+copy tfvars example
   |
   v
 terraform plan or ansible/plan.yml
   |
   v
-review, approve, apply
+review and apply
 ```
 
-Do not skip the local architecture file. That is where the traffic paths, trust
-boundaries, Terraform components, and review checklist live.
+## Local Workflow Options
 
-## Browse By Family
-
-| Family | What You Will Find |
-|---|---|
-| [core](blueprints/core/) | Shared OCI foundation: compartments, IAM, tagging, logging, Cloud Guard, Vault/KMS, Security Zones, VSS, budgets, events, and monitoring. |
-| [cis](blueprints/cis/) | CIS Level 1 and Level 2 landing-zone profiles. |
-| [networking](blueprints/networking/) | Standalone VCNs, hub-spoke, DRG, VPN, FastConnect, DNS, firewall, NVA, ZPR, multicloud, and regional hub patterns. |
-| [identity](blueprints/identity/) | IAM groups, policies, dynamic groups, and identity domains. |
-| [operating-entity](blueprints/operating-entity/) | Business-unit and workload onboarding boundaries. |
-| [operations](blueprints/operations/) | Cost optimization, budgets, tags, notifications, and FinOps hand-offs. |
-| [extensions](blueprints/extensions/) | OKE, Functions, API Gateway, WAF, Streaming, OAC, OIC, Oracle Digital Assistant, Observability, Redis, Container Instances, and more. |
-| [ai](blueprints/ai/) | GenAI, agents, gateway, guardrails, fine-tuning, embeddings, document intelligence, and multi-agent orchestration. |
-| [data-platform](blueprints/data-platform/) | Autonomous Database, APEX on ADB, OCI NoSQL Database, PostgreSQL, MySQL HeatWave, OpenSearch, and private data platform patterns. |
-| [compliance](blueprints/compliance/) | SCCA, Zero Trust, Healthcare/PCI, and security posture automation. |
-| [disaster-recovery](blueprints/disaster-recovery/) | Full Stack Disaster Recovery wiring. |
-| [devops](blueprints/devops/) | OCI DevOps project, repository, build pipeline, deploy pipeline, and notifications. |
-| [industry](blueprints/industry/) | Secure Desktops and telco cloud-native landing-zone patterns. |
-
-## Extension-Only Is Fine
-
-You do not need to deploy the whole foundation to use an extension. If the OCI
-estate already has compartments, VCNs, subnets, load balancers, gateways,
-registries, or databases, open the extension folder and pass the existing OCIDs
-in local tfvars.
-
-| Path | When It Fits |
-|---|---|
-| Extension only | The base OCI estate already exists and you only need one add-on service. |
-| Base plus extension | This repo should create the foundation first, then layer on the selected service. |
-
-The longer walkthrough is in the
-[Deployment Guide](docs/DEPLOYMENT-GUIDE.md#using-extensions-only).
-
-## Blueprint Shape
-
-Every deployable blueprint follows the same rhythm:
-
-```text
-blueprints/<family>/<deployment>/
-|-- README.md                  Operator guide
-|-- architecture/
-|   `-- README.md              Detailed Architecture
-|-- main.tf                    Terraform composition
-|-- variables.tf               Input contract
-|-- outputs.tf                 Hand-off values
-|-- providers.tf               Provider setup
-|-- versions.tf                Terraform/provider constraints
-|-- terraform.tfvars.example   Safe local input example
-`-- ansible/
-    |-- plan.yml               Local init, validate, and plan
-    |-- apply.yml              Guarded apply
-    `-- destroy.yml            Guarded destroy
-```
-
-Once you learn one folder, the rest should feel familiar. That consistency is
-deliberate.
-
-## Why Architecture
-
-The diagrams are plain text on purpose. They work in GitHub, terminals, pull
-requests, customer notes, and screen shares without extra tooling.
-
-Each `architecture/README.md` includes:
-
-| Section | Why It Exists |
-|---|---|
-| Deployment Purpose | What the blueprint is for. |
-| Architecture At A Glance | The short design summary. |
-| Architecture | Resource and flow view in plain text. |
-| Terraform Components | What `main.tf` actually wires. |
-| Request And Deployment Flow | How operator intent becomes infrastructure. |
-| Traffic And Trust Boundaries | Where traffic, IAM, and ownership lines sit. |
-| Operational Boundaries | What to check before plan/apply/destroy. |
-| Review Checklist | The final design-review pass. |
-
-## Local Workflow
-
-Terraform does the infrastructure work. Ansible gives you a consistent local
-plan/apply/destroy wrapper when you want one.
+Terraform direct:
 
 ```bash
-# From a blueprint folder
 terraform init -backend=false
 terraform validate
 terraform plan
 ```
 
-Or:
+Ansible wrapper:
 
 ```bash
 ansible-playbook -i localhost, ansible/plan.yml
@@ -236,113 +145,58 @@ CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
-Apply and destroy are guarded, so risky actions require an explicit confirmation
-flag.
+Cloud-specific wrappers in multicloud blueprints:
+- Azure: `ansible/azure-plan.yml`, `ansible/azure-apply.yml`, `ansible/azure-destroy.yml`
+- AWS: `ansible/aws-plan.yml`, `ansible/aws-apply.yml`, `ansible/aws-destroy.yml`
 
-## Requirements
+## Pick By Family
 
-| Tool | Why |
+| Family | What it covers |
 |---|---|
-| Terraform `1.12.0` or later | Builds and validates the OCI resource graph. |
-| OCI CLI | Supplies local OCI authentication and tenancy context. |
-| Git | Fetches the repo and pinned module sources. |
-| Ansible | Runs local plan/apply/destroy workflows. |
-| Optional scanners | `tflint`, `trivy`, `checkov`, `ansible-lint`, and `pre-commit` add extra confidence when installed. |
+| [core](blueprints/core/) | Tenancy foundation (IAM, tagging, logging, security, budgets, monitoring). |
+| [cis](blueprints/cis/) | CIS-aligned baseline profiles. |
+| [networking](blueprints/networking/) | VCN, DRG, DNS, firewall, hub-spoke, and multicloud connectivity patterns. |
+| [identity](blueprints/identity/) | IAM group/policy and identity domain baselines. |
+| [operating-entity](blueprints/operating-entity/) | Ownership and delegated administration boundaries. |
+| [operations](blueprints/operations/) | Cost controls and FinOps guardrails. |
+| [extensions](blueprints/extensions/) | OKE, Functions, API Gateway, WAF, ODA, Redis, Observability, and more. |
+| [ai](blueprints/ai/) | GenAI, agents, embedding pipelines, guardrails, and gateway patterns. |
+| [data-platform](blueprints/data-platform/) | Database and data platform patterns. |
+| [compliance](blueprints/compliance/) | SCCA, Zero Trust, Healthcare/PCI, and security posture automation. |
+| [disaster-recovery](blueprints/disaster-recovery/) | OCI and multicloud DR patterns. |
+| [devops](blueprints/devops/) | OCI DevOps CI/CD foundation. |
+| [industry](blueprints/industry/) | Vertical patterns (telco, secure desktops). |
 
-Optional tooling is exactly that: optional. The validation scripts skip missing
-scanners cleanly.
+## Validation and Quality Gates
 
-Recommended local helper setup on macOS:
-
-```bash
-brew install trivy
-pipx install checkov
-pipx install ansible-dev-tools
-pipx inject ansible-dev-tools ansible-lint --include-apps --force
-pipx install pre-commit
-pre-commit install
-```
-
-Install `tflint` from the Terraform Linters release for your platform when your
-package manager does not provide it.
-
-## Validate Changes
-
-For small edits:
+For changed work:
 
 ```bash
 ./scripts/validate-changed.sh
-# same thing, shorter
-make changed
 ```
 
-For broad changes or release work:
+For full repo validation:
 
 ```bash
 ./scripts/validate-all.sh
-# same thing, shorter
-make validate
 ```
 
-The validation flow checks naming conventions, documentation contracts,
-Terraform formatting, Terraform validation, Ansible syntax, and optional
-security scanners when available.
+Validation speed tips:
+- Shared Terraform provider cache is enabled by default with `TF_PLUGIN_CACHE_DIR`.
+- Validation keeps local `.terraform` workdirs by default for faster reruns.
+- Force full cleanup when needed:
+  `VALIDATION_CLEAN_TERRAFORM_WORKDIRS=1 ./scripts/validate-all.sh`
 
-## Handy Make Targets
+Networking lifecycle tests (create then destroy):
+- `scripts/test-networking-lifecycle.sh --blueprint blueprints/networking/aws-oci-hybrid-network-backbone --providers oci,aws`
+- `scripts/test-networking-lifecycle.sh --all-networking --providers oci` (heavy run)
 
-| Target | What It Does |
-|---|---|
-| `make validate` | Runs the full repository validation flow. |
-| `make changed` | Validates the changed scope against `origin/main`. |
-| `make clean` | Removes local Terraform, plan, state, cache, and editor artifacts. |
-| `make blueprint family=<family> name=<name>` | Creates a new deployable blueprint scaffold. |
-| `make blueprints` | Regenerates `BLUEPRINTS.md` from discovered blueprint folders. |
-| `make links` | Checks local Markdown links and anchors. |
+## Contributing
 
-Scaffold a new blueprint like this:
+- Read [CONTRIBUTING.md](CONTRIBUTING.md)
+- Keep module sources pinned
+- Keep every blueprint deployable and reviewable
+- Keep Architecture docs aligned with Terraform
 
-```bash
-make blueprint family=networking name=private-service-edge title="Private Service Edge"
-```
-
-## Repo Map
-
-```text
-blueprints/          Deployable architectures
-modules/             Reusable Terraform building blocks
-ansible/             Local orchestration and validation roles
-docs/                Guides, catalog, runbooks, naming, and architecture index
-environments/        Example backend and tfvars shapes
-scripts/             Repo checks and local workflow helpers
-tests/               Validation contract notes and future test home
-```
-
-## Useful Docs
-
-| Doc | Use It For |
-|---|---|
-| [Blueprint Index](BLUEPRINTS.md) | Generated list of deployable blueprint folders, README links, and architecture links. |
-| [Deployment Guide](docs/DEPLOYMENT-GUIDE.md) | End-to-end deployment flow and operating notes. |
-| [Deployment Pattern Catalog](docs/DEPLOYMENT-PATTERN-CATALOG.md) | Full blueprint menu and planned patterns. |
-| [Architecture Index](docs/architecture/README.md) | Repository-level Architecture map and every blueprint architecture link. |
-| [Naming Conventions](docs/NAMING-CONVENTIONS.md) | OCI naming standard used by generated defaults. |
-| [Variables Reference](VARIABLES.md) | Shared variable reference and notable inputs. |
-| [BYOL And License Model Matrix](docs/BYOL-LICENSING-MATRIX.md) | License-model guidance for supported service families. |
-| [CIS Profiles](docs/CIS-PROFILES.md) | CIS profile behavior. |
-| [Runbook](docs/RUNBOOK.md) | Operational flow for maintainers and reviewers. |
-| [Roadmap](docs/ROADMAP.md) | Implemented and upcoming candidates. |
-
-## Search-Friendly Summary
-
-This repository contains deployable Oracle Cloud Infrastructure landing-zone
-patterns for Terraform and Ansible. It covers OCI core governance, CIS,
-networking, identity, operating entities, OKE, Functions, API Gateway, WAF,
-OpenSearch, Autonomous Database, MySQL HeatWave, Redis, Secure Desktops,
-security posture automation, disaster recovery, DevOps, and AI/GenAI patterns
-such as OCI Generative AI, RAG agents, embeddings, guardrails, fine-tuning, and
-multi-agent orchestration.
-
-## License
-
-This project is licensed under the Apache License 2.0. See `LICENSE` for
-details.
+If you want, open an issue or PR with the customer outcome you are targeting
+and we can shape a blueprint around it.
