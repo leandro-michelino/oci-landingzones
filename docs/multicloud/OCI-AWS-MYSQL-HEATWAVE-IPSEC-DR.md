@@ -1,10 +1,12 @@
-# OCI + AWS MySQL HeatWave DR Blueprint Draft (OCI Primary over IPSec)
+# OCI + AWS MySQL HeatWave DR Design Record (OCI Primary over IPSec)
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This document defines a concrete architecture draft for running MySQL HeatWave
-with OCI as the primary write region and MySQL HeatWave on AWS as the secondary
-DR target, connected through IPSec.
+This document preserves the multicloud design rationale for the deployed
+blueprint in `blueprints/data-platform/oci-aws-mysql-heatwave-dr/`.
+
+Use the blueprint folder as the deployment source of truth. Keep this file as
+design history, backlog context, and architecture review material.
 
 ## Deployment Purpose
 
@@ -123,9 +125,9 @@ keeping OCI as the default primary production system.
 - DNS authority and failover ownership.
 - Planned DR test cadence and sign-off process.
 
-## Output Contract
+## Outputs And Hand-Off
 
-The deployable blueprint should return:
+The deployment hand-off should include:
 
 ```text
 oci_mysql_primary_endpoint
@@ -160,11 +162,16 @@ Execute failover/failback drill and record evidence.
 - Post-failover data consistency checks pass.
 - Evidence artifacts are stored and reviewable.
 
-## Promotion Criteria To Deployable Blueprint
+## Deployment Source
 
-Promote to `blueprints/data-platform/oci-aws-mysql-heatwave-dr/` when:
+The deployed implementation lives in:
 
-- Target regions and network CIDR contracts are approved.
-- Replication and failover runbooks pass at least one full rehearsal.
-- Security and compliance review approves key management and access boundaries.
-- Operational ownership for failover and failback is documented.
+```text
+blueprints/data-platform/oci-aws-mysql-heatwave-dr/
+```
+
+The AWS-side session lives in:
+
+```text
+blueprints/data-platform/oci-aws-mysql-heatwave-dr/aws/
+```
