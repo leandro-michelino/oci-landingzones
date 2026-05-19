@@ -1,0 +1,59 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid       = "ocid1.tenancy.oc1..example"
+current_user_ocid  = "ocid1.user.oc1..example"
+region             = "eu-madrid-1"
+home_region        = "eu-madrid-1"
+oci_config_profile = "DEFAULT"
+
+org         = "acme"
+environment = "prod"
+region_key  = "mad"
+
+# OCI stays primary in this pattern.
+oci_is_primary = true
+
+# Interconnect only. Keep IPSec backup disabled.
+interconnect_mode             = "expressroute-fastconnect-partner"
+enable_ipsec_backup           = false
+# fastconnect_virtual_circuit_id = "ocid1.virtualcircuit.oc1..example"
+# expressroute_circuit_id        = "/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Network/expressRouteCircuits/<name>"
+
+# OKE creation disabled by default for safe validation runs.
+enable_oke_cluster   = false
+enable_oke_node_pool = false
+oke_cluster_label    = "oci-primary"
+oke_node_pool_label  = "oci-workers"
+
+# Required when creating OKE resources.
+# compartment_ocid       = "ocid1.compartment.oc1..example"
+# oke_vcn_id             = "ocid1.vcn.oc1..example"
+# oke_kubernetes_version = "v1.31.1"
+# oke_node_subnet_ids    = ["ocid1.subnet.oc1..example"]
+
+# AKS is referenced as existing secondary cluster in this blueprint variant.
+# aks_cluster_id          = "/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.ContainerService/managedClusters/<name>"
+# aks_cluster_name        = "aks-secondary"
+# aks_resource_group_name = "rg-platform-aks"
+
+# GitOps and traffic steering contracts.
+enable_gitops_contract           = true
+gitops_tool                      = "argocd"
+# gitops_repo_url                = "https://github.com/example/platform-gitops.git"
+gitops_branch                    = "main"
+
+enable_traffic_steering_contract = true
+app_fqdn                         = "apps.example.com"
+# oci_primary_endpoint           = "oci.apps.example.com"
+# azure_secondary_endpoint       = "azure.apps.example.com"
+oci_primary_traffic_percent      = 100
+
+defined_tags = {
+  "acme-tags.Environment" = "prod"
+  "acme-tags.ManagedBy"   = "terraform"
+  "acme-tags.Owner"       = "platform-team"
+  "acme-tags.Project"     = "landingzone"
+}
+
+freeform_tags = {
+  Extension = "aks-oke-active-active"
+}

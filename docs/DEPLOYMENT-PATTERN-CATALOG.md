@@ -26,6 +26,7 @@ folder.
 | Identity | CIS basic identity baseline | `blueprints/identity/cis-basic/` | Implemented |
 | Identity | New identity domain | `blueprints/identity/new-identity-domain/` | Implemented |
 | Identity | Custom identity domain | `blueprints/identity/custom-identity-domain/` | Implemented |
+| Identity | Azure Entra to OCI IAM federation baseline | `blueprints/identity/azure-entra-federation/` | Planned |
 | Operating entity | Single operating entity onboarding | `blueprints/operating-entity/` | Implemented |
 | Operating entity | Multi-operating-entity landing zone | `blueprints/operating-entity/multi-operating-entities/` | Implemented |
 | Operating entity | Workload vending / application team onboarding | `blueprints/operating-entity/workload-vending/` | Implemented |
@@ -46,6 +47,7 @@ folder.
 | Networking | Hub-spoke with dual-region DR | `blueprints/networking/hub-spoke-with-dual-region-dr/` | Implemented |
 | Networking | Multi-tenancy shared services | `blueprints/networking/multi-tenancy-shared-services/` | Implemented |
 | Networking | Hub-spoke with multicloud interconnect | `blueprints/networking/hub-spoke-with-multicloud-interconnect/` | Implemented |
+| Networking | Azure + OCI hybrid networking (ExpressRoute/FastConnect + IPSec backup) | `blueprints/networking/azure-oci-hybrid-networking/` | Planned |
 | Networking | Regional prod/nonprod hub separation | `blueprints/networking/regional-prod-nonprod-hubs/` | Implemented |
 | Networking | OCI Network Load Balancer (Layer 4 TCP/UDP, private backend, health checks) | `blueprints/networking/network-load-balancer/` | Implemented |
 | Compliance | SCCA-style cloud-native landing zone | `blueprints/compliance/scca-cloud-native/` | Implemented |
@@ -53,6 +55,7 @@ folder.
 | Compliance | Healthcare / PCI compliance landing zone | `blueprints/compliance/healthcare-pci/` | Implemented |
 | Compliance | Security posture automation (Cloud Guard + Vuln Scan + auto-remediation) | `blueprints/compliance/security-posture/` | Implemented |
 | Disaster recovery | Full Stack Disaster Recovery | `blueprints/disaster-recovery/fsdr/` | Implemented |
+| Disaster recovery | Azure + OCI cross-cloud DR | `blueprints/disaster-recovery/azure-oci-cross-cloud-dr/` | Implemented |
 | Data platform | Autonomous Database ATP / ADW | `blueprints/data-platform/autonomous-database/` | Implemented |
 | Data platform | Private data platform landing zone | `blueprints/data-platform/private-data-platform/` | Implemented |
 | Data platform | PostgreSQL landing zone | `blueprints/data-platform/postgresql/` | Implemented |
@@ -72,6 +75,7 @@ folder.
 | Industry | Telco cloud-native landing zone | `blueprints/industry/telco-cloud-native/` | Implemented |
 | Industry | OCI Secure Desktops (VDI, private network, IAM, session policies) | `blueprints/industry/secure-desktops/` | Implemented |
 | Extensions | OKE extension | `blueprints/extensions/oke/` | Implemented |
+| Extensions | AKS + OKE active/active (OCI primary, interconnect-only, no IPSec backup) | `blueprints/extensions/aks-oke-active-active/` | Implemented |
 | Extensions | OKE service mesh | `blueprints/extensions/oke-service-mesh/` | Implemented |
 | Extensions | Exadata extension | `blueprints/extensions/exadata/` | Implemented |
 | Extensions | API Gateway extension | `blueprints/extensions/apigw/` | Implemented |
@@ -157,3 +161,4 @@ The catalog should continue to evolve from:
 - OCI reference architectures for hub-spoke, DRG, network firewall, FastConnect,
   VPN, private DNS, OKE, Exadata, Zero Trust, and SCCA.
 - Customer-specific requirements seen during real OCI landing zone work.
+- Azure + OCI draft blueprint notes under `docs/multicloud/`.

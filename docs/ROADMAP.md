@@ -39,7 +39,7 @@ compliance, or workload platform pattern.
 
 ## Already Implemented
 
-The repository currently contains 65 fully implemented and deployable blueprint
+The repository currently contains 67 fully implemented and deployable blueprint
 entry points. See [Architecture Index](architecture/README.md#blueprint-ascii-inventory)
 for the complete folder-by-folder list with links to each local ASCII
 architecture file.
@@ -52,8 +52,8 @@ architecture file.
 | `blueprints/core/` | 1 |
 | `blueprints/data-platform/` | 6 |
 | `blueprints/devops/` | 1 |
-| `blueprints/disaster-recovery/` | 1 |
-| `blueprints/extensions/` | 13 |
+| `blueprints/disaster-recovery/` | 2 |
+| `blueprints/extensions/` | 14 |
 | `blueprints/identity/` | 3 |
 | `blueprints/industry/` | 2 |
 | `blueprints/networking/` | 19 |
@@ -494,7 +494,223 @@ cloud_guard_target_id
 
 ---
 
-## Phase 9 - Next Architecture Backlog
+## Phase 9 - Azure + OCI Multicloud Expansion
+
+These patterns focus on enterprise Azure + OCI operating models where identity,
+network, operations, and AI services span both clouds.
+
+---
+
+### Identity Federation (Microsoft Entra ID -> OCI IAM)
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/identity/azure-entra-federation/` |
+| Depends on | Core Landing Zone; OCI identity domain and Entra tenant readiness |
+
+**Why this exists.**
+Enterprise teams want single sign-on and centralized role lifecycle in Entra
+while retaining OCI-native policy control. This blueprint standardizes SSO and
+group-based RBAC mapping with auditable least-privilege boundaries.
+
+**Scope highlights.**
+
+- Entra IdP federation into OCI IAM.
+- Group claim mapping to OCI groups.
+- Centralized RBAC with OCI policy enforcement.
+- Break-glass local OCI admin path.
+
+---
+
+### Hybrid Network Hub (Azure vWAN/Hub + OCI DRG)
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/networking/azure-oci-hybrid-networking/` |
+| Depends on | Core Landing Zone; hub-spoke networking on OCI; Azure hub or vWAN |
+
+**Why this exists.**
+Multicloud workloads need deterministic private connectivity and controlled
+failover. This blueprint codifies Azure hub-to-OCI DRG connectivity over
+partner interconnect and/or IPSec backup.
+
+**Scope highlights.**
+
+- Azure vWAN/Hub to OCI DRG connectivity.
+- Site-to-site VPN option.
+- ExpressRoute + FastConnect partner path.
+- Route, DNS, and inspection governance.
+
+---
+
+### Multi-Cloud DR (Azure <-> OCI) (Implemented)
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/disaster-recovery/azure-oci-cross-cloud-dr/` |
+| Depends on | Core Landing Zone; hybrid networking; workload baseline in at least one cloud |
+| Status | Implemented with OCI-primary variant, DNS failover runbook contracts, and connectivity mode support (`interconnect` or `without-interconnect`). |
+
+**Why this exists.**
+Application resilience often requires cloud-to-cloud recovery. This blueprint
+formalizes primary/standby patterns in either direction with DNS cutover and
+runbook-driven failover/failback.
+
+**Scope highlights.**
+
+- Primary in Azure with OCI standby, or inverse.
+- DNS failover controls and runbooks.
+- RTO/RPO measurement and rehearsal workflow.
+- Recovery evidence capture for audit.
+
+---
+
+### Data Replication (Azure SQL/Storage -> OCI Analytics)
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/data-platform/azure-oci-data-replication/` |
+| Depends on | Core Landing Zone; Autonomous Database blueprint; hybrid networking |
+
+**Why this exists.**
+Customers frequently keep operational workloads in Azure while running analytics
+and data products in OCI. This blueprint defines repeatable ingestion and
+replication lanes from Azure SQL/Storage into OCI Object Storage + Autonomous DB.
+
+**Scope highlights.**
+
+- Azure SQL export/replication feeds.
+- Azure Storage ingestion to OCI Object Storage.
+- Load paths into Autonomous Database.
+- Split operational vs analytics ownership model.
+
+---
+
+### AKS + OKE Active/Active Kubernetes (Implemented)
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/extensions/aks-oke-active-active/` |
+| Depends on | Core Landing Zone; `blueprints/extensions/oke/`; Azure AKS baseline; hybrid networking |
+| Status | Implemented with OCI-primary, interconnect-only contract and no IPSec backup path. |
+
+**Why this exists.**
+Platform teams running Kubernetes in both clouds need one pattern for traffic,
+release orchestration, and day-2 operations. This blueprint defines
+active/active AKS + OKE with GitOps and controlled steering.
+
+**Scope highlights.**
+
+- AKS and OKE dual-cluster topology.
+- GitOps delivery model across clouds.
+- Traffic steering and failover posture.
+- Shared platform SRE runbook contract.
+
+---
+
+### Security Baseline (Unified Azure Policy + OCI Controls)
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/compliance/azure-oci-security-baseline/` |
+| Depends on | Core Landing Zone; Cloud Guard; Security Zones; Azure Policy baseline |
+
+**Why this exists.**
+Security teams need one controls language across clouds. This blueprint maps
+Azure Policy and OCI Cloud Guard/Security Zones to a shared controls matrix.
+
+**Scope highlights.**
+
+- Unified control mapping matrix.
+- Guardrails for public exposure, encryption, and IAM.
+- Cross-cloud drift and exception workflow.
+- Audit-ready compliance evidence outputs.
+
+---
+
+### Centralized Observability (Azure Monitor + OCI Logging -> SIEM)
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/extensions/azure-oci-observability-hub/` |
+| Depends on | Core Landing Zone; `blueprints/extensions/observability/`; SIEM destination |
+
+**Why this exists.**
+Distributed telemetry fragments incident response. This blueprint standardizes
+log and signal forwarding from Azure Monitor and OCI Logging into one SIEM.
+
+**Scope highlights.**
+
+- Azure Monitor pipeline integration.
+- OCI Logging and service telemetry export.
+- Sentinel or Splunk destination patterns.
+- Alert routing and correlation conventions.
+
+---
+
+### FinOps Dashboard (Cross-Cloud Cost Governance)
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/operations/azure-oci-finops/` |
+| Depends on | Core Landing Zone; `blueprints/operations/cost-optimization/`; Azure cost exports |
+
+**Why this exists.**
+Cost governance needs one view across providers. This blueprint defines tagging
+standards, normalized cost datasets, and anomaly detection across Azure and OCI.
+
+**Scope highlights.**
+
+- Cross-cloud tagging taxonomy.
+- Azure and OCI cost ingestion model.
+- Unified anomaly detection and budget alerts.
+- FinOps hand-off dataset and dashboard contract.
+
+---
+
+### AI Gateway (Azure OpenAI + OCI Generative AI Routing)
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/ai/azure-oci-ai-gateway/` |
+| Depends on | Core Landing Zone; `blueprints/ai/genai-gateway/`; `blueprints/ai/genai-private/`; Azure OpenAI access |
+
+**Why this exists.**
+Enterprises need model routing based on latency, cost, sovereignty, or policy.
+This blueprint defines a multi-provider AI gateway across Azure OpenAI and OCI
+Generative AI.
+
+**Scope highlights.**
+
+- Region-aware routing between model providers.
+- Cost-based model selection policies.
+- Data residency policy enforcement paths.
+- Usage logging and quota governance.
+
+---
+
+### Golden Landing Zone (Single Terraform Framework for Azure + OCI)
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/core/azure-oci-golden-landing-zone/` |
+| Depends on | Core Landing Zone patterns; provider module standardization for Azure and OCI |
+
+**Why this exists.**
+Large enterprises want one IaC framework that composes shared controls across
+both clouds while allowing cloud-specific modules. This blueprint provides the
+foundation contract for that operating model.
+
+**Scope highlights.**
+
+- Shared Terraform structure for Azure + OCI.
+- Provider-specific modules under one governance contract.
+- Standard outputs for identity, network, security, and operations.
+- Baseline hand-off model for downstream multicloud blueprints.
+
+---
+
+## Phase 10 - Next Architecture Backlog
 
 These are good next candidates after the current Phase 4-8 queue. They fit the
 repo because they can reuse the existing contracts: Core for governance,

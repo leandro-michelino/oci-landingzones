@@ -1,0 +1,49 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid       = "ocid1.tenancy.oc1..example"
+current_user_ocid  = "ocid1.user.oc1..example"
+region             = "eu-madrid-1"
+home_region        = "eu-madrid-1"
+oci_config_profile = "DEFAULT"
+
+org         = "acme"
+environment = "prod"
+region_key  = "mad"
+
+# This blueprint variant keeps OCI as primary.
+oci_is_primary = true
+
+# Choose connectivity mode: interconnect or without-interconnect.
+connectivity_mode = "interconnect"
+# fastconnect_virtual_circuit_id = "ocid1.virtualcircuit.oc1..example"
+# expressroute_circuit_id        = "/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Network/expressRouteCircuits/<name>"
+
+# Optional OCI resources.
+enable_dr_evidence_bucket = true
+# dr_evidence_bucket_name = "acme-prod-mad-bkt-dr-evidence"
+
+enable_dr_alert_topic = true
+# dr_alert_topic_name = "acme-prod-mad-top-dr-alert"
+
+# DNS failover runbook contract.
+enable_dns_failover_contract = true
+app_fqdn                     = "app.example.com"
+# oci_primary_endpoint       = "oci.app.example.com"
+# azure_standby_endpoint     = "azure.app.example.com"
+dns_ttl_seconds              = 30
+
+# DR objectives and runbook contract.
+enable_runbook_contract = true
+dr_drill_frequency      = "quarterly"
+target_rto_minutes      = 30
+target_rpo_minutes      = 15
+
+defined_tags = {
+  "acme-tags.Environment" = "prod"
+  "acme-tags.ManagedBy"   = "terraform"
+  "acme-tags.Owner"       = "platform-team"
+  "acme-tags.Project"     = "landingzone"
+}
+
+freeform_tags = {
+  Blueprint = "azure-oci-cross-cloud-dr"
+}

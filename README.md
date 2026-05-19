@@ -54,6 +54,7 @@ pick a blueprint -> read its README -> review ASCII architecture -> fill tfvars 
 For the complete menu, use the generated [Blueprint Index](BLUEPRINTS.md), the
 [Deployment Pattern Catalog](docs/DEPLOYMENT-PATTERN-CATALOG.md), or the
 [Architecture Index](docs/architecture/README.md).
+For multicloud planning, see [Azure + OCI draft blueprints](docs/multicloud/README.md).
 
 ## Quick Start
 

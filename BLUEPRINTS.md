@@ -69,12 +69,14 @@ Run `make blueprints` after adding, moving, or removing a blueprint.
 
 | Blueprint | Summary | Architecture |
 |---|---|---|
+| [Azure + OCI Cross-Cloud DR](blueprints/disaster-recovery/azure-oci-cross-cloud-dr/) | Cross-cloud DR contract with OCI primary and Azure standby, DNS failover runbook metadata, and interconnect or no-interconnect connectivity modes. | [ASCII](blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/README.md) |
 | [Full Stack Disaster Recovery](blueprints/disaster-recovery/fsdr/) | Creates OCI Full Stack Disaster Recovery primary and standby protection groups, log buckets, and DR plan wiring. | [ASCII](blueprints/disaster-recovery/fsdr/architecture/README.md) |
 
 ## extensions
 
 | Blueprint | Summary | Architecture |
 |---|---|---|
+| [AKS + OKE Active Active](blueprints/extensions/aks-oke-active-active/) | Active/active AKS + OKE operating model with OCI as primary, partner interconnect, GitOps contract, and weighted traffic steering contract. | [ASCII](blueprints/extensions/aks-oke-active-active/architecture/README.md) |
 | [API Gateway Extension](blueprints/extensions/apigw/) | Adds OCI API Gateway resources to an existing landing zone so API exposure, routing, and deployment outputs are managed consistently. | [ASCII](blueprints/extensions/apigw/architecture/README.md) |
 | [OCI Container Instances](blueprints/extensions/container-instances/) | Serverless container runtime for private app workers, APIs, and small services that do not need OKE. | [ASCII](blueprints/extensions/container-instances/architecture/README.md) |
 | [Event-Driven Application Platform](blueprints/extensions/event-driven-platform/) | Event-driven apps, AI automation, integration pipelines, and async workload hand-offs. | [ASCII](blueprints/extensions/event-driven-platform/architecture/README.md) |

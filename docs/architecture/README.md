@@ -105,7 +105,7 @@ terraform plan or ansible/plan.yml
 
 ## Blueprint ASCII Inventory
 
-The current catalog has 65 deployable blueprint entry points across 13
+The current catalog has 67 deployable blueprint entry points across 13
 families. Each entry point owns its local ASCII architecture in
 `architecture/README.md`.
 
@@ -134,8 +134,10 @@ families. Each entry point owns its local ASCII architecture in
 | data-platform | [PostgreSQL Landing Zone](../../blueprints/data-platform/postgresql/) | [ASCII](../../blueprints/data-platform/postgresql/architecture/) |
 | data-platform | [Private Data Platform Landing Zone](../../blueprints/data-platform/private-data-platform/) | [ASCII](../../blueprints/data-platform/private-data-platform/architecture/) |
 | devops | [OCI DevOps Pipeline](../../blueprints/devops/oci-devops-pipeline/) | [ASCII](../../blueprints/devops/oci-devops-pipeline/architecture/) |
+| disaster-recovery | [Azure + OCI Cross-Cloud DR](../../blueprints/disaster-recovery/azure-oci-cross-cloud-dr/) | [ASCII](../../blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/) |
 | disaster-recovery | [Full Stack Disaster Recovery](../../blueprints/disaster-recovery/fsdr/) | [ASCII](../../blueprints/disaster-recovery/fsdr/architecture/) |
 | extensions | [API Gateway Extension](../../blueprints/extensions/apigw/) | [ASCII](../../blueprints/extensions/apigw/architecture/) |
+| extensions | [AKS + OKE Active Active](../../blueprints/extensions/aks-oke-active-active/) | [ASCII](../../blueprints/extensions/aks-oke-active-active/architecture/) |
 | extensions | [OCI Container Instances](../../blueprints/extensions/container-instances/) | [ASCII](../../blueprints/extensions/container-instances/architecture/) |
 | extensions | [Event-Driven Application Platform](../../blueprints/extensions/event-driven-platform/) | [ASCII](../../blueprints/extensions/event-driven-platform/architecture/) |
 | extensions | [Exadata Extension](../../blueprints/extensions/exadata/) | [ASCII](../../blueprints/extensions/exadata/architecture/) |
