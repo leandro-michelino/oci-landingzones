@@ -39,10 +39,10 @@ compliance, or workload platform pattern.
 
 ## Already Implemented
 
-The repository currently contains 67 fully implemented and deployable blueprint
+The repository currently contains 68 fully implemented and deployable blueprint
 entry points. See [Architecture Index](architecture/README.md#blueprint-architecture-inventory)
 for the complete folder-by-folder list with links to each local Architecture
-architecture file.
+file.
 
 | Family | Implemented Entry Points |
 | --- | ---: |
@@ -499,6 +499,19 @@ cloud_guard_target_id
 These patterns focus on enterprise Azure + OCI operating models where identity,
 network, operations, and AI services span both clouds.
 
+### Azure + OCI Idea Bullets
+
+- Identity federation: Microsoft Entra ID as IdP for OCI IAM (SSO and centralized RBAC).
+- Hybrid network hub: Azure vWAN/Hub + OCI DRG with site-to-site VPN or ExpressRoute/FastConnect partner path.
+- Multi-cloud DR: Primary app in OCI with Azure standby (or inverse) and DNS failover runbooks.
+- Data replication: Azure SQL/Storage into OCI Object Storage + Autonomous DB for analytics split.
+- AKS + OKE pattern: Active/active Kubernetes across clouds with GitOps and traffic steering.
+- Security baseline: Unified policy mapping across Azure Policy and OCI Cloud Guard/Security Zones.
+- Centralized observability: Azure Monitor + OCI Logging into one SIEM pipeline.
+- FinOps dashboard: Cross-cloud tagging standards and anomaly detection for both providers.
+- AI gateway: Azure OpenAI + OCI Generative AI routing by region, cost, or data residency.
+- Golden landing zone: Single Terraform framework with provider modules for Azure + OCI foundations.
+
 ---
 
 ### Identity Federation (Microsoft Entra ID -> OCI IAM)
@@ -710,6 +723,27 @@ foundation contract for that operating model.
 - Provider-specific modules under one governance contract.
 - Standard outputs for identity, network, security, and operations.
 - Baseline hand-off model for downstream multicloud blueprints.
+
+---
+
+## AWS + OCI Multicloud Expansion
+
+These patterns focus on AWS + OCI operating models for shared identity,
+networking, resilience, operations, and AI platform workflows across both
+clouds.
+
+### AWS + OCI Idea Bullets
+
+- Identity federation baseline: Central IdP and AWS IAM Identity Center with OCI IAM federation for SSO and centralized RBAC mapping.
+- Hybrid network backbone: AWS Transit Gateway + OCI DRG with site-to-site VPN and optional Direct Connect/FastConnect partner path.
+- Multi-cloud DR: OCI primary with AWS standby (or inverse) and DNS failover runbooks with drill evidence capture.
+- Data replication and analytics split: AWS RDS/S3 ingestion into OCI Object Storage + Autonomous Database (or reverse path) for analytics domains.
+- EKS + OKE active/active: Dual-cluster Kubernetes platform with GitOps promotion and weighted traffic steering.
+- Unified security baseline: AWS Config/Security Hub/GuardDuty mapping to OCI Cloud Guard/Security Zones with shared controls matrix.
+- Centralized observability: CloudWatch/CloudTrail + OCI Logging/Audit into unified SIEM pipelines and correlated alerting.
+- FinOps governance: Cross-cloud tagging taxonomy, allocation dimensions, and anomaly detection across AWS and OCI.
+- AI gateway routing: Amazon Bedrock + OCI Generative AI routing by region, cost, latency, and residency policy.
+- Golden landing zone framework: Shared Terraform pattern with OCI and AWS provider modules and consistent output contracts.
 
 ---
 

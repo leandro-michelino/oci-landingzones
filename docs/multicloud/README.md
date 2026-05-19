@@ -5,6 +5,9 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 This folder captures Azure + OCI architecture notes and remaining backlog
 patterns.
 
+For current AWS + OCI idea bullets, see the AWS + OCI section in
+`docs/ROADMAP.md`.
+
 Implemented patterns live under `blueprints/`. Documents in this folder are
 kept for design history and for patterns that are not yet implemented.
 
