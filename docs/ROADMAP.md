@@ -503,7 +503,7 @@ network, operations, and AI services span both clouds.
 
 - Identity federation: Microsoft Entra ID as IdP for OCI IAM (SSO and centralized RBAC).
 - Hybrid network hub: Azure vWAN/Hub + OCI DRG with site-to-site VPN or ExpressRoute/FastConnect partner path.
-- Multi-cloud DR: Primary app in OCI with Azure standby (or inverse) and DNS failover runbooks.
+- Multi-cloud DR: OCI primary with Azure standby and DNS failover runbooks.
 - Data replication: Azure SQL/Storage into OCI Object Storage + Autonomous DB for analytics split.
 - AKS + OKE pattern: Active/active Kubernetes across clouds with GitOps and traffic steering.
 - Security baseline: Unified policy mapping across Azure Policy and OCI Cloud Guard/Security Zones.
@@ -735,10 +735,10 @@ clouds.
 ### AWS + OCI Idea Bullets
 
 - Identity federation baseline: Central IdP and AWS IAM Identity Center with OCI IAM federation for SSO and centralized RBAC mapping.
-- Hybrid network backbone: AWS Transit Gateway + OCI DRG with site-to-site VPN and optional Direct Connect/FastConnect partner path.
-- Multi-cloud DR: OCI primary with AWS standby (or inverse) and DNS failover runbooks with drill evidence capture.
+- Hybrid network backbone: OCI-primary backbone with OCI DRG connected to AWS Transit Gateway using site-to-site VPN or Direct Connect/FastConnect partner interconnect.
+- Multi-cloud DR: OCI primary with AWS standby and DNS failover runbooks with drill evidence capture.
 - Data replication and analytics split: AWS RDS/S3 ingestion into OCI Object Storage + Autonomous Database (or reverse path) for analytics domains.
-- EKS + OKE active/active: Dual-cluster Kubernetes platform with GitOps promotion and weighted traffic steering.
+- EKS + OKE active/active: OCI-primary OKE with AWS EKS secondary, GitOps promotion, weighted traffic steering, and policy-based failover.
 - Unified security baseline: AWS Config/Security Hub/GuardDuty mapping to OCI Cloud Guard/Security Zones with shared controls matrix.
 - Centralized observability: CloudWatch/CloudTrail + OCI Logging/Audit into unified SIEM pipelines and correlated alerting.
 - FinOps governance: Cross-cloud tagging taxonomy, allocation dimensions, and anomaly detection across AWS and OCI.
