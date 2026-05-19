@@ -120,6 +120,8 @@ if command -v ansible-playbook >/dev/null 2>&1; then
       -o -path "*/ansible/destroy.yml" \) \
       -type f -print | sort
   )
+
+  "$REPO_ROOT/scripts/simulate-cloud-deployments.sh"
 else
   echo "==> Skipping ansible-playbook syntax checks; command not found"
 fi

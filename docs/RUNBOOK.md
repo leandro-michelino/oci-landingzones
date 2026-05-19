@@ -74,6 +74,27 @@ Behavior:
 - Always attempts provider destroy after apply attempts.
 - Uses explicit confirmation env vars internally (`CONFIRM_*`).
 
+## Simulate Azure And AWS Wrappers
+
+Use this before real cloud-side plan sessions, or whenever shared Azure/AWS
+runner behavior changes:
+
+```bash
+./scripts/simulate-cloud-deployments.sh
+```
+
+The helper discovers every `ansible/azure-plan.yml` and `ansible/aws-plan.yml`
+under `blueprints/`, syntax-checks each provider-specific plan/apply/destroy
+playbook, then runs the plan wrapper with simulation enabled. Simulation checks
+template and parameter paths and exits before any `az` or `aws` command.
+
+Real provider plans still use the normal wrappers:
+
+```bash
+ansible-playbook -i localhost, ansible/azure-plan.yml
+ansible-playbook -i localhost, ansible/aws-plan.yml
+```
+
 ## Review The Whole Project
 
 Use this when doing a repository hygiene pass rather than a single blueprint

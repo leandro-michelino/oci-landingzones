@@ -34,6 +34,7 @@ then jump into a specific blueprint Architecture file for delivery detail.
 |      |       `--> generated artifact cleanup                                  |
 |      |                                                                         |
 |      +--> fallback shell checks when Ansible is unavailable                    |
+|      `--> scripts/simulate-cloud-deployments.sh for Azure/AWS wrappers        |
 |                                                                                |
 |  Deployable blueprints                                                         |
 |      |                                                                         |

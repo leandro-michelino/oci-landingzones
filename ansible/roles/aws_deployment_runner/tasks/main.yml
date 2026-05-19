@@ -1,8 +1,16 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
-- name: Normalize AWS deployment action
+- name: Normalize AWS deployment inputs
   ansible.builtin.set_fact:
     aws_action_normalized: "{{ aws_action | lower }}"
+    aws_simulate_only_normalized: >-
+      {{
+        (
+          aws_simulate_only
+          | default(lookup('env', 'AWS_SIMULATE_ONLY') | default('false', true))
+        )
+        | bool
+      }}
 
 - name: Validate AWS deployment action
   ansible.builtin.assert:
@@ -15,18 +23,23 @@
     that:
       - lookup('env', 'CONFIRM_AWS_APPLY') == 'true'
     fail_msg: "Refusing AWS apply without CONFIRM_AWS_APPLY=true."
-  when: aws_action_normalized == "apply"
+  when:
+    - aws_action_normalized == "apply"
+    - not aws_simulate_only_normalized
 
 - name: Require explicit AWS destroy confirmation
   ansible.builtin.assert:
     that:
       - lookup('env', 'CONFIRM_AWS_DESTROY') == 'true'
     fail_msg: "Refusing AWS destroy without CONFIRM_AWS_DESTROY=true."
-  when: aws_action_normalized == "destroy"
+  when:
+    - aws_action_normalized == "destroy"
+    - not aws_simulate_only_normalized
 
 - name: Validate AWS CLI availability
   ansible.builtin.command: aws --version
   changed_when: false
+  when: not aws_simulate_only_normalized
 
 - name: Validate AWS CLI login context
   ansible.builtin.command:
@@ -37,6 +50,7 @@
       - --output
       - json
   changed_when: false
+  when: not aws_simulate_only_normalized
 
 - name: Ensure AWS template file exists
   ansible.builtin.stat:
@@ -63,6 +77,21 @@
       - aws_parameters_status.stat.exists
     fail_msg: "AWS parameters file not found: {{ aws_parameters_file }}"
   when: aws_action_normalized in ["plan", "apply"]
+
+- name: Simulate AWS deployment action
+  ansible.builtin.debug:
+    msg:
+      - "AWS simulation completed for action {{ aws_action_normalized }}."
+      - "Stack: {{ aws_stack_name }}"
+      - "Region: {{ aws_region }}"
+      - "Template: {{ aws_template_file | default('not required for destroy') }}"
+      - "Parameters: {{ aws_parameters_file | default('not required for destroy') }}"
+      - "No AWS CLI calls were made and no resources were created, changed, or deleted."
+  when: aws_simulate_only_normalized
+
+- name: End AWS simulation before cloud calls
+  ansible.builtin.meta: end_host
+  when: aws_simulate_only_normalized
 
 - name: Validate AWS CloudFormation template
   ansible.builtin.command:

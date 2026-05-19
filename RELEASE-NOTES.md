@@ -48,6 +48,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Markdown link checker for local README, catalog, and architecture links.
 - Make targets for validation, changed-scope checks, cleanup, blueprint
   scaffolding, index generation, and Markdown link checks.
+- Azure/AWS cloud deployment simulation helper for provider wrapper syntax,
+  template, and parameter wiring checks without cloud-side changes.
 
 ### Changed
 
@@ -78,6 +80,10 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   contract checks, optional scanners, and shared/blueprint-local Ansible syntax
   checks so full validation does not depend on a long-running Ansible role
   subprocess.
+- Tightened Azure/AWS runner behavior with explicit simulation mode, cloud
+  artifact contract checks, and Azure template-file validation before what-if.
+- Scoped generic YAML pre-commit parsing away from CloudFormation templates that
+  intentionally use AWS intrinsic tags such as `!Ref` and `!GetAtt`.
 - Aligned the default Terraform plan artifact with ignore and cleanup rules by
   using `tfplan.tfplan`.
 - Normalized remaining composite blueprint module sources to release-pinned Git

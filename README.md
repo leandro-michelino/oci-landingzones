@@ -150,6 +150,16 @@ Cloud-specific wrappers in multicloud blueprints:
 - Azure: `ansible/azure-plan.yml`, `ansible/azure-apply.yml`, `ansible/azure-destroy.yml`
 - AWS: `ansible/aws-plan.yml`, `ansible/aws-apply.yml`, `ansible/aws-destroy.yml`
 
+Cloud wrapper simulation:
+
+```bash
+make simulate-cloud
+```
+
+This checks every Azure and AWS wrapper, verifies its template and parameter
+files, and exits before any vendor CLI call. Real Azure what-if and AWS
+CloudFormation plan sessions still require logged-in `az` or `aws` CLIs.
+
 ## Pick By Family
 
 | Family | What it covers |
@@ -180,6 +190,12 @@ Run checks for the full repository:
 
 ```bash
 ./scripts/validate-all.sh
+```
+
+Simulate Azure and AWS deployment wrappers without creating resources:
+
+```bash
+./scripts/simulate-cloud-deployments.sh
 ```
 
 Performance tips:

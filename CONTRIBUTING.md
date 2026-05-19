@@ -39,6 +39,16 @@ blueprints, initializes and validates them without a backend, runs optional
 local scanners when installed, checks Ansible playbook syntax, and removes
 generated Terraform artifacts.
 
+When Azure or AWS wrapper behavior changes, run the cloud simulation helper:
+
+```bash
+./scripts/simulate-cloud-deployments.sh
+```
+
+It syntax-checks cloud-specific plan/apply/destroy playbooks and runs each plan
+wrapper in simulation mode. Simulation verifies the template and parameter file
+wiring, then stops before calling `az` or `aws`.
+
 For a focused local check from a single blueprint directory:
 
 ```bash
@@ -81,5 +91,6 @@ patterns.
 - Naming follows `docs/NAMING-CONVENTIONS.md`.
 - New variables are documented in `VARIABLES.md` or the blueprint README.
 - Security-sensitive defaults are conservative.
+- Azure/AWS wrapper changes pass `./scripts/simulate-cloud-deployments.sh`.
 - No secrets, OCIDs from private tenancies, or local `terraform.tfvars` files are
   committed.

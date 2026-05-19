@@ -1,6 +1,6 @@
 # Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-.PHONY: help validate changed clean blueprint blueprints links
+.PHONY: help validate changed clean blueprint blueprints links simulate-cloud
 
 help:
 	@printf '%s\n' "Targets:"
@@ -11,6 +11,7 @@ help:
 	@printf '%s\n' "  make blueprint path=blueprints/<family>/<name> [title='Nice Name']"
 	@printf '%s\n' "  make blueprints                       Regenerate BLUEPRINTS.md"
 	@printf '%s\n' "  make links                            Check local Markdown links and anchors"
+	@printf '%s\n' "  make simulate-cloud                   Simulate Azure and AWS deployment wrappers"
 
 validate:
 	./scripts/validate-all.sh
@@ -37,3 +38,6 @@ blueprints:
 
 links:
 	./scripts/check-markdown-links.sh
+
+simulate-cloud:
+	./scripts/simulate-cloud-deployments.sh

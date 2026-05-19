@@ -64,6 +64,18 @@ action.
 The default Ansible plan artifact is `tfplan.tfplan`. It is ignored and removed
 by validation cleanup, along with older `tfplan` artifacts from previous runs.
 
+Azure and AWS wrapper wiring can be simulated without provider credentials:
+
+```bash
+./scripts/simulate-cloud-deployments.sh
+```
+
+Simulation syntax-checks provider-specific plan/apply/destroy playbooks, verifies
+the referenced Bicep or CloudFormation template and example parameter file, and
+stops before making any cloud CLI call. Use the real `azure-plan.yml` and
+`aws-plan.yml` wrappers after logging in to `az` or `aws` when you need actual
+Azure what-if or CloudFormation no-execute changeset output.
+
 The generic landing zone deployment does not enable CIS behavior by default. To
 deploy a CIS landing zone, start from one of the dedicated folders instead:
 

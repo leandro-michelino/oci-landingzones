@@ -135,6 +135,26 @@ check_blueprint_contract() {
   done
 }
 
+check_cloud_deployment_contract() {
+  local dir="$1"
+  local provider="$2"
+  local template="$3"
+  local parameters="$4"
+  local playbook
+  local action
+
+  check_file "$dir/$provider/README.md"
+  check_file "$dir/$provider/$template"
+  check_file "$dir/$provider/$parameters"
+
+  for action in plan apply destroy; do
+    playbook="$dir/ansible/$provider-$action.yml"
+    check_file "$playbook"
+    check_contains "$playbook" "${provider}_action: $action" "${provider}_action: $action"
+    check_contains "$playbook" "${provider}_deployment_runner" "${provider}_deployment_runner role"
+  done
+}
+
 echo "==> Checking repository documentation and blueprint contracts"
 
 "$REPO_ROOT/scripts/check-naming-conventions.sh"
@@ -155,6 +175,22 @@ done < <(
   find "$REPO_ROOT/blueprints" \
     -path "*/.terraform/*" -prune -o \
     -name "main.tf" -type f -print | sort
+)
+
+while IFS= read -r template; do
+  check_cloud_deployment_contract "${template%/aws/main.yaml}" "aws" "main.yaml" "parameters.example.json"
+done < <(
+  find "$REPO_ROOT/blueprints" \
+    -path "*/.terraform/*" -prune -o \
+    -path "*/aws/main.yaml" -type f -print | sort
+)
+
+while IFS= read -r template; do
+  check_cloud_deployment_contract "${template%/azure/main.bicep}" "azure" "main.bicep" "parameters.example.json"
+done < <(
+  find "$REPO_ROOT/blueprints" \
+    -path "*/.terraform/*" -prune -o \
+    -path "*/azure/main.bicep" -type f -print | sort
 )
 
 if [[ "$failures" -ne 0 ]]; then
