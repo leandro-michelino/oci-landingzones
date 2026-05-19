@@ -308,7 +308,7 @@ tests/               Validation contract notes and future test home
 | [BYOL And License Model Matrix](docs/BYOL-LICENSING-MATRIX.md) | License-model guidance for supported service families. |
 | [CIS Profiles](docs/CIS-PROFILES.md) | CIS profile behavior. |
 | [Runbook](docs/RUNBOOK.md) | Operational flow for maintainers and reviewers. |
-| [Roadmap](docs/ROADMAP.md) | Implemented phases and future candidates. |
+| [Roadmap](docs/ROADMAP.md) | Implemented and upcoming candidates. |
 
 ## Search-Friendly Summary
 

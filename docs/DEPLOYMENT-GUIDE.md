@@ -4,7 +4,7 @@ This guide describes the intended deployment sequence. Every blueprint has real
 Terraform wiring now; use the enable flags and tfvars examples to decide which
 resources should be created in a specific tenancy.
 
-## Phase 0 - Bootstrap
+## Step 0 - Bootstrap
 
 Bootstrap verifies local prerequisites and records the manual decisions needed
 before a real `terraform apply`: OCI CLI access, tenancy context, remote state,
@@ -300,7 +300,7 @@ customers recognize as one deployable pattern. Compose them from existing base,
 networking, operations, and extension decisions, and avoid creating one bundle
 per minor feature toggle.
 
-## Phase 1 - Core Structure
+## Step 1 - Core Structure
 
 Deploy the core blueprint first. The implemented foundation creates the landing
 zone compartment structure and baseline governance tagging required by later
@@ -376,7 +376,7 @@ queries and notification destinations are environment-specific. Add
 `monitoring_subscriptions` and `monitoring_alarms` from local ignored tfvars
 when alarms should notify platform teams.
 
-## Phase 2 - IAM Foundation
+## Step 2 - IAM Foundation
 
 The core IAM foundation creates landing zone administrator, network
 administrator, security administrator, governance administrator, workload
@@ -397,7 +397,7 @@ Implemented module order:
 2. `iam/dynamic-groups`
 3. `iam/policies`
 
-## Phase 3 - Networking
+## Step 3 - Networking
 
 Choose one networking blueprint and deploy it after core.
 Each networking deployment folder has a local README and `architecture/` folder
@@ -411,12 +411,12 @@ during `terraform init`.
 Each networking blueprint keeps its diagram scope and update guidance in its
 local `architecture/` folder.
 
-## Phase 4 - Operating Entities
+## Step 4 - Operating Entities
 
 Use operating entity blueprints when the main question is ownership: who can
 administer the environment, where workloads live, and how access stays scoped.
 
-Available Phase 4 blueprints:
+Available operating-entity blueprints:
 
 - `blueprints/operating-entity/` creates one operating entity root compartment,
   child workload compartments, admin and auditor groups, and scoped IAM policies.
@@ -445,16 +445,16 @@ Architecture notes live in each operating-entity blueprint's
 | Operations and extensions | `blueprints/operations/*` and `blueprints/extensions/*` | Cost Optimization plus API Gateway, Container Instances, Event-Driven Platform, Exadata, Functions, OAC, Observability, OIC, OKE, OKE Service Mesh, Redis Cache, Streaming, and WAF are validated. |
 | Data, AI, DevOps, DR, and industry | `blueprints/data-platform/*`, `blueprints/ai/*`, `blueprints/devops/*`, `blueprints/disaster-recovery/*`, and `blueprints/industry/*` | Service-specific blueprints are initialized and validated without backend and must keep local ASCII architecture notes. |
 
-The full catalog currently contains 65 deployable blueprint entry points across
+The full catalog currently contains 67 deployable blueprint entry points across
 13 families. The complete architecture inventory is in
 `docs/architecture/README.md`.
 
-## Phase 5 - Operations
+## Step 5 - Operations
 
 Operations blueprints sit after core and before most workload add-ons. They
 help the landing zone stay understandable after resources start to multiply.
 
-Implemented Phase 5 operations entry points:
+Implemented operations entry points:
 
 - `blueprints/operations/cost-optimization/` creates cost-tracking tags, optional
   tag defaults, budgets, budget alert rules, FinOps ONS notifications, optional
@@ -464,7 +464,7 @@ Implemented Phase 5 operations entry points:
 Keep real budget amounts, recipients, webhook targets, Optimizer enrollment IDs,
 and IAM group names in local ignored tfvars files.
 
-## Phase 6 - Extensions
+## Step 6 - Extensions
 
 Extensions support two customer paths. For extension-only brownfield use,
 identify the existing compartment, network, service, and IAM values and run the
@@ -472,7 +472,7 @@ extension folder directly. For base-plus-extension use, deploy core and the
 required networking foundation first, then pass their outputs into the extension
 tfvars. Each extension must include its own architecture notes.
 
-Implemented Phase 6 extension entry points:
+Implemented extension entry points:
 
 - `blueprints/extensions/oke/` creates an optional OKE cluster and optional node
   pool. Both are disabled by default.
@@ -571,7 +571,7 @@ ANSIBLE_CONFIG=ansible/ansible.cfg \
 ## Specialized Patterns
 
 Some deployments are cross-cutting and should be selected based on the customer
-operating model rather than a simple phase number:
+operating model rather than a simple sequence number:
 
 - Use operating entity patterns for delegated ownership and repeatable
   application-team onboarding.

@@ -30,12 +30,38 @@ resource "oci_ons_notification_topic" "dr_alert" {
 
 resource "terraform_data" "connectivity_contract" {
   input = local.effective_interconnect
+
+  lifecycle {
+    precondition {
+      condition = (
+        var.connectivity_mode == "interconnect" &&
+        var.fastconnect_virtual_circuit_id != null &&
+        var.expressroute_circuit_id != null
+        ) || (
+        var.connectivity_mode == "without-interconnect" &&
+        var.fastconnect_virtual_circuit_id == null &&
+        var.expressroute_circuit_id == null
+      )
+      error_message = "For connectivity_mode=interconnect, set both fastconnect_virtual_circuit_id and expressroute_circuit_id. For connectivity_mode=without-interconnect, keep both values null."
+    }
+  }
 }
 
 resource "terraform_data" "dns_failover_contract" {
   count = var.enable_dns_failover_contract ? 1 : 0
 
   input = local.dns_failover_contract
+
+  lifecycle {
+    precondition {
+      condition = (
+        var.oci_primary_endpoint != null &&
+        var.azure_standby_endpoint != null &&
+        trimspace(var.app_fqdn) != ""
+      )
+      error_message = "When enable_dns_failover_contract=true, set app_fqdn, oci_primary_endpoint, and azure_standby_endpoint."
+    }
+  }
 }
 
 resource "terraform_data" "runbook_contract" {

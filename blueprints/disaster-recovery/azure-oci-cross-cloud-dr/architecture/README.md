@@ -91,6 +91,7 @@ during review, plan, and hand-off.
 - The DNS failover contract captures endpoint and TTL assumptions so operational teams can align cutover timing with runbook tests.
 - The runbook contract stores drill cadence and RTO/RPO targets so governance checks can compare planned versus measured recovery behavior.
 - Azure resources remain externally managed in this variant and are referenced by endpoint values in local tfvars.
+- `hello-world/index.html` is included as a lightweight drill/demo status page that mirrors the same primary/standby assumptions.
 
 ## Operational Boundaries
 

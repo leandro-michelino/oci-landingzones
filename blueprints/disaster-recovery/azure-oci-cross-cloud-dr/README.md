@@ -61,6 +61,7 @@ blueprints/disaster-recovery/azure-oci-cross-cloud-dr/
 |-- providers.tf               OCI provider configuration
 |-- versions.tf                Terraform and provider constraints
 |-- terraform.tfvars.example   Example input shape
+|-- hello-world/index.html     Sample DR status page for runbook demos
 `-- ansible/
     |-- plan.yml               Local init, validate, and plan
     |-- apply.yml              Guarded init, validate, plan, and apply
@@ -179,6 +180,13 @@ expected Terraform + Ansible output at the end of the deployment.
 - Confirm runbook objectives (RTO/RPO) match business requirements.
 - Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
 - Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
+
+## Hello World Page
+
+Use the sample page at `hello-world/index.html` as a lightweight status/demo
+artifact for DR rehearsals and runbook walkthroughs. It intentionally reflects
+this blueprint contract: OCI primary, Azure standby, DNS failover flow, and
+connectivity mode choices.
 
 ## Validation
 

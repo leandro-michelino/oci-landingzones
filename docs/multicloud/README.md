@@ -6,7 +6,7 @@ This folder captures concrete Azure + OCI blueprint drafts before they become
 full deployable folders under `blueprints/`.
 
 These drafts are architecture-first: clear scope, control boundaries, rollout
-phases, and hand-off contracts. They are intended to reduce design risk before
+plans, and hand-off contracts. They are intended to reduce design risk before
 Terraform implementation starts.
 
 ## Draft Blueprint Menu

@@ -62,13 +62,13 @@ architecture file.
 
 ---
 
-## Phase 4 - Specialized (Complete)
+## Specialized (Complete)
 
-The specialized Phase 4 queue is now implemented. New specialized candidates
+The specialized queue is now implemented. New specialized candidates
 should be added under the architecture backlog until they are ready to become a
-phase-level commitment.
+roadmap commitment.
 
-## Phase 5 - AI / ML Platform
+## AI / ML Platform
 
 AI workloads beyond a single GenAI endpoint. AI Agents and MySQL HeatWave are
 now implemented; Data Science remains as the next ML lifecycle platform gap.
@@ -133,7 +133,7 @@ artifact_bucket_name
 
 ---
 
-## Phase 6 - Platform Services
+## Platform Services
 
 Serverless and middleware services that round out the application platform.
 
@@ -236,7 +236,7 @@ vault_secret_id
 
 ---
 
-## Phase 7 - Security & Governance Automation
+## Security & Governance Automation
 
 Blueprints that extend the compliance baseline with automated detection,
 response, and data governance.
@@ -344,7 +344,7 @@ audit_bucket_name
 
 ---
 
-## Phase 8 - Industry Verticals
+## Industry Verticals
 
 Vertical-specific landing zones that combine Core + compliance + workload
 patterns into a single deployable shape for a target industry.
@@ -494,7 +494,7 @@ cloud_guard_target_id
 
 ---
 
-## Phase 9 - Azure + OCI Multicloud Expansion
+## Azure + OCI Multicloud Expansion
 
 These patterns focus on enterprise Azure + OCI operating models where identity,
 network, operations, and AI services span both clouds.
@@ -558,7 +558,7 @@ runbook-driven failover/failback.
 
 **Scope highlights.**
 
-- Primary in Azure with OCI standby, or inverse.
+- OCI primary with Azure standby in the implemented variant.
 - DNS failover controls and runbooks.
 - RTO/RPO measurement and rehearsal workflow.
 - Recovery evidence capture for audit.
@@ -710,9 +710,9 @@ foundation contract for that operating model.
 
 ---
 
-## Phase 10 - Next Architecture Backlog
+## Next Architecture Backlog
 
-These are good next candidates after the current Phase 4-8 queue. They fit the
+These are good next candidates after the current specialized and multicloud queues. They fit the
 repo because they can reuse the existing contracts: Core for governance,
 networking blueprints for traffic paths, extension blueprints for managed
 services, and local ASCII architecture for design review.
@@ -1203,7 +1203,7 @@ backup_handoff_outputs
 
 ---
 
-## Phase 10 - OCI Service Gaps
+## OCI Service Gaps
 
 Services that have full Terraform provider support but no blueprint in the repo
 yet. All are commonly requested in customer conversations and can reuse the
@@ -1578,14 +1578,14 @@ vault_secret_id
 
 ---
 
-## Phase 11 - GenAI Platform Patterns
+## GenAI Platform Patterns
 
 Advanced GenAI patterns that build on the `genai-private` and `ai/agents`
 blueprints. These address the operational, governance, and architectural gaps
 that appear once a team moves from a single GenAI endpoint to a production AI
 platform.
 
-These Phase 11 patterns are now implemented as deployable blueprint folders.
+These GenAI platform patterns are now implemented as deployable blueprint folders.
 The details below remain as architecture intent notes; the folder-level README
 and `architecture/README.md` files are the source of truth for operators.
 
@@ -2007,26 +2007,26 @@ Core Landing Zone (implemented)
   |   |--- blueprints/ai/embedding-pipeline/
   |   `--- blueprints/ai/multi-agent/
   |
-  |-- Phase 5 (AI/ML Platform) ---------------------------------------
+  |-- AI/ML Platform -----------------------------------------------
   |   |--- blueprints/ai/data-science/
   |   |--- blueprints/ai/agents/
   |   `--- blueprints/data-platform/mysql-heatwave/
   |
-  |-- Phase 6 (Platform Services) ------------------------------------
+  |-- Platform Services --------------------------------------------
   |   |--- blueprints/data-platform/goldengate/
   |   `--- blueprints/extensions/digital-assistant/
   |
-  |-- Phase 7 (Security and Governance) ------------------------------
+  |-- Security and Governance --------------------------------------
   |   |--- blueprints/compliance/security-posture/
   |   |--- blueprints/data-platform/data-catalog/
   |   `--- blueprints/extensions/vault-advanced/
   |
-  |-- Phase 8 (Industry Verticals) -----------------------------------
+  |-- Industry Verticals -------------------------------------------
   |   |--- blueprints/industry/financial-services/
   |   |--- blueprints/industry/hpc-gpu/
   |   `--- blueprints/compliance/public-sector/
   |
-  |-- Phase 9 (Next Architecture Backlog) ----------------------------
+  |-- Next Architecture Backlog ------------------------------------
   |   |--- blueprints/networking/public-edge-ingress/
   |   |--- blueprints/extensions/batch-workers/
   |   |--- blueprints/data-platform/object-storage-lakehouse/
@@ -2035,7 +2035,7 @@ Core Landing Zone (implemented)
   |   |--- blueprints/industry/weblogic-platform/
   |   `--- blueprints/industry/vmware-hybrid-migration/
   |
-  |-- Phase 10 (OCI Service Gaps) ------------------------------------
+  |-- OCI Service Gaps ---------------------------------------------
   |   |--- blueprints/data-platform/nosql/
   |   |--- blueprints/compliance/data-safe/
   |   |--- blueprints/industry/secure-desktops/
@@ -2048,7 +2048,7 @@ Core Landing Zone (implemented)
   |   |--- blueprints/extensions/email-delivery/
   |   `--- blueprints/compliance/threat-intelligence/
   |
-  `-- Phase 11 (GenAI Platform Patterns) ----------------------------
+  `-- GenAI Platform Patterns --------------------------------------
       `--- implemented; see Already Implemented above
 ```
 
@@ -2058,7 +2058,7 @@ When each blueprint is implemented, add it to:
 
 1. `README.md` - Deployment Menu table under the appropriate section
 2. `docs/DEPLOYMENT-PATTERN-CATALOG.md` - full pattern catalog
-3. `docs/DEPLOYMENT-GUIDE.md` - phase list and deployment order notes
+3. `docs/DEPLOYMENT-GUIDE.md` - deployment sequence and ordering notes
 4. `VARIABLES.md` - shared variable reference when new operator inputs matter
 5. `RELEASE-NOTES.md` - unreleased change summary
 6. Extension README and architecture notes - both extension-only and

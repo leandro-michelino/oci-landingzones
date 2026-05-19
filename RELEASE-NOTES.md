@@ -34,7 +34,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   Desktops, including the dated Windows 10/11 BYOL guardrail for Secure Desktops.
 - Search discoverability guide with recommended GitHub repository description,
   topics, and search-friendly summary text for Google, Bing, and GitHub search.
-- Phase 10 roadmap section for OCI service-gap candidates, including NoSQL,
+- Roadmap service-gap section for OCI service-gap candidates, including NoSQL,
   Data Safe, Secure Desktops, Data Flow, Data Integration, Certificates,
   AI Services, OCVS, Process Automation, Network Load Balancer, Email Delivery,
   Threat Intelligence, and follow-on backlog patterns.
@@ -184,7 +184,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   foundation while remaining opt-in.
 - Repository cleanup guidance for generated state, lock, plan, cache,
   and local test artifacts.
-- Phase 1 core implementation for landing zone compartments and governance
+- Core implementation for landing zone compartments and governance
   tagging.
 - Governance logging implementation for core log groups, optional service logs,
   VCN flow-log shortcuts, saved searches, and opt-in tenancy audit retention.
@@ -203,15 +203,15 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   default IAM change rules, and custom Events rules.
 - Monitoring implementation for opt-in alarms, notification topics, and
   subscriptions.
-- Phase 2 IAM foundation implementation for IAM groups, dynamic groups, and
+- IAM foundation implementation for IAM groups, dynamic groups, and
   scoped policies.
-- Phase 3 networking foundation implementation for reusable hub VCN, spoke VCN,
+- Networking foundation implementation for reusable hub VCN, spoke VCN,
   DRG, IPSec VPN, OCI Network Firewall, FastConnect, private DNS, ZPR, Bastion,
   and network virtual appliance modules.
-- Phase 4 operating entity implementation for single operating entity,
+- Operating entity implementation for single operating entity,
   multi-operating-entity, and workload vending blueprints using reusable
   compartment, group, and policy modules.
-- Phase 5 extension implementation for opt-in OKE, API Gateway, Streaming, WAF,
+- Extension implementation for opt-in OKE, API Gateway, Streaming, WAF,
   and Exadata blueprints with resource creation disabled by default.
 - Deployable networking foundations for standalone three-tier, standalone
   private-only, custom standalone, standalone ZPR, brownfield VCN references,
