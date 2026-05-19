@@ -38,7 +38,8 @@ backlog patterns.
 | Note | Focus | Target Path |
 | --- | --- | --- |
 | [Identity Federation](AZURE-OCI-IDENTITY-FEDERATION.md) | Microsoft Entra ID federation into OCI IAM with mapped RBAC and conditional access alignment. | `blueprints/identity/azure-entra-federation/` |
-| [Hybrid Networking](AZURE-OCI-HYBRID-NETWORKING.md) | Azure hub/vWAN to OCI DRG with private + encrypted paths, route governance, and DNS integration. | `blueprints/networking/azure-oci-hybrid-networking/` |
+| [Hybrid Networking](AZURE-OCI-HYBRID-NETWORKING.md) | Azure hub/vWAN to OCI DRG with private + encrypted paths, route governance, DNS integration, and current Interconnect region availability. | `blueprints/networking/azure-oci-hybrid-networking/` |
+| [AWS Interconnect Multicloud with OCI Preview](AWS-INTERCONNECT-MULTICLOUD-OCI-PREVIEW.md) | Preview-only AWS Interconnect - multicloud with OCI design note and current Limited Availability region pair; OCI support is not treated as production-ready repo automation yet. | `blueprints/networking/aws-interconnect-multicloud-oci/` |
 
 ## How To Use This Folder
 

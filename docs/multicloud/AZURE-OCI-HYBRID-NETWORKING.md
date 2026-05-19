@@ -31,6 +31,47 @@ DNS, and inspection boundaries.
 | Routing model | BGP-based route exchange with explicit route filtering |
 | DNS model | Private DNS forwarding and split-horizon controls |
 
+## Service Region Availability
+
+As per today date, 19/May/26, the documented Oracle Interconnect for Azure
+region availability is:
+
+Oracle Interconnect for Azure is available only in the OCI regions and Azure
+ExpressRoute locations shown below. Use these pairs as hard placement
+constraints before selecting a customer target region.
+
+### Asia Pacific (APAC)
+
+| OCI Region | OCI Key | Azure ExpressRoute Location |
+| --- | --- | --- |
+| Japan East (Tokyo) | `NRT` | Tokyo |
+| Singapore (Singapore) | `SIN` | Singapore |
+| South Korea Central (Seoul) | `ICN` | Seoul |
+
+### Europe, Middle East, Africa (EMEA)
+
+| OCI Region | OCI Key | Azure ExpressRoute Location |
+| --- | --- | --- |
+| Germany Central (Frankfurt) | `FRA` | Frankfurt and Frankfurt2 |
+| Netherlands Northwest (Amsterdam) | `AMS` | Amsterdam2 |
+| UK South (London) | `LHR` | London |
+| South Africa Central (Johannesburg) | `JNB` | Johannesburg |
+
+### Latin America (LATAM)
+
+| OCI Region | OCI Key | Azure ExpressRoute Location |
+| --- | --- | --- |
+| Brazil Southeast (Vinhedo) | `VCP` | Campinas |
+
+### North America (NA)
+
+| OCI Region | OCI Key | Azure ExpressRoute Location |
+| --- | --- | --- |
+| Canada Southeast (Toronto) | `YYZ` | Toronto and Toronto2 |
+| US East (Ashburn) | `IAD` | Washington DC and Washington DC2 |
+| US West (Phoenix) | `PHX` | Phoenix |
+| US West (San Jose) | `SJC` | Silicon Valley |
+
 ## Architecture
 
 ```text
@@ -80,9 +121,9 @@ DNS, and inspection boundaries.
 - DNS resolution ownership and forwarding zones.
 - Expected throughput and latency SLOs by workload tier.
 
-## Output Contract
+## Outputs And Hand-Off
 
-The deployable blueprint should return:
+The future deployment hand-off should include:
 
 ```text
 azure_hub_connection_ids
@@ -113,7 +154,7 @@ Enable full flow logging, SIEM forwarding, and periodic path failover drills.
 - DNS resolution is deterministic across both clouds.
 - Telemetry is available for path, tunnel, and route-state monitoring.
 
-## Promotion Criteria To Deployable Blueprint
+## Promotion Criteria
 
 Promote to `blueprints/networking/azure-oci-hybrid-networking/` when:
 

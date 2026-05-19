@@ -746,6 +746,7 @@ clouds.
 - Centralized observability: CloudWatch/CloudTrail + OCI Logging/Audit into unified SIEM pipelines and correlated alerting.
 - FinOps governance: Cross-cloud tagging taxonomy, allocation dimensions, and anomaly detection across AWS and OCI.
 - AI gateway routing: Amazon Bedrock + OCI Generative AI routing by region, cost, latency, and residency policy.
+- Preview only: AWS Interconnect - multicloud with OCI / Oracle Interconnect for AWS managed private connectivity, tracked in `docs/multicloud/AWS-INTERCONNECT-MULTICLOUD-OCI-PREVIEW.md`; do not promote until OCI support is GA or an approved preview exception is documented.
 - Golden landing zone framework: Shared Terraform pattern with OCI and AWS provider modules and consistent output contracts.
 
 ---
