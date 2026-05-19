@@ -54,6 +54,7 @@ in your local ignored `terraform.tfvars` file.
 blueprints/extensions/aks-oke-active-active/
 |-- README.md                  Operator guide for this deployment
 |-- architecture/README.md     Detailed ASCII architecture for this deployment
+|-- hello-world/index.html     Sample app page for active/active smoke tests
 |-- main.tf                    Terraform modules, resources, and data sources
 |-- variables.tf               Input contract
 |-- outputs.tf                 Deployment hand-off values
@@ -63,7 +64,9 @@ blueprints/extensions/aks-oke-active-active/
 `-- ansible/
     |-- plan.yml               Local init, validate, and plan
     |-- apply.yml              Guarded init, validate, plan, and apply
-    `-- destroy.yml            Guarded destroy
+    |-- destroy.yml            Guarded destroy
+    |-- serve-hello-world.yml  Start local hello-world endpoint for demos and checks
+    `-- stop-hello-world.yml   Stop local hello-world endpoint
 ```
 
 ## Inputs To Decide
@@ -154,6 +157,15 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 
 `apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for
 customer-facing or shared environments.
+
+To run the real hello-world endpoint for this blueprint:
+
+```bash
+cd blueprints/extensions/aks-oke-active-active
+ansible-playbook -i localhost, ansible/serve-hello-world.yml
+# open http://127.0.0.1:18080
+ansible-playbook -i localhost, ansible/stop-hello-world.yml
+```
 
 ## Deployment Order
 

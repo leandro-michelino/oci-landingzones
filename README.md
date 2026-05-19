@@ -67,6 +67,10 @@ Implemented multicloud blueprints:
 | Active/active Kubernetes with OCI primary and interconnect-only contract | [AKS + OKE Active Active](blueprints/extensions/aks-oke-active-active/) |
 | Cross-cloud DR with OCI primary, DNS failover runbooks, and connectivity mode support | [Azure + OCI Cross-Cloud DR](blueprints/disaster-recovery/azure-oci-cross-cloud-dr/) |
 
+Both Azure+OCI deployments include a `hello-world/index.html` sample plus
+`ansible/serve-hello-world.yml` and `ansible/stop-hello-world.yml` so you can
+run a real local endpoint during demos, smoke checks, and runbook drills.
+
 Planning and architecture drafts:
 
 | Draft | Link |
@@ -161,8 +165,6 @@ blueprints/<family>/<deployment>/
 |-- README.md                  Operator guide
 |-- architecture/
 |   `-- README.md              Detailed ASCII architecture
-|-- hello-world/
-|   `-- index.html             Simple application smoke-test page
 |-- main.tf                    Terraform composition
 |-- variables.tf               Input contract
 |-- outputs.tf                 Hand-off values

@@ -65,7 +65,9 @@ blueprints/disaster-recovery/azure-oci-cross-cloud-dr/
 `-- ansible/
     |-- plan.yml               Local init, validate, and plan
     |-- apply.yml              Guarded init, validate, plan, and apply
-    `-- destroy.yml            Guarded destroy
+    |-- destroy.yml            Guarded destroy
+    |-- serve-hello-world.yml  Start local DR hello-world endpoint
+    `-- stop-hello-world.yml   Stop local DR hello-world endpoint
 ```
 
 ## Inputs To Decide
@@ -187,6 +189,15 @@ Use the sample page at `hello-world/index.html` as a lightweight status/demo
 artifact for DR rehearsals and runbook walkthroughs. It intentionally reflects
 this blueprint contract: OCI primary, Azure standby, DNS failover flow, and
 connectivity mode choices.
+
+Run it as a real local endpoint:
+
+```bash
+cd blueprints/disaster-recovery/azure-oci-cross-cloud-dr
+ansible-playbook -i localhost, ansible/serve-hello-world.yml
+# open http://127.0.0.1:18081
+ansible-playbook -i localhost, ansible/stop-hello-world.yml
+```
 
 ## Validation
 

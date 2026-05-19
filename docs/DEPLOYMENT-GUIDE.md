@@ -148,7 +148,6 @@ The checked-out working tree stays small:
 blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/
 |-- README.md
 |-- architecture/README.md
-|-- hello-world/index.html
 |-- main.tf
 |-- variables.tf
 |-- outputs.tf

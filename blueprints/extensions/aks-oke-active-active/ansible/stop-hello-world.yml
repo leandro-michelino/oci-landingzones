@@ -1,0 +1,22 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+---
+- name: Stop the AKS + OKE hello-world local server
+  hosts: localhost
+  gather_facts: false
+  vars:
+    hello_world_dir: "{{ playbook_dir }}/../hello-world"
+    hello_world_pid_file: "{{ hello_world_dir }}/server.pid"
+  tasks:
+    - name: Stop local hello-world server when PID file exists
+      ansible.builtin.shell: |
+        if [ -f "{{ hello_world_pid_file }}" ]; then
+          pid="$(cat "{{ hello_world_pid_file }}")"
+          if kill -0 "$pid" 2>/dev/null; then
+            kill "$pid"
+            echo "Stopped PID $pid"
+          fi
+          rm -f "{{ hello_world_pid_file }}"
+        else
+          echo "No PID file found"
+        fi
+      changed_when: false

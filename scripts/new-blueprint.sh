@@ -16,8 +16,7 @@ Examples:
 
 Purpose:
   Scaffold a deployable OCI blueprint with Terraform, Ansible, README,
-  architecture README, hello-world page, tfvars example, and naming-compliant
-  defaults.
+  architecture README, tfvars example, and naming-compliant defaults.
 USAGE
 }
 
@@ -106,7 +105,7 @@ if [[ -e "$target_dir" ]]; then
   exit 1
 fi
 
-mkdir -p "$target_dir/architecture" "$target_dir/ansible" "$target_dir/hello-world"
+mkdir -p "$target_dir/architecture" "$target_dir/ansible"
 
 component_count="$(awk -F/ '{ print NF }' <<< "$relative_dir")"
 role_prefix=""
@@ -278,7 +277,6 @@ shape before the service-specific resources are implemented.
 $relative_dir/
 |-- README.md
 |-- architecture/README.md
-|-- hello-world/index.html
 |-- main.tf
 |-- locals.tf
 |-- variables.tf
@@ -432,135 +430,6 @@ engineering details needed for architecture review.
 - [ ] Validation passes before commit.
 EOF
 
-read -r -d '' hello_world_html <<EOF || true
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>$title - Hello World Application</title>
-  <style>
-    :root {
-      --bg: #0b1220;
-      --panel: #0f172a;
-      --line: #334155;
-      --text: #e5e7eb;
-      --muted: #94a3b8;
-      --accent: #22d3ee;
-      --ok: #34d399;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-      background: radial-gradient(circle at top right, #1e293b 0%, var(--bg) 52%);
-      color: var(--text);
-    }
-    main {
-      max-width: 940px;
-      margin: 44px auto;
-      padding: 20px;
-    }
-    section {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 22px;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
-    }
-    h1 {
-      margin: 0 0 10px;
-      font-size: clamp(1.35rem, 2.4vw, 2rem);
-      letter-spacing: 0.02em;
-    }
-    p {
-      margin: 0 0 12px;
-      color: var(--muted);
-      line-height: 1.52;
-    }
-    code {
-      color: #bae6fd;
-      background: #0b1220;
-      border: 1px solid #1f2937;
-      border-radius: 6px;
-      padding: 1px 6px;
-    }
-    .badge {
-      display: inline-block;
-      margin: 8px 8px 0 0;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid #475569;
-      font-size: 0.85rem;
-      color: var(--text);
-      background: #0b1220;
-    }
-    .ok {
-      border-color: #065f46;
-      color: #d1fae5;
-      background: rgba(6, 95, 70, 0.30);
-    }
-    .grid {
-      margin-top: 14px;
-      display: grid;
-      gap: 10px;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    }
-    .cell {
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: #0b1220;
-      padding: 10px;
-      font-size: 0.92rem;
-    }
-    .label {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--accent);
-      margin-bottom: 4px;
-    }
-  </style>
-</head>
-<body>
-  <main>
-    <section>
-      <h1>Hello World Application: $title</h1>
-      <p>
-        This page is a lightweight demo artifact for the deployment blueprint
-        <code>$relative_dir</code>.
-      </p>
-      <p>
-        Use it in walkthroughs, handoff notes, smoke checks, and runbook rehearsal
-        sessions where an example application endpoint helps validate the intended flow.
-      </p>
-      <span class="badge ok">Application Demo</span>
-      <span class="badge">Blueprint Ready</span>
-      <span class="badge">Runbook Friendly</span>
-      <div class="grid">
-        <div class="cell">
-          <div class="label">Blueprint</div>
-          <div>$title</div>
-        </div>
-        <div class="cell">
-          <div class="label">Path</div>
-          <div>$relative_dir</div>
-        </div>
-        <div class="cell">
-          <div class="label">Endpoint (Example)</div>
-          <div>app.example.com</div>
-        </div>
-        <div class="cell">
-          <div class="label">Purpose</div>
-          <div>Application hello-world and operational validation</div>
-        </div>
-      </div>
-    </section>
-  </main>
-</body>
-</html>
-EOF
-
 for action in plan apply destroy; do
   backend_enabled=false
   verb="Plan"
@@ -599,7 +468,6 @@ write_file "$target_dir/outputs.tf" "$outputs_tf"
 write_file "$target_dir/terraform.tfvars.example" "$tfvars_example"
 write_file "$target_dir/README.md" "$readme_md"
 write_file "$target_dir/architecture/README.md" "$architecture_md"
-write_file "$target_dir/hello-world/index.html" "$hello_world_html"
 
 "$REPO_ROOT/scripts/generate-blueprints-index.sh"
 
