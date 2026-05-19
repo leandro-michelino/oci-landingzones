@@ -18,7 +18,7 @@ registrations, health checks, listeners, source preservation options, and IAM.
 | Targets | IP or target OCID backends in private application subnets. |
 | Governance | NSGs, tags, IAM policy shell, and operator review. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 +--------------------------------------------------------------------------------+

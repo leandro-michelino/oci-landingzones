@@ -21,7 +21,7 @@ detection rules.
 | Cloud Guard | Detector recipe shell for GenAI-specific signals. |
 | IAM | Security reviewer and service permissions. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 GenAI Gateway / App / Endpoint

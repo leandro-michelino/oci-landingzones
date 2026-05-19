@@ -19,7 +19,7 @@ without adopting a full GenAI platform.
 | Output bucket | Stores inference results and extracted metadata. |
 | IAM | Controls service callers and data readers. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 Application / Integration

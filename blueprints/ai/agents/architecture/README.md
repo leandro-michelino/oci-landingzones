@@ -19,7 +19,7 @@ All expensive or externally visible resources are disabled by default.
 | Reasoning | OCI GenAI Agent and optional endpoint with sessions, traces, and citations. |
 | Governance | IAM policy shell, audit bucket, tags, and operator review gates. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 +--------------------------------------------------------------------------------+

@@ -2,7 +2,7 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This page is the deployment architecture for `blueprints/data-platform/autonomous-database`. It is intentionally ASCII-first so it is easy to review in GitHub, terminals, pull requests, runbooks, and customer notes without a diagramming tool.
+This page is the deployment architecture for `blueprints/data-platform/autonomous-database`. It is intentionally Architecture-first so it is easy to review in GitHub, terminals, pull requests, runbooks, and customer notes without a diagramming tool.
 
 ## Deployment Purpose
 
@@ -15,9 +15,9 @@ Deploys a private Autonomous Database pattern for ATP or ADW with optional manua
 | Boundary | `blueprints/data-platform/autonomous-database` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Deploys a private Autonomous Database pattern for ATP or ADW with optional manual backup, KMS, NSG, and private endpoint inputs. |
 | Terraform components | `oci_database_autonomous_database.this`, `oci_database_autonomous_database_backup.manual` |
-| Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic or control flow for this exact deployment. |
+| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic or control flow for this exact deployment. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 +----------------------------------------------------------------------------------------------------------+
@@ -65,7 +65,7 @@ Deploys a private Autonomous Database pattern for ATP or ADW with optional manua
 ## Traffic And Trust Boundaries
 
 - Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
-- Data plane traffic is the packet or service path shown in the ASCII diagram; if this deployment only creates identity or governance resources, the data plane is permission and signal flow.
+- Data plane traffic is the packet or service path shown in the Architecture diagram; if this deployment only creates identity or governance resources, the data plane is permission and signal flow.
 - Trust boundaries are the tenancy, compartment, VCN, subnet, private endpoint, identity domain, or managed service edges shown in the diagram.
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 

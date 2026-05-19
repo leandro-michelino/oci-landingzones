@@ -3,7 +3,7 @@
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 This page is the deployment architecture for
-`blueprints/operations/cost-optimization`. It is intentionally ASCII-first so it
+`blueprints/operations/cost-optimization`. It is intentionally Architecture-first so it
 is easy to review in GitHub, terminals, pull requests, runbooks, and customer
 notes without a diagramming tool.
 
@@ -20,9 +20,9 @@ optional Optimizer profiles, and an optional FinOps access policy.
 | Boundary | `blueprints/operations/cost-optimization` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Turns cost governance into a repeatable blueprint instead of a spreadsheet exercise. |
 | Terraform components | `module.tagging`, `module.budgets`, `module.notifications`, `module.monitoring`, `oci_optimizer_enrollment_status.this`, `oci_optimizer_profile.this`, `oci_identity_policy.finops_access` |
-| Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and signal flow for this exact deployment. |
+| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and signal flow for this exact deployment. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 +----------------------------------------------------------------------------------------------------------------+

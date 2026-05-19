@@ -20,7 +20,7 @@ an Events trigger, and IAM around external chunking and embedding functions.
 | Vector target | OpenSearch or another vector database/index. |
 | State bucket | Tracks processed versions and checkpoints. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 Source Documents

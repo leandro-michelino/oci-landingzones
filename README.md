@@ -27,7 +27,7 @@ Use it as a strong starting point: helpful, opinionated, and still something
 you should review carefully before you point it at a real tenancy.
 
 ```text
-pick a blueprint -> read its README -> review ASCII architecture -> fill tfvars -> plan
+pick a blueprint -> read its README -> review Architecture -> fill tfvars -> plan
 ```
 
 ## What Is Inside
@@ -179,7 +179,7 @@ Every deployable blueprint follows the same rhythm:
 blueprints/<family>/<deployment>/
 |-- README.md                  Operator guide
 |-- architecture/
-|   `-- README.md              Detailed ASCII architecture
+|   `-- README.md              Detailed Architecture
 |-- main.tf                    Terraform composition
 |-- variables.tf               Input contract
 |-- outputs.tf                 Hand-off values
@@ -195,7 +195,7 @@ blueprints/<family>/<deployment>/
 Once you learn one folder, the rest should feel familiar. That consistency is
 deliberate.
 
-## Why ASCII Architecture
+## Why Architecture
 
 The diagrams are plain text on purpose. They work in GitHub, terminals, pull
 requests, customer notes, and screen shares without extra tooling.
@@ -206,7 +206,7 @@ Each `architecture/README.md` includes:
 |---|---|
 | Deployment Purpose | What the blueprint is for. |
 | Architecture At A Glance | The short design summary. |
-| ASCII Architecture | Resource and flow view in plain text. |
+| Architecture | Resource and flow view in plain text. |
 | Terraform Components | What `main.tf` actually wires. |
 | Request And Deployment Flow | How operator intent becomes infrastructure. |
 | Traffic And Trust Boundaries | Where traffic, IAM, and ownership lines sit. |
@@ -321,7 +321,7 @@ tests/               Validation contract notes and future test home
 | [Blueprint Index](BLUEPRINTS.md) | Generated list of deployable blueprint folders, README links, and architecture links. |
 | [Deployment Guide](docs/DEPLOYMENT-GUIDE.md) | End-to-end deployment flow and operating notes. |
 | [Deployment Pattern Catalog](docs/DEPLOYMENT-PATTERN-CATALOG.md) | Full blueprint menu and planned patterns. |
-| [Architecture Index](docs/architecture/README.md) | Repository-level ASCII map and every blueprint architecture link. |
+| [Architecture Index](docs/architecture/README.md) | Repository-level Architecture map and every blueprint architecture link. |
 | [Naming Conventions](docs/NAMING-CONVENTIONS.md) | OCI naming standard used by generated defaults. |
 | [Variables Reference](VARIABLES.md) | Shared variable reference and notable inputs. |
 | [BYOL And License Model Matrix](docs/BYOL-LICENSING-MATRIX.md) | License-model guidance for supported service families. |

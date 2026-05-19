@@ -339,7 +339,7 @@ resources without changing the repository contract.
 | OCI | Ready for service-specific resources, modules, and data sources. |
 | Review | Tracks deployment intent, trust boundaries, and hand-off expectations. |
 
-## ASCII Architecture
+## Architecture
 
 \`\`\`text
 +-------------------------+
@@ -421,7 +421,7 @@ engineering details needed for architecture review.
 ## Review Checklist
 
 - [ ] The deployment purpose is specific enough for an operator to choose it.
-- [ ] The ASCII architecture shows every important OCI component.
+- [ ] The Architecture shows every important OCI component.
 - [ ] Resource names use \`local.name_prefix\` and documented type tokens.
 - [ ] Inputs are safe to publish in \`terraform.tfvars.example\`.
 - [ ] Outputs match the values downstream users need.

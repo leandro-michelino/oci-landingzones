@@ -20,7 +20,7 @@ data-platform deployment folder.
 | Snapshot bucket | Export, backup, and vector dataset recovery staging. |
 | IAM policy | Admin, writer, and reader permission hand-offs. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 Application / RAG Pipeline / Agent

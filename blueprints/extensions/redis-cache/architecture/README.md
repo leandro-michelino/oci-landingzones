@@ -18,7 +18,7 @@ and secret hand-offs so Redis does not become an unmanaged side component.
 | Operations | Monitoring alarms for memory, connections, failover, and saturation. |
 | Handoff | Endpoint, cluster ID, secret ID, and alarm IDs. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 +--------------------------------------------------------------------------------+

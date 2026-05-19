@@ -3,7 +3,7 @@
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 This page is the deployment architecture for `blueprints/extensions/functions`.
-It is intentionally ASCII-first so it is easy to review in GitHub, terminals,
+It is intentionally Architecture-first so it is easy to review in GitHub, terminals,
 pull requests, runbooks, and customer notes without a diagramming tool.
 
 ## Deployment Purpose
@@ -19,9 +19,9 @@ and scoped IAM policy hand-offs.
 | Boundary | `blueprints/extensions/functions` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Runs OCI-native serverless functions from approved container images, with optional HTTP and event-driven invocation paths. |
 | Terraform components | `oci_artifacts_container_repository.this`, `oci_functions_application.this`, `oci_functions_function.this`, `oci_apigateway_gateway.this`, `oci_apigateway_deployment.this`, `oci_events_rule.this`, `oci_identity_policy.access` |
-| Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and invocation paths for this exact deployment. |
+| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and invocation paths for this exact deployment. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 +------------------------------------------------------------------------------------------------------------------+

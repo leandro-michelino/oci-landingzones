@@ -30,7 +30,7 @@ authorization using OCI policies.
 | Access model | Group-based RBAC with conditional access guardrails |
 | Trust boundary | Entra tenant trust and OCI tenancy trust remain separate and explicit |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 +--------------------------------------------------------------------------------------------------+

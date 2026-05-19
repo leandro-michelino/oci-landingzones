@@ -20,7 +20,7 @@ folder.
 | Archive bucket | Long-term event payload storage. |
 | IAM policy | Service and operator permissions. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 OCI Services / Apps / Buckets

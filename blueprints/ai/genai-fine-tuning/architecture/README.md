@@ -18,7 +18,7 @@ and IAM policy decisions in one deployment folder.
 | Model endpoint | Optional private endpoint for inference. |
 | IAM policy | Separates ML engineers, deployers, and callers. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 Dataset Owner

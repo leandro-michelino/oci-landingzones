@@ -3,7 +3,7 @@
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 This page is the deployment architecture for
-`blueprints/extensions/aks-oke-active-active`. It is intentionally ASCII-first
+`blueprints/extensions/aks-oke-active-active`. It is intentionally Architecture-first
 so it is easy to review in GitHub, terminals, pull requests, runbooks, and
 customer notes without a diagramming tool.
 
@@ -20,9 +20,9 @@ weighted traffic steering contracts, while explicitly excluding IPSec backup.
 | Boundary | `blueprints/extensions/aks-oke-active-active` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | OCI-primary active/active AKS + OKE pattern with interconnect-only connectivity and contract outputs for GitOps and traffic steering. |
 | Terraform components | `oci_core_vcn.oke`, `oci_core_route_table.oke`, `oci_core_security_list.oke_*`, `oci_core_subnet.oke_*`, `oci_containerengine_cluster.oci_primary`, `oci_containerengine_node_pool.oci_primary`, `terraform_data.interconnect_contract`, `terraform_data.gitops_contract`, `terraform_data.traffic_steering_contract` |
-| Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 +----------------------------------------------------------------------------------------------------------+
@@ -80,7 +80,7 @@ weighted traffic steering contracts, while explicitly excluding IPSec backup.
 ## Traffic And Trust Boundaries
 
 - Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
-- Data plane traffic is the packet or service path shown in the ASCII diagram: client traffic is steered to OCI primary and optionally to Azure secondary based on configured weights.
+- Data plane traffic is the packet or service path shown in the Architecture diagram: client traffic is steered to OCI primary and optionally to Azure secondary based on configured weights.
 - Trust boundaries are the OCI tenancy boundary, the Azure boundary represented by externally supplied AKS and endpoint IDs, and the interconnect boundary represented by FastConnect + ExpressRoute partner links.
 - Secrets, OCIDs, ExpressRoute IDs, endpoints, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 

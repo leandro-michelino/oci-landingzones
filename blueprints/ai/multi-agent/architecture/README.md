@@ -21,7 +21,7 @@ workflows without inventing the foundation each time.
 | Audit bucket | Stores session traces and execution evidence. |
 | IAM | Enforces per-agent and per-tool permission boundaries. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 User / App Caller

@@ -4,7 +4,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 This page is the deployment architecture for
 `blueprints/disaster-recovery/azure-oci-cross-cloud-dr`. It is intentionally
-ASCII-first so it is easy to review in GitHub, terminals, pull requests,
+Architecture-first so it is easy to review in GitHub, terminals, pull requests,
 runbooks, and customer notes without a diagramming tool.
 
 ## Deployment Purpose
@@ -20,9 +20,9 @@ without-interconnect operation modes.
 | Boundary | `blueprints/disaster-recovery/azure-oci-cross-cloud-dr` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | OCI-primary to Azure-standby DR with contract outputs for connectivity, DNS failover, and runbook execution. |
 | Terraform components | `oci_core_vcn.primary`, `oci_core_route_table.primary`, `oci_core_security_list.primary_app`, `oci_core_subnet.primary_app`, `oci_objectstorage_namespace.this`, `oci_objectstorage_bucket.dr_evidence`, `oci_ons_notification_topic.dr_alert`, `terraform_data.connectivity_contract`, `terraform_data.dns_failover_contract`, `terraform_data.runbook_contract` |
-| Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 +----------------------------------------------------------------------------------------------------------+
@@ -80,7 +80,7 @@ without-interconnect operation modes.
 ## Traffic And Trust Boundaries
 
 - Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
-- Data plane traffic is the application path shown in the ASCII diagram: client traffic targets OCI primary and shifts to Azure standby during runbook-driven failover.
+- Data plane traffic is the application path shown in the Architecture diagram: client traffic targets OCI primary and shifts to Azure standby during runbook-driven failover.
 - Trust boundaries are the OCI tenancy boundary, Azure boundary represented by external standby endpoint IDs, and optional interconnect boundary represented by FastConnect + ExpressRoute partner links.
 - Secrets, OCIDs, endpoint URLs, circuit IDs, and operational contacts belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 

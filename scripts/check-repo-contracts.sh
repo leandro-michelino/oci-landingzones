@@ -103,8 +103,8 @@ check_architecture_file() {
   check_min_lines "$path" 60
   check_contains "$path" "## Deployment Purpose" "Deployment Purpose section"
   check_contains "$path" "## Architecture At A Glance" "Architecture At A Glance section"
-  check_contains "$path" "## ASCII Architecture" "ASCII Architecture section"
-  check_contains "$path" '```text' "a fenced ASCII diagram"
+  check_contains "$path" "## Architecture" "Architecture section"
+  check_contains "$path" '```text' "a fenced Architecture diagram"
   check_contains "$path" "## Terraform Components" "Terraform Components section"
   check_contains "$path" "## Request And Deployment Flow" "Request And Deployment Flow section"
   check_contains "$path" "## Traffic And Trust Boundaries" "Traffic And Trust Boundaries section"

@@ -20,7 +20,7 @@ systems.
 | Output bucket | Stores structured JSON, extracted text, and summaries. |
 | Failed bucket | Keeps rejected or failed documents for retry and evidence. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 Business App / User Upload

@@ -18,7 +18,7 @@ cluster, optional Lakehouse bucket, backup posture, encryption, and IAM handoff.
 | Protection | Backup policy, KMS option, NSGs, and no public endpoint by default. |
 | Governance | IAM policy shell, tags, and reviewed credential flow. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 +--------------------------------------------------------------------------------+

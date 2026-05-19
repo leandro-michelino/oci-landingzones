@@ -123,7 +123,7 @@ HEADER
 
     title="$(title_for "$dir/README.md")"
     summary="$(summary_for "$dir/README.md")"
-    printf '| [%s](%s/) | %s | [ASCII](%s/architecture/README.md) |\n' \
+    printf '| [%s](%s/) | %s | [Architecture](%s/architecture/README.md) |\n' \
       "$title" "$relative_dir" "$summary" "$relative_dir"
   done < <(
     find "$REPO_ROOT/blueprints" \

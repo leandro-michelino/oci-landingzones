@@ -9,7 +9,7 @@ Each planned blueprint follows the same folder contract as existing ones:
 ```text
 blueprints/<family>/<deployment>/
 |-- README.md                  Operator guide
-|-- architecture/README.md     Detailed ASCII architecture
+|-- architecture/README.md     Detailed Architecture
 |-- main.tf                    Terraform composition
 |-- variables.tf               Input contract
 |-- outputs.tf                 Hand-off values
@@ -40,8 +40,8 @@ compliance, or workload platform pattern.
 ## Already Implemented
 
 The repository currently contains 67 fully implemented and deployable blueprint
-entry points. See [Architecture Index](architecture/README.md#blueprint-ascii-inventory)
-for the complete folder-by-folder list with links to each local ASCII
+entry points. See [Architecture Index](architecture/README.md#blueprint-architecture-inventory)
+for the complete folder-by-folder list with links to each local Architecture
 architecture file.
 
 | Family | Implemented Entry Points |
@@ -100,7 +100,7 @@ data scientists and pipeline service accounts can operate independently.
 | Vault secret | Optional API key or token for external data sources |
 | IAM policies | Data science service, notebook sessions, model deploy |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
  Data Scientist (notebook session, private VCN)
@@ -162,7 +162,7 @@ manage trails and extracts without tenancy-admin access.
 | IAM policies | GoldenGate operator group, service principal |
 | Optional: Object Storage trail bucket | For cross-region trail file transfer |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
  Source Database (Autonomous DB / MySQL / on-prem)
@@ -267,7 +267,7 @@ programmes.
 | Business glossary | Seed categories and terms |
 | IAM policies | Catalog admin, data steward, read-only consumer groups |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
  Data Sources
@@ -418,7 +418,7 @@ blueprint exists in the repo today.
 | IAM policies | HPC administrator, job submission, read-only monitor |
 | Object Storage bucket | Job input / output archiving |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
  Researcher / Scheduler (bastion session)
@@ -715,7 +715,7 @@ foundation contract for that operating model.
 These are good next candidates after the current specialized and multicloud queues. They fit the
 repo because they can reuse the existing contracts: Core for governance,
 networking blueprints for traffic paths, extension blueprints for managed
-services, and local ASCII architecture for design review.
+services, and local Architecture for design review.
 
 | Priority | Blueprint | Folder | Why It Fits |
 | --- | --- | --- | --- |
@@ -753,7 +753,7 @@ subnets. This is usually the first diagram an application owner asks for.
 | NSGs | Edge-to-app traffic only; no admin ingress |
 | Monitoring alarms | 5xx, unhealthy backend, certificate expiry |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 Internet Client
@@ -814,7 +814,7 @@ would give teams a clean async foundation without hand-wiring each service.
 | Notifications topic | Email, webhook, or integration target |
 | IAM policies | Event producer, connector, function, and consumer groups |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 OCI Event Sources
@@ -874,7 +874,7 @@ application tier.
 | Monitoring alarms | Dead-letter, failed jobs, worker saturation |
 | IAM policies | Job submitter, worker service, operator groups |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 Job Producer
@@ -932,7 +932,7 @@ catalog hooks, and processing hooks for analytics teams.
 | Service Connector Hub | Bucket events to logs, stream, or functions |
 | Optional catalog registration | Hand-off to Data Catalog blueprint |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 Data Producers
@@ -993,7 +993,7 @@ network and IAM model.
 | IAM policies | Search admins, index writers, read-only consumers |
 | Monitoring alarms | Cluster health, storage pressure, rejected writes |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 App / Analytics Subnet
@@ -1049,7 +1049,7 @@ operator hand-off.
 | Events rules | Backup failure to Notifications or Functions |
 | IAM policies | Backup operators and audit readers |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 Protected Resources
@@ -1108,7 +1108,7 @@ reviewable and repeatable.
 | Logging and alarms | JVM logs, load balancer health, instance metrics |
 | Vault secrets | Admin passwords, datasource credentials, certs |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 User / Edge Ingress
@@ -1167,7 +1167,7 @@ landing zone instead of becoming an exception forever.
 | Logging and monitoring | Network, migration, and workload signals |
 | IAM policies | Migration operators and read-only auditors |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 On-Premises / Existing VMware
@@ -1251,7 +1251,7 @@ pattern for it today.
 | IAM policies | Table admin, read-write app group, read-only group |
 | Monitoring alarms | Throttled reads, throttled writes, storage pressure |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 App Tier (private subnet)
@@ -1310,7 +1310,7 @@ does not come from the database blueprints themselves.
 | Data masking policy | Masks PII and sensitive data in non-production targets |
 | IAM policies | Data Safe admin, security reviewer, audit reader groups |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 Target Database (Autonomous DB / MySQL / PostgreSQL)
@@ -1371,7 +1371,7 @@ storage hand-off today.
 | IAM policies | Data Flow service, job submitter, log reader groups |
 | Monitoring alarm | Failed runs, long-running jobs |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 Job Submitter (IAM group)
@@ -1428,7 +1428,7 @@ and IAM model are distinct from GoldenGate and need their own blueprint.
 | Vault secret | Source and target connection credentials |
 | IAM policies | Workspace admin, pipeline developer, read-only reviewer |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 Data Sources
@@ -1485,7 +1485,7 @@ IAM, alarm, and rotation wiring need explicit landing zone treatment.
 | Monitoring alarm | Certificate expiry warning at 30 and 7 days |
 | IAM policies | Certificate admin, issuer, and reader groups |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 OCI Certificates Service
@@ -1540,7 +1540,7 @@ explicitly wired. This blueprint gives that a consistent landing zone shape.
 | Monitoring alarm | Failed inference, error rate, latency |
 | Service selection flags | Enable Vision, Language, Speech, Document Understanding, Anomaly Detection independently |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 Input bucket (Object Storage)
@@ -1626,7 +1626,7 @@ routing, policy, and governance layer in front of one or more GenAI endpoints.
 | Monitoring alarms | Token usage, error rate, latency, quota exhaustion |
 | IAM policies | Per-team caller groups scoped to usage plans |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 App Team A / App Team B (IAM-scoped)
@@ -1693,7 +1693,7 @@ wiring does not exist yet.
 | IAM policies | ML engineer, fine-tuning service, inference caller groups |
 | Monitoring alarm | Job failure, cluster health, inference latency |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 Training Dataset (Object Storage)
@@ -1755,7 +1755,7 @@ overlay on any existing GenAI endpoint.
 | Cloud Guard custom detector | Unusual prompt volume or off-hours GenAI access |
 | IAM policies | Guardrail service, audit reader, security reviewer groups |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 GenAI Endpoint (genai-private or genai-gateway)
@@ -1815,7 +1815,7 @@ and Q&A over the extracted content. No blueprint wires this end-to-end today.
 | Events rule | Triggers pipeline on new object in intake bucket |
 | Monitoring alarm | Failed extraction, pipeline errors, queue depth |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 Intake bucket (Object Storage)
@@ -1875,7 +1875,7 @@ that case: chunk, embed, index.
 | Object Storage state bucket | Checkpoints for incremental re-embedding |
 | Monitoring alarm | Failed embeddings, index lag, pipeline errors |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 Source bucket (Object Storage)
@@ -1940,7 +1940,7 @@ IAM that keeps each agent scoped to its permitted resources.
 | IAM policies | Per-agent service principal; orchestrator-to-specialist trust |
 | Monitoring alarm | Agent timeout, failed tool calls, session errors |
 
-**ASCII Architecture.**
+**Architecture.**
 
 ```text
 User / App caller

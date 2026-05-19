@@ -32,7 +32,7 @@ RPO, ownership boundaries, and repeatable runbooks for failover and failback.
 | Traffic steering | DNS or global traffic manager cutover |
 | Recovery model | Failover to standby, then controlled failback |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 +--------------------------------------------------------------------------------------------------+

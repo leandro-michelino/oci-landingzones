@@ -2,7 +2,7 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This page is the deployment architecture for `blueprints/devops/oci-devops-pipeline`. It is intentionally ASCII-first so it is easy to review in GitHub, terminals, pull requests, runbooks, and customer notes without a diagramming tool.
+This page is the deployment architecture for `blueprints/devops/oci-devops-pipeline`. It is intentionally Architecture-first so it is easy to review in GitHub, terminals, pull requests, runbooks, and customer notes without a diagramming tool.
 
 ## Deployment Purpose
 
@@ -15,9 +15,9 @@ Deploys an OCI DevOps project with notification topic, code repository, build pi
 | Boundary | `blueprints/devops/oci-devops-pipeline` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Deploys an OCI DevOps project with notification topic, code repository, build pipeline, and deploy pipeline. |
 | Terraform components | `oci_ons_notification_topic.this`, `oci_devops_project.this`, `oci_devops_repository.this`, `oci_devops_build_pipeline.this`, `oci_devops_deploy_pipeline.this` |
-| Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic or control flow for this exact deployment. |
+| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic or control flow for this exact deployment. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 +----------------------------------------------------------------------------------------------------------+
@@ -65,7 +65,7 @@ Deploys an OCI DevOps project with notification topic, code repository, build pi
 ## Traffic And Trust Boundaries
 
 - Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
-- Data plane traffic is the packet or service path shown in the ASCII diagram; if this deployment only creates identity or governance resources, the data plane is permission and signal flow.
+- Data plane traffic is the packet or service path shown in the Architecture diagram; if this deployment only creates identity or governance resources, the data plane is permission and signal flow.
 - Trust boundaries are the tenancy, compartment, VCN, subnet, private endpoint, identity domain, or managed service edges shown in the diagram.
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 

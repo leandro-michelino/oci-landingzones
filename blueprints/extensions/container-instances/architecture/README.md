@@ -2,7 +2,7 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This page is the deployment architecture for `blueprints/extensions/container-instances`. It is intentionally ASCII-first so it is easy to review in GitHub, terminals, pull requests, runbooks, and customer notes without a diagramming tool.
+This page is the deployment architecture for `blueprints/extensions/container-instances`. It is intentionally Architecture-first so it is easy to review in GitHub, terminals, pull requests, runbooks, and customer notes without a diagramming tool.
 
 ## Deployment Purpose
 
@@ -15,9 +15,9 @@ Deploys a private OCI Container Instance runtime with VNIC, container definition
 | Boundary | `blueprints/extensions/container-instances` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Runs one or more approved container images without an OKE cluster. |
 | Terraform components | `oci_container_instances_container_instance.this`, `oci_identity_policy.access` |
-| Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic or control flow for this exact deployment. |
+| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic or control flow for this exact deployment. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 +----------------------------------------------------------------------------------------------------------+

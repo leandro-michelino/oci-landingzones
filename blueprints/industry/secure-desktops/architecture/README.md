@@ -29,7 +29,7 @@ For Terraform/API-created Windows BYOL pools, this blueprint adds the immutable 
 `oci:desktops:enable_byol = true` when
 `windows_10_11_byol_acknowledged` is set to `true`.
 
-## ASCII Architecture
+## Architecture
 
 ```text
 +--------------------------------------------------------------------------------+

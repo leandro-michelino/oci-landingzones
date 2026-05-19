@@ -2,7 +2,7 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Use this page as the operator guide for `blueprints/data-platform/postgresql`. It tells you what the blueprint builds, which inputs deserve a real review, how to run Terraform or the local Ansible wrappers, and where to find the detailed ASCII design.
+Use this page as the operator guide for `blueprints/data-platform/postgresql`. It tells you what the blueprint builds, which inputs deserve a real review, how to run Terraform or the local Ansible wrappers, and where to find the detailed Architecture design.
 
 ## At A Glance
 
@@ -132,7 +132,7 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 
 ## Architecture
 
-The full detailed ASCII architecture is local to this deployment:
+The full detailed Architecture is local to this deployment:
 
 ```text
 architecture/README.md

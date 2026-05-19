@@ -9,7 +9,7 @@ architectures, and patterns that show up in real customer conversations.
 Implemented patterns should have a self-contained blueprint folder with its own
 `README.md`, `architecture/README.md`, Terraform files, variables example, and
 validation notes. The architecture README is the canonical text artifact for the
-pattern and must include an ASCII diagram before the pattern is used in a
+pattern and must include an Architecture diagram before the pattern is used in a
 customer review.
 Status `Implemented` means the folder has deployable foundation wiring, even
 when some expensive or external resources are disabled by default. Status
@@ -148,7 +148,7 @@ folder.
   industry, compliance, or workload platform patterns, and compose existing
   base, networking, operations, and extension decisions instead of duplicating
   every subtopic.
-- Review the blueprint-local ASCII architecture diagram before plan/apply so
+- Review the blueprint-local Architecture diagram before plan/apply so
   ownership boundaries, traffic paths, DNS, IAM, logging, and monitoring are
   aligned with the target environment.
 

@@ -22,7 +22,7 @@ flows. Pattern-specific design checks live in each blueprint's local
    - `terraform.tfstate*`
    - `tfplan` and `*.tfplan`
    - `.DS_Store`
-8. Re-run validation after fixing any Terraform, Ansible, README, or ASCII
+8. Re-run validation after fixing any Terraform, Ansible, README, or Architecture
    architecture contract failures.
 
 ## Validate Only Changed Work
@@ -102,7 +102,7 @@ commands launched through the repository scripts or Ansible roles.
    addresses, or customer-specific values.
 3. Update the blueprint `README.md` with purpose, inputs, outputs, workflow,
    validation, and review notes.
-4. Update `architecture/README.md` with a detailed ASCII diagram, Terraform
+4. Update `architecture/README.md` with a detailed Architecture diagram, Terraform
    components, deployment flow, architecture notes, and review checklist.
 5. Add or update local `ansible/plan.yml`, `ansible/apply.yml`, and
    `ansible/destroy.yml` when the blueprint is deployable.

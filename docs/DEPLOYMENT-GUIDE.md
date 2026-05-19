@@ -74,7 +74,7 @@ cd blueprints/cis/level2
 
 Each deployable blueprint folder should be readable on its own. Review the local
 `README.md` and `architecture/README.md` before planning or applying that
-blueprint. The architecture README contains the canonical ASCII diagram for the
+blueprint. The architecture README contains the canonical Architecture diagram for the
 pattern and the review checklist for ownership, dependency, traffic, DNS, IAM,
 logging, and monitoring assumptions.
 
@@ -102,7 +102,7 @@ networking, compliance, data platform, industry, and extension patterns.
 Use `docs/BYOL-LICENSING-MATRIX.md` before enabling BYOL, BYOI,
 license-included, or customer-image options for databases, Windows instances,
 Red Hat images, analytics, integration, middleware, or VMware-related patterns.
-The repository-level ASCII map lives in `docs/architecture/README.md`; use each
+The repository-level Architecture map lives in `docs/architecture/README.md`; use each
 blueprint's local `architecture/README.md` for implementation and traffic-flow
 review.
 
@@ -401,7 +401,7 @@ Implemented module order:
 
 Choose one networking blueprint and deploy it after core.
 Each networking deployment folder has a local README and `architecture/` folder
-with the expected ASCII architecture notes and review artifact guidance.
+with the expected Architecture notes and review artifact guidance.
 
 Networking blueprints can also be used directly against an existing workload
 compartment. In that mode, set `compartment_ocid` to the target compartment.
@@ -443,7 +443,7 @@ Architecture notes live in each operating-entity blueprint's
 | Identity and operating entity | `blueprints/identity/*` and `blueprints/operating-entity/*` | Identity domain, CIS basic identity, single entity, multi-entity, and workload vending entry points are validated. |
 | Networking | `blueprints/networking/*` | Every standalone, hub-spoke, DNS, firewall, NVA, ZPR, multicloud, NLB, and regional networking blueprint is validated. |
 | Operations and extensions | `blueprints/operations/*` and `blueprints/extensions/*` | Cost Optimization plus API Gateway, Container Instances, Event-Driven Platform, Exadata, Functions, OAC, Observability, OIC, OKE, OKE Service Mesh, Redis Cache, Streaming, and WAF are validated. |
-| Data, AI, DevOps, DR, and industry | `blueprints/data-platform/*`, `blueprints/ai/*`, `blueprints/devops/*`, `blueprints/disaster-recovery/*`, and `blueprints/industry/*` | Service-specific blueprints are initialized and validated without backend and must keep local ASCII architecture notes. |
+| Data, AI, DevOps, DR, and industry | `blueprints/data-platform/*`, `blueprints/ai/*`, `blueprints/devops/*`, `blueprints/disaster-recovery/*`, and `blueprints/industry/*` | Service-specific blueprints are initialized and validated without backend and must keep local Architecture notes. |
 
 The full catalog currently contains 67 deployable blueprint entry points across
 13 families. The complete architecture inventory is in
@@ -510,7 +510,7 @@ Database, OpenSearch, MySQL HeatWave, OCI Generative AI, GenAI gateway,
 fine-tuning, guardrails, document intelligence, embedding pipelines, AI Agents
 RAG, multi-agent orchestration, OCI AI Services, OCI DevOps, Redis Cache,
 Security Posture Automation, Network Load Balancer, Secure Desktops, and
-Healthcare / PCI guardrails. They follow the same local README, ASCII
+Healthcare / PCI guardrails. They follow the same local README, Architecture
 architecture, Terraform, tfvars, and Ansible runner contract.
 
 Keep real subnet, VCN, load balancer, availability domain, image, event filter,

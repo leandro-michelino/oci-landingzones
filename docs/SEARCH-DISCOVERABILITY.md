@@ -12,7 +12,7 @@ topics, useful README text, real links, and regular updates.
 Use this as the repository description:
 
 ```text
-Oracle Cloud Infrastructure (OCI) landing zones with Terraform blueprints, Ansible workflows, ASCII architectures, and deployable patterns for networking, security, data, GenAI, OKE, and more.
+Oracle Cloud Infrastructure (OCI) landing zones with Terraform blueprints, Ansible workflows, Architectures, and deployable patterns for networking, security, data, GenAI, OKE, and more.
 ```
 
 ## Recommended GitHub Topics
@@ -80,6 +80,6 @@ OCI BYOL licensing matrix
 
 ```text
 OCI Landing Zones for Oracle Cloud Infrastructure: Terraform blueprints,
-Ansible workflows, ASCII architectures, and deployable OCI patterns for
+Ansible workflows, Architectures, and deployable OCI patterns for
 networking, security, data, GenAI, OKE, disaster recovery, and DevOps.
 ```

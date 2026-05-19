@@ -10,7 +10,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   private landing zone, OCI DevOps pipeline, Observability, Oracle Integration
   Cloud, Oracle Analytics Cloud, Healthcare / PCI compliance, and OKE Service
   Mesh.
-- Repository-level ASCII architecture index under `docs/architecture/`.
+- Repository-level Architecture index under `docs/architecture/`.
 - Text-first implementation roadmap under `docs/ROADMAP.md`.
 - Validation contract notes in `tests/README.md`.
 - Fast repository contract guard for repeated documentation fragments,
@@ -59,13 +59,13 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   `org-environment-region_key` OCI naming prefix and added an automated naming
   convention guard to the repository contract checks.
 - Updated the repository documentation inventory to reflect 65 deployable
-  blueprints across 13 families and linked each blueprint to its local ASCII
+  blueprints across 13 families and linked each blueprint to its local Architecture
   architecture review file.
 - Added license-model validation for Autonomous Database and Oracle Analytics
   Cloud, surfaced the Oracle Integration BYOL flag in examples, and wired OCI
   Compute `licensing_configs` through network appliance blueprints for eligible
   Windows BYOL images.
-- Enhanced every deployment-local ASCII architecture with a consistent legend,
+- Enhanced every deployment-local Architecture with a consistent legend,
   control lane, trust boundary, dependency flow, traffic or signal path, review
   focus, and hand-off lane.
 - Cleaned stale setup-marker wording from contribution, FSDR, and ZPR
@@ -103,7 +103,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   architecture index.
 - Promoted the AI / GenAI roadmap entries from planned-only notes into
   deployable blueprint folders with Terraform, Ansible runners, README files,
-  and detailed ASCII architecture pages.
+  and detailed Architecture pages.
 - Added README badges for license, Terraform version, validation, and optional
   security scanners.
 - Wired the generated blueprint index and Markdown link checker into repository
@@ -118,7 +118,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ### Changed
 
 - Replaced every deployment-local `architecture/README.md` with a real
-  deployment-specific ASCII architecture that shows the OCI components,
+  deployment-specific Architecture that shows the OCI components,
   dependency order, traffic flow, trust boundaries, Terraform components, and
   local Terraform + Ansible workflow for that exact blueprint.
 - Removed the previous generic file-contract architecture narrative from the
@@ -140,7 +140,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   shapes.
 - OCI OS Management Hub module resources for managed instance groups and
   scheduled jobs.
-- Detailed, deployment-specific ASCII architecture pages for every blueprint,
+- Detailed, deployment-specific Architecture pages for every blueprint,
   including Terraform components, request flow, architecture review notes, and
   review checklists.
 - Operator-friendly deployment READMEs for all 37 blueprint folders, including
@@ -153,10 +153,10 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 - Simplified the README layout to keep only the main README plus each
   deployment README and each deployment-local `architecture/README.md`.
-- Reworked generated architecture documentation into fixed-width ASCII diagrams
+- Reworked generated architecture documentation into fixed-width Architecture diagrams
   that reflect each folder's actual Terraform and Ansible file contract.
 - Updated validation guardrails so every Terraform blueprint must keep its
-  deployment README, architecture README, At A Glance sections, ASCII design,
+  deployment README, architecture README, At A Glance sections, Architecture design,
   Terraform components, request flow, review checklist, and Terraform + Ansible
   workflow sections.
 - Expanded the deployment pattern catalog and root README language to make the

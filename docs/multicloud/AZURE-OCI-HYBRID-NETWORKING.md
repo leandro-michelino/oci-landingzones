@@ -31,7 +31,7 @@ DNS, and inspection boundaries.
 | Routing model | BGP-based route exchange with explicit route filtering |
 | DNS model | Private DNS forwarding and split-horizon controls |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 +--------------------------------------------------------------------------------------------------+

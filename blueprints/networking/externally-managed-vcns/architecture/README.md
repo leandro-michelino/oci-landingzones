@@ -2,7 +2,7 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This page is the deployment architecture for `blueprints/networking/externally-managed-vcns`. It is intentionally ASCII-first so it
+This page is the deployment architecture for `blueprints/networking/externally-managed-vcns`. It is intentionally Architecture-first so it
 is easy to review in GitHub, terminals, pull requests, runbooks, and customer notes without a
 diagramming tool.
 
@@ -17,10 +17,10 @@ Documents and exports existing VCN, subnet, DRG, and route target OCIDs so brown
 | Boundary | `blueprints/networking/externally-managed-vcns` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Documents and exports existing VCN, subnet, DRG, and route target OCIDs so brownfield networks can participate in the landing-zone output contract. |
 | Terraform components | `locals.external_resource_ids` only |
-| Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
 
 
-## ASCII Architecture
+## Architecture
 
 ```text
 +----------------------------------------------------------------------------------------------------------+
@@ -62,7 +62,7 @@ Documents and exports existing VCN, subnet, DRG, and route target OCIDs so brown
 ## Traffic And Trust Boundaries
 
 - Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
-- Data plane traffic is the packet or service path shown in the ASCII diagram; if this deployment only creates identity or governance resources, the data plane is intentionally permission and signal flow instead of network packets.
+- Data plane traffic is the packet or service path shown in the Architecture diagram; if this deployment only creates identity or governance resources, the data plane is intentionally permission and signal flow instead of network packets.
 - Trust boundaries are the tenancy, compartment, VCN, subnet, DRG, private endpoint, identity domain, or managed service edges shown in the diagram.
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 

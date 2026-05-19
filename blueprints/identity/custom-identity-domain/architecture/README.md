@@ -2,7 +2,7 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This page is the deployment architecture for `blueprints/identity/custom-identity-domain`. It is intentionally ASCII-first so it
+This page is the deployment architecture for `blueprints/identity/custom-identity-domain`. It is intentionally Architecture-first so it
 is easy to review in GitHub, terminals, pull requests, runbooks, and customer notes without a
 diagramming tool.
 
@@ -17,10 +17,10 @@ Creates one or more OCI IAM identity domains with optional replica regions from 
 | Boundary | `blueprints/identity/custom-identity-domain` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Creates one or more OCI IAM identity domains with optional replica regions from a structured identity domain map. |
 | Terraform components | `oci_identity_domain.this`, `oci_identity_domain_replication_to_region.replicas` |
-| Primary architecture view | The ASCII diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
 
 
-## ASCII Architecture
+## Architecture
 
 ```text
 +----------------------------------------------------------------------------------------------------------+
@@ -67,7 +67,7 @@ Creates one or more OCI IAM identity domains with optional replica regions from 
 ## Traffic And Trust Boundaries
 
 - Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
-- Data plane traffic is the packet or service path shown in the ASCII diagram; if this deployment only creates identity or governance resources, the data plane is intentionally permission and signal flow instead of network packets.
+- Data plane traffic is the packet or service path shown in the Architecture diagram; if this deployment only creates identity or governance resources, the data plane is intentionally permission and signal flow instead of network packets.
 - Trust boundaries are the tenancy, compartment, VCN, subnet, DRG, private endpoint, identity domain, or managed service edges shown in the diagram.
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 

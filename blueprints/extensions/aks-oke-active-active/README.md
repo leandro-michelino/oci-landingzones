@@ -5,7 +5,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 Use this page as the operator guide for `blueprints/extensions/aks-oke-active-active`.
 It tells you what the blueprint builds, which inputs deserve a real review, how
 to run Terraform or the local Ansible wrappers, and where to find the detailed
-ASCII design.
+Architecture design.
 
 ## At A Glance
 
@@ -54,7 +54,7 @@ in your local ignored `terraform.tfvars` file.
 ```text
 blueprints/extensions/aks-oke-active-active/
 |-- README.md                  Operator guide for this deployment
-|-- architecture/README.md     Detailed ASCII architecture for this deployment
+|-- architecture/README.md     Detailed Architecture for this deployment
 |-- hello-world/index.html     Sample app page for active/active smoke tests
 |-- azure/
 |   |-- main.bicep             AKS secondary Azure deployment template
@@ -211,7 +211,7 @@ here.
 
 ## Architecture
 
-The full detailed ASCII architecture is local to this deployment:
+The full detailed Architecture is local to this deployment:
 
 ```text
 architecture/README.md

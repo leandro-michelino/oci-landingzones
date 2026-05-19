@@ -18,7 +18,7 @@ Events-based response paths, report archives, alarms, and IAM policy hand-offs.
 | Evidence | Object Storage report bucket and Monitoring alarm outputs. |
 | Governance | IAM statements for security admins, responders, scanners, and auditors. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 +--------------------------------------------------------------------------------+

@@ -20,7 +20,7 @@ in one reviewed deployment folder.
 | Logging | Gateway and routing telemetry log group. |
 | IAM | Caller, operator, and audit-reader policy hand-offs. |
 
-## ASCII Architecture
+## Architecture
 
 ```text
 App Team A          App Team B          Batch Job

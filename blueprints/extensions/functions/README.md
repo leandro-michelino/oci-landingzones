@@ -5,7 +5,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 Use this page as the operator guide for `blueprints/extensions/functions`.
 It tells you what the blueprint builds, which inputs deserve a real review, how
 to run Terraform or the local Ansible wrappers, and where to find the detailed
-ASCII design.
+Architecture design.
 
 ## At A Glance
 
@@ -62,7 +62,7 @@ real workload.
 ```text
 blueprints/extensions/functions/
 |-- README.md                  Operator guide for this deployment
-|-- architecture/README.md     Detailed ASCII architecture for this deployment
+|-- architecture/README.md     Detailed Architecture for this deployment
 |-- main.tf                    Terraform resources
 |-- variables.tf               Input contract
 |-- outputs.tf                 Deployment hand-off values
@@ -210,7 +210,7 @@ their outputs here.
 
 ## Architecture
 
-The full detailed ASCII architecture is local to this deployment:
+The full detailed Architecture is local to this deployment:
 
 ```text
 architecture/README.md
