@@ -55,6 +55,10 @@ blueprints/extensions/aks-oke-active-active/
 |-- README.md                  Operator guide for this deployment
 |-- architecture/README.md     Detailed ASCII architecture for this deployment
 |-- hello-world/index.html     Sample app page for active/active smoke tests
+|-- azure/
+|   |-- main.bicep             AKS secondary Azure deployment template
+|   |-- parameters.example.json Example Azure deployment parameters
+|   `-- README.md              Azure session guide
 |-- main.tf                    Terraform modules, resources, and data sources
 |-- variables.tf               Input contract
 |-- outputs.tf                 Deployment hand-off values
@@ -65,6 +69,9 @@ blueprints/extensions/aks-oke-active-active/
     |-- plan.yml               Local init, validate, and plan
     |-- apply.yml              Guarded init, validate, plan, and apply
     |-- destroy.yml            Guarded destroy
+    |-- azure-plan.yml         Azure what-if session for AKS secondary
+    |-- azure-apply.yml        Azure apply session for AKS secondary
+    |-- azure-destroy.yml      Azure destroy session for AKS secondary
     |-- serve-hello-world.yml  Start local hello-world endpoint for demos and checks
     `-- stop-hello-world.yml   Stop local hello-world endpoint
 ```
@@ -157,6 +164,17 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 
 `apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for
 customer-facing or shared environments.
+
+Azure full deployment session (AKS secondary):
+
+```bash
+cd blueprints/extensions/aks-oke-active-active
+ansible-playbook -i localhost, ansible/azure-plan.yml
+CONFIRM_AZURE_APPLY=true ansible-playbook -i localhost, ansible/azure-apply.yml
+CONFIRM_AZURE_DESTROY=true ansible-playbook -i localhost, ansible/azure-destroy.yml
+```
+
+For required Azure variables and parameters, review `azure/README.md`.
 
 To run the real hello-world endpoint for this blueprint:
 

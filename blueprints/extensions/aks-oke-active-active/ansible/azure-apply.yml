@@ -1,0 +1,74 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+---
+- name: Azure apply session for AKS secondary deployment
+  hosts: localhost
+  gather_facts: false
+  vars:
+    azure_resource_group: "{{ lookup('env', 'AZURE_AKS_RESOURCE_GROUP') | default('rg-aks-oci-secondary-dev', true) }}"
+    azure_location: "{{ lookup('env', 'AZURE_AKS_LOCATION') | default('westeurope', true) }}"
+    azure_deployment_name: "{{ lookup('env', 'AZURE_AKS_DEPLOYMENT_NAME') | default('aks-oci-secondary-apply', true) }}"
+    azure_template_file: "{{ playbook_dir }}/../azure/main.bicep"
+    azure_parameters_file: "{{ lookup('env', 'AZURE_AKS_PARAMETERS_FILE') | default(playbook_dir ~ '/../azure/parameters.example.json', true) }}"
+  tasks:
+    - name: Require explicit Azure apply confirmation
+      ansible.builtin.assert:
+        that:
+          - lookup('env', 'CONFIRM_AZURE_APPLY') == 'true'
+        fail_msg: "Refusing Azure apply without CONFIRM_AZURE_APPLY=true."
+
+    - name: Validate Azure CLI availability
+      ansible.builtin.command: az version
+      changed_when: false
+
+    - name: Validate Azure CLI login context
+      ansible.builtin.command: az account show
+      changed_when: false
+
+    - name: Ensure AKS Azure parameters file exists
+      ansible.builtin.stat:
+        path: "{{ azure_parameters_file }}"
+      register: aks_azure_parameters
+
+    - name: Fail when AKS Azure parameters file is missing
+      ansible.builtin.assert:
+        that:
+          - aks_azure_parameters.stat.exists
+        fail_msg: "Azure parameters file not found: {{ azure_parameters_file }}"
+
+    - name: Ensure Azure resource group exists
+      ansible.builtin.command:
+        argv:
+          - az
+          - group
+          - create
+          - --name
+          - "{{ azure_resource_group }}"
+          - --location
+          - "{{ azure_location }}"
+      changed_when: false
+
+    - name: Deploy AKS secondary resources in Azure
+      ansible.builtin.command:
+        argv:
+          - az
+          - deployment
+          - group
+          - create
+          - --resource-group
+          - "{{ azure_resource_group }}"
+          - --name
+          - "{{ azure_deployment_name }}"
+          - --template-file
+          - "{{ azure_template_file }}"
+          - --parameters
+          - "@{{ azure_parameters_file }}"
+          - --query
+          - properties.outputs
+          - --output
+          - json
+      register: aks_azure_outputs
+      changed_when: true
+
+    - name: Show AKS deployment outputs
+      ansible.builtin.debug:
+        var: aks_azure_outputs.stdout

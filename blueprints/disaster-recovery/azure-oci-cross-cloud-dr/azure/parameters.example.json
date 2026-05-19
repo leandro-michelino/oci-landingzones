@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "logAnalyticsWorkspaceName": {
+      "value": "law-oci-azure-dr-dev"
+    },
+    "managedEnvironmentName": {
+      "value": "cae-oci-azure-dr-dev"
+    },
+    "containerAppName": {
+      "value": "ca-oci-azure-standby-dev"
+    },
+    "helloWorldImage": {
+      "value": "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest"
+    },
+    "tags": {
+      "value": {
+        "Blueprint": "azure-oci-cross-cloud-dr",
+        "ManagedBy": "bicep"
+      }
+    }
+  }
+}

@@ -71,6 +71,13 @@ Both Azure+OCI deployments include a `hello-world/index.html` sample plus
 `ansible/serve-hello-world.yml` and `ansible/stop-hello-world.yml` so you can
 run a real local endpoint during demos, smoke checks, and runbook drills.
 
+Both now also include full Azure deployment sessions with Bicep templates and
+Ansible wrappers:
+
+- `ansible/azure-plan.yml` (what-if)
+- `ansible/azure-apply.yml` (create/update)
+- `ansible/azure-destroy.yml` (teardown)
+
 Planning and architecture drafts:
 
 | Draft | Link |

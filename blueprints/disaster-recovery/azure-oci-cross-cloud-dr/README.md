@@ -62,10 +62,17 @@ blueprints/disaster-recovery/azure-oci-cross-cloud-dr/
 |-- versions.tf                Terraform and provider constraints
 |-- terraform.tfvars.example   Example input shape
 |-- hello-world/index.html     Sample DR status page for runbook demos
+|-- azure/
+|   |-- main.bicep             Azure standby deployment template
+|   |-- parameters.example.json Example Azure deployment parameters
+|   `-- README.md              Azure session guide
 `-- ansible/
     |-- plan.yml               Local init, validate, and plan
     |-- apply.yml              Guarded init, validate, plan, and apply
     |-- destroy.yml            Guarded destroy
+    |-- azure-plan.yml         Azure what-if session for DR standby
+    |-- azure-apply.yml        Azure apply session for DR standby
+    |-- azure-destroy.yml      Azure destroy session for DR standby
     |-- serve-hello-world.yml  Start local DR hello-world endpoint
     `-- stop-hello-world.yml   Stop local DR hello-world endpoint
 ```
@@ -153,6 +160,17 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 
 `apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for
 customer-facing or shared environments.
+
+Azure full deployment session (standby side):
+
+```bash
+cd blueprints/disaster-recovery/azure-oci-cross-cloud-dr
+ansible-playbook -i localhost, ansible/azure-plan.yml
+CONFIRM_AZURE_APPLY=true ansible-playbook -i localhost, ansible/azure-apply.yml
+CONFIRM_AZURE_DESTROY=true ansible-playbook -i localhost, ansible/azure-destroy.yml
+```
+
+For required Azure variables and parameters, review `azure/README.md`.
 
 ## Deployment Order
 

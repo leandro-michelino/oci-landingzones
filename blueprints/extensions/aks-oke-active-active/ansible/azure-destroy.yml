@@ -1,0 +1,37 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+---
+- name: Azure destroy session for AKS secondary deployment
+  hosts: localhost
+  gather_facts: false
+  vars:
+    azure_resource_group: "{{ lookup('env', 'AZURE_AKS_RESOURCE_GROUP') | default('rg-aks-oci-secondary-dev', true) }}"
+  tasks:
+    - name: Require explicit Azure destroy confirmation
+      ansible.builtin.assert:
+        that:
+          - lookup('env', 'CONFIRM_AZURE_DESTROY') == 'true'
+        fail_msg: "Refusing Azure destroy without CONFIRM_AZURE_DESTROY=true."
+
+    - name: Validate Azure CLI availability
+      ansible.builtin.command: az version
+      changed_when: false
+
+    - name: Validate Azure CLI login context
+      ansible.builtin.command: az account show
+      changed_when: false
+
+    - name: Delete Azure resource group for AKS secondary
+      ansible.builtin.command:
+        argv:
+          - az
+          - group
+          - delete
+          - --name
+          - "{{ azure_resource_group }}"
+          - --yes
+          - --no-wait
+      changed_when: true
+
+    - name: Confirm Azure deletion request accepted
+      ansible.builtin.debug:
+        msg: "Deletion requested for resource group {{ azure_resource_group }}."

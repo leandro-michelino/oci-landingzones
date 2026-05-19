@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "clusterName": {
+      "value": "aks-oci-secondary-dev"
+    },
+    "dnsPrefix": {
+      "value": "aksocisecondarydev"
+    },
+    "nodePoolName": {
+      "value": "system"
+    },
+    "nodeCount": {
+      "value": 1
+    },
+    "nodeVmSize": {
+      "value": "Standard_D4ds_v5"
+    },
+    "tags": {
+      "value": {
+        "Blueprint": "aks-oke-active-active",
+        "ManagedBy": "bicep"
+      }
+    }
+  }
+}
