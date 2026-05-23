@@ -18,6 +18,7 @@ backlog patterns.
 | Azure + OCI AI gateway | `blueprints/ai/azure-oci-ai-gateway/` |
 | AKS + OKE active/active | `blueprints/extensions/aks-oke-active-active/` |
 | Azure + OCI cross-cloud DR | `blueprints/disaster-recovery/azure-oci-cross-cloud-dr/` |
+| Azure + OCI dual connectivity hardening | `blueprints/networking/azure-oci-dual-connectivity/` |
 | AWS + OCI hybrid network backbone | `blueprints/networking/aws-oci-hybrid-network-backbone/` |
 | AWS + OCI cross-cloud DR | `blueprints/disaster-recovery/aws-oci-cross-cloud-dr/` |
 | EKS + OKE active/active | `blueprints/extensions/eks-oke-active-active/` |
@@ -28,6 +29,7 @@ backlog patterns.
 | Note | Focus | Target Path |
 | --- | --- | --- |
 | [Azure + OCI Cross-Cloud DR](AZURE-OCI-CROSS-CLOUD-DR.md) | Historical architecture note retained as design context after delivery. | `blueprints/disaster-recovery/azure-oci-cross-cloud-dr/` |
+| [Azure + OCI Hybrid Networking](AZURE-OCI-HYBRID-NETWORKING.md) | OCI-primary dual-connectivity design record with Interconnect primary path and IPSec/BGP fallback hardening contracts. | `blueprints/networking/azure-oci-dual-connectivity/` |
 | [AWS + OCI Hybrid Network Backbone](AWS-OCI-HYBRID-NETWORK-BACKBONE.md) | OCI DRG-primary hybrid backbone with AWS Transit Gateway, optional VPN, and Direct Connect + FastConnect contract metadata. | `blueprints/networking/aws-oci-hybrid-network-backbone/` |
 | [AWS + OCI Cross-Cloud DR](AWS-OCI-CROSS-CLOUD-DR.md) | OCI-primary, AWS-standby DR design record with DNS failover, evidence, alerting, and runbook contracts. | `blueprints/disaster-recovery/aws-oci-cross-cloud-dr/` |
 | [EKS + OKE Active Active](EKS-OKE-ACTIVE-ACTIVE.md) | OCI-primary OKE and AWS-secondary EKS active/active design record with GitOps and weighted traffic steering contracts. | `blueprints/extensions/eks-oke-active-active/` |
@@ -38,7 +40,6 @@ backlog patterns.
 | Note | Focus | Target Path |
 | --- | --- | --- |
 | [Identity Federation](AZURE-OCI-IDENTITY-FEDERATION.md) | Microsoft Entra ID federation into OCI IAM with mapped RBAC and conditional access alignment. | `blueprints/identity/azure-entra-federation/` |
-| [Hybrid Networking](AZURE-OCI-HYBRID-NETWORKING.md) | Azure hub/vWAN to OCI DRG with private + encrypted paths, route governance, DNS integration, and current Interconnect region availability. | `blueprints/networking/azure-oci-hybrid-networking/` |
 | [AWS Interconnect Multicloud with OCI Preview](AWS-INTERCONNECT-MULTICLOUD-OCI-PREVIEW.md) | Preview-only AWS Interconnect - multicloud with OCI design note and current Limited Availability region pair; OCI support is not treated as production-ready repo automation yet. | `blueprints/networking/aws-interconnect-multicloud-oci/` |
 
 ## How To Use This Folder

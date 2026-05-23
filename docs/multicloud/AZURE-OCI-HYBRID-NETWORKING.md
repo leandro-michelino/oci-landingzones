@@ -1,76 +1,44 @@
-# Azure + OCI Hybrid Networking Blueprint Draft
+# Azure + OCI Hybrid Networking Design Record
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This document defines a concrete hybrid networking blueprint draft that links
-Azure hub networking with OCI hub-spoke networking for private multicloud
-application traffic and controlled failover.
+This design record maps to the deployed blueprint:
+`blueprints/networking/azure-oci-dual-connectivity/`.
 
 ## Deployment Purpose
 
 Provide deterministic and auditable network connectivity between Azure and OCI
-using a primary private path and an encrypted backup path, with explicit route,
-DNS, and inspection boundaries.
+with OCI as primary routing hub, Interconnect as preferred path, and
+IPSec/BGP as fallback path.
 
 ## Primary Outcomes
 
 - Private cloud-to-cloud connectivity for critical workloads.
-- Backup encrypted path for resilience.
+- Explicit fallback path with route-policy and runbook contracts.
 - Route segmentation by environment and workload class.
-- Consistent network inspection and logging controls.
-- Repeatable hand-off contract for application teams.
+- DNS forwarding and health-probe assumptions captured as output contracts.
+- Repeatable hand-off for platform and network operations teams.
 
 ## Architecture At A Glance
 
 | Item | Details |
 | --- | --- |
-| Azure side | Azure vWAN hub or regional hub VNet |
-| OCI side | OCI hub VCN + DRG + spoke VCN attachments |
+| Blueprint path | `blueprints/networking/azure-oci-dual-connectivity/` |
+| Azure side | Azure VNet connectivity edge + optional VPN Gateway resources from `azure/main.bicep` |
+| OCI side | OCI primary VCN + DRG + optional CPE/IPSec fallback resources |
 | Primary path | ExpressRoute + FastConnect via approved partner |
-| Secondary path | IPSec VPN between Azure VPN Gateway and OCI DRG |
-| Routing model | BGP-based route exchange with explicit route filtering |
-| DNS model | Private DNS forwarding and split-horizon controls |
+| Secondary path | IPSec VPN + BGP between Azure VPN edge and OCI DRG |
+| Routing model | BGP-oriented route exchange with explicit CIDR contracts |
+| DNS model | Private DNS forwarding and health-probe contract metadata |
 
 ## Service Region Availability
 
-As per today date, 19/May/26, the documented Oracle Interconnect for Azure
-region availability is:
+As of May 23, 2026, Oracle Interconnect for Azure has region-pair constraints.
+Always validate official current region support before production placement.
 
-Oracle Interconnect for Azure is available only in the OCI regions and Azure
-ExpressRoute locations shown below. Use these pairs as hard placement
-constraints before selecting a customer target region.
-
-### Asia Pacific (APAC)
-
-| OCI Region | OCI Key | Azure ExpressRoute Location |
-| --- | --- | --- |
-| Japan East (Tokyo) | `NRT` | Tokyo |
-| Singapore (Singapore) | `SIN` | Singapore |
-| South Korea Central (Seoul) | `ICN` | Seoul |
-
-### Europe, Middle East, Africa (EMEA)
-
-| OCI Region | OCI Key | Azure ExpressRoute Location |
-| --- | --- | --- |
-| Germany Central (Frankfurt) | `FRA` | Frankfurt and Frankfurt2 |
-| Netherlands Northwest (Amsterdam) | `AMS` | Amsterdam2 |
-| UK South (London) | `LHR` | London |
-| South Africa Central (Johannesburg) | `JNB` | Johannesburg |
-
-### Latin America (LATAM)
-
-| OCI Region | OCI Key | Azure ExpressRoute Location |
-| --- | --- | --- |
-| Brazil Southeast (Vinhedo) | `VCP` | Campinas |
-
-### North America (NA)
-
-| OCI Region | OCI Key | Azure ExpressRoute Location |
-| --- | --- | --- |
-| Canada Southeast (Toronto) | `YYZ` | Toronto and Toronto2 |
-| US East (Ashburn) | `IAD` | Washington DC and Washington DC2 |
-| US West (Phoenix) | `PHX` | Phoenix |
-| US West (San Jose) | `SJC` | Silicon Valley |
+Reference:
+- Oracle Interconnect for Azure: `docs.oracle.com/en-us/iaas/Content/Network/Concepts/azure.htm`
+- Azure ExpressRoute locations: `learn.microsoft.com/azure/expressroute/`
 
 ## Architecture
 
@@ -79,22 +47,18 @@ constraints before selecting a customer target region.
 | Azure + OCI Hybrid Networking                                                                    |
 +--------------------------------------------------------------------------------------------------+
 | {Azure}                                                                                          |
-| [Spoke VNets] -> [Azure Hub/vWAN] -> [ExpressRoute GW] -> (Provider Edge)                        |
-|        |                              |                                                           |
-|        |                              `-> [Azure VPN Gateway]                                    |
-|        |                                                                                         |
-|        +------------------------------ private + backup -------------------------------+         |
-|                                                                                          |       |
-|                                                                                          v       |
-| {OCI}                                                                                    [DRG]   |
-|                                                                                           |      |
-|                                                                                [Hub VCN + NSGs]  |
-|                                                                                           |      |
-|                                                                                 [Spoke VCNs]     |
-|                                                                                           |      |
-|                                                                          [Apps / Data Services]  |
+| [Connectivity VNet + route table + NSG] -> [ExpressRoute path] -> (Partner Edge)               |
+|                            |                                                                     |
+|                            `-> [Azure VPN fallback edge]                                         |
 |                                                                                                  |
-| Traffic policy: primary over private circuit, controlled failover to IPSec backup path.         |
+|                               private primary + encrypted fallback                               |
+|                                                                                                  |
+| {OCI primary}                                                                                    |
+| [DRG primary] <-> [Primary VCN subnet route/security controls]                                  |
+|      |                                                                                           |
+|      `-> [Optional CPE + IPSec fallback tunnel resources]                                       |
+|                                                                                                  |
+| Contract outputs: connectivity mode, path preference, CIDR exchange, DNS/probe, runbook steps  |
 +--------------------------------------------------------------------------------------------------+
 ```
 
@@ -107,58 +71,39 @@ constraints before selecting a customer target region.
 
 ## Security Controls
 
-- Encrypt all backup-path traffic using IPSec.
-- Place inspection points in hub networks for regulated workloads.
-- Log flow telemetry in both Azure and OCI and centralize to SIEM.
-- Prevent route leak by filtering default and broad supernets where not required.
+- Encrypt fallback-path traffic using IPSec.
+- Prefer private Interconnect for steady-state path.
+- Log route and tunnel state and forward to central observability.
+- Prevent route leak by filtering broad supernets where not required.
 
 ## Inputs To Settle Before Build
 
-- Azure hub architecture choice: vWAN or classic hub VNet.
-- OCI hub-spoke baseline and DRG attachment design.
-- BGP ASN allocation and route policy ownership.
+- Interconnect circuit ownership and lifecycle model.
+- Azure VPN edge endpoint ownership for fallback.
+- BGP ASN and timer ownership.
 - Approved CIDR ranges and overlap remediation plan.
 - DNS resolution ownership and forwarding zones.
-- Expected throughput and latency SLOs by workload tier.
+- Expected failover and failback objective timing.
 
 ## Outputs And Hand-Off
 
-The future deployment hand-off should include:
+The deployed blueprint publishes:
 
 ```text
-azure_hub_connection_ids
-oci_drg_id
-interconnect_virtual_circuit_ids
-ipsec_tunnel_ids
-advertised_route_sets
-dns_forwarding_endpoints
-network_observability_endpoints
+oci_network_contract
+connectivity_contract
+ipsec_fallback_contract
+routing_contract
+dns_contract
+runbook_contract
 ```
 
-## Rollout Plan
-
-1. Foundation:
-Confirm CIDR strategy, BGP ownership, and target route domains.
-2. Primary path:
-Enable ExpressRoute/FastConnect private interconnect and validate route exchange.
-3. Backup path:
-Add IPSec VPN and test failover with controlled traffic sets.
-4. Operational hardening:
-Enable full flow logging, SIEM forwarding, and periodic path failover drills.
+These outputs are the source of truth for operations runbooks.
 
 ## Validation Checklist
 
-- End-to-end connectivity tests pass for approved CIDRs.
+- End-to-end route assumptions match approved CIDRs.
 - Non-approved CIDRs are denied by route and security controls.
-- Primary and backup failover behavior matches design.
-- DNS resolution is deterministic across both clouds.
-- Telemetry is available for path, tunnel, and route-state monitoring.
-
-## Promotion Criteria
-
-Promote to `blueprints/networking/azure-oci-hybrid-networking/` when:
-
-- Interconnect providers and circuit ownership are confirmed.
-- Route policy and CIDR contracts are approved.
-- Security review signs off on inspection and logging design.
-- Application onboarding model is documented.
+- Primary and fallback path behavior matches contract outputs.
+- DNS forwarding and probe assumptions are deterministic.
+- Telemetry is available for route-state and tunnel-state monitoring.

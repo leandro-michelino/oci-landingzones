@@ -1,0 +1,17 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+---
+- name: Azure destroy session for dual connectivity fallback edge
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    azure_action: destroy
+    azure_resource_group: "{{ lookup('env', 'AZURE_CONNECTIVITY_RESOURCE_GROUP') | default('rg-oci-azure-connectivity-dev', true) }}"
+    azure_location: "{{ lookup('env', 'AZURE_CONNECTIVITY_LOCATION') | default('westeurope', true) }}"
+    azure_deployment_name: "{{ lookup('env', 'AZURE_CONNECTIVITY_DEPLOYMENT_NAME') | default('oci-azure-connectivity-destroy', true) }}"
+    azure_template_file: "{{ playbook_dir }}/../azure/main.bicep"
+    azure_parameters_file: "{{ lookup('env', 'AZURE_CONNECTIVITY_PARAMETERS_FILE') | default(playbook_dir ~ '/../azure/parameters.example.json', true) }}"
+  tasks:
+    - name: Run shared Azure deployment runner
+      ansible.builtin.import_role:
+        name: ../../../../ansible/roles/azure_deployment_runner

@@ -39,7 +39,7 @@ compliance, or workload platform pattern.
 
 ## Current Blueprint Inventory
 
-The repository currently contains 74 deployed blueprint
+The repository currently contains 75 deployed blueprint
 entry points. See [Architecture Index](architecture/README.md#blueprint-architecture-inventory)
 for the complete folder-by-folder list with links to each local Architecture
 file.
@@ -56,7 +56,7 @@ file.
 | `blueprints/extensions/` | 16 |
 | `blueprints/identity/` | 3 |
 | `blueprints/industry/` | 2 |
-| `blueprints/networking/` | 20 |
+| `blueprints/networking/` | 21 |
 | `blueprints/operating-entity/` | 3 |
 | `blueprints/operations/` | 1 |
 
@@ -514,6 +514,18 @@ network, operations, and AI services span both clouds.
 - FinOps dashboard: Cross-cloud tagging standards and anomaly detection for both providers.
 - AI gateway: Azure OpenAI + OCI Generative AI routing by region, cost, or data residency.
 - Golden landing zone: Single Terraform framework with provider modules for Azure + OCI foundations.
+- Oracle Database@Azure app split: `blueprints/data-platform/oracle-database-at-azure-app-split/` with app tier in Azure and OCI-aligned Oracle data controls.
+- Deployed: Dual connectivity hardening in `blueprints/networking/azure-oci-dual-connectivity/` with Interconnect as primary and IPSec/BGP fallback plus health probes and failback workflow.
+- vWAN transit backbone: `blueprints/networking/azure-vwan-oci-drg-transit/` with OCI-primary DRG transit, route segmentation, and inspection path controls.
+- DR drill automation: `blueprints/disaster-recovery/azure-oci-dr-drill-automation/` with rehearsal evidence capture, RTO/RPO scoring, and operator approval gates.
+- Arc-enabled OKE governance: `blueprints/extensions/azure-arc-oke-governance/` for central fleet policy and inventory visibility while keeping OCI OKE as primary runtime.
+- OpenTelemetry observability hub: `blueprints/extensions/azure-oci-observability-otel-hub/` to normalize traces/metrics/logs across Azure and OCI.
+- Workload identity federation: `blueprints/identity/entra-oci-workload-identity/` for non-human identity trust, token exchange rules, and audit-friendly least privilege.
+- Commitment-aware FinOps: `blueprints/operations/azure-oci-finops-commitment-aware/` for commitment tracking, allocation dimensions, and anomaly policy by operating entity.
+- Secrets broker baseline: `blueprints/security/azure-keyvault-oci-vault-secrets-broker/` for controlled secret flow between Azure Key Vault and OCI Vault.
+- Enterprise AI gateway controls: `blueprints/ai/azure-oci-ai-gateway-enterprise/` with policy engine, residency controls, fallback contracts, and usage governance.
+- Data Factory ingestion lane: `blueprints/data-platform/azure-data-factory-to-oci-adb/` for governed ingestion from Azure data pipelines into OCI Object Storage and Autonomous Database.
+- IPSec stability profile: `blueprints/networking/azure-oci-ipsec-hardening/` with IKE/IPSec profile baselines, MTU guidance, and troubleshooting runbook hand-off.
 
 ---
 
@@ -556,6 +568,28 @@ partner interconnect and/or IPSec backup.
 - Site-to-site VPN option.
 - ExpressRoute + FastConnect partner path.
 - Route, DNS, and inspection governance.
+
+---
+
+### Dual Connectivity Hardening (Interconnect Primary + IPSec/BGP Fallback) (Deployed)
+
+| Attribute | Value |
+| --- | --- |
+| Folder | `blueprints/networking/azure-oci-dual-connectivity/` |
+| Depends on | Core Landing Zone; OCI DRG-ready network posture; Azure networking subscription with ExpressRoute and VPN ownership |
+| Status | Deployed with OCI-primary routing posture, Interconnect primary path contract, and optional IPSec/BGP fallback contract. |
+
+**Why this exists.**
+Teams running OCI + Azure need deterministic behavior when private circuits
+degrade. This blueprint captures primary-path, fallback-path, and failback
+controls in one deployable package with explicit contracts for operations.
+
+**Scope highlights.**
+
+- OCI DRG primary connectivity control plane.
+- Interconnect path contract (`ExpressRoute + FastConnect`) for steady-state traffic.
+- Optional IPSec/BGP fallback resources and route-policy contract.
+- DNS/probe and runbook contracts for controlled failover and failback.
 
 ---
 

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vnetName": {
+      "value": "vnet-oci-azure-connectivity-dev"
+    },
+    "vnetCidr": {
+      "value": "10.88.0.0/16"
+    },
+    "workloadSubnetName": {
+      "value": "snet-oci-azure-connectivity-dev"
+    },
+    "workloadSubnetCidr": {
+      "value": "10.88.10.0/24"
+    },
+    "gatewaySubnetCidr": {
+      "value": "10.88.250.0/27"
+    },
+    "routeTableName": {
+      "value": "rt-oci-azure-connectivity-dev"
+    },
+    "networkSecurityGroupName": {
+      "value": "nsg-oci-azure-connectivity-dev"
+    },
+    "deployVpnGateway": {
+      "value": true
+    },
+    "vpnGatewayPublicIpName": {
+      "value": "pip-oci-azure-connectivity-dev"
+    },
+    "vpnGatewayName": {
+      "value": "vng-oci-azure-connectivity-dev"
+    },
+    "localNetworkGatewayName": {
+      "value": "lng-oci-primary-dev"
+    },
+    "vpnConnectionName": {
+      "value": "conn-azure-oci-fallback-dev"
+    },
+    "ociCpePublicIp": {
+      "value": "198.51.100.10"
+    },
+    "ociAddressPrefixes": {
+      "value": [
+        "10.58.0.0/16"
+      ]
+    },
+    "azureAsn": {
+      "value": 65515
+    },
+    "ociAsn": {
+      "value": 31898
+    },
+    "fallbackSharedKey": {
+      "value": "replace-with-secure-key"
+    },
+    "tags": {
+      "value": {
+        "Blueprint": "azure-oci-dual-connectivity",
+        "Environment": "dev",
+        "ManagedBy": "ansible"
+      }
+    }
+  }
+}

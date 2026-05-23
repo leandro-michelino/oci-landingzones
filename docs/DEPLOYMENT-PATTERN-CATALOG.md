@@ -51,6 +51,7 @@ folder.
 | Networking | Multi-tenancy shared services | `blueprints/networking/multi-tenancy-shared-services/` | Deployed |
 | Networking | Hub-spoke with multicloud interconnect | `blueprints/networking/hub-spoke-with-multicloud-interconnect/` | Deployed |
 | Networking | AWS + OCI hybrid network backbone (OCI DRG primary, VPN and Direct Connect/FastConnect contracts) | `blueprints/networking/aws-oci-hybrid-network-backbone/` | Deployed |
+| Networking | Azure + OCI dual connectivity hardening (OCI DRG primary, Interconnect primary path, IPSec/BGP fallback contract) | `blueprints/networking/azure-oci-dual-connectivity/` | Deployed |
 | Networking | Azure + OCI hybrid networking (ExpressRoute/FastConnect + IPSec backup) | `blueprints/networking/azure-oci-hybrid-networking/` | Planned |
 | Networking | Regional prod/nonprod hub separation | `blueprints/networking/regional-prod-nonprod-hubs/` | Deployed |
 | Networking | OCI Network Load Balancer (Layer 4 TCP/UDP, private backend, health checks) | `blueprints/networking/network-load-balancer/` | Deployed |
