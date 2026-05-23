@@ -50,7 +50,7 @@ READMEs may define additional variables for local behavior.
 
 | Variable | Type | Required | Description |
 |---|---|---:|---|
-| `compartment_ocid` | `string` | For networking blueprints | Compartment where networking resources are deployed. Defaults to `tenancy_ocid` for simple tests. |
+| `compartment_ocid` | `string` | For networking blueprints | Compartment where networking resources are available. Defaults to `tenancy_ocid` for simple tests. |
 | `vcn_label` | `string` | For standalone blueprints | Short semantic label used in VCN, subnet, route table, and gateway names. |
 | `vcn_cidr_block` | `string` | For standalone blueprints | CIDR block for the standalone workload VCN. |
 | `hub_vcn_cidr_block` | `string` | For hub-spoke | CIDR block for the hub VCN. |

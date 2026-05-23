@@ -1,0 +1,51 @@
+# Azure Session - vWAN + DRG Transit
+
+Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
+
+This folder contains Azure artifacts used by
+`blueprints/networking/azure-vwan-oci-drg-transit`.
+
+## What This Azure Session Creates
+
+- Azure Virtual WAN and Virtual Hub resources for transit aggregation.
+- Azure vHub route table and VNet connection for route-domain policy.
+- Azure VNet, workload subnet, NSG, and route table for transit edge controls.
+- Optional Azure VPN Gateway resources for IPSec fallback path.
+- Optional Local Network Gateway and VPN Connection toward OCI CPE endpoint.
+
+The OCI side remains primary and is created by Terraform in the parent
+blueprint folder.
+
+## Required Inputs
+
+- `ociCpePublicIp` as OCI fallback tunnel endpoint public IP.
+- `ociAddressPrefixes` as OCI CIDRs advertised toward Azure.
+- `fallbackSharedKey` as tunnel shared key.
+
+## Outputs To Pair With Terraform Contracts
+
+- `azureVirtualWanId`, `azureVirtualHubId`, `azureVirtualHubRouteTableId`, `azureVirtualHubConnectionId`
+- `azureWorkloadVnetId`, `azureWorkloadSubnetId`, `azureWorkloadRouteTableId`, `azureNetworkSecurityGroupId`
+- `azureVpnGatewayId`, `azureVpnConnectionId`, `azureVpnGatewayPublicIp`
+
+Use these values with Terraform outputs from the parent blueprint for runbook
+handoff and route troubleshooting.
+
+## Run The Azure Session
+
+```bash
+cd blueprints/networking/azure-vwan-oci-drg-transit
+export AZURE_VWAN_TRANSIT_RESOURCE_GROUP=rg-oci-azure-vwan-transit-dev
+export AZURE_VWAN_TRANSIT_LOCATION=westeurope
+export AZURE_VWAN_TRANSIT_DEPLOYMENT_NAME=oci-azure-vwan-transit-whatif
+
+ansible-playbook -i localhost, ansible/azure-plan.yml
+CONFIRM_AZURE_APPLY=true ansible-playbook -i localhost, ansible/azure-apply.yml
+CONFIRM_AZURE_DESTROY=true ansible-playbook -i localhost, ansible/azure-destroy.yml
+```
+
+For simulation-only checks without cloud-side execution:
+
+```bash
+AZURE_SIMULATE_ONLY=true ansible-playbook -i localhost, ansible/azure-plan.yml
+```

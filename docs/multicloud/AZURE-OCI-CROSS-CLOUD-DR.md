@@ -3,7 +3,7 @@
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 This document preserves the original architecture design that was later
-deployed in `blueprints/disaster-recovery/azure-oci-cross-cloud-dr/`.
+available in `blueprints/disaster-recovery/azure-oci-cross-cloud-dr/`.
 
 Use the blueprint folder as the deployment source of truth. Keep this file as
 design history and rationale context.

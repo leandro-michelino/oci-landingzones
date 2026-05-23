@@ -84,7 +84,7 @@ real OCIDs, CIDRs, names, recipients, and enable flags.
 
 | Input | What To Decide |
 | --- | --- |
-| `compartment_ocid` | Compartment OCID where the private VCN is deployed. Defaults to tenancy_ocid for simple tests. |
+| `compartment_ocid` | Compartment OCID where the private VCN is available. Defaults to tenancy_ocid for simple tests. |
 | `vcn_label` | Short label for the private VCN. |
 | `vcn_dns_label` | DNS label for the private VCN. |
 | `vcn_cidr_block` | CIDR block for the private VCN. |

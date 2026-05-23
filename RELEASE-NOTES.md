@@ -186,7 +186,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Initial Ansible inventories, playbooks, roles, and local orchestration
   structure.
 - Dedicated opt-in CIS Level 1 and Level 2 landing zone blueprint folders.
-- CIS Level 1 and Level 2 wrappers wired to the deployed core/IAM
+- CIS Level 1 and Level 2 wrappers wired to the available core/IAM
   foundation while remaining opt-in.
 - Repository cleanup guidance for generated state, lock, plan, cache,
   and local test artifacts.
@@ -226,7 +226,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   services, transit NVA HA, and regional prod/nonprod hub blueprints.
 - Example tfvars and deployment notes for operating entity onboarding,
   multi-entity onboarding, and workload vending.
-- Ansible-backed validation that discovers deployed Terraform blueprints,
+- Ansible-backed validation that discovers available Terraform blueprints,
   uses a Terraform plugin cache, bounds slow Terraform checks with timeouts, and
   cleans generated Terraform artifacts after validation.
 - Standalone-consumable blueprint architecture folders that use pinned Git

@@ -315,7 +315,7 @@ per minor feature toggle.
 
 ## Step 1 - Core Structure
 
-Deploy the core blueprint first. The deployed foundation creates the landing
+Deploy the core blueprint first. The available foundation creates the landing
 zone compartment structure and baseline governance tagging required by later
 blueprints.
 
@@ -404,7 +404,7 @@ quota-constrained defaults in local ignored test variable files:
 `enable_default_dynamic_groups = false`, or
 `enable_default_iam_policies = false`.
 
-Deployed module order:
+Available module order:
 
 1. `iam/groups`
 2. `iam/dynamic-groups`
@@ -447,7 +447,7 @@ visible in the local README and architecture notes.
 Architecture notes live in each operating-entity blueprint's
 `architecture/README.md`.
 
-## Deployed Blueprint Wiring Check
+## Available Blueprint Wiring Check
 
 | Family | Terraform Entry Points | Ansible Coverage |
 |---|---|---|
@@ -467,7 +467,7 @@ The full catalog currently contains 67 deployable blueprint entry points across
 Operations blueprints sit after core and before most workload add-ons. They
 help the landing zone stay understandable after resources start to multiply.
 
-Deployed operations entry points:
+Available operations entry points:
 
 - `blueprints/operations/cost-optimization/` creates cost-tracking tags, optional
   tag defaults, budgets, budget alert rules, FinOps ONS notifications, optional
@@ -485,7 +485,7 @@ extension folder directly. For base-plus-extension use, deploy core and the
 required networking foundation first, then pass their outputs into the extension
 tfvars. Each extension must include its own architecture notes.
 
-Deployed extension entry points:
+Available extension entry points:
 
 - `blueprints/extensions/oke/` creates an optional OKE cluster and optional node
   pool. Both are disabled by default.

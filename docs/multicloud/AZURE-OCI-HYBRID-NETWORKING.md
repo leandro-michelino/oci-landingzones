@@ -2,7 +2,7 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This design record maps to the deployed blueprint:
+This design record maps to the available blueprint:
 `blueprints/networking/azure-oci-dual-connectivity/`.
 
 ## Deployment Purpose
@@ -87,7 +87,7 @@ Reference:
 
 ## Outputs And Hand-Off
 
-The deployed blueprint publishes:
+The available blueprint publishes:
 
 ```text
 oci_network_contract

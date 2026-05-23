@@ -84,7 +84,7 @@ real OCIDs, CIDRs, names, recipients, and enable flags.
 
 | Input | What To Decide |
 | --- | --- |
-| `compartment_ocid` | Compartment OCID where networking resources are deployed. Defaults to tenancy_ocid for simple tests. |
+| `compartment_ocid` | Compartment OCID where networking resources are available. Defaults to tenancy_ocid for simple tests. |
 | `prod_environment` | Environment name used for the production hub. |
 | `nonprod_environment` | Environment name used for the non-production hub. |
 

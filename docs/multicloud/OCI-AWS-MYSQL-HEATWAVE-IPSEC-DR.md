@@ -2,7 +2,7 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This document preserves the multicloud design rationale for the deployed
+This document preserves the multicloud design rationale for the available
 blueprint in `blueprints/data-platform/oci-aws-mysql-heatwave-dr/`.
 
 Use the blueprint folder as the deployment source of truth. Keep this file as
@@ -164,7 +164,7 @@ Execute failover/failback drill and record evidence.
 
 ## Deployment Source
 
-The deployed implementation lives in:
+The available design lives in:
 
 ```text
 blueprints/data-platform/oci-aws-mysql-heatwave-dr/

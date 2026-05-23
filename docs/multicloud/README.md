@@ -7,29 +7,31 @@ Use it for architecture context, backlog ideas, and decision history.
 
 For current status tracking, use `docs/ROADMAP.md`.
 
-Deployed patterns live under `blueprints/`.
-Docs in this folder stay as design records for deployed patterns and drafts for
+Available patterns live under `blueprints/`.
+Docs in this folder stay as design records for available patterns and drafts for
 backlog patterns.
 
-## Deployed Blueprints
+## Available Blueprints
 
-| Pattern | Deployed Path |
+| Pattern | Available Path |
 | --- | --- |
 | Azure + OCI AI gateway | `blueprints/ai/azure-oci-ai-gateway/` |
 | AKS + OKE active/active | `blueprints/extensions/aks-oke-active-active/` |
 | Azure + OCI cross-cloud DR | `blueprints/disaster-recovery/azure-oci-cross-cloud-dr/` |
 | Azure + OCI dual connectivity hardening | `blueprints/networking/azure-oci-dual-connectivity/` |
+| Azure vWAN + OCI DRG transit backbone | `blueprints/networking/azure-vwan-oci-drg-transit/` |
 | AWS + OCI hybrid network backbone | `blueprints/networking/aws-oci-hybrid-network-backbone/` |
 | AWS + OCI cross-cloud DR | `blueprints/disaster-recovery/aws-oci-cross-cloud-dr/` |
 | EKS + OKE active/active | `blueprints/extensions/eks-oke-active-active/` |
 | OCI + AWS MySQL HeatWave DR | `blueprints/data-platform/oci-aws-mysql-heatwave-dr/` |
 
-## Deployed Design Records
+## Available Design Records
 
 | Note | Focus | Target Path |
 | --- | --- | --- |
 | [Azure + OCI Cross-Cloud DR](AZURE-OCI-CROSS-CLOUD-DR.md) | Historical architecture note retained as design context after delivery. | `blueprints/disaster-recovery/azure-oci-cross-cloud-dr/` |
 | [Azure + OCI Hybrid Networking](AZURE-OCI-HYBRID-NETWORKING.md) | OCI-primary dual-connectivity design record with Interconnect primary path and IPSec/BGP fallback hardening contracts. | `blueprints/networking/azure-oci-dual-connectivity/` |
+| [Azure vWAN + OCI DRG Transit](AZURE-VWAN-OCI-DRG-TRANSIT.md) | OCI-primary transit design record with Azure vWAN/vHub route domain, Interconnect primary path, and IPSec/BGP fallback contracts. | `blueprints/networking/azure-vwan-oci-drg-transit/` |
 | [AWS + OCI Hybrid Network Backbone](AWS-OCI-HYBRID-NETWORK-BACKBONE.md) | OCI DRG-primary hybrid backbone with AWS Transit Gateway, optional VPN, and Direct Connect + FastConnect contract metadata. | `blueprints/networking/aws-oci-hybrid-network-backbone/` |
 | [AWS + OCI Cross-Cloud DR](AWS-OCI-CROSS-CLOUD-DR.md) | OCI-primary, AWS-standby DR design record with DNS failover, evidence, alerting, and runbook contracts. | `blueprints/disaster-recovery/aws-oci-cross-cloud-dr/` |
 | [EKS + OKE Active Active](EKS-OKE-ACTIVE-ACTIVE.md) | OCI-primary OKE and AWS-secondary EKS active/active design record with GitOps and weighted traffic steering contracts. | `blueprints/extensions/eks-oke-active-active/` |
@@ -44,8 +46,8 @@ backlog patterns.
 
 ## How To Use This Folder
 
-- Use deployed blueprint folders as the source of truth for deployment.
-- Use deployed design records for architecture reviews and design rationale.
-- Use backlog drafts for refinement before implementation.
+- Use available blueprint folders as the source of truth for deployment.
+- Use available design records for architecture reviews and design rationale.
+- Use backlog drafts for refinement before design.
 - Promote backlog notes to `blueprints/...` only when each pattern has an
   approved owner, lifecycle, and state boundary.

@@ -88,7 +88,7 @@ real OCIDs, CIDRs, names, recipients, and enable flags.
 
 | Input | What To Decide |
 | --- | --- |
-| `compartment_ocid` | Compartment OCID where networking resources are deployed. Defaults to tenancy_ocid for simple tests. |
+| `compartment_ocid` | Compartment OCID where networking resources are available. Defaults to tenancy_ocid for simple tests. |
 | `hub_vcn_dns_label` | DNS label for the hub VCN. |
 | `hub_vcn_cidr_block` | CIDR block for the hub VCN. |
 | `hub_subnets` | Hub subnet map. |

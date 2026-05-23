@@ -11,7 +11,7 @@ This folder contains Azure deployment artifacts used by
 - Optional Azure VPN Gateway resources for IPSec fallback path.
 - Optional Local Network Gateway + VPN Connection toward OCI CPE endpoint.
 
-The OCI side remains primary and is deployed by Terraform in the parent
+The OCI side remains primary and is available by Terraform in the parent
 blueprint folder.
 
 ## Required Inputs

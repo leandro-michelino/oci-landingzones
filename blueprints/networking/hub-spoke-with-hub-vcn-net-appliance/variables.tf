@@ -42,7 +42,7 @@ variable "region_key" {
 }
 
 variable "compartment_ocid" {
-  description = "Compartment OCID where networking resources are deployed. Defaults to tenancy_ocid for simple tests."
+  description = "Compartment OCID where networking resources are provisioned. Defaults to tenancy_ocid for simple tests."
   type        = string
   default     = null
 }

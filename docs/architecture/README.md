@@ -109,7 +109,7 @@ terraform plan or ansible/plan.yml
 
 ## Blueprint Architecture Inventory
 
-The current catalog has 75 deployable blueprint entry points across 13
+The current catalog has 76 deployable blueprint entry points across 13
 families. Each entry point owns its local Architecture in
 `architecture/README.md`.
 
@@ -168,6 +168,7 @@ families. Each entry point owns its local Architecture in
 | networking | [Externally Managed VCNs](../../blueprints/networking/externally-managed-vcns/) | [Architecture](../../blueprints/networking/externally-managed-vcns/architecture/) |
 | networking | [AWS + OCI Hybrid Network Backbone](../../blueprints/networking/aws-oci-hybrid-network-backbone/) | [Architecture](../../blueprints/networking/aws-oci-hybrid-network-backbone/architecture/) |
 | networking | [Azure + OCI Dual Connectivity Hardening](../../blueprints/networking/azure-oci-dual-connectivity/) | [Architecture](../../blueprints/networking/azure-oci-dual-connectivity/architecture/) |
+| networking | [Azure vWAN + OCI DRG Transit](../../blueprints/networking/azure-vwan-oci-drg-transit/) | [Architecture](../../blueprints/networking/azure-vwan-oci-drg-transit/architecture/) |
 | networking | [Hub-Spoke With DRG And Three-Tier VCNs](../../blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/) | [Architecture](../../blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/architecture/) |
 | networking | [Hub-Spoke With Dual Region DR](../../blueprints/networking/hub-spoke-with-dual-region-dr/) | [Architecture](../../blueprints/networking/hub-spoke-with-dual-region-dr/architecture/) |
 | networking | [Hub-Spoke With Bastion Jump Host](../../blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/) | [Architecture](../../blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/architecture/) |

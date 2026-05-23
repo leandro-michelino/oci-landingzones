@@ -1,0 +1,44 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+---
+- name: Serve the Azure vWAN + OCI DRG transit hello-world page locally
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    hello_world_root: "{{ playbook_dir }}/../hello-world"
+    hello_world_port: "{{ lookup('env', 'HELLO_WORLD_PORT') | default('8094', true) }}"
+    hello_world_pid_file: "{{ playbook_dir }}/../hello-world/.hello-world.pid"
+    hello_world_log_file: "{{ playbook_dir }}/../hello-world/.hello-world.log"
+  tasks:
+    - name: Ensure hello-world root exists
+      ansible.builtin.stat:
+        path: "{{ hello_world_root }}/index.html"
+      register: hello_world_index
+
+    - name: Fail when hello-world page is missing
+      ansible.builtin.assert:
+        that:
+          - hello_world_index.stat.exists
+        fail_msg: "Missing hello-world page at {{ hello_world_root }}/index.html"
+
+    - name: Check whether hello-world server is already running
+      ansible.builtin.stat:
+        path: "{{ hello_world_pid_file }}"
+      register: hello_world_pid
+
+    - name: Start hello-world server
+      ansible.builtin.shell: |
+        set -euo pipefail
+        cd "{{ hello_world_root }}"
+        nohup python3 -m http.server "{{ hello_world_port }}" --bind 127.0.0.1 > "{{ hello_world_log_file }}" 2>&1 &
+        echo $! > "{{ hello_world_pid_file }}"
+      args:
+        executable: /bin/bash
+      when: not hello_world_pid.stat.exists
+
+    - name: Show hello-world endpoint
+      ansible.builtin.debug:
+        msg:
+          - "Azure vWAN + OCI DRG transit hello-world started"
+          - "URL: http://127.0.0.1:{{ hello_world_port }}"
+          - "PID file: {{ hello_world_pid_file }}"

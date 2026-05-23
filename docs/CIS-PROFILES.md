@@ -22,7 +22,7 @@ behavior is opt-in through dedicated landing zone blueprint folders:
   `blueprints/cis/level2/` folder.
 - CIS folders fix their profile internally and expose it through an output named
   `cis_level`.
-- CIS blueprints pass the selected profile into the deployed core, IAM,
+- CIS blueprints pass the selected profile into the available core, IAM,
   governance logging, Cloud Guard, Events, and Budgets foundation and will keep
   passing it to later security and networking controls as those modules mature.
 - Documentation must explain behavioral differences before any resource behavior

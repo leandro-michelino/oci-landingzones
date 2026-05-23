@@ -34,7 +34,7 @@ changes to shared validation behavior:
 ./scripts/validate-all.sh
 ```
 
-The full validation helper runs Terraform formatting, discovers deployed
+The full validation helper runs Terraform formatting, discovers available
 blueprints, initializes and validates them without a backend, runs optional
 local scanners when installed, checks Ansible playbook syntax, and removes
 generated Terraform artifacts.

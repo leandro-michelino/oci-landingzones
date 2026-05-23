@@ -84,7 +84,7 @@ real OCIDs, CIDRs, names, recipients, and enable flags.
 
 | Input | What To Decide |
 | --- | --- |
-| `compartment_ocid` | Compartment OCID where networking resources are deployed. Defaults to tenancy_ocid for simple tests. |
+| `compartment_ocid` | Compartment OCID where networking resources are available. Defaults to tenancy_ocid for simple tests. |
 | `vpn_label` | Short semantic label for the IPSec VPN. |
 | `cpe_ip_address` | Customer-premises equipment IP address. |
 | `cpe_is_private` | Whether the CPE IP address is private. |

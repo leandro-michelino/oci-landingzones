@@ -5,7 +5,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 This document defines a preview-only design draft for AWS Interconnect -
 multicloud connectivity with Oracle Cloud Infrastructure (OCI).
 
-This is intentionally not a deployed blueprint. AWS announced OCI support in
+This is intentionally not a available blueprint. AWS announced OCI support in
 public preview, and Oracle documents Interconnect for AWS as Limited
 Availability. Treat this note as architecture tracking material until the
 service has production-ready availability, regional coverage, automation

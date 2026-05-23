@@ -86,7 +86,7 @@ real OCIDs, CIDRs, names, recipients, and enable flags.
 
 | Input | What To Decide |
 | --- | --- |
-| `compartment_ocid` | Compartment OCID where networking resources are deployed. Defaults to tenancy_ocid for simple tests. |
+| `compartment_ocid` | Compartment OCID where networking resources are available. Defaults to tenancy_ocid for simple tests. |
 | `customer_bgp_asn` | Customer BGP ASN for FastConnect. |
 | `provider_service_id` | Provider service OCID for partner FastConnect circuits. |
 | `provider_service_key_name` | Provider service key/name supplied by the FastConnect partner. |

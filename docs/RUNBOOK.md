@@ -219,8 +219,8 @@ should deploy the full base first.
 
 ## Add A New Operating Entity
 
-1. Confirm the core landing zone is deployed.
-2. Confirm the required networking blueprint is deployed if this entity needs a
+1. Confirm the core landing zone is available.
+2. Confirm the required networking blueprint is available if this entity needs a
    network attachment.
 3. Create or update the local architecture notes in
    `blueprints/operating-entity/architecture/README.md`.

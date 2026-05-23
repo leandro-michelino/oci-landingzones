@@ -269,7 +269,7 @@ resources are added.
 ## Deployment Purpose
 
 Use this scaffold when a new OCI landing-zone pattern needs a consistent folder
-shape before the service-specific resources are deployed.
+shape before the service-specific resources are provisioned.
 
 ## Folder Contract
 

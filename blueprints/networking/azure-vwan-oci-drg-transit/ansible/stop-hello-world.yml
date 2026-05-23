@@ -1,0 +1,33 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+---
+- name: Stop the Azure vWAN + OCI DRG transit hello-world local server
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    hello_world_pid_file: "{{ playbook_dir }}/../hello-world/.hello-world.pid"
+  tasks:
+    - name: Check for pid file
+      ansible.builtin.stat:
+        path: "{{ hello_world_pid_file }}"
+      register: hello_world_pid
+
+    - name: Stop hello-world server process
+      ansible.builtin.shell: |
+        set -euo pipefail
+        pid="$(cat "{{ hello_world_pid_file }}")"
+        if kill -0 "$pid" >/dev/null 2>&1; then
+          kill "$pid"
+        fi
+        rm -f "{{ hello_world_pid_file }}"
+      args:
+        executable: /bin/bash
+      when: hello_world_pid.stat.exists
+
+    - name: Confirm stop status
+      ansible.builtin.debug:
+        msg: >-
+          {{
+            hello_world_pid.stat.exists
+            | ternary('hello-world server stopped.', 'hello-world server was not running.')
+          }}

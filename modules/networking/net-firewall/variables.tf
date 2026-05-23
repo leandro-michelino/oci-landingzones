@@ -42,7 +42,7 @@ variable "firewall_label" {
 }
 
 variable "subnet_id" {
-  description = "Subnet OCID where OCI Network Firewall will be deployed."
+  description = "Subnet OCID where OCI Network Firewall will be provisioned."
   type        = string
   default     = null
 }

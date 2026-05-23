@@ -85,7 +85,7 @@ real OCIDs, CIDRs, names, recipients, and enable flags.
 
 | Input | What To Decide |
 | --- | --- |
-| `compartment_ocid` | Compartment OCID where networking resources are deployed. Defaults to tenancy_ocid for simple tests. |
+| `compartment_ocid` | Compartment OCID where networking resources are available. Defaults to tenancy_ocid for simple tests. |
 | `firewall_label` | Short semantic label for OCI Network Firewall. |
 | `firewall_subnet_key` | Hub subnet key where OCI Network Firewall should be placed. |
 | `network_firewall_policy_id` | Optional existing OCI Network Firewall policy OCID. |

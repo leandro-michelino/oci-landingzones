@@ -2,7 +2,7 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This document preserves the multicloud design rationale for the deployed
+This document preserves the multicloud design rationale for the available
 blueprint in `blueprints/extensions/eks-oke-active-active/`.
 
 Use the blueprint folder as the deployment source of truth. Keep this file as
@@ -86,7 +86,7 @@ distribution.
 
 - OCI starts as the primary weighted endpoint.
 - AWS receives the remaining weight from `oci_primary_traffic_percent`.
-- DNS or global traffic manager implementation remains outside the Terraform
+- DNS or global traffic manager design remains outside the Terraform
   resource graph and is represented as contract metadata.
 
 ## Inputs To Settle Before Build
@@ -140,7 +140,7 @@ clouds.
 
 ## Deployment Source
 
-The deployed implementation lives in:
+The available design lives in:
 
 ```text
 blueprints/extensions/eks-oke-active-active/

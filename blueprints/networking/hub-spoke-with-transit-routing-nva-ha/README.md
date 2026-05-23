@@ -85,7 +85,7 @@ real OCIDs, CIDRs, names, recipients, and enable flags.
 
 | Input | What To Decide |
 | --- | --- |
-| `compartment_ocid` | Compartment OCID where networking resources are deployed. Defaults to tenancy_ocid for simple tests. |
+| `compartment_ocid` | Compartment OCID where networking resources are available. Defaults to tenancy_ocid for simple tests. |
 | `appliances` | HA NVA instances keyed by logical name, including image, shape, NSG, optional user data, and optional `licensing_configs` for eligible Windows BYOL images. |
 | `reserved_route_ips` | Reserved private IP route targets keyed by logical HA node. |
 | `existing_route_target_private_ip_ids` | Existing NVA private IP OCIDs keyed by HA node. |

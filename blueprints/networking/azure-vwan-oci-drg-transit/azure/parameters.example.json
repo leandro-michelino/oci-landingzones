@@ -1,0 +1,78 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualWanName": {
+      "value": "vwan-oci-azure-transit-dev"
+    },
+    "virtualHubName": {
+      "value": "vhub-oci-azure-transit-dev"
+    },
+    "virtualHubAddressPrefix": {
+      "value": "10.88.255.0/24"
+    },
+    "routeTableName": {
+      "value": "rt-vhub-oci-transit-dev"
+    },
+    "vnetName": {
+      "value": "vnet-oci-azure-transit-dev"
+    },
+    "vnetCidr": {
+      "value": "10.88.0.0/16"
+    },
+    "workloadSubnetName": {
+      "value": "snet-oci-azure-transit-dev"
+    },
+    "workloadSubnetCidr": {
+      "value": "10.88.10.0/24"
+    },
+    "gatewaySubnetCidr": {
+      "value": "10.88.250.0/27"
+    },
+    "networkSecurityGroupName": {
+      "value": "nsg-oci-azure-transit-dev"
+    },
+    "workloadRouteTableName": {
+      "value": "rt-oci-azure-transit-workload-dev"
+    },
+    "deployVpnGateway": {
+      "value": true
+    },
+    "vpnGatewayPublicIpName": {
+      "value": "pip-oci-azure-transit-dev"
+    },
+    "vpnGatewayName": {
+      "value": "vng-oci-azure-transit-dev"
+    },
+    "localNetworkGatewayName": {
+      "value": "lng-oci-drg-primary-dev"
+    },
+    "vpnConnectionName": {
+      "value": "conn-azure-oci-transit-fallback-dev"
+    },
+    "ociCpePublicIp": {
+      "value": "198.51.100.10"
+    },
+    "ociAddressPrefixes": {
+      "value": [
+        "10.58.0.0/16"
+      ]
+    },
+    "azureAsn": {
+      "value": 65515
+    },
+    "ociAsn": {
+      "value": 31898
+    },
+    "fallbackSharedKey": {
+      "value": "replace-with-secure-key"
+    },
+    "tags": {
+      "value": {
+        "Blueprint": "azure-vwan-oci-drg-transit",
+        "Environment": "dev",
+        "ManagedBy": "ansible"
+      }
+    }
+  }
+}

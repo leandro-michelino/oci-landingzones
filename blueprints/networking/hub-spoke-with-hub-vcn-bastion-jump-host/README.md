@@ -85,7 +85,7 @@ real OCIDs, CIDRs, names, recipients, and enable flags.
 
 | Input | What To Decide |
 | --- | --- |
-| `compartment_ocid` | Compartment OCID where networking resources are deployed. Defaults to tenancy_ocid for simple tests. |
+| `compartment_ocid` | Compartment OCID where networking resources are available. Defaults to tenancy_ocid for simple tests. |
 | `bastion_label` | Short semantic label for the bastion. |
 | `bastion_subnet_key` | Hub subnet key where the bastion endpoint is placed. |
 | `client_cidr_block_allow_list` | Client CIDR blocks allowed to create bastion sessions. |

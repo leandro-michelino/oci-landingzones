@@ -97,7 +97,7 @@ shell and leaves detector rule tuning to the security review.
 
 - [ ] Log source and destination are approved.
 - [ ] Sensitive prompt/response handling is documented.
-- [ ] Alarm queries match the deployed GenAI service namespace.
+- [ ] Alarm queries match the available GenAI service namespace.
 - [ ] Notification destinations are owned by the right operations team.
 - [ ] Cloud Guard recipe scope is reviewed before enforcement.
 - [ ] Audit-reader IAM is least privilege.

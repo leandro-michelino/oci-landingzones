@@ -85,7 +85,7 @@ real OCIDs, CIDRs, names, recipients, and enable flags.
 
 | Input | What To Decide |
 | --- | --- |
-| `compartment_ocid` | Compartment OCID where networking resources are deployed. Defaults to tenancy_ocid for simple tests. |
+| `compartment_ocid` | Compartment OCID where networking resources are available. Defaults to tenancy_ocid for simple tests. |
 | `virtual_circuit_label` | Short semantic label for the virtual circuit. |
 | `virtual_circuit_type` | FastConnect virtual circuit type. |
 | `bandwidth_shape_name` | FastConnect bandwidth shape name. |

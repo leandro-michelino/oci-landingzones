@@ -1,8 +1,8 @@
 # OCI Landing Zones Roadmap
 
-This document tracks what is already deployed and what is next.
-Deployed blueprints are summarized here, with full specs in each blueprint
-folder. Detailed planning notes stay only for items that are not deployed yet.
+This document tracks what is already available and what is next.
+Available blueprints are summarized here, with full specs in each blueprint
+folder. Detailed planning notes stay only for items that are not available yet.
 
 Each planned blueprint follows the same folder contract as existing ones:
 
@@ -39,12 +39,12 @@ compliance, or workload platform pattern.
 
 ## Current Blueprint Inventory
 
-The repository currently contains 75 deployed blueprint
+The repository currently contains 76 available blueprint
 entry points. See [Architecture Index](architecture/README.md#blueprint-architecture-inventory)
 for the complete folder-by-folder list with links to each local Architecture
 file.
 
-| Family | Deployed Entry Points |
+| Family | Available Entry Points |
 | --- | ---: |
 | `blueprints/ai/` | 9 |
 | `blueprints/cis/` | 2 |
@@ -56,7 +56,7 @@ file.
 | `blueprints/extensions/` | 16 |
 | `blueprints/identity/` | 3 |
 | `blueprints/industry/` | 2 |
-| `blueprints/networking/` | 21 |
+| `blueprints/networking/` | 22 |
 | `blueprints/operating-entity/` | 3 |
 | `blueprints/operations/` | 1 |
 
@@ -196,7 +196,7 @@ vault_secret_ids
 
 ---
 
-### Oracle Digital Assistant (ODA) (Deployed)
+### Oracle Digital Assistant (ODA) (Available)
 
 | Attribute | Value |
 | --- | --- |
@@ -206,7 +206,7 @@ vault_secret_ids
 
 **Why this exists.**
 ODA is the conversational AI layer for Oracle SaaS and custom app integrations.
-The deployed blueprint covers ODA instance lifecycle, optional private
+The available blueprint covers ODA instance lifecycle, optional private
 endpoint lifecycle, deploy-and-use network wiring, optional IAM policy
 statements, and operational outputs for channel integration runbooks.
 
@@ -515,8 +515,8 @@ network, operations, and AI services span both clouds.
 - AI gateway: Azure OpenAI + OCI Generative AI routing by region, cost, or data residency.
 - Golden landing zone: Single Terraform framework with provider modules for Azure + OCI foundations.
 - Oracle Database@Azure app split: `blueprints/data-platform/oracle-database-at-azure-app-split/` with app tier in Azure and OCI-aligned Oracle data controls.
-- Deployed: Dual connectivity hardening in `blueprints/networking/azure-oci-dual-connectivity/` with Interconnect as primary and IPSec/BGP fallback plus health probes and failback workflow.
-- vWAN transit backbone: `blueprints/networking/azure-vwan-oci-drg-transit/` with OCI-primary DRG transit, route segmentation, and inspection path controls.
+- Available: Dual connectivity hardening in `blueprints/networking/azure-oci-dual-connectivity/` with Interconnect as primary and IPSec/BGP fallback plus health probes and failback workflow.
+- Available: vWAN transit backbone in `blueprints/networking/azure-vwan-oci-drg-transit/` with OCI-primary DRG transit, route segmentation, and inspection path controls.
 - DR drill automation: `blueprints/disaster-recovery/azure-oci-dr-drill-automation/` with rehearsal evidence capture, RTO/RPO scoring, and operator approval gates.
 - Arc-enabled OKE governance: `blueprints/extensions/azure-arc-oke-governance/` for central fleet policy and inventory visibility while keeping OCI OKE as primary runtime.
 - OpenTelemetry observability hub: `blueprints/extensions/azure-oci-observability-otel-hub/` to normalize traces/metrics/logs across Azure and OCI.
@@ -554,8 +554,9 @@ group-based RBAC mapping with auditable least-privilege boundaries.
 
 | Attribute | Value |
 | --- | --- |
-| Folder | `blueprints/networking/azure-oci-hybrid-networking/` |
+| Folder | `blueprints/networking/azure-vwan-oci-drg-transit/` |
 | Depends on | Core Landing Zone; hub-spoke networking on OCI; Azure hub or vWAN |
+| Status | Available with OCI-primary DRG transit posture, Interconnect-first path policy, and optional IPSec/BGP fallback contract. |
 
 **Why this exists.**
 Multicloud workloads need deterministic private connectivity and controlled
@@ -571,13 +572,13 @@ partner interconnect and/or IPSec backup.
 
 ---
 
-### Dual Connectivity Hardening (Interconnect Primary + IPSec/BGP Fallback) (Deployed)
+### Dual Connectivity Hardening (Interconnect Primary + IPSec/BGP Fallback) (Available)
 
 | Attribute | Value |
 | --- | --- |
 | Folder | `blueprints/networking/azure-oci-dual-connectivity/` |
 | Depends on | Core Landing Zone; OCI DRG-ready network posture; Azure networking subscription with ExpressRoute and VPN ownership |
-| Status | Deployed with OCI-primary routing posture, Interconnect primary path contract, and optional IPSec/BGP fallback contract. |
+| Status | Available with OCI-primary routing posture, Interconnect primary path contract, and optional IPSec/BGP fallback contract. |
 
 **Why this exists.**
 Teams running OCI + Azure need deterministic behavior when private circuits
@@ -593,13 +594,13 @@ controls in one deployable package with explicit contracts for operations.
 
 ---
 
-### Multi-Cloud DR (Azure <-> OCI) (Deployed)
+### Multi-Cloud DR (Azure <-> OCI) (Available)
 
 | Attribute | Value |
 | --- | --- |
 | Folder | `blueprints/disaster-recovery/azure-oci-cross-cloud-dr/` |
 | Depends on | Core Landing Zone; hybrid networking; workload baseline in at least one cloud |
-| Status | Deployed with OCI-primary variant, DNS failover runbook contracts, and connectivity mode support (`interconnect` or `without-interconnect`). |
+| Status | Available with OCI-primary variant, DNS failover runbook contracts, and connectivity mode support (`interconnect` or `without-interconnect`). |
 
 **Why this exists.**
 Application resilience often requires cloud-to-cloud recovery. This blueprint
@@ -608,7 +609,7 @@ runbook-driven failover/failback.
 
 **Scope highlights.**
 
-- OCI primary with Azure standby in the deployed variant.
+- OCI primary with Azure standby in the available variant.
 - DNS failover controls and runbooks.
 - RTO/RPO measurement and rehearsal workflow.
 - Recovery evidence capture for audit.
@@ -636,13 +637,13 @@ replication lanes from Azure SQL/Storage into OCI Object Storage + Autonomous DB
 
 ---
 
-### AKS + OKE Active/Active Kubernetes (Deployed)
+### AKS + OKE Active/Active Kubernetes (Available)
 
 | Attribute | Value |
 | --- | --- |
 | Folder | `blueprints/extensions/aks-oke-active-active/` |
 | Depends on | Core Landing Zone; `blueprints/extensions/oke/`; Azure AKS baseline; hybrid networking |
-| Status | Deployed with OCI-primary, interconnect-only contract and no IPSec backup path. |
+| Status | Available with OCI-primary, interconnect-only contract and no IPSec backup path. |
 
 **Why this exists.**
 Platform teams running Kubernetes in both clouds need one pattern for traffic,
@@ -718,7 +719,7 @@ standards, normalized cost datasets, and anomaly detection across Azure and OCI.
 
 ---
 
-### AI Gateway (Azure OpenAI + OCI Generative AI Routing) - Deployed
+### AI Gateway (Azure OpenAI + OCI Generative AI Routing) - Available
 
 | Attribute | Value |
 | --- | --- |
@@ -771,9 +772,9 @@ clouds.
 
 ### AWS + OCI Idea Bullets
 
-- Deployed: Hybrid network backbone (OCI DRG primary) with AWS Transit Gateway pairing contracts, optional site-to-site VPN resources, and optional Direct Connect/FastConnect interconnect mode in `blueprints/networking/aws-oci-hybrid-network-backbone/`.
-- Deployed: Multi-cloud DR (OCI primary, AWS standby) with DNS failover runbook metadata, RTO/RPO contracts, and drill evidence hooks in `blueprints/disaster-recovery/aws-oci-cross-cloud-dr/`.
-- Deployed: EKS + OKE active/active with OCI-primary OKE, AWS EKS secondary contract, weighted traffic steering, and GitOps hand-off in `blueprints/extensions/eks-oke-active-active/`.
+- Available: Hybrid network backbone (OCI DRG primary) with AWS Transit Gateway pairing contracts, optional site-to-site VPN resources, and optional Direct Connect/FastConnect interconnect mode in `blueprints/networking/aws-oci-hybrid-network-backbone/`.
+- Available: Multi-cloud DR (OCI primary, AWS standby) with DNS failover runbook metadata, RTO/RPO contracts, and drill evidence hooks in `blueprints/disaster-recovery/aws-oci-cross-cloud-dr/`.
+- Available: EKS + OKE active/active with OCI-primary OKE, AWS EKS secondary contract, weighted traffic steering, and GitOps hand-off in `blueprints/extensions/eks-oke-active-active/`.
 - Identity federation baseline: Central IdP and AWS IAM Identity Center with OCI IAM federation for SSO and centralized RBAC mapping.
 - Data replication and analytics split: AWS RDS/S3 ingestion into OCI Object Storage + Autonomous Database (or reverse path) for analytics domains.
 - Unified security baseline: AWS Config/Security Hub/GuardDuty mapping to OCI Cloud Guard/Security Zones with shared controls matrix.
@@ -795,11 +796,11 @@ services, and local Architecture for design review.
 | Priority | Blueprint | Folder | Why It Fits |
 | --- | --- | --- | --- |
 | 1 | Public Edge and Ingress Zone | `blueprints/networking/public-edge-ingress/` | Completes the north-south story with DNS, WAF, public/private load balancing, certificates, and route-to-app hand-off. |
-| 2 | Event-Driven Application Platform | `blueprints/extensions/event-driven-platform/` | Deployed. Composes Events, Service Connector Hub, Streaming, Functions, Notifications, and Object Storage into one reusable async pattern. |
+| 2 | Event-Driven Application Platform | `blueprints/extensions/event-driven-platform/` | Available. Composes Events, Service Connector Hub, Streaming, Functions, Notifications, and Object Storage into one reusable async pattern. |
 | 3 | Batch and Queue Workers | `blueprints/extensions/batch-workers/` | Covers scheduled and burst compute patterns that do not fit OKE, Functions, or Container Instances. |
 | 4 | Object Storage Data Lakehouse | `blueprints/data-platform/object-storage-lakehouse/` | Adds the missing data lake foundation: buckets, KMS, private endpoints, lifecycle, logs, and optional query/processing hooks. |
-| 5 | OpenSearch Search and Vector Platform | `blueprints/data-platform/opensearch/` | Deployed. Useful as a standalone search, logging, and vector index platform, not only as an AI Agents dependency. |
-| 6 | Redis Cache Landing Zone | `blueprints/extensions/redis-cache/` | Deployed. Adds the common low-latency cache/session layer expected by app teams. |
+| 5 | OpenSearch Search and Vector Platform | `blueprints/data-platform/opensearch/` | Available. Useful as a standalone search, logging, and vector index platform, not only as an AI Agents dependency. |
+| 6 | Redis Cache Landing Zone | `blueprints/extensions/redis-cache/` | Available. Adds the common low-latency cache/session layer expected by app teams. |
 | 7 | Ransomware-Resilient Backup | `blueprints/operations/backup-resilience/` | Adds backup policies, immutable archive buckets, monitoring, and restore evidence for regulated tenancies. |
 | 8 | WebLogic / Java App Platform | `blueprints/industry/weblogic-platform/` | Gives enterprise Java workloads a migration-ready pattern with LB, app tier, database, logs, and operations hooks. |
 | 9 | VMware / Hybrid Migration Zone | `blueprints/industry/vmware-hybrid-migration/` | Covers brownfield migration where customers need private connectivity, DNS, backup, and landing-zone guardrails around VMware workloads. |
@@ -1280,28 +1281,28 @@ backup_handoff_outputs
 
 ## OCI Service Gaps
 
-Service gap watchlist based on customer demand. Entries marked `Deployed`
+Service gap watchlist based on customer demand. Entries marked `Available`
 already have deployable blueprint folders; the rest remain backlog candidates
 that can reuse existing Core, networking, and IAM contracts.
 
 | Priority | Blueprint | Folder | Why It Fits |
 | --- | --- | --- | --- |
-| 1 | OCI NoSQL Database | `blueprints/data-platform/nosql/` | Deployed. Key-value and document store with table capacity contract, optional index, optional cross-region replica, optional app network, and optional IAM/alerts. |
+| 1 | OCI NoSQL Database | `blueprints/data-platform/nosql/` | Available. Key-value and document store with table capacity contract, optional index, optional cross-region replica, optional app network, and optional IAM/alerts. |
 | 2 | OCI Data Safe | `blueprints/compliance/data-safe/` | Database activity monitoring, auditing, and data masking. Comes up in every regulated engagement alongside Autonomous DB, MySQL, or PostgreSQL. |
-| 3 | OCI Secure Desktops | `blueprints/industry/secure-desktops/` | Deployed. Managed VDI pattern with private network, session policies, BYOL-aware Windows 10/11 guardrail, and image management wiring. |
+| 3 | OCI Secure Desktops | `blueprints/industry/secure-desktops/` | Available. Managed VDI pattern with private network, session policies, BYOL-aware Windows 10/11 guardrail, and image management wiring. |
 | 4 | OCI Data Flow | `blueprints/data-platform/data-flow/` | Managed Apache Spark for batch analytics and ETL. Fills the analytics gap between Autonomous DB and a full Lakehouse. |
 | 5 | OCI Data Integration | `blueprints/data-platform/data-integration/` | Managed ELT/ETL workspace. Complements GoldenGate for non-CDC integration patterns and connects to Autonomous DB and Object Storage. |
 | 6 | OCI Certificates Service | `blueprints/extensions/certificates/` | Managed PKI and certificate authority. TLS lifecycle is always a gap in first-deployment reviews and works across LB, API Gateway, and OKE. |
-| 7 | OCI AI Services | `blueprints/ai/ai-services/` | Deployed. Pre-trained Vision, Language, Speech, Document Understanding, and Anomaly Detection. Distinct from GenAI; pairs well with ODA and OIC integration patterns. |
+| 7 | OCI AI Services | `blueprints/ai/ai-services/` | Available. Pre-trained Vision, Language, Speech, Document Understanding, and Anomaly Detection. Distinct from GenAI; pairs well with ODA and OIC integration patterns. |
 | 8 | Oracle Cloud VMware Solution (OCVS) | `blueprints/industry/ocvs/` | Native VMware baremetal on OCI. Different from the hybrid migration zone; covers customers running VMware on OCI long-term rather than transitioning off it. |
 | 9 | OCI Process Automation | `blueprints/extensions/process-automation/` | Low-code workflow automation connecting Oracle SaaS, OCI services, and custom REST APIs. Common in ERP and CX integration projects. |
-| 10 | OCI Network Load Balancer | `blueprints/networking/network-load-balancer/` | Deployed. Layer 4 TCP/UDP load balancing with private backend sets, listeners, and health checks. |
+| 10 | OCI Network Load Balancer | `blueprints/networking/network-load-balancer/` | Available. Layer 4 TCP/UDP load balancing with private backend sets, listeners, and health checks. |
 | 11 | OCI Email Delivery | `blueprints/extensions/email-delivery/` | SMTP relay and approved sender service. App teams always need it; requires IAM, NSG, and SPF/DKIM configuration. |
 | 12 | OCI Threat Intelligence | `blueprints/compliance/threat-intelligence/` | Indicator-of-compromise feeds integrated with Cloud Guard custom detector recipes and event rules. Natural companion to security-posture blueprint. |
 
 ---
 
-### OCI NoSQL Database (Deployed)
+### OCI NoSQL Database (Available)
 
 | Attribute | Value |
 | --- | --- |
@@ -1311,7 +1312,7 @@ that can reuse existing Core, networking, and IAM contracts.
 
 **Why this exists.**
 Many application teams need a low-latency key-value or document store that
-does not require a relational schema. The deployed blueprint provides the
+does not require a relational schema. The available blueprint provides the
 NoSQL table contract with explicit capacity settings, plus optional index,
 optional cross-region replica, optional deploy-and-use app network resources,
 and optional IAM/alert operations wiring.
@@ -1666,12 +1667,12 @@ and `architecture/README.md` files are the source of truth for operators.
 
 | Priority | Blueprint | Folder | Why It Fits |
 | --- | --- | --- | --- |
-| 1 | GenAI multi-model gateway | `blueprints/ai/genai-gateway/` | Deployed. Routes prompts to the right OCI GenAI model based on rules; adds rate limiting, cost tagging, and per-team IAM. |
-| 2 | Fine-tuning and dedicated AI cluster | `blueprints/ai/genai-fine-tuning/` | Deployed. Customer-managed fine-tuning using OCI GenAI with a dedicated AI cluster, training data bucket, and endpoint hand-off. |
-| 3 | GenAI guardrails and observability | `blueprints/ai/genai-guardrails/` | Deployed. Prompt logging, PII-aware audit flow, token alarms, and Cloud Guard hook points. |
-| 4 | Document intelligence pipeline | `blueprints/ai/document-intelligence/` | Deployed. Document Understanding + GenAI-oriented intake, extraction, and structured output foundation. |
-| 5 | Embedding and vector ingestion pipeline | `blueprints/ai/embedding-pipeline/` | Deployed. Functions-based chunk/embed/index foundation for OpenSearch or another vector target. |
-| 6 | Multi-agent orchestration | `blueprints/ai/multi-agent/` | Deployed. Orchestrator and specialist agents, Streaming task hand-off, tool registry, and session audit. |
+| 1 | GenAI multi-model gateway | `blueprints/ai/genai-gateway/` | Available. Routes prompts to the right OCI GenAI model based on rules; adds rate limiting, cost tagging, and per-team IAM. |
+| 2 | Fine-tuning and dedicated AI cluster | `blueprints/ai/genai-fine-tuning/` | Available. Customer-managed fine-tuning using OCI GenAI with a dedicated AI cluster, training data bucket, and endpoint hand-off. |
+| 3 | GenAI guardrails and observability | `blueprints/ai/genai-guardrails/` | Available. Prompt logging, PII-aware audit flow, token alarms, and Cloud Guard hook points. |
+| 4 | Document intelligence pipeline | `blueprints/ai/document-intelligence/` | Available. Document Understanding + GenAI-oriented intake, extraction, and structured output foundation. |
+| 5 | Embedding and vector ingestion pipeline | `blueprints/ai/embedding-pipeline/` | Available. Functions-based chunk/embed/index foundation for OpenSearch or another vector target. |
+| 6 | Multi-agent orchestration | `blueprints/ai/multi-agent/` | Available. Orchestrator and specialist agents, Streaming task hand-off, tool registry, and session audit. |
 
 ---
 
@@ -2056,7 +2057,7 @@ session_log_bucket_name
 ## Delivery Order Summary
 
 ```text
-Core Landing Zone (deployed)
+Core Landing Zone (available)
   |
   |-- Current Blueprint Inventory ---------------------------------
   |   |--- blueprints/data-platform/autonomous-database/
@@ -2124,12 +2125,12 @@ Core Landing Zone (deployed)
   |   `--- blueprints/compliance/threat-intelligence/
   |
   `-- GenAI Platform Patterns --------------------------------------
-      `--- deployed; see Current Blueprint Inventory above
+      `--- available; see Current Blueprint Inventory above
 ```
 
 ## Updating the Deployment Menu
 
-When each blueprint is deployed, add it to:
+When each blueprint is available, add it to:
 
 1. `README.md` - Deployment Menu table under the appropriate section
 2. `docs/DEPLOYMENT-PATTERN-CATALOG.md` - full pattern catalog
@@ -2144,6 +2145,6 @@ New families introduced by this roadmap:
 
 | New Family | First Blueprint | Status |
 | --- | --- | --- |
-| `blueprints/ai/` | `genai-private/` | Deployed |
-| `blueprints/devops/` | `oci-devops-pipeline/` | Deployed |
-| `blueprints/operations/` | `cost-optimization/` | Deployed |
+| `blueprints/ai/` | `genai-private/` | Available |
+| `blueprints/devops/` | `oci-devops-pipeline/` | Available |
+| `blueprints/operations/` | `cost-optimization/` | Available |

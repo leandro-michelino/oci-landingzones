@@ -42,7 +42,7 @@ variable "region_key" {
 }
 
 variable "compartment_ocid" {
-  description = "Compartment OCID where the standalone VCN is deployed. Defaults to tenancy_ocid for simple tests."
+  description = "Compartment OCID where the standalone VCN is provisioned. Defaults to tenancy_ocid for simple tests."
   type        = string
   default     = null
 }

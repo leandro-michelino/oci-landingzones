@@ -108,6 +108,6 @@ checksums, or batch checkpoints.
 - [ ] Chunk size and overlap strategy are documented.
 - [ ] Embedding model ID is approved and region-supported.
 - [ ] Vector index endpoint and index name are correct.
-- [ ] Events rule is disabled until handlers are deployed.
+- [ ] Events rule is disabled until handlers are available.
 - [ ] IAM covers only required bucket, stream, GenAI, and index access.
 - [ ] Retry and failed-object handling are owned.

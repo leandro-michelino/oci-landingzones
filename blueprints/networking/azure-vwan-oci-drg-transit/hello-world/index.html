@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Azure vWAN + OCI DRG Transit - Hello World</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f4f7fb; color: #1a2233; }
+    .wrap { max-width: 900px; margin: 32px auto; padding: 24px; }
+    h1 { margin: 0 0 8px; }
+    .card { background: #fff; border: 1px solid #d8e0ef; border-radius: 10px; padding: 18px; margin-top: 16px; }
+    .row { display: grid; grid-template-columns: 260px 1fr; gap: 10px; margin: 8px 0; }
+    .k { font-weight: 700; }
+    code { background: #eef3fb; padding: 2px 6px; border-radius: 4px; }
+    .ok { color: #0b7a3b; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Azure vWAN + OCI DRG Transit</h1>
+    <p class="ok">Hello world endpoint is reachable.</p>
+    <div class="card">
+      <div class="row"><div class="k">Blueprint</div><div><code>blueprints/networking/azure-vwan-oci-drg-transit</code></div></div>
+      <div class="row"><div class="k">Primary cloud</div><div>OCI (DRG primary transit hub)</div></div>
+      <div class="row"><div class="k">Azure transit domain</div><div>Virtual WAN + Virtual Hub + route table</div></div>
+      <div class="row"><div class="k">Primary path</div><div>ExpressRoute + FastConnect (Interconnect)</div></div>
+      <div class="row"><div class="k">Fallback path</div><div>IPSec + BGP (operator-controlled failover and failback)</div></div>
+      <div class="row"><div class="k">Contract outputs</div><div>Interconnect, transit segmentation, DNS, and runbook metadata</div></div>
+    </div>
+    <div class="card">
+      <strong>Purpose:</strong> use this page in walkthroughs, change reviews, and runbook rehearsals to verify
+      endpoint delivery and pattern context before cloud cutovers.
+    </div>
+  </div>
+</body>
+</html>
