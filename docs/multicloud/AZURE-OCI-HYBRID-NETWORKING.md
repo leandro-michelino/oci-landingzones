@@ -2,8 +2,9 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-This design record maps to the available blueprint:
-`blueprints/networking/azure-oci-dual-connectivity/`.
+This design record maps to the available networking blueprints:
+- `blueprints/networking/azure-oci-dual-connectivity/`
+- `blueprints/networking/azure-vwan-oci-drg-transit/`
 
 ## Deployment Purpose
 
@@ -23,8 +24,8 @@ IPSec/BGP as fallback path.
 
 | Item | Details |
 | --- | --- |
-| Blueprint path | `blueprints/networking/azure-oci-dual-connectivity/` |
-| Azure side | Azure VNet connectivity edge + optional VPN Gateway resources from `azure/main.bicep` |
+| Blueprint paths | `blueprints/networking/azure-oci-dual-connectivity/` and `blueprints/networking/azure-vwan-oci-drg-transit/` |
+| Azure side | Azure VNet connectivity edge + optional VPN Gateway resources; vWAN and vHub transit route-domain option in the transit blueprint |
 | OCI side | OCI primary VCN + DRG + optional CPE/IPSec fallback resources |
 | Primary path | ExpressRoute + FastConnect via approved partner |
 | Secondary path | IPSec VPN + BGP between Azure VPN edge and OCI DRG |
@@ -87,13 +88,13 @@ Reference:
 
 ## Outputs And Hand-Off
 
-The available blueprint publishes:
+The available blueprints publish:
 
 ```text
 oci_network_contract
-connectivity_contract
+interconnect or connectivity contract
 ipsec_fallback_contract
-routing_contract
+routing or transit contract
 dns_contract
 runbook_contract
 ```

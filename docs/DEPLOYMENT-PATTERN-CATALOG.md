@@ -53,7 +53,6 @@ folder.
 | Networking | AWS + OCI hybrid network backbone (OCI DRG primary, VPN and Direct Connect/FastConnect contracts) | `blueprints/networking/aws-oci-hybrid-network-backbone/` | Available |
 | Networking | Azure + OCI dual connectivity hardening (OCI DRG primary, Interconnect primary path, IPSec/BGP fallback contract) | `blueprints/networking/azure-oci-dual-connectivity/` | Available |
 | Networking | Azure vWAN + OCI DRG transit backbone (OCI DRG primary, vWAN/vHub route domain, Interconnect primary path, IPSec/BGP fallback) | `blueprints/networking/azure-vwan-oci-drg-transit/` | Available |
-| Networking | Azure + OCI hybrid networking (ExpressRoute/FastConnect + IPSec backup) | `blueprints/networking/azure-oci-hybrid-networking/` | Planned |
 | Networking | Regional prod/nonprod hub separation | `blueprints/networking/regional-prod-nonprod-hubs/` | Available |
 | Networking | OCI Network Load Balancer (Layer 4 TCP/UDP, private backend, health checks) | `blueprints/networking/network-load-balancer/` | Available |
 | Compliance | SCCA-style cloud-native landing zone | `blueprints/compliance/scca-cloud-native/` | Available |
