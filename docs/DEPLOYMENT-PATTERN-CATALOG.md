@@ -51,8 +51,8 @@ folder.
 | Networking | Multi-tenancy shared services | `blueprints/networking/multi-tenancy-shared-services/` | Available |
 | Networking | Hub-spoke with multicloud interconnect | `blueprints/networking/hub-spoke-with-multicloud-interconnect/` | Available |
 | Networking | AWS + OCI hybrid network backbone (OCI DRG primary, VPN and Direct Connect/FastConnect contracts) | `blueprints/networking/aws-oci-hybrid-network-backbone/` | Available |
-| Networking | Azure + OCI dual connectivity hardening (OCI DRG primary, Interconnect primary path, IPSec/BGP fallback contract) | `blueprints/networking/azure-oci-dual-connectivity/` | Available |
-| Networking | Azure vWAN + OCI DRG transit backbone (OCI DRG primary, vWAN/vHub route domain, Interconnect primary path, IPSec/BGP fallback) | `blueprints/networking/azure-vwan-oci-drg-transit/` | Available |
+| Networking | Azure + OCI dual connectivity hardening (OCI DRG primary, Interconnect default when present, IPSec/BGP backup contract, `without-interconnect` test mode) | `blueprints/networking/azure-oci-dual-connectivity/` | Available |
+| Networking | Azure vWAN + OCI DRG transit backbone (OCI DRG primary, vWAN/vHub route domain, Interconnect default when present, IPSec/BGP backup and test mode) | `blueprints/networking/azure-vwan-oci-drg-transit/` | Available |
 | Networking | Regional prod/nonprod hub separation | `blueprints/networking/regional-prod-nonprod-hubs/` | Available |
 | Networking | OCI Network Load Balancer (Layer 4 TCP/UDP, private backend, health checks) | `blueprints/networking/network-load-balancer/` | Available |
 | Compliance | SCCA-style cloud-native landing zone | `blueprints/compliance/scca-cloud-native/` | Available |

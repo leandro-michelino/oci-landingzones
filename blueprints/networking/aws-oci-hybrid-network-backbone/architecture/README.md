@@ -10,15 +10,15 @@ requests, runbooks, and customer notes without a diagramming tool.
 ## Deployment Purpose
 
 Implements an OCI-primary hybrid backbone where OCI DRG is the primary routing
-hub, with AWS connectivity through site-to-site VPN and optional partner Direct
-Connect + FastConnect interconnect contract metadata.
+hub, with AWS connectivity through site-to-site VPN first and optional partner
+Direct Connect + FastConnect interconnect contract metadata for final cutover.
 
 ## Architecture At A Glance
 
 | Item | Details |
 | --- | --- |
 | Boundary | `blueprints/networking/aws-oci-hybrid-network-backbone` owns this deployment folder and its Terraform + Ansible runners. |
-| Purpose | Build OCI DRG-primary backbone networking and publish interconnect and routing contracts for AWS + OCI operations. |
+| Purpose | Build OCI DRG-primary backbone networking and publish IPSec-first, interconnect-ready routing contracts for AWS + OCI operations. |
 | Terraform components | `oci_core_vcn.backbone`, `oci_core_route_table.backbone`, `oci_core_security_list.backbone`, `oci_core_subnet.backbone`, `oci_core_drg.primary`, `oci_core_drg_attachment.backbone`, `oci_core_cpe.aws`, `oci_core_ipsec.aws`, `terraform_data.connectivity_contract`, `terraform_data.routing_contract` |
 | Primary architecture view | The Architecture diagram below shows the OCI hub, AWS side connectivity assumptions, and contract outputs for this deployment. |
 
@@ -49,7 +49,7 @@ Connect + FastConnect interconnect contract metadata.
 |   |-- (Transit Gateway and VPC attachment from aws/main.yaml session)                                          |
 |   `-- (Direct Connect connection ID when interconnect mode is selected)                                        |
 |                                                                                                                |
-| Route intent: OCI DRG primary hub <-> AWS CIDRs via VPN and/or interconnect contracts                         |
+| Route intent: OCI DRG primary hub <-> AWS CIDRs via IPSec first, with optional interconnect cutover           |
 +----------------------------------------------------------------------------------------------------------------+
 ```
 
@@ -63,7 +63,7 @@ Connect + FastConnect interconnect contract metadata.
 | Resource | `oci_core_cpe.aws`, `oci_core_ipsec.aws` | Optional VPN path resources for AWS connectivity. |
 | Resource | `oci_ons_notification_topic.backbone_alert` | Optional operations topic for backbone alerts. |
 | Resource | `terraform_data.oci_network_contract` | OCI network IDs and subnet/route/security contract output. |
-| Resource | `terraform_data.connectivity_contract` | Interconnect and VPN mode contract output. |
+| Resource | `terraform_data.connectivity_contract` | IPSec-first and optional interconnect mode contract output. |
 | Resource | `terraform_data.routing_contract` | Route governance contract output. |
 
 ## Request And Deployment Flow
@@ -77,7 +77,7 @@ Connect + FastConnect interconnect contract metadata.
 ## Traffic And Trust Boundaries
 
 - Control plane traffic is local or CI execution authenticated to OCI and AWS CLI contexts.
-- Data plane traffic is routed through OCI DRG, optional IPSec tunnels, and optional interconnect paths.
+- Data plane traffic starts through OCI DRG and IPSec tunnels, with optional interconnect path at final cutover.
 - Trust boundaries include OCI tenancy ownership, AWS account ownership, and partner interconnect ownership.
 - Connection IDs, public endpoint IPs, and account identifiers belong in ignored local tfvars or secure pipeline variable stores.
 

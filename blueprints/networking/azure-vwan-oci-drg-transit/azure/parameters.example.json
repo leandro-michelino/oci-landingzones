@@ -41,6 +41,13 @@
     "vpnGatewayPublicIpName": {
       "value": "pip-oci-azure-transit-dev"
     },
+    "vpnGatewayPublicIpZones": {
+      "value": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
     "vpnGatewayName": {
       "value": "vng-oci-azure-transit-dev"
     },

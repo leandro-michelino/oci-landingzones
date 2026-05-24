@@ -62,8 +62,8 @@ Full inventory:
 | AI gateway routing by region, cost, or residency | [Azure + OCI AI Gateway](blueprints/ai/azure-oci-ai-gateway/) |
 | Active/active Kubernetes (OCI-primary OKE, AKS secondary) | [AKS + OKE Active Active](blueprints/extensions/aks-oke-active-active/) |
 | Cross-cloud DR (OCI primary, Azure standby) | [Azure + OCI Cross-Cloud DR](blueprints/disaster-recovery/azure-oci-cross-cloud-dr/) |
-| Dual connectivity hardening (OCI DRG primary, Interconnect + IPSec/BGP fallback) | [Azure + OCI Dual Connectivity Hardening](blueprints/networking/azure-oci-dual-connectivity/) |
-| vWAN transit backbone (OCI DRG primary, vWAN/vHub route domain with Interconnect primary path) | [Azure vWAN + OCI DRG Transit](blueprints/networking/azure-vwan-oci-drg-transit/) |
+| Dual connectivity hardening (OCI DRG primary, Interconnect default when present + IPSec/BGP backup, testable without Interconnect) | [Azure + OCI Dual Connectivity Hardening](blueprints/networking/azure-oci-dual-connectivity/) |
+| vWAN transit backbone (OCI DRG primary, vWAN/vHub route domain, Interconnect default when present, IPSec-first test mode) | [Azure vWAN + OCI DRG Transit](blueprints/networking/azure-vwan-oci-drg-transit/) |
 
 ### AWS + OCI (Available)
 

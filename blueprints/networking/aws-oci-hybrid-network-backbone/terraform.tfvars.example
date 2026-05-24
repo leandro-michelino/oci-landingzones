@@ -16,9 +16,9 @@ oci_backbone_vcn_cidr          = "10.54.0.0/16"
 oci_backbone_subnet_cidr       = "10.54.10.0/24"
 oci_backbone_ingress_allowed_cidr = "10.0.0.0/8"
 
-connectivity_mode                = "interconnect"
-fastconnect_virtual_circuit_id   = "ocid1.virtualcircuit.oc1..example"
-direct_connect_connection_id     = "dxcon-example123456"
+connectivity_mode              = "without-interconnect"
+# fastconnect_virtual_circuit_id = null
+# direct_connect_connection_id   = null
 
 enable_site_to_site_vpn = true
 aws_cpe_public_ip       = "203.0.113.10"

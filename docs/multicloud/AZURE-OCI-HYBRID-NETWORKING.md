@@ -9,8 +9,8 @@ This design record maps to the available networking blueprints:
 ## Deployment Purpose
 
 Provide deterministic and auditable network connectivity between Azure and OCI
-with OCI as primary routing hub, Interconnect as preferred path, and
-IPSec/BGP as fallback path.
+with OCI as primary routing hub, Interconnect as the default path when present,
+and IPSec/BGP as backup path.
 
 ## Primary Outcomes
 
@@ -27,8 +27,8 @@ IPSec/BGP as fallback path.
 | Blueprint paths | `blueprints/networking/azure-oci-dual-connectivity/` and `blueprints/networking/azure-vwan-oci-drg-transit/` |
 | Azure side | Azure VNet connectivity edge + optional VPN Gateway resources; vWAN and vHub transit route-domain option in the transit blueprint |
 | OCI side | OCI primary VCN + DRG + optional CPE/IPSec fallback resources |
-| Primary path | ExpressRoute + FastConnect via approved partner |
-| Secondary path | IPSec VPN + BGP between Azure VPN edge and OCI DRG |
+| Primary path when present | ExpressRoute + FastConnect via approved partner |
+| Backup path | IPSec VPN + BGP between Azure VPN edge and OCI DRG |
 | Routing model | BGP-oriented route exchange with explicit CIDR contracts |
 | DNS model | Private DNS forwarding and health-probe contract metadata |
 
@@ -73,7 +73,8 @@ Reference:
 ## Security Controls
 
 - Encrypt fallback-path traffic using IPSec.
-- Prefer private Interconnect for steady-state path.
+- Use Interconnect as default path when it is available.
+- Use `without-interconnect` mode for low-cost rollout tests.
 - Log route and tunnel state and forward to central observability.
 - Prevent route leak by filtering broad supernets where not required.
 

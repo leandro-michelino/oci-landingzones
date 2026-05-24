@@ -12,7 +12,7 @@ sessions, and where to review the detailed Architecture.
 | Item | Details |
 | --- | --- |
 | Folder | `blueprints/networking/azure-oci-dual-connectivity` |
-| Best fit | OCI-primary dual-connectivity pattern with Interconnect (ExpressRoute + FastConnect) as primary path and IPSec/BGP as fallback path. |
+| Best fit | OCI-primary dual-connectivity pattern with IPSec/BGP first, plus optional Interconnect (ExpressRoute + FastConnect) enablement at final cutover. |
 | Terraform shape | `oci_core_vcn.primary`, `oci_core_route_table.primary`, `oci_core_security_list.primary_hub`, `oci_core_subnet.primary_hub`, `oci_core_drg.primary`, `oci_core_drg_attachment.primary`, `oci_core_cpe.azure`, `oci_core_ipsec.azure`, `terraform_data.connectivity_contract`, `terraform_data.ipsec_fallback_contract`, `terraform_data.routing_contract`, `terraform_data.dns_contract`, `terraform_data.runbook_contract` |
 | Inputs to settle first | `connectivity_mode`, `fastconnect_virtual_circuit_id`, `expressroute_circuit_id`, `enable_ipsec_fallback`, `azure_cpe_public_ip`, `azure_network_cidrs`, `private_dns_zone_fqdn` |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `connectivity_contract`, `ipsec_fallback_contract`, `routing_contract`, `dns_contract`, `runbook_contract` |
@@ -21,13 +21,13 @@ sessions, and where to review the detailed Architecture.
 ## Deployment Purpose
 
 Implements a hardened cross-cloud connectivity baseline where OCI stays primary,
-Interconnect is preferred for steady-state traffic, and IPSec/BGP fallback is
-predefined for controlled failover and failback.
+IPSec/BGP is enabled first for validation and early traffic, and Interconnect
+can be enabled in the final cutover stage.
 
 ## When To Use This Deployment
 
 - OCI must remain the primary connectivity and routing control plane.
-- Azure workloads need a private primary path to OCI through Interconnect.
+- Azure workloads need private connectivity to OCI with IPSec/BGP bring-up first.
 - Operations require a deterministic IPSec/BGP fallback posture.
 - Teams need explicit contracts for routing, DNS, and failover runbooks.
 
@@ -40,7 +40,7 @@ predefined for controlled failover and failback.
 | Resource | `oci_core_cpe.azure`, `oci_core_ipsec.azure` | Optional fallback IPSec resources. |
 | Resource | `oci_ons_notification_topic.connectivity_alert` | Optional connectivity operations topic. |
 | Resource | `terraform_data.oci_network_contract` | OCI network and DRG hand-off contract. |
-| Resource | `terraform_data.connectivity_contract` | Primary interconnect-mode contract. |
+| Resource | `terraform_data.connectivity_contract` | Connectivity contract with IPSec-first and optional interconnect mode. |
 | Resource | `terraform_data.ipsec_fallback_contract` | IPSec/BGP fallback hardening contract. |
 | Resource | `terraform_data.routing_contract` | Route exchange and path preference contract. |
 | Resource | `terraform_data.dns_contract` | Optional DNS forwarding and health-probe contract. |
@@ -70,6 +70,7 @@ blueprints/networking/azure-oci-dual-connectivity/
     |-- azure-plan.yml         Azure what-if session for fallback edge
     |-- azure-apply.yml        Azure apply session for fallback edge
     |-- azure-destroy.yml      Azure destroy session for fallback edge
+    |-- azure-ipsec-verify.yml Validate IPSec tunnel state and optional ping from Azure VM
     |-- serve-hello-world.yml  Start local hello-world endpoint
     `-- stop-hello-world.yml   Stop local hello-world endpoint
 ```
@@ -96,7 +97,7 @@ Start with `terraform.tfvars.example`, then create a local ignored
 
 | Input | What To Decide |
 | --- | --- |
-| `connectivity_mode` | `interconnect` for primary private path or `without-interconnect` when interconnect is intentionally absent. |
+| `connectivity_mode` | `without-interconnect` for IPSec-first rollout or `interconnect` for final dedicated-circuit cutover. |
 | `fastconnect_virtual_circuit_id` | FastConnect virtual circuit OCID for interconnect mode. |
 | `expressroute_circuit_id` | ExpressRoute circuit resource ID for interconnect mode. |
 | `enable_ipsec_fallback` | Enable fallback path resources in OCI. |
@@ -145,6 +146,18 @@ CONFIRM_AZURE_DESTROY=true ansible-playbook -i localhost, ansible/azure-destroy.
 ```
 
 For required Azure variables and parameters, review `azure/README.md`.
+
+IPSec validation and optional ping test from Azure VM:
+
+```bash
+cd blueprints/networking/azure-oci-dual-connectivity
+export OCI_AZURE_IPSEC_CONNECTION_ID="ocid1.ipsecconnection.oc1..example"
+# Optional ping test variables:
+# export AZURE_TEST_VM_RESOURCE_GROUP="rg-test"
+# export AZURE_TEST_VM_NAME="vm-test"
+# export OCI_PING_TARGET_IP="10.58.10.10"
+ansible-playbook -i localhost, ansible/azure-ipsec-verify.yml
+```
 
 ## Architecture
 

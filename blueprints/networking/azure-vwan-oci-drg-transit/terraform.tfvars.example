@@ -19,10 +19,10 @@ oci_primary_vcn_cidr            = "10.58.0.0/16"
 oci_primary_hub_subnet_cidr     = "10.58.10.0/24"
 oci_primary_ingress_allowed_cidr = "10.0.0.0/8"
 
-# Choose connectivity mode: interconnect or without-interconnect.
-connectivity_mode = "interconnect"
-# fastconnect_virtual_circuit_id = "ocid1.virtualcircuit.oc1..example"
-# expressroute_circuit_id        = "/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Network/expressRouteCircuits/<name>"
+# Choose connectivity mode: without-interconnect (IPSec first) or interconnect.
+connectivity_mode = "without-interconnect"
+# fastconnect_virtual_circuit_id = null
+# expressroute_circuit_id        = null
 
 # Azure vWAN and vHub metadata for transit contracts.
 # azure_virtual_wan_id           = "/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Network/virtualWans/<name>"

@@ -30,7 +30,7 @@ interconnect contracts.
 | --- | --- |
 | Primary network hub | OCI DRG |
 | AWS network side | AWS VPC, subnet, security group, Transit Gateway, and TGW attachment |
-| Connectivity modes | `interconnect` or `without-interconnect` |
+| Connectivity modes | `without-interconnect` for IPSec-first rollout tests, or `interconnect` for dedicated-circuit cutover |
 | VPN mode | Optional OCI CPE + IPSec toward AWS VPN endpoint |
 | Interconnect contract | OCI FastConnect virtual circuit ID plus AWS Direct Connect connection ID |
 | Deployment boundary | OCI Terraform plus AWS CloudFormation session |
@@ -77,7 +77,7 @@ interconnect contracts.
 - OCI tenancy, compartment, region, and naming prefix.
 - OCI backbone VCN and subnet CIDRs.
 - AWS VPC and subnet CIDRs.
-- Connectivity mode: `interconnect` or `without-interconnect`.
+- Connectivity mode: `without-interconnect` for initial rollout tests or `interconnect` for dedicated-circuit cutover.
 - Whether IPSec is enabled and the AWS CPE public IP.
 - AWS backbone CIDRs expected behind Transit Gateway.
 - Direct Connect and FastConnect IDs when interconnect mode is selected.

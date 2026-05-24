@@ -12,7 +12,7 @@ local Ansible wrappers, and where to find the detailed Architecture design.
 | Item | Details |
 | --- | --- |
 | Folder | `blueprints/networking/aws-oci-hybrid-network-backbone` |
-| Best fit | OCI DRG-primary hybrid network backbone with AWS Transit Gateway pairing, optional site-to-site VPN, and optional Direct Connect + FastConnect partner interconnect contract. |
+| Best fit | OCI DRG-primary hybrid network backbone with AWS Transit Gateway pairing and IPSec first, plus optional Direct Connect + FastConnect partner interconnect at final cutover. |
 | Terraform shape | `oci_core_vcn.backbone`, `oci_core_route_table.backbone`, `oci_core_security_list.backbone`, `oci_core_subnet.backbone`, `oci_core_drg.primary`, `oci_core_drg_attachment.backbone`, `oci_core_cpe.aws`, `oci_core_ipsec.aws`, `terraform_data.connectivity_contract`, `terraform_data.routing_contract` |
 | Inputs to settle first | `connectivity_mode`, `fastconnect_virtual_circuit_id`, `direct_connect_connection_id`, `enable_site_to_site_vpn`, `aws_cpe_public_ip`, `aws_backbone_cidrs` |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `oci_network_contract`, `connectivity_contract`, `routing_contract`, `oci_drg_id` |
@@ -21,13 +21,13 @@ local Ansible wrappers, and where to find the detailed Architecture design.
 ## Deployment Purpose
 
 Implements the OCI-primary hybrid network backbone with DRG as the primary
-routing core and contract outputs for both partner interconnect and VPN paths
-between OCI and AWS.
+routing core and contract outputs for IPSec-first rollout and optional partner
+interconnect cutover between OCI and AWS.
 
 ## When To Use This Deployment
 
 - OCI must remain the primary network hub across clouds.
-- AWS participates through Transit Gateway, site-to-site VPN, or partner Direct Connect + FastConnect.
+- AWS participates through Transit Gateway with site-to-site VPN first, and Direct Connect + FastConnect optional at final cutover.
 - You need deterministic route and connectivity contracts for operations runbooks.
 - You want deploy-and-use OCI backbone networking in the same blueprint.
 
@@ -45,7 +45,7 @@ provide the same plan/apply/destroy rhythm used across the repo.
 | Resource | `oci_core_cpe.aws`, `oci_core_ipsec.aws` | Optional VPN resources for OCI-to-AWS connectivity. |
 | Resource | `oci_ons_notification_topic.backbone_alert` | Optional hybrid backbone operations alerts topic. |
 | Resource | `terraform_data.oci_network_contract` | OCI backbone network IDs and routing primitives output. |
-| Resource | `terraform_data.connectivity_contract` | Interconnect mode and VPN contract output. |
+| Resource | `terraform_data.connectivity_contract` | IPSec-first and optional interconnect contract output. |
 | Resource | `terraform_data.routing_contract` | DRG and CIDR routing contract output. |
 
 ## Folder Contract
@@ -72,6 +72,7 @@ blueprints/networking/aws-oci-hybrid-network-backbone/
     |-- aws-plan.yml           AWS CloudFormation plan session
     |-- aws-apply.yml          AWS CloudFormation apply session
     |-- aws-destroy.yml        AWS CloudFormation destroy session
+    |-- aws-ipsec-verify.yml   Validate IPSec tunnel state and optional ping from AWS test instance
     |-- serve-hello-world.yml  Start local hello-world endpoint
     `-- stop-hello-world.yml   Stop local hello-world endpoint
 ```
@@ -104,7 +105,7 @@ Start with `terraform.tfvars.example`, then create a local ignored
 | `enable_oci_backbone_network` | Create OCI VCN/subnet/route/security resources for backbone operations. |
 | `oci_backbone_vcn_cidr` | CIDR for OCI backbone VCN. |
 | `oci_backbone_subnet_cidr` | CIDR for OCI backbone subnet. |
-| `connectivity_mode` | Select `interconnect` or `without-interconnect`. |
+| `connectivity_mode` | Select `without-interconnect` for IPSec-first rollout or `interconnect` for final dedicated-circuit cutover. |
 | `fastconnect_virtual_circuit_id` | FastConnect virtual circuit OCID when interconnect mode is used. |
 | `direct_connect_connection_id` | AWS Direct Connect connection ID when interconnect mode is used. |
 | `enable_site_to_site_vpn` | Enable OCI CPE and IPSec resources for VPN path. |
@@ -148,6 +149,18 @@ cd blueprints/networking/aws-oci-hybrid-network-backbone
 ansible-playbook -i localhost, ansible/aws-plan.yml
 CONFIRM_AWS_APPLY=true ansible-playbook -i localhost, ansible/aws-apply.yml
 CONFIRM_AWS_DESTROY=true ansible-playbook -i localhost, ansible/aws-destroy.yml
+```
+
+IPSec validation and optional ping test from AWS test instance:
+
+```bash
+cd blueprints/networking/aws-oci-hybrid-network-backbone
+# Optional, when not reading from CloudFormation stack outputs:
+# export AWS_VPN_CONNECTION_ID="vpn-xxxxxxxx"
+# Optional ping test variables:
+# export AWS_TEST_INSTANCE_ID="i-xxxxxxxx"
+# export OCI_PING_TARGET_IP="10.54.10.10"
+ansible-playbook -i localhost, ansible/aws-ipsec-verify.yml
 ```
 
 ## Architecture

@@ -12,7 +12,7 @@ sessions, and where to review the detailed Architecture.
 | Item | Details |
 | --- | --- |
 | Folder | `blueprints/networking/azure-vwan-oci-drg-transit` |
-| Best fit | OCI-primary transit pattern with Azure Virtual WAN and Virtual Hub on the Azure side, Interconnect as primary path, and IPSec/BGP fallback path. |
+| Best fit | OCI-primary transit pattern with Azure Virtual WAN and Virtual Hub on the Azure side, IPSec/BGP first for rollout, and Interconnect as default path when enabled in final cutover. |
 | Terraform shape | `oci_core_vcn.primary`, `oci_core_route_table.primary`, `oci_core_security_list.primary_hub`, `oci_core_subnet.primary_hub`, `oci_core_drg.primary`, `oci_core_drg_attachment.primary`, `oci_core_cpe.azure`, `oci_core_ipsec.azure`, `terraform_data.interconnect_contract`, `terraform_data.ipsec_fallback_contract`, `terraform_data.transit_contract`, `terraform_data.dns_contract`, `terraform_data.runbook_contract` |
 | Inputs to settle first | `connectivity_mode`, `fastconnect_virtual_circuit_id`, `expressroute_circuit_id`, `azure_virtual_wan_id`, `azure_virtual_hub_id`, `enable_ipsec_fallback`, `azure_cpe_public_ip`, `azure_network_cidrs` |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `interconnect_contract`, `ipsec_fallback_contract`, `transit_contract`, `dns_contract`, `runbook_contract` |
@@ -22,14 +22,14 @@ sessions, and where to review the detailed Architecture.
 
 Defines an OCI-primary cross-cloud transit baseline where OCI DRG remains the
 primary transit control plane, Azure vWAN and vHub carry Azure-side route
-aggregation, Interconnect carries primary traffic, and IPSec/BGP stays ready
-for controlled fallback and failback.
+aggregation, IPSec/BGP is used for first rollout tests, and Interconnect
+becomes the default path when enabled at final cutover.
 
 ## When To Use This Deployment
 
 - OCI must remain the primary transit and routing control plane.
 - Azure workloads need centralized transit through Azure Virtual WAN and Virtual Hub.
-- Teams need a deterministic interconnect-first path with explicit fallback behavior.
+- Teams need a deterministic path policy where Interconnect is default when present and IPSec is fallback.
 - Operations require route segmentation, DNS expectations, and runbook contracts.
 
 ## What This Deploys
@@ -41,7 +41,7 @@ for controlled fallback and failback.
 | Resource | `oci_core_cpe.azure`, `oci_core_ipsec.azure` | Optional fallback IPSec resources. |
 | Resource | `oci_ons_notification_topic.transit_alert` | Optional transit operations topic. |
 | Resource | `terraform_data.oci_network_contract` | OCI network and DRG hand-off contract. |
-| Resource | `terraform_data.interconnect_contract` | Interconnect contract with ExpressRoute plus FastConnect and Azure vWAN/vHub metadata. |
+| Resource | `terraform_data.interconnect_contract` | Contract that keeps IPSec-first testing and Interconnect-default cutover metadata. |
 | Resource | `terraform_data.ipsec_fallback_contract` | IPSec/BGP fallback hardening contract. |
 | Resource | `terraform_data.transit_contract` | Transit route segmentation and path policy contract. |
 | Resource | `terraform_data.dns_contract` | Optional DNS forwarding and health-probe contract. |
@@ -71,6 +71,7 @@ blueprints/networking/azure-vwan-oci-drg-transit/
     |-- azure-plan.yml         Azure what-if session for transit edge
     |-- azure-apply.yml        Azure apply session for transit edge
     |-- azure-destroy.yml      Azure destroy session for transit edge
+    |-- azure-ipsec-verify.yml Validate IPSec tunnel state and optional ping from Azure VM
     |-- serve-hello-world.yml  Start local hello-world endpoint
     `-- stop-hello-world.yml   Stop local hello-world endpoint
 ```
@@ -97,7 +98,7 @@ Start with `terraform.tfvars.example`, then create a local ignored
 
 | Input | What To Decide |
 | --- | --- |
-| `connectivity_mode` | `interconnect` for primary private path or `without-interconnect` when interconnect is intentionally absent. |
+| `connectivity_mode` | `without-interconnect` for IPSec-first testing or `interconnect` for final dedicated-circuit cutover. |
 | `fastconnect_virtual_circuit_id` | FastConnect virtual circuit OCID for interconnect mode. |
 | `expressroute_circuit_id` | ExpressRoute circuit resource ID for interconnect mode. |
 | `azure_virtual_wan_id` | Azure Virtual WAN resource ID for contract tracking in interconnect mode. |
@@ -151,6 +152,18 @@ CONFIRM_AZURE_DESTROY=true ansible-playbook -i localhost, ansible/azure-destroy.
 ```
 
 For required Azure variables and parameters, review `azure/README.md`.
+
+IPSec validation and optional ping test from Azure VM:
+
+```bash
+cd blueprints/networking/azure-vwan-oci-drg-transit
+export OCI_AZURE_TRANSIT_IPSEC_CONNECTION_ID="ocid1.ipsecconnection.oc1..example"
+# Optional ping test variables:
+# export AZURE_TEST_VM_RESOURCE_GROUP="rg-test"
+# export AZURE_TEST_VM_NAME="vm-test"
+# export OCI_PING_TARGET_IP="10.58.10.10"
+ansible-playbook -i localhost, ansible/azure-ipsec-verify.yml
+```
 
 ## Architecture
 

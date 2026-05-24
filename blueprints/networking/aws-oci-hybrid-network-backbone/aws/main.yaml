@@ -12,6 +12,24 @@ Parameters:
   AllowedIngressCidr:
     Type: String
     Default: 10.0.0.0/8
+  EnableSiteToSiteVpn:
+    Type: String
+    Default: "true"
+    AllowedValues:
+      - "true"
+      - "false"
+  OciCustomerGatewayPublicIp:
+    Type: String
+    Default: 198.51.100.10
+  OciBackboneCidr:
+    Type: String
+    Default: 10.54.0.0/16
+  OciBgpAsn:
+    Type: Number
+    Default: 31898
+
+Conditions:
+  EnableSiteToSiteVpnCondition: !Equals [!Ref EnableSiteToSiteVpn, "true"]
 
 Resources:
   BackboneVpc:
@@ -108,6 +126,44 @@ Resources:
         - Key: Name
           Value: !Sub '${AWS::StackName}-tgw-attach-backbone'
 
+  OciCustomerGateway:
+    Type: AWS::EC2::CustomerGateway
+    Condition: EnableSiteToSiteVpnCondition
+    Properties:
+      Type: ipsec.1
+      IpAddress: !Ref OciCustomerGatewayPublicIp
+      BgpAsn: !Ref OciBgpAsn
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-cgw-oci-primary'
+
+  OciSiteToSiteVpnConnection:
+    Type: AWS::EC2::VPNConnection
+    Condition: EnableSiteToSiteVpnCondition
+    Properties:
+      Type: ipsec.1
+      TransitGatewayId: !Ref TransitGateway
+      CustomerGatewayId: !Ref OciCustomerGateway
+      StaticRoutesOnly: true
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-vpn-oci-primary'
+
+  OciVpnConnectionRoute:
+    Type: AWS::EC2::VPNConnectionRoute
+    Condition: EnableSiteToSiteVpnCondition
+    Properties:
+      VpnConnectionId: !Ref OciSiteToSiteVpnConnection
+      DestinationCidrBlock: !Ref OciBackboneCidr
+
+  BackboneToOciTransitRoute:
+    Type: AWS::EC2::Route
+    Condition: EnableSiteToSiteVpnCondition
+    Properties:
+      RouteTableId: !Ref BackboneRouteTable
+      DestinationCidrBlock: !Ref OciBackboneCidr
+      TransitGatewayId: !Ref TransitGateway
+
 Outputs:
   AwsTransitGatewayId:
     Description: Transit Gateway ID for OCI DRG attachment contracts.
@@ -127,3 +183,9 @@ Outputs:
   AwsBackboneSecurityGroupId:
     Description: AWS backbone security group ID.
     Value: !Ref BackboneSecurityGroup
+  AwsCustomerGatewayId:
+    Description: AWS Customer Gateway ID for OCI-primary Site-to-Site VPN.
+    Value: !If [EnableSiteToSiteVpnCondition, !Ref OciCustomerGateway, ""]
+  AwsVpnConnectionId:
+    Description: AWS VPN connection ID for OCI-primary Site-to-Site VPN.
+    Value: !If [EnableSiteToSiteVpnCondition, !Ref OciSiteToSiteVpnConnection, ""]

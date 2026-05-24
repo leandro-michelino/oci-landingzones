@@ -9,16 +9,17 @@ and customer notes without a diagramming tool.
 
 ## Deployment Purpose
 
-Defines an OCI-primary network transit pattern with explicit paths: Interconnect
-as preferred steady-state and IPSec/BGP as fallback. Azure Virtual WAN and
-Virtual Hub provide centralized Azure-side transit and route domains.
+Defines an OCI-primary network transit pattern with explicit paths: IPSec/BGP
+for rollout and validation, then Interconnect as the default path when enabled.
+Azure Virtual WAN and Virtual Hub provide centralized Azure-side transit and
+route domains.
 
 ## Architecture At A Glance
 
 | Item | Details |
 | --- | --- |
 | Boundary | `blueprints/networking/azure-vwan-oci-drg-transit` owns this deployment folder and its Terraform + Ansible runners. |
-| Purpose | Build OCI-primary DRG routing baseline and publish interconnect, route segmentation, DNS, and runbook contracts for Azure + OCI operations. |
+| Purpose | Build OCI-primary DRG routing baseline and publish IPSec-first, interconnect-default-when-present, route segmentation, DNS, and runbook contracts for Azure + OCI operations. |
 | Terraform components | `oci_core_vcn.primary`, `oci_core_route_table.primary`, `oci_core_security_list.primary_hub`, `oci_core_subnet.primary_hub`, `oci_core_drg.primary`, `oci_core_drg_attachment.primary`, `oci_core_cpe.azure`, `oci_core_ipsec.azure`, `terraform_data.interconnect_contract`, `terraform_data.ipsec_fallback_contract`, `terraform_data.transit_contract`, `terraform_data.dns_contract`, `terraform_data.runbook_contract` |
 | Primary architecture view | The Architecture diagram below shows OCI control-plane ownership, Azure vWAN/vHub assumptions, and route preference policy. |
 
@@ -53,7 +54,7 @@ Virtual Hub provide centralized Azure-side transit and route domains.
 |   |-- [VNet + subnet + NSG + route table]                                                                            |
 |   `-- [VPN gateway + local network gateway + connection] (optional fallback)                                        |
 |                                                                                                                      |
-| Path intent: OCI DRG primary hub <-> Azure vHub transit domains over interconnect, with controlled IPSec fallback  |
+| Path intent: OCI DRG primary hub <-> Azure vHub transit domains with IPSec-first rollout and optional interconnect cutover |
 +----------------------------------------------------------------------------------------------------------------------+
 ```
 
@@ -84,7 +85,7 @@ Virtual Hub provide centralized Azure-side transit and route domains.
 ## Traffic And Trust Boundaries
 
 - Control plane traffic runs from workstation or CI to OCI and Azure APIs.
-- Data plane prefers Interconnect and only shifts to IPSec fallback through operator-controlled runbook steps.
+- Data plane starts with IPSec for rollout tests and can shift to Interconnect as default when dedicated circuits are enabled.
 - Trust boundaries include OCI tenancy ownership, Azure subscription ownership, and partner interconnect ownership.
 - Circuit IDs, public IP endpoints, and OCIDs must stay in ignored local tfvars or secure pipeline variables.
 

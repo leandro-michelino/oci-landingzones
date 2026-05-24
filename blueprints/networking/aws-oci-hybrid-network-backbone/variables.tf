@@ -83,9 +83,9 @@ variable "oci_backbone_ingress_allowed_cidr" {
 }
 
 variable "connectivity_mode" {
-  description = "Connectivity mode between OCI and AWS: partner interconnect or without interconnect."
+  description = "Connectivity mode between OCI and AWS: without-interconnect (IPSec first) or interconnect."
   type        = string
-  default     = "interconnect"
+  default     = "without-interconnect"
 
   validation {
     condition     = contains(["interconnect", "without-interconnect"], var.connectivity_mode)

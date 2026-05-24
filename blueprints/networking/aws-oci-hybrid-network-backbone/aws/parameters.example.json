@@ -10,5 +10,21 @@
   {
     "ParameterKey": "AllowedIngressCidr",
     "ParameterValue": "10.0.0.0/8"
+  },
+  {
+    "ParameterKey": "EnableSiteToSiteVpn",
+    "ParameterValue": "true"
+  },
+  {
+    "ParameterKey": "OciCustomerGatewayPublicIp",
+    "ParameterValue": "198.51.100.10"
+  },
+  {
+    "ParameterKey": "OciBackboneCidr",
+    "ParameterValue": "10.54.0.0/16"
+  },
+  {
+    "ParameterKey": "OciBgpAsn",
+    "ParameterValue": "31898"
   }
 ]

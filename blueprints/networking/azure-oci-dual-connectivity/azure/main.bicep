@@ -10,6 +10,11 @@ param networkSecurityGroupName string = 'nsg-oci-azure-connectivity'
 
 param deployVpnGateway bool = true
 param vpnGatewayPublicIpName string = 'pip-oci-azure-connectivity-vng'
+param vpnGatewayPublicIpZones array = [
+  '1'
+  '2'
+  '3'
+]
 param vpnGatewayName string = 'vng-oci-azure-connectivity'
 param localNetworkGatewayName string = 'lng-oci-primary'
 param vpnConnectionName string = 'conn-azure-oci-fallback'
@@ -116,6 +121,7 @@ resource vpnGatewayPublicIp 'Microsoft.Network/publicIPAddresses@2024-05-01' = i
   name: vpnGatewayPublicIpName
   location: resourceGroup().location
   tags: tags
+  zones: vpnGatewayPublicIpZones
   sku: {
     name: 'Standard'
   }
@@ -134,8 +140,8 @@ resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2024-05-01' = if (
     enableBgp: true
     activeActive: false
     sku: {
-      name: 'VpnGw1'
-      tier: 'VpnGw1'
+      name: 'VpnGw1AZ'
+      tier: 'VpnGw1AZ'
     }
     ipConfigurations: [
       {

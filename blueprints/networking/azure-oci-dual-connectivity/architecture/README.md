@@ -10,14 +10,15 @@ and customer notes without a diagramming tool.
 ## Deployment Purpose
 
 Implements an OCI-primary network connectivity pattern with two explicit paths:
-Interconnect as the preferred steady-state path and IPSec/BGP as fallback.
+IPSec/BGP for first bring-up and validation, then optional Interconnect for
+final cutover.
 
 ## Architecture At A Glance
 
 | Item | Details |
 | --- | --- |
 | Boundary | `blueprints/networking/azure-oci-dual-connectivity` owns this deployment folder and its Terraform + Ansible runners. |
-| Purpose | Build OCI-primary DRG routing baseline and publish interconnect, IPSec/BGP fallback, DNS, and runbook contracts for Azure + OCI operations. |
+| Purpose | Build OCI-primary DRG routing baseline and publish IPSec-first, interconnect-optional, DNS, and runbook contracts for Azure + OCI operations. |
 | Terraform components | `oci_core_vcn.primary`, `oci_core_route_table.primary`, `oci_core_security_list.primary_hub`, `oci_core_subnet.primary_hub`, `oci_core_drg.primary`, `oci_core_drg_attachment.primary`, `oci_core_cpe.azure`, `oci_core_ipsec.azure`, `terraform_data.connectivity_contract`, `terraform_data.ipsec_fallback_contract`, `terraform_data.routing_contract`, `terraform_data.dns_contract`, `terraform_data.runbook_contract` |
 | Primary architecture view | The Architecture diagram below shows OCI control-plane ownership, Azure edge assumptions, and the route preference model. |
 
@@ -42,7 +43,7 @@ Interconnect as the preferred steady-state path and IPSec/BGP as fallback.
 |   `-- [terraform_data contracts + optional alerts topic]                                                             |
 |          |-- interconnect mode + ExpressRoute/FastConnect IDs                                                       |
 |          |-- IPSec/BGP fallback policy + approved Azure CIDRs                                                       |
-|          |-- routing preference: interconnect primary, fallback secondary                                            |
+|          |-- routing preference: ipsec-first rollout, interconnect-ready cutover                                     |
 |          `-- DNS + runbook hand-off metadata                                                                         |
 |                                                                                                                      |
 | {Azure secondary boundary}                                                                                            |
@@ -51,7 +52,7 @@ Interconnect as the preferred steady-state path and IPSec/BGP as fallback.
 |   |-- (VPN gateway public endpoint for fallback)                                                                     |
 |   `-- (fallback network edge from azure/main.bicep session)                                                          |
 |                                                                                                                      |
-| Path intent: OCI DRG primary hub <-> Azure CIDRs via interconnect, with controlled IPSec fallback and failback     |
+| Path intent: OCI DRG primary hub <-> Azure CIDRs via IPSec first, with optional Interconnect cutover and failback  |
 +----------------------------------------------------------------------------------------------------------------------+
 ```
 
@@ -65,7 +66,7 @@ Interconnect as the preferred steady-state path and IPSec/BGP as fallback.
 | Resource | `oci_core_cpe.azure`, `oci_core_ipsec.azure` | Optional IPSec fallback tunnel resources for Azure edge failover. |
 | Resource | `oci_ons_notification_topic.connectivity_alert` | Optional operations alerts topic. |
 | Resource | `terraform_data.oci_network_contract` | OCI network and DRG contract output. |
-| Resource | `terraform_data.connectivity_contract` | Interconnect primary-path contract output. |
+| Resource | `terraform_data.connectivity_contract` | IPSec-first and optional interconnect-mode contract output. |
 | Resource | `terraform_data.ipsec_fallback_contract` | Fallback IPSec/BGP contract output. |
 | Resource | `terraform_data.routing_contract` | CIDR exchange and path preference contract output. |
 | Resource | `terraform_data.dns_contract` | Optional DNS forwarding and probe contract output. |
@@ -82,7 +83,7 @@ Interconnect as the preferred steady-state path and IPSec/BGP as fallback.
 ## Traffic And Trust Boundaries
 
 - Control plane traffic runs from local workstation/CI to OCI and Azure APIs.
-- Data plane prefers Interconnect and only shifts to IPSec fallback through operator-controlled runbook steps.
+- Data plane starts with IPSec and can shift to Interconnect in final cutover using operator-controlled runbook steps.
 - Trust boundaries include OCI tenancy ownership, Azure subscription ownership, and partner interconnect ownership.
 - Connection IDs, public IP endpoints, and circuit identifiers must stay in ignored local tfvars or secure pipeline variables.
 

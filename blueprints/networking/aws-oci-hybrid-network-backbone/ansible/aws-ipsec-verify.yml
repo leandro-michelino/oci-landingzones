@@ -1,0 +1,179 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+---
+- name: Validate AWS + OCI IPSec posture and optional ping test
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    aws_stack_name: "{{ lookup('env', 'AWS_BACKBONE_STACK_NAME') | default('oci-aws-hybrid-backbone-dev', true) }}"
+    aws_region: "{{ lookup('env', 'AWS_BACKBONE_REGION') | default('eu-west-1', true) }}"
+    aws_vpn_connection_id: "{{ lookup('env', 'AWS_VPN_CONNECTION_ID') | default('', true) }}"
+    aws_test_instance_id: "{{ lookup('env', 'AWS_TEST_INSTANCE_ID') | default('', true) }}"
+    oci_ping_target_ip: "{{ lookup('env', 'OCI_PING_TARGET_IP') | default('', true) }}"
+    run_ping_test: >-
+      {{
+        aws_test_instance_id | trim | length > 0 and
+        oci_ping_target_ip | trim | length > 0
+      }}
+  tasks:
+    - name: Validate AWS CLI availability
+      ansible.builtin.command: aws --version
+      changed_when: false
+
+    - name: Validate OCI CLI availability
+      ansible.builtin.command: oci --version
+      changed_when: false
+
+    - name: Validate AWS login context
+      ansible.builtin.command:
+        argv:
+          - aws
+          - sts
+          - get-caller-identity
+          - --output
+          - json
+      changed_when: false
+
+    - name: Discover AWS VPN connection ID from CloudFormation output
+      ansible.builtin.command:
+        argv:
+          - aws
+          - cloudformation
+          - describe-stacks
+          - --stack-name
+          - "{{ aws_stack_name }}"
+          - --region
+          - "{{ aws_region }}"
+          - --query
+          - "Stacks[0].Outputs[?OutputKey=='AwsVpnConnectionId'].OutputValue | [0]"
+          - --output
+          - text
+      register: discovered_aws_vpn_connection_id
+      changed_when: false
+      when: aws_vpn_connection_id | trim | length == 0
+
+    - name: Resolve effective AWS VPN connection ID
+      ansible.builtin.set_fact:
+        aws_vpn_connection_id_effective: >-
+          {{
+            (
+              aws_vpn_connection_id
+              if (aws_vpn_connection_id | trim | length > 0)
+              else discovered_aws_vpn_connection_id.stdout
+            ) | trim
+          }}
+
+    - name: Validate effective AWS VPN connection ID
+      ansible.builtin.assert:
+        that:
+          - aws_vpn_connection_id_effective | length > 0
+          - aws_vpn_connection_id_effective != "None"
+          - aws_vpn_connection_id_effective != "null"
+        fail_msg: "Could not resolve AWS VPN connection ID. Set AWS_VPN_CONNECTION_ID or deploy aws/main.yaml with Site-to-Site VPN enabled."
+
+    - name: Query AWS VPN connection status
+      ansible.builtin.command:
+        argv:
+          - aws
+          - ec2
+          - describe-vpn-connections
+          - --region
+          - "{{ aws_region }}"
+          - --vpn-connection-ids
+          - "{{ aws_vpn_connection_id_effective }}"
+          - --query
+          - "VpnConnections[0].{State:State,Tunnel1Status:VgwTelemetry[0].Status,Tunnel2Status:VgwTelemetry[1].Status}"
+          - --output
+          - json
+      register: aws_vpn_status
+      changed_when: false
+
+    - name: Parse AWS VPN status
+      ansible.builtin.set_fact:
+        aws_vpn_status_parsed: "{{ aws_vpn_status.stdout | from_json }}"
+
+    - name: Ensure AWS VPN connection exists and is active
+      ansible.builtin.assert:
+        that:
+          - aws_vpn_status_parsed.State == "available"
+        fail_msg: "AWS VPN connection is not available. Review AWS and OCI tunnel configuration before traffic tests."
+
+    - name: Run optional ping test from AWS test instance to OCI target IP through SSM
+      ansible.builtin.command:
+        argv:
+          - aws
+          - ssm
+          - send-command
+          - --region
+          - "{{ aws_region }}"
+          - --instance-ids
+          - "{{ aws_test_instance_id }}"
+          - --document-name
+          - AWS-RunShellScript
+          - --comment
+          - "Ping OCI target over IPSec path"
+          - --parameters
+          - "commands=ping -c 4 {{ oci_ping_target_ip }}"
+          - --query
+          - "Command.CommandId"
+          - --output
+          - text
+      register: aws_ssm_ping_command
+      changed_when: false
+      when: run_ping_test
+
+    - name: Wait for AWS SSM ping command completion
+      ansible.builtin.command:
+        argv:
+          - aws
+          - ssm
+          - wait
+          - command-executed
+          - --region
+          - "{{ aws_region }}"
+          - --command-id
+          - "{{ aws_ssm_ping_command.stdout | trim }}"
+          - --instance-id
+          - "{{ aws_test_instance_id }}"
+      changed_when: false
+      when: run_ping_test
+
+    - name: Fetch AWS SSM ping command output
+      ansible.builtin.command:
+        argv:
+          - aws
+          - ssm
+          - get-command-invocation
+          - --region
+          - "{{ aws_region }}"
+          - --command-id
+          - "{{ aws_ssm_ping_command.stdout | trim }}"
+          - --instance-id
+          - "{{ aws_test_instance_id }}"
+          - --query
+          - "StandardOutputContent"
+          - --output
+          - text
+      register: aws_ssm_ping_output
+      changed_when: false
+      when: run_ping_test
+
+    - name: Explain how to enable optional ping test
+      ansible.builtin.debug:
+        msg:
+          - "Set AWS_TEST_INSTANCE_ID and OCI_PING_TARGET_IP to enable a real ping test through SSM."
+      when: not run_ping_test
+
+    - name: Summarize IPSec validation
+      ansible.builtin.debug:
+        msg:
+          - "AWS VPN connection status: {{ aws_vpn_status_parsed.State }}."
+          - "AWS tunnel 1: {{ aws_vpn_status_parsed.Tunnel1Status | default('n/a') }}, tunnel 2: {{ aws_vpn_status_parsed.Tunnel2Status | default('n/a') }}."
+          - >-
+            {{
+              run_ping_test
+              | ternary(
+                'Ping test executed from AWS test instance. Output: ' ~ (aws_ssm_ping_output.stdout | default('no output')),
+                'Ping test skipped because test instance variables were not provided.'
+              )
+            }}

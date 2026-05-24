@@ -23,7 +23,7 @@ locals {
     expressroute_circuit_id        = var.expressroute_circuit_id
     azure_virtual_wan_id           = var.azure_virtual_wan_id
     azure_virtual_hub_id           = var.azure_virtual_hub_id
-    preferred_path                 = "interconnect"
+    preferred_path                 = var.connectivity_mode == "interconnect" ? "interconnect" : "ipsec-bgp"
     fallback_path                  = var.enable_ipsec_fallback ? "ipsec-bgp" : "none"
   }
 

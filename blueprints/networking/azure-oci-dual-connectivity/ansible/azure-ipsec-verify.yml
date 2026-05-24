@@ -1,0 +1,123 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+---
+- name: Validate Azure + OCI IPSec posture and optional ping test
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    azure_resource_group: "{{ lookup('env', 'AZURE_CONNECTIVITY_RESOURCE_GROUP') | default('rg-oci-azure-connectivity-dev', true) }}"
+    azure_vpn_connection_name: "{{ lookup('env', 'AZURE_CONNECTIVITY_VPN_CONNECTION_NAME') | default('conn-azure-oci-fallback-dev', true) }}"
+    oci_ipsec_connection_id: "{{ lookup('env', 'OCI_AZURE_IPSEC_CONNECTION_ID') | default('', true) }}"
+    azure_test_vm_resource_group: "{{ lookup('env', 'AZURE_TEST_VM_RESOURCE_GROUP') | default('', true) }}"
+    azure_test_vm_name: "{{ lookup('env', 'AZURE_TEST_VM_NAME') | default('', true) }}"
+    oci_ping_target_ip: "{{ lookup('env', 'OCI_PING_TARGET_IP') | default('', true) }}"
+    run_ping_test: >-
+      {{
+        azure_test_vm_resource_group | trim | length > 0 and
+        azure_test_vm_name | trim | length > 0 and
+        oci_ping_target_ip | trim | length > 0
+      }}
+  tasks:
+    - name: Validate required OCI IPSec connection OCID
+      ansible.builtin.assert:
+        that:
+          - oci_ipsec_connection_id | trim | length > 0
+        fail_msg: "Set OCI_AZURE_IPSEC_CONNECTION_ID before running azure-ipsec-verify.yml."
+
+    - name: Validate Azure CLI availability
+      ansible.builtin.command: az version
+      changed_when: false
+
+    - name: Validate OCI CLI availability
+      ansible.builtin.command: oci --version
+      changed_when: false
+
+    - name: Validate Azure login context
+      ansible.builtin.command: az account show
+      changed_when: false
+
+    - name: Validate OCI IPSec status from OCI primary side
+      ansible.builtin.command:
+        argv:
+          - oci
+          - network
+          - ip-sec-connection
+          - get-status
+          - --ipsc-id
+          - "{{ oci_ipsec_connection_id }}"
+          - --output
+          - json
+      register: oci_ipsec_status
+      changed_when: false
+
+    - name: Query Azure VPN connection status
+      ansible.builtin.command:
+        argv:
+          - az
+          - network
+          - vpn-connection
+          - show
+          - --resource-group
+          - "{{ azure_resource_group }}"
+          - --name
+          - "{{ azure_vpn_connection_name }}"
+          - --query
+          - "{provisioningState:provisioningState,connectionStatus:connectionStatus,ingressBytesTransferred:ingressBytesTransferred,egressBytesTransferred:egressBytesTransferred}"
+          - --output
+          - json
+      register: azure_vpn_status
+      changed_when: false
+
+    - name: Parse Azure VPN status
+      ansible.builtin.set_fact:
+        azure_vpn_status_parsed: "{{ azure_vpn_status.stdout | from_json }}"
+
+    - name: Ensure Azure VPN connection exists and is not disconnected
+      ansible.builtin.assert:
+        that:
+          - azure_vpn_status_parsed.provisioningState == "Succeeded"
+          - azure_vpn_status_parsed.connectionStatus != "NotConnected"
+        fail_msg: "Azure VPN connection is not healthy. Review Azure and OCI tunnel configuration before traffic tests."
+
+    - name: Optional ping test from Azure test VM to OCI target IP
+      ansible.builtin.command:
+        argv:
+          - az
+          - vm
+          - run-command
+          - invoke
+          - --resource-group
+          - "{{ azure_test_vm_resource_group }}"
+          - --name
+          - "{{ azure_test_vm_name }}"
+          - --command-id
+          - RunShellScript
+          - --scripts
+          - "ping -c 4 {{ oci_ping_target_ip }}"
+          - --query
+          - "value[0].message"
+          - --output
+          - tsv
+      register: azure_ping_result
+      changed_when: false
+      when: run_ping_test
+
+    - name: Explain how to enable optional ping test
+      ansible.builtin.debug:
+        msg:
+          - "Set AZURE_TEST_VM_RESOURCE_GROUP, AZURE_TEST_VM_NAME, and OCI_PING_TARGET_IP to enable a real ping test."
+      when: not run_ping_test
+
+    - name: Summarize IPSec validation
+      ansible.builtin.debug:
+        msg:
+          - "OCI IPSec status queried successfully for {{ oci_ipsec_connection_id }}."
+          - "Azure VPN connection status: {{ azure_vpn_status_parsed.connectionStatus }}."
+          - >-
+            {{
+              run_ping_test
+              | ternary(
+                'Ping test executed from Azure test VM. Output: ' ~ (azure_ping_result.stdout | default('no output')),
+                'Ping test skipped because test VM variables were not provided.'
+              )
+            }}

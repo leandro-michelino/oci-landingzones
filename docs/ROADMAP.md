@@ -515,7 +515,7 @@ network, operations, and AI services span both clouds.
 - AI gateway: Azure OpenAI + OCI Generative AI routing by region, cost, or data residency.
 - Golden landing zone: Single Terraform framework with provider modules for Azure + OCI foundations.
 - Oracle Database@Azure app split: `blueprints/data-platform/oracle-database-at-azure-app-split/` with app tier in Azure and OCI-aligned Oracle data controls.
-- Available: Dual connectivity hardening in `blueprints/networking/azure-oci-dual-connectivity/` with Interconnect as primary and IPSec/BGP fallback plus health probes and failback workflow.
+- Available: Dual connectivity hardening in `blueprints/networking/azure-oci-dual-connectivity/` with Interconnect as default when present, IPSec/BGP backup, health probes, failback workflow, and low-cost test mode without Interconnect.
 - Available: vWAN transit backbone in `blueprints/networking/azure-vwan-oci-drg-transit/` with OCI-primary DRG transit, route segmentation, and inspection path controls.
 - DR drill automation: `blueprints/disaster-recovery/azure-oci-dr-drill-automation/` with rehearsal evidence capture, RTO/RPO scoring, and operator approval gates.
 - Arc-enabled OKE governance: `blueprints/extensions/azure-arc-oke-governance/` for central fleet policy and inventory visibility while keeping OCI OKE as primary runtime.
@@ -556,7 +556,7 @@ group-based RBAC mapping with auditable least-privilege boundaries.
 | --- | --- |
 | Folder | `blueprints/networking/azure-vwan-oci-drg-transit/` |
 | Depends on | Core Landing Zone; hub-spoke networking on OCI; Azure hub or vWAN |
-| Status | Available with OCI-primary DRG transit posture, Interconnect-first path policy, and optional IPSec/BGP fallback contract. |
+| Status | Available with OCI-primary DRG transit posture, Interconnect default path when present, and IPSec/BGP backup contract with `without-interconnect` test mode. |
 
 **Why this exists.**
 Multicloud workloads need deterministic private connectivity and controlled
@@ -578,7 +578,7 @@ partner interconnect and/or IPSec backup.
 | --- | --- |
 | Folder | `blueprints/networking/azure-oci-dual-connectivity/` |
 | Depends on | Core Landing Zone; OCI DRG-ready network posture; Azure networking subscription with ExpressRoute and VPN ownership |
-| Status | Available with OCI-primary routing posture, Interconnect primary path contract, and optional IPSec/BGP fallback contract. |
+| Status | Available with OCI-primary routing posture, Interconnect default path contract when present, and IPSec/BGP backup contract. |
 
 **Why this exists.**
 Teams running OCI + Azure need deterministic behavior when private circuits

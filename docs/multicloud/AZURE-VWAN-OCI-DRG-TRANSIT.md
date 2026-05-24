@@ -19,8 +19,8 @@ organize Azure-side route domains.
 | --- | --- |
 | Primary control plane | OCI DRG and OCI route policy remain primary. |
 | Azure transit domain | Azure Virtual WAN plus Virtual Hub route domain. |
-| Primary path | Interconnect (ExpressRoute + FastConnect). |
-| Fallback path | IPSec + BGP with operator-controlled failover and failback. |
+| Default path when present | Interconnect (ExpressRoute + FastConnect). |
+| Test and backup path | IPSec + BGP with operator-controlled failover and failback. |
 | Route governance | Segment metadata for prod, nonprod, and management lanes. |
 | DNS and probes | DNS contract plus probe FQDN for health validation and cutover checks. |
 
@@ -42,6 +42,7 @@ Azure vWAN + vHub
 ## Operational Notes
 
 - Keep OCI as primary (`oci_is_primary=true`) for this variant.
+- Use `without-interconnect` for rollout tests where dedicated circuits are intentionally not provisioned.
 - For `connectivity_mode=interconnect`, provide FastConnect and ExpressRoute IDs.
 - Keep vWAN and vHub IDs in local ignored tfvars or secure pipeline variables.
 - Use blueprint outputs as the contract source for NOC and SRE handoff.

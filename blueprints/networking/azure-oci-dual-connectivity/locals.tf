@@ -21,7 +21,7 @@ locals {
     oci_is_primary                 = var.oci_is_primary
     fastconnect_virtual_circuit_id = var.fastconnect_virtual_circuit_id
     expressroute_circuit_id        = var.expressroute_circuit_id
-    preferred_path                 = "interconnect"
+    preferred_path                 = var.connectivity_mode == "interconnect" ? "interconnect" : "ipsec-bgp"
     fallback_path                  = var.enable_ipsec_fallback ? "ipsec-bgp" : "none"
   }
 
