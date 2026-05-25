@@ -13,7 +13,9 @@ Build OCI landing zones fast, with clear architecture and real deploy flows.
 
 This repo is a practical toolkit: Terraform blueprints, reusable modules, and
 local Ansible wrappers for plan/apply/destroy sessions. It is opinionated,
-reviewable, and built for real platform work.
+reviewable, and built for real platform work. The thinking is intentionally
+plain: pick the customer outcome, inspect the architecture, run the plan, then
+make the deployment yours.
 
 ## Heads-Up
 
@@ -43,6 +45,7 @@ terraform plan
 | A full OCI baseline | [Core Landing Zone](blueprints/core/) |
 | CIS controls | [CIS Level 1](blueprints/cis/level1/) or [CIS Level 2](blueprints/cis/level2/) |
 | Kubernetes platform | [OKE Extension](blueprints/extensions/oke/) |
+| Network inspection with FortiGate HA | [Hub-Spoke With FortiGate HA](blueprints/networking/hub-spoke-with-fortigate-ha/) |
 | DR pattern | [Full Stack DR](blueprints/disaster-recovery/fsdr/) |
 | Data platform foundations | [Autonomous DB](blueprints/data-platform/autonomous-database/), [PostgreSQL](blueprints/data-platform/postgresql/), [MySQL HeatWave](blueprints/data-platform/mysql-heatwave/), [OCI NoSQL](blueprints/data-platform/nosql/), [OCI + AWS MySQL HeatWave DR](blueprints/data-platform/oci-aws-mysql-heatwave-dr/) |
 | AI workloads | [GenAI Private](blueprints/ai/genai-private/), [GenAI Gateway](blueprints/ai/genai-gateway/), [AI Agents](blueprints/ai/agents/) |
@@ -219,5 +222,5 @@ Maintainer-focused validation details live in [CONTRIBUTING.md](CONTRIBUTING.md)
 - Keep every blueprint deployable and reviewable
 - Keep Architecture docs aligned with Terraform
 
-If you want, open an issue or PR with the customer outcome you are targeting
-and we can shape a blueprint around it.
+Issues and PRs work best when they describe the customer outcome, the operating
+constraints, and the blueprint shape you want to land.

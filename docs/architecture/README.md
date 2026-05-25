@@ -109,7 +109,7 @@ terraform plan or ansible/plan.yml
 
 ## Blueprint Architecture Inventory
 
-The current catalog has 76 deployable blueprint entry points across 13
+The current catalog has 77 deployable blueprint entry points across 13
 families. Each entry point owns its local Architecture in
 `architecture/README.md`.
 
@@ -173,6 +173,7 @@ families. Each entry point owns its local Architecture in
 | networking | [Hub-Spoke With Dual Region DR](../../blueprints/networking/hub-spoke-with-dual-region-dr/) | [Architecture](../../blueprints/networking/hub-spoke-with-dual-region-dr/architecture/) |
 | networking | [Hub-Spoke With Bastion Jump Host](../../blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/) | [Architecture](../../blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/architecture/) |
 | networking | [Hub-Spoke With FastConnect Virtual Circuit](../../blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc/) | [Architecture](../../blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc/architecture/) |
+| networking | [Hub-Spoke With FortiGate HA](../../blueprints/networking/hub-spoke-with-fortigate-ha/) | [Architecture](../../blueprints/networking/hub-spoke-with-fortigate-ha/architecture/) |
 | networking | [Hub-Spoke With IPSec VPN](../../blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn/) | [Architecture](../../blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn/architecture/) |
 | networking | [Hub-Spoke With Network Appliance](../../blueprints/networking/hub-spoke-with-hub-vcn-net-appliance/) | [Architecture](../../blueprints/networking/hub-spoke-with-hub-vcn-net-appliance/architecture/) |
 | networking | [Hub-Spoke With Network Firewall](../../blueprints/networking/hub-spoke-with-hub-vcn-net-firewall/) | [Architecture](../../blueprints/networking/hub-spoke-with-hub-vcn-net-firewall/architecture/) |

@@ -32,6 +32,7 @@ no Oracle-documented BYOL path -> do not add a BYOL variable
 | Oracle Integration Cloud | BYOL boolean on integration instance | `blueprints/extensions/oic` `is_byol` | Wired and documented. |
 | OCI Compute Windows VMs | OCI-provided or Microsoft BYOL licensing config where supported | `modules/networking/net-appliance` per-appliance `licensing_configs` | Wired for NVA compute use cases. |
 | OCI Secure Desktops Windows 10/11 | Customer BYOL acknowledgement and required pool tag | `blueprints/industry/secure-desktops` `windows_10_11_byol_acknowledged` | Wired with validation and tag injection. |
+| Fortinet FortiGate-VM on OCI | Marketplace, BYOL, or vendor-supported image workflow | `blueprints/networking/hub-spoke-with-fortigate-ha` `fortigate_image_id` | Documented; no generic BYOL flag. |
 | Red Hat Enterprise Linux on OCI Compute | BYOI/BYOS image and subscription workflow | NVA and future compute blueprints use customer image OCIDs | Documented; no generic Terraform license enum. |
 | Exadata Database Service | BYOL applies at VM cluster/database service layer | `blueprints/extensions/exadata` creates infrastructure only | Documented as follow-on DB platform decision. |
 | Base Database Service | BYOL applies to DB system/database service resources | No dedicated Base DB blueprint yet | Track for future database blueprint. |
@@ -101,6 +102,16 @@ Marketplace image documents another model. For customer-owned RHEL images,
 capture the approved image OCID, support contract, and patching owner in local
 tfvars or deployment notes. Do not use a generic BYOL flag for RHEL.
 
+### Fortinet FortiGate-VM
+
+Treat FortiGate as an image, subscription, and support-ownership decision. The
+FortiGate HA blueprint accepts `fortigate_image_id` after the operator accepts
+the Marketplace terms or provides an approved custom image OCID. Keep license
+type, FortiCare/FortiGuard ownership, bootstrap data, and FortiManager
+registration details outside committed tfvars. Do not add a generic BYOL flag
+because the OCI Terraform surface creates compute instances from the selected
+image; it does not own the Fortinet commercial entitlement.
+
 ### Exadata And Base Database
 
 The current Exadata extension creates Exadata Cloud Infrastructure only. BYOL
@@ -115,6 +126,10 @@ database deployment blueprints.
   `https://docs.oracle.com/en-us/iaas/Content/Compute/References/bring-your-own-license.htm`
 - OCI custom Linux image import:
   `https://docs.oracle.com/iaas/Content/Compute/Tasks/importingcustomimagelinux.htm`
+- Fortinet FortiGate-VM for OCI licensing:
+  `https://docs.fortinet.com/document/fortigate-public-cloud/latest/oci-administration-guide/515229/licensing`
+- Fortinet FortiGate-VM HA on OCI:
+  `https://docs.fortinet.com/document/fortigate-public-cloud/latest/oci-administration-guide/138784/ha-for-fortigate-vm-on-oci`
 - Autonomous Database license selection:
   `https://docs.oracle.com/en-us/iaas/autonomous-database-serverless/doc/autonomous-choose-license.html`
 - Base Database licenses:

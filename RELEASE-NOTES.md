@@ -50,6 +50,9 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   scaffolding, index generation, and Markdown link checks.
 - Azure/AWS cloud deployment simulation helper for provider wrapper syntax,
   template, and parameter wiring checks without cloud-side changes.
+- FortiGate HA hub-spoke networking blueprint with new VCN/subnet creation,
+  active-passive FortiGate nodes, secondary untrust/trust/HA VNICs, optional
+  floating private IPs, and optional SDN connector IAM failover policy.
 
 ### Changed
 
@@ -60,7 +63,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Normalized blueprint `local.name_prefix` values to the standard
   `org-environment-region_key` OCI naming prefix and added an automated naming
   convention guard to the repository contract checks.
-- Updated the repository documentation inventory to reflect 65 deployable
+- Updated the repository documentation inventory to reflect 77 deployable
   blueprints across 13 families and linked each blueprint to its local Architecture
   architecture review file.
 - Added license-model validation for Autonomous Database and Oracle Analytics

@@ -1,0 +1,13 @@
+---
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+- name: Destroy hub-spoke FortiGate HA blueprint
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    terraform_action: destroy
+    terraform_working_dir: "{{ playbook_dir }}/.."
+    terraform_require_confirmation: true
+    terraform_confirmation_env: CONFIRM_DESTROY
+  roles:
+    - role: terraform_runner

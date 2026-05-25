@@ -1,0 +1,100 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "eu-frankfurt-1"
+home_region       = "eu-frankfurt-1"
+
+org         = "acme"
+environment = "dev"
+region_key  = "fra"
+defined_tags = {
+  "acme-tags.Environment" = "dev"
+  "acme-tags.ManagedBy"   = "terraform"
+  "acme-tags.Owner"       = "platform-team"
+  "acme-tags.Project"     = "landingzone"
+}
+
+freeform_tags = {}
+
+# Accept the FortiGate marketplace terms in the target region, then provide the
+# image OCID. Keep creation disabled until routing, licensing, bootstrap, and
+# failover ownership are reviewed.
+enable_fortigate_ha = false
+fortigate_image_id  = "ocid1.image.oc1.eu-frankfurt-1.example"
+
+fortigate_nodes = {
+  active = {
+    availability_domain = "example:EU-FRANKFURT-1-AD-1"
+    shape               = "VM.Standard.E4.Flex"
+    ocpus               = 4
+    memory_in_gbs       = 16
+    interfaces = {
+      mgmt = {
+        private_ip       = "10.0.1.10"
+        hostname_label   = "fgtamgmt"
+        assign_public_ip = true
+      }
+      untrust = {
+        private_ip       = "10.0.0.10"
+        hostname_label   = "fgtauntrust"
+        assign_public_ip = false
+      }
+      trust = {
+        private_ip     = "10.0.2.10"
+        hostname_label = "fgtatrust"
+      }
+      ha_sync = {
+        private_ip     = "10.0.3.10"
+        hostname_label = "fgtaha"
+      }
+    }
+  }
+  standby = {
+    availability_domain = "example:EU-FRANKFURT-1-AD-2"
+    shape               = "VM.Standard.E4.Flex"
+    ocpus               = 4
+    memory_in_gbs       = 16
+    interfaces = {
+      mgmt = {
+        private_ip       = "10.0.1.11"
+        hostname_label   = "fgtbmgmt"
+        assign_public_ip = true
+      }
+      untrust = {
+        private_ip       = "10.0.0.11"
+        hostname_label   = "fgtbuntrust"
+        assign_public_ip = false
+      }
+      trust = {
+        private_ip     = "10.0.2.11"
+        hostname_label = "fgtbtrust"
+      }
+      ha_sync = {
+        private_ip     = "10.0.3.11"
+        hostname_label = "fgtbha"
+      }
+    }
+  }
+}
+
+# Optional reserved route-target or floating private IPs for FortiGate failover.
+enable_fortigate_floating_ips = false
+fortigate_floating_ips = {
+  untrust = {
+    subnet_key      = "dmz"
+    active_node_key = "active"
+    interface_name  = "untrust"
+    ip_address      = "10.0.0.20"
+    hostname_label  = "fgtuntrust"
+  }
+  trust = {
+    subnet_key      = "trust"
+    active_node_key = "active"
+    interface_name  = "trust"
+    ip_address      = "10.0.2.20"
+    hostname_label  = "fgttrust"
+  }
+}
+
+# Optional OCI API permissions for FortiGate HA failover automation.
+enable_fortigate_instance_principal_policy = false

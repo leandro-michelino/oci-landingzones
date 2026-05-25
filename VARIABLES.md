@@ -67,6 +67,12 @@ READMEs may define additional variables for local behavior.
 | `provider_service_key_name` | `string` | For FastConnect | Provider service key/name supplied by the FastConnect partner. |
 | `enable_network_firewall` | `bool` | For firewall hub-spoke | Creates OCI Network Firewall and policy resources. Disabled by default for low-cost smoke tests. |
 | `firewall_subnet_key` | `string` | For firewall hub-spoke | Hub subnet key where OCI Network Firewall is placed. |
+| `enable_fortigate_ha` | `bool` | For FortiGate HA | Creates the FortiGate active-passive HA pair when image, AD, interface, and licensing decisions are ready. Disabled by default. |
+| `fortigate_image_id` | `string` | For FortiGate HA | FortiGate Marketplace or custom image OCID after subscription terms and support ownership are confirmed. |
+| `fortigate_nodes` | `map(object)` | For FortiGate HA | Two FortiGate nodes keyed by role, with AD, shape, optional image override, bootstrap data, and management/untrust/trust/HA interface settings. |
+| `enable_fortigate_floating_ips` | `bool` | For FortiGate HA | Creates optional private IP route targets for FortiGate failover designs. Disabled by default. |
+| `fortigate_floating_ips` | `map(object)` | For FortiGate HA | Secondary or reserved private IP definitions keyed by purpose, including subnet, optional active node, interface name, and IP address. |
+| `enable_fortigate_instance_principal_policy` | `bool` | For FortiGate HA | Creates the dynamic group and OCI policy used by Fortinet SDN connector failover automation. Disabled by default. |
 | `enable_bastion` | `bool` | For Bastion hub-spoke | Creates OCI Bastion in the hub. Disabled by default. |
 | `client_cidr_block_allow_list` | `list(string)` | For Bastion hub-spoke | Client CIDR blocks allowed to open bastion sessions. Required when Bastion is enabled; world-open CIDRs are rejected. |
 | `enable_private_dns` | `bool` | For DNS blueprints | Creates private DNS view and zones. |

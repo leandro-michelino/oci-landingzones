@@ -1,0 +1,11 @@
+---
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+- name: Plan hub-spoke FortiGate HA blueprint
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    terraform_action: plan
+    terraform_working_dir: "{{ playbook_dir }}/.."
+  roles:
+    - role: terraform_runner
