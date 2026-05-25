@@ -1,0 +1,66 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+tenancy_ocid       = "ocid1.tenancy.oc1..example"
+current_user_ocid  = "ocid1.user.oc1..example"
+region             = "af-johannesburg-1"
+home_region        = "af-johannesburg-1"
+oci_config_profile = "DEFAULT"
+
+org         = "acme"
+environment = "prod"
+region_key  = "jnb"
+
+# OCI hub-spoke CIDRs advertised toward Azure vWAN.
+hub_vcn_cidr_block = "10.0.0.0/16"
+spoke_vcns = {
+  app1 = {
+    cidr_block = "10.1.0.0/16"
+    dns_label  = "appone"
+    subnets = {
+      web = {
+        cidr_block = "10.1.0.0/24"
+        dns_label  = "web"
+      }
+      app = {
+        cidr_block = "10.1.1.0/24"
+        dns_label  = "app"
+      }
+      db = {
+        cidr_block = "10.1.2.0/24"
+        dns_label  = "db"
+      }
+    }
+  }
+}
+
+# ExpressRoute + FastConnect is the primary path. Enable after provider values are real.
+enable_fastconnect        = false
+customer_bgp_asn         = 65515
+# provider_service_id       = "ocid1.providerservice.oc1..example"
+# provider_service_key_name = "<provider-service-key>"
+# expressroute_circuit_id         = "/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Network/expressRouteCircuits/<name>"
+# expressroute_circuit_peering_id = "/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Network/expressRouteCircuits/<name>/peerings/AzurePrivatePeering"
+
+# Optional IPSec backup path.
+enable_ipsec       = false
+# cpe_ip_address   = "203.0.113.10"
+# remote_cloud_cidr_blocks = ["10.88.0.0/16"]
+
+# Azure vWAN hand-off metadata. Populate IDs after Azure apply, or use existing IDs.
+azure_virtual_hub_region         = "westeurope"
+azure_virtual_hub_address_prefix = "10.88.255.0/24"
+azure_route_table_name           = "rt-vhub-oci-transit"
+# azure_virtual_wan_id           = "/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Network/virtualWans/<name>"
+# azure_virtual_hub_id           = "/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Network/virtualHubs/<name>"
+# azure_expressroute_gateway_id  = "/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Network/expressRouteGateways/<name>"
+
+azure_vnet_peerings = {
+  app1 = {
+    cidr_blocks          = ["10.88.10.0/24"]
+    connected_spoke_keys = ["app1"]
+    # vnet_id            = "/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Network/virtualNetworks/vnet-oci-spoke-app1"
+    # vhub_connection_id = "/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Network/virtualHubs/<vhub>/hubVirtualNetworkConnections/<connection>"
+  }
+}
+
+# Enable after ExpressRoute IDs and Azure VNet mappings are known.
+enable_route_contract_validation = false

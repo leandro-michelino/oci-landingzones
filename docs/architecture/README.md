@@ -169,6 +169,7 @@ families. Each entry point owns its local Architecture in
 | networking | [AWS + OCI Hybrid Network Backbone](../../blueprints/networking/aws-oci-hybrid-network-backbone/) | [Architecture](../../blueprints/networking/aws-oci-hybrid-network-backbone/architecture/) |
 | networking | [Azure + OCI Dual Connectivity Hardening](../../blueprints/networking/azure-oci-dual-connectivity/) | [Architecture](../../blueprints/networking/azure-oci-dual-connectivity/architecture/) |
 | networking | [Azure vWAN + OCI DRG Transit](../../blueprints/networking/azure-vwan-oci-drg-transit/) | [Architecture](../../blueprints/networking/azure-vwan-oci-drg-transit/architecture/) |
+| networking | [Hub-Spoke With Azure vWAN ExpressRoute](../../blueprints/networking/hub-spoke-with-azure-vwan-expressroute/) | [Architecture](../../blueprints/networking/hub-spoke-with-azure-vwan-expressroute/architecture/) |
 | networking | [Hub-Spoke With DRG And Three-Tier VCNs](../../blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/) | [Architecture](../../blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/architecture/) |
 | networking | [Hub-Spoke With Dual Region DR](../../blueprints/networking/hub-spoke-with-dual-region-dr/) | [Architecture](../../blueprints/networking/hub-spoke-with-dual-region-dr/architecture/) |
 | networking | [Hub-Spoke With Bastion Jump Host](../../blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/) | [Architecture](../../blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/architecture/) |

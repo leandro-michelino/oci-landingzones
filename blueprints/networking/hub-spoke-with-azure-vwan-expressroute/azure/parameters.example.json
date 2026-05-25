@@ -1,0 +1,65 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualWanName": {
+      "value": "vwan-oci-hub-spoke-dev"
+    },
+    "virtualHubName": {
+      "value": "vhub-oci-hub-spoke-dev"
+    },
+    "virtualHubAddressPrefix": {
+      "value": "10.88.255.0/24"
+    },
+    "routeTableName": {
+      "value": "rt-vhub-oci-transit-dev"
+    },
+    "deployExpressRouteGateway": {
+      "value": true
+    },
+    "expressRouteGatewayName": {
+      "value": "ergw-oci-hub-spoke-dev"
+    },
+    "expressRouteGatewayScaleUnits": {
+      "value": 1
+    },
+    "expressRouteConnectionName": {
+      "value": "conn-ergw-to-oci-fastconnect-dev"
+    },
+    "expressRouteCircuitPeeringId": {
+      "value": ""
+    },
+    "expressRouteAuthorizationKey": {
+      "value": ""
+    },
+    "ociAddressPrefixes": {
+      "value": [
+        "10.0.0.0/16",
+        "10.1.0.0/16"
+      ]
+    },
+    "spokeVnets": {
+      "value": [
+        {
+          "key": "app1",
+          "name": "vnet-oci-spoke-app1-dev",
+          "addressPrefixes": [
+            "10.88.10.0/24"
+          ],
+          "subnetName": "snet-workload",
+          "subnetPrefix": "10.88.10.0/24",
+          "networkSecurityGroupName": "nsg-oci-spoke-app1-dev",
+          "connectionName": "conn-vhub-to-app1-dev",
+          "connectedOciSpokes": [
+            "app1"
+          ]
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Blueprint": "hub-spoke-with-azure-vwan-expressroute"
+      }
+    }
+  }
+}

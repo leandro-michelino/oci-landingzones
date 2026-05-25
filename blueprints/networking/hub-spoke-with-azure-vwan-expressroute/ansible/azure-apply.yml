@@ -1,0 +1,17 @@
+# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
+---
+- name: Azure apply session for Hub-Spoke With Azure vWAN ExpressRoute
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    azure_action: apply
+    azure_resource_group: "{{ lookup('env', 'AZURE_HUB_SPOKE_VWAN_RESOURCE_GROUP') | default('rg-oci-hub-spoke-vwan-dev', true) }}"
+    azure_location: "{{ lookup('env', 'AZURE_HUB_SPOKE_VWAN_LOCATION') | default('westeurope', true) }}"
+    azure_deployment_name: "{{ lookup('env', 'AZURE_HUB_SPOKE_VWAN_DEPLOYMENT_NAME') | default('oci-hub-spoke-vwan-apply', true) }}"
+    azure_template_file: "{{ playbook_dir }}/../azure/main.bicep"
+    azure_parameters_file: "{{ lookup('env', 'AZURE_HUB_SPOKE_VWAN_PARAMETERS_FILE') | default(playbook_dir ~ '/../azure/parameters.example.json', true) }}"
+  tasks:
+    - name: Run shared Azure session runner
+      ansible.builtin.import_role:
+        name: ../../../../ansible/roles/azure_deployment_runner
