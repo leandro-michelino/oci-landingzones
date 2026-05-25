@@ -1,5 +1,7 @@
 # Hub-Spoke With FortiGate HA
 
+![FortiGate HA hub-spoke architecture](fortigateha.jpg)
+
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 Use this page as the operator guide for
