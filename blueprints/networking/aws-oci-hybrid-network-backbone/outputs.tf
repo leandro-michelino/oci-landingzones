@@ -15,11 +15,11 @@ output "resource_ids" {
     oci_network_contract_id       = terraform_data.oci_network_contract.id
     connectivity_contract_id      = terraform_data.connectivity_contract.id
     routing_contract_id           = terraform_data.routing_contract.id
-    oci_backbone_vcn_id           = try(oci_core_vcn.backbone[0].id, null)
+    oci_backbone_vcn_id           = local.effective_backbone_vcn_id
     oci_backbone_subnet_id        = try(oci_core_subnet.backbone[0].id, null)
     oci_backbone_route_table_id   = try(oci_core_route_table.backbone[0].id, null)
     oci_backbone_security_list_id = try(oci_core_security_list.backbone[0].id, null)
-    oci_drg_id                    = oci_core_drg.primary.id
+    oci_drg_id                    = local.effective_primary_drg_id
     oci_drg_attachment_id         = try(oci_core_drg_attachment.backbone[0].id, null)
     oci_cpe_id                    = try(oci_core_cpe.aws[0].id, null)
     oci_ipsec_id                  = try(oci_core_ipsec.aws[0].id, null)
@@ -44,7 +44,7 @@ output "routing_contract" {
 
 output "oci_drg_id" {
   description = "OCI DRG OCID acting as the primary routing hub for this OCI-first hybrid backbone deployment."
-  value       = oci_core_drg.primary.id
+  value       = local.effective_primary_drg_id
 }
 
 output "oci_ipsec_id" {

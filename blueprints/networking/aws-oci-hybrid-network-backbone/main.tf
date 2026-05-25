@@ -13,7 +13,7 @@ resource "oci_core_internet_gateway" "backbone" {
   count = var.enable_oci_backbone_network ? 1 : 0
 
   compartment_id = local.target_compartment_ocid
-  vcn_id         = oci_core_vcn.backbone[0].id
+  vcn_id         = local.effective_backbone_vcn_id
   display_name   = local.backbone_igw_name
   enabled        = true
   defined_tags   = var.defined_tags
@@ -24,7 +24,7 @@ resource "oci_core_route_table" "backbone" {
   count = var.enable_oci_backbone_network ? 1 : 0
 
   compartment_id = local.target_compartment_ocid
-  vcn_id         = oci_core_vcn.backbone[0].id
+  vcn_id         = local.effective_backbone_vcn_id
   display_name   = local.backbone_rt_name
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
@@ -41,7 +41,7 @@ resource "oci_core_route_table" "backbone" {
     content {
       destination       = route_rules.value
       destination_type  = "CIDR_BLOCK"
-      network_entity_id = oci_core_drg.primary.id
+      network_entity_id = local.effective_primary_drg_id
     }
   }
 }
@@ -50,7 +50,7 @@ resource "oci_core_security_list" "backbone" {
   count = var.enable_oci_backbone_network ? 1 : 0
 
   compartment_id = local.target_compartment_ocid
-  vcn_id         = oci_core_vcn.backbone[0].id
+  vcn_id         = local.effective_backbone_vcn_id
   display_name   = local.backbone_sl_name
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
@@ -75,7 +75,7 @@ resource "oci_core_subnet" "backbone" {
   count = var.enable_oci_backbone_network ? 1 : 0
 
   compartment_id             = local.target_compartment_ocid
-  vcn_id                     = oci_core_vcn.backbone[0].id
+  vcn_id                     = local.effective_backbone_vcn_id
   cidr_block                 = var.oci_backbone_subnet_cidr
   display_name               = local.backbone_subnet_name
   route_table_id             = oci_core_route_table.backbone[0].id
@@ -86,6 +86,8 @@ resource "oci_core_subnet" "backbone" {
 }
 
 resource "oci_core_drg" "primary" {
+  count = var.existing_oci_primary_drg_id == null ? 1 : 0
+
   compartment_id = local.target_compartment_ocid
   display_name   = local.drg_name
   defined_tags   = var.defined_tags
@@ -93,10 +95,10 @@ resource "oci_core_drg" "primary" {
 }
 
 resource "oci_core_drg_attachment" "backbone" {
-  count = var.enable_oci_backbone_network ? 1 : 0
+  count = var.attach_oci_backbone_vcn_to_drg && local.effective_backbone_vcn_id != null && local.effective_primary_drg_id != null ? 1 : 0
 
-  drg_id       = oci_core_drg.primary.id
-  vcn_id       = oci_core_vcn.backbone[0].id
+  drg_id       = local.effective_primary_drg_id
+  vcn_id       = local.effective_backbone_vcn_id
   display_name = local.drg_attach_name
 
   defined_tags  = var.defined_tags
@@ -118,7 +120,7 @@ resource "oci_core_ipsec" "aws" {
 
   compartment_id = local.target_compartment_ocid
   cpe_id         = oci_core_cpe.aws[0].id
-  drg_id         = oci_core_drg.primary.id
+  drg_id         = local.effective_primary_drg_id
   display_name   = local.ipsec_name
   static_routes  = var.aws_backbone_cidrs
 
@@ -139,10 +141,11 @@ resource "oci_ons_notification_topic" "backbone_alert" {
 resource "terraform_data" "oci_network_contract" {
   input = {
     enabled          = var.enable_oci_backbone_network
-    vcn_id           = try(oci_core_vcn.backbone[0].id, null)
+    vcn_id           = local.effective_backbone_vcn_id
     subnet_id        = try(oci_core_subnet.backbone[0].id, null)
     route_table_id   = try(oci_core_route_table.backbone[0].id, null)
     security_list_id = try(oci_core_security_list.backbone[0].id, null)
+    drg_id           = local.effective_primary_drg_id
   }
 }
 
@@ -150,6 +153,19 @@ resource "terraform_data" "connectivity_contract" {
   input = local.connectivity_contract
 
   lifecycle {
+    precondition {
+      condition = (
+        (var.enable_oci_backbone_network && var.existing_oci_backbone_vcn_id == null) ||
+        (!var.enable_oci_backbone_network && var.existing_oci_backbone_vcn_id != null)
+      )
+      error_message = "Set enable_oci_backbone_network=true to create OCI VCN resources, or set enable_oci_backbone_network=false with existing_oci_backbone_vcn_id to reuse an existing VCN."
+    }
+
+    precondition {
+      condition     = local.effective_primary_drg_id != null
+      error_message = "Set existing_oci_primary_drg_id or allow this blueprint to create a new DRG."
+    }
+
     precondition {
       condition = (
         var.connectivity_mode == "interconnect" &&

@@ -16,6 +16,9 @@ locals {
   ipsec_name              = "${local.name_prefix}-vpn-azure-fallback"
   connectivity_topic_name = coalesce(var.connectivity_alert_topic_name, "${local.name_prefix}-top-azure-connectivity")
 
+  effective_primary_vcn_id = var.enable_oci_primary_network ? try(oci_core_vcn.primary[0].id, null) : var.existing_oci_primary_vcn_id
+  effective_primary_drg_id = var.existing_oci_primary_drg_id != null ? var.existing_oci_primary_drg_id : try(oci_core_drg.primary[0].id, null)
+
   effective_interconnect = {
     mode                           = var.connectivity_mode
     oci_is_primary                 = var.oci_is_primary
@@ -37,7 +40,7 @@ locals {
   routing_contract = {
     primary_cloud = "oci"
     oci = {
-      drg_id               = oci_core_drg.primary.id
+      drg_id               = local.effective_primary_drg_id
       vcn_cidr             = var.oci_primary_vcn_cidr
       hub_subnet_cidr      = var.oci_primary_hub_subnet_cidr
       route_exchange_model = "bgp"

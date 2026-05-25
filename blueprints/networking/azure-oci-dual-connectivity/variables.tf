@@ -64,6 +64,17 @@ variable "enable_oci_primary_network" {
   default     = true
 }
 
+variable "existing_oci_primary_vcn_id" {
+  description = "Existing OCI VCN OCID to reuse instead of creating a new primary VCN."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = !(var.enable_oci_primary_network && var.existing_oci_primary_vcn_id != null)
+    error_message = "Set either enable_oci_primary_network=true (create VCN) or existing_oci_primary_vcn_id (reuse VCN), not both."
+  }
+}
+
 variable "oci_primary_vcn_cidr" {
   description = "CIDR block for OCI primary VCN when enable_oci_primary_network is true."
   type        = string
@@ -80,6 +91,18 @@ variable "oci_primary_ingress_allowed_cidr" {
   description = "Source CIDR allowed for OCI primary hub subnet ingress over HTTPS."
   type        = string
   default     = "10.0.0.0/8"
+}
+
+variable "existing_oci_primary_drg_id" {
+  description = "Existing OCI DRG OCID to reuse instead of creating a new DRG."
+  type        = string
+  default     = null
+}
+
+variable "attach_oci_primary_vcn_to_drg" {
+  description = "Attach OCI primary VCN to the effective DRG. Disable when reusing a VCN that is already attached."
+  type        = bool
+  default     = true
 }
 
 variable "connectivity_mode" {

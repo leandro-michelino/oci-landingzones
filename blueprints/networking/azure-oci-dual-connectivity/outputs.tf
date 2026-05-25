@@ -18,11 +18,11 @@ output "resource_ids" {
     routing_contract_id           = terraform_data.routing_contract.id
     dns_contract_id               = var.enable_dns_contract ? try(terraform_data.dns_contract[0].id, null) : null
     runbook_contract_id           = terraform_data.runbook_contract.id
-    oci_primary_vcn_id            = try(oci_core_vcn.primary[0].id, null)
+    oci_primary_vcn_id            = local.effective_primary_vcn_id
     oci_primary_subnet_id         = try(oci_core_subnet.primary_hub[0].id, null)
     oci_primary_route_table_id    = try(oci_core_route_table.primary[0].id, null)
     oci_primary_security_list_id  = try(oci_core_security_list.primary_hub[0].id, null)
-    oci_primary_drg_id            = oci_core_drg.primary.id
+    oci_primary_drg_id            = local.effective_primary_drg_id
     oci_primary_drg_attachment_id = try(oci_core_drg_attachment.primary[0].id, null)
     oci_azure_cpe_id              = try(oci_core_cpe.azure[0].id, null)
     oci_azure_ipsec_id            = try(oci_core_ipsec.azure[0].id, null)
@@ -59,7 +59,7 @@ output "oci_primary_target" {
   description = "Declared primary routing target for this pattern. OCI remains the primary control and data-path hub."
   value = {
     cloud = "oci"
-    drg   = oci_core_drg.primary.id
+    drg   = local.effective_primary_drg_id
   }
 }
 

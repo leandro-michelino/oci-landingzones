@@ -16,6 +16,9 @@ locals {
   ipsec_name       = "${local.name_prefix}-vpn-hybrid-aws"
   alert_topic_name = coalesce(var.backbone_alert_topic_name, "${local.name_prefix}-top-hybrid-alert")
 
+  effective_backbone_vcn_id = var.enable_oci_backbone_network ? try(oci_core_vcn.backbone[0].id, null) : var.existing_oci_backbone_vcn_id
+  effective_primary_drg_id  = var.existing_oci_primary_drg_id != null ? var.existing_oci_primary_drg_id : try(oci_core_drg.primary[0].id, null)
+
   connectivity_contract = {
     oci_primary                    = var.oci_is_primary
     mode                           = var.connectivity_mode
@@ -28,7 +31,7 @@ locals {
 
   routing_contract = {
     oci_primary = {
-      drg_id               = oci_core_drg.primary.id
+      drg_id               = local.effective_primary_drg_id
       backbone_vcn_cidr    = var.oci_backbone_vcn_cidr
       backbone_subnet_cidr = var.oci_backbone_subnet_cidr
     }

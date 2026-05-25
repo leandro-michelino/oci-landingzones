@@ -98,6 +98,10 @@ Start with `terraform.tfvars.example`, then create a local ignored
 | Input | What To Decide |
 | --- | --- |
 | `connectivity_mode` | `without-interconnect` for IPSec-first rollout or `interconnect` for final dedicated-circuit cutover. |
+| `enable_oci_primary_network` | `true` to create OCI VCN resources in this blueprint, or `false` to reuse an existing VCN. |
+| `existing_oci_primary_vcn_id` | Existing OCI VCN OCID when `enable_oci_primary_network=false`. |
+| `existing_oci_primary_drg_id` | Existing OCI DRG OCID when DRG reuse is required (quota-aware runs). |
+| `attach_oci_primary_vcn_to_drg` | Keep `true` for new VCNs. Set `false` when reusing a VCN that is already attached. |
 | `fastconnect_virtual_circuit_id` | FastConnect virtual circuit OCID for interconnect mode. |
 | `expressroute_circuit_id` | ExpressRoute circuit resource ID for interconnect mode. |
 | `enable_ipsec_fallback` | Enable fallback path resources in OCI. |

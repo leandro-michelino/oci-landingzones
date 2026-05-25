@@ -15,6 +15,9 @@ oci_is_primary = true
 # OCI primary networking defaults are deploy-and-use and create:
 # VCN + route table + security list + primary hub subnet.
 enable_oci_primary_network    = true
+# existing_oci_primary_vcn_id = "ocid1.vcn.oc1.af-johannesburg-1..example"
+# existing_oci_primary_drg_id = "ocid1.drg.oc1.af-johannesburg-1..example"
+# attach_oci_primary_vcn_to_drg = false
 oci_primary_vcn_cidr          = "10.58.0.0/16"
 oci_primary_hub_subnet_cidr   = "10.58.10.0/24"
 oci_primary_ingress_allowed_cidr = "10.0.0.0/8"

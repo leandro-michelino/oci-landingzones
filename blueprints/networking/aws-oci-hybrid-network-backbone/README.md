@@ -103,6 +103,9 @@ Start with `terraform.tfvars.example`, then create a local ignored
 | --- | --- |
 | `oci_is_primary` | Must remain `true` in this blueprint variant. |
 | `enable_oci_backbone_network` | Create OCI VCN/subnet/route/security resources for backbone operations. |
+| `existing_oci_backbone_vcn_id` | Existing OCI VCN OCID when `enable_oci_backbone_network=false`. |
+| `existing_oci_primary_drg_id` | Existing OCI DRG OCID when DRG reuse is required (quota-aware runs). |
+| `attach_oci_backbone_vcn_to_drg` | Keep `true` for new VCNs. Set `false` when reusing a VCN that is already attached. |
 | `oci_backbone_vcn_cidr` | CIDR for OCI backbone VCN. |
 | `oci_backbone_subnet_cidr` | CIDR for OCI backbone subnet. |
 | `connectivity_mode` | Select `without-interconnect` for IPSec-first rollout or `interconnect` for final dedicated-circuit cutover. |

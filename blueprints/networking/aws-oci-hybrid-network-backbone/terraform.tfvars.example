@@ -12,6 +12,9 @@ compartment_ocid = "ocid1.compartment.oc1..example"
 oci_is_primary = true
 
 enable_oci_backbone_network    = true
+# existing_oci_backbone_vcn_id = "ocid1.vcn.oc1.af-johannesburg-1..example"
+# existing_oci_primary_drg_id  = "ocid1.drg.oc1.af-johannesburg-1..example"
+# attach_oci_backbone_vcn_to_drg = false
 oci_backbone_vcn_cidr          = "10.54.0.0/16"
 oci_backbone_subnet_cidr       = "10.54.10.0/24"
 oci_backbone_ingress_allowed_cidr = "10.0.0.0/8"
