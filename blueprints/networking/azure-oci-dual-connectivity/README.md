@@ -178,3 +178,35 @@ ansible-playbook -i localhost, ansible/serve-hello-world.yml
 # open http://127.0.0.1:8092
 ansible-playbook -i localhost, ansible/stop-hello-world.yml
 ```
+
+## Deployment Steps
+
+1. Set OCI profile and run low-cost mode with IPSec first:
+```bash
+export OCI_PROFILE=JNB
+export OCI_CLI_PROFILE=JNB
+```
+2. Keep `connectivity_mode="without-interconnect"` during tests, and leave `fastconnect_virtual_circuit_id` and `expressroute_circuit_id` as `null`.
+3. Run Azure apply:
+```bash
+cd blueprints/networking/azure-oci-dual-connectivity
+CONFIRM_AZURE_APPLY=true ansible-playbook -i localhost, ansible/azure-apply.yml
+```
+4. If Azure returns `ResourceAvailabilityZonesCannotBeModified`, destroy the test resource group and rerun apply:
+```bash
+CONFIRM_AZURE_DESTROY=true ansible-playbook -i localhost, ansible/azure-destroy.yml
+CONFIRM_AZURE_APPLY=true ansible-playbook -i localhost, ansible/azure-apply.yml
+```
+5. Run optional IPSec and ping checks:
+```bash
+export OCI_AZURE_IPSEC_CONNECTION_ID="ocid1.ipsecconnection.oc1..example"
+# Optional ping inputs:
+# export AZURE_TEST_VM_RESOURCE_GROUP="rg-test"
+# export AZURE_TEST_VM_NAME="vm-test"
+# export OCI_PING_TARGET_IP="10.58.10.10"
+ansible-playbook -i localhost, ansible/azure-ipsec-verify.yml
+```
+6. Destroy immediately after tests:
+```bash
+CONFIRM_AZURE_DESTROY=true ansible-playbook -i localhost, ansible/azure-destroy.yml
+```

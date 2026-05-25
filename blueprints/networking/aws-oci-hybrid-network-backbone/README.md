@@ -182,3 +182,32 @@ ansible-playbook -i localhost, ansible/serve-hello-world.yml
 # open http://127.0.0.1:18082
 ansible-playbook -i localhost, ansible/stop-hello-world.yml
 ```
+
+## Deployment Steps
+
+1. Set OCI profile and keep IPSec-first mode:
+```bash
+export OCI_PROFILE=JNB
+export OCI_CLI_PROFILE=JNB
+```
+2. Keep `connectivity_mode="without-interconnect"` for tests, with dedicated-circuit IDs unset.
+3. Use isolated stack names for repeated test loops:
+```bash
+export AWS_BACKBONE_STACK_NAME=oci-aws-hybrid-backbone-test1
+```
+4. Run apply and then destroy:
+```bash
+cd blueprints/networking/aws-oci-hybrid-network-backbone
+CONFIRM_AWS_APPLY=true ansible-playbook -i localhost, ansible/aws-apply.yml
+CONFIRM_AWS_DESTROY=true ansible-playbook -i localhost, ansible/aws-destroy.yml
+```
+5. If rerun returns Customer Gateway `AlreadyExists`, wait until prior Customer Gateway resources are fully deleted and rerun:
+```bash
+aws ec2 describe-customer-gateways --region eu-west-1 \
+  --filters Name=ip-address,Values=198.51.100.10 \
+  --query "CustomerGateways[].{Id:CustomerGatewayId,State:State}" --output table
+```
+6. Run optional IPSec and ping checks:
+```bash
+ansible-playbook -i localhost, ansible/aws-ipsec-verify.yml
+```

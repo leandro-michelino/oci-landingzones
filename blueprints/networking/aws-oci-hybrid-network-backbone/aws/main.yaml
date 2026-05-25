@@ -149,16 +149,12 @@ Resources:
         - Key: Name
           Value: !Sub '${AWS::StackName}-vpn-oci-primary'
 
-  OciVpnConnectionRoute:
-    Type: AWS::EC2::VPNConnectionRoute
-    Condition: EnableSiteToSiteVpnCondition
-    Properties:
-      VpnConnectionId: !Ref OciSiteToSiteVpnConnection
-      DestinationCidrBlock: !Ref OciBackboneCidr
-
   BackboneToOciTransitRoute:
     Type: AWS::EC2::Route
     Condition: EnableSiteToSiteVpnCondition
+    DependsOn:
+      - TransitGatewayAttachment
+      - OciSiteToSiteVpnConnection
     Properties:
       RouteTableId: !Ref BackboneRouteTable
       DestinationCidrBlock: !Ref OciBackboneCidr

@@ -9,7 +9,7 @@
       "value": "vhub-oci-azure-transit-dev"
     },
     "virtualHubAddressPrefix": {
-      "value": "10.88.255.0/24"
+      "value": "10.89.255.0/24"
     },
     "routeTableName": {
       "value": "rt-vhub-oci-transit-dev"
@@ -72,7 +72,7 @@
       "value": 31898
     },
     "fallbackSharedKey": {
-      "value": "replace-with-secure-key"
+      "value": "ReplaceWithSecureKey123"
     },
     "tags": {
       "value": {

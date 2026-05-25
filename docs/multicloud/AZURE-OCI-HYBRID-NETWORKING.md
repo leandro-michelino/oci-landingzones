@@ -109,3 +109,19 @@ These outputs are the source of truth for operations runbooks.
 - Primary and fallback path behavior matches contract outputs.
 - DNS forwarding and probe assumptions are deterministic.
 - Telemetry is available for route-state and tunnel-state monitoring.
+
+## Deployment Steps
+
+1. Set OCI profile:
+```bash
+export OCI_PROFILE=JNB
+export OCI_CLI_PROFILE=JNB
+```
+2. Keep `connectivity_mode="without-interconnect"` during test runs.
+3. Run Azure side apply using the blueprint-local playbooks.
+4. Keep Azure VNet and vHub prefixes non-overlapping.
+5. Use alphanumeric-only VPN shared key when pairing Azure with OCI IPSec fallback.
+6. If zone mutation errors happen on reused Public IP resources, destroy the test resource group and rerun apply.
+7. Run IPSec verification playbooks with OCI IPSec OCID and optional test VM ping inputs.
+8. Azure VPN gateway creation can take around 45 to 60 minutes.
+9. Destroy test resource groups right after validation.

@@ -121,6 +121,19 @@ clouds.
 - OCI and AWS route tables contain the approved CIDR routes.
 - Security rules are scoped to expected operational and workload ranges.
 
+## Deployment Steps
+
+1. Set OCI profile:
+```bash
+export OCI_PROFILE=JNB
+export OCI_CLI_PROFILE=JNB
+```
+2. Keep `connectivity_mode="without-interconnect"` during test runs.
+3. Use isolated stack names per run.
+4. Run apply and destroy with the blueprint-local AWS playbooks.
+5. If reruns hit Customer Gateway `AlreadyExists`, wait for full deletion and then retry.
+6. Keep cleanup immediate after validation to control cost.
+
 ## Deployment Source
 
 The available design lives in:

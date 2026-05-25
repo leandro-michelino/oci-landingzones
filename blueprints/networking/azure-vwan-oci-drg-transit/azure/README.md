@@ -22,6 +22,14 @@ blueprint folder.
 - `ociAddressPrefixes` as OCI CIDRs advertised toward Azure.
 - `fallbackSharedKey` as tunnel shared key.
 
+## Input Guardrails
+
+- Keep `virtualHubAddressPrefix` outside the VNet CIDR range. Example:
+  `virtualHubAddressPrefix=10.89.255.0/24` with `vnetCidr=10.88.0.0/16`.
+- For Azure plus OCI fallback interoperability, keep `fallbackSharedKey`
+  alphanumeric only (letters and numbers) so the same key can be applied on OCI
+  tunnel PSKs.
+
 ## Outputs To Pair With Terraform Contracts
 
 - `azureVirtualWanId`, `azureVirtualHubId`, `azureVirtualHubRouteTableId`, `azureVirtualHubConnectionId`

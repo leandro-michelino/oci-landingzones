@@ -126,7 +126,7 @@ variable "azure_virtual_hub_region" {
 variable "azure_virtual_hub_address_prefix" {
   description = "Azure Virtual Hub address prefix documented in transit contract outputs."
   type        = string
-  default     = "10.88.255.0/24"
+  default     = "10.89.255.0/24"
 }
 
 variable "azure_route_table_name" {

@@ -2,7 +2,7 @@
 
 param virtualWanName string = 'vwan-oci-azure-transit'
 param virtualHubName string = 'vhub-oci-azure-transit'
-param virtualHubAddressPrefix string = '10.88.255.0/24'
+param virtualHubAddressPrefix string = '10.89.255.0/24'
 param routeTableName string = 'rt-vhub-oci-transit'
 
 param vnetName string = 'vnet-oci-azure-transit'
@@ -30,7 +30,7 @@ param ociAddressPrefixes array = [
 ]
 param azureAsn int = 65515
 param ociAsn int = 31898
-param fallbackSharedKey string = 'replace-with-secure-key'
+param fallbackSharedKey string = 'ReplaceWithSecureKey123'
 param tags object = {}
 
 resource virtualWan 'Microsoft.Network/virtualWans@2024-05-01' = {

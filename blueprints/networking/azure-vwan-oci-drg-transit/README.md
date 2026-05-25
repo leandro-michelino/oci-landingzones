@@ -184,3 +184,37 @@ ansible-playbook -i localhost, ansible/serve-hello-world.yml
 # open http://127.0.0.1:8094
 ansible-playbook -i localhost, ansible/stop-hello-world.yml
 ```
+
+## Deployment Steps
+
+1. Set OCI profile and keep IPSec-first mode:
+```bash
+export OCI_PROFILE=JNB
+export OCI_CLI_PROFILE=JNB
+```
+2. Keep `connectivity_mode="without-interconnect"` for tests, with interconnect IDs unset.
+3. Run Azure apply for vWAN transit:
+```bash
+cd blueprints/networking/azure-vwan-oci-drg-transit
+CONFIRM_AZURE_APPLY=true ansible-playbook -i localhost, ansible/azure-apply.yml
+```
+4. Keep Azure address spaces non-overlapping:
+   - `vnetCidr=10.88.0.0/16`
+   - `virtualHubAddressPrefix=10.89.255.0/24`
+5. Use an alphanumeric VPN shared key when pairing with OCI fallback PSKs.
+6. If apply fails due legacy zone constraints in reused resources, destroy the test resource group and rerun apply.
+7. Run optional IPSec and ping checks:
+```bash
+export OCI_AZURE_TRANSIT_IPSEC_CONNECTION_ID="ocid1.ipsecconnection.oc1..example"
+# Optional ping inputs:
+# export AZURE_TEST_VM_RESOURCE_GROUP="rg-test"
+# export AZURE_TEST_VM_NAME="vm-test"
+# export OCI_PING_TARGET_IP="10.58.10.10"
+ansible-playbook -i localhost, ansible/azure-ipsec-verify.yml
+```
+8. Azure VPN gateway creation can take around 45 to 60 minutes; wait for
+   `provisioningState=Succeeded` before validating tunnel health.
+9. Destroy immediately after tests:
+```bash
+CONFIRM_AZURE_DESTROY=true ansible-playbook -i localhost, ansible/azure-destroy.yml
+```

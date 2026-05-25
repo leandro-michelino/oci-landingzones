@@ -28,7 +28,7 @@ connectivity_mode = "without-interconnect"
 # azure_virtual_wan_id           = "/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Network/virtualWans/<name>"
 # azure_virtual_hub_id           = "/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Network/virtualHubs/<name>"
 azure_virtual_hub_region         = "westeurope"
-azure_virtual_hub_address_prefix = "10.88.255.0/24"
+azure_virtual_hub_address_prefix = "10.89.255.0/24"
 azure_route_table_name           = "rt-vhub-oci-transit"
 enable_route_segmentation        = true
 
