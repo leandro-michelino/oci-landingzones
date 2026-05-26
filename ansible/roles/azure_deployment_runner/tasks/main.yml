@@ -162,17 +162,10 @@
 - name: Summarize Azure deployment outputs
   ansible.builtin.debug:
     msg:
-      - "Azure AKS standby apply completed."
+      - "Azure deployment apply completed."
       - "Deployment: {{ azure_deployment_name }}"
       - "Resource group: {{ azure_resource_group }}"
       - "Location: {{ azure_location }}"
-      - "Cluster: {{ azure_apply_outputs_map.aksClusterName | default('not returned') }}"
-      - "Cluster ID: {{ azure_apply_outputs_map.aksClusterId | default('not returned') }}"
-      - "VNet: {{ azure_apply_outputs_map.aksVnetId | default('not returned') }}"
-      - "Subnet: {{ azure_apply_outputs_map.aksSubnetId | default('not returned') }}"
-      - "Route table: {{ azure_apply_outputs_map.aksRouteTableId | default('not returned') }}"
-      - "Network security group: {{ azure_apply_outputs_map.aksNetworkSecurityGroupId | default('not returned') }}"
-      - "Kubeconfig: az aks get-credentials --resource-group {{ azure_resource_group }} --name {{ azure_apply_outputs_map.aksClusterName | default('<cluster-name>') }}"
       - "All outputs: {{ azure_apply_outputs_map | to_nice_json }}"
   when: azure_action_normalized == "apply"
 
@@ -206,7 +199,7 @@
 - name: Confirm Azure deletion request accepted
   ansible.builtin.debug:
     msg:
-      - "Azure AKS standby destroy completed."
+      - "Azure deployment destroy requested."
       - "Resource group: {{ azure_resource_group }}"
       - >-
         {{

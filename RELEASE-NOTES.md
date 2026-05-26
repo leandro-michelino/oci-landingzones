@@ -63,7 +63,7 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - Normalized blueprint `local.name_prefix` values to the standard
   `org-environment-region_key` OCI naming prefix and added an automated naming
   convention guard to the repository contract checks.
-- Updated the repository documentation inventory to reflect 77 deployable
+- Updated the repository documentation inventory to reflect 78 deployable
   blueprints across 13 families and linked each blueprint to its local Architecture
   architecture review file.
 - Added license-model validation for Autonomous Database and Oracle Analytics
@@ -95,6 +95,8 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   blueprints.
 - Extended validation cleanup to remove generated plan files and `.DS_Store`
   metadata in both Ansible and shell fallback paths.
+- Added a repository contract check that keeps the Architecture inventory count
+  aligned with discovered deployable blueprint entry points.
 - Kept `terraform_tflint` out of the default pre-commit hook set so optional
   scanner availability stays consistent with the validation script.
 - Wired shared Terraform environment handling into validation and destroy

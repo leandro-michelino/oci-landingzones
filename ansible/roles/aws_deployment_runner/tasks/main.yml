@@ -246,17 +246,9 @@
 - name: Summarize AWS apply output
   ansible.builtin.debug:
     msg:
-      - "AWS EKS standby apply completed."
+      - "AWS CloudFormation apply completed."
       - "Stack: {{ aws_stack_name }}"
       - "Region: {{ aws_region }}"
-      - "Cluster: {{ aws_stack_outputs_map.EksClusterName | default('not returned') }}"
-      - "Cluster ARN: {{ aws_stack_outputs_map.EksClusterArn | default('not returned') }}"
-      - "API endpoint: {{ aws_stack_outputs_map.EksClusterEndpoint | default('not returned') }}"
-      - "Node group ARN: {{ aws_stack_outputs_map.EksNodeGroupArn | default('not returned') }}"
-      - "VPC: {{ aws_stack_outputs_map.EksVpcId | default('not returned') }}"
-      - "Subnets: {{ [aws_stack_outputs_map.EksSubnetOneId | default('not returned'), aws_stack_outputs_map.EksSubnetTwoId | default('not returned')] | join(', ') }}"
-      - "Security group: {{ aws_stack_outputs_map.EksSecurityGroupId | default('not returned') }}"
-      - "Kubeconfig: aws eks update-kubeconfig --region {{ aws_region }} --name {{ aws_stack_outputs_map.EksClusterName | default(aws_stack_name) }}"
       - "All outputs: {{ aws_stack_outputs_map | to_nice_json }}"
   when: aws_action_normalized == "apply"
 
@@ -292,7 +284,7 @@
 - name: Confirm AWS deletion request accepted
   ansible.builtin.debug:
     msg:
-      - "AWS EKS standby destroy completed."
+      - "AWS CloudFormation destroy requested."
       - "Stack: {{ aws_stack_name }}"
       - "Region: {{ aws_region }}"
       - >-

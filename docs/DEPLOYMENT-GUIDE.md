@@ -458,7 +458,7 @@ Architecture notes live in each operating-entity blueprint's
 | Operations and extensions | `blueprints/operations/*` and `blueprints/extensions/*` | Cost Optimization plus API Gateway, Container Instances, Event-Driven Platform, Exadata, Functions, OAC, Observability, OIC, OKE, OKE Service Mesh, Redis Cache, Streaming, and WAF are validated. |
 | Data, AI, DevOps, DR, and industry | `blueprints/data-platform/*`, `blueprints/ai/*`, `blueprints/devops/*`, `blueprints/disaster-recovery/*`, and `blueprints/industry/*` | Service-specific blueprints are initialized and validated without backend and must keep local Architecture notes. |
 
-The full catalog currently contains 77 deployable blueprint entry points across
+The full catalog currently contains 78 deployable blueprint entry points across
 13 families. The complete architecture inventory is in
 `docs/architecture/README.md`.
 

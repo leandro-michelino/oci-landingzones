@@ -155,11 +155,45 @@ check_cloud_deployment_contract() {
   done
 }
 
+check_architecture_inventory_count() {
+  local architecture_index="$REPO_ROOT/docs/architecture/README.md"
+  local actual_count
+  local table_count
+  local stated_count
+
+  check_file "$architecture_index"
+
+  actual_count="$(
+    find "$REPO_ROOT/blueprints" \
+      -path "*/.terraform/*" -prune -o \
+      -name "main.tf" -type f -print | wc -l | tr -d ' '
+  )"
+
+  table_count="$(
+    awk -F'|' '/^\| [^|]+ \| \[/ && $2 !~ /Family/ { count++ } END { print count + 0 }' \
+      "$architecture_index"
+  )"
+
+  stated_count="$(
+    sed -nE 's/^The current catalog has ([0-9]+) deployable blueprint entry points.*/\1/p' \
+      "$architecture_index" | head -n 1
+  )"
+
+  if [[ "$table_count" != "$actual_count" ]]; then
+    fail "docs/architecture/README.md table lists $table_count blueprints, but $actual_count deployable Terraform entry points exist."
+  fi
+
+  if [[ "$stated_count" != "$actual_count" ]]; then
+    fail "docs/architecture/README.md stated blueprint count is ${stated_count:-missing}, but $actual_count deployable Terraform entry points exist."
+  fi
+}
+
 echo "==> Checking repository documentation and blueprint contracts"
 
 "$REPO_ROOT/scripts/check-naming-conventions.sh"
 "$REPO_ROOT/scripts/generate-blueprints-index.sh" --check
 "$REPO_ROOT/scripts/check-markdown-links.sh"
+check_architecture_inventory_count
 
 check_forbidden_markdown "State, Inputs, And Outputs"
 check_forbidden_markdown "Input sources"
