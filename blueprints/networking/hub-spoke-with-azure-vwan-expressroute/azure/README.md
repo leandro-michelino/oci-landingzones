@@ -48,3 +48,24 @@ Simulation mode validates wrapper wiring without calling Azure:
 ```bash
 AZURE_SIMULATE_ONLY=true ansible-playbook -i localhost, ansible/azure-plan.yml
 ```
+
+## London Interconnect Test Notes
+
+The latest live London test on 2026-05-26 confirmed the pairable ExpressRoute
+and FastConnect shape for this Azure session:
+
+- Azure ExpressRoute: `uksouth`, Oracle Cloud FastConnect provider, London
+  peering location, `Local_UnlimitedData`, `1 Gbps`.
+- OCI FastConnect: `uk-london-1`, Microsoft Azure provider service, `1 Gbps`,
+  target compartment `Leandro_Michelino`.
+- Azure Private Peering should be aligned to the provider-key values returned by
+  OCI: peer ASN `31898`, VLAN `13`, primary pair `10.255.0.1/30` and
+  `10.255.0.2/30`, secondary pair `10.255.0.5/30` and `10.255.0.6/30`.
+- Leave the Azure shared key empty for this provider-key flow; the OCI virtual
+  circuit rejected explicit customer ASN, explicit VLAN, and BGP MD5 updates.
+
+The circuit and OCI virtual circuit reached provisioned states, but connectivity
+testing did not complete because the Azure vWAN ExpressRoute Gateway was still
+`Updating` during the validation window. Create the ExpressRoute Gateway
+connection only after the gateway reports `Succeeded`, then validate OCI BGP
+state and run bidirectional packet tests before destroy.

@@ -47,6 +47,31 @@ Azure vWAN + vHub
 - Keep vWAN and vHub IDs in local ignored tfvars or secure pipeline variables.
 - Use blueprint outputs as the contract source for NOC and SRE handoff.
 
+## Latest London Test Findings
+
+Live validation on 2026-05-26 used Azure `uksouth` with London
+ExpressRoute peering and OCI `uk-london-1` in the `Leandro_Michelino`
+compartment. The interconnect-first path created both sides of the private
+connectivity contract:
+
+- Azure ExpressRoute circuit: `Local_UnlimitedData`, Oracle Cloud FastConnect
+  provider, London peering location, `1 Gbps`, Azure Private Peering enabled.
+- OCI FastConnect virtual circuit: Microsoft Azure provider service, `1 Gbps`,
+  provider state `ACTIVE`, lifecycle state `PROVISIONED`.
+- Provider-key values returned by OCI drove the Azure peering values: peer ASN
+  `31898`, VLAN `13`, primary pair `10.255.0.1/30` and `10.255.0.2/30`,
+  secondary pair `10.255.0.5/30` and `10.255.0.6/30`, and no BGP MD5 shared
+  key.
+
+The important operational result is that circuit provisioning succeeded, but
+end-to-end data-plane validation did not complete in that run. The Azure vWAN
+ExpressRoute Gateway stayed `Updating` through the validation window and only
+returned `Succeeded` after teardown had already started, so the vHub gateway
+connection was not created. BGP remained `DOWN`, and bidirectional packet tests
+were not completed. The IPSec fallback was also attempted, but OCI returned
+`ipsec-connection-count` quota exceeded in `uk-london-1`; free or raise that
+quota before using London IPSec as the backup path.
+
 ## Blueprint Source
 
 - `blueprints/networking/azure-vwan-oci-drg-transit/`
