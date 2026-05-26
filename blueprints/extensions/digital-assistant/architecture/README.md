@@ -57,7 +57,7 @@ optional endpoint attachment, and clear operational hand-off contracts.
 | --- | --- | --- |
 | Resource | `oci_core_vcn.oda`, `oci_core_route_table.oda`, `oci_core_security_list.oda`, `oci_core_subnet.oda` | Optional deploy-and-use network foundation for ODA private endpoint placement. |
 | Resource | `oci_core_network_security_group.oda` | NSG boundary for ODA private endpoint traffic. |
-| Resource | `oci_core_network_security_group_security_rule.oda_ingress_https`, `oci_core_network_security_group_security_rule.oda_egress_all` | NSG ingress/egress guardrails. |
+| Resource | `oci_core_network_security_group_security_rule.oda_ingress_https`, `oci_core_network_security_group_security_rule.oda_egress_all` | Stateless HTTPS ingress and scoped HTTPS egress guardrails. |
 | Resource | `oci_oda_oda_instance.this` | ODA instance for conversational platform workloads. |
 | Resource | `oci_oda_oda_private_endpoint.this` | ODA private endpoint for controlled channel integration. |
 | Resource | `oci_oda_oda_private_endpoint_attachment.this` | Optional attachment between ODA instance and private endpoint. |
@@ -88,7 +88,7 @@ These notes expand the diagram with design details usually needed in reviews.
 - ODA instance creation and private endpoint creation are decoupled so teams can stage rollout safely.
 - Attachment step is explicit and precondition-guarded to prevent partial misconfiguration.
 - Network creation is optional to support extension-only mode in existing customer estates.
-- NSG rules are intentionally minimal: HTTPS ingress from allowed CIDR and unrestricted egress.
+- Security rules are intentionally minimal: HTTPS ingress from the allowed CIDR and CIDR-scoped HTTPS egress.
 - Optional IAM policies let platform teams codify role boundaries in the same deployment.
 - Alert topic creation is optional and intended for runbook and channel-monitoring hooks.
 

@@ -107,6 +107,8 @@ resource "oci_objectstorage_bucket" "dr_evidence" {
   storage_tier = "Standard"
   versioning   = "Enabled"
 
+  object_events_enabled = true
+
   defined_tags  = var.defined_tags
   freeform_tags = local.common_freeform_tags
 }

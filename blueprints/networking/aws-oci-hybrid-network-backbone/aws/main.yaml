@@ -42,6 +42,71 @@ Resources:
         - Key: Name
           Value: !Sub '${AWS::StackName}-vpc-backbone'
 
+  BackboneLogKey:
+    Type: AWS::KMS::Key
+    Properties:
+      Description: !Sub '${AWS::StackName} VPC flow log encryption key'
+      EnableKeyRotation: true
+      KeyPolicy:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: EnableAccountAdministration
+            Effect: Allow
+            Principal:
+              AWS: !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:root'
+            Action: kms:*
+            Resource: '*'
+          - Sid: AllowCloudWatchLogsUse
+            Effect: Allow
+            Principal:
+              Service: !Sub 'logs.${AWS::Region}.amazonaws.com'
+            Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:GenerateDataKey
+              - kms:ReEncrypt*
+            Resource: '*'
+
+  BackboneFlowLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      KmsKeyId: !GetAtt BackboneLogKey.Arn
+      RetentionInDays: 30
+
+  BackboneFlowLogRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: vpc-flow-logs.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: write-vpc-flow-logs
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:DescribeLogGroups
+                  - logs:DescribeLogStreams
+                  - logs:PutLogEvents
+                Resource: !Sub '${BackboneFlowLogGroup.Arn}:*'
+
+  BackboneVpcFlowLog:
+    Type: AWS::EC2::FlowLog
+    Properties:
+      DeliverLogsPermissionArn: !GetAtt BackboneFlowLogRole.Arn
+      LogDestinationType: cloud-watch-logs
+      LogGroupName: !Ref BackboneFlowLogGroup
+      ResourceId: !Ref BackboneVpc
+      ResourceType: VPC
+      TrafficType: ALL
+
   InternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
@@ -77,7 +142,7 @@ Resources:
       VpcId: !Ref BackboneVpc
       CidrBlock: !Ref BackboneSubnetCidr
       AvailabilityZone: !Select [0, !GetAZs '']
-      MapPublicIpOnLaunch: true
+      MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-sn-backbone'
@@ -94,13 +159,17 @@ Resources:
       GroupDescription: AWS backbone security group for OCI hybrid interconnect demos.
       VpcId: !Ref BackboneVpc
       SecurityGroupIngress:
-        - IpProtocol: tcp
+        - Description: Allow approved HTTPS ingress to the backbone edge.
+          IpProtocol: tcp
           FromPort: 443
           ToPort: 443
           CidrIp: !Ref AllowedIngressCidr
       SecurityGroupEgress:
-        - IpProtocol: -1
-          CidrIp: 0.0.0.0/0
+        - Description: Allow HTTPS egress toward the OCI backbone CIDR.
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: !Ref OciBackboneCidr
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-sg-backbone'

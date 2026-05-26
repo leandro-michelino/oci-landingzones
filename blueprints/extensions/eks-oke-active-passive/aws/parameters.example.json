@@ -33,6 +33,6 @@
   },
   {
     "ParameterKey": "AllowedIngressCidr",
-    "ParameterValue": "0.0.0.0/0"
+    "ParameterValue": "10.0.0.0/8"
   }
 ]

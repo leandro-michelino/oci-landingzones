@@ -29,7 +29,7 @@ Parameters:
     Default: 10.64.20.0/24
   AllowedIngressCidr:
     Type: String
-    Default: 0.0.0.0/0
+    Default: 10.0.0.0/8
 
 Resources:
   EksVpc:
@@ -41,6 +41,45 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-vpc-eks-secondary'
+
+  EksFlowLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      KmsKeyId: !GetAtt EksSecretsKey.Arn
+      RetentionInDays: 30
+
+  EksFlowLogRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: vpc-flow-logs.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: write-vpc-flow-logs
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:DescribeLogGroups
+                  - logs:DescribeLogStreams
+                  - logs:PutLogEvents
+                Resource: !Sub '${EksFlowLogGroup.Arn}:*'
+
+  EksVpcFlowLog:
+    Type: AWS::EC2::FlowLog
+    Properties:
+      DeliverLogsPermissionArn: !GetAtt EksFlowLogRole.Arn
+      LogDestinationType: cloud-watch-logs
+      LogGroupName: !Ref EksFlowLogGroup
+      ResourceId: !Ref EksVpc
+      ResourceType: VPC
+      TrafficType: ALL
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
@@ -77,7 +116,7 @@ Resources:
       VpcId: !Ref EksVpc
       CidrBlock: !Ref SubnetOneCidr
       AvailabilityZone: !Select [0, !GetAZs '']
-      MapPublicIpOnLaunch: true
+      MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-sn-eks-secondary-a'
@@ -88,7 +127,7 @@ Resources:
       VpcId: !Ref EksVpc
       CidrBlock: !Ref SubnetTwoCidr
       AvailabilityZone: !Select [1, !GetAZs '']
-      MapPublicIpOnLaunch: true
+      MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-sn-eks-secondary-b'
@@ -111,16 +150,46 @@ Resources:
       GroupDescription: Security group for EKS secondary cluster traffic.
       VpcId: !Ref EksVpc
       SecurityGroupIngress:
-        - IpProtocol: tcp
+        - Description: Allow Kubernetes API access from the approved ingress CIDR.
+          IpProtocol: tcp
           FromPort: 443
           ToPort: 443
           CidrIp: !Ref AllowedIngressCidr
       SecurityGroupEgress:
-        - IpProtocol: -1
-          CidrIp: 0.0.0.0/0
+        - Description: Allow HTTPS egress to private platform endpoints inside the VPC.
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: !Ref VpcCidr
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-sg-eks-secondary'
+
+  EksSecretsKey:
+    Type: AWS::KMS::Key
+    Properties:
+      Description: !Sub '${AWS::StackName} EKS secret encryption key'
+      EnableKeyRotation: true
+      KeyPolicy:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: EnableAccountAdministration
+            Effect: Allow
+            Principal:
+              AWS: !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:root'
+            Action: kms:*
+            Resource: '*'
+          - Sid: AllowCloudWatchLogsUse
+            Effect: Allow
+            Principal:
+              Service: !Sub 'logs.${AWS::Region}.amazonaws.com'
+            Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:GenerateDataKey
+              - kms:ReEncrypt*
+            Resource: '*'
 
   EksClusterRole:
     Type: AWS::IAM::Role
@@ -157,13 +226,26 @@ Resources:
       Version: !Ref KubernetesVersion
       RoleArn: !GetAtt EksClusterRole.Arn
       ResourcesVpcConfig:
-        EndpointPublicAccess: true
-        EndpointPrivateAccess: false
+        EndpointPublicAccess: false
+        EndpointPrivateAccess: true
         SecurityGroupIds:
           - !Ref EksSecurityGroup
         SubnetIds:
           - !Ref EksSubnetOne
           - !Ref EksSubnetTwo
+      EncryptionConfig:
+        - Provider:
+            KeyArn: !GetAtt EksSecretsKey.Arn
+          Resources:
+            - secrets
+      Logging:
+        ClusterLogging:
+          EnabledTypes:
+            - Type: api
+            - Type: audit
+            - Type: authenticator
+            - Type: controllerManager
+            - Type: scheduler
 
   EksNodeGroup:
     Type: AWS::EKS::Nodegroup

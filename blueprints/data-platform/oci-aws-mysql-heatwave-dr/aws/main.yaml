@@ -39,7 +39,6 @@ Parameters:
   DbMasterUserPassword:
     Type: String
     NoEcho: true
-    Default: ChangeMe123!
   DbPort:
     Type: Number
     Default: 3306
@@ -57,6 +56,71 @@ Resources:
       Tags:
         - Key: Name
           Value: oci-aws-mysql-dr-vpc
+
+  AwsDrLogKey:
+    Type: AWS::KMS::Key
+    Properties:
+      Description: VPC flow log encryption key for OCI AWS MySQL DR.
+      EnableKeyRotation: true
+      KeyPolicy:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: EnableAccountAdministration
+            Effect: Allow
+            Principal:
+              AWS: !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:root'
+            Action: kms:*
+            Resource: '*'
+          - Sid: AllowCloudWatchLogsUse
+            Effect: Allow
+            Principal:
+              Service: !Sub 'logs.${AWS::Region}.amazonaws.com'
+            Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:GenerateDataKey
+              - kms:ReEncrypt*
+            Resource: '*'
+
+  AwsDrFlowLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      KmsKeyId: !GetAtt AwsDrLogKey.Arn
+      RetentionInDays: 30
+
+  AwsDrFlowLogRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: vpc-flow-logs.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: write-vpc-flow-logs
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:DescribeLogGroups
+                  - logs:DescribeLogStreams
+                  - logs:PutLogEvents
+                Resource: !Sub '${AwsDrFlowLogGroup.Arn}:*'
+
+  AwsDrVpcFlowLog:
+    Type: AWS::EC2::FlowLog
+    Properties:
+      DeliverLogsPermissionArn: !GetAtt AwsDrFlowLogRole.Arn
+      LogDestinationType: cloud-watch-logs
+      LogGroupName: !Ref AwsDrFlowLogGroup
+      ResourceId: !Ref AwsDrVpc
+      ResourceType: VPC
+      TrafficType: ALL
 
   AwsDrRouteTable:
     Type: AWS::EC2::RouteTable
@@ -107,13 +171,17 @@ Resources:
       GroupName: oci-aws-mysql-dr-sg
       VpcId: !Ref AwsDrVpc
       SecurityGroupIngress:
-        - IpProtocol: tcp
+        - Description: Allow MySQL replication and failover traffic from OCI.
+          IpProtocol: tcp
           FromPort: !Ref DbPort
           ToPort: !Ref DbPort
           CidrIp: !Ref OciReplicationCidr
       SecurityGroupEgress:
-        - IpProtocol: -1
-          CidrIp: 0.0.0.0/0
+        - Description: Allow MySQL response traffic to the OCI replication CIDR.
+          IpProtocol: tcp
+          FromPort: !Ref DbPort
+          ToPort: !Ref DbPort
+          CidrIp: !Ref OciReplicationCidr
       Tags:
         - Key: Name
           Value: oci-aws-mysql-dr-sg
@@ -144,7 +212,10 @@ Resources:
       MasterUserPassword: !Ref DbMasterUserPassword
       PubliclyAccessible: false
       MultiAZ: false
-      DeletionProtection: false
+      DeletionProtection: true
+      EnableIAMDatabaseAuthentication: true
+      EnablePerformanceInsights: true
+      PerformanceInsightsKMSKeyId: !GetAtt AwsDrLogKey.Arn
       BackupRetentionPeriod: 7
       Port: !Ref DbPort
       DBSubnetGroupName: !Ref AwsDrDbSubnetGroup

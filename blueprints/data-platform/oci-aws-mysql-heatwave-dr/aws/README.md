@@ -10,10 +10,10 @@ networking and database endpoint provisioning.
 
 | Resource Group | Purpose |
 | --- | --- |
-| VPC + subnets + route table | AWS standby network footprint for DR database endpoint. |
-| Security group | Restricts MySQL ingress to approved OCI replication CIDR. |
+| VPC + subnets + route table | Private AWS standby network footprint with encrypted VPC Flow Logs. |
+| Security group | Restricts MySQL ingress and egress to approved OCI replication CIDR. |
 | DB subnet group | Places standby database in dedicated private subnets. |
-| Optional MySQL-compatible RDS instance | Provides deployable standby endpoint for replication and failover tests. |
+| Optional MySQL-compatible RDS instance | Provides deployable standby endpoint with storage encryption, IAM database authentication, Performance Insights, and deletion protection. |
 
 ## CloudFormation Files
 
@@ -45,6 +45,8 @@ CONFIRM_AWS_DESTROY=true ansible-playbook -i localhost, ../ansible/aws-destroy.y
 ## Notes
 
 - Use secure secret injection for `DbMasterUserPassword` in real environments.
+- Deletion protection is enabled on the RDS standby; run a controlled stack
+  update to disable it before destructive teardown of real test databases.
 - For plan-only tests, the shared AWS runner automatically removes temporary
   review stacks created by no-execute changesets.
 - Destroy sessions should always be executed after ephemeral tests.

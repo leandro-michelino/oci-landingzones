@@ -14,7 +14,7 @@ Architecture design.
 | Folder | `blueprints/extensions/digital-assistant` |
 | Best fit | Oracle Digital Assistant landing zone with optional deploy-and-use private endpoint network, ODA instance, private endpoint attachment, and IAM/alert contracts. |
 | Terraform shape | `oci_core_vcn.oda`, `oci_core_route_table.oda`, `oci_core_security_list.oda`, `oci_core_subnet.oda`, `oci_core_network_security_group.oda`, `oci_oda_oda_instance.this`, `oci_oda_oda_private_endpoint.this`, `oci_oda_oda_private_endpoint_attachment.this`, `oci_ons_notification_topic.alert`, `terraform_data.oda_network_contract`, `terraform_data.oda_contract` |
-| Inputs to settle first | `compartment_ocid`, `create_oda_instance`, `oda_shape_name`, `create_oda_private_endpoint`, `attach_private_endpoint_to_instance`, `enable_oda_network`, `oda_ingress_allowed_cidr` |
+| Inputs to settle first | `compartment_ocid`, `create_oda_instance`, `oda_shape_name`, `create_oda_private_endpoint`, `attach_private_endpoint_to_instance`, `enable_oda_network`, `oda_ingress_allowed_cidr`, `oda_egress_allowed_cidr` |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `oda_instance_id`, `oda_instance_connector_url`, `oda_private_endpoint_id`, `oda_network_contract`, `oda_operational_contract` |
 | Local runner | `terraform plan` for quick iteration; `ansible/plan.yml` and guarded `ansible/apply.yml` for the repo-standard flow. |
 
@@ -97,6 +97,7 @@ Start with `terraform.tfvars.example`, then create a local ignored
 | `enable_oda_network` | Create VCN/subnet/route/security resources for private endpoint. |
 | `oda_vcn_cidr` and `oda_subnet_cidr` | CIDRs for ODA network resources. |
 | `oda_ingress_allowed_cidr` | Allowed source CIDR to private endpoint HTTPS. |
+| `oda_egress_allowed_cidr` | Allowed destination CIDR for private endpoint HTTPS egress. |
 | `create_oda_instance` | Create ODA instance in this deployment. |
 | `oda_shape_name` | ODA shape/edition selection. |
 | `oda_identity_domain` | Optional identity domain override. |
@@ -170,7 +171,7 @@ blueprint.
 - Confirm ODA shape and identity-domain decisions with platform owners.
 - Confirm whether private endpoint should be created and attached in this run.
 - Confirm endpoint subnet and NSG wiring if using existing network resources.
-- Confirm ingress CIDR allowlist is intentionally scoped.
+- Confirm ingress and egress CIDR allowlists are intentionally scoped.
 - Confirm policy statements map to intended ODA admin/developer/caller groups.
 - Confirm `architecture/README.md` matches `main.tf`, `variables.tf`, and `outputs.tf`.
 - Confirm no generated Terraform files, state files, plans, or local tfvars are committed.

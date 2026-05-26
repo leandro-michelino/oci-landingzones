@@ -7,11 +7,13 @@ This folder contains the AWS EKS secondary deployment artifacts for the
 
 ## What It Deploys
 
-- AWS VPC with two public EKS subnets across AZs
+- AWS VPC with two private EKS subnets across AZs and VPC Flow Logs
 - Route table and internet route
 - Security group for API and cluster traffic controls
 - IAM roles required for EKS control plane and managed node group
-- EKS cluster and managed node group
+- EKS cluster with private API endpoint, control-plane logging, and
+  KMS-backed secret encryption
+- Managed node group using private subnets by default
 
 ## Prerequisites
 
@@ -24,6 +26,8 @@ This folder contains the AWS EKS secondary deployment artifacts for the
 
 Start from `parameters.example.json` and copy to a local file (for example
 `parameters.dev.json`) with your cluster name, node size, and CIDR ranges.
+Keep `AllowedIngressCidr` scoped to known administrator, VPN, or health-check
+source ranges; the example uses `10.0.0.0/8`.
 Keep `KubernetesVersion` on the latest minor version that is also supported by
 the paired OKE region. The example remains `1.36` as the intended baseline, but
 the May 26, 2026 E2E test in `eu-west-1` used `1.35` because EKS did not accept

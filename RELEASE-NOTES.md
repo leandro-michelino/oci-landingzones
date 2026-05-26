@@ -97,6 +97,15 @@ Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
   metadata in both Ansible and shell fallback paths.
 - Added a repository contract check that keeps the Architecture inventory count
   aligned with discovered deployable blueprint entry points.
+- Added retry handling for `terraform init` during full validation so transient
+  remote module download failures do not stop otherwise healthy checks.
+- Hardened AWS CloudFormation deployment templates with private subnet defaults,
+  encrypted VPC Flow Logs, described security group rules, restricted egress,
+  IMDSv2 and encrypted root volume for EC2, KMS-backed EKS secret encryption,
+  EKS control-plane logging, and RDS standby security controls.
+- Enabled object events on cross-cloud DR evidence buckets and scoped Oracle
+  Digital Assistant NSG rules to stateless HTTPS ingress plus CIDR-bound HTTPS
+  egress.
 - Kept `terraform_tflint` out of the default pre-commit hook set so optional
   scanner availability stays consistent with the validation script.
 - Wired shared Terraform environment handling into validation and destroy

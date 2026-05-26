@@ -50,6 +50,32 @@ run_if_available() {
   fi
 }
 
+terraform_init_with_retry() {
+  local terraform_dir="$1"
+  local terraform_dir_label="$2"
+  local attempt
+  local max_attempts="${VALIDATION_TERRAFORM_INIT_ATTEMPTS:-3}"
+
+  for ((attempt = 1; attempt <= max_attempts; attempt++)); do
+    if (( attempt == 1 )); then
+      echo "==> terraform init -backend=false ${terraform_dir_label}"
+    else
+      echo "==> terraform init retry ${attempt}/${max_attempts} ${terraform_dir_label}"
+    fi
+
+    if (cd "$terraform_dir" && terraform init -backend=false -input=false -no-color); then
+      return 0
+    fi
+
+    if (( attempt < max_attempts )); then
+      rm -rf "$terraform_dir/.terraform/modules"
+      sleep "$attempt"
+    fi
+  done
+
+  return 1
+}
+
 run_terraform_blueprint_validation() {
   local main_tf
   local terraform_dir
@@ -67,8 +93,7 @@ run_terraform_blueprint_validation() {
     terraform_dir="${main_tf%/main.tf}"
     terraform_dir_label="${terraform_dir#$REPO_ROOT/}"
 
-    echo "==> terraform init -backend=false ${terraform_dir_label}"
-    (cd "$terraform_dir" && terraform init -backend=false -input=false -no-color)
+    terraform_init_with_retry "$terraform_dir" "$terraform_dir_label"
 
     echo "==> terraform validate ${terraform_dir_label}"
     (cd "$terraform_dir" && terraform validate -no-color)

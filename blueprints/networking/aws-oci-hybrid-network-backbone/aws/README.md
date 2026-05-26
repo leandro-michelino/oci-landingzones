@@ -7,10 +7,11 @@ This folder contains the AWS backbone deployment artifacts for the
 
 ## What It Deploys
 
-- AWS VPC and backbone subnet
+- AWS VPC and private backbone subnet with VPC Flow Logs
 - Route table with default internet route
-- Security group for backbone traffic control
+- Security group for approved backbone traffic control
 - AWS Transit Gateway and VPC attachment
+- Customer-managed KMS key for encrypted VPC Flow Log delivery
 - Stack outputs used by OCI DRG connectivity contracts and runbooks
 
 ## Prerequisites
@@ -22,7 +23,8 @@ This folder contains the AWS backbone deployment artifacts for the
 ## Parameters
 
 Start from `parameters.example.json` and copy to a local file (for example
-`parameters.dev.json`) with your CIDRs and ingress policy.
+`parameters.dev.json`) with your CIDRs and ingress policy. Keep
+`AllowedIngressCidr` scoped to known operations, VPN, or interconnect ranges.
 
 ## Outputs To Feed Terraform
 

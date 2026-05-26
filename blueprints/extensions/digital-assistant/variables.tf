@@ -71,6 +71,12 @@ variable "oda_ingress_allowed_cidr" {
   default     = "10.0.0.0/8"
 }
 
+variable "oda_egress_allowed_cidr" {
+  description = "Destination CIDR allowed for ODA private endpoint HTTPS egress."
+  type        = string
+  default     = "10.0.0.0/8"
+}
+
 variable "create_oda_instance" {
   description = "Create Oracle Digital Assistant instance."
   type        = bool

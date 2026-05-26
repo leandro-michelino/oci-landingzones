@@ -55,9 +55,14 @@ resource "oci_core_security_list" "oda" {
   }
 
   egress_security_rules {
-    protocol         = "all"
-    destination      = "0.0.0.0/0"
+    protocol         = "6"
+    destination      = var.oda_egress_allowed_cidr
     destination_type = "CIDR_BLOCK"
+
+    tcp_options {
+      min = 443
+      max = 443
+    }
   }
 }
 
@@ -93,6 +98,7 @@ resource "oci_core_network_security_group_security_rule" "oda_ingress_https" {
   protocol                  = "6"
   source                    = var.oda_ingress_allowed_cidr
   source_type               = "CIDR_BLOCK"
+  stateless                 = true
   description               = "Allow HTTPS ingress to ODA private endpoint NSG."
 
   tcp_options {
@@ -108,10 +114,17 @@ resource "oci_core_network_security_group_security_rule" "oda_egress_all" {
 
   network_security_group_id = oci_core_network_security_group.oda[0].id
   direction                 = "EGRESS"
-  protocol                  = "all"
-  destination               = "0.0.0.0/0"
+  protocol                  = "6"
+  destination               = var.oda_egress_allowed_cidr
   destination_type          = "CIDR_BLOCK"
-  description               = "Allow egress traffic from ODA private endpoint NSG."
+  description               = "Allow HTTPS egress from ODA private endpoint NSG."
+
+  tcp_options {
+    destination_port_range {
+      min = 443
+      max = 443
+    }
+  }
 }
 
 resource "terraform_data" "oda_network_contract" {
