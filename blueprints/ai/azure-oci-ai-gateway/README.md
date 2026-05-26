@@ -183,6 +183,8 @@ Azure full deployment session (Azure OpenAI + API Management + hello-world app):
 
 ```bash
 cd blueprints/ai/azure-oci-ai-gateway
+az provider register --namespace Microsoft.CognitiveServices --wait
+az provider register --namespace Microsoft.ApiManagement --wait
 ansible-playbook -i localhost, ansible/azure-plan.yml
 CONFIRM_AZURE_APPLY=true ansible-playbook -i localhost, ansible/azure-apply.yml
 CONFIRM_AZURE_DESTROY=true ansible-playbook -i localhost, ansible/azure-destroy.yml
@@ -234,8 +236,46 @@ blueprint.
 - Confirm route policies for region, cost, and data residency map to intended providers.
 - Confirm OCI API Gateway exposure (`PUBLIC` or `PRIVATE`) matches the security model.
 - Confirm Azure session outputs were copied into local tfvars correctly.
+- Keep provider backend URLs free of query strings in gateway backend config.
+  For Azure OpenAI, pass `api-version` on client calls instead of baking it
+  into the OCI API Gateway backend URL.
 - Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
 - Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
+
+## E2E Smoke Evidence
+
+A real E2E smoke run should prove both cloud sides before teardown:
+
+1. Azure what-if and apply complete in a region with capacity for Container Apps,
+   Azure OpenAI, and API Management.
+2. Azure Container Apps hello-world endpoint returns HTTP `200`.
+3. Azure OpenAI account is `Succeeded`; APIM is `Succeeded`.
+4. OCI Terraform plan and apply create API Gateway, API deployment, network,
+   audit bucket, routing log group, and contracts.
+5. OCI API deployment endpoint is `ACTIVE`.
+6. Route samples reach the expected backend:
+   - `/ai/providers/azure` and `/ai/route/cost` should return an Azure OpenAI
+     response such as `401` when provider credentials are intentionally absent.
+   - `/ai/providers/oci`, `/ai/route/region`, and
+     `/ai/route/data-residency` should return an OCI Generative AI response
+     such as `NotAuthorizedOrNotFound` when request signing/provider auth is
+     intentionally absent.
+
+Sample route check:
+
+```bash
+BASE="https://<deployment-host>.apigateway.<region>.oci.customer-oci.com/ai"
+curl -sS -D /tmp/aigw.headers -o /tmp/aigw.body \
+  -w 'http=%{http_code}\n' \
+  -H 'content-type: application/json' \
+  -X POST "$BASE/providers/azure?api-version=2024-10-21" \
+  --data '{"messages":[{"role":"user","content":"hello from e2e"}],"max_tokens":8}'
+```
+
+When `deployOpenAiModel=false`, direct Azure OpenAI chat-completion samples may
+return `DeploymentNotFound`; that still validates account reachability, but not
+model inference. Enable a model deployment only when regional model quota is
+available and the test owner accepts the cost.
 
 ## Validation
 

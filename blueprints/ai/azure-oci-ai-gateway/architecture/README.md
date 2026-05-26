@@ -106,6 +106,14 @@ These notes expand the diagram with design details usually needed in reviews.
 - OCI network resources are deploy-and-use and include route table plus security list wiring.
 - Azure sessions deploy network resources, OpenAI account, API Management endpoint, and a real public hello-world endpoint.
 - The local hello-world page is included for runbook rehearsals and smoke checks without requiring cloud traffic generation.
+- OCI API Gateway HTTP backends should use only the scheme, host, and path.
+  Query strings such as Azure OpenAI `api-version` belong on client requests,
+  not in the backend URL, because OCI API Gateway rejects backend URLs with
+  invalid query/path composition.
+- End-to-end route validation can use expected provider auth responses. An
+  Azure OpenAI `401` or OCI Generative AI `NotAuthorizedOrNotFound` response
+  through the OCI Gateway proves the route reached the intended provider when
+  provider credentials are intentionally not injected into the gateway.
 
 ## Operational Boundaries
 

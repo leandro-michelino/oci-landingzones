@@ -95,6 +95,10 @@ during review, plan, and hand-off.
 - The runbook contract stores drill cadence and RTO/RPO targets so governance checks can compare planned versus measured recovery behavior.
 - Azure resources are provisioned through the local Azure session artifacts (`azure/main.bicep` and `ansible/azure-*.yml`) and referenced in Terraform by standby endpoint values.
 - `hello-world/index.html` is included as a lightweight drill/demo status page that mirrors the same primary/standby assumptions.
+- Azure Container Apps capacity is regional. Treat
+  `ManagedEnvironmentCapacityHeavyUsageError` as a regional capacity issue, not
+  as a blueprint contract failure; delete the failed test resource group and
+  retry in an approved alternate region.
 
 ## Operational Boundaries
 

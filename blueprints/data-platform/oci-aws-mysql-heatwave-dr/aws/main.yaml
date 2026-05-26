@@ -42,9 +42,24 @@ Parameters:
   DbPort:
     Type: Number
     Default: 3306
+  DbDeletionProtection:
+    Type: String
+    AllowedValues: ['true', 'false']
+    Default: 'true'
+  DbBackupRetentionPeriod:
+    Type: Number
+    Default: 7
+    MinValue: 0
+    MaxValue: 35
+  DbPerformanceInsightsEnabled:
+    Type: String
+    AllowedValues: ['true', 'false']
+    Default: 'true'
 
 Conditions:
   EnableRdsStandby: !Equals [!Ref CreateRdsStandby, 'true']
+  EnableDbDeletionProtection: !Equals [!Ref DbDeletionProtection, 'true']
+  EnableDbPerformanceInsights: !Equals [!Ref DbPerformanceInsightsEnabled, 'true']
 
 Resources:
   AwsDrVpc:
@@ -55,7 +70,7 @@ Resources:
       EnableDnsSupport: true
       Tags:
         - Key: Name
-          Value: oci-aws-mysql-dr-vpc
+          Value: !Sub '${AWS::StackName}-vpc'
 
   AwsDrLogKey:
     Type: AWS::KMS::Key
@@ -128,7 +143,7 @@ Resources:
       VpcId: !Ref AwsDrVpc
       Tags:
         - Key: Name
-          Value: oci-aws-mysql-dr-rt
+          Value: !Sub '${AWS::StackName}-rt'
 
   AwsDrSubnetOne:
     Type: AWS::EC2::Subnet
@@ -139,7 +154,7 @@ Resources:
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
-          Value: oci-aws-mysql-dr-subnet-1
+          Value: !Sub '${AWS::StackName}-subnet-1'
 
   AwsDrSubnetTwo:
     Type: AWS::EC2::Subnet
@@ -150,7 +165,7 @@ Resources:
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
-          Value: oci-aws-mysql-dr-subnet-2
+          Value: !Sub '${AWS::StackName}-subnet-2'
 
   AwsDrSubnetOneRouteAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -168,7 +183,6 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Allow OCI replication and application traffic to MySQL standby.
-      GroupName: oci-aws-mysql-dr-sg
       VpcId: !Ref AwsDrVpc
       SecurityGroupIngress:
         - Description: Allow MySQL replication and failover traffic from OCI.
@@ -184,14 +198,14 @@ Resources:
           CidrIp: !Ref OciReplicationCidr
       Tags:
         - Key: Name
-          Value: oci-aws-mysql-dr-sg
+          Value: !Sub '${AWS::StackName}-sg'
 
   AwsDrDbSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Condition: EnableRdsStandby
     Properties:
       DBSubnetGroupDescription: Subnets for AWS MySQL standby in OCI-primary DR pattern.
-      DBSubnetGroupName: oci-aws-mysql-dr-subnet-group
+      DBSubnetGroupName: !Sub '${AWS::StackName}-subnet-group'
       SubnetIds:
         - !Ref AwsDrSubnetOne
         - !Ref AwsDrSubnetTwo
@@ -212,11 +226,11 @@ Resources:
       MasterUserPassword: !Ref DbMasterUserPassword
       PubliclyAccessible: false
       MultiAZ: false
-      DeletionProtection: true
+      DeletionProtection: !If [EnableDbDeletionProtection, true, false]
       EnableIAMDatabaseAuthentication: true
-      EnablePerformanceInsights: true
-      PerformanceInsightsKMSKeyId: !GetAtt AwsDrLogKey.Arn
-      BackupRetentionPeriod: 7
+      EnablePerformanceInsights: !If [EnableDbPerformanceInsights, true, false]
+      PerformanceInsightsKMSKeyId: !If [EnableDbPerformanceInsights, !GetAtt AwsDrLogKey.Arn, !Ref AWS::NoValue]
+      BackupRetentionPeriod: !Ref DbBackupRetentionPeriod
       Port: !Ref DbPort
       DBSubnetGroupName: !Ref AwsDrDbSubnetGroup
       VPCSecurityGroups:
@@ -225,7 +239,7 @@ Resources:
       CopyTagsToSnapshot: true
       Tags:
         - Key: Name
-          Value: oci-aws-mysql-standby
+          Value: !Sub '${AWS::StackName}-standby'
 
 Outputs:
   AwsDrVpcId:

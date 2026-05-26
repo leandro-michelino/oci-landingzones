@@ -95,6 +95,11 @@ during review, plan, and hand-off.
 - The runbook contract stores drill cadence and RTO/RPO targets so governance checks can compare planned versus measured recovery behavior.
 - AWS resources are provisioned through the local AWS session artifacts (`aws/main.yaml` and `ansible/aws-*.yml`) and referenced in Terraform by standby endpoint values.
 - `hello-world/index.html` is included as a lightweight drill/demo status page that mirrors the same primary/standby assumptions.
+- The AWS standby instance bootstrap depends on outbound HTTPS for package and
+  managed-service access. Ephemeral E2E tests should allow that egress while
+  keeping inbound HTTP/HTTPS scoped to the operator CIDR.
+- Validate the exported `AwsStandbyEndpoint` with a real HTTP `200` response
+  before copying it into OCI-side DNS failover and runbook contracts.
 
 ## Operational Boundaries
 

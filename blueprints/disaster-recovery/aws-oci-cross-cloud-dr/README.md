@@ -179,6 +179,12 @@ For required AWS variables and parameters, review `aws/README.md`.
 AWS session playbooks use the shared role
 `ansible/roles/aws_deployment_runner` for consistent behavior.
 
+E2E note: the AWS standby EC2 instance needs outbound HTTPS during first boot
+for package repositories, SSM, and managed service endpoints. The template also
+associates a public IP before the EIP attachment settles so the hello-world
+bootstrap can complete reliably in ephemeral public-subnet tests. Scope inbound
+HTTP/HTTPS with `AllowedIngressCidr`; use a narrow operator CIDR for E2E.
+
 ## Deployment Order
 
 1. Confirm OCI remains primary and AWS remains standby for this environment.
@@ -205,6 +211,8 @@ expected Terraform + Ansible output at the end of the deployment.
 - Confirm connectivity mode choice and interconnect IDs if using interconnect.
 - Confirm DNS endpoint targets and TTL assumptions.
 - Confirm runbook objectives (RTO/RPO) match business requirements.
+- Confirm AWS standby hello-world returns HTTP `200` before using the endpoint
+  in OCI DNS/runbook contracts.
 - Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
 - Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
 

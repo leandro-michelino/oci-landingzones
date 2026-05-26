@@ -20,8 +20,8 @@ locals {
   oci_deployment_id_effective     = var.create_oci_gateway_deployment ? try(oci_apigateway_deployment.this[0].id, null) : var.oci_gateway_deployment_id
 
   provider_backend_urls = {
-    oci   = coalesce(var.oci_generative_ai_inference_url, "https://example.oci.generative.ai/inference")
-    azure = coalesce(var.azure_openai_inference_url, "https://example.openai.azure.com/openai/deployments/chat/completions?api-version=2024-10-21")
+    oci   = split("?", coalesce(var.oci_generative_ai_inference_url, "https://example.oci.generative.ai/inference"))[0]
+    azure = split("?", coalesce(var.azure_openai_inference_url, "https://example.openai.azure.com/openai/deployments/chat/completions?api-version=2024-10-21"))[0]
   }
 
   strategy_provider_map = {

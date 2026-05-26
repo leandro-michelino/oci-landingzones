@@ -179,6 +179,12 @@ For required Azure variables and parameters, review `azure/README.md`.
 Azure session playbooks use the shared role
 `ansible/roles/azure_deployment_runner` for consistent behavior.
 
+E2E note: Azure Container Apps managed environments can fail in a selected
+region because of AKS/Container Apps regional capacity. If apply fails with
+`ManagedEnvironmentCapacityHeavyUsageError` or `AKSCapacityHeavyUsage`, destroy
+the failed resource group first, then rerun the same parameter shape in another
+approved Azure region such as `spaincentral`.
+
 ## Deployment Order
 
 1. Confirm OCI remains primary and Azure remains standby for this environment.
@@ -205,6 +211,8 @@ expected Terraform + Ansible output at the end of the deployment.
 - Confirm connectivity mode choice and interconnect IDs if using interconnect.
 - Confirm DNS endpoint targets and TTL assumptions.
 - Confirm runbook objectives (RTO/RPO) match business requirements.
+- Confirm Azure standby hello-world returns HTTP `200` before using the endpoint
+  in OCI DNS/runbook contracts.
 - Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
 - Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
 

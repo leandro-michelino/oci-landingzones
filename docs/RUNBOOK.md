@@ -74,6 +74,35 @@ Behavior:
 - Always attempts provider destroy after apply attempts.
 - Uses explicit confirmation env vars internally (`CONFIRM_*`).
 
+## Multicloud E2E Evidence
+
+Use this checklist for real Azure/AWS/OCI E2E runs that create disposable cloud
+resources.
+
+Capture:
+- Cloud account, subscription, tenancy profile, and AWS profile used.
+- Regions, Kubernetes/database/model versions, and selected instance classes.
+- Resource group, stack, and Terraform name prefixes.
+- Public URLs, private endpoints, generated commands, and output contract IDs.
+- Direct endpoint test result for each cloud side.
+- DNS, Traffic Management, or GSLB FQDN results where the blueprint owns DNS.
+- Failover/failback timing, RTO/RPO comparison, and known caveats.
+- Explicit destroy confirmation and post-destroy validation.
+
+Known E2E findings:
+- AKS + OKE active/passive and EKS + OKE active/passive were previously tested
+  with temporary resources and destroyed after validation.
+- Azure Container Apps can fail with regional AKS capacity errors; destroy the
+  failed resource group and retry in another approved region.
+- OCI API Gateway HTTP backend URLs should not include query strings. Put API
+  version parameters on client/sample requests.
+- AWS DR EC2 bootstrap needs outbound HTTPS and a reachable public path during
+  first boot when using the included hello-world test.
+- AWS RDS MySQL E2E may need `DbBackupRetentionPeriod=0` and
+  `DbPerformanceInsightsEnabled=false` for small/free-tier-compatible instance
+  classes. Keep `DbDeletionProtection=true` for long-lived environments and set
+  it to `false` only for disposable E2E stacks.
+
 ## Simulate Azure And AWS Wrappers
 
 Use this before real cloud-side plan sessions, or whenever shared Azure/AWS

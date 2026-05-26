@@ -93,6 +93,13 @@ and OCI-to-AWS data movement is controlled through IPSec-only connectivity.
   delivery is driven by AWS deployment session parameters and standards.
 - CloudFormation AWS session includes a MySQL-compatible standby deployment path to keep
   end-to-end DR testing deployable from this repository.
+- The AWS standby template exposes deletion protection, backup retention, and
+  Performance Insights switches so E2E runs can use the smallest accepted RDS
+  shape and still delete cleanly afterward.
+- For constrained accounts, a deployable E2E path is `db.t4g.micro` in
+  `eu-west-1` with backup retention `0`, Performance Insights disabled, and
+  deletion protection disabled. Use a paid-compatible class only when the
+  smaller shape is unavailable in the target account or region.
 - For production, enforce secure secret injection for MySQL credentials and avoid
   committing any live endpoint or password values in tfvars files.
 

@@ -149,6 +149,32 @@ CONFIRM_AWS_APPLY=true ansible-playbook -i localhost, ansible/aws-apply.yml
 CONFIRM_AWS_DESTROY=true ansible-playbook -i localhost, ansible/aws-destroy.yml
 ```
 
+The AWS CloudFormation template supports E2E-safe RDS overrides:
+
+- `DbDeletionProtection=false` for disposable test stacks that must be deleted.
+- `DbBackupRetentionPeriod=0` for accounts or plans that reject seven-day
+  retention during short-lived tests.
+- `DbPerformanceInsightsEnabled=false` for small instance classes or regions
+  that do not support Performance Insights.
+- Stack-scoped names are used for VPC, subnet group, security group, and RDS
+  tags so repeated E2E runs do not collide with earlier stacks.
+
+Known-good E2E shape:
+
+```text
+AWS region: eu-west-1
+Engine: mysql
+Instance class: db.t4g.micro
+Deletion protection: false
+Backup retention: 0
+Performance Insights: false
+Publicly accessible: false
+```
+
+After AWS apply, feed `AwsStandbyEndpoint` and `AwsStandbyPort` back into
+Terraform as `aws_secondary_endpoint` so OCI-side replication, DNS, and runbook
+contracts reference the real RDS standby endpoint.
+
 ## Architecture
 
 Detailed Architecture is in:
@@ -175,6 +201,10 @@ ansible-playbook -i localhost, ansible/stop-hello-world.yml
 - Confirm IPSec CIDR and CPE public IP values are correct.
 - Confirm MySQL credential handling is secure and not committed.
 - Confirm endpoints for replication and DNS contracts are accurate.
+- Confirm RDS deletion protection is disabled only for disposable E2E runs and
+  enabled for long-lived environments.
+- Confirm backup retention and Performance Insights settings match the AWS
+  account, region, instance class, and cost model.
 - Confirm architecture/README.md still matches Terraform and Ansible behavior.
 
 ## Validation
