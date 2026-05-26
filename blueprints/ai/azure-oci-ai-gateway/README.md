@@ -34,6 +34,31 @@ residency decisions.
   explicit no-interconnect mode.
 - You want both Terraform and Azure deployment sessions in one operator folder.
 
+## Practical Use Cases
+
+This blueprint is a good fit when the business wants AI choices without making
+every application team learn every provider integration detail. It gives teams a
+single gateway contract, then lets the platform route requests to OCI Generative
+AI or Azure OpenAI based on policy.
+
+Examples:
+
+- **Regional AI front door:** route Madrid or EU workloads to OCI Generative AI
+  while keeping an Azure OpenAI route available for teams that already use an
+  Azure model family.
+- **Cost-aware model routing:** send everyday summarization or extraction
+  traffic to the cheaper approved provider, while reserving a premium model path
+  for regulated or customer-facing workflows.
+- **Data residency control:** keep sensitive prompts on the provider and region
+  approved by governance, with the routing choice documented in Terraform
+  outputs instead of buried in application code.
+- **AI platform migration:** expose the same `/chat`, `/embed`, or
+  `/summarize` style gateway route while moving workloads gradually from one AI
+  backend to another.
+- **Demo and enablement lab:** use the hello-world app and gateway route map to
+  show developers how cross-cloud AI routing works before wiring production
+  models.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the

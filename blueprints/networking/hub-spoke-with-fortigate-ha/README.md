@@ -31,6 +31,27 @@ customer-managed inspection.
 - The landing zone needs a repeatable HA pair with management, untrust, trust, and HA sync interfaces.
 - Security teams want OCI private IP failover permissions managed alongside the network baseline.
 
+## Practical Use Cases
+
+This blueprint is for teams that want the OCI network built in a cloud-native
+way but still need FortiGate as the inspection brain. It keeps the hub/spoke
+layout repeatable and gives the security team the familiar Fortinet control
+plane they already operate.
+
+Examples:
+
+- **Enterprise standard firewall:** deploy FortiGate HA in the hub because the
+  customer already standardizes on FortiManager, FortiAnalyzer, or FortiOS
+  policy workflows.
+- **North-south inspection:** steer internet, partner, or on-premises traffic
+  through active/passive FortiGate nodes before it reaches spoke workloads.
+- **East-west segmentation:** route spoke-to-spoke flows through FortiGate when
+  workloads need layer 7 policy, IPS, threat inspection, or custom NAT behavior.
+- **HA failover automation:** use floating private IPs and optional instance
+  principal policy so FortiGate can move route targets during failover.
+- **Migration landing zone:** recreate an on-prem firewall pattern in OCI first,
+  then gradually simplify routes as teams adopt more cloud-native controls.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource

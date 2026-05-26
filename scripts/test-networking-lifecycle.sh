@@ -83,7 +83,7 @@ run_playbook() {
   if [[ ! -f "$playbook" ]]; then
     return 2
   fi
-  ANSIBLE_CONFIG="$REPO_ROOT/ansible/ansible.cfg" ansible-playbook -i localhost, "$playbook"
+  ANSIBLE_CONFIG="$REPO_ROOT/ansible/ansible.cfg" ansible-playbook -i localhost, -c local "$playbook"
 }
 
 run_provider_lifecycle() {

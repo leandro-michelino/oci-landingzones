@@ -29,6 +29,28 @@ landing-zone network.
 - Hub routes and firewall subnet placement need review.
 - Security teams need firewall IDs and private IP hand-off.
 
+## Practical Use Cases
+
+This blueprint is the OCI-native firewall option for a hub/spoke landing zone.
+It is a clean fit when you want managed inspection in the hub without operating
+third-party firewall instances, patch cycles, or HA node mechanics yourself.
+
+Examples:
+
+- **Managed inspection hub:** put OCI Network Firewall in the hub VCN and route
+  spoke ingress or egress through the firewall subnet for centralized policy.
+- **Cloud-native security baseline:** use an OCI-managed firewall policy for
+  teams that want network inspection but do not need a FortiGate, Palo Alto, or
+  other appliance operating model.
+- **Simpler operations:** avoid firewall VM sizing, image upgrades, bootstrap
+  scripts, and floating-IP failover while still giving security teams a
+  firewall endpoint and private IP to hand off.
+- **Regulated workload landing zone:** prove that application subnets can be
+  isolated behind a managed inspection point before workloads are admitted.
+- **Fast smoke-to-production path:** run topology-only tests with
+  `enable_network_firewall=false`, then switch to `true` for a full paid
+  firewall deployment once policy, route tables, and cost are approved.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
