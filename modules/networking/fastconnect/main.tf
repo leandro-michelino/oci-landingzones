@@ -12,7 +12,22 @@ resource "oci_core_virtual_circuit" "this" {
   provider_service_key_name = var.provider_service_key_name
   routing_policy            = upper(var.virtual_circuit_type) == "PRIVATE" ? var.routing_policy : null
   ip_mtu                    = var.ip_mtu
-  defined_tags              = var.defined_tags
+
+  dynamic "cross_connect_mappings" {
+    for_each = var.cross_connect_mappings
+
+    content {
+      bgp_md5auth_key                         = try(cross_connect_mappings.value.bgp_md5_auth_key, null)
+      cross_connect_or_cross_connect_group_id = try(cross_connect_mappings.value.cross_connect_or_cross_connect_group_id, null)
+      customer_bgp_peering_ip                 = try(cross_connect_mappings.value.customer_bgp_peering_ip, null)
+      customer_bgp_peering_ipv6               = try(cross_connect_mappings.value.customer_bgp_peering_ipv6, null)
+      oracle_bgp_peering_ip                   = try(cross_connect_mappings.value.oracle_bgp_peering_ip, null)
+      oracle_bgp_peering_ipv6                 = try(cross_connect_mappings.value.oracle_bgp_peering_ipv6, null)
+      vlan                                    = try(cross_connect_mappings.value.vlan, null)
+    }
+  }
+
+  defined_tags = var.defined_tags
   freeform_tags = merge(
     var.freeform_tags,
     {

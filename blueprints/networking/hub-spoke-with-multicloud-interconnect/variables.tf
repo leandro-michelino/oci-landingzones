@@ -77,6 +77,20 @@ variable "provider_service_key_name" {
   default     = null
 }
 
+variable "cross_connect_mappings" {
+  description = "Optional FastConnect cross-connect mappings. Azure ExpressRoute provider-key circuits require two BGP mappings."
+  type = list(object({
+    bgp_md5_auth_key                        = optional(string)
+    cross_connect_or_cross_connect_group_id = optional(string)
+    customer_bgp_peering_ip                 = optional(string)
+    customer_bgp_peering_ipv6               = optional(string)
+    oracle_bgp_peering_ip                   = optional(string)
+    oracle_bgp_peering_ipv6                 = optional(string)
+    vlan                                    = optional(number)
+  }))
+  default = []
+}
+
 variable "cpe_ip_address" {
   description = "Remote cloud VPN gateway public or private IP address."
   type        = string

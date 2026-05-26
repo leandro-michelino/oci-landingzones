@@ -115,6 +115,20 @@ run the OCI plan again so `azure_vwan_contract` reflects the final cross-cloud p
 
 ## Validation
 
+For Azure/OCI interconnect tests, use London on both sides:
+
+- Azure ExpressRoute: `uksouth`, Oracle Cloud FastConnect provider, London
+  peering location, `Local_UnlimitedData`, `1 Gbps`.
+- OCI FastConnect: `uk-london-1`, Microsoft Azure provider service, `1 Gbps`.
+- Configure Azure Private Peering with peer ASN `31898`, no MD5 shared key for
+  this provider-key VC flow, and the VLAN returned by OCI after FastConnect
+  creation.
+- Bring the Azure vWAN ExpressRoute Gateway to `Succeeded`, connect it to the
+  circuit peering, then check OCI `bgp-session-state` before packet tests.
+- Keep IPSec as the secondary path. If `uk-london-1` returns
+  `ipsec-connection-count`, clear quota or document the fallback test as
+  blocked.
+
 From the repository root:
 
 ```bash

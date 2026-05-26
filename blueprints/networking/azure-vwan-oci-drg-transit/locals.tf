@@ -3,6 +3,7 @@ locals {
   blueprint_name          = "networking-azure-vwan-oci-drg-transit"
   name_prefix             = "${var.org}-${var.environment}-${var.region_key}"
   target_compartment_ocid = coalesce(var.compartment_ocid, var.tenancy_ocid)
+  primary_drg_id          = coalesce(var.existing_drg_id, try(oci_core_drg.primary[0].id, null))
 
   primary_vcn_name    = "${local.name_prefix}-vcn-azure-vwan-transit"
   primary_igw_name    = "${local.name_prefix}-igw-azure-vwan-transit"
@@ -39,7 +40,7 @@ locals {
   transit_contract = {
     primary_cloud = "oci"
     oci = {
-      drg_id               = oci_core_drg.primary.id
+      drg_id               = local.primary_drg_id
       vcn_cidr             = var.oci_primary_vcn_cidr
       hub_subnet_cidr      = var.oci_primary_hub_subnet_cidr
       route_exchange_model = "bgp"

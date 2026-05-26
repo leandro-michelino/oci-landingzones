@@ -41,7 +41,7 @@ resource "oci_core_route_table" "primary" {
     content {
       destination       = route_rules.value
       destination_type  = "CIDR_BLOCK"
-      network_entity_id = oci_core_drg.primary.id
+      network_entity_id = local.primary_drg_id
     }
   }
 }
@@ -86,6 +86,8 @@ resource "oci_core_subnet" "primary_hub" {
 }
 
 resource "oci_core_drg" "primary" {
+  count = var.existing_drg_id == null ? 1 : 0
+
   compartment_id = local.target_compartment_ocid
   display_name   = local.drg_name
   defined_tags   = var.defined_tags
@@ -95,7 +97,7 @@ resource "oci_core_drg" "primary" {
 resource "oci_core_drg_attachment" "primary" {
   count = var.enable_oci_primary_network ? 1 : 0
 
-  drg_id       = oci_core_drg.primary.id
+  drg_id       = local.primary_drg_id
   vcn_id       = oci_core_vcn.primary[0].id
   display_name = local.drg_attachment_name
 
@@ -118,7 +120,7 @@ resource "oci_core_ipsec" "azure" {
 
   compartment_id = local.target_compartment_ocid
   cpe_id         = oci_core_cpe.azure[0].id
-  drg_id         = oci_core_drg.primary.id
+  drg_id         = local.primary_drg_id
   display_name   = local.ipsec_name
   static_routes  = var.azure_network_cidrs
 
@@ -143,7 +145,7 @@ resource "terraform_data" "oci_network_contract" {
     subnet_id        = try(oci_core_subnet.primary_hub[0].id, null)
     route_table_id   = try(oci_core_route_table.primary[0].id, null)
     security_list_id = try(oci_core_security_list.primary_hub[0].id, null)
-    drg_id           = oci_core_drg.primary.id
+    drg_id           = local.primary_drg_id
   }
 }
 

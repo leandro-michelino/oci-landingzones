@@ -47,6 +47,12 @@ variable "compartment_ocid" {
   default     = null
 }
 
+variable "existing_drg_id" {
+  description = "Optional existing DRG OCID to reuse for London or quota-constrained tests. When set, the blueprint does not create or destroy a DRG."
+  type        = string
+  default     = null
+}
+
 variable "oci_is_primary" {
   description = "Set to true. This pattern keeps OCI DRG as the primary transit hub."
   type        = bool
