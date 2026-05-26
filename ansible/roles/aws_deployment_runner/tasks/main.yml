@@ -240,14 +240,24 @@
 - name: Parse AWS stack outputs
   ansible.builtin.set_fact:
     aws_stack_outputs_parsed: "{{ aws_stack_outputs.stdout | from_json }}"
+    aws_stack_outputs_map: "{{ dict((aws_stack_outputs.stdout | from_json) | map(attribute='OutputKey') | zip((aws_stack_outputs.stdout | from_json) | map(attribute='OutputValue'))) }}"
   when: aws_action_normalized == "apply"
 
 - name: Summarize AWS apply output
   ansible.builtin.debug:
     msg:
-      - "AWS apply completed for stack {{ aws_stack_name }} in {{ aws_region }}."
-      - "Returned output count: {{ aws_stack_outputs_parsed | length }}."
-      - "Outputs (JSON): {{ aws_stack_outputs_parsed | to_nice_json }}"
+      - "AWS EKS standby apply completed."
+      - "Stack: {{ aws_stack_name }}"
+      - "Region: {{ aws_region }}"
+      - "Cluster: {{ aws_stack_outputs_map.EksClusterName | default('not returned') }}"
+      - "Cluster ARN: {{ aws_stack_outputs_map.EksClusterArn | default('not returned') }}"
+      - "API endpoint: {{ aws_stack_outputs_map.EksClusterEndpoint | default('not returned') }}"
+      - "Node group ARN: {{ aws_stack_outputs_map.EksNodeGroupArn | default('not returned') }}"
+      - "VPC: {{ aws_stack_outputs_map.EksVpcId | default('not returned') }}"
+      - "Subnets: {{ [aws_stack_outputs_map.EksSubnetOneId | default('not returned'), aws_stack_outputs_map.EksSubnetTwoId | default('not returned')] | join(', ') }}"
+      - "Security group: {{ aws_stack_outputs_map.EksSecurityGroupId | default('not returned') }}"
+      - "Kubeconfig: aws eks update-kubeconfig --region {{ aws_region }} --name {{ aws_stack_outputs_map.EksClusterName | default(aws_stack_name) }}"
+      - "All outputs: {{ aws_stack_outputs_map | to_nice_json }}"
   when: aws_action_normalized == "apply"
 
 - name: Delete AWS CloudFormation stack
@@ -282,7 +292,9 @@
 - name: Confirm AWS deletion request accepted
   ansible.builtin.debug:
     msg:
-      - "AWS destroy completed for stack {{ aws_stack_name }} in {{ aws_region }}."
+      - "AWS EKS standby destroy completed."
+      - "Stack: {{ aws_stack_name }}"
+      - "Region: {{ aws_region }}"
       - >-
         {{
           ((aws_destroy_wait.rc | default(1)) == 0)

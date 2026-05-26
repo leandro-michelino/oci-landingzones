@@ -84,8 +84,8 @@ folder.
 | Industry | Telco cloud-native landing zone | `blueprints/industry/telco-cloud-native/` | Available |
 | Industry | OCI Secure Desktops (VDI, private network, IAM, session policies) | `blueprints/industry/secure-desktops/` | Available |
 | Extensions | OKE extension | `blueprints/extensions/oke/` | Available |
-| Extensions | AKS + OKE active/active (OCI primary, interconnect-only, no IPSec backup) | `blueprints/extensions/aks-oke-active-active/` | Available |
-| Extensions | EKS + OKE active/active (OCI primary, interconnect-only, no IPSec backup) | `blueprints/extensions/eks-oke-active-active/` | Available |
+| Extensions | AKS + OKE active/passive (OCI primary, interconnect-only, no IPSec backup) | `blueprints/extensions/aks-oke-active-passive/` | Available |
+| Extensions | EKS + OKE active/passive (OCI primary, interconnect-only, no IPSec backup) | `blueprints/extensions/eks-oke-active-passive/` | Available |
 | Extensions | OKE service mesh | `blueprints/extensions/oke-service-mesh/` | Available |
 | Extensions | Exadata extension | `blueprints/extensions/exadata/` | Available |
 | Extensions | API Gateway extension | `blueprints/extensions/apigw/` | Available |

@@ -1,0 +1,38 @@
+[
+  {
+    "ParameterKey": "EKSClusterName",
+    "ParameterValue": "eks-oci-secondary"
+  },
+  {
+    "ParameterKey": "NodeGroupName",
+    "ParameterValue": "system"
+  },
+  {
+    "ParameterKey": "KubernetesVersion",
+    "ParameterValue": "1.36"
+  },
+  {
+    "ParameterKey": "NodeInstanceType",
+    "ParameterValue": "t3.medium"
+  },
+  {
+    "ParameterKey": "NodeCount",
+    "ParameterValue": "2"
+  },
+  {
+    "ParameterKey": "VpcCidr",
+    "ParameterValue": "10.64.0.0/16"
+  },
+  {
+    "ParameterKey": "SubnetOneCidr",
+    "ParameterValue": "10.64.10.0/24"
+  },
+  {
+    "ParameterKey": "SubnetTwoCidr",
+    "ParameterValue": "10.64.20.0/24"
+  },
+  {
+    "ParameterKey": "AllowedIngressCidr",
+    "ParameterValue": "0.0.0.0/0"
+  }
+]

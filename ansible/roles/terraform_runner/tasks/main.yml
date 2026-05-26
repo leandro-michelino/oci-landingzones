@@ -139,6 +139,43 @@
   environment: "{{ terraform_command_environment }}"
   when: terraform_action_normalized == "apply"
 
+- name: Read Terraform outputs for operator summary
+  ansible.builtin.command: terraform output -json
+  args:
+    chdir: "{{ terraform_working_dir }}"
+  register: terraform_output_json
+  changed_when: false
+  failed_when: false
+  environment: "{{ terraform_command_environment }}"
+  when: terraform_action_normalized in ["plan", "apply"]
+
+- name: Parse Terraform outputs for operator summary
+  ansible.builtin.set_fact:
+    terraform_outputs_parsed: "{{ terraform_output_json.stdout | from_json }}"
+  when:
+    - terraform_action_normalized in ["plan", "apply"]
+    - terraform_output_json.rc == 0
+    - terraform_output_json.stdout | trim | length > 0
+    - terraform_output_json.stdout | trim is search('^{')
+
+- name: Show friendly Terraform operator summary
+  ansible.builtin.debug:
+    msg:
+      - "Terraform {{ terraform_action_normalized }} completed for {{ terraform_working_dir }}."
+      - "Blueprint: {{ terraform_outputs_parsed.blueprint_name.value | default('not available yet') }}"
+      - "Name prefix: {{ terraform_outputs_parsed.name_prefix.value | default('not available yet') }}"
+      - "Primary cluster: {{ terraform_outputs_parsed.primary_cluster.value | default({}) | to_nice_json }}"
+      - "Secondary cluster: {{ terraform_outputs_parsed.secondary_cluster.value | default({}) | to_nice_json }}"
+      - "Kubernetes: {{ terraform_outputs_parsed.operator_summary.value.kubernetes | default({}) | to_nice_json }}"
+      - "Application endpoints: {{ terraform_outputs_parsed.operator_summary.value.application_endpoints | default({}) | to_nice_json }}"
+      - "Traffic management: {{ terraform_outputs_parsed.operator_summary.value.traffic_management | default({}) | to_nice_json }}"
+      - "Resource names: {{ terraform_outputs_parsed.operator_summary.value.resource_names | default({}) | to_nice_json }}"
+      - "Resource IDs: {{ terraform_outputs_parsed.resource_ids.value | default({}) | to_nice_json }}"
+      - "Useful commands: {{ terraform_outputs_parsed.operator_summary.value.useful_commands | default({}) | to_nice_json }}"
+  when:
+    - terraform_action_normalized in ["plan", "apply"]
+    - terraform_outputs_parsed is defined
+
 - name: Terraform destroy
   ansible.builtin.command:
     argv: >-
@@ -150,4 +187,12 @@
     chdir: "{{ terraform_working_dir }}"
   changed_when: true
   environment: "{{ terraform_command_environment }}"
+  when: terraform_action_normalized == "destroy"
+
+- name: Show friendly Terraform destroy summary
+  ansible.builtin.debug:
+    msg:
+      - "Terraform destroy completed for {{ terraform_working_dir }}."
+      - "State resources owned by this run were destroyed or destroy was idempotent."
+      - "Run 'terraform state list' in the blueprint folder to confirm no managed resources remain."
   when: terraform_action_normalized == "destroy"

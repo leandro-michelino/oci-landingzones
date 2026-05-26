@@ -641,14 +641,14 @@ replication lanes from Azure SQL/Storage into OCI Object Storage + Autonomous DB
 
 | Attribute | Value |
 | --- | --- |
-| Folder | `blueprints/extensions/aks-oke-active-active/` |
+| Folder | `blueprints/extensions/aks-oke-active-passive/` |
 | Depends on | Core Landing Zone; `blueprints/extensions/oke/`; Azure AKS baseline; hybrid networking |
 | Status | Available with OCI-primary, interconnect-only contract and no IPSec backup path. |
 
 **Why this exists.**
 Platform teams running Kubernetes in both clouds need one pattern for traffic,
 release orchestration, and day-2 operations. This blueprint defines
-active/active AKS + OKE with GitOps and controlled steering.
+active/passive AKS + OKE with GitOps and controlled steering.
 
 **Scope highlights.**
 
@@ -774,7 +774,7 @@ clouds.
 
 - Available: Hybrid network backbone (OCI DRG primary) with AWS Transit Gateway pairing contracts, optional site-to-site VPN resources, and optional Direct Connect/FastConnect interconnect mode in `blueprints/networking/aws-oci-hybrid-network-backbone/`.
 - Available: Multi-cloud DR (OCI primary, AWS standby) with DNS failover runbook metadata, RTO/RPO contracts, and drill evidence hooks in `blueprints/disaster-recovery/aws-oci-cross-cloud-dr/`.
-- Available: EKS + OKE active/active with OCI-primary OKE, AWS EKS secondary contract, weighted traffic steering, and GitOps hand-off in `blueprints/extensions/eks-oke-active-active/`.
+- Available: EKS + OKE active/passive with OCI-primary OKE, AWS EKS secondary contract, failover traffic steering, and GitOps hand-off in `blueprints/extensions/eks-oke-active-passive/`.
 - Identity federation baseline: Central IdP and AWS IAM Identity Center with OCI IAM federation for SSO and centralized RBAC mapping.
 - Data replication and analytics split: AWS RDS/S3 ingestion into OCI Object Storage + Autonomous Database (or reverse path) for analytics domains.
 - Unified security baseline: AWS Config/Security Hub/GuardDuty mapping to OCI Cloud Guard/Security Zones with shared controls matrix.

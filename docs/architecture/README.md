@@ -145,8 +145,8 @@ families. Each entry point owns its local Architecture in
 | disaster-recovery | [AWS + OCI Cross-Cloud DR](../../blueprints/disaster-recovery/aws-oci-cross-cloud-dr/) | [Architecture](../../blueprints/disaster-recovery/aws-oci-cross-cloud-dr/architecture/) |
 | disaster-recovery | [Full Stack Disaster Recovery](../../blueprints/disaster-recovery/fsdr/) | [Architecture](../../blueprints/disaster-recovery/fsdr/architecture/) |
 | extensions | [API Gateway Extension](../../blueprints/extensions/apigw/) | [Architecture](../../blueprints/extensions/apigw/architecture/) |
-| extensions | [AKS + OKE Active Active](../../blueprints/extensions/aks-oke-active-active/) | [Architecture](../../blueprints/extensions/aks-oke-active-active/architecture/) |
-| extensions | [EKS + OKE Active Active](../../blueprints/extensions/eks-oke-active-active/) | [Architecture](../../blueprints/extensions/eks-oke-active-active/architecture/) |
+| extensions | [AKS + OKE Active Passive](../../blueprints/extensions/aks-oke-active-passive/) | [Architecture](../../blueprints/extensions/aks-oke-active-passive/architecture/) |
+| extensions | [EKS + OKE Active Passive](../../blueprints/extensions/eks-oke-active-passive/) | [Architecture](../../blueprints/extensions/eks-oke-active-passive/architecture/) |
 | extensions | [OCI Container Instances](../../blueprints/extensions/container-instances/) | [Architecture](../../blueprints/extensions/container-instances/architecture/) |
 | extensions | [Event-Driven Application Platform](../../blueprints/extensions/event-driven-platform/) | [Architecture](../../blueprints/extensions/event-driven-platform/architecture/) |
 | extensions | [Exadata Extension](../../blueprints/extensions/exadata/) | [Architecture](../../blueprints/extensions/exadata/architecture/) |

@@ -16,13 +16,13 @@ backlog patterns.
 | Pattern | Available Path |
 | --- | --- |
 | Azure + OCI AI gateway | `blueprints/ai/azure-oci-ai-gateway/` |
-| AKS + OKE active/active | `blueprints/extensions/aks-oke-active-active/` |
+| AKS + OKE active/passive | `blueprints/extensions/aks-oke-active-passive/` |
 | Azure + OCI cross-cloud DR | `blueprints/disaster-recovery/azure-oci-cross-cloud-dr/` |
 | Azure + OCI dual connectivity hardening | `blueprints/networking/azure-oci-dual-connectivity/` |
 | Azure vWAN + OCI DRG transit backbone | `blueprints/networking/azure-vwan-oci-drg-transit/` |
 | AWS + OCI hybrid network backbone | `blueprints/networking/aws-oci-hybrid-network-backbone/` |
 | AWS + OCI cross-cloud DR | `blueprints/disaster-recovery/aws-oci-cross-cloud-dr/` |
-| EKS + OKE active/active | `blueprints/extensions/eks-oke-active-active/` |
+| EKS + OKE active/passive | `blueprints/extensions/eks-oke-active-passive/` |
 | OCI + AWS MySQL HeatWave DR | `blueprints/data-platform/oci-aws-mysql-heatwave-dr/` |
 
 ## Available Design Records
@@ -34,7 +34,7 @@ backlog patterns.
 | [Azure vWAN + OCI DRG Transit](AZURE-VWAN-OCI-DRG-TRANSIT.md) | OCI-primary transit design record with Azure vWAN/vHub route domain, Interconnect default when present, and IPSec/BGP-first testing contracts. | `blueprints/networking/azure-vwan-oci-drg-transit/` |
 | [AWS + OCI Hybrid Network Backbone](AWS-OCI-HYBRID-NETWORK-BACKBONE.md) | OCI DRG-primary hybrid backbone with AWS Transit Gateway, optional VPN, and Direct Connect + FastConnect contract metadata. | `blueprints/networking/aws-oci-hybrid-network-backbone/` |
 | [AWS + OCI Cross-Cloud DR](AWS-OCI-CROSS-CLOUD-DR.md) | OCI-primary, AWS-standby DR design record with DNS failover, evidence, alerting, and runbook contracts. | `blueprints/disaster-recovery/aws-oci-cross-cloud-dr/` |
-| [EKS + OKE Active Active](EKS-OKE-ACTIVE-ACTIVE.md) | OCI-primary OKE and AWS-secondary EKS active/active design record with GitOps and weighted traffic steering contracts. | `blueprints/extensions/eks-oke-active-active/` |
+| [EKS + OKE Active Passive](EKS-OKE-ACTIVE-PASSIVE.md) | OCI-primary OKE and AWS-standby EKS active/passive design record with GitOps and OCI Traffic Management failover contracts. | `blueprints/extensions/eks-oke-active-passive/` |
 | [OCI + AWS MySQL HeatWave DR](OCI-AWS-MYSQL-HEATWAVE-IPSEC-DR.md) | OCI-primary MySQL HeatWave DR over IPSec with AWS standby database, replication, and failover contracts. | `blueprints/data-platform/oci-aws-mysql-heatwave-dr/` |
 
 ## Backlog Drafts

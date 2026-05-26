@@ -156,14 +156,24 @@
 - name: Show Azure deployment outputs
   ansible.builtin.set_fact:
     azure_apply_outputs_parsed: "{{ azure_apply_outputs.stdout | from_json }}"
+    azure_apply_outputs_map: "{{ dict((azure_apply_outputs.stdout | from_json).keys() | zip((azure_apply_outputs.stdout | from_json).values() | map(attribute='value'))) }}"
   when: azure_action_normalized == "apply"
 
 - name: Summarize Azure deployment outputs
   ansible.builtin.debug:
     msg:
-      - "Azure apply completed for deployment {{ azure_deployment_name }} in resource group {{ azure_resource_group }}."
-      - "Returned output keys: {{ azure_apply_outputs_parsed.keys() | list | length }}."
-      - "Outputs (JSON): {{ azure_apply_outputs_parsed | to_nice_json }}"
+      - "Azure AKS standby apply completed."
+      - "Deployment: {{ azure_deployment_name }}"
+      - "Resource group: {{ azure_resource_group }}"
+      - "Location: {{ azure_location }}"
+      - "Cluster: {{ azure_apply_outputs_map.aksClusterName | default('not returned') }}"
+      - "Cluster ID: {{ azure_apply_outputs_map.aksClusterId | default('not returned') }}"
+      - "VNet: {{ azure_apply_outputs_map.aksVnetId | default('not returned') }}"
+      - "Subnet: {{ azure_apply_outputs_map.aksSubnetId | default('not returned') }}"
+      - "Route table: {{ azure_apply_outputs_map.aksRouteTableId | default('not returned') }}"
+      - "Network security group: {{ azure_apply_outputs_map.aksNetworkSecurityGroupId | default('not returned') }}"
+      - "Kubeconfig: az aks get-credentials --resource-group {{ azure_resource_group }} --name {{ azure_apply_outputs_map.aksClusterName | default('<cluster-name>') }}"
+      - "All outputs: {{ azure_apply_outputs_map | to_nice_json }}"
   when: azure_action_normalized == "apply"
 
 - name: Delete Azure resource group
@@ -196,7 +206,8 @@
 - name: Confirm Azure deletion request accepted
   ansible.builtin.debug:
     msg:
-      - "Azure destroy completed for resource group {{ azure_resource_group }}."
+      - "Azure AKS standby destroy completed."
+      - "Resource group: {{ azure_resource_group }}"
       - >-
         {{
           ((azure_destroy_wait.rc | default(1)) == 0)

@@ -63,7 +63,7 @@ Full inventory:
 | Pattern | Blueprint |
 |---|---|
 | AI gateway routing by region, cost, or residency | [Azure + OCI AI Gateway](blueprints/ai/azure-oci-ai-gateway/) |
-| Active/active Kubernetes (OCI-primary OKE, AKS secondary) | [AKS + OKE Active Active](blueprints/extensions/aks-oke-active-active/) |
+| Active/passive Kubernetes failover (OCI-primary OKE, AKS standby) | [AKS + OKE Active Passive](blueprints/extensions/aks-oke-active-passive/) |
 | Cross-cloud DR (OCI primary, Azure standby) | [Azure + OCI Cross-Cloud DR](blueprints/disaster-recovery/azure-oci-cross-cloud-dr/) |
 | Dual connectivity hardening (OCI DRG primary, Interconnect default when present + IPSec/BGP backup, testable without Interconnect) | [Azure + OCI Dual Connectivity Hardening](blueprints/networking/azure-oci-dual-connectivity/) |
 | vWAN transit backbone (OCI DRG primary, vWAN/vHub route domain, Interconnect default when present, IPSec-first test mode) | [Azure vWAN + OCI DRG Transit](blueprints/networking/azure-vwan-oci-drg-transit/) |
@@ -75,7 +75,7 @@ Full inventory:
 |---|---|
 | Hybrid backbone (OCI DRG primary) | [AWS + OCI Hybrid Network Backbone](blueprints/networking/aws-oci-hybrid-network-backbone/) |
 | Cross-cloud DR (OCI primary, AWS standby) | [AWS + OCI Cross-Cloud DR](blueprints/disaster-recovery/aws-oci-cross-cloud-dr/) |
-| Active/active Kubernetes (OCI-primary OKE, EKS secondary) | [EKS + OKE Active Active](blueprints/extensions/eks-oke-active-active/) |
+| Active/passive Kubernetes failover (OCI-primary OKE, EKS standby) | [EKS + OKE Active Passive](blueprints/extensions/eks-oke-active-passive/) |
 | MySQL DR over IPSec (OCI primary) | [OCI + AWS MySQL HeatWave DR](blueprints/data-platform/oci-aws-mysql-heatwave-dr/) |
 
 AWS deployment quick paths:
@@ -88,6 +88,16 @@ All Azure+OCI and AWS+OCI blueprints include:
 - deployable cloud-side sessions (`azure-*.yml` or `aws-*.yml`)
 - local `hello-world/index.html`
 - `ansible/serve-hello-world.yml` and `ansible/stop-hello-world.yml`
+
+Kubernetes multicloud blueprints should use the latest common Kubernetes minor
+version supported by all selected providers and regions. The Kubernetes
+multicloud extension blueprints use an OCI-primary active/passive failover
+model by default, with OCI Traffic Management as the DNS failover layer when a
+delegated public zone is available. Direct IPs validate each application
+endpoint, while browser failover tests require a real public domain or
+subdomain delegated to the OCI DNS zone nameservers. Active/active remains an
+intentional option when the application, data layer, and GSLB policy are ready
+for dual serving.
 
 Design notes and backlog:
 - [Multicloud Notes](docs/multicloud/README.md)

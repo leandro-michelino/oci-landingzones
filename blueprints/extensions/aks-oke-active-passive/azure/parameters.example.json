@@ -1,0 +1,48 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "clusterName": {
+      "value": "aks-oci-secondary-dev"
+    },
+    "dnsPrefix": {
+      "value": "aksocisecondarydev"
+    },
+    "kubernetesVersion": {
+      "value": "1.36"
+    },
+    "nodePoolName": {
+      "value": "system"
+    },
+    "nodeCount": {
+      "value": 1
+    },
+    "nodeVmSize": {
+      "value": "Standard_D4ds_v5"
+    },
+    "vnetName": {
+      "value": "vnet-aks-oci-secondary-dev"
+    },
+    "vnetCidr": {
+      "value": "10.62.0.0/16"
+    },
+    "aksSubnetName": {
+      "value": "snet-aks-oci-secondary-dev"
+    },
+    "aksSubnetCidr": {
+      "value": "10.62.10.0/24"
+    },
+    "routeTableName": {
+      "value": "rt-aks-oci-secondary-dev"
+    },
+    "networkSecurityGroupName": {
+      "value": "nsg-aks-oci-secondary-dev"
+    },
+    "tags": {
+      "value": {
+        "Blueprint": "aks-oke-active-passive",
+        "ManagedBy": "bicep"
+      }
+    }
+  }
+}
