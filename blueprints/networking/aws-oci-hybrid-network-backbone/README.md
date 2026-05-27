@@ -31,6 +31,13 @@ interconnect cutover between OCI and AWS.
 - You need deterministic route and connectivity contracts for operations runbooks.
 - You want deploy-and-use OCI backbone networking in the same blueprint.
 
+## Practical Use Cases
+
+- **AWS apps with OCI shared services:** Keep AWS workloads connected to OCI databases, directory services, observability, or security services without turning every VPC into a custom snowflake.
+- **IPSec-first rollout:** Bring up encrypted connectivity quickly, prove routes and operations, then move to Direct Connect plus FastConnect when the dedicated path is ready.
+- **OCI as the network anchor:** Use OCI DRG as the primary routing point while AWS Transit Gateway aggregates the AWS side.
+- **Migration and coexistence:** Run workloads in both clouds during a phased move, with route intent captured clearly for the teams doing the cutover.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the
@@ -214,3 +221,10 @@ aws ec2 describe-customer-gateways --region eu-west-1 \
 ```bash
 ansible-playbook -i localhost, ansible/aws-ipsec-verify.yml
 ```
+
+## What Good Looks Like
+
+- OCI DRG exists or is reused intentionally, and the backbone VCN attachment is clear.
+- AWS CIDRs are documented and do not overlap OCI CIDRs.
+- VPN or interconnect mode matches the IDs supplied in tfvars.
+- Connectivity and routing outputs are useful enough for the AWS and OCI teams to operate from.

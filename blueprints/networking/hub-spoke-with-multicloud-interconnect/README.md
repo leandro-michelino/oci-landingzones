@@ -29,6 +29,13 @@ multi-provider connectivity.
 - Dedicated and VPN paths are both part of the design.
 - Private DNS and inspection may be layered later.
 
+## Practical Use Cases
+
+- **Generic multicloud path:** Combine hub-spoke OCI networking with optional FastConnect and IPSec for non-Azure-specific interconnects.
+- **Private plus fallback design:** Use FastConnect for normal traffic and IPSec as a backup or early validation path.
+- **Provider comparison:** Keep the same OCI topology while testing different remote-cloud or provider hand-offs.
+- **Reusable hybrid foundation:** Start with one pattern that can later be specialized for Azure, AWS, or partner networks.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -160,6 +167,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- The chosen connectivity flags match the provider IDs supplied.
+- FastConnect and IPSec routes do not fight each other.
+- DRG route tables show the intended remote CIDRs.
+- Control-plane and packet tests are recorded for every enabled path.
 
 ## Review Before Apply
 

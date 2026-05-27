@@ -29,6 +29,13 @@ reviewable.
 - Bastion placement must be part of the network design.
 - Privileged access should not be hidden in workload subnets.
 
+## Practical Use Cases
+
+- **Controlled admin entry:** Give operators a reviewed jump path into private subnets without opening broad public access.
+- **Temporary project access:** Support migration or implementation teams while keeping the route and security posture visible.
+- **Break-glass operations:** Keep a known access point available for emergencies, with ownership and teardown understood.
+- **Private workload onboarding:** Let early workloads be reached for setup before mature automation is in place.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -158,6 +165,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- The jump host subnet, ingress CIDRs, and allowed protocols are reviewed.
+- Access is limited to the operators and source networks that actually need it.
+- Spoke routing does not accidentally expose private tiers.
+- The team has a clear plan to retire or harden the jump path.
 
 ## Review Before Apply
 

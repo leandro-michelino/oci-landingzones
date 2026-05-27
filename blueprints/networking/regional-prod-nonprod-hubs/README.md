@@ -28,6 +28,13 @@ isolation is stronger than naming alone.
 - Network teams want environment-specific hub outputs.
 - Shared regional patterns should still keep blast radius controlled.
 
+## Practical Use Cases
+
+- **Environment isolation:** Create separate regional hubs for production and nonproduction instead of relying on naming conventions.
+- **Shared regional pattern:** Give both environments similar routing primitives while keeping blast radius separate.
+- **Governed expansion:** Let teams add spokes to the right environment hub as workloads grow.
+- **Audit-friendly topology:** Show clearly where prod and nonprod traffic can and cannot mix.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -151,6 +158,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- Prod and nonprod CIDRs do not overlap.
+- Each environment has its own hub resources and outputs.
+- Routes between environments are explicit, not accidental.
+- Naming and tags make ownership obvious.
 
 ## Review Before Apply
 

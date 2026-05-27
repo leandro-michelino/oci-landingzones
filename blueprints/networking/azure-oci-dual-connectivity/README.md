@@ -31,6 +31,13 @@ can be enabled in the final cutover stage.
 - Operations require a deterministic IPSec/BGP fallback posture.
 - Teams need explicit contracts for routing, DNS, and failover runbooks.
 
+## Practical Use Cases
+
+- **Azure to OCI private baseline:** Use IPSec/BGP first so the team can validate routing before committing production traffic to a private circuit.
+- **Interconnect cutover planning:** Keep ExpressRoute plus FastConnect details in the same operating model without pretending the dedicated path exists too early.
+- **Fallback design:** Document the path preference and recovery steps before a circuit outage makes everyone improvise.
+- **Cross-cloud DNS and probes:** Record resolver endpoints and health probes so failover checks are repeatable.
+
 ## What This Deploys
 
 | Kind | Name | Source Or Role |
@@ -214,3 +221,10 @@ ansible-playbook -i localhost, ansible/azure-ipsec-verify.yml
 ```bash
 CONFIRM_AZURE_DESTROY=true ansible-playbook -i localhost, ansible/azure-destroy.yml
 ```
+
+## What Good Looks Like
+
+- The selected connectivity mode matches the Azure and OCI resources that actually exist.
+- IPSec fallback has a real Azure public endpoint when enabled.
+- Route and DNS contracts show the expected Azure CIDRs, probes, and convergence target.
+- Runbook outputs explain what to check before failover and before restoration.

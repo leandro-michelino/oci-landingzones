@@ -29,6 +29,13 @@ inspected transit paths.
 - HA route targets are required.
 - Security or network teams own an appliance-based inspection model.
 
+## Practical Use Cases
+
+- **Highly available NVA transit:** Use paired NVAs when custom inspection or routing must survive instance failure.
+- **Enterprise firewall pattern:** Prepare a hub design where third-party firewall appliances handle transit paths.
+- **Route symmetry testing:** Validate active/passive or active/active behavior before production traffic lands.
+- **Centralized shared inspection:** Keep workload spokes simple while routing sensitive paths through the NVA tier.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -157,6 +164,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- Both NVA instances deploy in the intended HA placement.
+- Route tables point traffic to the correct floating or active target.
+- Failover is tested with realistic flows.
+- Management, health checks, and recovery steps are documented.
 
 ## Review Before Apply
 

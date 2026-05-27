@@ -29,6 +29,13 @@ the workload network.
 - Security teams want ZPR policy review before apply.
 - The topology is smaller than hub-spoke but still needs strong boundaries.
 
+## Practical Use Cases
+
+- **Single VCN with micro-segmentation:** Build a three-tier workload network where ZPR controls are present from day one.
+- **Sensitive application baseline:** Use policy-backed segmentation for workloads that need stricter east-west control.
+- **ZPR learning path:** Show how network tiers and ZPR attributes work together without the complexity of hub-spoke.
+- **Pre-production policy review:** Validate segmentation behavior before promoting the application network pattern.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -158,6 +165,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- ZPR policies map cleanly to web, app, and database tiers.
+- Expected flows work and unexpected flows are denied.
+- Subnets, routes, and security lists do not contradict the ZPR intent.
+- Application and security teams understand how to request policy changes.
 
 ## Review Before Apply
 

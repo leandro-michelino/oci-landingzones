@@ -28,6 +28,13 @@ consume brownfield networking cleanly.
 - You need a consistent output contract without creating VCNs.
 - Brownfield resources must be handed off to extensions or workload blueprints.
 
+## Practical Use Cases
+
+- **Brownfield landing zones:** Normalize existing VCNs, subnets, DRGs, and route targets so newer blueprints can consume them cleanly.
+- **Shared network ownership:** Let a network team keep managing the actual VCN while application blueprints consume a stable hand-off.
+- **Migration without rebuild:** Point downstream modules at known IDs instead of recreating networks that already passed review.
+- **Audit cleanup:** Put the important existing network IDs in one readable place for review and automation.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -151,6 +158,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- Every referenced VCN, subnet, DRG, and route target ID is intentional and current.
+- Downstream blueprints can consume the outputs without hardcoding brownfield IDs again.
+- CIDR and DNS labels match the real environment.
+- Ownership is clear: this blueprint documents existing resources; it does not pretend to own them.
 
 ## Review Before Apply
 

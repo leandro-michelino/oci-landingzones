@@ -192,6 +192,13 @@ That file documents the ownership boundary, Terraform components, request flow, 
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
 
+## What Good Looks Like
+
+- FortiGate instances deploy in the intended subnets and HA roles are clear.
+- Route tables send inspected traffic through the firewall path.
+- Management access is explicit and restricted.
+- Failover behavior is tested before production traffic depends on it.
+
 ## Review Before Apply
 
 - Confirm FortiGate marketplace terms and licensing are accepted before enabling the nodes.

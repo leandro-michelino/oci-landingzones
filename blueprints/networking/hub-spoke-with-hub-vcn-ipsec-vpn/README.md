@@ -28,6 +28,13 @@ Adds IPSec VPN connectivity to a hub-spoke network for encrypted hybrid connecti
 - CPE and tunnel settings need reviewable Terraform inputs.
 - DRG routing must be aligned with workload spokes.
 
+## Practical Use Cases
+
+- **Encrypted hybrid starter:** Connect a hub-spoke OCI network to a remote site before a dedicated circuit exists.
+- **Backup path:** Keep IPSec as a fallback when FastConnect or another private path is down.
+- **Partner or customer edge tests:** Validate CPE settings, static routes, and tunnel health with a small blast radius.
+- **Low-volume private access:** Support simple private connectivity where a full circuit is not justified.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -156,6 +163,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- CPE public IP and static routes are correct.
+- OCI IPSec tunnels are available and, where configured, BGP is healthy.
+- Route tables send remote CIDRs to the DRG.
+- A packet test proves traffic can cross the VPN path.
 
 ## Review Before Apply
 

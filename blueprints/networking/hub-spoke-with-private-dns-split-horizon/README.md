@@ -29,6 +29,13 @@ split-horizon name resolution.
 - Workload spokes need shared resolver behavior.
 - Hybrid or multicloud name resolution must be explicit.
 
+## Practical Use Cases
+
+- **Private name resolution:** Give hub and spoke workloads consistent private DNS without leaking internal names publicly.
+- **Hybrid DNS hand-off:** Expose resolver outputs that on-premises or another cloud can forward to.
+- **Application modernization:** Keep private service names stable while workloads move between spokes.
+- **Central DNS governance:** Let the platform team own zones and views instead of each workload inventing DNS behavior.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -156,6 +163,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- Private zones, views, and resolver endpoints match the intended namespace.
+- Spokes can resolve the names they need and cannot resolve names they should not.
+- Forwarding rules are documented for hybrid consumers.
+- DNS tests are run from at least one representative subnet.
 
 ## Review Before Apply
 

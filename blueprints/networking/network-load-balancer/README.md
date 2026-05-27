@@ -16,6 +16,13 @@ private exposure, and clear network ownership boundaries.
 | Default posture | Private by default; creation disabled until subnet and listener design are approved. |
 | Customer paths | Extension-only against an existing VCN, or base-plus-extension after Networking. |
 
+## Practical Use Cases
+
+- **Private TCP service entry:** Expose databases, message brokers, or custom TCP services inside the network without adding HTTP assumptions.
+- **UDP or mixed protocol workloads:** Use NLB listeners when an HTTP load balancer is the wrong tool.
+- **Stable service IP:** Give clients one predictable address while backend instances rotate.
+- **Extension of an existing VCN:** Add Layer 4 balancing to a reviewed network without rebuilding the VCN.
+
 ## What This Deploys
 
 | Resource | Enable Flag |
@@ -53,6 +60,13 @@ private exposure, and clear network ownership boundaries.
 | `backend_set_names` | Backend set names keyed by logical name. |
 | `listener_ids` | Listener OCIDs keyed by logical name. |
 | `access_policy_id` | Optional IAM policy OCID. |
+
+## What Good Looks Like
+
+- Subnet, NSGs, listeners, and backend ports match the approved traffic path.
+- Health checks reflect the real service behavior.
+- Public exposure is reviewed; private is the default posture.
+- Backends register cleanly and clients can connect through the listener.
 
 ## Validation
 

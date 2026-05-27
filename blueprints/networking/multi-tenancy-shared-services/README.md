@@ -29,6 +29,13 @@ DNS and common network services.
 - Private DNS and hub services need a common place.
 - Spoke outputs must be consumed by downstream teams.
 
+## Practical Use Cases
+
+- **Shared network services:** Create a central services VCN for DNS, tooling, inspection, or platform utilities used by multiple tenants.
+- **Tenant separation:** Give each operating entity a clean route relationship to shared services without collapsing ownership boundaries.
+- **Platform team baseline:** Provide common networking once, then let tenant teams consume it through outputs.
+- **Governed hub services:** Keep common endpoints discoverable and reviewable instead of duplicated in every workload VCN.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -153,6 +160,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- Shared services CIDRs do not overlap tenant networks.
+- Routing clearly separates shared-services access from tenant-to-tenant access.
+- DNS and service endpoints are documented for consumers.
+- Tenant teams know which outputs to consume and which resources they must not modify.
 
 ## Review Before Apply
 

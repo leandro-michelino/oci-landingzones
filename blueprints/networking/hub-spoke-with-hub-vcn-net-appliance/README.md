@@ -29,6 +29,13 @@ behavior.
 - Route targets must point through private IPs.
 - Transit traffic needs explicit HA or inspection review.
 
+## Practical Use Cases
+
+- **Custom inspection or routing:** Insert a network appliance when traffic handling needs more than native route targets.
+- **Third-party service chaining:** Put a vendor NVA in the hub and steer spoke traffic through it intentionally.
+- **Lab for route behavior:** Test appliance next-hop behavior before adopting a production inspection design.
+- **Centralized egress control:** Make egress pass through a controlled point instead of each spoke choosing its own path.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -157,6 +164,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- The appliance subnet, next-hop targets, and route tables agree.
+- Traffic symmetry is understood before stateful inspection is enabled.
+- Health and management access are documented.
+- Spokes only route through the appliance where intended.
 
 ## Review Before Apply
 

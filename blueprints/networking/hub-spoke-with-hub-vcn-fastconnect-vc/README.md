@@ -29,6 +29,13 @@ connectivity.
 - DRG, hub VCN, and provider circuit state need a single blueprint.
 - Network teams need explicit hand-off outputs.
 
+## Practical Use Cases
+
+- **Dedicated private connectivity:** Attach a hub-spoke OCI network to FastConnect for predictable hybrid routing.
+- **Data center to OCI:** Connect on-premises networks into OCI through the DRG while spokes stay cleanly segmented.
+- **Partner interconnect validation:** Test provider service keys, BGP, and route advertisements before production cutover.
+- **Latency-sensitive workloads:** Move steady-state traffic off public internet paths and onto a private circuit.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -159,6 +166,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- FastConnect provider details and BGP settings match the provider hand-off.
+- The virtual circuit reaches a provisioned state and BGP comes up.
+- DRG route tables advertise and learn only the intended prefixes.
+- Packet tests prove traffic in both directions before cleanup or handoff.
 
 ## Review Before Apply
 

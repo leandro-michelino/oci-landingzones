@@ -29,6 +29,13 @@ gateways, and security lists.
 - Subnet and route-table design is customer-specific.
 - A single workload VCN needs repeatable Terraform ownership.
 
+## Practical Use Cases
+
+- **Custom workload VCN:** Build web, app, and database subnet tiers with CIDRs and controls chosen for a real application.
+- **Application team landing zone:** Give one team a self-contained network before it joins a larger hub design.
+- **Nonstandard subnet layout:** Use custom maps when defaults are too simple for the workload.
+- **Design validation:** Plan a bespoke three-tier topology before adding appliances, DNS, or DRG attachments.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -159,6 +166,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- Each tier has the intended CIDR, route table, and security list.
+- Public and private subnet behavior is deliberate.
+- Gateway choices match the application egress and service-access needs.
+- Outputs are ready for compute, database, or security extensions.
 
 ## Review Before Apply
 

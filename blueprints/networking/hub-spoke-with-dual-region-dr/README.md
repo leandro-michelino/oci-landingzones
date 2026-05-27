@@ -29,6 +29,13 @@ regional separation.
 - Primary and secondary traffic paths need matching structure.
 - DR planning requires region-specific outputs.
 
+## Practical Use Cases
+
+- **Regional DR foundation:** Create paired hub-spoke networks so disaster recovery starts with routing, not last-minute subnet design.
+- **Active/passive application estates:** Keep the secondary region ready for replicated services and controlled failover.
+- **Compliance-driven separation:** Show auditors that the DR region has a real network landing zone, not just a diagram.
+- **Runbook rehearsal:** Use consistent outputs to script validation between primary and secondary regions.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -155,6 +162,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- Primary and secondary CIDRs do not overlap.
+- Both regions expose the expected hub, spoke, subnet, and DRG outputs.
+- Naming makes regional ownership obvious.
+- The application team knows which region is active and which is standby.
 
 ## Review Before Apply
 

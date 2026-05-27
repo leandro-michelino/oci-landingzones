@@ -29,6 +29,13 @@ landing-zone network.
 - A DRG is the routing hub.
 - Spoke VCN subnet tiers need repeatable creation.
 
+## Practical Use Cases
+
+- **Classic routed landing zone:** Create a hub VCN, DRG, and workload spokes with a predictable three-tier subnet model.
+- **Shared services hub:** Put routing, inspection, DNS, or operations services in the hub while app teams land in spokes.
+- **Reusable customer baseline:** Start with a clean topology that later blueprints can extend with VPN, FastConnect, firewall, or DNS.
+- **Environment starter kit:** Give platform teams a repeatable prod, nonprod, or lab network shape.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -161,6 +168,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- Hub and spoke CIDRs are non-overlapping and large enough for the environment.
+- Each spoke has the expected web, app, and database subnet layout.
+- DRG attachments exist for the hub and every intended spoke.
+- Route tables and security lists match the traffic model before workloads are placed.
 
 ## Review Before Apply
 

@@ -29,6 +29,13 @@ the topology.
 - Spokes need identity-aware segmentation.
 - Network and IAM teams need shared review of policy boundaries.
 
+## Practical Use Cases
+
+- **Micro-segmented hub-spoke:** Apply ZPR controls to a routed landing zone so network reachability and identity-aware policy move together.
+- **Regulated workload zones:** Keep sensitive application tiers isolated even inside the same regional network design.
+- **Policy-first onboarding:** Give teams a blueprint where segmentation is part of day one, not a cleanup later.
+- **Security validation:** Review ZPR policies alongside subnets, routes, and DRG attachments.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -154,6 +161,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- ZPR namespace, attributes, and policies are created intentionally.
+- Allowed flows match application requirements and denied flows are tested.
+- Route reachability does not bypass segmentation expectations.
+- Security owners can map policies back to workload tiers.
 
 ## Review Before Apply
 

@@ -29,6 +29,13 @@ demos, first plans, and baseline workload networks.
 - A single workload network is enough.
 - You want a fast example before customizing a larger topology.
 
+## Practical Use Cases
+
+- **Fast demo network:** Spin up a sensible three-tier VCN without designing every subnet from scratch.
+- **Training and workshops:** Give learners a readable baseline before introducing hub-spoke or inspection patterns.
+- **First workload plan:** Start simple, inspect the plan, then decide what needs to become custom.
+- **Module smoke test:** Validate provider and module behavior with low documentation overhead.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -155,6 +162,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- The default CIDRs are acceptable for the target tenancy or lab.
+- Web, app, and database subnet roles are clear.
+- Route and security defaults are reviewed before real workloads land.
+- The team knows when to switch to the custom blueprint instead.
 
 ## Review Before Apply
 

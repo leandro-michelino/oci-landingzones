@@ -29,6 +29,13 @@ subnet pattern.
 - Private endpoints and service access drive the network design.
 - A compact private network is enough for the deployment.
 
+## Practical Use Cases
+
+- **Private service VCN:** Create a minimal private-first network for workloads that should not expose public application subnets.
+- **Private endpoint tests:** Validate service access through private endpoints before connecting to a larger hub.
+- **Small controlled workload:** Give a team a compact network shape with fewer moving parts than hub-spoke.
+- **Security-first demo:** Show private access patterns without building a full landing zone.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -157,6 +164,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- No unintended public application path exists.
+- Private endpoint subnets and security lists match the service requirements.
+- Route tables send traffic only where intended.
+- Connectivity tests run from inside the private network.
 
 ## Review Before Apply
 

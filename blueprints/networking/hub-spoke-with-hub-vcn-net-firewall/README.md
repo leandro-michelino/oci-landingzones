@@ -179,6 +179,13 @@ That file documents the ownership boundary, Terraform components, request flow, 
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
 
+## What Good Looks Like
+
+- Firewall policy exists and is attached to the firewall.
+- Routes point inspected traffic at the firewall endpoint.
+- Allowed and denied flows are tested with representative workloads.
+- The operations team knows how to update policy without breaking routing.
+
 ## Review Before Apply
 
 - Confirm firewall policy readiness.
