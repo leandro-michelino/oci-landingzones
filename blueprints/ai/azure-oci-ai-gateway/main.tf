@@ -5,7 +5,7 @@ resource "oci_core_vcn" "gateway" {
   compartment_id = local.target_compartment_ocid
   cidr_block     = var.oci_gateway_vcn_cidr
   display_name   = local.gateway_vcn_name
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 }
 
@@ -16,7 +16,7 @@ resource "oci_core_internet_gateway" "gateway" {
   vcn_id         = oci_core_vcn.gateway[0].id
   display_name   = local.gateway_igw_name
   enabled        = true
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 }
 
@@ -26,7 +26,7 @@ resource "oci_core_route_table" "gateway" {
   compartment_id = local.target_compartment_ocid
   vcn_id         = oci_core_vcn.gateway[0].id
   display_name   = local.gateway_rt_name
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 
   route_rules {
@@ -42,7 +42,7 @@ resource "oci_core_security_list" "gateway" {
   compartment_id = local.target_compartment_ocid
   vcn_id         = oci_core_vcn.gateway[0].id
   display_name   = local.gateway_sl_name
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 
   egress_security_rules {
@@ -81,7 +81,7 @@ resource "oci_core_subnet" "gateway" {
   security_list_ids = [oci_core_security_list.gateway[0].id]
 
   prohibit_public_ip_on_vnic = false
-  defined_tags               = var.defined_tags
+  defined_tags               = local.defined_tags
   freeform_tags              = local.common_freeform_tags
 }
 
@@ -104,7 +104,7 @@ resource "oci_apigateway_gateway" "this" {
   certificate_id             = var.oci_gateway_certificate_id
   display_name               = local.oci_gateway_name
   network_security_group_ids = var.oci_gateway_network_security_group_ids
-  defined_tags               = var.defined_tags
+  defined_tags               = local.defined_tags
   freeform_tags              = local.common_freeform_tags
 
   lifecycle {
@@ -122,7 +122,7 @@ resource "oci_apigateway_deployment" "this" {
   gateway_id     = local.oci_gateway_id_effective
   path_prefix    = var.gateway_path_prefix
   display_name   = local.oci_deployment_name
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 
   specification {
@@ -165,7 +165,7 @@ resource "oci_apigateway_usage_plan" "this" {
 
   compartment_id = local.target_compartment_ocid
   display_name   = coalesce(each.value.display_name, "${local.name_prefix}-up-${each.key}")
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 
   entitlements {
@@ -222,7 +222,7 @@ resource "oci_objectstorage_bucket" "audit" {
   versioning            = var.oci_audit_bucket_versioning
   object_events_enabled = true
   kms_key_id            = var.oci_kms_key_id
-  defined_tags          = var.defined_tags
+  defined_tags          = local.defined_tags
   freeform_tags         = local.common_freeform_tags
 }
 
@@ -232,7 +232,7 @@ resource "oci_logging_log_group" "routing" {
   compartment_id = local.target_compartment_ocid
   display_name   = local.routing_log_group_name
   description    = "Cross-cloud AI gateway routing logs for ${local.name_prefix}."
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 }
 
@@ -244,7 +244,7 @@ resource "oci_identity_policy" "access" {
   name           = "${local.name_prefix}-pol-ai-gw"
   description    = "AI gateway access policy for ${local.name_prefix}."
   statements     = var.policy_statements
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 }
 

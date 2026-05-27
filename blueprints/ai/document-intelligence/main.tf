@@ -15,7 +15,7 @@ resource "oci_objectstorage_bucket" "this" {
   versioning            = var.bucket_versioning
   object_events_enabled = true
   kms_key_id            = var.kms_key_id
-  defined_tags          = var.defined_tags
+  defined_tags          = local.defined_tags
   freeform_tags         = local.common_freeform_tags
 }
 
@@ -25,7 +25,7 @@ resource "oci_ai_document_project" "this" {
   compartment_id = local.target_compartment_ocid
   display_name   = local.project_display_name
   description    = var.project_description
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 }
 
@@ -37,7 +37,7 @@ resource "oci_events_rule" "intake" {
   description    = "Invoke document intelligence handler for new intake objects."
   condition      = var.event_rule_condition
   is_enabled     = true
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 
   actions {
@@ -58,6 +58,6 @@ resource "oci_identity_policy" "access" {
   name           = "${local.name_prefix}-pol-access"
   description    = "Document intelligence access policy for ${local.name_prefix}."
   statements     = var.policy_statements
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 }

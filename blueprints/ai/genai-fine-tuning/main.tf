@@ -15,7 +15,7 @@ resource "oci_objectstorage_bucket" "training" {
   versioning            = var.training_bucket_versioning
   object_events_enabled = true
   kms_key_id            = var.kms_key_id
-  defined_tags          = var.defined_tags
+  defined_tags          = local.defined_tags
   freeform_tags         = local.common_freeform_tags
 }
 
@@ -28,7 +28,7 @@ resource "oci_generative_ai_dedicated_ai_cluster" "this" {
   type           = var.cluster_type
   unit_count     = var.cluster_unit_count
   unit_shape     = var.cluster_unit_shape
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 }
 
@@ -39,7 +39,7 @@ resource "oci_generative_ai_model" "this" {
   display_name   = local.model_display_name
   description    = var.model_description
   base_model_id  = var.base_model_id
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 
   fine_tune_details {
@@ -70,7 +70,7 @@ resource "oci_generative_ai_endpoint" "this" {
   dedicated_ai_cluster_id           = local.cluster_id
   model_id                          = local.model_id
   generative_ai_private_endpoint_id = var.generative_ai_private_endpoint_id
-  defined_tags                      = var.defined_tags
+  defined_tags                      = local.defined_tags
   freeform_tags                     = local.common_freeform_tags
 }
 
@@ -82,6 +82,6 @@ resource "oci_identity_policy" "access" {
   name           = "${local.name_prefix}-pol-access"
   description    = "GenAI fine-tuning access policy for ${local.name_prefix}."
   statements     = var.policy_statements
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 }

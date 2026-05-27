@@ -13,7 +13,7 @@ resource "oci_generative_ai_generative_ai_private_endpoint" "this" {
   dns_prefix     = var.dns_prefix
   subnet_id      = var.subnet_id
   nsg_ids        = var.nsg_ids
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 }
 
@@ -28,7 +28,7 @@ resource "oci_objectstorage_bucket" "archive" {
   versioning            = var.archive_versioning
   object_events_enabled = var.archive_object_events_enabled
   kms_key_id            = var.kms_key_id
-  defined_tags          = var.defined_tags
+  defined_tags          = local.defined_tags
   freeform_tags         = local.common_freeform_tags
 }
 
@@ -39,6 +39,6 @@ resource "oci_identity_policy" "access" {
   name           = "${local.name_prefix}-pol-genai"
   description    = "Scoped OCI Generative AI access for ${local.name_prefix}."
   statements     = var.policy_statements
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 }

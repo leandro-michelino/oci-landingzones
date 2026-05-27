@@ -15,7 +15,7 @@ resource "oci_objectstorage_bucket" "audit" {
   versioning            = var.audit_bucket_versioning
   object_events_enabled = true
   kms_key_id            = var.kms_key_id
-  defined_tags          = var.defined_tags
+  defined_tags          = local.defined_tags
   freeform_tags         = local.common_freeform_tags
 }
 
@@ -25,7 +25,7 @@ resource "oci_logging_log_group" "gateway" {
   compartment_id = local.target_compartment_ocid
   display_name   = local.log_group_name
   description    = "GenAI gateway routing and audit logs for ${local.name_prefix}."
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 }
 
@@ -38,7 +38,7 @@ resource "oci_apigateway_gateway" "this" {
   certificate_id             = var.gateway_certificate_id
   display_name               = local.gateway_display_name
   network_security_group_ids = var.gateway_network_security_group_ids
-  defined_tags               = var.defined_tags
+  defined_tags               = local.defined_tags
   freeform_tags              = local.common_freeform_tags
 }
 
@@ -49,7 +49,7 @@ resource "oci_apigateway_deployment" "this" {
   gateway_id     = local.gateway_id
   path_prefix    = var.gateway_path_prefix
   display_name   = local.deployment_display_name
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 
   specification {
@@ -78,7 +78,7 @@ resource "oci_apigateway_usage_plan" "this" {
 
   compartment_id = local.target_compartment_ocid
   display_name   = coalesce(each.value.display_name, "${local.name_prefix}-up-${each.key}")
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 
   entitlements {
@@ -119,6 +119,6 @@ resource "oci_identity_policy" "access" {
   name           = "${local.name_prefix}-pol-access"
   description    = "GenAI gateway access policy for ${local.name_prefix}."
   statements     = var.policy_statements
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 }

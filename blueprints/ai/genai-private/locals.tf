@@ -10,4 +10,5 @@ locals {
   endpoint_display_name   = coalesce(var.endpoint_display_name, "${local.name_prefix}-pe-genai")
   archive_bucket_name     = coalesce(var.archive_bucket_name, "${local.name_prefix}-bkt-genai-archive")
   policy_compartment_ocid = coalesce(var.policy_compartment_ocid, var.tenancy_ocid)
+  defined_tags            = length(var.defined_tags) > 0 ? var.defined_tags : null
 }

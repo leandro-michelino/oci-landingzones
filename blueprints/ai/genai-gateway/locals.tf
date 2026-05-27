@@ -4,6 +4,7 @@ locals {
   name_prefix             = "${var.org}-${var.environment}-${var.region_key}"
   target_compartment_ocid = coalesce(var.compartment_ocid, var.tenancy_ocid)
   policy_compartment_ocid = coalesce(var.policy_compartment_ocid, var.tenancy_ocid)
+  defined_tags            = length(var.defined_tags) > 0 ? var.defined_tags : null
   gateway_display_name    = coalesce(var.gateway_display_name, "${local.name_prefix}-apigw")
   deployment_display_name = coalesce(var.deployment_display_name, "${local.name_prefix}-apidep")
   audit_bucket_name       = coalesce(var.audit_bucket_name, "${local.name_prefix}-bkt-audit")

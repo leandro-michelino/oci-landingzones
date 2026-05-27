@@ -4,6 +4,7 @@ locals {
   name_prefix             = "${var.org}-${var.environment}-${var.region_key}"
   target_compartment_ocid = coalesce(var.compartment_ocid, var.tenancy_ocid)
   policy_compartment_ocid = coalesce(var.policy_compartment_ocid, var.tenancy_ocid)
+  defined_tags            = length(var.defined_tags) > 0 ? var.defined_tags : null
   training_bucket_name    = coalesce(var.training_bucket_name, "${local.name_prefix}-bkt-training")
   cluster_display_name    = coalesce(var.cluster_display_name, "${local.name_prefix}-cluster-default")
   model_display_name      = coalesce(var.model_display_name, "${local.name_prefix}-model-default")
