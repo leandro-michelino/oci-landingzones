@@ -210,14 +210,14 @@
       when: validation_available_tools["tflint"] | default(false)
 
     - name: Run Trivy config scan when available
-      ansible.builtin.command: trivy config .
+      ansible.builtin.command: "trivy --config {{ validation_repo_root }}/trivy.yaml config ."
       args:
         chdir: "{{ validation_repo_root }}"
       changed_when: false
       when: validation_available_tools["trivy"] | default(false)
 
     - name: Run checkov when available
-      ansible.builtin.command: checkov -d . --framework terraform --compact
+      ansible.builtin.command: "checkov -d . --config-file {{ validation_repo_root }}/.checkov.yaml"
       args:
         chdir: "{{ validation_repo_root }}"
       changed_when: false

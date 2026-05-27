@@ -25,8 +25,13 @@ handoff work.
 ## Friendly Disclaimer
 
 This is a personal engineering project, not an official Oracle product or
-Oracle-supported package. Use it as a strong starting point, then tune it to
-your tenancy, controls, and operating model.
+Oracle-supported package.
+
+Think of these blueprints as complementary ideas, lab patterns, and operator
+notes around the official Oracle Enterprise Landing Zone (OELZ) repositories,
+not as a replacement for them and not as Oracle-owned guidance. Use this repo as
+a strong starting point, then tune it to your tenancy, controls, and operating
+model.
 
 ## Start Here
 
@@ -218,7 +223,7 @@ plan sessions still require logged-in `az` or `aws` CLIs.
 | [compliance](blueprints/compliance/) | SCCA, Zero Trust, Healthcare/PCI, and security posture automation. |
 | [disaster-recovery](blueprints/disaster-recovery/) | OCI and multicloud DR patterns. |
 | [devops](blueprints/devops/) | OCI DevOps CI/CD foundation. |
-| [industry](blueprints/industry/) | Vertical patterns (telco, secure desktops). |
+| [industry](BLUEPRINTS.md#industry) | Vertical patterns (telco, secure desktops). |
 
 ## Quality Checks
 

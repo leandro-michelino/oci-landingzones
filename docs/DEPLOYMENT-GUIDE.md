@@ -4,6 +4,11 @@ This guide describes the intended deployment sequence. Every blueprint has real
 Terraform wiring now; use the enable flags and tfvars examples to decide which
 resources should be created in a specific tenancy.
 
+These patterns are complementary field notes and lab-friendly ideas around the
+official Oracle Enterprise Landing Zone (OELZ) repositories. They are not an
+official Oracle product, not Oracle-owned guidance, and not a substitute for the
+official OELZ repositories or Oracle support.
+
 ## Step 0 - Bootstrap
 
 Bootstrap verifies local prerequisites and records the manual decisions needed
@@ -49,6 +54,11 @@ validates them without a remote backend, runs optional scanners when installed,
 and syntax-checks Ansible playbooks. Blueprint
 folders with scaffold markers fail validation, because every architecture is
 expected to have real Terraform wiring.
+
+Scanner behavior is configured once at the repo root:
+- TFLint: `.tflint.hcl`
+- Trivy: `trivy.yaml`
+- Checkov: `.checkov.yaml`
 
 For quick feedback while editing docs or blueprint wrappers, run only the
 contract guard:
