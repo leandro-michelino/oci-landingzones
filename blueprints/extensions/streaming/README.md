@@ -10,7 +10,7 @@ Ansible wrappers, and where to find the detailed Architecture design.
 | --- | --- |
 | Folder | `blueprints/extensions/streaming` |
 | Best fit | Adds OCI Streaming resources with stream pool and stream outputs for event-driven or data-platform workloads. |
-| Terraform shape | `oci_streaming_stream_pool.this`, `oci_streaming_stream.this` |
+| Terraform shape | `oci_streaming_stream_pool.this`, `oci_streaming_stream.in_pool`, `oci_streaming_stream.in_compartment` |
 | Inputs to settle first | `compartment_ocid`, `create_stream_pool`, `stream_pool_id`, `stream_pool_name`, `kms_key_id`, `private_endpoint_subnet_id`, `private_endpoint_nsg_ids`, plus 2 more |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `stream_pool_id`, `stream_ids` |
 | Local runner | `terraform plan` for quick iteration; `ansible/plan.yml` and guarded `ansible/apply.yml` for the repo-standard flow. |
@@ -26,6 +26,16 @@ data-platform workloads.
 - Retention, partitions, and access policies need a reusable pattern.
 - Streaming outputs must be handed off to producers and consumers.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+| --- | --- |
+| Event ingestion stream | Creates stream pool and stream outputs for producers to publish application or platform events. |
+| Data pipeline hand-off | Gives data teams named streams, partitions, retention, and optional encryption inputs. |
+| Private streaming access | Supports stream pool private endpoint settings for private producer and consumer paths. |
+| Kafka-compatible integration | Captures stream pool settings that support Kafka-style producer and consumer workflows. |
+| Multi-service async contract | Produces stream IDs that Functions, Service Connector Hub, and app services can consume. |
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -35,7 +45,8 @@ in the repo.
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
 | Resource | `oci_streaming_stream_pool.this` | Declared directly in `main.tf` |
-| Resource | `oci_streaming_stream.this` | Declared directly in `main.tf` |
+| Resource | `oci_streaming_stream.in_pool` | Streams created inside a new or existing stream pool. |
+| Resource | `oci_streaming_stream.in_compartment` | Streams created directly in the compartment when no stream pool is used. |
 
 The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local
 ignored `terraform.tfvars` file.

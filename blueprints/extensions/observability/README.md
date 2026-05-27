@@ -23,6 +23,16 @@ Deploys an observability layer with optional Log Analytics namespace and group, 
 - You need a reusable, reviewable OCI deployment folder with local Terraform and Ansible runners.
 - Outputs from this pattern must be handed off to application, platform, or security teams.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+|---|---|
+| Shared application observability | Adds Log Analytics, APM, and Operations Insights hooks above the core landing-zone baseline. |
+| Distributed tracing foundation | Creates an APM domain that app teams can use for trace and performance instrumentation. |
+| Central log analysis | Provides Log Analytics namespace and log group outputs for platform logging workflows. |
+| Database and fleet insight readiness | Adds Operations Insights private endpoint support for private telemetry paths. |
+| Operations hand-off package | Produces service IDs and resource outputs for SRE, platform, and security teams. |
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere in the repo.

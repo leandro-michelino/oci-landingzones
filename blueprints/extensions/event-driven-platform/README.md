@@ -13,6 +13,16 @@ and optional Functions hand-offs.
 | Terraform shape | Archive bucket, stream pool, streams, notification topic, Events rules, Service Connector, IAM. |
 | Customer paths | Extension-only with existing resources, or base-plus-extension after Core and Networking. |
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+| --- | --- |
+| Async application backbone | Combines Events, Streaming, Notifications, and Service Connector Hub for decoupled workload hand-offs. |
+| Object Storage event processing | Routes bucket events into streams, topics, functions, or archive targets for downstream automation. |
+| AI automation trigger layer | Provides event rules and stream contracts for agent, function, or data-processing automation. |
+| Integration pipeline foundation | Lets integration teams standardize archive bucket, stream pool, topic, connector, and IAM decisions. |
+| Event audit and replay pattern | Archives events and streams so teams can inspect, replay, or feed operational evidence workflows. |
+
 ## What This Deploys
 
 | Resource | Enable Flag |

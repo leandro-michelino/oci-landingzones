@@ -15,6 +15,16 @@ hooks, and IAM policy scaffolding.
 | Default posture | Cluster creation is disabled until subnet, node sizing, and access model are reviewed. |
 | Customer paths | Extension-only with an existing app VCN, or base-plus-extension after Core and Networking. |
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+| --- | --- |
+| Session cache | Provides a private Redis-compatible endpoint for web and API session state. |
+| API acceleration | Places low-latency cache capacity close to private application subnets. |
+| Shared platform cache | Lets multiple app teams consume a governed cache with NSG, alarms, and IAM hand-off. |
+| Queue-adjacent transient state | Supports fast ephemeral state beside asynchronous workers or event-driven services. |
+| Cache operations baseline | Captures node sizing, cluster mode, alarms, secret references, and endpoint outputs before apply. |
+
 ## What This Deploys
 
 | Resource | Enable Flag |

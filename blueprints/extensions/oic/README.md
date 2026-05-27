@@ -23,6 +23,16 @@ Deploys an Oracle Integration Cloud instance with optional private outbound conn
 - You need a reusable, reviewable OCI deployment folder with local Terraform and Ansible runners.
 - Outputs from this pattern must be handed off to application, platform, or security teams.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+|---|---|
+| SaaS and ERP integration hub | Creates Oracle Integration Cloud for process, SaaS, ERP, and application connectivity. |
+| Private outbound integration | Adds private outbound connection support for integrations that must reach private systems. |
+| Application modernization | Gives app teams a managed integration layer instead of point-to-point scripts or custom middleware. |
+| B2B or workflow automation | Provides a reviewed OIC instance foundation for business process and partner workflows. |
+| Secure integration hand-off | Captures license, compartment, private endpoint, and output decisions before platform hand-off. |
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere in the repo.

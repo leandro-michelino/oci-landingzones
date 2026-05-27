@@ -23,6 +23,16 @@ Deploys an Oracle Analytics Cloud instance with optional private access channel.
 - You need a reusable, reviewable OCI deployment folder with local Terraform and Ansible runners.
 - Outputs from this pattern must be handed off to application, platform, or security teams.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+|---|---|
+| Enterprise reporting platform | Creates an Oracle Analytics Cloud instance for governed dashboards and business reporting. |
+| Private analytics over ADW or ATP | Adds private access channel wiring so analytics can reach private database sources. |
+| Department analytics workspace | Gives teams a repeatable OAC deployment with sizing, license, and network decisions reviewed. |
+| Modernization of legacy BI | Provides a managed analytics target for teams migrating reports into OCI. |
+| Secure analytics hand-off | Produces analytics instance and private access channel IDs for platform, network, and BI owners. |
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere in the repo.

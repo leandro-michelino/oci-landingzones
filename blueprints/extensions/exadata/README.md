@@ -26,6 +26,16 @@ landing-zone network and compartments are ready.
 - Platform and database teams need a repeatable starting shape.
 - Capacity, maintenance, and network placement need review.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+| --- | --- |
+| Mission-critical Oracle Database platform | Provisions Cloud Exadata Infrastructure as the foundation for high-performance database workloads. |
+| Database consolidation landing zone | Captures shape, compute, storage, and placement choices for teams consolidating Oracle estates. |
+| Exadata capacity reservation | Gives DBAs and platform owners a reviewable Terraform surface before quota and commercial commitments. |
+| Regulated database platform | Records contacts, tags, compartment placement, and maintenance-sensitive decisions before apply. |
+| Downstream VM cluster preparation | Produces the infrastructure OCID needed by later database VM cluster and database lifecycle automation. |
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource

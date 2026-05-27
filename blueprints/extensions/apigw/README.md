@@ -26,6 +26,16 @@ deployment outputs are managed consistently.
 - Gateway subnet placement and endpoint exposure require review.
 - API deployment endpoints must be handed off to app teams.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+| --- | --- |
+| Managed HTTP API ingress | Creates or reuses OCI API Gateway so app teams get a controlled front door for APIs. |
+| Private API exposure | Supports subnet placement and endpoint type review before private consumers receive the deployment URL. |
+| Serverless API routing | Can hand API Gateway routes to Functions or backend services while keeping routing in Terraform. |
+| Partner or mobile API launch | Produces a reviewed endpoint and deployment contract for external or semi-external consumers. |
+| API platform standardization | Gives platform teams a repeatable gateway folder with gateway, deployment, and endpoint outputs. |
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource

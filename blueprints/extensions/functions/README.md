@@ -35,6 +35,16 @@ statements for deployers, invokers, and service principals.
   monitoring, or governance workflows.
 - App teams need a repeatable image, function, route, event, and IAM hand-off.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+|---|---|
+| Event-driven automation | Creates Functions and Events rules for Object Storage, compute, monitoring, or governance workflows. |
+| Lightweight API backend | Publishes selected functions through API Gateway while keeping route and deployment details in Terraform. |
+| Private serverless worker | Places the Functions application in approved private subnets and NSGs. |
+| Image-based function delivery | Can create the repository and function resources that consume approved OCIR-compatible images. |
+| Landing-zone operations hook | Gives platform teams a repeatable pattern for small automation tasks without managing servers or clusters. |
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the

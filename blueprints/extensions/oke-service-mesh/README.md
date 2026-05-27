@@ -23,6 +23,16 @@ Deploys the OKE service mesh add-on shell with optional APM domain for distribut
 - You need a reusable, reviewable OCI deployment folder with local Terraform and Ansible runners.
 - Outputs from this pattern must be handed off to application, platform, or security teams.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+|---|---|
+| Service-to-service security | Enables the OKE service mesh add-on foundation for mTLS and traffic-policy preparation. |
+| Microservice traffic governance | Gives platform teams a mesh control point before teams add complex routing or policy rules. |
+| Distributed tracing hand-off | Optionally creates an APM domain for tracing integration with mesh-enabled workloads. |
+| OKE platform maturity step | Adds mesh capabilities after the base OKE cluster exists and app teams need stronger service controls. |
+| Regulated Kubernetes workloads | Captures mesh add-on and observability IDs for security, audit, and operations review. |
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere in the repo.

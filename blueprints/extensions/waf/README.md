@@ -26,6 +26,16 @@ edge or application protection.
 - Security teams need policy review before routing traffic.
 - WAF IDs need to be handed off to DNS, load balancer, or app teams.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+| --- | --- |
+| Public application protection | Creates WAF policy and firewall resources before traffic reaches exposed applications. |
+| Load balancer security layer | Attaches managed WAF controls to an approved load balancer backend. |
+| Security review gate | Gives security teams Terraform-visible policy and firewall IDs before DNS cutover. |
+| API or web launch readiness | Provides a repeatable WAF deployment step for new web, mobile, or partner-facing endpoints. |
+| Compliance-driven edge controls | Captures backend type, policy ownership, and hand-off outputs for audit and operations. |
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource

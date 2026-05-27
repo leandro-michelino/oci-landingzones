@@ -29,6 +29,16 @@ bot/channel operations.
 - You want lifecycle separation between ODA instance and endpoint attachment.
 - You need explicit operator outputs for integration runbooks and channel setup.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+| --- | --- |
+| Customer-service virtual assistant | Creates the ODA instance and hand-off outputs needed for bot/channel setup. |
+| Private enterprise chatbot | Adds private endpoint wiring so assistant integrations can stay on approved network paths. |
+| HR, finance, or IT self-service | Gives internal teams a repeatable assistant platform with clear endpoint and access contracts. |
+| Channel integration foundation | Separates ODA instance, endpoint, attachment, alerting, and IAM decisions for review. |
+| Conversational AI operations | Produces outputs for operators to manage connector URLs, endpoint IDs, and runbook steps. |
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the

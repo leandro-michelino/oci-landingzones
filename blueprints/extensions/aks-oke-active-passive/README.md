@@ -39,29 +39,15 @@ minor version for the E2E run.
 - Cross-cloud connectivity uses ExpressRoute + FastConnect partner interconnect.
 - You need explicit DNS failover and GitOps hand-off contracts.
 
-## Practical Use Cases
+## Use Cases
 
-Use this blueprint when the application team needs Kubernetes resiliency across
-OCI and Azure, but the operating model is deliberately simple: OCI serves live
-traffic, Azure is warm standby, and GitOps keeps the two sides aligned.
-
-Examples:
-
-- **OCI-primary service with Azure standby:** run the production service on OKE
-  and keep an AKS deployment ready for planned maintenance or regional
-  incidents.
-- **Regulated workload failover:** keep the normal path in OCI while proving
-  that a controlled Azure recovery path exists, with DNS failover settings and
-  GitOps metadata visible in outputs.
-- **Release safety net:** deploy the same app version to OKE and AKS through
-  Argo CD or Flux, then use the standby cluster for rollback or emergency
-  service continuity.
-- **Cross-cloud platform standard:** give developers the same Kubernetes
-  deployment pattern even when one business unit prefers OCI and another already
-  has AKS skills.
-- **Failover rehearsal:** publish `Hello World OCI` and `Hello World Azure`
-  endpoints, then measure how quickly OCI Traffic Management changes the client
-  response when the primary is unhealthy.
+| Use Case | Why This Blueprint Fits |
+| --- | --- |
+| OCI-primary service with Azure standby | Runs production traffic on OKE while keeping AKS ready for planned maintenance or regional incidents. |
+| Regulated workload failover | Makes DNS failover settings, interconnect metadata, and GitOps hand-off visible for audit and operations review. |
+| Release safety net | Lets Argo CD or Flux keep OKE and AKS aligned so the standby cluster can support rollback or emergency continuity. |
+| Cross-cloud platform standard | Gives teams one Kubernetes recovery pattern when OCI is primary and Azure skills or services are already present. |
+| Failover rehearsal | Publishes differentiated OCI and Azure endpoints so teams can measure traffic-management behavior during drills. |
 
 ## What This Deploys
 

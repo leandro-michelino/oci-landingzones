@@ -39,27 +39,15 @@ EKS and `v1.35.2` on OKE.
 - Cross-cloud connectivity uses Direct Connect + FastConnect partner interconnect.
 - You need explicit DNS failover and GitOps hand-off contracts.
 
-## Practical Use Cases
+## Use Cases
 
-Use this blueprint when OCI is the main Kubernetes landing zone, AWS remains a
-strategic recovery or ecosystem target, and the platform team wants failover to
-be boring, visible, and repeatable.
-
-Examples:
-
-- **OCI-primary app with AWS standby:** serve customers from OKE and keep EKS
-  ready as the passive target for regional disruption or major maintenance.
-- **AWS ecosystem bridge:** keep workloads close to OCI data or network services
-  while maintaining a tested EKS path for teams that depend on AWS-native
-  integrations.
-- **GitOps-driven recovery:** let Argo CD or Flux keep manifests synchronized so
-  failover is mostly traffic steering, not a frantic rebuild.
-- **Compliance evidence:** produce clear Terraform outputs showing primary and
-  secondary clusters, interconnect IDs, DNS failover intent, and the no-IPSec
-  backup stance.
-- **Operational drill:** run the differentiated hello-world endpoints and record
-  OCI-to-AWS and AWS-to-OCI failover times through the delegated Traffic
-  Management FQDN.
+| Use Case | Why This Blueprint Fits |
+| --- | --- |
+| OCI-primary app with AWS standby | Serves customers from OKE while keeping EKS ready as the passive target for regional disruption or major maintenance. |
+| AWS ecosystem bridge | Keeps workloads close to OCI data or network services while preserving a tested EKS path for AWS-native integrations. |
+| GitOps-driven recovery | Lets Argo CD or Flux synchronize manifests so failover is traffic steering, not a rebuild. |
+| Compliance evidence | Produces Terraform outputs for clusters, interconnect IDs, DNS failover intent, and the no-IPSec backup stance. |
+| Operational drill | Uses differentiated hello-world endpoints to record OCI-to-AWS and AWS-to-OCI failover behavior. |
 
 ## What This Deploys
 

@@ -26,6 +26,16 @@ subnet, endpoint, IAM, and logging decisions visible.
 - Private nodes, endpoint exposure, and ingress need review.
 - Platform and application teams need a repeatable OKE baseline.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+| --- | --- |
+| Standard Kubernetes workload platform | Creates or extends OKE so application teams get a repeatable cluster and node pool baseline. |
+| Private worker-node platform | Captures endpoint subnet, node subnet, NSG, and Kubernetes version choices before apply. |
+| App modernization target | Gives containerized applications a managed Kubernetes destination in OCI. |
+| Platform extension after networking | Consumes existing VCN/subnet outputs from core or networking blueprints and adds OKE on top. |
+| Cluster hand-off for GitOps | Produces cluster and node pool IDs for Argo CD, Flux, observability, and service mesh workflows. |
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource

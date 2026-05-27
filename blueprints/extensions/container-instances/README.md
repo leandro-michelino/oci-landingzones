@@ -24,6 +24,16 @@ Deploys an OCI Container Instance with private VNIC attachment, one or more cont
 - You need a repeatable OCI deployment folder with local Terraform and Ansible runners.
 - App or platform teams need stable outputs for VNICs, container IDs, and IAM policy hand-off.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+|---|---|
+| Small private service | Runs one or more containers in a private subnet without creating an OKE cluster. |
+| Scheduled or worker process | Gives background jobs a managed container runtime with VNIC, NSG, and sizing controls. |
+| API sidecar or helper runtime | Hosts lightweight app helpers where OKE would be operationally heavy. |
+| Container proof of value | Lets teams validate image, environment, volume, and network decisions quickly. |
+| Regulated container hand-off | Captures image source, pull secrets, private placement, and IAM statements before apply. |
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere in the repo.
