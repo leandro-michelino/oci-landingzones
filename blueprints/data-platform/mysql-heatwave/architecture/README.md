@@ -1,7 +1,5 @@
 # MySQL HeatWave Landing Zone Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 ## Deployment Purpose
 
 This blueprint provides a repeatable OCI landing-zone pattern for MySQL

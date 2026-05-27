@@ -1,7 +1,5 @@
 # Azure vWAN + OCI DRG Transit
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This blueprint is the "OCI DRG is the transit brain, Azure vWAN is the Azure
 aggregation layer" pattern. It is intentionally practical: build or reuse the
 OCI DRG side, describe the Azure vWAN/vHub side, keep IPSec available for early

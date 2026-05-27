@@ -1,5 +1,4 @@
 ---
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 - name: Apply hub-spoke FortiGate HA blueprint
   hosts: localhost
   connection: local

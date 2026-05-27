@@ -1,7 +1,5 @@
 # AI Agents RAG Landing Zone
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this blueprint when a team needs a private retrieval augmented generation
 stack with OCI GenAI Agent, a knowledge base, Object Storage document intake,
 OpenSearch or compatible indexing, ingestion jobs, and session/audit hand-offs.

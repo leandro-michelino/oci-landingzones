@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 AWSTemplateFormatVersion: '2010-09-09'
 Description: AWS EKS secondary cluster for OCI-primary EKS + OKE active-passive blueprint.
 

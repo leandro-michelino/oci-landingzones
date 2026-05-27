@@ -1,9 +1,9 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 locals {
   blueprint_name          = "secure-desktops"
   name_prefix             = "${var.org}-${var.environment}-${var.region_key}"
   target_compartment_ocid = coalesce(var.compartment_ocid, var.tenancy_ocid)
   policy_compartment_ocid = coalesce(var.policy_compartment_ocid, var.tenancy_ocid)
+  defined_tags            = length(var.defined_tags) > 0 ? var.defined_tags : null
   desktop_pool_name       = coalesce(var.desktop_pool_display_name, "${local.name_prefix}-pool")
   desktop_pool_id         = var.create_desktop_pool ? try(oci_desktops_desktop_pool.this[0].id, null) : var.desktop_pool_id
   desktop_pool_byol_tags = var.windows_10_11_byol_acknowledged ? {

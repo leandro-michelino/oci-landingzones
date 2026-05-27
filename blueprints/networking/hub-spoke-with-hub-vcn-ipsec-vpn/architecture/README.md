@@ -1,7 +1,5 @@
 # Hub-Spoke IPSec VPN Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This page is the deployment architecture for `blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn`. It is intentionally Architecture-first so it
 is easy to review in GitHub, terminals, pull requests, runbooks, and customer notes without a
 diagramming tool.

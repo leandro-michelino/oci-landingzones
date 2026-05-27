@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 module "network" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=v0.2.0"
 
@@ -11,7 +10,7 @@ module "network" {
   org                = var.org
   environment        = var.environment
   region_key         = var.region_key
-  defined_tags       = var.defined_tags
+  defined_tags       = local.defined_tags
   freeform_tags      = local.common_freeform_tags
 }
 
@@ -27,7 +26,7 @@ module "vault" {
   enable_vault         = var.enable_vault
   enable_default_vault = var.enable_default_vault
   enable_default_key   = var.enable_default_key
-  defined_tags         = var.defined_tags
+  defined_tags         = local.defined_tags
   freeform_tags        = local.common_freeform_tags
 }
 
@@ -55,7 +54,7 @@ module "oke" {
   node_shape_ocpus         = var.node_shape_ocpus
   node_shape_memory_in_gbs = var.node_shape_memory_in_gbs
   ssh_public_key           = var.ssh_public_key
-  defined_tags             = var.defined_tags
+  defined_tags             = local.defined_tags
   freeform_tags            = local.common_freeform_tags
 }
 
@@ -73,7 +72,7 @@ module "monitoring" {
   notification_topics  = var.monitoring_notification_topics
   subscriptions        = var.monitoring_subscriptions
   alarms               = var.monitoring_alarms
-  defined_tags         = var.defined_tags
+  defined_tags         = local.defined_tags
   freeform_tags        = local.common_freeform_tags
 }
 
@@ -89,6 +88,6 @@ module "os_management" {
   enable_os_management    = var.enable_os_management
   managed_instance_groups = var.os_managed_instance_groups
   scheduled_jobs          = var.os_scheduled_jobs
-  defined_tags            = var.defined_tags
+  defined_tags            = local.defined_tags
   freeform_tags           = local.common_freeform_tags
 }

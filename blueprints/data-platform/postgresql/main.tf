@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_psql_db_system" "this" {
   count = var.enable_db_system ? 1 : 0
 

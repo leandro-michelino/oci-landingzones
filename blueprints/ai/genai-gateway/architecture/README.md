@@ -1,7 +1,5 @@
 # GenAI Multi-Model Gateway Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 ## Deployment Purpose
 
 Provide a governed API front door for one or more OCI GenAI models, private

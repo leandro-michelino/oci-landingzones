@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
 - name: Plan the AWS + OCI Cross-Cloud DR blueprint
   hosts: localhost

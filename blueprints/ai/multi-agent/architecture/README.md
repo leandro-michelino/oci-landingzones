@@ -1,7 +1,5 @@
 # Multi-Agent Orchestration Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 ## Deployment Purpose
 
 Provide a controlled platform shape for agentic systems. The blueprint wires an

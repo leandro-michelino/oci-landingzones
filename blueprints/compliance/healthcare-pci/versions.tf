@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 terraform {
   required_version = ">= 1.12.0"
 

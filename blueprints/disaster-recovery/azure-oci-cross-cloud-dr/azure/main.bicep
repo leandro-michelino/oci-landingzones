@@ -1,4 +1,3 @@
-// Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 param logAnalyticsWorkspaceName string
 param managedEnvironmentName string

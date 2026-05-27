@@ -1,7 +1,5 @@
 # Document Intelligence Pipeline
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this blueprint for document intake workflows that combine Object Storage,
 OCI Document Understanding, Oracle Functions orchestration, and optional GenAI
 reasoning or summarization.

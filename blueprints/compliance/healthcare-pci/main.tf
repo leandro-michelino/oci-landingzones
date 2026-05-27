@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_identity_policy" "guardrails" {
   count = length(var.guardrail_policy_statements) > 0 ? 1 : 0
 

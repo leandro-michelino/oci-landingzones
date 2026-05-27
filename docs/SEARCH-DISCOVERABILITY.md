@@ -1,7 +1,5 @@
 # Search Discoverability
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This repo can be made easier to find in Google, Bing, GitHub search, and AI
 search summaries, but no repository can honestly guarantee a top result. The
 best path is boring in the good way: clear title, clear description, relevant

@@ -1,7 +1,5 @@
 # Security Posture Automation Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 ## Deployment Purpose
 
 This blueprint extends the compliance baseline with automated security posture

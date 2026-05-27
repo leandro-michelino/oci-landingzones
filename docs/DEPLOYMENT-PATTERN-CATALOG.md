@@ -1,7 +1,5 @@
 # Deployment Pattern Catalog
 
-Author: Leandro Michelino | ACE | <leandro.michelino@oracle.com>
-
 This catalog keeps the deployment menu broader than a single reference
 delivery. It borrows from OCI landing zone repositories, OCI reference
 architectures, and patterns that show up in real customer conversations.

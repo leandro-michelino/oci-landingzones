@@ -1,7 +1,5 @@
 # GenAI Guardrails And Observability Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 ## Deployment Purpose
 
 Add auditability and security review controls around GenAI workloads without

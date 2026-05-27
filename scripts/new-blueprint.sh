@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -114,7 +113,6 @@ for _ in $(seq 1 $((component_count + 1))); do
 done
 
 read -r -d '' versions_tf <<EOF || true
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 terraform {
   required_version = ">= 1.12.0"
 
@@ -128,7 +126,6 @@ terraform {
 EOF
 
 read -r -d '' providers_tf <<EOF || true
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 provider "oci" {
   tenancy_ocid        = var.tenancy_ocid
   region              = var.region
@@ -137,7 +134,6 @@ provider "oci" {
 EOF
 
 read -r -d '' variables_tf <<EOF || true
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 variable "tenancy_ocid" {
   description = "OCI tenancy OCID."
   type        = string
@@ -191,7 +187,6 @@ variable "freeform_tags" {
 EOF
 
 read -r -d '' locals_tf <<EOF || true
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 locals {
   blueprint_name = "$blueprint_name"
   name_prefix    = "\${var.org}-\${var.environment}-\${var.region_key}"
@@ -209,13 +204,11 @@ locals {
 EOF
 
 read -r -d '' main_tf <<EOF || true
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 # Add OCI resources and release-pinned module sources here as the blueprint
 # moves from scaffold to delivery.
 EOF
 
 read -r -d '' outputs_tf <<EOF || true
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 output "blueprint_name" {
   description = "Blueprint identifier."
   value       = local.blueprint_name
@@ -233,7 +226,6 @@ output "example_resource_name" {
 EOF
 
 read -r -d '' tfvars_example <<EOF || true
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 tenancy_ocid      = "ocid1.tenancy.oc1..example"
 current_user_ocid = "ocid1.user.oc1..example"
 region            = "eu-madrid-1"
@@ -248,8 +240,6 @@ EOF
 
 read -r -d '' readme_md <<EOF || true
 # $title
-
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 Use this page as the operator guide for \`$relative_dir\`. It explains the
 deployment intent, the local workflow, and the review path before real OCI
@@ -321,8 +311,6 @@ EOF
 
 read -r -d '' architecture_md <<EOF || true
 # $title Architecture
-
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 ## Deployment Purpose
 
@@ -442,7 +430,6 @@ for action in plan apply destroy; do
   fi
 
   read -r -d '' playbook <<EOF || true
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
 - name: $verb the $title blueprint
   hosts: localhost

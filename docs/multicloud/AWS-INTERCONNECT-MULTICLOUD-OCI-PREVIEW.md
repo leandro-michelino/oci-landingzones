@@ -1,7 +1,5 @@
 # AWS Interconnect Multicloud with OCI Preview Draft
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This document defines a preview-only design draft for AWS Interconnect -
 multicloud connectivity with Oracle Cloud Infrastructure (OCI).
 

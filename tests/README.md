@@ -1,7 +1,5 @@
 # Tests
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 The full test entry point for this repository is `./scripts/validate-all.sh`.
 It discovers every Terraform blueprint, validates the documentation contract,
 runs Terraform formatting and validation without remote state, syntax-checks

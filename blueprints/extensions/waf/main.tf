@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_waf_web_app_firewall_policy" "this" {
   count = var.enable_waf_policy ? 1 : 0
 

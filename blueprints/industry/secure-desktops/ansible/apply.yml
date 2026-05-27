@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
 - name: Apply Secure Desktops Landing Zone
   hosts: localhost

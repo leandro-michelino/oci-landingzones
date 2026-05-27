@@ -1,7 +1,5 @@
 # AI Agents RAG Landing Zone Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 ## Deployment Purpose
 
 This blueprint creates the deployable landing-zone shape for an OCI GenAI Agent

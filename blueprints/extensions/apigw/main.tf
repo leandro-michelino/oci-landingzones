@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_apigateway_gateway" "this" {
   count = var.enable_gateway && var.create_gateway ? 1 : 0
 

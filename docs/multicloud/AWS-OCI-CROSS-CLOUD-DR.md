@@ -1,7 +1,5 @@
 # AWS + OCI Cross-Cloud Disaster Recovery Design Record
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This document preserves the multicloud design rationale for the available
 blueprint in `blueprints/disaster-recovery/aws-oci-cross-cloud-dr/`.
 

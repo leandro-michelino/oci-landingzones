@@ -1,7 +1,5 @@
 # Azure vWAN + OCI DRG Transit Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This page is the deployment architecture for
 `blueprints/networking/azure-vwan-oci-drg-transit`. It is Architecture-first
 so the design is easy to review in GitHub, terminals, pull requests, runbooks,

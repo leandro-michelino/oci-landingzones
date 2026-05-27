@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_network_load_balancer_network_load_balancer" "this" {
   count = var.create_network_load_balancer ? 1 : 0
 

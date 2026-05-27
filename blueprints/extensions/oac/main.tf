@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_analytics_analytics_instance" "this" {
   count = var.enable_analytics_instance ? 1 : 0
 

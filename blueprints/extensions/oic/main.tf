@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_integration_integration_instance" "this" {
   count = var.enable_integration_instance ? 1 : 0
 

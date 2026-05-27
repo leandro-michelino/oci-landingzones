@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_container_instances_container_instance" "this" {
   count = var.enable_container_instance ? 1 : 0
 

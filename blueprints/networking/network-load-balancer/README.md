@@ -1,7 +1,5 @@
 # Network Load Balancer Landing Zone
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this blueprint when a workload needs Layer 4 TCP, UDP, or mixed protocol
 load balancing with private backend sets, health checks, optional public or
 private exposure, and clear network ownership boundaries.

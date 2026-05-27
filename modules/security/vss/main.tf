@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_vulnerability_scanning_host_scan_recipe" "this" {
   for_each = local.host_scan_recipes
 

@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 module "tagging" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/tagging?ref=v0.2.0"
 

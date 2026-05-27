@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 terraform_env_is_true() {
   case "${1:-}" in

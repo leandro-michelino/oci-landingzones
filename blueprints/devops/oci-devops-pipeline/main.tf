@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_ons_notification_topic" "this" {
   count = var.create_notification_topic ? 1 : 0
 

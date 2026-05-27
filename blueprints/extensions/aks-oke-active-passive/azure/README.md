@@ -1,7 +1,5 @@
 # Azure Session - AKS Secondary Deployment
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This folder contains the Azure deployment artifacts for the AKS secondary side
 of the `aks-oke-active-passive` blueprint.
 

@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
 - name: Destroy the SCCA Cloud-Native Landing Zone blueprint
   hosts: localhost

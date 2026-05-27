@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 locals {
   blueprint_name           = "network-load-balancer"
   name_prefix              = "${var.org}-${var.environment}-${var.region_key}"

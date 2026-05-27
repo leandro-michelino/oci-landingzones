@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
 - name: Normalize AWS deployment inputs
   ansible.builtin.set_fact:

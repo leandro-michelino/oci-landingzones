@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_core_instance" "appliance" {
   for_each = var.enable_net_appliance ? var.appliances : {}
 

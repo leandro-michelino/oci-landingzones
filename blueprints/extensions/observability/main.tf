@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_log_analytics_namespace" "this" {
   count = var.enable_log_analytics_namespace ? 1 : 0
 

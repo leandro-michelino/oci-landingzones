@@ -1,7 +1,5 @@
 # Runbook
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this runbook for local repository operations and common landing-zone change
 flows. Pattern-specific design checks live in each blueprint's local
 `architecture/README.md`.

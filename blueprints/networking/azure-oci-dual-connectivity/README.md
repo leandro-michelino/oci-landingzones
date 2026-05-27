@@ -1,7 +1,5 @@
 # Azure + OCI Dual Connectivity Hardening
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this page as the operator guide for
 `blueprints/networking/azure-oci-dual-connectivity`. It explains what the
 blueprint deploys, which inputs matter, how to run Terraform and local Ansible

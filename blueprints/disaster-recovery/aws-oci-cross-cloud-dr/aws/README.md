@@ -1,7 +1,5 @@
 # AWS Session - DR Standby Deployment
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This folder contains the AWS standby deployment artifacts for the
 `aws-oci-cross-cloud-dr` blueprint.
 

@@ -1,7 +1,5 @@
 # Azure + OCI Cross-Cloud Disaster Recovery Design Record
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This document preserves the original architecture design that was later
 available in `blueprints/disaster-recovery/azure-oci-cross-cloud-dr/`.
 

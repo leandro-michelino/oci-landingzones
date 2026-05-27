@@ -1,7 +1,5 @@
 # AWS Session Guide - OCI + AWS MySQL HeatWave DR
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This folder contains AWS CloudFormation artifacts used by the
 `blueprints/data-platform/oci-aws-mysql-heatwave-dr` deployment for standby-side
 networking and database endpoint provisioning.

@@ -1,7 +1,5 @@
 # Azure + OCI AI Gateway Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This page is the deployment architecture for
 `blueprints/ai/azure-oci-ai-gateway`. It is intentionally Architecture-first so
 it is easy to review in GitHub, terminals, pull requests, runbooks, and

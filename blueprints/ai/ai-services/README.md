@@ -1,7 +1,5 @@
 # OCI AI Services
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this blueprint for OCI AI Services projects: Vision, Language, Document
 Understanding, and supporting input/output buckets. It is separate from GenAI so
 customers can use pretrained service APIs without a model-serving platform.

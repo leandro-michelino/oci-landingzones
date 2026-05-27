@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
 - name: Serve the Azure + OCI DR hello-world page locally
   hosts: localhost

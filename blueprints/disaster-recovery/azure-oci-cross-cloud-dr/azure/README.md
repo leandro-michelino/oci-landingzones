@@ -1,7 +1,5 @@
 # Azure Session - DR Standby Deployment
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This folder contains the Azure standby deployment artifacts for the
 `azure-oci-cross-cloud-dr` blueprint.
 

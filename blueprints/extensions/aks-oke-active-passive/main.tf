@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_core_vcn" "oke" {
   count = var.enable_oke_networking ? 1 : 0
 

@@ -49,23 +49,14 @@ Simulation mode validates wrapper wiring without calling Azure:
 AZURE_SIMULATE_ONLY=true ansible-playbook -i localhost, ansible/azure-plan.yml
 ```
 
-## Vinhedo/Campinas Interconnect Test Notes
+## Interconnect Validation Notes
 
-The latest live test on 2026-05-27 confirmed the pairable ExpressRoute and
-FastConnect shape for this Azure session:
+Keep environment-specific validation details outside the public repository:
+compartment names, run dates, provider-key values, peer IPs, VLANs, and any
+temporary test-host notes belong in local runbooks or pipeline logs.
 
-- Azure ExpressRoute: `brazilsouth` resources, Oracle Cloud FastConnect
-  provider, Campinas peering location, `Local_UnlimitedData`, `1 Gbps`.
-- OCI FastConnect: `sa-vinhedo-1`, Microsoft Azure provider service, `1 Gbps`,
-  target compartment `Leandro_Michelino`.
-- Azure Private Peering should be aligned to the provider-key values returned by
-  OCI: peer ASN `31898`, VLAN `33`, primary pair `10.255.0.1/30` and
-  `10.255.0.2/30`, secondary pair `10.255.0.5/30` and `10.255.0.6/30`.
-- Leave the Azure shared key empty for this provider-key flow.
-
-The Azure vWAN ExpressRoute Gateway reached `Succeeded`, OCI FastConnect reached
-`PROVISIONED`, the provider state was `ACTIVE`, BGP was `UP`, and Azure showed
-one ExpressRoute Gateway connection. Bidirectional packet testing still needs a
-successful temporary VM launch on both sides; the validation run was blocked by
-an Azure CLI VM-create runtime error and OCI compute authorization in the target
-compartment.
+- Match the Azure peering location to the selected OCI FastConnect region.
+- Align Azure Private Peering to the provider-key values returned by OCI.
+- Leave the Azure shared key empty unless the selected provider-key flow
+  explicitly supports MD5 on both sides.
+- Validate control-plane state before running bidirectional packet tests.

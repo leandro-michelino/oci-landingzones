@@ -1,7 +1,5 @@
 # Hub-Spoke With Azure vWAN ExpressRoute Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This page is the deployment architecture for
 `blueprints/networking/hub-spoke-with-azure-vwan-expressroute`. It keeps the
 Azure Virtual WAN model explicit while preserving the OCI hub-spoke foundation.

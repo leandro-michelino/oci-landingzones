@@ -1,7 +1,5 @@
 # EKS + OKE Active Passive Design Record
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This document preserves the multicloud design rationale for the available
 blueprint in `blueprints/extensions/eks-oke-active-passive/`.
 

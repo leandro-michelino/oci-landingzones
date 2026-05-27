@@ -1,7 +1,5 @@
 # GenAI Fine-Tuning And Dedicated AI Cluster Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 ## Deployment Purpose
 
 Create a repeatable fine-tuning landing zone for OCI GenAI. The blueprint keeps

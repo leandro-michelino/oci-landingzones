@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_ons_notification_topic" "this" {
   for_each = local.notification_topics
 

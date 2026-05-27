@@ -1,7 +1,5 @@
 # OCI + AWS MySQL HeatWave DR Design Record (OCI Primary over IPSec)
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This document preserves the multicloud design rationale for the available
 blueprint in `blueprints/data-platform/oci-aws-mysql-heatwave-dr/`.
 

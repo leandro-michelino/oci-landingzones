@@ -1,7 +1,5 @@
 # Multi-Agent Orchestration
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this blueprint when a customer needs an orchestrator agent, specialist
 agents, shared task hand-off, tool registry storage, audit logs, and IAM
 boundaries for agentic workflows.

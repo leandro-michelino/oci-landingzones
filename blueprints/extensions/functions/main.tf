@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_artifacts_container_repository" "this" {
   count = var.enable_container_repository ? 1 : 0
 

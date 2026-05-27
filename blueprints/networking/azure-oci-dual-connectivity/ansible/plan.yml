@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
 - name: Plan the Azure + OCI dual connectivity hardening blueprint
   hosts: localhost

@@ -1,7 +1,5 @@
 # Azure Session - vWAN + DRG Transit
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This folder contains Azure artifacts used by
 `blueprints/networking/azure-vwan-oci-drg-transit`.
 

@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_os_management_hub_managed_instance_group" "this" {
   for_each = local.managed_instance_groups
 

@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
 - name: Stop the Azure vWAN + OCI DRG transit hello-world local server
   hosts: localhost

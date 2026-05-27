@@ -1,7 +1,5 @@
 # OCI + AWS MySQL HeatWave DR (OCI Primary over IPSec)
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this page as the operator guide for
 `blueprints/data-platform/oci-aws-mysql-heatwave-dr`. It explains what is
 built, which inputs matter most, how to run Terraform and Ansible sessions, and

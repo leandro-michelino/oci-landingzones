@@ -1,7 +1,5 @@
 # Contributing
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This project keeps Terraform, Ansible, and architecture documentation moving
 together. A blueprint is considered ready only when its Terraform resources,
 local runners, README, and Architecture describe the same deployable OCI

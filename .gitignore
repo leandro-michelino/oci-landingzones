@@ -1,15 +1,23 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 # macOS
 .DS_Store
+
+# Local agent/tooling
+.codex/
+.codex-local/
+.claude/
+.cursor/
 
 # Terraform
 .terraform/
 .terraform.lock.hcl
 terraform.tfstate
 terraform.tfstate.*
+.terraform.tfstate.lock.info
+terraform.tfvars.json
 tfplan
 tfplan.*
 *.tfplan
+*.tfvars.json
 crash.log
 crash.*.log
 override.tf
@@ -25,22 +33,34 @@ override.tf.json
 .leo-local/
 .env
 .env.*
+.envrc
 *.auto.tfvars
+*.auto.tfvars.json
 terraform.tfvars
 oci_config
 
 # Tool output
-.claude/
 .tflint.d/
 .checkov/
+.trivy/
 checkov-report.*
 tfsec-report.*
+trivy-results.*
+.secrets.baseline
 *.retry
 .ansible/
 .ansible_async/
 ansible/vault-password*
 **/hello-world/server.pid
 **/hello-world/server.log
+
+# Python and test caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
 
 # Editors
 .idea/

@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 .PHONY: help validate changed clean blueprint blueprints links simulate-cloud
 

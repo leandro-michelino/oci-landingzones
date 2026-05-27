@@ -1,7 +1,5 @@
 # GenAI Fine-Tuning And Dedicated AI Cluster
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this blueprint when a customer needs customer-managed fine-tuning for OCI
 GenAI: training data in Object Storage, a dedicated AI cluster, a fine-tuned
 model, and an optional private model endpoint.

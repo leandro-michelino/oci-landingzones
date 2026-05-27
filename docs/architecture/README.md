@@ -1,7 +1,5 @@
 # Architecture Index
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This folder is the repository-level architecture index. The authoritative
 architecture for a deployable pattern still lives beside that pattern at
 `blueprints/<family>/<deployment>/architecture/README.md`.

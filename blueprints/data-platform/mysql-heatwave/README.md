@@ -1,7 +1,5 @@
 # MySQL HeatWave Landing Zone
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this blueprint when an application or analytics team needs a private MySQL
 DB System with optional HeatWave analytics and Lakehouse-ready Object Storage
 handoff. It keeps the database, analytics cluster, lakehouse bucket, and IAM

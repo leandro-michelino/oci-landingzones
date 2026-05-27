@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
 - name: Azure what-if session for Azure OpenAI gateway deployment
   hosts: localhost

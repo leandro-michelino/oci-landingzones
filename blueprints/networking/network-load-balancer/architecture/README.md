@@ -1,7 +1,5 @@
 # Network Load Balancer Landing Zone Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 ## Deployment Purpose
 
 This blueprint implements an OCI Network Load Balancer pattern for Layer 4

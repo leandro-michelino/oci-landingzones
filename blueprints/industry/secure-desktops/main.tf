@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_desktops_desktop_pool" "this" {
   count = var.create_desktop_pool ? 1 : 0
 
@@ -20,7 +19,7 @@ resource "oci_desktops_desktop_pool" "this" {
   time_start_scheduled     = var.time_start_scheduled
   time_stop_scheduled      = var.time_stop_scheduled
   use_dedicated_vm_host    = var.use_dedicated_vm_host
-  defined_tags             = var.defined_tags
+  defined_tags             = local.defined_tags
   freeform_tags            = local.desktop_pool_freeform_tags
 
   availability_policy {
@@ -124,7 +123,7 @@ resource "oci_monitoring_alarm" "this" {
   metric_compartment_id = coalesce(each.value.metric_compartment_id, local.target_compartment_ocid)
   body                  = each.value.body
   is_enabled            = each.value.is_enabled
-  defined_tags          = var.defined_tags
+  defined_tags          = local.defined_tags
   freeform_tags         = local.common_freeform_tags
 }
 
@@ -136,6 +135,6 @@ resource "oci_identity_policy" "access" {
   name           = "${local.name_prefix}-pol-access"
   description    = "Secure Desktops access policy for ${local.name_prefix}."
   statements     = var.policy_statements
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 }

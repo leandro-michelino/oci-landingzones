@@ -1,7 +1,5 @@
 # Event-Driven Application Platform
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this extension when a customer needs a reusable async foundation with OCI
 Events, Streaming, Service Connector Hub, Object Storage archive, Notifications,
 and optional Functions hand-offs.

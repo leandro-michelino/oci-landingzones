@@ -1,7 +1,5 @@
 # BYOL And License Model Matrix
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This page records where this landing zone exposes Bring Your Own License,
 license-included, BYOI, or BYOS decisions. It is an operator guide, not a legal
 license opinion. Always confirm customer entitlement, support status, regional

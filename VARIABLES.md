@@ -1,7 +1,5 @@
 # Variables Reference
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This file tracks global variables shared by blueprints and modules. Blueprint
 READMEs may define additional variables for local behavior.
 

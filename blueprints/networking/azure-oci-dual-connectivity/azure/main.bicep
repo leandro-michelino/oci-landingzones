@@ -1,4 +1,3 @@
-// Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 param vnetName string = 'vnet-oci-azure-connectivity'
 param vnetCidr string = '10.88.0.0/16'

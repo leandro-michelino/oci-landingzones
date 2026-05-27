@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_core_vcn" "oda" {
   count = var.enable_oda_network ? 1 : 0
 

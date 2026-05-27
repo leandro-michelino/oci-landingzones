@@ -1,7 +1,5 @@
 # Hub-Spoke With Azure vWAN ExpressRoute
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This blueprint builds the more concrete version of the OCI plus Azure vWAN
 story: OCI hub and spoke VCNs on one side, Azure Virtual WAN and Virtual Hub on
 the other, with Azure ExpressRoute Gateway connected to OCI FastConnect.
@@ -158,41 +156,27 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ## Region Pairing Notes
 
 For ExpressRoute plus FastConnect, match the Azure ExpressRoute peering location
-with the OCI FastConnect region. The live 2026-05-27 validation used:
+with the OCI FastConnect region. Keep the exact region pair, peering location,
+bandwidth, billing model, and provider choices in local deployment notes.
 
-- OCI: `sa-vinhedo-1`
-- Azure peering location: Campinas
-- Azure resource location: `brazilsouth`
-- Bandwidth: `1 Gbps`
-- Azure billing model: `Local_UnlimitedData`
-- Azure provider: Oracle Cloud FastConnect
-- OCI provider: Microsoft Azure
-
-The control-plane result was good: OCI FastConnect reached `PROVISIONED`,
-provider state `ACTIVE`, BGP `UP`, and Azure showed one ExpressRoute Gateway
-connection.
-
-The packet test still needs a clean compute run. The validation attempt was
-blocked by an Azure CLI VM-create runtime error and OCI compute authorization in
-the target compartment. In other words: the circuit came up, but do not claim
-end-to-end packet success until temporary VMs can be launched on both sides.
+Do not claim end-to-end success until both the interconnect control plane and
+bidirectional packet tests pass with temporary endpoints on both sides.
 
 ## Provider-Key BGP Notes
 
-For the Vinhedo/Campinas validation, Azure Private Peering was aligned to the
-OCI-returned values:
+For provider-key flows, Azure Private Peering must be aligned to the values
+returned by the OCI virtual circuit:
 
 | Field | Value |
 | --- | --- |
-| Peer ASN | `31898` |
-| VLAN | `33` |
-| Primary pair | `10.255.0.1/30` and `10.255.0.2/30` |
-| Secondary pair | `10.255.0.5/30` and `10.255.0.6/30` |
-| MD5/shared key | Empty for this provider-key flow |
+| Peer ASN | OCI-returned peer ASN |
+| VLAN | OCI-returned VLAN |
+| Primary pair | OCI-returned primary BGP peering pair |
+| Secondary pair | OCI-returned secondary BGP peering pair |
+| MD5/shared key | Empty unless both sides explicitly support it |
 
-Those values are examples from the test run, not universal constants. Read the
-OCI FastConnect virtual circuit output and put the returned values into
-`cross_connect_mappings` and Azure Private Peering.
+Put the returned values into `cross_connect_mappings` and Azure Private
+Peering.
 
 ## What Good Looks Like
 

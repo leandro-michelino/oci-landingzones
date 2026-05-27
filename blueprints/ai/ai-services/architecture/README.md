@@ -1,7 +1,5 @@
 # OCI AI Services Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 ## Deployment Purpose
 
 Create a landing-zone-ready shape for pretrained OCI AI Services. The blueprint

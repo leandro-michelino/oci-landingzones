@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_streaming_stream_pool" "this" {
   count = var.enable_streaming && var.create_stream_pool ? 1 : 0
 

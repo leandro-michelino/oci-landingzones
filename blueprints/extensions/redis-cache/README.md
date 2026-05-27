@@ -1,7 +1,5 @@
 # Redis Cache Landing Zone
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this blueprint when an application team needs a private Redis-compatible
 cache for sessions, API acceleration, queue-adjacent state, or low-latency read
 patterns. It provides OCI Cache with Redis cluster wiring, NSG hand-off, alarm

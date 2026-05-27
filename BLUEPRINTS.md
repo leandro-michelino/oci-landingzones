@@ -1,7 +1,5 @@
 # Blueprint Index
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Generated from deployable folders under `blueprints/`.
 Run `make blueprints` after adding, moving, or removing a blueprint.
 

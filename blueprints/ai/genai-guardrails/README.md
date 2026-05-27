@@ -1,7 +1,5 @@
 # GenAI Guardrails And Observability
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this blueprint when GenAI workloads need responsible-AI controls around
 audit logging, PII handling, anomaly alarms, Cloud Guard hooks, and security
 reviewer access.

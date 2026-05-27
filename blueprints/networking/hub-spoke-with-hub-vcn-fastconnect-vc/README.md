@@ -1,7 +1,5 @@
 # Hub-Spoke With FastConnect Virtual Circuit
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this page as the operator guide for
 `blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc`. It tells you what the
 blueprint builds, which inputs deserve a real review, how to run Terraform or the local
@@ -184,12 +182,12 @@ Ansible output at the end of the deployment.
 
 ## Validation
 
-For Azure interconnect validation, the live London path uses Azure
-ExpressRoute `Local_UnlimitedData` at `1 Gbps` and OCI FastConnect `1 Gbps`.
-Create Azure Private Peering first, pass the Azure service key to OCI, then
-align Azure to the VLAN returned in the OCI virtual circuit mappings. Do not
-set an Azure shared key for the Microsoft Azure provider-key flow unless the
-OCI side also supports MD5 for that circuit type.
+For Azure interconnect validation, create Azure Private Peering first, pass the
+Azure service key to OCI, then align Azure to the VLAN returned in the OCI
+virtual circuit mappings. Do not set an Azure shared key for the Microsoft
+Azure provider-key flow unless the OCI side also supports MD5 for that circuit
+type. Keep live region, bandwidth, and quota findings in environment-specific
+notes.
 
 From the repository root:
 

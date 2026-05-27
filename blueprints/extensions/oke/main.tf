@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_containerengine_cluster" "this" {
   count = var.enable_cluster ? 1 : 0
 

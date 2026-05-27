@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_containerengine_addon" "service_mesh" {
   count = var.enable_service_mesh_addon ? 1 : 0
 

@@ -1,7 +1,5 @@
 # Azure Session - Dual Connectivity Fallback Edge
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This folder contains Azure deployment artifacts used by
 `blueprints/networking/azure-oci-dual-connectivity`.
 

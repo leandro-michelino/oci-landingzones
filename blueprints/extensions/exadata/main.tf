@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_database_cloud_exadata_infrastructure" "this" {
   count = var.enable_exadata_infrastructure ? 1 : 0
 

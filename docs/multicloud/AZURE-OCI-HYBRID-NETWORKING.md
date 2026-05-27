@@ -1,7 +1,5 @@
 # Azure + OCI Hybrid Networking Design Record
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This design record maps to the available networking blueprints:
 - `blueprints/networking/azure-oci-dual-connectivity/`
 - `blueprints/networking/azure-vwan-oci-drg-transit/`

@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_core_vcn" "gateway" {
   count = var.enable_oci_gateway_network ? 1 : 0
 

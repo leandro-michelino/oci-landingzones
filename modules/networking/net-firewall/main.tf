@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_network_firewall_network_firewall_policy" "this" {
   count = var.enable_network_firewall && var.network_firewall_policy_id == null ? 1 : 0
 

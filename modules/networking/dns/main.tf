@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_dns_view" "private" {
   count = var.enable_private_dns ? 1 : 0
 

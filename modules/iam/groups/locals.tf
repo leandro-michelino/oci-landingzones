@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 locals {
   module_name = "iam-groups"
   cis_level   = var.cis_level == null ? null : lower(var.cis_level)

@@ -1,7 +1,5 @@
 # Embedding And Vector Ingestion Pipeline
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this blueprint when documents or records need to be chunked, embedded with
 OCI GenAI, and indexed into OpenSearch or another vector search target.
 

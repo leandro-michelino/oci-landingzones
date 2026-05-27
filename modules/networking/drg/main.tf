@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_core_drg" "this" {
   compartment_id = var.compartment_ocid
   display_name   = local.drg_name

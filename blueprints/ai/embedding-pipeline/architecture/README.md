@@ -1,7 +1,5 @@
 # Embedding And Vector Ingestion Pipeline Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 ## Deployment Purpose
 
 Create a reusable ingestion foundation for semantic search and RAG workloads.

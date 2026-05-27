@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
 - name: Plan the Hub-Spoke With Transit Routing NVA HA blueprint
   hosts: localhost

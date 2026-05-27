@@ -1,7 +1,5 @@
 # AKS + OKE Active Passive
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this page as the operator guide for `blueprints/extensions/aks-oke-active-passive`.
 It tells you what the blueprint builds, which inputs deserve a real review, how
 to run Terraform or the local Ansible wrappers, and where to find the detailed

@@ -1,7 +1,5 @@
 # Azure Session - Azure OpenAI Gateway Deployment
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This folder contains the Azure deployment artifacts for the Azure side of the
 `azure-oci-ai-gateway` blueprint.
 

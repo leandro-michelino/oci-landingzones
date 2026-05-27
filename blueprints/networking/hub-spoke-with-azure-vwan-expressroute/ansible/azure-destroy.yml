@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
 - name: Azure destroy session for Hub-Spoke With Azure vWAN ExpressRoute
   hosts: localhost

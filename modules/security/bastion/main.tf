@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_bastion_bastion" "this" {
   count = var.enable_bastion ? 1 : 0
 

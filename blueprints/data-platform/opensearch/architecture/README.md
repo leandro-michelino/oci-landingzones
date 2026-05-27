@@ -1,7 +1,5 @@
 # OpenSearch Search And Vector Platform Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 ## Deployment Purpose
 
 Provide a managed OpenSearch foundation for application search, operational

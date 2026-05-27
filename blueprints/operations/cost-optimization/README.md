@@ -1,7 +1,5 @@
 # Cost Optimization
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this page as the operator guide for `blueprints/operations/cost-optimization`.
 It explains what the blueprint builds, which FinOps inputs need a real decision,
 how to run Terraform or the local Ansible wrappers, and where to review the

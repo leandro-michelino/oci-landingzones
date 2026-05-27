@@ -1,7 +1,5 @@
 # Security Posture Automation
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this blueprint when security teams need a repeatable extension for Cloud
 Guard targeting, Vulnerability Scanning, event-driven remediation hooks, report
 archives, alarms, and least-privilege IAM hand-offs.

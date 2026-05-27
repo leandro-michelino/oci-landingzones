@@ -1,7 +1,5 @@
 # Multicloud Notes (Azure + OCI, AWS + OCI)
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This folder is the design notebook for multicloud work.
 Use it for architecture context, backlog ideas, and decision history.
 

@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 output "blueprint_name" {
   description = "Stable blueprint identifier used for reporting, runbooks, and cross-blueprint automation hand-offs."
   value       = local.blueprint_name

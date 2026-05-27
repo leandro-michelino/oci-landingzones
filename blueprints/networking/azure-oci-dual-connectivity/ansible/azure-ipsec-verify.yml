@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
 - name: Validate Azure + OCI IPSec posture and optional ping test
   hosts: localhost

@@ -1,4 +1,3 @@
-// Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
 param virtualWanName string = 'vwan-oci-azure-transit'
 param virtualHubName string = 'vhub-oci-azure-transit'

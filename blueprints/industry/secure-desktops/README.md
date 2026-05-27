@@ -1,7 +1,5 @@
 # Secure Desktops Landing Zone
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this blueprint when contractors, regulated-data workers, or remote teams
 need managed desktops in OCI without sensitive data landing on unmanaged end
 user devices. It gives desktop pools the same landing-zone treatment as other

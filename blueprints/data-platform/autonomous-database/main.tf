@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_database_autonomous_database" "this" {
   count = var.enable_autonomous_database ? 1 : 0
 

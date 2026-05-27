@@ -1,7 +1,5 @@
 # Event-Driven Application Platform Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 ## Deployment Purpose
 
 Create a reusable event-driven foundation for asynchronous applications and AI

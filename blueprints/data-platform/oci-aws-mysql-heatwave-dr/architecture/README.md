@@ -1,7 +1,5 @@
 # OCI + AWS MySQL HeatWave DR Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 ## Deployment Purpose
 
 Provide a cross-cloud MySQL disaster recovery architecture where OCI is the

@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
 validation_repo_root: "{{ playbook_dir }}/../.."
 validation_blueprint_root: "{{ validation_repo_root }}/blueprints"

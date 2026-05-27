@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_redis_redis_cluster" "this" {
   count = var.create_cluster ? 1 : 0
 

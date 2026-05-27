@@ -1,7 +1,5 @@
 # Azure + OCI Identity Federation Blueprint Draft
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This document defines a concrete blueprint draft for federating Microsoft Entra
 ID with OCI IAM so enterprise users and groups authenticate centrally while OCI
 authorization remains explicit and auditable.

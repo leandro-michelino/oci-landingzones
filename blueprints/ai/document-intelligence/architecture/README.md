@@ -1,7 +1,5 @@
 # Document Intelligence Pipeline Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 ## Deployment Purpose
 
 Provide a reusable document-processing landing zone that starts with Object

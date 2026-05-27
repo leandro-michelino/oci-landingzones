@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
 bootstrap_required_environment_variables:
   - TENANCY_OCID

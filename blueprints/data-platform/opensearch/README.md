@@ -1,7 +1,5 @@
 # OpenSearch Search And Vector Platform
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this blueprint when the customer needs OCI Search with OpenSearch for
 application search, log-style indexing, semantic search, or vector/RAG
 workloads.

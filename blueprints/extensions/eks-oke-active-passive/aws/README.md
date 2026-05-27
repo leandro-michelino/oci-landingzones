@@ -1,7 +1,5 @@
 # AWS Session - EKS Secondary Deployment
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This folder contains the AWS EKS secondary deployment artifacts for the
 `eks-oke-active-passive` blueprint.
 

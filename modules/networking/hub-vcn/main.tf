@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 data "oci_core_services" "all_services" {
   filter {
     name   = "name"

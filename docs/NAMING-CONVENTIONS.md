@@ -1,7 +1,5 @@
 # Cloud Naming Conventions (OCI, Azure, AWS)
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 These naming conventions are mandatory for this repository.
 
 ## OCI Format

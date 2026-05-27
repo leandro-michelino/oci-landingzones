@@ -1,7 +1,5 @@
 # AWS Session - Hybrid Network Backbone
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This folder contains the AWS backbone deployment artifacts for the
 `aws-oci-hybrid-network-backbone` blueprint.
 

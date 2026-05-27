@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 data "oci_database_autonomous_database" "this" {
   count = var.autonomous_database_id == null ? 0 : 1
 

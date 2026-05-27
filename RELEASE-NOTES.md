@@ -1,7 +1,5 @@
 # Release Notes
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 ## Unreleased
 
 ### Added

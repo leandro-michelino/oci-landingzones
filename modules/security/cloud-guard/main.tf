@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_cloud_guard_cloud_guard_configuration" "this" {
   count = var.enable_cloud_guard ? 1 : 0
 

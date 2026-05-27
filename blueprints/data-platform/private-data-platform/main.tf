@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 data "oci_objectstorage_namespace" "this" {
   compartment_id = var.tenancy_ocid
 }

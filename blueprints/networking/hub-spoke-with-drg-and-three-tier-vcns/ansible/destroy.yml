@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
 - name: Destroy the Hub-Spoke With DRG And Three-Tier VCNs blueprint
   hosts: localhost

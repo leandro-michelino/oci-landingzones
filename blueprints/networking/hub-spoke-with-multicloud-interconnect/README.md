@@ -1,7 +1,5 @@
 # Hub-Spoke With Multicloud Interconnect
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this page as the operator guide for
 `blueprints/networking/hub-spoke-with-multicloud-interconnect`. It tells you what the
 blueprint builds, which inputs deserve a real review, how to run Terraform or the local
@@ -185,12 +183,10 @@ Ansible output at the end of the deployment.
 
 ## Validation
 
-When the remote cloud is Azure, test Interconnect first and IPSec second. The
-validated minimum London shape is Azure ExpressRoute `Local_UnlimitedData`
-`1 Gbps` plus OCI FastConnect `1 Gbps` with the Microsoft Azure provider
-service in `uk-london-1`. Keep the fallback IPSec path enabled only when London
-IPSec quota allows it; otherwise record `ipsec-connection-count` as a quota
-blocker and do not leave partial resources running.
+When the remote cloud is Azure, test Interconnect first and IPSec second.
+Record the selected ExpressRoute peering location, FastConnect region,
+bandwidth, provider service, and quota findings in the environment runbook
+instead of committing lab-specific values here.
 
 From the repository root:
 

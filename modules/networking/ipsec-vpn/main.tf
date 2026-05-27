@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_core_cpe" "this" {
   count = var.enable_ipsec ? 1 : 0
 

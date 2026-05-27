@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 ---
 - name: Run Terraform plan for OpenSearch Search And Vector Platform
   hosts: localhost

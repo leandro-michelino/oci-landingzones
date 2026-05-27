@@ -1,7 +1,5 @@
 # GenAI Multi-Model Gateway
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this blueprint when a platform team needs one governed front door for
 multiple OCI GenAI endpoints, models, or routing functions. It gives app teams a
 stable API Gateway endpoint while the platform team controls routes, quotas,

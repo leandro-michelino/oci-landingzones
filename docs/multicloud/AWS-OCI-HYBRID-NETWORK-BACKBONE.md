@@ -1,7 +1,5 @@
 # AWS + OCI Hybrid Network Backbone Design Record
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 This document preserves the multicloud design rationale for the available
 blueprint in `blueprints/networking/aws-oci-hybrid-network-backbone/`.
 

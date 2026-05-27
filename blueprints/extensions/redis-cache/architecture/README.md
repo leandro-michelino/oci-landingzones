@@ -1,7 +1,5 @@
 # Redis Cache Landing Zone Architecture
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 ## Deployment Purpose
 
 This blueprint gives application teams a consistent private Redis cache pattern.

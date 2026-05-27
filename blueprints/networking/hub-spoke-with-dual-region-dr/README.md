@@ -1,7 +1,5 @@
 # Hub-Spoke With Dual Region DR
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this page as the operator guide for
 `blueprints/networking/hub-spoke-with-dual-region-dr`. It tells you what the blueprint
 builds, which inputs deserve a real review, how to run Terraform or the local Ansible

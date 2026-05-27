@@ -7,8 +7,6 @@
 ![Validation: validate-all](https://img.shields.io/badge/validation-validate--all-brightgreen.svg)
 ![Security: TFLint Trivy Checkov](https://img.shields.io/badge/security-tflint%20%7C%20trivy%20%7C%20checkov-2f855a.svg)
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Build OCI landing zones fast, with clear architecture and real deploy flows.
 
 This repo is a practical toolkit: Terraform blueprints, reusable modules, and

@@ -1,7 +1,5 @@
 # OCI NoSQL Database
 
-Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
-
 Use this page as the operator guide for `blueprints/data-platform/nosql`.
 It tells you what the blueprint builds, which inputs deserve a real review, how
 to run Terraform or local Ansible wrappers, and where to find the detailed

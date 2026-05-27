@@ -1,4 +1,3 @@
-# Maintainer: Leandro Michelino | ACE | leandro.michelino@oracle.com
 resource "oci_logging_log_group" "this" {
   for_each = local.log_groups
 
