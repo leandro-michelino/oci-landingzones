@@ -32,6 +32,16 @@ DBA, and platform teams.
 - App teams need a repeatable deployment folder instead of manually stitching
   ADB URLs, load balancer backends, certificates, DNS, and secrets together.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+|---|---|
+| Internal low-code application portal | Publishes APEX/ORDS through a private endpoint path while keeping the Autonomous Database as the managed application runtime. |
+| Department app modernization | Gives business teams an APEX hand-off without asking them to manage load balancer, DNS, certificate, and backend set wiring. |
+| Private SaaS admin console | Places APEX behind internal DNS and controlled network access for operations, support, or back-office users. |
+| DBA-controlled workspace rollout | Keeps workspace creation in the DBA/APEX owner process while Terraform captures URLs, backend IPs, and optional secret hand-off. |
+| Regulated application access | Supports private load balancer placement, NSGs, certificate review, and Vault-backed bootstrap material. |
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the

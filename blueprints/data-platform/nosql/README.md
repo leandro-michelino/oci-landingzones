@@ -29,6 +29,16 @@ consumer workloads.
 - You want optional secondary-index and replica controls in the same blueprint.
 - You want deploy-and-use networking defaults for app-side consumer tiers.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+| --- | --- |
+| Key-value application state | Provides a managed NoSQL table with explicit read, write, and storage capacity hand-off. |
+| JSON document storage | Supports document-style data with a Terraform-owned DDL contract that application teams can review. |
+| Event or order lookup table | Creates a predictable table contract for high-throughput service lookups, order state, or session metadata. |
+| App landing-zone demo | Can create a small app VCN/subnet contract beside the table so consumers have a deploy-and-use starting point. |
+| Cross-region read or recovery pattern | Optional replica inputs let teams model regional resilience when the workload needs it. |
+
 ## Deployment Modes
 
 | Mode | Use It When | Main Inputs |

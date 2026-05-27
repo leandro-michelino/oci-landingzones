@@ -26,6 +26,16 @@ private endpoint, and streaming hooks.
 - Object Storage, Streaming, and KMS need to be reviewed as one pattern.
 - Multiple data-product teams need a repeatable landing-zone shape.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+| --- | --- |
+| Private data-product foundation | Creates network, bucket, private endpoint, Vault/KMS, and Streaming hooks as one reusable platform base. |
+| Secure ingestion landing zone | Combines Object Storage and Streaming so producers can land batch files and event streams privately. |
+| Analytics staging area | Provides a private bucket, subnet contracts, and encryption hooks for downstream analytics or lakehouse services. |
+| Multi-team data platform starter | Gives platform teams a repeatable pattern with named outputs for data, app, and endpoint subnets. |
+| Governance and audit readiness | Captures encryption, private endpoint, bucket events, stream retention, and tags before production rollout. |
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -34,9 +44,9 @@ in the repo.
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `network` | `../../../blueprints/networking/standalone-private-endpoint-only` |
-| Module | `vault` | `../../../modules/security/vault` |
-| Module | `streaming` | `../../../blueprints/extensions/streaming` |
+| Module | `network` | Private endpoint network foundation module. |
+| Module | `vault` | Vault and KMS module. |
+| Module | `streaming` | Streaming extension module. |
 | Resource | `oci_objectstorage_bucket.data` | Declared directly in `main.tf` |
 | Resource | `oci_objectstorage_private_endpoint.data` | Declared directly in `main.tf` |
 | Data source | `data.oci_objectstorage_namespace.this` | Read during plan/apply |

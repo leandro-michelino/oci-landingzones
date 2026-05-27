@@ -26,6 +26,16 @@ This is the managed-service path for teams that want MongoDB-style application a
 - Platform teams need database sizing, network placement, backup, KMS, and IAM decisions captured before apply.
 - Outputs from this pattern must be handed off to application, platform, DBA, or security teams.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+|---|---|
+| MongoDB-compatible app modernization | Gives app teams a MongoDB-style API on an OCI managed database service without self-managing replica sets. |
+| JSON document workloads | Uses Autonomous Database JSON/document capabilities with MongoDB API tooling enabled for document-style access patterns. |
+| Private document API | Creates or consumes private endpoint networking so document traffic stays inside approved OCI network paths. |
+| Migration assessment | Lets teams validate driver behavior, command compatibility, indexing, and endpoint handling before production cutover. |
+| Managed platform alternative | Reduces operational ownership for patching, database host backups, and OS-level database maintenance. |
+
 ## Deployment Modes
 
 | Mode | Use It When | Main Inputs |

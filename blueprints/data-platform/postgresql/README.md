@@ -26,6 +26,16 @@ The blueprint can either consume an existing private subnet and NSG or create a 
 - You want backup, storage, NSG, and credential decisions documented before apply.
 - Outputs from this pattern must be handed off to application, platform, or security teams.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+|---|---|
+| Private PostgreSQL application backend | Creates a managed PostgreSQL DB system with private endpoint outputs for app teams. |
+| Open-source database landing zone | Gives teams a PostgreSQL option beside Autonomous Database, MySQL HeatWave, and NoSQL patterns. |
+| HA-ready service database | Captures instance count, reader endpoint, storage durability, backup, and maintenance choices before apply. |
+| Migration target for PostgreSQL workloads | Provides a reviewable OCI target for app migrations that need PostgreSQL compatibility and managed operations. |
+| Isolated smoke or demo database | Can create a compact VCN/subnet/NSG and DB system for validation without relying on a separate network blueprint. |
+
 ## Deployment Modes
 
 | Mode | Use It When | Main Inputs |

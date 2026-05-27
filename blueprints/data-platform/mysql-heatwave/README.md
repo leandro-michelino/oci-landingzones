@@ -32,6 +32,16 @@ statements in one reviewable deployment surface.
 - Outputs from this pattern must be handed off to app, DBA, analytics, or
   security teams.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+| --- | --- |
+| Private MySQL application backend | Creates a MySQL DB System with private placement, endpoint outputs, backup decisions, and credential hand-off. |
+| Operational analytics acceleration | Adds HeatWave when the same MySQL workload needs analytics acceleration without a separate analytics database. |
+| Lakehouse-ready MySQL pattern | Adds the bucket and IAM hand-off for teams preparing HeatWave Lakehouse or Object Storage-based analytics. |
+| MySQL extension deployment | Can attach HeatWave or Lakehouse pieces to an existing DB System by supplying `db_system_id`. |
+| Governance-ready database rollout | Captures HA, backup, shape, subnet, NSG, IAM, and deletion-policy decisions before apply. |
+
 ## Deployment Modes
 
 | Mode | Use It When | Main Inputs |

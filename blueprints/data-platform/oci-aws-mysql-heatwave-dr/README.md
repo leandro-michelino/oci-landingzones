@@ -29,6 +29,16 @@ IPSec connectivity and explicit replication/failover contracts.
 - Database failover and failback must be operationally documented.
 - Cross-cloud data transport must be private and encrypted.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+| --- | --- |
+| OCI-primary cross-cloud DR | Keeps the production write path in OCI while preparing AWS as a standby endpoint. |
+| DR tabletop and runbook validation | Produces replication, DNS, connectivity, and runbook contracts that can be used in exercises before a real incident. |
+| Regulated cross-cloud replication lane | Uses DRG, CPE, and IPSec resources so replication traffic has an explicit encrypted path. |
+| MySQL HeatWave resilience pattern | Combines OCI MySQL HeatWave primary resources with AWS standby artifacts in one reviewable folder. |
+| Evidence and operations hand-off | Optional bucket, alert topic, endpoint contracts, and RTO/RPO values support audit and operations teams. |
+
 ## What This Deploys
 
 | Kind | Name | Purpose |

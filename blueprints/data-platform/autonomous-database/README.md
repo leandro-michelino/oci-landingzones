@@ -25,6 +25,16 @@ endpoint inputs, and explicit license model selection.
 - You need a reusable, reviewable OCI deployment folder with local Terraform and Ansible runners.
 - Outputs from this pattern must be handed off to application, platform, or security teams.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+|---|---|
+| Private application database | Creates an Autonomous Database with optional private network resources and endpoint outputs for app-team hand-off. |
+| Data warehouse landing zone | Supports ADW-style workloads, private endpoint placement, storage sizing, backup retention, and license review in one folder. |
+| Rapid proof of value | Can create a compact private VCN/subnet/NSG plus database for isolated demos or short-lived validation. |
+| Secure database foundation | Captures KMS, NSG, admin password, backup, and IAM decisions before apply. |
+| Downstream data-platform dependency | Produces ADB IDs, connection strings, private endpoint values, and backup IDs for APEX, analytics, and integration blueprints. |
+
 ## Deployment Modes
 
 | Mode | Use It When | Main Inputs |

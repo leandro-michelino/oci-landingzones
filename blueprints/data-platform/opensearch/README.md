@@ -31,6 +31,16 @@ subnet, and NSG so the cluster is ready for controlled app-team access.
   captured before apply.
 - Outputs must be handed off to application, platform, or security teams.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+| --- | --- |
+| Application search service | Creates a managed OpenSearch endpoint for product, catalog, document, or operational search. |
+| Vector and RAG retrieval target | Provides a search/vector platform for embedding pipelines, semantic search, and retrieval-augmented generation. |
+| Log-style indexing | Supports private indexing and dashboard access for teams that need searchable operational or application events. |
+| Isolated search sandbox | Can create its own small private VCN/subnet/NSG for demos, tests, and workload validation. |
+| Snapshot and export foundation | Optional bucket and IAM policy settings prepare the cluster for snapshot, export, or backup workflows. |
+
 ## Deployment Modes
 
 | Mode | Use It When | Main Inputs |
