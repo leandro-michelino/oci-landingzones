@@ -1,0 +1,93 @@
+variable "tenancy_ocid" {
+  description = "OCI tenancy OCID."
+  type        = string
+}
+
+variable "compartment_ocid" {
+  description = "Compartment for all disposable lab resources."
+  type        = string
+}
+
+variable "region" {
+  description = "Primary OCI region name."
+  type        = string
+}
+
+variable "standby_region" {
+  description = "Standby OCI region name."
+  type        = string
+}
+
+variable "oci_config_profile" {
+  description = "Optional OCI CLI config profile for local execution."
+  type        = string
+  default     = null
+}
+
+variable "name_prefix" {
+  description = "Prefix for lab resource names."
+  type        = string
+  default     = "fsdr-lab"
+}
+
+variable "primary_vcn_cidr" {
+  description = "Primary VCN CIDR."
+  type        = string
+  default     = "10.77.0.0/16"
+}
+
+variable "standby_vcn_cidr" {
+  description = "Standby VCN CIDR."
+  type        = string
+  default     = "10.78.0.0/16"
+}
+
+variable "primary_subnet_cidr" {
+  description = "Primary subnet CIDR."
+  type        = string
+  default     = "10.77.1.0/24"
+}
+
+variable "standby_subnet_cidr" {
+  description = "Standby subnet CIDR."
+  type        = string
+  default     = "10.78.1.0/24"
+}
+
+variable "image_ocid" {
+  description = "Primary-region image OCID used for the disposable compute instance."
+  type        = string
+}
+
+variable "instance_shape" {
+  description = "Compute shape for the disposable instance."
+  type        = string
+  default     = "VM.Standard.A1.Flex"
+}
+
+variable "instance_ocpus" {
+  description = "OCPUs for flex shapes."
+  type        = number
+  default     = 1
+}
+
+variable "instance_memory_in_gbs" {
+  description = "Memory for flex shapes."
+  type        = number
+  default     = 6
+}
+
+variable "boot_volume_size_in_gbs" {
+  description = "Boot volume size for the disposable instance."
+  type        = number
+  default     = 50
+}
+
+variable "freeform_tags" {
+  description = "Freeform tags applied to lab resources."
+  type        = map(string)
+  default = {
+    Purpose   = "fsdr-real-lab"
+    Temporary = "true"
+  }
+}

@@ -1,0 +1,54 @@
+output "primary_instance_id" {
+  description = "Disposable primary compute instance OCID."
+  value       = oci_core_instance.primary.id
+}
+
+output "primary_boot_volume_id" {
+  description = "Boot volume OCID for the disposable primary compute instance."
+  value       = oci_core_instance.primary.boot_volume_id
+}
+
+output "primary_volume_group_id" {
+  description = "Volume group OCID to register as an FSDR VOLUME_GROUP member."
+  value       = oci_core_volume_group.primary.id
+}
+
+output "primary_subnet_id" {
+  description = "Primary subnet OCID; use as the destination subnet during switchback."
+  value       = oci_core_subnet.primary.id
+}
+
+output "standby_subnet_id" {
+  description = "Standby subnet OCID; use as the destination subnet during switchover."
+  value       = oci_core_subnet.standby.id
+}
+
+output "object_storage_buckets" {
+  description = "Primary and standby bucket names for Object Storage replication tests."
+  value = {
+    primary_namespace = data.oci_objectstorage_namespace.primary.namespace
+    standby_namespace = data.oci_objectstorage_namespace.standby.namespace
+    primary_bucket    = oci_objectstorage_bucket.primary.name
+    standby_bucket    = oci_objectstorage_bucket.standby.name
+  }
+}
+
+output "fsdr_member_hints" {
+  description = "Member values to use when registering the lab resources with FSDR."
+  value = {
+    compute = {
+      member_id                  = oci_core_instance.primary.id
+      member_type                = "COMPUTE_INSTANCE_MOVABLE"
+      destination_subnet_id      = oci_core_subnet.standby.id
+      destination_hostname_label = "fsdrstandby"
+    }
+    volume_group = {
+      member_id   = oci_core_volume_group.primary.id
+      member_type = "VOLUME_GROUP"
+    }
+    object_storage = {
+      source_bucket_name      = oci_objectstorage_bucket.primary.name
+      destination_bucket_name = oci_objectstorage_bucket.standby.name
+    }
+  }
+}

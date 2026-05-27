@@ -6,6 +6,7 @@
 .codex-local/
 .claude/
 .cursor/
+.work/
 
 # Terraform
 .terraform/

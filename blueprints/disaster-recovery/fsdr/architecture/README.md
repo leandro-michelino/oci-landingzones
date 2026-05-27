@@ -82,6 +82,11 @@ These notes expand the diagram with the design details that usually matter durin
 - Protection group members should map to real application resources that can be moved, recovered, or orchestrated by FSDR.
 - The DR plan is created only after protection groups exist and should be reviewed against the intended failover or switchover type.
 - Runtime application replication is outside this folder; this deployment prepares the FSDR control plane and log locations.
+- FSDR resource-principal access is an IAM prerequisite. The DR protection groups need dynamic-group and policy coverage for the resource families they orchestrate.
+- Switchover and failover execution is an operational action, not a normal Terraform apply action. Plans are generated and executed from the DR protection group that is currently standby.
+- Movable compute recovery depends on the compute instance, its destination subnet mapping, and a replicated volume group that covers all attached boot and block volumes.
+- Object Storage recovery depends on bucket replication outside this Terraform folder; add bucket members only after replication is active.
+- The optional `examples/real-dr-lab` harness creates disposable compute, network, bucket, and replicated volume-group resources for customer drills without changing this blueprint boundary.
 
 ## Operational Boundaries
 

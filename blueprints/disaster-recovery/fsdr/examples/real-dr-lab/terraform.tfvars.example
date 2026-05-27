@@ -1,0 +1,10 @@
+tenancy_ocid       = "ocid1.tenancy.oc1..example"
+compartment_ocid   = "ocid1.compartment.oc1..example"
+region             = "sa-saopaulo-1"
+standby_region     = "sa-vinhedo-1"
+oci_config_profile = "DEFAULT"
+
+name_prefix = "customer-fsdr-lab"
+
+# Use a current image OCID from the primary region.
+image_ocid = "ocid1.image.oc1.sa-saopaulo-1.example"

@@ -25,6 +25,18 @@ buckets, and DR plan wiring.
 - A workload needs OCI FSDR orchestration.
 - Primary and standby regions are already selected.
 - Protection groups and plan execution need a documented review path.
+- You want a reusable control-plane baseline for repeated FSDR drills without
+  recreating application resources each time.
+
+## Use Cases
+
+| Use Case | What This Blueprint Provides | What The Workload Must Provide |
+| --- | --- | --- |
+| Regional switchover drill | Primary and standby DR protection groups, log buckets, and optional plan wiring. | Replicated compute volumes, destination network mappings, and a reviewed switchover plan created from the current standby DRPG. |
+| Movable compute recovery | FSDR control plane and log locations. | Compute instances whose attached boot and block volumes are in replicated volume groups, plus destination subnets and hostname/IP choices. |
+| Object Storage recovery | DRPGs and log buckets. | Source and destination buckets with Object Storage replication policy configured before adding the bucket as an FSDR member. |
+| Database stack orchestration | FSDR DRPGs and plan hand-off points. | Data Guard, Autonomous Database refreshable clone/cross-region design, or the database-specific DR topology required by the service. |
+| Customer demo or lab | A stable DRPG baseline plus the optional lab in `examples/real-dr-lab`. | Disposable workload resources, IAM approval, and cleanup discipline after the drill. |
 
 ## What This Deploys
 
@@ -152,6 +164,55 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 `apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for
 customer-facing or shared environments.
 
+## Optional Real DR Lab
+
+This blueprint intentionally does not create application resources. To help customers
+simulate a real drill, the folder includes an optional lab harness:
+
+```text
+examples/real-dr-lab/
+```
+
+The lab creates disposable primary/standby VCNs, subnets, Object Storage buckets, a
+small primary compute instance, and a replicated boot-volume volume group. It then
+outputs the resource IDs and FSDR member hints needed for compute, storage, and
+volume-group registration.
+
+Use it when you want to demonstrate the same pattern as a real São Paulo to Vinhedo
+test: deploy the FSDR control plane first, deploy the lab workload second, add members
+to the current primary DRPG, generate the switchover plan from the current standby DRPG,
+run precheck, execute switchover, then switch back.
+
+Keep the lab separate from production state:
+
+```bash
+cd blueprints/disaster-recovery/fsdr/examples/real-dr-lab
+mkdir -p .work
+cp *.tf.example .work/
+cp terraform.tfvars.example .work/
+for file in .work/*.tf.example; do mv "$file" "${file%.example}"; done
+cd .work
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform plan
+terraform apply
+```
+
+The lab files are checked in with the `.tf.example` suffix so the repo validator treats
+them as a customer simulation harness, not as another managed blueprint entry point.
+Keep generated `.tf` files and local Terraform working data in `.work/`.
+
+After the drill, remove FSDR members and plans first, then destroy the lab:
+
+```bash
+cd blueprints/disaster-recovery/fsdr/examples/real-dr-lab/.work
+terraform destroy
+```
+
+The lab is intentionally explicit about cleanup because volume-group and boot-volume
+replication can preserve resources after compute termination. If manual cleanup is
+needed, disable volume or boot-volume replicas before deleting the preserved volumes.
+
 ## Deployment Order
 
 1. Confirm primary and standby regions.
@@ -177,6 +238,9 @@ Ansible output at the end of the deployment.
 - Keep drills and failover execution outside normal Terraform apply until reviewed.
 - Confirm primary and standby region providers.
 - Validate protected resources and IAM permissions before activation.
+- Create and execute switchover or failover plans from the current standby DR protection group.
+- For movable compute, confirm every attached boot and block volume is covered by a replicated volume group that is also an FSDR member.
+- For Object Storage members, confirm bucket replication is active before plan generation.
 - Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
 - Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
 
