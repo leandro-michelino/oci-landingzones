@@ -1,6 +1,7 @@
 ---
 - name: Run Terraform plan for MySQL HeatWave Landing Zone
   hosts: localhost
+  connection: local
   gather_facts: false
   vars:
     terraform_action: plan

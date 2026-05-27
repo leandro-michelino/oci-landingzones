@@ -107,7 +107,7 @@ terraform plan or ansible/plan.yml
 
 ## Blueprint Architecture Inventory
 
-The current catalog has 78 deployable blueprint entry points across 13
+The current catalog has 79 deployable blueprint entry points across 13
 families. Each entry point owns its local Architecture in
 `architecture/README.md`.
 
@@ -132,6 +132,7 @@ families. Each entry point owns its local Architecture in
 | core | [Core Landing Zone](../../blueprints/core/) | [Architecture](../../blueprints/core/architecture/) |
 | data-platform | [Oracle APEX On Autonomous Database](../../blueprints/data-platform/apex-adw/) | [Architecture](../../blueprints/data-platform/apex-adw/architecture/) |
 | data-platform | [Autonomous Database](../../blueprints/data-platform/autonomous-database/) | [Architecture](../../blueprints/data-platform/autonomous-database/architecture/) |
+| data-platform | [Autonomous Database MongoDB API](../../blueprints/data-platform/mongodb-api/) | [Architecture](../../blueprints/data-platform/mongodb-api/architecture/) |
 | data-platform | [MySQL HeatWave Landing Zone](../../blueprints/data-platform/mysql-heatwave/) | [Architecture](../../blueprints/data-platform/mysql-heatwave/architecture/) |
 | data-platform | [OCI + AWS MySQL HeatWave DR](../../blueprints/data-platform/oci-aws-mysql-heatwave-dr/) | [Architecture](../../blueprints/data-platform/oci-aws-mysql-heatwave-dr/architecture/) |
 | data-platform | [OCI NoSQL Database](../../blueprints/data-platform/nosql/) | [Architecture](../../blueprints/data-platform/nosql/architecture/) |

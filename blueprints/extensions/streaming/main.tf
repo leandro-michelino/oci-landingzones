@@ -34,14 +34,24 @@ resource "oci_streaming_stream_pool" "this" {
   }
 }
 
-resource "oci_streaming_stream" "this" {
-  for_each = var.enable_streaming ? var.streams : {}
+resource "oci_streaming_stream" "in_pool" {
+  for_each = var.enable_streaming && (var.create_stream_pool || var.stream_pool_id != null) ? var.streams : {}
+
+  name               = "${local.name_prefix}-stream-${each.key}"
+  partitions         = each.value.partitions
+  retention_in_hours = try(each.value.retention_in_hours, null)
+  stream_pool_id     = local.stream_pool_id
+  defined_tags       = var.defined_tags
+  freeform_tags      = local.common_freeform_tags
+}
+
+resource "oci_streaming_stream" "in_compartment" {
+  for_each = var.enable_streaming && !var.create_stream_pool && var.stream_pool_id == null ? var.streams : {}
 
   compartment_id     = local.target_compartment_ocid
   name               = "${local.name_prefix}-stream-${each.key}"
   partitions         = each.value.partitions
   retention_in_hours = try(each.value.retention_in_hours, null)
-  stream_pool_id     = local.stream_pool_id
   defined_tags       = var.defined_tags
   freeform_tags      = local.common_freeform_tags
 }

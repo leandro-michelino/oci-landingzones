@@ -52,6 +52,56 @@ variable "enable_db_system" {
   type        = bool
   default     = false
 }
+variable "create_private_network" {
+  description = "Create a small private VCN, subnet, and NSG for PostgreSQL."
+  type        = bool
+  default     = false
+}
+variable "vcn_cidr_block" {
+  description = "CIDR block for the optional private VCN."
+  type        = string
+  default     = "10.81.0.0/16"
+}
+variable "subnet_cidr_block" {
+  description = "CIDR block for the optional private PostgreSQL subnet."
+  type        = string
+  default     = "10.81.10.0/24"
+}
+variable "vcn_display_name" {
+  description = "Optional display name override for the private VCN."
+  type        = string
+  default     = null
+}
+variable "subnet_display_name" {
+  description = "Optional display name override for the PostgreSQL subnet."
+  type        = string
+  default     = null
+}
+variable "nsg_display_name" {
+  description = "Optional display name override for the PostgreSQL NSG."
+  type        = string
+  default     = null
+}
+variable "vcn_dns_label" {
+  description = "DNS label for the optional private VCN."
+  type        = string
+  default     = "psqlvcn"
+}
+variable "subnet_dns_label" {
+  description = "DNS label for the optional private PostgreSQL subnet."
+  type        = string
+  default     = "psqlsn"
+}
+variable "allowed_client_cidrs" {
+  description = "CIDR blocks allowed to reach PostgreSQL."
+  type        = list(string)
+  default     = ["10.81.0.0/16"]
+}
+variable "postgresql_port" {
+  description = "TCP port allowed to PostgreSQL."
+  type        = number
+  default     = 5432
+}
 variable "db_system_display_name" {
   description = "Optional PostgreSQL DB system display name override."
   type        = string
@@ -70,7 +120,7 @@ variable "db_version" {
 variable "shape" {
   description = "PostgreSQL DB system shape."
   type        = string
-  default     = "PostgreSQL.VM.Standard.E4.Flex"
+  default     = "PostgreSQL.VM.Standard.E5.Flex"
 }
 variable "system_type" {
   description = "PostgreSQL DB system type."
@@ -90,12 +140,12 @@ variable "instance_count" {
 variable "instance_ocpu_count" {
   description = "OCPU count per PostgreSQL instance."
   type        = number
-  default     = 1
+  default     = 2
 }
 variable "instance_memory_size_in_gbs" {
   description = "Memory in GB per PostgreSQL instance."
   type        = number
-  default     = 16
+  default     = 32
 }
 variable "admin_username" {
   description = "PostgreSQL admin username."

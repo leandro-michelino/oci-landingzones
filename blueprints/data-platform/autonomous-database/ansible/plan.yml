@@ -1,6 +1,7 @@
 ---
 - name: Run Terraform plan for Autonomous Database
   hosts: localhost
+  connection: local
   gather_facts: false
   vars:
     terraform_action: plan

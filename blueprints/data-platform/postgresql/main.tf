@@ -1,3 +1,55 @@
+resource "oci_core_vcn" "postgresql" {
+  count = var.create_private_network ? 1 : 0
+
+  compartment_id = local.target_compartment_ocid
+  cidr_block     = var.vcn_cidr_block
+  display_name   = local.vcn_display_name
+  dns_label      = var.vcn_dns_label
+  defined_tags   = var.defined_tags
+  freeform_tags  = local.common_freeform_tags
+}
+
+resource "oci_core_subnet" "postgresql" {
+  count = var.create_private_network ? 1 : 0
+
+  compartment_id             = local.target_compartment_ocid
+  vcn_id                     = oci_core_vcn.postgresql[0].id
+  cidr_block                 = var.subnet_cidr_block
+  display_name               = local.subnet_display_name
+  dns_label                  = var.subnet_dns_label
+  prohibit_public_ip_on_vnic = true
+  defined_tags               = var.defined_tags
+  freeform_tags              = local.common_freeform_tags
+}
+
+resource "oci_core_network_security_group" "postgresql" {
+  count = var.create_private_network ? 1 : 0
+
+  compartment_id = local.target_compartment_ocid
+  vcn_id         = oci_core_vcn.postgresql[0].id
+  display_name   = local.nsg_display_name
+  defined_tags   = var.defined_tags
+  freeform_tags  = local.common_freeform_tags
+}
+
+resource "oci_core_network_security_group_security_rule" "postgresql_ingress" {
+  for_each = var.create_private_network ? toset(var.allowed_client_cidrs) : []
+
+  network_security_group_id = oci_core_network_security_group.postgresql[0].id
+  direction                 = "INGRESS"
+  protocol                  = "6"
+  source                    = each.value
+  source_type               = "CIDR_BLOCK"
+  stateless                 = false
+
+  tcp_options {
+    destination_port_range {
+      min = var.postgresql_port
+      max = var.postgresql_port
+    }
+  }
+}
+
 resource "oci_psql_db_system" "this" {
   count = var.enable_db_system ? 1 : 0
 
@@ -26,8 +78,8 @@ resource "oci_psql_db_system" "this" {
   }
 
   network_details {
-    subnet_id                      = var.subnet_id
-    nsg_ids                        = var.nsg_ids
+    subnet_id                      = local.effective_subnet_id
+    nsg_ids                        = local.effective_nsg_ids
     primary_db_endpoint_private_ip = var.primary_db_endpoint_private_ip
     is_reader_endpoint_enabled     = var.is_reader_endpoint_enabled
   }
@@ -60,8 +112,8 @@ resource "oci_psql_db_system" "this" {
 
         content {
           backup_start      = backup_policy.value.backup_start
-          days_of_the_month = backup_policy.value.days_of_the_month
-          days_of_the_week  = backup_policy.value.days_of_the_week
+          days_of_the_month = length(backup_policy.value.days_of_the_month) > 0 ? backup_policy.value.days_of_the_month : null
+          days_of_the_week  = length(backup_policy.value.days_of_the_week) > 0 ? backup_policy.value.days_of_the_week : null
           kind              = backup_policy.value.kind
           retention_days    = backup_policy.value.retention_days
 
@@ -99,4 +151,10 @@ resource "oci_identity_policy" "access" {
   statements     = var.policy_statements
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
+}
+
+data "oci_psql_db_system_connection_detail" "this" {
+  count = var.enable_db_system ? 1 : 0
+
+  db_system_id = oci_psql_db_system.this[0].id
 }

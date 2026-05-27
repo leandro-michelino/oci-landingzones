@@ -9,9 +9,20 @@ output "name_prefix" {
 output "resource_ids" {
   description = "Consolidated map of resource and contract identifiers produced by this blueprint; use it as the primary machine-readable hand-off for integration and runbook steps."
   value = {
+    vcn                = try(oci_core_vcn.opensearch[0].id, null)
+    subnet             = try(oci_core_subnet.opensearch[0].id, null)
+    nsg                = try(oci_core_network_security_group.opensearch[0].id, null)
     opensearch_cluster = try(oci_opensearch_opensearch_cluster.this[0].id, null)
     snapshot_bucket    = try(oci_objectstorage_bucket.snapshots[0].id, null)
     access_policy      = try(oci_identity_policy.access[0].id, null)
+  }
+}
+output "private_network" {
+  description = "Optional private network resources created by this blueprint."
+  value = {
+    vcn_id    = try(oci_core_vcn.opensearch[0].id, null)
+    subnet_id = try(oci_core_subnet.opensearch[0].id, null)
+    nsg_id    = try(oci_core_network_security_group.opensearch[0].id, null)
   }
 }
 output "opensearch_cluster_id" {

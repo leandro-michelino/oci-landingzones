@@ -1,6 +1,7 @@
 ---
 - name: Apply OpenSearch Search And Vector Platform
   hosts: localhost
+  connection: local
   gather_facts: false
   vars:
     terraform_action: apply

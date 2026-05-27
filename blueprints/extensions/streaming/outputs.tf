@@ -12,7 +12,10 @@ output "resource_ids" {
   description = "Consolidated map of resource and contract identifiers produced by this blueprint; use it as the primary machine-readable hand-off for integration and runbook steps."
   value = {
     stream_pool = try(oci_streaming_stream_pool.this[0].id, null)
-    streams     = { for key, stream in oci_streaming_stream.this : key => stream.id }
+    streams = merge(
+      { for key, stream in oci_streaming_stream.in_pool : key => stream.id },
+      { for key, stream in oci_streaming_stream.in_compartment : key => stream.id }
+    )
   }
 }
 
@@ -23,5 +26,8 @@ output "stream_pool_id" {
 
 output "stream_ids" {
   description = "Stream OCIDs keyed by logical stream name."
-  value       = { for key, stream in oci_streaming_stream.this : key => stream.id }
+  value = merge(
+    { for key, stream in oci_streaming_stream.in_pool : key => stream.id },
+    { for key, stream in oci_streaming_stream.in_compartment : key => stream.id }
+  )
 }

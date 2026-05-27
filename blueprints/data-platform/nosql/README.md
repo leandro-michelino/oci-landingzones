@@ -29,6 +29,38 @@ consumer workloads.
 - You want optional secondary-index and replica controls in the same blueprint.
 - You want deploy-and-use networking defaults for app-side consumer tiers.
 
+## Deployment Modes
+
+| Mode | Use It When | Main Inputs |
+| --- | --- | --- |
+| Table with app network | Fastest complete deployment for demos, tests, or isolated app landing zones. | `enable_app_network = true`, `app_vcn_cidr`, `app_subnet_cidr` |
+| Table only | Production or shared environments already have app networking. | `enable_app_network = false`, table DDL and capacity inputs |
+| Table plus index | Query patterns need a secondary index from day one. | `create_secondary_index = true`, `secondary_index_columns` |
+| Table plus replica | Cross-region read or recovery posture is approved. | `enable_table_replica = true`, `replica_region` |
+| Validation only | You want CI or local validation without creating resources. | Keep resource enable flags disabled or use validation tfvars. |
+
+## Quick Start
+
+For a table with app-network outputs, start with the example file and fill in
+approved compartment, schema, and capacity values:
+
+```bash
+cd blueprints/data-platform/nosql
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform validate
+terraform plan
+```
+
+For the repo-standard guarded flow:
+
+```bash
+cd blueprints/data-platform/nosql
+ansible-playbook -i localhost, -c local ansible/plan.yml
+CONFIRM_APPLY=true ansible-playbook -i localhost, -c local ansible/apply.yml
+CONFIRM_DESTROY=true ansible-playbook -i localhost, -c local ansible/destroy.yml
+```
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the
@@ -142,9 +174,9 @@ the repo:
 
 ```bash
 cd blueprints/data-platform/nosql
-ansible-playbook -i localhost, ansible/plan.yml
-CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
-CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
+ansible-playbook -i localhost, -c local ansible/plan.yml
+CONFIRM_APPLY=true ansible-playbook -i localhost, -c local ansible/apply.yml
+CONFIRM_DESTROY=true ansible-playbook -i localhost, -c local ansible/destroy.yml
 ```
 
 `apply.yml` and `destroy.yml` are intentionally guarded.
@@ -176,10 +208,7 @@ blueprint.
 From the repository root:
 
 ```bash
-./scripts/validate-all.sh
+./scripts/validate-changed.sh
 ```
 
-The validator checks Terraform formatting, required deployment README files,
-required architecture README sections, `terraform init -backend=false`,
-`terraform validate`, root Ansible syntax, blueprint-local Ansible syntax,
-optional scanners when installed, and cleanup of generated Terraform artifacts.
+Use `./scripts/validate-all.sh` before release work or broad shared changes.

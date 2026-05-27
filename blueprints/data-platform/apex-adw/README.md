@@ -200,7 +200,3 @@ From the repository root:
 ```
 
 Use `./scripts/validate-all.sh` before release work or broad shared changes.
-The validator checks Terraform formatting, required deployment README files,
-required architecture README sections, `terraform init -backend=false`,
-`terraform validate`, Ansible syntax, optional scanners when installed, and
-cleanup of generated Terraform artifacts.

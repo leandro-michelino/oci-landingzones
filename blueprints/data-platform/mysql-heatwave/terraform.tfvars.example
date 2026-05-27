@@ -17,6 +17,7 @@ create_db_system         = false
 create_heatwave_cluster  = false
 create_lakehouse_bucket  = false
 enable_heatwave_lakehouse = false
+db_shape_name            = "MySQL.2"
 
 admin_username = "admin"
 admin_password = "REPLACE_WITH_LOCAL_SECRET"

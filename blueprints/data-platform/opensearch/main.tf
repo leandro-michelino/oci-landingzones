@@ -3,6 +3,40 @@ data "oci_objectstorage_namespace" "this" {
   compartment_id = var.tenancy_ocid
 }
 
+resource "oci_core_vcn" "opensearch" {
+  count = var.create_private_network ? 1 : 0
+
+  compartment_id = local.target_compartment_ocid
+  cidr_block     = var.vcn_cidr_block
+  display_name   = local.vcn_display_name
+  dns_label      = var.vcn_dns_label
+  defined_tags   = var.defined_tags
+  freeform_tags  = local.common_freeform_tags
+}
+
+resource "oci_core_subnet" "opensearch" {
+  count = var.create_private_network ? 1 : 0
+
+  compartment_id             = local.target_compartment_ocid
+  vcn_id                     = oci_core_vcn.opensearch[0].id
+  cidr_block                 = var.subnet_cidr_block
+  display_name               = local.subnet_display_name
+  dns_label                  = var.subnet_dns_label
+  prohibit_public_ip_on_vnic = true
+  defined_tags               = var.defined_tags
+  freeform_tags              = local.common_freeform_tags
+}
+
+resource "oci_core_network_security_group" "opensearch" {
+  count = var.create_private_network ? 1 : 0
+
+  compartment_id = local.target_compartment_ocid
+  vcn_id         = oci_core_vcn.opensearch[0].id
+  display_name   = local.nsg_display_name
+  defined_tags   = var.defined_tags
+  freeform_tags  = local.common_freeform_tags
+}
+
 resource "oci_objectstorage_bucket" "snapshots" {
   count = var.create_snapshot_bucket ? 1 : 0
 
@@ -24,11 +58,11 @@ resource "oci_opensearch_opensearch_cluster" "this" {
   compartment_id                     = local.target_compartment_ocid
   display_name                       = local.cluster_display_name
   software_version                   = var.software_version
-  vcn_id                             = var.vcn_id
+  vcn_id                             = local.effective_vcn_id
   vcn_compartment_id                 = coalesce(var.vcn_compartment_id, local.target_compartment_ocid)
-  subnet_id                          = var.subnet_id
+  subnet_id                          = local.effective_subnet_id
   subnet_compartment_id              = coalesce(var.subnet_compartment_id, local.target_compartment_ocid)
-  nsg_id                             = var.nsg_id
+  nsg_id                             = local.effective_nsg_id
   master_node_count                  = var.master_node_count
   master_node_host_type              = var.master_node_host_type
   master_node_host_ocpu_count        = var.master_node_host_ocpu_count

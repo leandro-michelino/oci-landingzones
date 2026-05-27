@@ -3,6 +3,58 @@ data "oci_objectstorage_namespace" "this" {
   compartment_id = var.tenancy_ocid
 }
 
+resource "oci_core_vcn" "mysql" {
+  count = var.create_private_network ? 1 : 0
+
+  compartment_id = local.target_compartment_ocid
+  cidr_block     = var.vcn_cidr_block
+  display_name   = local.vcn_display_name
+  dns_label      = var.vcn_dns_label
+  defined_tags   = var.defined_tags
+  freeform_tags  = local.common_freeform_tags
+}
+
+resource "oci_core_subnet" "mysql" {
+  count = var.create_private_network ? 1 : 0
+
+  compartment_id             = local.target_compartment_ocid
+  vcn_id                     = oci_core_vcn.mysql[0].id
+  cidr_block                 = var.subnet_cidr_block
+  display_name               = local.subnet_display_name
+  dns_label                  = var.subnet_dns_label
+  prohibit_public_ip_on_vnic = true
+  defined_tags               = var.defined_tags
+  freeform_tags              = local.common_freeform_tags
+}
+
+resource "oci_core_network_security_group" "mysql" {
+  count = var.create_private_network ? 1 : 0
+
+  compartment_id = local.target_compartment_ocid
+  vcn_id         = oci_core_vcn.mysql[0].id
+  display_name   = local.nsg_display_name
+  defined_tags   = var.defined_tags
+  freeform_tags  = local.common_freeform_tags
+}
+
+resource "oci_core_network_security_group_security_rule" "mysql_ingress" {
+  for_each = var.create_private_network ? toset(var.allowed_client_cidrs) : []
+
+  network_security_group_id = oci_core_network_security_group.mysql[0].id
+  direction                 = "INGRESS"
+  protocol                  = "6"
+  source                    = each.value
+  source_type               = "CIDR_BLOCK"
+  stateless                 = false
+
+  tcp_options {
+    destination_port_range {
+      min = 3306
+      max = 3306
+    }
+  }
+}
+
 resource "oci_objectstorage_bucket" "lakehouse" {
   count = var.create_lakehouse_bucket ? 1 : 0
 
@@ -27,8 +79,8 @@ resource "oci_mysql_mysql_db_system" "this" {
   availability_domain     = var.availability_domain
   fault_domain            = var.fault_domain
   shape_name              = var.db_shape_name
-  subnet_id               = var.subnet_id
-  nsg_ids                 = var.nsg_ids
+  subnet_id               = local.effective_subnet_id
+  nsg_ids                 = local.effective_nsg_ids
   hostname_label          = var.hostname_label
   mysql_version           = var.mysql_version
   admin_username          = var.admin_username

@@ -53,6 +53,51 @@ variable "create_db_system" {
   type        = bool
   default     = false
 }
+variable "create_private_network" {
+  description = "Create a private VCN, subnet, and NSG for the MySQL endpoint."
+  type        = bool
+  default     = false
+}
+variable "vcn_cidr_block" {
+  description = "CIDR block for the optional private VCN."
+  type        = string
+  default     = "10.83.0.0/16"
+}
+variable "subnet_cidr_block" {
+  description = "CIDR block for the optional private MySQL subnet."
+  type        = string
+  default     = "10.83.10.0/24"
+}
+variable "vcn_display_name" {
+  description = "Optional display name override for the private VCN."
+  type        = string
+  default     = null
+}
+variable "subnet_display_name" {
+  description = "Optional display name override for the private MySQL subnet."
+  type        = string
+  default     = null
+}
+variable "nsg_display_name" {
+  description = "Optional display name override for the MySQL NSG."
+  type        = string
+  default     = null
+}
+variable "vcn_dns_label" {
+  description = "DNS label for the optional private VCN."
+  type        = string
+  default     = "mysqlvcn"
+}
+variable "subnet_dns_label" {
+  description = "DNS label for the optional private MySQL subnet."
+  type        = string
+  default     = "mysqlsn"
+}
+variable "allowed_client_cidrs" {
+  description = "CIDR blocks allowed to reach MySQL."
+  type        = list(string)
+  default     = ["10.83.0.0/16"]
+}
 variable "db_system_id" {
   description = "Existing MySQL DB System OCID when create_db_system is false."
   type        = string
@@ -81,7 +126,7 @@ variable "fault_domain" {
 variable "db_shape_name" {
   description = "MySQL DB System shape name."
   type        = string
-  default     = "MySQL.VM.Standard.E4.1.8GB"
+  default     = "MySQL.2"
 }
 variable "subnet_id" {
   description = "Private subnet OCID for the MySQL endpoint."

@@ -12,7 +12,7 @@ Deploys a private OCI PostgreSQL DB system with network controls, storage durabi
 |---|---|
 | Boundary | `blueprints/data-platform/postgresql` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Provides a private managed PostgreSQL database foundation for application teams. |
-| Terraform components | `oci_psql_db_system.this`, `oci_identity_policy.access` |
+| Terraform components | `oci_core_vcn.postgresql`, `oci_core_subnet.postgresql`, `oci_core_network_security_group.postgresql`, `oci_psql_db_system.this`, `data.oci_psql_db_system_connection_detail.this`, `oci_identity_policy.access` |
 | Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic or control flow for this exact deployment. |
 
 ## Architecture
@@ -29,7 +29,11 @@ Deploys a private OCI PostgreSQL DB system with network controls, storage durabi
 |         v                    v                         v                                                 |
 | {Database compartment / private network boundary}                                                        |
 |         |                                                                                                |
-|         +--> (private database subnet)                                                                   |
+|         +--> [optional private VCN]                                                                      |
+|         |        |-- private PostgreSQL subnet                                                              |
+|         |        `-- NSG ingress from approved client CIDRs to port 5432                                  |
+|         |                                                                                                |
+|         +--> (private database subnet, created or supplied)                                              |
 |         |        |                                                                                       |
 |         |        v                                                                                       |
 |         |   [PostgreSQL DB system]                                                                       |
@@ -55,14 +59,19 @@ Deploys a private OCI PostgreSQL DB system with network controls, storage durabi
 
 | Kind | Name | Source Or Role |
 |---|---|---|
+| Resource | `oci_core_vcn.postgresql` | Optional private VCN for complete deploy-and-use PostgreSQL deployments. |
+| Resource | `oci_core_subnet.postgresql` | Optional private database subnet. |
+| Resource | `oci_core_network_security_group.postgresql` | Optional NSG attached to the PostgreSQL DB system. |
+| Resource | `oci_core_network_security_group_security_rule.postgresql_ingress` | Optional NSG ingress rules from approved client CIDRs to PostgreSQL port 5432. |
 | Resource | `oci_psql_db_system.this` | Declared directly in `main.tf` |
+| Data source | `oci_psql_db_system_connection_detail.this` | Reads primary, reader, and instance endpoint details for hand-off outputs. |
 | Resource | `oci_identity_policy.access` | Optional scoped IAM policy declared directly in `main.tf` |
 
 ## Request And Deployment Flow
 
-- Operator supplies tenancy values, private subnet, NSGs, version, shape, storage, backup, and credential settings.
-- Terraform creates the PostgreSQL DB system, network details, storage details, optional management policy, optional source restore settings, and optional IAM policy.
-- Outputs expose DB system ID, state, instance details, admin username, and policy ID for app teams and runbooks.
+- Operator supplies tenancy values, private network mode or existing subnet/NSGs, version, shape, storage, backup, and credential settings.
+- Terraform creates or consumes private network resources, then creates the PostgreSQL DB system, network details, storage details, optional management policy, optional source restore settings, and optional IAM policy.
+- Outputs expose DB system ID, state, private network IDs, endpoint details, instance details, admin username, and policy ID for app teams and runbooks.
 
 ## Traffic And Trust Boundaries
 
@@ -74,8 +83,10 @@ Deploys a private OCI PostgreSQL DB system with network controls, storage durabi
 ## Detailed Architecture Notes
 
 - Keep PostgreSQL in a private subnet and expose it only to app subnets or approved admin paths.
+- The optional network path is intentionally small: one VCN, one private subnet, one NSG, and only port 5432 from approved client CIDRs.
 - Prefer Vault secret references for admin credentials when the deployment process can read approved secret OCIDs.
 - Review storage durability and availability domain placement together; regional durability and AD-specific placement are different operational choices.
+- In one-AD regions, set `is_regionally_durable = false` and provide `availability_domain`; regional durability is for supported multi-AD regions.
 - Use backup and maintenance policy settings deliberately so restore and maintenance expectations are visible before apply.
 - Use IAM policy statements only for approved DBA, operator, or application groups.
 
@@ -88,7 +99,7 @@ Deploys a private OCI PostgreSQL DB system with network controls, storage durabi
 
 ## Review Checklist
 
-- Confirm the diagram matches `main.tf`: `oci_psql_db_system.this`, `oci_identity_policy.access`.
+- Confirm the diagram matches `main.tf`: optional VCN/subnet/NSG resources, `oci_psql_db_system.this`, and `oci_identity_policy.access`.
 - Confirm the described traffic or control path is the path you want in OCI before apply.
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.

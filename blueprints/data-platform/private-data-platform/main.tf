@@ -3,7 +3,7 @@ data "oci_objectstorage_namespace" "this" {
 }
 
 module "network" {
-  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/standalone-private-endpoint-only?ref=v0.2.0"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/standalone-private-endpoint-only?ref=main"
 
   tenancy_ocid       = var.tenancy_ocid
   current_user_ocid  = var.current_user_ocid
@@ -19,7 +19,7 @@ module "network" {
 }
 
 module "vault" {
-  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vault?ref=v0.2.0"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vault?ref=main"
 
   tenancy_ocid         = var.tenancy_ocid
   compartment_ocid     = local.target_compartment_ocid
@@ -74,7 +74,7 @@ resource "oci_objectstorage_private_endpoint" "data" {
 }
 
 module "streaming" {
-  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/extensions/streaming?ref=v0.2.0"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/extensions/streaming?ref=main"
 
   tenancy_ocid               = var.tenancy_ocid
   current_user_ocid          = var.current_user_ocid

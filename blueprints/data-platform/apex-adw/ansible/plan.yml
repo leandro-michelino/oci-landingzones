@@ -1,6 +1,7 @@
 ---
 - name: Run Terraform plan for APEX on Autonomous Database
   hosts: localhost
+  connection: local
   gather_facts: false
   vars:
     terraform_action: plan

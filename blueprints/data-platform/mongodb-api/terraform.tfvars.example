@@ -1,0 +1,46 @@
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "eu-madrid-1"
+home_region       = "eu-madrid-1"
+
+org         = "acme"
+environment = "dev"
+region_key  = "mad"
+
+# Cost-bearing resources are disabled by default. Set true only after review.
+enable_mongodb_api_database = false
+create_private_network      = true
+
+# Replace with the target workload compartment. Use subnet_id and nsg_ids when
+# consuming an existing VCN instead of the optional private network.
+compartment_ocid       = "ocid1.compartment.oc1..example"
+subnet_id              = null
+nsg_ids                = []
+private_endpoint_label = "mongoapi"
+vcn_cidr_block         = "10.80.0.0/16"
+subnet_cidr_block      = "10.80.10.0/24"
+allowed_client_cidrs   = ["10.80.0.0/16"]
+
+db_name                  = "LZMONGO"
+database_display_name    = "acme-dev-mad-adb-mongodb"
+admin_password           = null
+db_workload              = "AJD"
+compute_model            = "ECPU"
+compute_count            = 2
+data_storage_size_in_tbs = 1
+
+enable_mongodb_api = true
+
+# Optional controls.
+backup_retention_period_in_days        = 30
+create_manual_backup                   = false
+manual_backup_is_long_term             = false
+manual_backup_retention_period_in_days = null
+kms_key_id                             = null
+enable_public_access_control           = false
+whitelisted_ips                        = []
+policy_statements                      = []
+
+freeform_tags = {
+  CostCenter = "platform"
+}

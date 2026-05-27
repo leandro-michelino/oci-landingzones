@@ -155,9 +155,9 @@ Use the local Ansible wrapper when you want the same runner shape used across th
 
 ```bash
 cd blueprints/data-platform/private-data-platform
-ansible-playbook -i localhost, ansible/plan.yml
-CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
-CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
+ansible-playbook -i localhost, -c local ansible/plan.yml
+CONFIRM_APPLY=true ansible-playbook -i localhost, -c local ansible/apply.yml
+CONFIRM_DESTROY=true ansible-playbook -i localhost, -c local ansible/destroy.yml
 ```
 
 `apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for
@@ -196,10 +196,7 @@ Ansible output at the end of the deployment.
 From the repository root:
 
 ```bash
-./scripts/validate-all.sh
+./scripts/validate-changed.sh
 ```
 
-The validator checks Terraform formatting, required deployment README files, required
-architecture README sections, `terraform init -backend=false`, `terraform validate`, root
-Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
-cleanup of generated Terraform artifacts.
+Use `./scripts/validate-all.sh` before release work or broad shared changes.

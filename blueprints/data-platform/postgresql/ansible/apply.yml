@@ -1,6 +1,7 @@
 ---
 - name: Run Terraform apply for PostgreSQL Landing Zone
   hosts: localhost
+  connection: local
   gather_facts: false
   vars:
     terraform_action: apply

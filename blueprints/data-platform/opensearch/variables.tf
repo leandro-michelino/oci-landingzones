@@ -53,6 +53,46 @@ variable "create_cluster" {
   type        = bool
   default     = false
 }
+variable "create_private_network" {
+  description = "Create a private VCN, subnet, and NSG for OpenSearch."
+  type        = bool
+  default     = false
+}
+variable "vcn_cidr_block" {
+  description = "CIDR block for the optional private VCN."
+  type        = string
+  default     = "10.85.0.0/16"
+}
+variable "subnet_cidr_block" {
+  description = "CIDR block for the optional OpenSearch subnet."
+  type        = string
+  default     = "10.85.10.0/24"
+}
+variable "vcn_display_name" {
+  description = "Optional display name override for the private VCN."
+  type        = string
+  default     = null
+}
+variable "subnet_display_name" {
+  description = "Optional display name override for the OpenSearch subnet."
+  type        = string
+  default     = null
+}
+variable "nsg_display_name" {
+  description = "Optional display name override for the OpenSearch NSG."
+  type        = string
+  default     = null
+}
+variable "vcn_dns_label" {
+  description = "DNS label for the optional private VCN."
+  type        = string
+  default     = "osvcn"
+}
+variable "subnet_dns_label" {
+  description = "DNS label for the optional OpenSearch subnet."
+  type        = string
+  default     = "ossn"
+}
 variable "cluster_display_name" {
   description = "Optional OpenSearch cluster display name override."
   type        = string
@@ -106,7 +146,7 @@ variable "master_node_host_ocpu_count" {
 variable "master_node_host_memory_gb" {
   description = "Master node memory in GB."
   type        = number
-  default     = 16
+  default     = 20
 }
 variable "data_node_count" {
   description = "OpenSearch data node count."
@@ -126,7 +166,7 @@ variable "data_node_host_ocpu_count" {
 variable "data_node_host_memory_gb" {
   description = "Data node memory in GB."
   type        = number
-  default     = 16
+  default     = 20
 }
 variable "data_node_storage_gb" {
   description = "Data node storage in GB."

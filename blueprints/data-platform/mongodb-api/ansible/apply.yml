@@ -1,5 +1,5 @@
 ---
-- name: Run Terraform apply for Autonomous Database
+- name: Run Terraform apply for MongoDB API
   hosts: localhost
   connection: local
   gather_facts: false
