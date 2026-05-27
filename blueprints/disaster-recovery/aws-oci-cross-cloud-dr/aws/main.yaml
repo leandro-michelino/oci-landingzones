@@ -14,6 +14,9 @@ Parameters:
   AllowedIngressCidr:
     Type: String
     Default: 10.0.0.0/8
+  AllowedEgressCidr:
+    Type: String
+    Default: 10.0.0.0/8
 
 Resources:
   StandbyVpc:
@@ -154,11 +157,11 @@ Resources:
           ToPort: 443
           CidrIp: !Ref AllowedIngressCidr
       SecurityGroupEgress:
-        - Description: Allow HTTPS egress for package repositories, SSM, and managed service endpoints.
+        - Description: Allow HTTPS egress to approved package, SSM, or managed endpoint ranges.
           IpProtocol: tcp
           FromPort: 443
           ToPort: 443
-          CidrIp: 0.0.0.0/0
+          CidrIp: !Ref AllowedEgressCidr
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-sg-dr-standby'

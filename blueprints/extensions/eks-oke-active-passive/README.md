@@ -1,9 +1,6 @@
 # EKS + OKE Active Passive
 
-Use this page as the operator guide for `blueprints/extensions/eks-oke-active-passive`.
-It tells you what the blueprint builds, which inputs deserve a real review, how
-to run Terraform or the local Ansible wrappers, and where to find the detailed
-Architecture design.
+Start here for `blueprints/extensions/eks-oke-active-passive`: what it builds, which inputs deserve a careful look, how to run Terraform or the local Ansible wrappers, and where the detailed architecture notes live.
 
 ## At A Glance
 
@@ -51,7 +48,7 @@ EKS and `v1.35.2` on OKE.
 
 ## What This Deploys
 
-This folder is self-contained at the deployment level: Terraform composes the
+Everything needed for this deployment starts in this folder: Terraform composes the
 OCI resource graph and cross-cloud operating contracts, while the local Ansible
 files provide the same plan/apply/destroy rhythm everywhere in the repo.
 
@@ -67,8 +64,7 @@ files provide the same plan/apply/destroy rhythm everywhere in the repo.
 | Optional resource | `oci_dns_steering_policy.traffic_failover` | OCI DNS Traffic Management failover policy with OCI as primary and AWS as standby. |
 | Optional resource | `oci_dns_steering_policy_attachment.traffic_failover` | Attaches the failover steering policy to the application FQDN in an OCI DNS zone. |
 
-The exact OCI behavior is controlled by `variables.tf` and the values supplied
-in your local ignored `terraform.tfvars` file.
+Use `variables.tf` as the input contract, then keep real OCIDs, CIDRs, names, and enable flags in an ignored local `terraform.tfvars`.
 
 ## Folder Contract
 
@@ -163,7 +159,7 @@ Start with `terraform.tfvars.example`, then create a local ignored
 ## Outputs And Hand-Off
 
 These outputs are the deployment contract for downstream blueprints, runbooks,
-customer notes, or manual hand-off. If an output name changes, update
+customer-safe notes, or manual hand-off. If an output name changes, update
 dependent docs and consumers in the same change.
 
 | Output | Hand-Off Meaning |
@@ -269,7 +265,7 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
 `apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for
-customer-facing or shared environments.
+customer or shared environments.
 
 AWS full deployment session (EKS secondary):
 

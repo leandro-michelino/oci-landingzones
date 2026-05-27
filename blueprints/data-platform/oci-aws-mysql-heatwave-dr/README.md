@@ -1,9 +1,6 @@
 # OCI + AWS MySQL HeatWave DR (OCI Primary over IPSec)
 
-Use this page as the operator guide for
-`blueprints/data-platform/oci-aws-mysql-heatwave-dr`. It explains what is
-built, which inputs matter most, how to run Terraform and Ansible sessions, and
-where to find the detailed Architecture.
+Start here for `blueprints/data-platform/oci-aws-mysql-heatwave-dr`: what it builds, which inputs deserve a careful look, how to run Terraform or the local Ansible wrappers, and where the detailed architecture notes live.
 
 ## At A Glance
 

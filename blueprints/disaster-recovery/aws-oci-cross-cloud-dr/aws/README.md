@@ -28,7 +28,9 @@ to the tester, load balancer, or DNS health-check source range.
 Start from `parameters.example.json` and copy to a local file (for example
 `parameters.dev.json`) with your real network ranges and ingress policy. Keep
 `AllowedIngressCidr` scoped to known source ranges; the example uses
-`10.0.0.0/8` instead of open internet ingress.
+`10.0.0.0/8` instead of open internet ingress. Keep `AllowedEgressCidr` scoped
+to approved outbound ranges for package repositories, SSM endpoints, NAT, proxy,
+or private endpoint paths.
 
 ## Outputs To Feed Terraform
 

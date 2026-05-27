@@ -1,9 +1,6 @@
 # OpenSearch Search And Vector Platform
 
-Use this page as the operator guide for `blueprints/data-platform/opensearch`.
-It tells you what the blueprint builds, which inputs deserve a real review, how
-to run Terraform or the local Ansible wrappers, and where to find the detailed
-Architecture design.
+Start here for `blueprints/data-platform/opensearch`: what it builds, which inputs deserve a careful look, how to run Terraform or the local Ansible wrappers, and where the detailed architecture notes live.
 
 ## At A Glance
 

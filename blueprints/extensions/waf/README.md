@@ -1,8 +1,6 @@
 # WAF Extension
 
-Use this page as the operator guide for `blueprints/extensions/waf`. It tells you what the
-blueprint builds, which inputs deserve a real review, how to run Terraform or the local
-Ansible wrappers, and where to find the detailed Architecture design.
+Start here for `blueprints/extensions/waf`: what it builds, which inputs deserve a careful look, how to run Terraform or the local Ansible wrappers, and where the detailed architecture notes live.
 
 ## At A Glance
 
@@ -38,7 +36,7 @@ edge or application protection.
 
 ## What This Deploys
 
-This folder is self-contained at the deployment level: Terraform composes the OCI resource
+Everything needed for this deployment starts in this folder: Terraform composes the OCI resource
 graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere
 in the repo.
 
@@ -47,8 +45,7 @@ in the repo.
 | Resource | `oci_waf_web_app_firewall_policy.this` | Declared directly in `main.tf` |
 | Resource | `oci_waf_web_app_firewall.this` | Declared directly in `main.tf` |
 
-The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local
-ignored `terraform.tfvars` file.
+Use `variables.tf` as the input contract, then keep real OCIDs, CIDRs, names, and enable flags in an ignored local `terraform.tfvars`.
 
 ## Folder Contract
 
@@ -141,7 +138,7 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
 `apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for
-customer-facing or shared environments.
+customer or shared environments.
 
 ## Deployment Order
 

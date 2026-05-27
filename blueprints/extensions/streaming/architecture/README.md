@@ -1,8 +1,6 @@
 # Streaming Extension Architecture
 
-This page is the deployment architecture for `blueprints/extensions/streaming`. It is intentionally Architecture-first so it
-is easy to review in GitHub, terminals, pull requests, runbooks, and customer notes without a
-diagramming tool.
+This is the deployment architecture for `blueprints/extensions/streaming`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
 
 ## Deployment Purpose
 

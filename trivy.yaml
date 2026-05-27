@@ -5,6 +5,7 @@ scan:
   skip-dirs:
     - .git
     - .terraform
+    - "**/.terraform"
     - .leo-local
     - .claude
 misconfiguration:

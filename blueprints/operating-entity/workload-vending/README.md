@@ -1,8 +1,6 @@
 # Workload Vending
 
-Use this page as the operator guide for `blueprints/operating-entity/workload-vending`. It
-tells you what the blueprint builds, which inputs deserve a real review, how to run
-Terraform or the local Ansible wrappers, and where to find the detailed Architecture design.
+Start here for `blueprints/operating-entity/workload-vending`: what it builds, which inputs deserve a careful look, how to run Terraform or the local Ansible wrappers, and where the detailed architecture notes live.
 
 ## At A Glance
 
@@ -31,14 +29,14 @@ product team.
 | Use Case | Why This Blueprint Fits |
 | --- | --- |
 | New application landing area | Vends a workload root compartment, child compartments, IAM groups, and scoped policies for an app team. |
-| Appleby workload onboarding | Supports Appleby-profile execution when vending workload boundaries under an approved operating entity. |
+| Named-profile workload onboarding | Supports OCI CLI profile-based execution when vending workload boundaries under an approved operating entity. |
 | Product-team self-service | Gives product owners a repeatable structure for admin, operator, and auditor access. |
 | Environment separation | Creates consistent child compartments for dev, test, prod, shared services, or other workload-specific boundaries. |
 | Downstream blueprint target | Produces compartment IDs and group outputs that networking, data-platform, and extension blueprints can consume. |
 
 ## What This Deploys
 
-This folder is self-contained at the deployment level: Terraform composes the OCI resource
+Everything needed for this deployment starts in this folder: Terraform composes the OCI resource
 graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere
 in the repo.
 
@@ -48,8 +46,7 @@ in the repo.
 | Module | `groups` | `modules/iam/groups @ v0.2.0` |
 | Module | `policies` | `modules/iam/policies @ v0.2.0` |
 
-The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local
-ignored `terraform.tfvars` file.
+Use `variables.tf` as the input contract, then keep real OCIDs, CIDRs, names, and enable flags in an ignored local `terraform.tfvars`.
 
 ## Folder Contract
 
@@ -136,7 +133,7 @@ Use direct Terraform when you are iterating locally:
 ```bash
 cd blueprints/operating-entity/workload-vending
 cp terraform.tfvars.example terraform.tfvars
-# Set oci_config_profile = "Appleby" in terraform.tfvars for Appleby runs.
+# Set oci_config_profile = "DEFAULT" or another approved OCI CLI profile in terraform.tfvars.
 terraform init
 terraform validate
 terraform plan
@@ -146,14 +143,14 @@ Use the local Ansible wrapper when you want the same runner shape used across th
 
 ```bash
 cd blueprints/operating-entity/workload-vending
-export OCI_CLI_PROFILE=Appleby
+export OCI_CLI_PROFILE=DEFAULT
 ansible-playbook -i localhost, ansible/plan.yml
 CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
 `apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for
-customer-facing or shared environments.
+customer or shared environments.
 
 ## Deployment Order
 

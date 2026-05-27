@@ -7,24 +7,31 @@
 ![Validation: validate-all](https://img.shields.io/badge/validation-validate--all-brightgreen.svg)
 ![Security: TFLint Trivy Checkov](https://img.shields.io/badge/security-tflint%20%7C%20trivy%20%7C%20checkov-2f855a.svg)
 
-Build OCI landing zones fast, with clear architecture and real deploy flows.
+Build OCI landing zones that are easy to review, run, and hand off.
 
-This repo is a practical toolkit: Terraform blueprints, reusable modules, and
-local Ansible wrappers for plan/apply/destroy sessions. It is opinionated,
-reviewable, and built for real platform work. The thinking is intentionally
-plain: pick the customer outcome, inspect the architecture, run the plan, then
-make the deployment yours.
+This repo is a practical OCI landing-zone workshop: Terraform blueprints,
+reusable OCI modules, ASCII architecture docs, and local Ansible wrappers for
+repeatable plan/apply/destroy workflows. No private customer facts, no mystery
+state, no "just trust the diagram" energy.
 
-## Heads-Up
+The rhythm is simple: pick the outcome, read the local README, review the ASCII
+architecture, fill your ignored `terraform.tfvars`, run a plan, and then adapt
+the deployment to your tenancy.
+
+It is built for platform engineers, cloud architects, and operators who want a
+solid starting point that still respects real-world review, security, and
+handoff work.
+
+## Friendly Disclaimer
 
 This is a personal engineering project, not an official Oracle product or
 Oracle-supported package. Use it as a strong starting point, then tune it to
 your tenancy, controls, and operating model.
 
-## Start Here (2 Minutes)
+## Start Here
 
 ```text
-pick a blueprint -> read README -> review Architecture -> fill tfvars -> plan
+pick a blueprint -> read README -> review architecture -> fill tfvars -> plan
 ```
 
 ```bash
@@ -35,6 +42,12 @@ terraform init -backend=false
 terraform validate
 terraform plan
 ```
+
+That is the normal rhythm everywhere in the repo. Each deployable blueprint has
+the same basic shape, so once one folder makes sense, the rest feel familiar.
+
+If you are browsing first, open the [Blueprint Index](BLUEPRINTS.md). If you are
+ready to test the baseline, start with [Core Landing Zone](blueprints/core/).
 
 ## What You Can Deploy
 
@@ -54,6 +67,20 @@ Full inventory:
 - [Blueprint Index](BLUEPRINTS.md)
 - [Deployment Pattern Catalog](docs/DEPLOYMENT-PATTERN-CATALOG.md)
 - [Architecture Index](docs/architecture/README.md)
+
+## How The Repo Thinks
+
+The repo is intentionally boring in the useful way:
+
+- Blueprints are complete deployment entry points.
+- Modules are reusable building blocks.
+- Every deployable blueprint has a README, an ASCII architecture file, Terraform
+  files, safe example inputs, and local Ansible runners.
+- Customer-specific values stay out of git. Use ignored `terraform.tfvars`,
+  environment variables, or your pipeline secret store.
+- Public docs stay generic, English-only, and safe to share.
+
+The goal is not to hide complexity. The goal is to put it in predictable places.
 
 ## Multicloud (OCI Primary)
 
@@ -101,7 +128,7 @@ for dual serving.
 Design notes and backlog:
 - [Multicloud Notes](docs/multicloud/README.md)
 
-## Repo Structure
+## Blueprint Shape
 
 ```text
 blueprints/<family>/<deployment>/
@@ -119,8 +146,8 @@ blueprints/<family>/<deployment>/
     `-- destroy.yml
 ```
 
-Consistency is deliberate: once you know one blueprint, you can work in all of
-them.
+The consistency is deliberate. It keeps review simple and makes sparse checkout
+usable when you only need one deployment pattern.
 
 ## Typical Operator Flow
 
@@ -145,7 +172,7 @@ review and apply
 
 ## Local Workflow Options
 
-Terraform direct:
+Use Terraform directly when you are iterating:
 
 ```bash
 terraform init -backend=false
@@ -153,7 +180,7 @@ terraform validate
 terraform plan
 ```
 
-Ansible wrapper:
+Use the local Ansible wrapper when you want the repo-standard guardrails:
 
 ```bash
 ansible-playbook -i localhost, ansible/plan.yml
@@ -171,9 +198,9 @@ Cloud wrapper simulation:
 make simulate-cloud
 ```
 
-This checks every Azure and AWS wrapper, verifies its template and parameter
-files, and exits before any vendor CLI call. Real Azure what-if and AWS
-CloudFormation plan sessions still require logged-in `az` or `aws` CLIs.
+This checks every Azure and AWS wrapper, verifies template and parameter paths,
+and exits before any vendor CLI call. Real Azure what-if and AWS CloudFormation
+plan sessions still require logged-in `az` or `aws` CLIs.
 
 ## Pick By Family
 
@@ -194,6 +221,11 @@ CloudFormation plan sessions still require logged-in `az` or `aws` CLIs.
 | [industry](blueprints/industry/) | Vertical patterns (telco, secure desktops). |
 
 ## Quality Checks
+
+The repo is wired to catch the boring-but-important stuff: missing architecture
+files, stale blueprint indexes, bad Markdown links, mutable module refs,
+Terraform format or validation errors, scanner findings, and Ansible syntax
+drift.
 
 Run checks for changed work:
 
@@ -231,6 +263,7 @@ Maintainer-focused validation details live in [CONTRIBUTING.md](CONTRIBUTING.md)
 - Keep module sources pinned
 - Keep every blueprint deployable and reviewable
 - Keep Architecture docs aligned with Terraform
+- Keep README files friendly, useful, and public-safe
 
 Issues and PRs work best when they describe the customer outcome, the operating
 constraints, and the blueprint shape you want to land.

@@ -1,9 +1,6 @@
 # Cost Optimization
 
-Use this page as the operator guide for `blueprints/operations/cost-optimization`.
-It explains what the blueprint builds, which FinOps inputs need a real decision,
-how to run Terraform or the local Ansible wrappers, and where to review the
-detailed Architecture.
+Start here for `blueprints/operations/cost-optimization`: what it builds, which inputs deserve a careful look, how to run Terraform or the local Ansible wrappers, and where the detailed architecture notes live.
 
 ## At A Glance
 
@@ -37,7 +34,7 @@ policy for the finance or platform team.
 
 | Use Case | Why This Blueprint Fits |
 |---|---|
-| Appleby FinOps baseline | Uses the Appleby profile workflow to create cost-center tags, budgets, alerts, and FinOps hand-off outputs in the target tenancy. |
+| Named-profile FinOps baseline | Uses a named OCI CLI profile workflow to create cost-center tags, budgets, alerts, and FinOps hand-off outputs in the target tenancy. |
 | Business-unit chargeback | Applies owner and cost-center tags so finance can attribute spend by entity, workload, or team. |
 | Budget guardrails before scale-up | Creates budgets and alert rules before app teams expand compute, database, or platform usage. |
 | Cost anomaly notification path | Provides ONS topics, subscriptions, and optional alarms for finance and platform teams. |
@@ -45,7 +42,7 @@ policy for the finance or platform team.
 
 ## What This Deploys
 
-This folder is self-contained at the deployment level. Terraform composes
+Everything needed for this deployment starts in this folder. Terraform composes
 existing governance modules and a few direct resources, while the local Ansible
 files provide the same plan/apply/destroy rhythm used across the repo.
 
@@ -59,8 +56,7 @@ files provide the same plan/apply/destroy rhythm used across the repo.
 | Resource | `oci_optimizer_profile.this` | Optional Optimizer profiles scoped by compartment or tags. |
 | Resource | `oci_identity_policy.finops_access` | Optional policy for FinOps operators. |
 
-The exact OCI behavior is controlled by `variables.tf` and the values supplied
-in your local ignored `terraform.tfvars` file.
+Use `variables.tf` as the input contract, then keep real OCIDs, CIDRs, names, and enable flags in an ignored local `terraform.tfvars`.
 
 ## Folder Contract
 
@@ -127,7 +123,7 @@ IAM policy statements are enabled only when you supply the matching inputs.
 ## Outputs And Hand-Off
 
 These outputs are the deployment contract for downstream blueprints, runbooks,
-customer notes, or manual hand-off. If an output name changes, update dependent
+customer-safe notes, or manual hand-off. If an output name changes, update dependent
 docs and consumers in the same change.
 
 | Output | Hand-Off Meaning |
@@ -153,7 +149,7 @@ Use direct Terraform when you are iterating locally:
 ```bash
 cd blueprints/operations/cost-optimization
 cp terraform.tfvars.example terraform.tfvars
-# Set oci_config_profile = "Appleby" in terraform.tfvars for Appleby runs.
+# Set oci_config_profile = "DEFAULT" or another approved OCI CLI profile in terraform.tfvars.
 terraform init
 terraform validate
 terraform plan
@@ -164,14 +160,14 @@ the repo:
 
 ```bash
 cd blueprints/operations/cost-optimization
-export OCI_CLI_PROFILE=Appleby
+export OCI_CLI_PROFILE=DEFAULT
 ansible-playbook -i localhost, ansible/plan.yml
 CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
 `apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for
-customer-facing or shared environments.
+customer or shared environments.
 
 ## Deployment Order
 

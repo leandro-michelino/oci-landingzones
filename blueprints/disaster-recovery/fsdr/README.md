@@ -1,8 +1,6 @@
 # Full Stack Disaster Recovery
 
-Use this page as the operator guide for `blueprints/disaster-recovery/fsdr`. It tells you
-what the blueprint builds, which inputs deserve a real review, how to run Terraform or the
-local Ansible wrappers, and where to find the detailed Architecture design.
+Start here for `blueprints/disaster-recovery/fsdr`: what it builds, which inputs deserve a careful look, how to run Terraform or the local Ansible wrappers, and where the detailed architecture notes live.
 
 ## At A Glance
 
@@ -40,7 +38,7 @@ buckets, and DR plan wiring.
 
 ## What This Deploys
 
-This folder is self-contained at the deployment level: Terraform composes the OCI resource
+Everything needed for this deployment starts in this folder: Terraform composes the OCI resource
 graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere
 in the repo.
 
@@ -54,8 +52,7 @@ in the repo.
 | Data source | `data.oci_objectstorage_namespace.primary` | Read during plan/apply |
 | Data source | `data.oci_objectstorage_namespace.standby` | Read during plan/apply |
 
-The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local
-ignored `terraform.tfvars` file.
+Use `variables.tf` as the input contract, then keep real OCIDs, CIDRs, names, and enable flags in an ignored local `terraform.tfvars`.
 
 ## Folder Contract
 
@@ -162,7 +159,7 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
 `apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for
-customer-facing or shared environments.
+customer or shared environments.
 
 ## Optional Real DR Lab
 
@@ -178,10 +175,10 @@ small primary compute instance, and a replicated boot-volume volume group. It th
 outputs the resource IDs and FSDR member hints needed for compute, storage, and
 volume-group registration.
 
-Use it when you want to demonstrate the same pattern as a real São Paulo to Vinhedo
-test: deploy the FSDR control plane first, deploy the lab workload second, add members
-to the current primary DRPG, generate the switchover plan from the current standby DRPG,
-run precheck, execute switchover, then switch back.
+Use it when you want to demonstrate a realistic primary-to-standby regional drill:
+deploy the FSDR control plane first, deploy the lab workload second, add members to the
+current primary DRPG, generate the switchover plan from the current standby DRPG, run
+precheck, execute switchover, then switch back.
 
 Keep the lab separate from production state:
 

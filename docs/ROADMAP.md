@@ -31,7 +31,7 @@ blueprint.
 
 When planned work repeats Terraform behavior already needed by several
 blueprints, extract that behavior into `modules/` and keep the blueprint as the
-customer-facing wrapper. Curated full landing-zone bundles belong on the
+operator-facing wrapper. Curated full landing-zone bundles belong on the
 roadmap only when they describe a common real journey, such as an industry,
 compliance, or workload platform pattern.
 

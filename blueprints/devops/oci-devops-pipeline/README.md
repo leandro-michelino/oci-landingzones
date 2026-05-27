@@ -1,6 +1,6 @@
 # OCI DevOps Pipeline
 
-Use this page as the operator guide for `blueprints/devops/oci-devops-pipeline`. It tells you what the blueprint builds, which inputs deserve a real review, how to run Terraform or the local Ansible wrappers, and where to find the detailed Architecture design.
+Start here for `blueprints/devops/oci-devops-pipeline`: what it builds, which inputs deserve a careful look, how to run Terraform or the local Ansible wrappers, and where the detailed architecture notes live.
 
 ## At A Glance
 
@@ -25,7 +25,7 @@ Deploys an OCI DevOps project with notification topic, code repository, build pi
 
 ## What This Deploys
 
-This folder is self-contained at the deployment level: Terraform composes the OCI resource graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere in the repo.
+Everything needed for this deployment starts in this folder: Terraform composes the OCI resource graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere in the repo.
 
 | Kind | Name | Source Or Role |
 |---|---|---|
@@ -35,7 +35,7 @@ This folder is self-contained at the deployment level: Terraform composes the OC
 | Resource | `oci_devops_build_pipeline.this` | Declared directly in `main.tf` |
 | Resource | `oci_devops_deploy_pipeline.this` | Declared directly in `main.tf` |
 
-The exact OCI behavior is controlled by `variables.tf` and values supplied in your local ignored `terraform.tfvars` file.
+Use `variables.tf` as the input contract, then keep real OCIDs, CIDRs, names, and enable flags in an ignored local `terraform.tfvars`.
 
 ## Folder Contract
 

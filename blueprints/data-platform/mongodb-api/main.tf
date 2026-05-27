@@ -33,6 +33,7 @@ resource "oci_core_network_security_group" "mongodb_api" {
 }
 
 resource "oci_core_network_security_group_security_rule" "mongodb_api_ingress" {
+  #checkov:skip=CKV_OCI_21:Database ingress is intentionally stateful so return traffic stays tied to approved client CIDRs without broad ephemeral egress.
   for_each = var.create_private_network ? toset(var.allowed_client_cidrs) : []
 
   network_security_group_id = oci_core_network_security_group.mongodb_api[0].id

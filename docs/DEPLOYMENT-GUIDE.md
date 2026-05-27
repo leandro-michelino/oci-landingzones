@@ -200,7 +200,7 @@ This keeps every blueprint portable for sparse-checkout customers.
 
 When cutting a new repository release, update blueprint Git source refs to the
 new release tag in the same commit that will be tagged. Avoid `?ref=main` for
-customer-facing blueprints because it makes copied architecture folders change
+operator-facing blueprints because it makes copied architecture folders change
 under users without review.
 
 ## Using Extensions Only
@@ -304,7 +304,7 @@ clearer outcome.
 
 When repeated delivery appears in more than one blueprint, promote the
 shared resource graph into `modules/` and keep the blueprint folder as the
-customer-facing wrapper. The wrapper owns the operator README, architecture
+operator-facing wrapper. The wrapper owns the operator README, architecture
 diagram, input defaults, outputs, Ansible runners, and sparse-checkout contract;
 the module owns reusable Terraform behavior.
 

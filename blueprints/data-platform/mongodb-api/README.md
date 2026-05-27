@@ -1,6 +1,6 @@
 # Autonomous Database MongoDB API
 
-Use this page as the operator guide for `blueprints/data-platform/mongodb-api`. It tells you what the blueprint builds, which inputs deserve a real review, how to run Terraform or the local Ansible wrappers, and where to find the detailed Architecture design.
+Start here for `blueprints/data-platform/mongodb-api`: what it builds, which inputs deserve a careful look, how to run Terraform or the local Ansible wrappers, and where the detailed architecture notes live.
 
 ## At A Glance
 
@@ -70,7 +70,7 @@ When the run completes, hand off `mongodb_api_url`, the approved username/passwo
 
 ## What This Deploys
 
-This folder is self-contained at the deployment level: Terraform composes the OCI resource graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere in the repo.
+Everything needed for this deployment starts in this folder: Terraform composes the OCI resource graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere in the repo.
 
 | Kind | Name | Source Or Role |
 |---|---|---|
@@ -78,7 +78,7 @@ This folder is self-contained at the deployment level: Terraform composes the OC
 | Resource | `oci_database_autonomous_database_backup.manual` | Optional initial manual backup |
 | Resource | `oci_identity_policy.access` | Optional scoped IAM policy for app, DBA, or operator access |
 
-The exact OCI behavior is controlled by `variables.tf` and values supplied in your local ignored `terraform.tfvars` file.
+Use `variables.tf` as the input contract, then keep real OCIDs, CIDRs, names, and enable flags in an ignored local `terraform.tfvars`.
 
 ## Folder Contract
 

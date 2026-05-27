@@ -1,8 +1,14 @@
-# Runbook
+# Public Operator Runbook
 
 Use this runbook for local repository operations and common landing-zone change
 flows. Pattern-specific design checks live in each blueprint's local
 `architecture/README.md`.
+
+This file is intentionally safe for the public repository. Keep it generic:
+document commands, approval gates, validation flow, and cleanup behavior, but do
+not commit customer names, real account/subscription/tenancy identifiers,
+private endpoint URLs, support tickets, screenshots, incident timelines, or
+cloud output evidence.
 
 ## Validate The Repository
 
@@ -21,7 +27,7 @@ flows. Pattern-specific design checks live in each blueprint's local
    - `terraform.tfstate*`
    - `tfplan` and `*.tfplan`
    - `.DS_Store`
-8. Re-run validation after fixing any Terraform, Ansible, README, or Architecture
+8. Re-run validation after fixing any Terraform, Ansible, README, or
    architecture contract failures.
 
 ## Validate Only Changed Work
@@ -98,9 +104,10 @@ Checklist:
 ## Multicloud E2E Evidence
 
 Use this checklist for real Azure/AWS/OCI E2E runs that create disposable cloud
-resources.
+resources. Store the evidence in an approved private location; keep only the
+generic checklist and repeatable lessons in this public repo.
 
-Capture:
+Capture privately:
 - Cloud account, subscription, tenancy profile, and AWS profile used.
 - Regions, Kubernetes/database/model versions, and selected instance classes.
 - Resource group, stack, and Terraform name prefixes.
@@ -110,7 +117,7 @@ Capture:
 - Failover/failback timing, RTO/RPO comparison, and known caveats.
 - Explicit destroy confirmation and post-destroy validation.
 
-Known E2E findings:
+Common E2E findings to remember:
 - AKS + OKE active/passive and EKS + OKE active/passive were previously tested
   with temporary resources and destroyed after validation.
 - Azure Container Apps can fail with regional AKS capacity errors; destroy the

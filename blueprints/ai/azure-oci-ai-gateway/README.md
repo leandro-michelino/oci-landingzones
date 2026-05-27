@@ -1,9 +1,6 @@
 # Azure + OCI AI Gateway
 
-Use this page as the operator guide for `blueprints/ai/azure-oci-ai-gateway`.
-It tells you what the blueprint builds, which inputs deserve a real review, how
-to run Terraform or the local Ansible wrappers, and where to find the detailed
-Architecture design.
+Start here for `blueprints/ai/azure-oci-ai-gateway`: what it builds, which inputs deserve a careful look, how to run Terraform or the local Ansible wrappers, and where the detailed architecture notes live.
 
 ## At A Glance
 
@@ -46,7 +43,7 @@ Examples:
   Azure model family.
 - **Cost-aware model routing:** send everyday summarization or extraction
   traffic to the cheaper approved provider, while reserving a premium model path
-  for regulated or customer-facing workflows.
+  for regulated or customer or public-facing workflows.
 - **Data residency control:** keep sensitive prompts on the provider and region
   approved by governance, with the routing choice documented in Terraform
   outputs instead of buried in application code.
@@ -59,7 +56,7 @@ Examples:
 
 ## What This Deploys
 
-This folder is self-contained at the deployment level: Terraform composes the
+Everything needed for this deployment starts in this folder: Terraform composes the
 OCI resource graph and cross-cloud contracts, while local Ansible files provide
 a consistent plan/apply/destroy rhythm for OCI and Azure.
 
@@ -157,7 +154,7 @@ flags.
 ## Outputs And Hand-Off
 
 These outputs are the deployment contract for downstream blueprints, runbooks,
-customer notes, or manual hand-off. If an output name changes, update dependent
+customer-safe notes, or manual hand-off. If an output name changes, update dependent
 docs and consumers in the same change.
 
 | Output | Hand-Off Meaning |

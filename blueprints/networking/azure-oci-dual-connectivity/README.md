@@ -1,9 +1,6 @@
 # Azure + OCI Dual Connectivity Hardening
 
-Use this page as the operator guide for
-`blueprints/networking/azure-oci-dual-connectivity`. It explains what the
-blueprint deploys, which inputs matter, how to run Terraform and local Ansible
-sessions, and where to review the detailed Architecture.
+Start here for `blueprints/networking/azure-oci-dual-connectivity`: what it builds, which inputs deserve a careful look, how to run Terraform or the local Ansible wrappers, and where the detailed architecture notes live.
 
 ## At A Glance
 

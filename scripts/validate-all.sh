@@ -117,7 +117,7 @@ fi
 cd "$REPO_ROOT"
 
 run_if_available tflint --config "$REPO_ROOT/.tflint.hcl" --recursive
-run_if_available trivy config . --skip-dirs .terraform --skip-dirs .git
+run_if_available trivy config . --skip-dirs .terraform --skip-dirs "**/.terraform" --skip-dirs .git
 run_if_available checkov -d . --framework terraform --compact --skip-path .terraform --skip-path .git
 ANSIBLE_CONFIG="$REPO_ROOT/ansible/ansible.cfg" run_if_available ansible-lint ansible
 

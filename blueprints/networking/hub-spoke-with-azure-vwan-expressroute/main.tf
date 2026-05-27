@@ -22,7 +22,7 @@ module "network" {
 }
 
 module "fastconnect" {
-  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/fastconnect?ref=main"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/fastconnect?ref=4fcd80386471010d9a4a22200e47edb1956bda11"
 
   tenancy_ocid              = var.tenancy_ocid
   compartment_ocid          = local.target_compartment_ocid

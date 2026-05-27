@@ -1,9 +1,6 @@
 # Multi Operating Entities
 
-Use this page as the operator guide for
-`blueprints/operating-entity/multi-operating-entities`. It tells you what the blueprint
-builds, which inputs deserve a real review, how to run Terraform or the local Ansible
-wrappers, and where to find the detailed Architecture design.
+Start here for `blueprints/operating-entity/multi-operating-entities`: what it builds, which inputs deserve a careful look, how to run Terraform or the local Ansible wrappers, and where the detailed architecture notes live.
 
 ## At A Glance
 
@@ -32,14 +29,14 @@ policies.
 | Use Case | Why This Blueprint Fits |
 | --- | --- |
 | Multi-entity tenancy onboarding | Creates several operating-entity boundaries in one reviewed Terraform plan. |
-| Appleby group rollout | Supports an Appleby-profile execution path for onboarding multiple entities with consistent compartment and IAM patterns. |
+| Named-profile group rollout | Supports an OCI CLI profile-based execution path for onboarding multiple entities with consistent compartment and IAM patterns. |
 | Standardized business-unit structure | Applies the same default workload compartments to each entity unless an entity needs an override. |
 | Delegated governance at scale | Creates per-entity admin and auditor groups so responsibilities do not bleed across boundaries. |
 | Acquisition or regional expansion | Lets platform teams add new subsidiaries, regions, or operating groups with repeatable outputs. |
 
 ## What This Deploys
 
-This folder is self-contained at the deployment level: Terraform composes the OCI resource
+Everything needed for this deployment starts in this folder: Terraform composes the OCI resource
 graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere
 in the repo.
 
@@ -49,8 +46,7 @@ in the repo.
 | Module | `groups` | `modules/iam/groups @ v0.2.0` |
 | Module | `policies` | `modules/iam/policies @ v0.2.0` |
 
-The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local
-ignored `terraform.tfvars` file.
+Use `variables.tf` as the input contract, then keep real OCIDs, CIDRs, names, and enable flags in an ignored local `terraform.tfvars`.
 
 ## Folder Contract
 
@@ -129,7 +125,7 @@ Use direct Terraform when you are iterating locally:
 ```bash
 cd blueprints/operating-entity/multi-operating-entities
 cp terraform.tfvars.example terraform.tfvars
-# Set oci_config_profile = "Appleby" in terraform.tfvars for Appleby runs.
+# Set oci_config_profile = "DEFAULT" or another approved OCI CLI profile in terraform.tfvars.
 terraform init
 terraform validate
 terraform plan
@@ -139,14 +135,14 @@ Use the local Ansible wrapper when you want the same runner shape used across th
 
 ```bash
 cd blueprints/operating-entity/multi-operating-entities
-export OCI_CLI_PROFILE=Appleby
+export OCI_CLI_PROFILE=DEFAULT
 ansible-playbook -i localhost, ansible/plan.yml
 CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
 `apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for
-customer-facing or shared environments.
+customer or shared environments.
 
 ## Deployment Order
 

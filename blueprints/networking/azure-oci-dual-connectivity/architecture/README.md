@@ -3,7 +3,7 @@
 This page is the deployment architecture for
 `blueprints/networking/azure-oci-dual-connectivity`. It is Architecture-first
 so the design is easy to review in GitHub, terminals, pull requests, runbooks,
-and customer notes without a diagramming tool.
+and customer-safe notes without a diagramming tool.
 
 ## Deployment Purpose
 

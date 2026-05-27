@@ -1,6 +1,6 @@
 # OCI Container Instances
 
-Use this page as the operator guide for `blueprints/extensions/container-instances`. It tells you what the blueprint builds, which inputs deserve a real review, how to run Terraform or the local Ansible wrappers, and where to find the detailed Architecture design.
+Start here for `blueprints/extensions/container-instances`: what it builds, which inputs deserve a careful look, how to run Terraform or the local Ansible wrappers, and where the detailed architecture notes live.
 
 ## At A Glance
 
@@ -36,14 +36,14 @@ Deploys an OCI Container Instance with private VNIC attachment, one or more cont
 
 ## What This Deploys
 
-This folder is self-contained at the deployment level: Terraform composes the OCI resource graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere in the repo.
+Everything needed for this deployment starts in this folder: Terraform composes the OCI resource graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere in the repo.
 
 | Kind | Name | Source Or Role |
 |---|---|---|
 | Resource | `oci_container_instances_container_instance.this` | Declared directly in `main.tf` |
 | Resource | `oci_identity_policy.access` | Optional scoped IAM policy declared directly in `main.tf` |
 
-The exact OCI behavior is controlled by `variables.tf` and values supplied in your local ignored `terraform.tfvars` file.
+Use `variables.tf` as the input contract, then keep real OCIDs, CIDRs, names, and enable flags in an ignored local `terraform.tfvars`.
 
 ## Folder Contract
 

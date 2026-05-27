@@ -3,7 +3,7 @@
 This page is the deployment architecture for
 `blueprints/extensions/eks-oke-active-passive`. It is intentionally Architecture-first
 so it is easy to review in GitHub, terminals, pull requests, runbooks, and
-customer notes without a diagramming tool.
+customer-safe notes without a diagramming tool.
 
 The default operating mode described here is OCI-primary active/passive.
 

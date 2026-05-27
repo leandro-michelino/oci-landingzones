@@ -1,9 +1,6 @@
 # OCI NoSQL Database
 
-Use this page as the operator guide for `blueprints/data-platform/nosql`.
-It tells you what the blueprint builds, which inputs deserve a real review, how
-to run Terraform or local Ansible wrappers, and where to find the detailed
-Architecture design.
+Start here for `blueprints/data-platform/nosql`: what it builds, which inputs deserve a careful look, how to run Terraform or the local Ansible wrappers, and where the detailed architecture notes live.
 
 ## At A Glance
 
@@ -73,7 +70,7 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, -c local ansible/destroy.yml
 
 ## What This Deploys
 
-This folder is self-contained at the deployment level: Terraform composes the
+Everything needed for this deployment starts in this folder: Terraform composes the
 NoSQL resource graph and contracts, while local Ansible files provide the same
 plan/apply/destroy rhythm used across the repo.
 
@@ -150,7 +147,7 @@ Start with `terraform.tfvars.example`, then create a local ignored
 ## Outputs And Hand-Off
 
 These outputs are the deployment contract for downstream blueprints, runbooks,
-customer notes, or manual hand-off. If an output name changes, update dependent
+customer-safe notes, or manual hand-off. If an output name changes, update dependent
 docs and consumers in the same change.
 
 | Output | Hand-Off Meaning |

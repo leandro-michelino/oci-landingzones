@@ -153,7 +153,7 @@ folder.
   independently operated customer outcome.
 - Promote repeated Terraform delivery into `modules/` when several
   blueprints need the same behavior, then keep each blueprint as a thin
-  customer-facing wrapper with its own README, architecture, inputs, and
+  operator-facing wrapper with its own README, architecture, inputs, and
   outputs.
 - Add curated full landing-zone bundles only for common real journeys, such as
   industry, compliance, or workload platform patterns, and compose existing

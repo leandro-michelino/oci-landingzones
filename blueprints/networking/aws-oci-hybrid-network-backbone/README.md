@@ -1,9 +1,6 @@
 # AWS + OCI Hybrid Network Backbone
 
-Use this page as the operator guide for
-`blueprints/networking/aws-oci-hybrid-network-backbone`. It tells you what the
-blueprint builds, which inputs deserve a real review, how to run Terraform or
-local Ansible wrappers, and where to find the detailed Architecture design.
+Start here for `blueprints/networking/aws-oci-hybrid-network-backbone`: what it builds, which inputs deserve a careful look, how to run Terraform or the local Ansible wrappers, and where the detailed architecture notes live.
 
 ## At A Glance
 
@@ -38,7 +35,7 @@ interconnect cutover between OCI and AWS.
 
 ## What This Deploys
 
-This folder is self-contained at the deployment level: Terraform composes the
+Everything needed for this deployment starts in this folder: Terraform composes the
 OCI resource graph and connectivity contracts, while local Ansible files
 provide the same plan/apply/destroy rhythm used across the repo.
 
