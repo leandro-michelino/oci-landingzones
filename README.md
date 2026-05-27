@@ -47,6 +47,7 @@ terraform plan
 | DR pattern | [Full Stack DR](blueprints/disaster-recovery/fsdr/) |
 | Data platform foundations | [Autonomous DB](blueprints/data-platform/autonomous-database/), [PostgreSQL](blueprints/data-platform/postgresql/), [MySQL HeatWave](blueprints/data-platform/mysql-heatwave/), [OCI NoSQL](blueprints/data-platform/nosql/), [OCI + AWS MySQL HeatWave DR](blueprints/data-platform/oci-aws-mysql-heatwave-dr/) |
 | AI workloads | [GenAI Private](blueprints/ai/genai-private/), [GenAI Gateway](blueprints/ai/genai-gateway/), [AI Agents](blueprints/ai/agents/) |
+| Industry patterns | [Secure Desktops](blueprints/industry/secure-desktops/) or [Telco Cloud Native](blueprints/industry/telco-cloud-native/) |
 | Conversational AI | [Oracle Digital Assistant](blueprints/extensions/digital-assistant/) |
 
 Full inventory:

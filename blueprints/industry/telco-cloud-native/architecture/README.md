@@ -78,9 +78,13 @@ Combines hub-spoke networking, Vault/KMS, OKE, monitoring, and OS management for
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
 
 - The hub-spoke network is created first and feeds hub subnet IDs into the OKE endpoint, service load balancer, and node pool choices.
+- The network foundation can be applied by itself for route, subnet, DRG, and
+  naming validation before quota-sensitive services are enabled.
 - Vault/KMS provides key-management foundations for platform services that require encryption controls.
 - Monitoring and OS Management add operational signals and instance management around the telco workload platform.
 - CNF traffic should be reviewed across OKE endpoint access, service load balancer subnets, node subnets, DRG paths, NAT, and service gateway routes.
+- Empty `defined_tags` input is normalized to no defined tags, which keeps the
+  plan stable when the tenancy adds service-managed tags.
 
 ## Operational Boundaries
 
@@ -88,6 +92,8 @@ These notes expand the diagram with the design details that usually matter durin
 - Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
 - Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
 - Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+- Destroy disposable stacks after validation unless the network foundation has a
+  named owner and a follow-on deployment window.
 
 ## Review Checklist
 

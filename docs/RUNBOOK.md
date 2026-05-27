@@ -72,6 +72,29 @@ Behavior:
 - Always attempts provider destroy after apply attempts.
 - Uses explicit confirmation env vars internally (`CONFIRM_*`).
 
+## Ephemeral Industry Tests
+
+Use this when an industry blueprint needs a real OCI check without turning on
+every expensive or quota-sensitive service.
+
+Recommended low-cost paths:
+- Secure Desktops: keep `create_desktop_pool = false` and validate monitoring
+  alarms or IAM policy wiring before creating desktop pools.
+- Telco Cloud Native: validate the hub-spoke network foundation first, then
+  enable Vault, OKE, monitoring, and OS Management only after quota and owner
+  review.
+
+Checklist:
+1. Create a temporary compartment or an explicitly approved test compartment.
+2. Keep local `terraform.tfvars` ignored.
+3. Run `terraform init`, `terraform validate`, and `terraform plan`.
+4. Apply the staged path.
+5. Read back the key resources with OCI CLI, such as VCNs, subnets, DRGs,
+   alarms, policies, or service-specific outputs.
+6. Run a second `terraform plan -detailed-exitcode` to check drift.
+7. Destroy disposable resources and verify the compartment or test scope is
+   clean.
+
 ## Multicloud E2E Evidence
 
 Use this checklist for real Azure/AWS/OCI E2E runs that create disposable cloud

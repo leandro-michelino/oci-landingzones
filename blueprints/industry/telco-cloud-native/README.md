@@ -25,6 +25,21 @@ cloud-native workloads.
 - Telco workloads need a cloud-native landing-zone baseline.
 - OKE, network, operations, and security services need one review surface.
 - Platform teams need repeatable service enablement.
+- You want hub-spoke and DRG networking ready before turning on quota-sensitive
+  services like OKE worker pools.
+- You need a controlled path for CNF/platform teams to review routes, subnets,
+  KMS, alarms, and patching hooks together.
+
+## Practical Use Cases
+
+- Telco application landing zone with shared hub services and separated spoke
+  segments.
+- CNF or network-function platform foundation where OKE is enabled after route,
+  subnet, and quota review.
+- Regional lab or pre-production platform where the network foundation is
+  validated first, then Vault, monitoring, OS Management, and OKE are layered in.
+- Customer demos that need real OCI networking without immediately creating
+  clusters, keys, alarms, or patch jobs.
 
 ## What This Deploys
 
@@ -42,6 +57,14 @@ in the repo.
 
 The exact OCI behavior is controlled by `variables.tf` and the values supplied in your local
 ignored `terraform.tfvars` file.
+
+## Deployment Modes
+
+| Mode | Enable Flags |
+| --- | --- |
+| Network foundation | Keep `enable_oke_cluster`, `enable_oke_node_pool`, `enable_monitoring`, and `enable_os_management` false. Disable Vault if the test only needs VCN, subnet, and DRG wiring. |
+| Platform foundation | Enable Vault/KMS and monitoring after notification topics, tags, and owner contacts are agreed. |
+| Full telco platform | Enable OKE cluster/node pool and OS Management after Kubernetes version, node shape, subnet keys, patching scope, and regional quotas are confirmed. |
 
 ## Folder Contract
 
@@ -78,7 +101,7 @@ real OCIDs, CIDRs, names, recipients, and enable flags.
 | `org` | Short organization prefix used in names. |
 | `environment` | Deployment environment name. |
 | `region_key` | Short OCI region key used in resource names. |
-| `defined_tags` | Defined tags applied to resources. |
+| `defined_tags` | Defined tags applied to resources. Use `{}` when no customer-defined tag namespace is ready. |
 | `freeform_tags` | Freeform tags applied to resources. |
 
 ### Deployment-Specific Decisions
@@ -162,9 +185,12 @@ customer-facing or shared environments.
 
 1. Review the local README and architecture.
 2. Populate `terraform.tfvars`.
-3. Run plan.
-4. Apply after review.
-5. Hand outputs to the next owner.
+3. Start with the network foundation mode unless you already have service
+   quotas and approvals for OKE, Vault, monitoring, and OS Management.
+4. Run plan.
+5. Apply after review.
+6. Read back VCN, subnet, DRG, and optional service outputs.
+7. Hand outputs to the next owner.
 
 ## Architecture
 
@@ -185,6 +211,7 @@ Ansible output at the end of the deployment.
 - Check quotas, service limits, and region readiness.
 - Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
 - Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
+- Confirm the destroy path is approved for disposable validation stacks.
 
 ## Validation
 
@@ -198,3 +225,7 @@ The validator checks Terraform formatting, required deployment README files, req
 architecture README sections, `terraform init -backend=false`, `terraform validate`, root
 Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
 cleanup of generated Terraform artifacts.
+
+For a cost-controlled deployment check, run this blueprint with the network
+foundation mode, read back VCN/subnet/DRG outputs, run a second plan for drift,
+and destroy the disposable stack when validation is complete.

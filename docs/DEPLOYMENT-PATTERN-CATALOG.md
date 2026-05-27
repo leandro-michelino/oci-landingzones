@@ -132,6 +132,9 @@ folder.
   mapping drives the design.
 - Use data platform and industry patterns when the workload shape needs its own
   landing zone conventions.
+- For industry blueprints, prefer the staged path first: validate the network,
+  IAM, alarm, and output contracts before enabling desktop capacity, OKE worker
+  pools, or other quota-heavy services.
 - Use extension-only mode when the customer already has the base OCI estate and
   only needs one add-on service. Supply existing compartment, network, service,
   and IAM identifiers through local tfvars.

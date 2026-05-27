@@ -26,6 +26,25 @@ and IAM.
 | Monitoring alarms | `alarms` map |
 | IAM policy shell | `policy_statements` not empty |
 
+## Good Use Cases
+
+- Contractors who need access to private apps without copying data to their own
+  devices.
+- Regulated desktop sessions where clipboard, printing, audio, drives, and
+  video input need explicit decisions.
+- Admin workstations for database, network, or platform teams that should stay
+  inside OCI private networking.
+- Temporary desktop pools for projects where storage preservation, schedules,
+  and alarms matter from day one.
+
+## Deployment Modes
+
+| Mode | How It Works |
+| --- | --- |
+| Review-only | Keep `create_desktop_pool = false`, populate safe metadata, and validate Terraform plus Ansible wrappers. |
+| Low-cost control path | Keep desktop creation disabled and create only approved alarms or IAM policy statements. |
+| Full desktop pool | Set `create_desktop_pool = true` after image, subnet, NSG, backup, license, and capacity approvals are complete. |
+
 ## Inputs To Decide
 
 | Input | What To Decide |
@@ -57,6 +76,20 @@ API/CLI-style BYOL pool creation.
 5. Run `terraform plan` or `ansible-playbook ansible/plan.yml`.
 6. Apply after IAM groups and user onboarding flow are approved.
 
+## Operator Notes
+
+- Start with `create_desktop_pool = false` unless the image and subnet are
+  already approved. It keeps validation cheap and avoids creating desktops
+  before access rules are ready.
+- `defined_tags = {}` is treated as no defined tags, which avoids drift from
+  tenancy-managed system tags.
+- A Windows 10/11 pool needs both customer license approval and
+  `windows_10_11_byol_acknowledged = true`.
+- Monitoring alarms and IAM policy statements are useful early checks because
+  they validate provider access and naming without needing desktop capacity.
+- Destroy disposable validation resources when the test is complete. Keep only
+  long-lived desktop pools that have an owner, support contact, and schedule.
+
 ## Outputs
 
 | Output | Meaning |
@@ -75,5 +108,9 @@ terraform init -backend=false
 terraform validate
 ansible-playbook ansible/plan.yml
 ```
+
+For a disposable control-path check, create a local ignored `terraform.tfvars`
+with `create_desktop_pool = false` and one disabled alarm or policy statement,
+then run plan/apply/readback/destroy from this folder.
 
 Review `architecture/README.md` before onboarding end users.

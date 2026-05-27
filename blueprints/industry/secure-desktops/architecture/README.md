@@ -100,6 +100,8 @@ For Terraform/API-created Windows BYOL pools, this blueprint adds the immutable 
 
 - `create_desktop_pool` defaults to false because image, subnet, and backup
   policy choices are customer-specific.
+- With `create_desktop_pool = false`, the blueprint can still validate alarms
+  and IAM policy wiring before desktop capacity is approved.
 - `windows_10_11_byol_acknowledged` documents the customer license decision and
   adds the required Secure Desktops BYOL pool tag during Terraform creation.
 - `device_policy` is explicit so reviewers can see every redirection setting.
@@ -115,6 +117,8 @@ For Terraform/API-created Windows BYOL pools, this blueprint adds the immutable 
 - Domain join, endpoint security tooling, and profile management are customer workflows.
 - Desktop software licensing must be reviewed outside Terraform.
 - Session monitoring and user support processes belong in the operations runbook.
+- Disposable validation should destroy alarms, policies, and pools that do not
+  have an approved owner. Keep only intentionally long-lived desktop pools.
 
 ## Review Checklist
 
