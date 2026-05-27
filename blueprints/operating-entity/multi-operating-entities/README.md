@@ -27,6 +27,16 @@ policies.
 - Common child compartments should be created for each entity.
 - Administration should be delegated per entity.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+| --- | --- |
+| Multi-entity tenancy onboarding | Creates several operating-entity boundaries in one reviewed Terraform plan. |
+| Appleby group rollout | Supports an Appleby-profile execution path for onboarding multiple entities with consistent compartment and IAM patterns. |
+| Standardized business-unit structure | Applies the same default workload compartments to each entity unless an entity needs an override. |
+| Delegated governance at scale | Creates per-entity admin and auditor groups so responsibilities do not bleed across boundaries. |
+| Acquisition or regional expansion | Lets platform teams add new subsidiaries, regions, or operating groups with repeatable outputs. |
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -119,6 +129,7 @@ Use direct Terraform when you are iterating locally:
 ```bash
 cd blueprints/operating-entity/multi-operating-entities
 cp terraform.tfvars.example terraform.tfvars
+# Set oci_config_profile = "Appleby" in terraform.tfvars for Appleby runs.
 terraform init
 terraform validate
 terraform plan
@@ -128,6 +139,7 @@ Use the local Ansible wrapper when you want the same runner shape used across th
 
 ```bash
 cd blueprints/operating-entity/multi-operating-entities
+export OCI_CLI_PROFILE=Appleby
 ansible-playbook -i localhost, ansible/plan.yml
 CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml

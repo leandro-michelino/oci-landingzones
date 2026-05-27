@@ -26,6 +26,16 @@ delegated administration.
 - Delegated admins and auditors need named groups.
 - Workload compartments should sit under an entity root.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+| --- | --- |
+| Single business-unit landing zone | Creates one compartment boundary with delegated groups and policies for a business unit, subsidiary, or legal entity. |
+| Appleby operating-entity onboarding | Provides a repeatable Appleby-profile workflow for creating the entity root, workload compartments, admin group, and auditor group. |
+| Delegated administration model | Separates platform-owned tenancy administration from entity-owned workload administration. |
+| Audit-ready compartment boundary | Produces compartment, group, policy, and policy-statement outputs that can be reviewed before hand-off. |
+| Foundation for workload vending | Establishes the parent entity boundary that workload-vending blueprints can use later. |
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -125,6 +135,7 @@ Use direct Terraform when you are iterating locally:
 ```bash
 cd blueprints/operating-entity
 cp terraform.tfvars.example terraform.tfvars
+# Set oci_config_profile = "Appleby" in terraform.tfvars for Appleby runs.
 terraform init
 terraform validate
 terraform plan
@@ -134,6 +145,7 @@ Use the local Ansible wrapper when you want the same runner shape used across th
 
 ```bash
 cd blueprints/operating-entity
+export OCI_CLI_PROFILE=Appleby
 ansible-playbook -i localhost, ansible/plan.yml
 CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml

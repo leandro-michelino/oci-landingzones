@@ -33,6 +33,16 @@ policy for the finance or platform team.
   tag sets.
 - A FinOps group needs review or manage access without becoming tenancy admin.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+|---|---|
+| Appleby FinOps baseline | Uses the Appleby profile workflow to create cost-center tags, budgets, alerts, and FinOps hand-off outputs in the target tenancy. |
+| Business-unit chargeback | Applies owner and cost-center tags so finance can attribute spend by entity, workload, or team. |
+| Budget guardrails before scale-up | Creates budgets and alert rules before app teams expand compute, database, or platform usage. |
+| Cost anomaly notification path | Provides ONS topics, subscriptions, and optional alarms for finance and platform teams. |
+| Scoped optimization recommendations | Creates Optimizer profiles for approved compartments or tag scopes without granting broad tenancy administration. |
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level. Terraform composes
@@ -143,6 +153,7 @@ Use direct Terraform when you are iterating locally:
 ```bash
 cd blueprints/operations/cost-optimization
 cp terraform.tfvars.example terraform.tfvars
+# Set oci_config_profile = "Appleby" in terraform.tfvars for Appleby runs.
 terraform init
 terraform validate
 terraform plan
@@ -153,6 +164,7 @@ the repo:
 
 ```bash
 cd blueprints/operations/cost-optimization
+export OCI_CLI_PROFILE=Appleby
 ansible-playbook -i localhost, ansible/plan.yml
 CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml

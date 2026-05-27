@@ -26,6 +26,16 @@ product team.
 - A workload owner needs delegated admin/operator/auditor access.
 - Child compartments should be created consistently.
 
+## Use Cases
+
+| Use Case | Why This Blueprint Fits |
+| --- | --- |
+| New application landing area | Vends a workload root compartment, child compartments, IAM groups, and scoped policies for an app team. |
+| Appleby workload onboarding | Supports Appleby-profile execution when vending workload boundaries under an approved operating entity. |
+| Product-team self-service | Gives product owners a repeatable structure for admin, operator, and auditor access. |
+| Environment separation | Creates consistent child compartments for dev, test, prod, shared services, or other workload-specific boundaries. |
+| Downstream blueprint target | Produces compartment IDs and group outputs that networking, data-platform, and extension blueprints can consume. |
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -126,6 +136,7 @@ Use direct Terraform when you are iterating locally:
 ```bash
 cd blueprints/operating-entity/workload-vending
 cp terraform.tfvars.example terraform.tfvars
+# Set oci_config_profile = "Appleby" in terraform.tfvars for Appleby runs.
 terraform init
 terraform validate
 terraform plan
@@ -135,6 +146,7 @@ Use the local Ansible wrapper when you want the same runner shape used across th
 
 ```bash
 cd blueprints/operating-entity/workload-vending
+export OCI_CLI_PROFILE=Appleby
 ansible-playbook -i localhost, ansible/plan.yml
 CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
