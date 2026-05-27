@@ -15,7 +15,7 @@ session for Virtual WAN, Virtual Hub, ExpressRoute Gateway, and VNet connections
 | Best fit | OCI hub-spoke network connected to Azure Virtual WAN through ExpressRoute Gateway, with Azure VNets mapped to OCI spoke VCNs. |
 | Terraform shape | `network`, `fastconnect`, `ipsec_vpn`, `terraform_data.azure_vwan_contract` |
 | Azure shape | `azure/main.bicep` creates vWAN, vHub, vHub route table, ExpressRoute Gateway, VNet connections, VNets, subnets, and NSGs. |
-| Inputs to settle first | `hub_vcn_cidr_block`, `spoke_vcns`, `customer_bgp_asn`, `provider_service_id`, `provider_service_key_name`, `expressroute_circuit_id`, `expressroute_circuit_peering_id`, `azure_vnet_peerings` |
+| Inputs to settle first | `hub_vcn_cidr_block`, `spoke_vcns`, `customer_bgp_asn`, `provider_service_id`, `provider_service_key_name`, `cross_connect_mappings`, `expressroute_circuit_id`, `expressroute_circuit_peering_id`, `azure_vnet_peerings` |
 | Outputs to hand off | `hub_vcn_id`, `drg_id`, `spoke_vcn_ids`, `virtual_circuit_id`, `azure_vwan_contract`, `spoke_vnet_peering_contract` |
 | Local runner | `terraform plan` for OCI; `ansible/azure-plan.yml` for Azure what-if. |
 
@@ -76,7 +76,7 @@ with real OCIDs, CIDRs, ExpressRoute IDs, and provider details.
 | --- | --- |
 | `hub_vcn_cidr_block`, `hub_subnets` | OCI hub address space and subnet roles. |
 | `spoke_vcns`, `spoke_route_tables`, `spoke_security_lists` | OCI spoke address spaces, subnets, route behavior, and security controls. |
-| `enable_fastconnect`, `customer_bgp_asn`, `provider_service_id`, `provider_service_key_name` | OCI FastConnect creation and partner hand-off details. Keep disabled until real provider values are known. |
+| `enable_fastconnect`, `customer_bgp_asn`, `provider_service_id`, `provider_service_key_name`, `cross_connect_mappings` | OCI FastConnect creation and partner hand-off details. Keep disabled until real provider values are known. |
 | `expressroute_circuit_id`, `expressroute_circuit_peering_id` | Azure ExpressRoute circuit and private peering IDs. |
 | `azure_virtual_wan_id`, `azure_virtual_hub_id`, `azure_expressroute_gateway_id` | Azure IDs copied from the Azure session or existing resources. |
 | `azure_vnet_peerings` | Azure VNets connected to the Virtual Hub and mapped to OCI spoke keys. |
@@ -115,19 +115,29 @@ run the OCI plan again so `azure_vwan_contract` reflects the final cross-cloud p
 
 ## Validation
 
-For Azure/OCI interconnect tests, use London on both sides:
+For Azure/OCI interconnect tests, match the Azure ExpressRoute peering location
+to the OCI FastConnect region. The latest live validation used:
 
-- Azure ExpressRoute: `uksouth`, Oracle Cloud FastConnect provider, London
-  peering location, `Local_UnlimitedData`, `1 Gbps`.
-- OCI FastConnect: `uk-london-1`, Microsoft Azure provider service, `1 Gbps`.
+- Azure ExpressRoute: `brazilsouth` resources, Campinas peering location,
+  Oracle Cloud FastConnect provider, `Local_UnlimitedData`, `1 Gbps`.
+- OCI FastConnect: `sa-vinhedo-1`, Microsoft Azure provider service, `1 Gbps`,
+  target compartment `Leandro_Michelino`.
 - Configure Azure Private Peering with peer ASN `31898`, no MD5 shared key for
-  this provider-key VC flow, and the VLAN returned by OCI after FastConnect
-  creation.
+  this provider-key VC flow, and use the `cross_connect_mappings` returned by
+  OCI. The Vinhedo/Campinas validation used VLAN `33`, primary pair
+  `10.255.0.1/30` and `10.255.0.2/30`, and secondary pair `10.255.0.5/30` and
+  `10.255.0.6/30`.
 - Bring the Azure vWAN ExpressRoute Gateway to `Succeeded`, connect it to the
-  circuit peering, then check OCI `bgp-session-state` before packet tests.
-- Keep IPSec as the secondary path. If `uk-london-1` returns
-  `ipsec-connection-count`, clear quota or document the fallback test as
-  blocked.
+  circuit peering, then check OCI `bgp-session-state` before packet tests. The
+  2026-05-27 Vinhedo/Campinas control-plane test reached OCI FastConnect
+  `PROVISIONED`, provider `ACTIVE`, BGP `UP`, and one Azure ER gateway
+  connection.
+- Packet tests require temporary compute endpoints on both sides. If compute
+  launch is blocked by tenancy policy or CLI/runtime errors, record the
+  control-plane result and rerun packet tests after endpoint creation is fixed.
+- Keep IPSec as a separate secondary path. The vWAN ExpressRoute session does
+  not create an Azure VPN Gateway, so IPSec requires a separate VPN deployment
+  and tunnel parameter exchange.
 
 From the repository root:
 

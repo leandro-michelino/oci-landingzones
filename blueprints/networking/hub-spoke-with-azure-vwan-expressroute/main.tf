@@ -23,7 +23,7 @@ module "network" {
 }
 
 module "fastconnect" {
-  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/fastconnect?ref=v0.2.0"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/fastconnect?ref=main"
 
   tenancy_ocid              = var.tenancy_ocid
   compartment_ocid          = local.target_compartment_ocid
@@ -37,6 +37,7 @@ module "fastconnect" {
   customer_bgp_asn          = var.customer_bgp_asn
   provider_service_id       = var.provider_service_id
   provider_service_key_name = var.provider_service_key_name
+  cross_connect_mappings    = var.cross_connect_mappings
   defined_tags              = var.defined_tags
   freeform_tags             = var.freeform_tags
 }
