@@ -22,7 +22,7 @@ override.tf.json
 *.key
 *.p12
 *.pfx
-.codex-local/
+.leo-local/
 .env
 .env.*
 *.auto.tfvars

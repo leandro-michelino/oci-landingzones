@@ -6,7 +6,7 @@ scan:
   skip-dirs:
     - .git
     - .terraform
-    - .codex-local
+    - .leo-local
     - .claude
 misconfiguration:
   terraform:

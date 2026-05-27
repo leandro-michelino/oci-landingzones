@@ -211,7 +211,7 @@ cd blueprints/networking/aws-oci-hybrid-network-backbone
 CONFIRM_AWS_APPLY=true ansible-playbook -i localhost, ansible/aws-apply.yml
 CONFIRM_AWS_DESTROY=true ansible-playbook -i localhost, ansible/aws-destroy.yml
 ```
-5. If rerun returns Customer Gateway `AlreadyExists`, wait until prior Customer Gateway resources are fully deleted and rerun:
+5. If rerun returns Customer Gateway `AlreadyExists`, wait until prior Customer Gateway resources are fully released and rerun:
 ```bash
 aws ec2 describe-customer-gateways --region eu-west-1 \
   --filters Name=ip-address,Values=198.51.100.10 \

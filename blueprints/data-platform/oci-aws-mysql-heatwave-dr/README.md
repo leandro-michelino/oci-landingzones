@@ -151,7 +151,7 @@ CONFIRM_AWS_DESTROY=true ansible-playbook -i localhost, ansible/aws-destroy.yml
 
 The AWS CloudFormation template supports E2E-safe RDS overrides:
 
-- `DbDeletionProtection=false` for disposable test stacks that must be deleted.
+- `DbDeletionProtection=false` for disposable test stacks that are short-lived.
 - `DbBackupRetentionPeriod=0` for accounts or plans that reject seven-day
   retention during short-lived tests.
 - `DbPerformanceInsightsEnabled=false` for small instance classes or regions

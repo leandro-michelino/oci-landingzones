@@ -57,7 +57,7 @@ terraform validate
 ```
 
 Generated Terraform folders, lock files, plans, state files, local tfvars, and
-`.codex-local/` or `.claude/` workspace data are workstation-only artifacts.
+`.leo-local/` or `.claude/` workspace data are workstation-only artifacts.
 Clean them before committing so reviews stay focused on source, examples, and
 documentation.
 

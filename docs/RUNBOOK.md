@@ -54,7 +54,7 @@ that a focused check would miss the blast radius.
 
 ## Ephemeral Networking Tests (OCI, Azure, AWS)
 
-Use this when networking components should be created for testing and deleted
+Use this when networking components should be created for testing and released
 immediately afterward.
 
 ```bash

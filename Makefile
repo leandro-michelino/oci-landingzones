@@ -22,7 +22,7 @@ changed:
 clean:
 	find . -name ".terraform" -type d -prune -exec rm -rf {} +
 	find . \( -name ".terraform.lock.hcl" -o -name "terraform.tfstate*" -o -name "tfplan" -o -name "tfplan.*" -o -name "*.tfplan" -o -name ".DS_Store" \) -type f -delete
-	rm -rf .codex-local .claude .ansible
+	rm -rf .leo-local .claude .ansible
 
 blueprint:
 	@if [ -n "$(path)" ]; then \
