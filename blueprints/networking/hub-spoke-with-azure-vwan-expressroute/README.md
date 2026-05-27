@@ -2,10 +2,14 @@
 
 Author: Leandro Michelino | ACE | leandro.michelino@oracle.com
 
-Use this page as the operator guide for
-`blueprints/networking/hub-spoke-with-azure-vwan-expressroute`. It builds an OCI
-hub-spoke network, attaches the OCI hub DRG to FastConnect, and provides an Azure
-session for Virtual WAN, Virtual Hub, ExpressRoute Gateway, and VNet connections.
+This blueprint builds the more concrete version of the OCI plus Azure vWAN
+story: OCI hub and spoke VCNs on one side, Azure Virtual WAN and Virtual Hub on
+the other, with Azure ExpressRoute Gateway connected to OCI FastConnect.
+
+The goal is simple: let OCI spokes and Azure VNets exchange private routes
+through a clean transit design, while leaving enough metadata in Terraform
+outputs that operators know exactly which VCNs, VNets, gateways, and circuits
+belong together.
 
 ## At A Glance
 
@@ -13,36 +17,194 @@ session for Virtual WAN, Virtual Hub, ExpressRoute Gateway, and VNet connections
 | --- | --- |
 | Folder | `blueprints/networking/hub-spoke-with-azure-vwan-expressroute` |
 | Best fit | OCI hub-spoke network connected to Azure Virtual WAN through ExpressRoute Gateway, with Azure VNets mapped to OCI spoke VCNs. |
-| Terraform shape | `network`, `fastconnect`, `ipsec_vpn`, `terraform_data.azure_vwan_contract` |
-| Azure shape | `azure/main.bicep` creates vWAN, vHub, vHub route table, ExpressRoute Gateway, VNet connections, VNets, subnets, and NSGs. |
-| Inputs to settle first | `hub_vcn_cidr_block`, `spoke_vcns`, `customer_bgp_asn`, `provider_service_id`, `provider_service_key_name`, `cross_connect_mappings`, `expressroute_circuit_id`, `expressroute_circuit_peering_id`, `azure_vnet_peerings` |
-| Outputs to hand off | `hub_vcn_id`, `drg_id`, `spoke_vcn_ids`, `virtual_circuit_id`, `azure_vwan_contract`, `spoke_vnet_peering_contract` |
-| Local runner | `terraform plan` for OCI; `ansible/azure-plan.yml` for Azure what-if. |
+| OCI shape | Hub VCN, spoke VCNs, DRG, optional FastConnect, optional IPSec, and route hand-off contracts. |
+| Azure session | vWAN, vHub, ExpressRoute Gateway, optional ER connection, Azure VNets, subnets, NSGs, and vHub connections. |
+| Key outputs | `hub_vcn_id`, `drg_id`, `spoke_vcn_ids`, `virtual_circuit_id`, `azure_vwan_contract`, `spoke_vnet_peering_contract`. |
 
-## Deployment Purpose
+## Good Fit
 
-This deployment makes Azure vWAN explicit instead of hiding it inside the generic
-multicloud interconnect blueprint. OCI remains the hub-spoke owner, while Azure
-Virtual WAN and Virtual Hub provide the Azure transit domain for connected VNets.
+- You need an OCI hub-spoke landing zone connected to Azure VNets.
+- Azure VNets should attach to a Virtual Hub rather than many direct peerings.
+- ExpressRoute plus FastConnect is the primary private path.
+- You want the Azure-side deployment kept next to the OCI blueprint.
+- You need a repeatable lab or customer demo for cross-cloud private routing.
 
-## When To Use This Deployment
+If you only need an OCI-primary transit contract with optional IPSec fallback,
+use `azure-vwan-oci-drg-transit`. This blueprint is better when you want the
+actual OCI hub-spoke topology and Azure vWAN ExpressRoute session together.
 
-- OCI hub and spoke VCNs must exchange private routes with Azure VNets.
-- The primary path is Azure ExpressRoute Gateway to OCI FastConnect.
-- Azure VNets should connect to a Virtual Hub rather than direct VNet peering.
-- IPSec is useful as an optional backup path or early test path.
+## Common Use Cases
 
-## What This Deploys
+| Use case | Why this blueprint helps |
+| --- | --- |
+| Enterprise app split across clouds | OCI app/database tiers and Azure services can communicate over a private routed path. |
+| Azure subscriptions as spokes | Azure VNets connect to vWAN while OCI keeps a hub-spoke VCN model with DRG transit. |
+| FastConnect/ExpressRoute validation | The blueprint carries the provider-key hand-off, BGP mappings, Azure gateway connection, and cleanup workflow. |
+| Migration runway | Teams can move services between OCI and Azure without redesigning routing every sprint. |
+| Customer demo or proof of concept | Creates enough real infrastructure to validate control-plane and, when VMs are available, packet flow. |
 
-| Kind | Name | Source Or Role |
-| --- | --- | --- |
-| Module | `network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.2.0` |
-| Module | `fastconnect` | `modules/networking/fastconnect @ v0.2.0` |
-| Module | `ipsec_vpn` | `modules/networking/ipsec-vpn @ v0.2.0` |
-| Resource | `terraform_data.azure_vwan_contract` | OCI to Azure vWAN routing and peering hand-off contract. |
-| Azure template | `azure/main.bicep` | Azure vWAN, vHub, ExpressRoute Gateway, VNets, and vHub VNet connections. |
+## What It Builds
 
-## Folder Contract
+OCI side:
+
+- Hub VCN, hub subnets, spoke VCNs, spoke subnets, route tables, and security
+  lists through the hub-spoke module.
+- DRG and DRG attachments for the hub/spoke routing domain.
+- Optional FastConnect virtual circuit for Azure ExpressRoute.
+- Optional IPSec connection for a separate backup or early test path.
+- `azure_vwan_contract` and `spoke_vnet_peering_contract` outputs for hand-off.
+
+Azure side, through `azure/main.bicep`:
+
+- Azure Virtual WAN and Virtual Hub.
+- vHub route table labelled for OCI transit.
+- Optional ExpressRoute Gateway and ExpressRoute Gateway connection.
+- One or more Azure VNets, subnets, NSGs, and vHub VNet connections.
+
+## How The Pieces Fit
+
+```text
+OCI spoke VCNs
+      |
+OCI hub VCN
+      |
+OCI DRG
+      |
+OCI FastConnect  <->  Azure ExpressRoute
+                         |
+                    Azure ER Gateway
+                         |
+                    Azure Virtual Hub
+                         |
+                    Azure VNets
+```
+
+In normal operation, ExpressRoute/FastConnect is the path you care about. IPSec
+is intentionally separate here; the Azure vWAN ExpressRoute deployment does not
+create an Azure VPN Gateway. If you want IPSec, deploy the VPN path separately
+and exchange tunnel parameters with OCI.
+
+## Inputs You Usually Touch
+
+| Input | Notes |
+| --- | --- |
+| `hub_vcn_cidr_block`, `hub_subnets` | OCI hub address plan. Keep it non-overlapping with Azure. |
+| `spoke_vcns` | OCI spoke VCNs and subnets. These are advertised toward Azure. |
+| `enable_fastconnect` | Leave false until the Azure circuit and provider values are ready. |
+| `customer_bgp_asn` | Azure private peering ASN for the provider-key flow. |
+| `provider_service_id` | OCI FastConnect provider service OCID for Microsoft Azure. |
+| `provider_service_key_name` | Azure ExpressRoute service key used by OCI FastConnect. |
+| `cross_connect_mappings` | BGP/VLAN values returned by OCI and aligned with Azure Private Peering. |
+| `expressroute_circuit_id` | Azure ExpressRoute circuit ID for contract tracking. |
+| `expressroute_circuit_peering_id` | Azure private peering ID used by the ER gateway connection. |
+| `azure_vnet_peerings` | Maps Azure VNets to OCI spoke keys. |
+| `enable_route_contract_validation` | Keep false during early planning; enable when IDs and peerings are final. |
+
+Start from `terraform.tfvars.example`. Real service keys, OCIDs, local state,
+and generated plan files should stay local.
+
+## Run It
+
+OCI side:
+
+```bash
+cd blueprints/networking/hub-spoke-with-azure-vwan-expressroute
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform validate
+terraform plan
+```
+
+Repo-standard Ansible wrappers:
+
+```bash
+cd blueprints/networking/hub-spoke-with-azure-vwan-expressroute
+ansible-playbook -i localhost, ansible/plan.yml
+CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
+```
+
+Azure side:
+
+```bash
+cd blueprints/networking/hub-spoke-with-azure-vwan-expressroute
+ansible-playbook -i localhost, ansible/azure-plan.yml
+CONFIRM_AZURE_APPLY=true ansible-playbook -i localhost, ansible/azure-apply.yml
+```
+
+After Azure apply, copy the Azure output IDs back into `terraform.tfvars`:
+
+- `azure_virtual_wan_id`
+- `azure_virtual_hub_id`
+- `azure_expressroute_gateway_id`
+- `expressroute_circuit_id`
+- `expressroute_circuit_peering_id`
+- `azure_vnet_peerings`
+
+Then rerun `terraform plan` so the OCI-side contract outputs match the final
+Azure path.
+
+Destroy the Azure test side when done:
+
+```bash
+CONFIRM_AZURE_DESTROY=true ansible-playbook -i localhost, ansible/azure-destroy.yml
+```
+
+Destroy OCI only when you really intend to remove the VCN/DRG topology:
+
+```bash
+CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
+```
+
+## Region Pairing Notes
+
+For ExpressRoute plus FastConnect, match the Azure ExpressRoute peering location
+with the OCI FastConnect region. The live 2026-05-27 validation used:
+
+- OCI: `sa-vinhedo-1`
+- Azure peering location: Campinas
+- Azure resource location: `brazilsouth`
+- Bandwidth: `1 Gbps`
+- Azure billing model: `Local_UnlimitedData`
+- Azure provider: Oracle Cloud FastConnect
+- OCI provider: Microsoft Azure
+
+The control-plane result was good: OCI FastConnect reached `PROVISIONED`,
+provider state `ACTIVE`, BGP `UP`, and Azure showed one ExpressRoute Gateway
+connection.
+
+The packet test still needs a clean compute run. The validation attempt was
+blocked by an Azure CLI VM-create runtime error and OCI compute authorization in
+the target compartment. In other words: the circuit came up, but do not claim
+end-to-end packet success until temporary VMs can be launched on both sides.
+
+## Provider-Key BGP Notes
+
+For the Vinhedo/Campinas validation, Azure Private Peering was aligned to the
+OCI-returned values:
+
+| Field | Value |
+| --- | --- |
+| Peer ASN | `31898` |
+| VLAN | `33` |
+| Primary pair | `10.255.0.1/30` and `10.255.0.2/30` |
+| Secondary pair | `10.255.0.5/30` and `10.255.0.6/30` |
+| MD5/shared key | Empty for this provider-key flow |
+
+Those values are examples from the test run, not universal constants. Read the
+OCI FastConnect virtual circuit output and put the returned values into
+`cross_connect_mappings` and Azure Private Peering.
+
+## What Good Looks Like
+
+- Azure vWAN, vHub, and ExpressRoute Gateway are `Succeeded`.
+- OCI FastConnect is `PROVISIONED`.
+- OCI provider state is `ACTIVE`.
+- OCI BGP session is `UP`.
+- Azure ExpressRoute Gateway has the expected connection to the private peering.
+- OCI route tables and Azure vHub/VNet route behavior match the intended CIDRs.
+- Packet tests pass from Azure to OCI and OCI to Azure using temporary endpoints.
+
+## Folder Map
 
 ```text
 blueprints/networking/hub-spoke-with-azure-vwan-expressroute/
@@ -51,8 +213,6 @@ blueprints/networking/hub-spoke-with-azure-vwan-expressroute/
 |-- main.tf
 |-- variables.tf
 |-- outputs.tf
-|-- providers.tf
-|-- versions.tf
 |-- terraform.tfvars.example
 |-- azure/
 |   |-- README.md
@@ -67,80 +227,13 @@ blueprints/networking/hub-spoke-with-azure-vwan-expressroute/
     `-- azure-destroy.yml
 ```
 
-## Inputs To Decide
+## Before You Hand It Over
 
-Start from `terraform.tfvars.example`, then create a local ignored `terraform.tfvars`
-with real OCIDs, CIDRs, ExpressRoute IDs, and provider details.
-
-| Input | What To Decide |
-| --- | --- |
-| `hub_vcn_cidr_block`, `hub_subnets` | OCI hub address space and subnet roles. |
-| `spoke_vcns`, `spoke_route_tables`, `spoke_security_lists` | OCI spoke address spaces, subnets, route behavior, and security controls. |
-| `enable_fastconnect`, `customer_bgp_asn`, `provider_service_id`, `provider_service_key_name`, `cross_connect_mappings` | OCI FastConnect creation and partner hand-off details. Keep disabled until real provider values are known. |
-| `expressroute_circuit_id`, `expressroute_circuit_peering_id` | Azure ExpressRoute circuit and private peering IDs. |
-| `azure_virtual_wan_id`, `azure_virtual_hub_id`, `azure_expressroute_gateway_id` | Azure IDs copied from the Azure session or existing resources. |
-| `azure_vnet_peerings` | Azure VNets connected to the Virtual Hub and mapped to OCI spoke keys. |
-| `enable_ipsec`, `cpe_ip_address`, `remote_cloud_cidr_blocks` | Optional backup or test VPN path. |
-
-## Terraform And Azure Workflow
-
-OCI side:
-
-```bash
-cd blueprints/networking/hub-spoke-with-azure-vwan-expressroute
-cp terraform.tfvars.example terraform.tfvars
-terraform init
-terraform validate
-terraform plan
-```
-
-Azure side:
-
-```bash
-cd blueprints/networking/hub-spoke-with-azure-vwan-expressroute
-ansible-playbook -i localhost, ansible/azure-plan.yml
-CONFIRM_AZURE_APPLY=true ansible-playbook -i localhost, ansible/azure-apply.yml
-```
-
-After Azure apply, copy the Azure output IDs into local Terraform variables and
-run the OCI plan again so `azure_vwan_contract` reflects the final cross-cloud path.
-
-## Review Before Apply
-
-- Confirm OCI hub and spoke CIDRs do not overlap Azure VNet CIDRs.
-- Confirm ExpressRoute private peering and OCI FastConnect provider details refer to the same private interconnect path.
-- Confirm Azure vHub route table labels and VNet connection names match the intended route domain.
-- Keep ExpressRoute authorization keys, provider service keys, state files, and local tfvars out of commits.
-- Confirm the architecture file still matches `main.tf`, `variables.tf`, `outputs.tf`, and `azure/main.bicep`.
-
-## Validation
-
-For Azure/OCI interconnect tests, match the Azure ExpressRoute peering location
-to the OCI FastConnect region. The latest live validation used:
-
-- Azure ExpressRoute: `brazilsouth` resources, Campinas peering location,
-  Oracle Cloud FastConnect provider, `Local_UnlimitedData`, `1 Gbps`.
-- OCI FastConnect: `sa-vinhedo-1`, Microsoft Azure provider service, `1 Gbps`,
-  target compartment `Leandro_Michelino`.
-- Configure Azure Private Peering with peer ASN `31898`, no MD5 shared key for
-  this provider-key VC flow, and use the `cross_connect_mappings` returned by
-  OCI. The Vinhedo/Campinas validation used VLAN `33`, primary pair
-  `10.255.0.1/30` and `10.255.0.2/30`, and secondary pair `10.255.0.5/30` and
-  `10.255.0.6/30`.
-- Bring the Azure vWAN ExpressRoute Gateway to `Succeeded`, connect it to the
-  circuit peering, then check OCI `bgp-session-state` before packet tests. The
-  2026-05-27 Vinhedo/Campinas control-plane test reached OCI FastConnect
-  `PROVISIONED`, provider `ACTIVE`, BGP `UP`, and one Azure ER gateway
-  connection.
-- Packet tests require temporary compute endpoints on both sides. If compute
-  launch is blocked by tenancy policy or CLI/runtime errors, record the
-  control-plane result and rerun packet tests after endpoint creation is fixed.
-- Keep IPSec as a separate secondary path. The vWAN ExpressRoute session does
-  not create an Azure VPN Gateway, so IPSec requires a separate VPN deployment
-  and tunnel parameter exchange.
-
-From the repository root:
-
-```bash
-./scripts/validate-all.sh
-```
+- Confirm all OCI and Azure CIDRs are non-overlapping.
+- Confirm the Azure peering location matches the OCI FastConnect region.
+- Keep service keys, provider keys, tfvars, plan files, and state files out of
+  commits.
+- Decide whether the OCI VCN/DRG should be preserved after tests.
+- Delete cost-generating resources first: ExpressRoute, FastConnect, gateways,
+  VPN gateways, NAT gateways, and test VMs.
+- Keep the VCN/DRG only when the test plan explicitly says to preserve them.
