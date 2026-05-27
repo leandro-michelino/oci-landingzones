@@ -14,6 +14,13 @@ OCI GenAI, and indexed into OpenSearch or another vector search target.
 | Terraform shape | Source/state/failed buckets, optional streams, Events trigger, IAM policy. |
 | Default posture | Storage, streams, and events are disabled until the pipeline handlers exist. |
 
+## Practical Use Cases
+
+- **Knowledge-base refresh:** Embed approved content on a repeatable schedule for RAG or semantic search.
+- **Semantic search foundation:** Prepare chunks, vectors, metadata, and storage before the user-facing app exists.
+- **RAG ingestion pipeline:** Separate ingestion quality from chat or agent behavior so each can be tested independently.
+- **Document lifecycle updates:** Re-index changed content without rebuilding the whole AI stack.
+
 ## What This Deploys
 
 | Resource | Enable Flag |
@@ -49,6 +56,13 @@ then enable the Events trigger. For full landing zones, Core, Networking,
 | `stream_ids` | Stream OCIDs keyed by logical name. |
 | `events_rule_id` | Source object trigger rule OCID. |
 | `vector_index_name` | Target index name. |
+
+## What Good Looks Like
+
+- Chunking, metadata, embedding model, and vector target are explicit.
+- Duplicate, stale, or unauthorized content is filtered before ingestion.
+- A retrieval smoke test returns relevant chunks for known questions.
+- Refresh and rollback behavior are understood by the owning team.
 
 ## Validation
 

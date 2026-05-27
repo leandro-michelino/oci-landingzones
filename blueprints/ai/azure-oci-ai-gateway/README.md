@@ -254,6 +254,13 @@ That file documents the ownership boundary, Terraform components, request flow,
 traffic boundaries, detailed notes, and review checklist expected for this
 blueprint.
 
+## What Good Looks Like
+
+- Gateway routes match the intended provider, region, and policy rules.
+- Secrets and keys are stored outside committed files.
+- Observability captures requests, provider choice, errors, and cost tags.
+- A test request proves both OCI and Azure paths when both are enabled.
+
 ## Review Before Apply
 
 - Confirm connectivity mode and corresponding circuit values are intentional.

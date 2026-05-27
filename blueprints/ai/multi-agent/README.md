@@ -15,6 +15,13 @@ boundaries for agentic workflows.
 | Terraform shape | Buckets, Streaming, GenAI Agent knowledge base, agents, endpoint, tools, IAM policy. |
 | Default posture | All service resources are disabled until model, tool, and ownership decisions are reviewed. |
 
+## Practical Use Cases
+
+- **Specialist agent orchestration:** Coordinate search, data, code, or workflow agents behind one orchestrator.
+- **Workflow automation prototype:** Test agent responsibilities before turning them into production services.
+- **Enterprise assistant backend:** Route user requests to the right specialist while keeping tool access explicit.
+- **Agent governance demo:** Show how permissions, observability, and hand-off points can be reviewed.
+
 ## What This Deploys
 
 | Resource | Enable Flag |
@@ -54,6 +61,13 @@ endpoint, tools.
 | `specialist_agent_ids` | Specialist agent OCIDs. |
 | `streaming_topic_id` | Inter-agent task stream OCID. |
 | `tool_ids` | Tool OCIDs keyed by logical name. |
+
+## What Good Looks Like
+
+- Each agent has a clear role, inputs, outputs, and allowed tools.
+- The orchestrator can route a known task to the right specialist.
+- Logs show agent decisions and failure points.
+- Tool and data permissions are scoped to the agent role.
 
 ## Validation
 

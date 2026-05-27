@@ -28,6 +28,13 @@ controls without the stricter Level 2 posture.
 - You need a governed baseline with IAM, audit, monitoring, vault, budgets, VSS, and events.
 - The environment needs repeatable controls but still allows normal operational flexibility.
 
+## Practical Use Cases
+
+- **Pragmatic CIS baseline:** Start with controls that improve security posture without making day-one operations too heavy.
+- **New tenancy foundation:** Create governance, logging, guardrails, and network defaults before application teams arrive.
+- **Customer readiness review:** Show a clear control baseline for teams that need security evidence but are not yet ready for stricter Level 2.
+- **Incremental hardening:** Use Level 1 as the first step, then move selected environments toward Level 2 as process maturity grows.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -185,6 +192,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- Core governance and security modules plan cleanly with the target compartments.
+- Logging, Cloud Guard, budgets, and baseline network controls are enabled intentionally.
+- Exceptions are documented instead of hidden in local variables.
+- Application teams understand which controls are mandatory from day one.
 
 ## Review Before Apply
 

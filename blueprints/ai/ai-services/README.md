@@ -15,6 +15,13 @@ customers can use pretrained service APIs without a model-serving platform.
 | Terraform shape | Input/output buckets, service projects, optional Vision private endpoint, IAM policy. |
 | Default posture | Projects and buckets are disabled until the required services are chosen. |
 
+## Practical Use Cases
+
+- **Pretrained AI quick start:** Use OCI Vision, Language, or Document Understanding without building custom model infrastructure.
+- **Document and image triage:** Classify, extract, or enrich unstructured content before it enters downstream workflows.
+- **Low-code AI enablement:** Give application teams service access and outputs they can integrate quickly.
+- **Service capability demo:** Show what managed AI services can do before committing to a custom pipeline.
+
 ## What This Deploys
 
 | Resource | Enable Flag |
@@ -50,6 +57,13 @@ OCI pretrained AI APIs.
 | `vision_project_id` | Vision project OCID. |
 | `vision_private_endpoint_id` | Vision private endpoint OCID. |
 | `bucket_names` | Input/output bucket names. |
+
+## What Good Looks Like
+
+- The chosen AI services match the workload and data type.
+- Input and output buckets or integration points are known.
+- IAM permissions are scoped to the application or operator group.
+- A small sample document, image, or text run proves the service path works.
 
 ## Validation
 

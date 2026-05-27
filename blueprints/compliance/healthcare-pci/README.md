@@ -25,6 +25,13 @@ Deploys a regulated landing-zone control pack with IAM guardrail policy, budget 
 - You need a reusable, reviewable OCI deployment folder with local Terraform and Ansible runners.
 - Outputs from this pattern must be handed off to application, platform, or security teams.
 
+## Practical Use Cases
+
+- **Healthcare control evidence:** Prepare HIPAA-oriented network, logging, and governance evidence for protected workloads.
+- **PCI workload landing zone:** Create a clearer path for cardholder-data-adjacent systems with explicit controls.
+- **Mixed regulated environment:** Support teams that need both healthcare and payment-control language in one design.
+- **Audit conversation starter:** Give compliance teams concrete OCI resources and outputs to review.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere in the repo.
@@ -126,6 +133,13 @@ The full detailed Architecture is local to this deployment:
 ```text
 architecture/README.md
 ```
+
+## What Good Looks Like
+
+- Control evidence maps to the intended HIPAA, PCI, or mixed scope.
+- Logging, monitoring, and network boundaries are enabled intentionally.
+- Sensitive data paths are private and reviewable.
+- Exceptions and compensating controls are documented before production use.
 
 ## Review Before Apply
 

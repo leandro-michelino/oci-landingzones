@@ -28,6 +28,13 @@ cloud-native landing-zone pattern.
 - Security, network, and platform teams need one reviewable composition.
 - OS Management, network inspection, and baseline controls are part of the landing-zone conversation.
 
+## Practical Use Cases
+
+- **SCCA-style landing zone:** Combine governance, controlled networking, and operations hooks for cloud-native regulated workloads.
+- **Government or defense-adjacent pattern:** Start with a stricter structure when review, isolation, and evidence matter.
+- **Security-first platform baseline:** Create the core, network, and operations pieces together so ownership is clear.
+- **Reference architecture validation:** Use the blueprint as a deployable version of the SCCA cloud-native design conversation.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -167,6 +174,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- Core governance, controlled networking, and operations hooks all plan together.
+- Compartments, policies, and routes match the target control boundary.
+- Monitoring and OS-management hooks are enabled where expected.
+- Architecture notes and outputs are sufficient for a security review.
 
 ## Review Before Apply
 

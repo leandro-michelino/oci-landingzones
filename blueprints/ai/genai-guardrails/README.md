@@ -15,6 +15,13 @@ reviewer access.
 | Terraform shape | Audit bucket, log group, Service Connector, Cloud Guard detector recipe shell, Monitoring alarms, IAM policy. |
 | Default posture | Create flags are disabled until the customer chooses destinations and alarms. |
 
+## Practical Use Cases
+
+- **Safety overlay:** Add guardrails around existing GenAI endpoints without rebuilding the whole application stack.
+- **Policy review:** Make blocked categories, sensitive data handling, and response controls explicit.
+- **Observability layer:** Capture guardrail events so teams can tune policy based on real behavior.
+- **Pre-production AI approval:** Give risk teams a clear checkpoint before model access is opened widely.
+
 ## What This Deploys
 
 | Resource | Enable Flag |
@@ -51,6 +58,13 @@ deploy Core, Operations, and the GenAI serving blueprint first.
 | `service_connector_id` | Service Connector OCID. |
 | `detector_recipe_id` | Cloud Guard detector recipe OCID. |
 | `alarm_ids` | Monitoring alarm OCIDs. |
+
+## What Good Looks Like
+
+- Guardrail policies map to the application risk profile.
+- Allowed, blocked, and redacted examples are tested.
+- Events and logs are available for review.
+- Application owners know how policy changes will affect users.
 
 ## Validation
 

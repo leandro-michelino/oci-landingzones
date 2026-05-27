@@ -16,6 +16,13 @@ OpenSearch or compatible indexing, ingestion jobs, and session/audit hand-offs.
 | Default posture | Creation flags are disabled until customer OCIDs and index design are reviewed. |
 | Customer paths | Extension-only with existing buckets/OpenSearch/agent, or base-plus-extension after Core, Networking, OpenSearch, and GenAI. |
 
+## Practical Use Cases
+
+- **Enterprise document assistant:** Ground an agent on approved documents so answers come from known content, not guesswork.
+- **Internal knowledge search:** Let teams ask questions across policies, runbooks, product docs, or customer material.
+- **RAG proof of concept:** Stand up the moving pieces for retrieval, prompting, and agent hand-off before building a full app.
+- **Controlled assistant pattern:** Keep document scope, storage, and model access explicit for review.
+
 ## What This Deploys
 
 | Resource | Enable Flag |
@@ -62,6 +69,13 @@ OpenSearch, and a GenAI foundation first, then pass their outputs here.
 | `agent_id` | RAG agent OCID. |
 | `agent_endpoint_id` | Agent endpoint OCID. |
 | `bucket_names` | Source, processed, and audit bucket names. |
+
+## What Good Looks Like
+
+- Approved document sources are identified and scoped.
+- Embeddings, retrieval settings, and model endpoints are clear in the hand-off.
+- The agent can cite or otherwise trace answers back to source material.
+- Access to documents and generated answers follows the target data boundary.
 
 ## Validation
 

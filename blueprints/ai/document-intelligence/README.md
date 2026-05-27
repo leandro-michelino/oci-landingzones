@@ -15,6 +15,13 @@ reasoning or summarization.
 | Terraform shape | Intake/output/failed buckets, Document Understanding project, Events trigger, IAM policy. |
 | Default posture | Buckets, projects, and event triggers are disabled until reviewed. |
 
+## Practical Use Cases
+
+- **Invoice and claims extraction:** Turn PDFs or images into structured records that downstream systems can validate.
+- **Contract review intake:** Extract clauses, parties, dates, obligations, and risk markers before human review.
+- **Report summarization:** Process long reports into searchable, structured, or summarized outputs.
+- **Back-office automation:** Reduce manual document handling while keeping storage and processing boundaries visible.
+
 ## What This Deploys
 
 | Resource | Enable Flag |
@@ -47,6 +54,13 @@ GenAI access.
 | `document_project_id` | Document Understanding project OCID. |
 | `events_rule_id` | Events trigger OCID. |
 | `access_policy_id` | IAM policy OCID. |
+
+## What Good Looks Like
+
+- Document intake locations, output schema, and retention expectations are defined.
+- Extraction results are validated against representative sample documents.
+- Human review points are clear for low-confidence or high-risk outputs.
+- The pipeline records enough metadata to troubleshoot bad extractions.
 
 ## Validation
 

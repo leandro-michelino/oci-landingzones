@@ -16,6 +16,13 @@ archives, alarms, and least-privilege IAM hand-offs.
 | Default posture | Scanning and response resources are disabled until scope and recipes are approved. |
 | Customer paths | Extension-only on an existing Core baseline, or base-plus-extension after Core/CIS. |
 
+## Practical Use Cases
+
+- **Security posture automation:** Enable Cloud Guard, Vulnerability Scanning, and events so findings are not purely manual.
+- **Protected compartment onboarding:** Attach monitoring and response automation as new compartments become important.
+- **Continuous controls review:** Turn posture signals into events, alerts, or workflows that platform teams can track.
+- **Lightweight compliance uplift:** Improve visibility without deploying a full landing-zone rebuild.
+
 ## What This Deploys
 
 | Resource | Enable Flag |
@@ -56,6 +63,13 @@ archives, alarms, and least-privilege IAM hand-offs.
 | `host_scan_target_id` | VSS host scan target OCID. |
 | `report_bucket_name` | Report archive bucket. |
 | `event_rule_ids` | Events rule OCIDs. |
+
+## What Good Looks Like
+
+- Cloud Guard and Vulnerability Scanning targets match the protected compartments.
+- Events and notifications route to the right operations channel.
+- Findings are visible and assigned to an owner.
+- The team has a cadence for reviewing and closing posture issues.
 
 ## Validation
 

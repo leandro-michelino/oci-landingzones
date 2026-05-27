@@ -17,6 +17,13 @@ audit storage, logs, and IAM.
 | Default posture | Expensive or externally visible resources are disabled until explicit enable flags are set. |
 | Customer paths | Run extension-only with existing gateway/subnet/model endpoints, or base-plus-extension after Core, Networking, and `genai-private`. |
 
+## Practical Use Cases
+
+- **Shared GenAI front door:** Expose one governed entry point for multiple models or application teams.
+- **Quota and usage control:** Apply usage plans, quotas, logging, and cost tags before adoption grows.
+- **Model routing experiments:** Test different model backends without making every app own routing logic.
+- **Central audit pattern:** Collect request metadata and logs in one place for platform review.
+
 ## What This Deploys
 
 | Resource | Enable Flag |
@@ -64,6 +71,13 @@ outputs here.
 | `usage_plan_ids` | Usage plan OCIDs keyed by logical name. |
 | `audit_bucket_name` | Prompt and response audit bucket name. |
 | `log_group_id` | Gateway log group OCID. |
+
+## What Good Looks Like
+
+- Routes, quotas, usage plans, and consumer groups are reviewed.
+- Audit bucket and log group are created and retained as expected.
+- A test client can call the intended model path through the gateway.
+- Cost and ownership tags make usage attributable.
 
 ## Validation
 

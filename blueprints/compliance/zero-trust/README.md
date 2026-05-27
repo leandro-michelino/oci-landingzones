@@ -28,6 +28,13 @@ controls, and least-privilege boundaries called out up front.
 - Private access, segmentation, and inspected paths are explicit design goals.
 - ZPR, NSGs, IAM, and network placement need to be reviewed together.
 
+## Practical Use Cases
+
+- **Private segmented workloads:** Create a landing zone where network reachability and policy boundaries are deliberate.
+- **Least-privilege platform baseline:** Use identity-aware and network-aware controls before applications arrive.
+- **Sensitive app onboarding:** Give regulated workloads a stronger starting point than a generic VCN.
+- **Zero trust proof of concept:** Demonstrate ZPR, private networking, and governance working together.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -166,6 +173,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- Private network paths, ZPR policy, and IAM boundaries line up.
+- Allowed and denied access paths are tested with representative users or workloads.
+- Logging and monitoring provide evidence for policy decisions.
+- Exceptions are rare, explicit, and reviewed before production use.
 
 ## Review Before Apply
 

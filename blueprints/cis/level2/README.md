@@ -28,6 +28,13 @@ hardened controls and tighter operational review are expected.
 - Security teams require a stronger baseline than Level 1.
 - Tenancy-wide logging, monitoring, vault, VSS, and security-zone choices must be reviewed together.
 
+## Practical Use Cases
+
+- **Regulated landing zone:** Use the stricter posture when workloads need tighter review, stronger defaults, and fewer open-ended exceptions.
+- **Production security baseline:** Set expectations before sensitive production workloads land in the tenancy.
+- **Audit preparation:** Give risk and compliance teams a concrete set of controls to inspect and track.
+- **Level 1 upgrade path:** Move mature environments from pragmatic controls to a more hardened operating model.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource
@@ -185,6 +192,13 @@ architecture/README.md
 That file documents the ownership boundary, Terraform components, request flow, state and
 output contract, operational boundaries, review checklist, and the expected Terraform +
 Ansible output at the end of the deployment.
+
+## What Good Looks Like
+
+- All Level 2 controls are either enabled or have explicit approved exceptions.
+- Security zones, logging, monitoring, and Cloud Guard settings match the target risk profile.
+- Network and IAM boundaries are reviewed before workload onboarding.
+- Control evidence is easy to collect from outputs, logs, and policy configuration.
 
 ## Review Before Apply
 

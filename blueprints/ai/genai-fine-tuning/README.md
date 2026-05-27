@@ -16,6 +16,13 @@ model, and an optional private model endpoint.
 | Default posture | All cost-driving resources are disabled until explicit enable flags are set. |
 | Customer paths | Use with existing buckets/clusters, or after Core, Networking, and `genai-private`. |
 
+## Practical Use Cases
+
+- **Domain model adaptation:** Fine-tune or customize model behavior for specialized language, formats, or business processes.
+- **Controlled dataset workflow:** Keep training data, evaluation data, and model outputs traceable.
+- **Dedicated AI capacity hand-off:** Prepare cluster, model, and endpoint outputs for a team that needs predictable capacity.
+- **Experiment-to-production path:** Move from one-off tuning work toward a governed endpoint hand-off.
+
 ## What This Deploys
 
 | Resource | Enable Flag |
@@ -54,6 +61,13 @@ model, and an optional private model endpoint.
 | `fine_tuned_model_id` | Fine-tuned model OCID. |
 | `endpoint_id` | Optional endpoint OCID. |
 | `access_policy_id` | IAM policy OCID. |
+
+## What Good Looks Like
+
+- Training and evaluation datasets are approved and versioned.
+- Cluster and endpoint outputs are clear for consumers.
+- Evaluation criteria are defined before tuning starts.
+- Data handling and retention expectations are documented.
 
 ## Validation
 

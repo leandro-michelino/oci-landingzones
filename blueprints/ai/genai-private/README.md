@@ -25,6 +25,13 @@ Deploys a private OCI Generative AI endpoint pattern with optional archive bucke
 - You need a reusable, reviewable OCI deployment folder with local Terraform and Ansible runners.
 - Outputs from this pattern must be handed off to application, platform, or security teams.
 
+## Practical Use Cases
+
+- **Private GenAI access:** Keep applications, notebooks, and datasets on private network paths while using OCI Generative AI.
+- **Sensitive workload enablement:** Support AI use cases where public exposure is not acceptable.
+- **Fine-tuning preparation:** Create the private access pattern before dataset or endpoint work begins.
+- **Platform-controlled AI zone:** Give AI teams a secure starting point with network and access boundaries already visible.
+
 ## What This Deploys
 
 This folder is self-contained at the deployment level: Terraform composes the OCI resource graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere in the repo.
@@ -124,6 +131,13 @@ The full detailed Architecture is local to this deployment:
 ```text
 architecture/README.md
 ```
+
+## What Good Looks Like
+
+- Private networking and service access are configured intentionally.
+- Dataset and notebook access paths do not require public exposure.
+- IAM policies identify which teams can call GenAI services.
+- A private client can invoke the expected model or endpoint.
 
 ## Review Before Apply
 
