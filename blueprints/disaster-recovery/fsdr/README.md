@@ -66,6 +66,8 @@ blueprints/disaster-recovery/fsdr/
 |-- providers.tf               OCI provider configuration
 |-- versions.tf                Terraform and provider constraints
 |-- terraform.tfvars.example   Example input shape
+|-- runbooks/
+|   `-- windows-ad-domain-joined-compute.md
 `-- ansible/
     |-- plan.yml               Local init, validate, and plan
     |-- apply.yml              Guarded init, validate, plan, and apply
@@ -210,6 +212,31 @@ The lab is intentionally explicit about cleanup because volume-group and boot-vo
 replication can preserve resources after compute termination. If manual cleanup is
 needed, disable volume or boot-volume replicas before deleting the preserved volumes.
 
+## Windows AD Domain-Joined Compute
+
+For Windows member servers joined to Active Directory, keep the domain-specific work
+in the FSDR runbook or user-defined plan groups. This blueprint creates the FSDR
+control plane; it does not configure AD DNS, domain controllers, Kerberos time sync,
+SPNs, certificates, monitoring agents, backup jobs, or application bindings.
+
+Before a drill, switchover, or failover, validate that the standby network can reach
+the required domain controllers and AD DNS resolvers, that the destination hostname
+label and private IP choices are available, and that all attached boot and block
+volumes are included in the replicated volume group. For a real switchover or
+failover of a Windows member server, do not Sysprep or routinely unjoin/rejoin the
+domain; the recovered boot volume carries the same Windows computer identity.
+
+For drills, avoid booting a duplicate domain-joined copy on the same production AD
+network with the same hostname and computer account. Use an isolated drill network,
+a lab AD environment, or custom FSDR steps that rename, disjoin, or otherwise isolate
+the drill copy before it can contact production AD.
+
+Detailed checks and PowerShell validation commands are in:
+
+```text
+runbooks/windows-ad-domain-joined-compute.md
+```
+
 ## Deployment Order
 
 1. Confirm primary and standby regions.
@@ -237,6 +264,9 @@ Ansible output at the end of the deployment.
 - Validate protected resources and IAM permissions before activation.
 - Create and execute switchover or failover plans from the current standby DR protection group.
 - For movable compute, confirm every attached boot and block volume is covered by a replicated volume group that is also an FSDR member.
+- For Windows AD domain-joined member servers, confirm AD DNS, domain-controller reachability, time sync, hostname label availability, and secure-channel checks are part of the runbook.
+- For FSDR drills, do not let a duplicate domain-joined Windows drill copy contact production AD unless that identity conflict is explicitly planned and controlled.
+- Do not treat Windows domain controllers as ordinary movable compute members; use an AD-specific DR design.
 - For Object Storage members, confirm bucket replication is active before plan generation.
 - Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
 - Confirm no generated Terraform files, state files, plans, or local tfvars are committed.

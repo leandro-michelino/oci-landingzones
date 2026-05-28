@@ -60,6 +60,14 @@ is primary, and use `primary_subnet_id` when switching back.
   replicated volume group that is also an FSDR member.
 - Object Storage bucket members require Object Storage replication to be configured
   before FSDR plan generation.
+- Windows AD domain-joined member servers need extra drill controls. Do not boot a
+  duplicate drill copy onto the same production AD network with the same hostname and
+  computer account; use an isolated drill network, lab AD, or custom FSDR steps.
+- For real switchover of a Windows AD member server, preserve the VM identity and
+  validate AD DNS, domain-controller reachability, Kerberos time sync, hostname label
+  availability, and secure-channel health before and after execution.
+- Do not use this movable-compute lab pattern for Windows domain controllers unless an
+  AD-specific recovery design has been reviewed.
 - Hostname labels must be available in the destination subnet. If a stopped source
   instance still owns a hostname label during switchback, rename or terminate the stale
   VNIC before retrying the failed precheck.

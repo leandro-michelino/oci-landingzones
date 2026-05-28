@@ -83,6 +83,9 @@ These notes expand the diagram with the design details that usually matter durin
 - FSDR resource-principal access is an IAM prerequisite. The DR protection groups need dynamic-group and policy coverage for the resource families they orchestrate.
 - Switchover and failover execution is an operational action, not a normal Terraform apply action. Plans are generated and executed from the DR protection group that is currently standby.
 - Movable compute recovery depends on the compute instance, its destination subnet mapping, and a replicated volume group that covers all attached boot and block volumes.
+- Windows AD domain-joined member servers need workload runbook coverage for AD DNS, domain-controller reachability, Kerberos time sync, hostname conflicts, secure-channel validation, SPNs, service accounts, certificates, monitoring, backups, and application bindings.
+- FSDR drills can create a duplicate Windows member-server identity while production stays online. Isolate the drill network, use lab AD, or add custom plan steps before the drill copy can contact production AD.
+- Windows domain controllers need an AD-specific DR pattern and should not be treated as ordinary movable compute members.
 - Object Storage recovery depends on bucket replication outside this Terraform folder; add bucket members only after replication is active.
 - The optional `examples/real-dr-lab` harness creates disposable compute, network, bucket, and replicated volume-group resources for customer drills without changing this blueprint boundary.
 
@@ -92,6 +95,7 @@ These notes expand the diagram with the design details that usually matter durin
 - Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
 - Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
 - Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+- For Windows AD domain-joined member servers, keep the runbook in `runbooks/windows-ad-domain-joined-compute.md` aligned with any customer-specific DNS, domain-controller, monitoring, backup, or application steps.
 
 ## Review Checklist
 
