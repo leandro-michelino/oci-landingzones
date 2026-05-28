@@ -154,6 +154,71 @@ check_cloud_deployment_contract() {
   done
 }
 
+check_brownfield_blueprint_contract() {
+  local dir="$1"
+  local relative_dir="${dir#$REPO_ROOT/}"
+
+  case "$relative_dir" in
+    blueprints/networking/externally-managed-vcns)
+      check_contains "$dir/README.md" "Externally Managed VCNs" "brownfield blueprint title"
+      check_contains "$dir/variables.tf" 'variable "vcn_ids"' "externally managed VCN inputs"
+      check_contains "$dir/variables.tf" 'variable "subnet_ids"' "externally managed subnet inputs"
+      check_contains "$dir/variables.tf" 'variable "route_target_ids"' "externally managed route target inputs"
+      check_contains "$dir/outputs.tf" 'output "resource_ids"' "externally managed resource_ids output"
+      return 0
+      ;;
+  esac
+
+  return 1
+}
+
+check_deployable_blueprint_payload() {
+  local dir="$1"
+  local relative_dir="${dir#$REPO_ROOT/}"
+  local scaffold_matches
+
+  if check_brownfield_blueprint_contract "$dir"; then
+    return 0
+  fi
+
+  if ! grep -REq '^[[:space:]]*(resource|module)[[:space:]]+"' "$dir"/*.tf; then
+    fail "${relative_dir} must create OCI resources directly, compose resource-bearing modules/blueprints, or be listed as an explicit brownfield contract."
+  fi
+
+  if command -v rg >/dev/null 2>&1; then
+    scaffold_matches="$(
+      rg -n --fixed-strings \
+        --glob "*.tf" \
+        --glob "*.md" \
+        -e "Add OCI resources and release-pinned module sources here" \
+        -e "moves from scaffold to delivery" \
+        -e "Starts a naming-compliant OCI blueprint" \
+        -e "Scaffold with standard providers" \
+        "$dir" || true
+    )"
+  else
+    scaffold_matches="$(
+      find "$dir" \
+        \( -name "*.tf" -o -name "*.md" \) \
+        -type f -exec grep -nHE \
+        "Add OCI resources and release-pinned module sources here|moves from scaffold to delivery|Starts a naming-compliant OCI blueprint|Scaffold with standard providers" {} + || true
+    )"
+  fi
+
+  if [[ -n "$scaffold_matches" ]]; then
+    echo "$scaffold_matches" >&2
+    fail "${relative_dir} still contains scaffold-only blueprint text."
+  fi
+
+  if [[ -f "$dir/aws/main.yaml" ]] && ! grep -Eq 'Type:[[:space:]]+AWS::' "$dir/aws/main.yaml"; then
+    fail "${relative_dir}/aws/main.yaml must define real AWS CloudFormation resources."
+  fi
+
+  if [[ -f "$dir/azure/main.bicep" ]] && ! grep -Eq '^[[:space:]]*resource[[:space:]]+[[:alnum:]_]+' "$dir/azure/main.bicep"; then
+    fail "${relative_dir}/azure/main.bicep must define real Azure Bicep resources."
+  fi
+}
+
 check_architecture_inventory_count() {
   local architecture_index="$REPO_ROOT/docs/architecture/README.md"
   local actual_count
@@ -203,7 +268,9 @@ check_forbidden_blueprint_tf_regex 'source[[:space:]]*=[[:space:]]*"\.\.?/' \
   "Deployable blueprints must not use local Terraform module source paths."
 
 while IFS= read -r main_tf; do
-  check_blueprint_contract "${main_tf%/main.tf}"
+  blueprint_dir="${main_tf%/main.tf}"
+  check_blueprint_contract "$blueprint_dir"
+  check_deployable_blueprint_payload "$blueprint_dir"
 done < <(
   find "$REPO_ROOT/blueprints" \
     -path "*/.terraform/*" -prune -o \
