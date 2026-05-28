@@ -47,6 +47,8 @@ for real deployment.
 | `blueprints/extensions/exadata` | Vinhedo | Safety plan only | `plan-20260528081258`: verified the default disabled mode plans no Exadata infrastructure resource. |
 | `blueprints/identity/cis-basic` | Sao Paulo | Apply blocked | `ephem-20260528081309`: planned one disposable IAM group; OCI blocked the create because IAM writes must run in the tenancy home region. No resource was created. |
 | `blueprints/identity/cis-basic` | Vinhedo | Plan only | `plan-20260528081352`: planned one disposable IAM group after the Sao Paulo home-region blocker. No apply was run. |
+| `blueprints/operating-entity/workload-vending` | Sao Paulo | Plan only | `plan-20260528081627`: planned one workload root, one child compartment, three groups, and scoped policies. No apply was run. |
+| `blueprints/operating-entity/workload-vending` | Vinhedo | Plan only | `plan-20260528081630`: planned one workload root, one child compartment, three groups, and scoped policies. No apply was run. |
 
 ## Evidence README Standard
 
