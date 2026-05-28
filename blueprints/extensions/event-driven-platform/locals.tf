@@ -5,9 +5,13 @@ locals {
   policy_compartment_ocid = coalesce(var.policy_compartment_ocid, var.tenancy_ocid)
   stream_pool_name        = coalesce(var.stream_pool_name, "${local.name_prefix}-pool")
   stream_pool_id          = var.create_stream_pool ? try(oci_streaming_stream_pool.this[0].id, null) : var.stream_pool_id
-  archive_bucket_name     = coalesce(var.archive_bucket_name, "${local.name_prefix}-bkt-archive")
-  topic_name              = coalesce(var.topic_name, "${local.name_prefix}-top")
-  topic_id                = var.create_topic ? try(oci_ons_notification_topic.this[0].id, null) : var.topic_id
+  stream_ids = merge(
+    { for key, stream in oci_streaming_stream.this : key => stream.id },
+    { for key, stream in oci_streaming_stream.in_pool : key => stream.id }
+  )
+  archive_bucket_name = coalesce(var.archive_bucket_name, "${local.name_prefix}-bkt-archive")
+  topic_name          = coalesce(var.topic_name, "${local.name_prefix}-top")
+  topic_id            = var.create_topic ? try(oci_ons_notification_topic.this[0].id, null) : var.topic_id
   common_freeform_tags = merge(var.freeform_tags, {
     ManagedBy = "Terraform"
     Blueprint = local.blueprint_name

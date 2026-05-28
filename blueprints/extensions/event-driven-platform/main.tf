@@ -36,9 +36,19 @@ resource "oci_streaming_stream_pool" "this" {
 }
 
 resource "oci_streaming_stream" "this" {
-  for_each = var.create_streams ? var.streams : {}
+  for_each = var.create_streams && !var.create_stream_pool && var.stream_pool_id == null ? var.streams : {}
 
   compartment_id     = local.target_compartment_ocid
+  name               = "${local.name_prefix}-stream-${each.key}"
+  partitions         = each.value.partitions
+  retention_in_hours = each.value.retention_in_hours
+  defined_tags       = var.defined_tags
+  freeform_tags      = local.common_freeform_tags
+}
+
+resource "oci_streaming_stream" "in_pool" {
+  for_each = var.create_streams && (var.create_stream_pool || var.stream_pool_id != null) ? var.streams : {}
+
   name               = "${local.name_prefix}-stream-${each.key}"
   partitions         = each.value.partitions
   retention_in_hours = each.value.retention_in_hours
@@ -75,7 +85,7 @@ resource "oci_events_rule" "this" {
       content {
         action_type = actions.value.action_type
         function_id = actions.value.function_id
-        stream_id   = coalesce(actions.value.stream_id, try(oci_streaming_stream.this[actions.value.stream_key].id, null))
+        stream_id   = coalesce(actions.value.stream_id, try(local.stream_ids[actions.value.stream_key], null))
         topic_id    = coalesce(actions.value.topic_id, local.topic_id)
         description = actions.value.description
         is_enabled  = coalesce(actions.value.is_enabled, true)
@@ -95,7 +105,7 @@ resource "oci_sch_service_connector" "this" {
 
   source {
     kind      = "streaming"
-    stream_id = coalesce(var.connector_source_stream_id, try(oci_streaming_stream.this[var.connector_source_stream_key].id, null))
+    stream_id = coalesce(var.connector_source_stream_id, try(local.stream_ids[var.connector_source_stream_key], null))
   }
 
   target {

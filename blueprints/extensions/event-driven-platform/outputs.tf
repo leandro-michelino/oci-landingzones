@@ -11,7 +11,7 @@ output "resource_ids" {
   value = {
     archive_bucket     = try(oci_objectstorage_bucket.archive[0].id, null)
     stream_pool        = local.stream_pool_id
-    streams            = { for key, stream in oci_streaming_stream.this : key => stream.id }
+    streams            = local.stream_ids
     notification_topic = local.topic_id
     event_rules        = { for key, rule in oci_events_rule.this : key => rule.id }
     service_connector  = try(oci_sch_service_connector.this[0].id, null)
@@ -28,7 +28,7 @@ output "stream_pool_id" {
 }
 output "stream_ids" {
   description = "Stream OCIDs keyed by logical name."
-  value       = { for key, stream in oci_streaming_stream.this : key => stream.id }
+  value       = local.stream_ids
 }
 output "notification_topic_id" {
   description = "ONS notification topic OCID."
