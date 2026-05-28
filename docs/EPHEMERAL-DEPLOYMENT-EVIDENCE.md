@@ -36,6 +36,8 @@ for real deployment.
 | `blueprints/extensions/event-driven-platform` | Vinhedo | Apply/destroy | Created and destroyed archive bucket, stream pool, stream, and topic after fixing pool-backed streams. |
 | `blueprints/extensions/observability` | Sao Paulo | Apply/destroy | Created and destroyed an APM free-tier domain. |
 | `blueprints/extensions/observability` | Vinhedo | Apply/cleanup | Created an APM free-tier domain; interrupted local state was cleaned up directly and verified as deleted. |
+| `blueprints/extensions/exadata` | Sao Paulo | Plan only | Planned Cloud Exadata Infrastructure with `Exadata.X9M`, 2 compute servers, and 3 storage servers. No apply was run. |
+| `blueprints/extensions/exadata` | Vinhedo | Plan only | Planned Cloud Exadata Infrastructure with `Exadata.X9M`, 2 compute servers, and 3 storage servers. No apply was run. |
 
 ## Evidence README Standard
 
