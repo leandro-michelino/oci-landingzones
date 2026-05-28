@@ -36,6 +36,7 @@ for real deployment.
 | `blueprints/extensions/event-driven-platform` | Vinhedo | Apply/destroy | `ephem-20260528073049`: created and destroyed archive bucket, stream pool, stream, and topic after fixing pool-backed streams. |
 | `blueprints/extensions/observability` | Sao Paulo | Apply/destroy | `ephem-20260528075835`: created and destroyed an APM free-tier domain. |
 | `blueprints/extensions/observability` | Vinhedo | Apply/cleanup | `ephem-20260528080303`: created an APM free-tier domain; interrupted local state was cleaned up directly and verified as deleted. |
+| `blueprints/identity/cis-basic` | Home region | Apply/destroy | `ephem-20260528082617`: created and destroyed one disposable IAM group with default CIS groups and policies disabled. |
 
 ## Plan-Only Runs
 
