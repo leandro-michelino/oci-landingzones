@@ -49,6 +49,8 @@ for real deployment.
 | `blueprints/identity/cis-basic` | Vinhedo | Plan only | `plan-20260528081352`: planned one disposable IAM group after the Sao Paulo home-region blocker. No apply was run. |
 | `blueprints/operating-entity/workload-vending` | Sao Paulo | Plan only | `plan-20260528081627`: planned one workload root, one child compartment, three groups, and scoped policies. No apply was run. |
 | `blueprints/operating-entity/workload-vending` | Vinhedo | Plan only | `plan-20260528081630`: planned one workload root, one child compartment, three groups, and scoped policies. No apply was run. |
+| `blueprints/core` | Sao Paulo | Plan only | `plan-20260528081801`: planned the reduced core compartment baseline with tagging, logging, and default IAM disabled. No apply was run. |
+| `blueprints/core` | Vinhedo | Plan only | `plan-20260528081805`: planned the reduced core compartment baseline with tagging, logging, and default IAM disabled. No apply was run. |
 
 ## Evidence README Standard
 
