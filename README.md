@@ -1,39 +1,74 @@
 ![OCI Landing Zones architecture banner](docs/assets/oci-landing-zones-banner.png)
 
-# OCI Landing Zones
+# OCI Landing Zones (OCI-Primary Multicloud Blueprint Repository)
 
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 ![Terraform >= 1.12.0](https://img.shields.io/badge/terraform-%3E%3D1.12.0-844FBA.svg)
 ![Validation: validate-all](https://img.shields.io/badge/validation-validate--all-brightgreen.svg)
 ![Security: TFLint Trivy Checkov](https://img.shields.io/badge/security-tflint%20%7C%20trivy%20%7C%20checkov-2f855a.svg)
 
-Build OCI landing zones that are easy to review, run, and hand off.
+Build OCI-primary multicloud landing zones for OCI, Azure, and AWS with clear architecture and real deploy flows.
 
-This repo is a practical OCI landing-zone workshop: Terraform blueprints,
-reusable OCI modules, ASCII architecture docs, and local Ansible wrappers for
-repeatable plan/apply/destroy workflows. No private customer facts, no mystery
-state, no "just trust the diagram" energy.
+This repo is a practical multicloud toolkit: Terraform blueprints, reusable
+modules, and local Ansible wrappers for plan/apply/destroy sessions.
 
-The rhythm is simple: pick the outcome, read the local README, review the ASCII
-architecture, fill your ignored `terraform.tfvars`, run a plan, and then adapt
-the deployment to your tenancy.
+It is built for real platform work:
+- OCI stays primary by design.
+- Azure and AWS integrations are first-class.
+- Every blueprint is organized to be easy to read, review, and operate.
 
-It is built for platform engineers, cloud architects, and operators who want a
-solid starting point that still respects real-world review, security, and
-handoff work.
+Simple approach:
+`pick the outcome -> review Architecture -> plan -> apply -> verify`
+
+About:
+- OCI is the primary control plane by design.
+- Azure and AWS patterns are included as first-class multicloud blueprints.
+- The repository focus is deploy-and-use multicloud architecture across networking, security, data, AI, Kubernetes, DR, and FinOps.
 
 ## Friendly Disclaimer
 
 This is a personal engineering project, not an official Oracle product or
 Oracle-supported package.
 
-Think of these blueprints as complementary ideas, lab patterns, and operator
-notes around the official Oracle Enterprise Landing Zone (OELZ) repositories,
-not as a replacement for them and not as Oracle-owned guidance. Use this repo as
-a strong starting point, then tune it to your tenancy, controls, and operating
-model.
+## GitHub About (Copy/Paste)
 
-## Start Here
+Use this repository description in GitHub About:
+
+```text
+OCI-primary multicloud landing zones with Terraform blueprints, Ansible workflows, and Architecture docs for OCI, Azure, and AWS across networking, security, data, AI, Kubernetes, disaster recovery, and FinOps.
+```
+
+Suggested GitHub topics:
+
+```text
+oracle-cloud
+oci
+oracle-cloud-infrastructure
+multicloud
+terraform
+ansible
+landing-zone
+landing-zones
+infrastructure-as-code
+cloud-architecture
+networking
+security
+cis
+oke
+genai
+autonomous-database
+mysql-heatwave
+devops
+disaster-recovery
+finops
+cost-optimization
+azure
+aws
+ipsec
+bgp
+```
+
+## Start Here (2 Minutes)
 
 ```text
 pick a blueprint -> read README -> review architecture -> fill tfvars -> plan
@@ -79,7 +114,7 @@ The repo is intentionally boring in the useful way:
 
 - Blueprints are complete deployment entry points.
 - Modules are reusable building blocks.
-- Every deployable blueprint has a README, an ASCII architecture file, Terraform
+- Every deployable blueprint has a README, an Architecture file, Terraform
   files, safe example inputs, and local Ansible runners.
 - Customer-specific values stay out of git. Use ignored `terraform.tfvars`,
   environment variables, or your pipeline secret store.

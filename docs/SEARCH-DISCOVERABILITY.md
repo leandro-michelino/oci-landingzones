@@ -10,7 +10,7 @@ topics, useful README text, real links, and regular updates.
 Use this as the repository description:
 
 ```text
-Oracle Cloud Infrastructure (OCI) landing zones with Terraform blueprints, Ansible workflows, Architectures, and deployable patterns for networking, security, data, GenAI, OKE, and more.
+OCI-primary multicloud landing zones with Terraform blueprints, Ansible workflows, and Architecture docs for OCI, Azure, and AWS across networking, security, data, AI, Kubernetes, disaster recovery, and FinOps.
 ```
 
 ## Recommended GitHub Topics
@@ -33,12 +33,19 @@ cis
 oke
 genai
 rag
-opensearch
 autonomous-database
 mysql-heatwave
 byol
 devops
 disaster-recovery
+multicloud
+azure
+aws
+finops
+cost-optimization
+site-to-site-vpn
+ipsec
+bgp
 ```
 
 ## Phrases The README Should Naturally Cover
