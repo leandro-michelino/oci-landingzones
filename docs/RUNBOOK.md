@@ -78,6 +78,26 @@ Behavior:
 - Always attempts provider destroy after apply attempts.
 - Uses explicit confirmation env vars internally (`CONFIRM_*`).
 
+### Azure + OCI Transit VM Packet Test
+
+For `blueprints/networking/azure-vwan-oci-drg-transit/` in
+`connectivity_mode="without-interconnect"`:
+
+1. Apply OCI and Azure transit sessions first.
+2. Create one Linux VM in OCI transit subnet and one in Azure workload subnet.
+3. Confirm route and security wiring before ping:
+   - Azure route table: OCI CIDR via `VirtualNetworkGateway`
+   - Azure NSG: allow ICMP and SSH from OCI CIDR
+   - OCI route table: Azure CIDR via DRG
+   - OCI security list: allow ICMP and SSH from Azure CIDR
+4. Validate tunnel state:
+   - `az network vpn-connection show ...` reports `Connected`
+   - `oci network ip-sec-connection get-status ...` shows at least one tunnel `UP`
+5. Run in-guest ping from Azure VM to OCI private IP:
+   - `az vm run-command invoke ... "ping -c 4 <oci-private-ip>"`
+6. Run reverse ping/TCP check from OCI VM to Azure private IP.
+7. Destroy only after packet tests and evidence capture are complete.
+
 ## Ephemeral Industry Tests
 
 Use this when an industry blueprint needs a real OCI check without turning on

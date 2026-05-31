@@ -147,6 +147,22 @@ export OCI_PING_TARGET_IP="10.58.10.10"
 ansible-playbook -i localhost, ansible/azure-ipsec-verify.yml
 ```
 
+Cross-cloud Linux VM readiness (recommended for real packet validation):
+
+1. OCI side:
+   - Create a small Linux VM in the OCI transit subnet (example: `10.58.10.0/24`).
+   - Confirm subnet route table contains Azure CIDRs through DRG.
+   - Confirm OCI security list allows at least ICMP and SSH from Azure CIDRs.
+2. Azure side:
+   - Create a small Linux VM in the Azure workload subnet (example: `10.88.10.0/24`).
+   - Confirm workload route table includes OCI CIDR via `VirtualNetworkGateway`.
+   - Confirm NSG allows at least ICMP and SSH from OCI CIDRs.
+3. Verification:
+   - Verify Azure VPN connection state (`Connected`).
+   - Verify at least one OCI IPSec tunnel state (`UP`).
+   - Run in-guest ping from Azure VM to OCI private IP.
+   - Run reverse ping or TCP checks from OCI VM to Azure private IP.
+
 Destroy the Azure side when the test is done:
 
 ```bash
@@ -171,16 +187,17 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 
 ## Field Notes
 
-- Azure VPN Gateway creation is slow. Budget around 45 to 60 minutes before
-  judging tunnel health.
+- For multicloud tests in this repository, use Brazil regions by default:
+  OCI `sa-saopaulo-1` and Azure `brazilsouth`.
+- Azure vWAN/vHub plus VPN Gateway readiness can be slow. Expect 45 to 60
+  minutes in normal cases, and up to 6 hours in constrained windows.
 - DRG and IPSec quota can block tests. Use `existing_drg_id` when you need to
   preserve or reuse a known DRG.
 - For ExpressRoute/FastConnect tests, pair the Azure peering location with the
   OCI FastConnect region. A private circuit that is technically up but regionally
   mismatched is not a useful validation.
-- The live 2026-05-26 London test proved the basic 1 Gbps ExpressRoute plus
-  FastConnect shape, but Azure vWAN gateway readiness and OCI IPSec quota
-  prevented full packet validation during that run.
+- For `without-interconnect` mode, keep both interconnect IDs unset and drive
+  data-plane tests through IPSec path only.
 
 ## Folder Map
 

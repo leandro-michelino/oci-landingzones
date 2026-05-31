@@ -44,6 +44,27 @@ Azure vWAN + vHub
 - For `connectivity_mode=interconnect`, provide FastConnect and ExpressRoute IDs.
 - Keep vWAN and vHub IDs in local ignored tfvars or secure pipeline variables.
 - Use blueprint outputs as the contract source for NOC and SRE handoff.
+- Use Brazil regions as baseline for multicloud validation in this repository:
+  OCI `sa-saopaulo-1` and Azure `brazilsouth`.
+- Treat route and security wiring as mandatory before packet tests:
+  - Azure workload route table must include OCI CIDRs through `VirtualNetworkGateway`.
+  - Azure NSG must allow ICMP/SSH from OCI test CIDRs.
+  - OCI subnet route table must include Azure CIDRs through DRG.
+  - OCI security list must allow ICMP/SSH from Azure test CIDRs.
+
+## Linux VM Connectivity Test Recipe
+
+Use this for real packet-path verification in `without-interconnect` mode:
+
+1. Apply OCI side and Azure side resources from the blueprint runbooks.
+2. Create one Linux VM in OCI transit workload subnet.
+3. Create one Linux VM in Azure workload subnet connected to vWAN domain.
+4. Verify control-plane health:
+   - Azure VPN connection state is `Connected`.
+   - At least one OCI IPSec tunnel is `UP`.
+5. Run in-guest ping from Azure VM to OCI VM private IP.
+6. Run reverse ping/TCP probes from OCI VM to Azure VM private IP.
+7. Keep resources until packet tests are complete, then destroy according to approved cleanup order.
 
 ## Interconnect Validation Notes
 

@@ -135,6 +135,15 @@ The goal is not to hide complexity. The goal is to put it in predictable places.
 | vWAN transit backbone (OCI DRG primary, vWAN/vHub route domain, Interconnect default when present, IPSec-first test mode) | [Azure vWAN + OCI DRG Transit](blueprints/networking/azure-vwan-oci-drg-transit/) |
 | Hub-spoke via Azure vWAN ExpressRoute (OCI hub/spokes mapped to Azure VNets) | [Hub-Spoke With Azure vWAN ExpressRoute](blueprints/networking/hub-spoke-with-azure-vwan-expressroute/) |
 
+Azure + OCI transit quick test path (`without-interconnect`):
+1. Run OCI plan/apply in `blueprints/networking/azure-vwan-oci-drg-transit/`.
+2. Run Azure plan/apply in the same blueprint (`ansible/azure-*.yml`).
+3. Create one Linux VM in the OCI transit subnet and one Linux VM in the Azure workload subnet.
+4. Add explicit Azure route `OCI_CIDR -> VirtualNetworkGateway`.
+5. Allow ICMP and SSH between OCI and Azure CIDRs in Azure NSG and OCI security list.
+6. Run `ansible/azure-ipsec-verify.yml` with `AZURE_TEST_VM_RESOURCE_GROUP`, `AZURE_TEST_VM_NAME`, and `OCI_PING_TARGET_IP`.
+7. Validate bidirectional traffic, then destroy in reverse order after confirmation.
+
 ### AWS + OCI (Available)
 
 | Pattern | Blueprint |
