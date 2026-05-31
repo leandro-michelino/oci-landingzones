@@ -65,6 +65,9 @@ Use this for real packet-path verification in `without-interconnect` mode:
 5. Run in-guest ping from Azure VM to OCI VM private IP.
 6. Run reverse ping/TCP probes from OCI VM to Azure VM private IP.
 7. Keep resources until packet tests are complete, then destroy according to approved cleanup order.
+8. When running `ansible/azure-ipsec-verify.yml`, set `OCI_CLI_REGION=sa-saopaulo-1`.
+9. During cleanup, wait for Azure resource-group deletion to finish because
+   VPN Gateway and vWAN dependencies can keep resources in `Deleting` for a while.
 
 ## Interconnect Validation Notes
 

@@ -96,7 +96,11 @@ For `blueprints/networking/azure-vwan-oci-drg-transit/` in
 5. Run in-guest ping from Azure VM to OCI private IP:
    - `az vm run-command invoke ... "ping -c 4 <oci-private-ip>"`
 6. Run reverse ping/TCP check from OCI VM to Azure private IP.
-7. Destroy only after packet tests and evidence capture are complete.
+7. Set `OCI_CLI_REGION=sa-saopaulo-1` for `ansible/azure-ipsec-verify.yml`.
+8. Destroy only after packet tests and evidence capture are complete.
+9. Confirm Azure deletion is finished:
+   - `az group show -n <rg> --query "properties.provisioningState" -o tsv`
+   - `az group wait --name <rg> --deleted`
 
 ## Ephemeral Industry Tests
 

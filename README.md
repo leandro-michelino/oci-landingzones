@@ -141,8 +141,9 @@ Azure + OCI transit quick test path (`without-interconnect`):
 3. Create one Linux VM in the OCI transit subnet and one Linux VM in the Azure workload subnet.
 4. Add explicit Azure route `OCI_CIDR -> VirtualNetworkGateway`.
 5. Allow ICMP and SSH between OCI and Azure CIDRs in Azure NSG and OCI security list.
-6. Run `ansible/azure-ipsec-verify.yml` with `AZURE_TEST_VM_RESOURCE_GROUP`, `AZURE_TEST_VM_NAME`, and `OCI_PING_TARGET_IP`.
+6. Run `ansible/azure-ipsec-verify.yml` with `AZURE_TEST_VM_RESOURCE_GROUP`, `AZURE_TEST_VM_NAME`, `OCI_PING_TARGET_IP`, and `OCI_CLI_REGION=sa-saopaulo-1`.
 7. Validate bidirectional traffic, then destroy in reverse order after confirmation.
+8. Wait for Azure resource-group deletion to reach completion before closing the test.
 
 ### AWS + OCI (Available)
 

@@ -42,12 +42,20 @@ handoff and route troubleshooting.
 ```bash
 cd blueprints/networking/azure-vwan-oci-drg-transit
 export AZURE_VWAN_TRANSIT_RESOURCE_GROUP=rg-oci-azure-vwan-transit-dev
-export AZURE_VWAN_TRANSIT_LOCATION=westeurope
+export AZURE_VWAN_TRANSIT_LOCATION=brazilsouth
 export AZURE_VWAN_TRANSIT_DEPLOYMENT_NAME=oci-azure-vwan-transit-whatif
 
 ansible-playbook -i localhost, ansible/azure-plan.yml
 CONFIRM_AZURE_APPLY=true ansible-playbook -i localhost, ansible/azure-apply.yml
 CONFIRM_AZURE_DESTROY=true ansible-playbook -i localhost, ansible/azure-destroy.yml
+```
+
+After `azure-destroy.yml`, wait for resource-group deletion to finish before
+declaring cleanup complete:
+
+```bash
+az group show -n "$AZURE_VWAN_TRANSIT_RESOURCE_GROUP" --query "properties.provisioningState" -o tsv
+az group wait --name "$AZURE_VWAN_TRANSIT_RESOURCE_GROUP" --deleted
 ```
 
 For simulation-only checks without cloud-side execution:

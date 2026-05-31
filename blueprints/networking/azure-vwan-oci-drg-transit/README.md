@@ -134,6 +134,7 @@ IPSec validation:
 
 ```bash
 cd blueprints/networking/azure-vwan-oci-drg-transit
+export OCI_CLI_REGION="sa-saopaulo-1"
 export OCI_AZURE_TRANSIT_IPSEC_CONNECTION_ID="ocid1.ipsecconnection.oc1..example"
 ansible-playbook -i localhost, ansible/azure-ipsec-verify.yml
 ```
@@ -144,6 +145,7 @@ Optional ping validation from an Azure VM:
 export AZURE_TEST_VM_RESOURCE_GROUP="rg-test"
 export AZURE_TEST_VM_NAME="vm-test"
 export OCI_PING_TARGET_IP="10.58.10.10"
+export OCI_CLI_REGION="sa-saopaulo-1"
 ansible-playbook -i localhost, ansible/azure-ipsec-verify.yml
 ```
 
@@ -169,6 +171,14 @@ Destroy the Azure side when the test is done:
 CONFIRM_AZURE_DESTROY=true ansible-playbook -i localhost, ansible/azure-destroy.yml
 ```
 
+Track Azure resource-group deletion to completion (vWAN and VPN Gateway can
+take longer to remove):
+
+```bash
+az group show -n rg-oci-azure-vwan-transit-dev --query "properties.provisioningState" -o tsv
+az group wait --name rg-oci-azure-vwan-transit-dev --deleted
+```
+
 Destroy the OCI side only when you are sure the DRG/VCN are not being reused:
 
 ```bash
@@ -189,6 +199,8 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 
 - For multicloud tests in this repository, use Brazil regions by default:
   OCI `sa-saopaulo-1` and Azure `brazilsouth`.
+- Set `OCI_CLI_REGION=sa-saopaulo-1` when running `ansible/azure-ipsec-verify.yml`
+  so OCI IPSec status checks hit the correct region endpoint.
 - Azure vWAN/vHub plus VPN Gateway readiness can be slow. Expect 45 to 60
   minutes in normal cases, and up to 6 hours in constrained windows.
 - DRG and IPSec quota can block tests. Use `existing_drg_id` when you need to
