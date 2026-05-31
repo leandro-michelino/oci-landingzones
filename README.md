@@ -1,6 +1,6 @@
 ![OCI Landing Zones architecture banner](docs/assets/oci-landing-zones-banner.png)
 
-# OCI Landing Zones (OCI-Primary Multicloud Blueprint Repository)
+# OCI Landing Zones
 
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 ![Terraform >= 1.12.0](https://img.shields.io/badge/terraform-%3E%3D1.12.0-844FBA.svg)
