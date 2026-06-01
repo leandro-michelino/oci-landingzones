@@ -54,6 +54,9 @@
 
 ### Changed
 
+- Performed a full repository documentation audit to ensure Markdown guides are
+  current and consistently written in English, and refreshed wording where
+  needed for clarity and consistency.
 - Reworked the main README into a friendlier outcome-first landing page with
   quicker navigation, lighter prose, and clearer operator paths.
 - Removed redundant family-level blueprint README files that duplicated the
