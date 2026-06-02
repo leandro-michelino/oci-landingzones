@@ -68,7 +68,8 @@ blueprints/extensions/oic/
 Public-safe samples live in `samples/`:
 
 - `basic-instance.tfvars.example` creates a minimal OIC instance in Sao Paulo
-  with one message pack, an identity domain, and no private outbound connection.
+  with one message pack, an identity domain, default service-selected shape,
+  and no private outbound connection.
 - `private-outbound-existing-network.tfvars.example` shows the brownfield
   shape for OIC plus a private outbound connection using existing subnet and
   NSG IDs.
@@ -104,7 +105,7 @@ Review every variable after the base section in `variables.tf`, especially enabl
 | `enable_integration_instance` | Create the OIC instance. Keep false for validation-only shape checks. |
 | `integration_display_name` | Optional display name override for the OIC instance. |
 | `integration_instance_type` | OIC instance type, such as `STANDARDX`, after quota and owner review. Legacy `STANDARD`/`ENTERPRISE` types require entitlement. |
-| `shape` | OIC shape such as `DEVELOPMENT` or `PRODUCTION` for newer instance types. |
+| `shape` | Optional OIC shape override. Leave null unless the target region and tenancy have confirmed accepted values for the selected instance type. |
 | `domain_id` / `idcs_access_token` | Required by newer OIC instance types. Use an identity domain OCID or a secure IDCS access token source. |
 | `message_packs` | Message pack count. Start small for disposable tests. |
 | `enable_private_outbound_connection` | Create the private outbound connection when approved subnet and NSG IDs are available. |
@@ -151,10 +152,12 @@ base-plus-extension use, deploy core and networking first, then pass their
 outputs here.
 
 1. Confirm the target compartment, network/service dependencies, and ownership model.
-2. Confirm service-specific quotas, cost, and dependencies.
-3. Populate `terraform.tfvars` with real values from approved sources.
-4. Run plan and review optional resource enable flags.
-5. Apply only after the platform or service owner approves the output shape.
+2. Confirm OIC service limits are non-zero in the target region and compartment.
+3. Confirm identity domain or IDCS token inputs for the selected OIC generation.
+4. Confirm tag defaults and required tag policies are valid for OIC creation.
+5. Populate `terraform.tfvars` with real values from approved sources.
+6. Run plan and review optional resource enable flags.
+7. Apply only after the platform or service owner approves the output shape.
 
 ## Real Lifecycle Test
 
@@ -176,8 +179,22 @@ validation before a later cleanup run.
 Real test note: newer OIC types such as `STANDARDX` require `domain_id` or
 `idcs_access_token`. Legacy `STANDARD` and `ENTERPRISE` types can fail before
 resource creation when the tenancy is not entitled for those instance types.
-In that case the lifecycle runner still executes destroy and confirms local
-state cleanup.
+OIC creation can also fail before provisioning when regional service limits are
+zero or tag defaults/policies are not accepted by the Integration service. In
+those cases the lifecycle runner still executes destroy after apply attempts
+and confirms local state cleanup.
+
+### Last Verified Lifecycle
+
+On 2026-06-02, this blueprint completed a real disposable OIC3 lifecycle in
+`af-johannesburg-1` using `STANDARDX`, one message pack, an identity domain,
+and no private outbound connection. Terraform created the integration instance,
+the OCI CLI verification returned `ACTIVE`, and Terraform destroy removed the
+instance. The post-destroy state check reported no managed resources remaining.
+
+The service selected `PRODUCTION` as the effective shape when `shape` was left
+unset, so the public samples intentionally omit `shape` unless a deployment
+owner confirms an accepted override for the target tenancy and region.
 
 ## Architecture
 

@@ -80,7 +80,7 @@ variable "consumption_model" {
 variable "shape" {
   description = "Optional OIC shape."
   type        = string
-  default     = "DEVELOPMENT"
+  default     = null
 }
 variable "is_file_server_enabled" {
   description = "Enable OIC File Server."

@@ -46,5 +46,10 @@ The real OIC lifecycle entry point is `scripts/test-oic-lifecycle.sh`. It runs
 Terraform fmt/init/validate, plan, apply, OCI instance verification when
 creation succeeds, destroy, and post-destroy state checks when
 `OIC_LIFECYCLE_CONFIRM=true` is set. OIC creation can be blocked by missing
-identity domain or legacy instance-type entitlement before resources are
-provisioned.
+identity domain, regional service limits, tag policy/defaults, or legacy
+instance-type entitlement before resources are provisioned.
+
+The OIC lifecycle runner was last proven end to end on 2026-06-02 with a
+disposable `STANDARDX` instance in `af-johannesburg-1`: apply completed,
+OCI CLI verification returned `ACTIVE`, destroy completed, and the post-destroy
+state check found no managed resources.

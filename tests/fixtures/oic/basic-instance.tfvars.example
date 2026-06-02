@@ -13,7 +13,6 @@ compartment_ocid = "ocid1.compartment.oc1..example"
 enable_integration_instance = true
 integration_display_name    = "test-dev-gru-oic"
 integration_instance_type   = "STANDARDX"
-shape                       = "DEVELOPMENT"
 domain_id                   = "ocid1.domain.oc1..example"
 is_byol                     = false
 message_packs               = 1
