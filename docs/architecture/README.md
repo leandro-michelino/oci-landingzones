@@ -203,3 +203,7 @@ families. Each entry point owns its local Architecture in
   checks the repository contract plus the touched Terraform and Ansible surface.
 - Run `./scripts/validate-all.sh` before release work or broad shared changes
   that should exercise every blueprint together.
+- Run service-specific real lifecycle tests when a blueprint has one. For
+  OpenSearch, use `scripts/test-opensearch-lifecycle.sh` with an ignored local
+  tfvars file; committed samples live under
+  `blueprints/data-platform/opensearch/samples/`.

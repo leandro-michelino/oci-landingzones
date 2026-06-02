@@ -11,7 +11,14 @@ the current branch and working tree to `origin/main`, maps changed files to the
 nearest blueprint or module Terraform root, and validates only that touched
 surface while still running the repository contract guard.
 
-Future unit or integration tests should live under this folder only when they
-add coverage beyond the repository validation role. Empty `.gitkeep` files are
-not needed because this README keeps the folder in git and documents the test
-contract.
+OpenSearch fixture samples live under `fixtures/opensearch/`:
+
+- `validation-only.tfvars.example` keeps every cost-bearing flag disabled for
+  local shape checks.
+- `private-network-cluster.tfvars.example` models the end-to-end managed
+  OpenSearch path with a private network, cluster, and snapshot bucket.
+
+The real OpenSearch lifecycle entry point is
+`scripts/test-opensearch-lifecycle.sh`. It runs Terraform fmt/init/validate,
+plan, apply, OCI verification, destroy, and post-destroy state checks when
+`OPENSEARCH_LIFECYCLE_CONFIRM=true` is set.

@@ -1,0 +1,32 @@
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "sa-saopaulo-1"
+home_region       = "af-johannesburg-1"
+oci_config_profile = "JNB"
+
+org         = "acme"
+environment = "dev"
+region_key  = "gru"
+
+compartment_ocid = "ocid1.compartment.oc1..example"
+
+create_private_network = false
+create_cluster         = true
+create_snapshot_bucket = false
+
+vcn_id    = "ocid1.vcn.oc1..example"
+subnet_id = "ocid1.subnet.oc1..example"
+nsg_id    = "ocid1.networksecuritygroup.oc1..example"
+
+master_node_count                  = 1
+master_node_host_ocpu_count        = 1
+master_node_host_memory_gb         = 20
+data_node_count                    = 1
+data_node_host_ocpu_count          = 1
+data_node_host_memory_gb           = 20
+data_node_storage_gb               = 50
+opendashboard_node_count           = 1
+opendashboard_node_host_ocpu_count = 1
+opendashboard_node_host_memory_gb  = 8
+
+policy_statements = []

@@ -1063,11 +1063,10 @@ network and IAM model.
 | Resource | Notes |
 | --- | --- |
 | OpenSearch cluster | Private endpoint, shape and node count configurable |
-| NSG | Client subnet access only |
-| Vault secret | Admin or integration credentials |
+| Optional private VCN/subnet/NSG | Isolated network path for demos and test deployments |
 | Object Storage bucket | Snapshot repository |
 | IAM policies | Search admins, index writers, read-only consumers |
-| Monitoring alarms | Cluster health, storage pressure, rejected writes |
+| Lifecycle test samples | Public-safe tfvars examples and test fixtures for validation and real deploy cleanup |
 
 **Architecture.**
 
@@ -1078,8 +1077,7 @@ App / Analytics Subnet
 OpenSearch Cluster (private endpoint)
  |--- Indexes / vector indexes
  |--- Snapshot bucket
- |--- Vault credentials
- `--- Monitoring alarms
+ `--- Optional IAM access policy
 ```
 
 **Inputs to decide.**
@@ -1089,6 +1087,8 @@ OpenSearch Cluster (private endpoint)
 - Snapshot bucket retention and restore workflow
 - Whether vector indexes are required from day one
 - Client subnet and NSG allowlist
+- Whether to run the real lifecycle test with cleanup or keep resources for
+  manual index validation
 
 **Outputs and hand-off.**
 
@@ -1098,6 +1098,13 @@ opensearch_endpoint
 snapshot_bucket_name
 nsg_id
 ```
+
+**Validation samples.**
+
+- `blueprints/data-platform/opensearch/samples/private-network-cluster.tfvars.example`
+- `blueprints/data-platform/opensearch/samples/existing-network-cluster.tfvars.example`
+- `tests/fixtures/opensearch/validation-only.tfvars.example`
+- `tests/fixtures/opensearch/private-network-cluster.tfvars.example`
 
 ---
 

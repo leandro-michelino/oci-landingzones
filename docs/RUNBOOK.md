@@ -56,6 +56,24 @@ Escalate to `./scripts/validate-all.sh` when shared modules, shared Ansible
 roles, validation scripts, scanner configs, or repo-wide docs changed enough
 that a focused check would miss the blast radius.
 
+## OpenSearch Lifecycle Test
+
+Use this when the OpenSearch blueprint needs real create, OCI verification, and
+cleanup coverage after static validation.
+
+```bash
+OPENSEARCH_LIFECYCLE_CONFIRM=true \
+  scripts/test-opensearch-lifecycle.sh \
+  --profile JNB \
+  --region sa-saopaulo-1
+```
+
+The runner uses an ignored local tfvars file by default and can also accept
+`--var-file`. It runs Terraform fmt/init/validate, plan, apply, OCI CLI
+verification, destroy, and post-destroy state checks. Pass `--keep-resources`
+only when the cluster must remain available for manual endpoint or index
+validation before a later cleanup run.
+
 ## Ephemeral Networking Tests (OCI, Azure, AWS)
 
 Use this when networking components should be created for testing and released

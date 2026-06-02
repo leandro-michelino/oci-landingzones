@@ -69,6 +69,20 @@ CONFIRM_APPLY=true ansible-playbook -i localhost, -c local ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, -c local ansible/destroy.yml
 ```
 
+For a disposable end-to-end lifecycle test that always attempts cleanup after
+apply, use the repository script with a local ignored tfvars file:
+
+```bash
+OPENSEARCH_LIFECYCLE_CONFIRM=true \
+  scripts/test-opensearch-lifecycle.sh \
+  --var-file blueprints/data-platform/opensearch/terraform.tfvars \
+  --profile JNB \
+  --region sa-saopaulo-1
+```
+
+Add `--keep-resources` when the test should stop after apply and verification
+so the cluster can remain available for manual database/index validation.
+
 ## What This Deploys
 
 | Resource | Enable Flag |
@@ -135,3 +149,13 @@ terraform init -backend=false
 terraform validate
 ansible-playbook -i localhost, -c local ansible/plan.yml
 ```
+
+## Samples
+
+Reusable non-secret sample inputs live under `samples/`:
+
+- `samples/private-network-cluster.tfvars.example`
+- `samples/existing-network-cluster.tfvars.example`
+
+Test fixtures for validation-only and private-network scenarios live under
+`tests/fixtures/opensearch/`.

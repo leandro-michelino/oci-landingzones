@@ -48,7 +48,9 @@ Admins / Index Writers / Read-Only Consumers
 | `variables.tf` | Network, sizing, security, snapshot, and policy inputs. |
 | `outputs.tf` | Cluster, endpoint, dashboard, bucket, and policy outputs. |
 | `terraform.tfvars.example` | Example network and disabled create flags. |
+| `samples/*.tfvars.example` | Public-safe input shapes for private-network and existing-network deployments. |
 | `ansible/*.yml` | Standard local runners. |
+| `scripts/test-opensearch-lifecycle.sh` | Repository-level real lifecycle runner for create, OCI verification, destroy, and state cleanup. |
 
 ## Request And Deployment Flow
 
@@ -87,6 +89,8 @@ data-platform storage when that already exists.
 - Keep subnet, NSG, and security settings in local tfvars.
 - Use this before `embedding-pipeline` or `multi-agent` when vectors are needed.
 - Pair with backup and monitoring runbooks for production clusters.
+- Use `--keep-resources` in the lifecycle runner only when manual endpoint or
+  index validation is required before a later cleanup run.
 
 ## Review Checklist
 
@@ -96,3 +100,5 @@ data-platform storage when that already exists.
 - [ ] Snapshot strategy is documented.
 - [ ] Index writers and readers are least privilege.
 - [ ] Outputs are handed to only approved consumers.
+- [ ] Real lifecycle tests use ignored tfvars and either destroy immediately or
+      document the planned cleanup window.

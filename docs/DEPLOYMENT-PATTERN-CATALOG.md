@@ -65,7 +65,7 @@ folder.
 | Data platform | Private data platform landing zone | `blueprints/data-platform/private-data-platform/` | Available |
 | Data platform | PostgreSQL landing zone | `blueprints/data-platform/postgresql/` | Available |
 | Data platform | Oracle APEX on Autonomous Database | `blueprints/data-platform/apex-adw/` | Available |
-| Data platform | OpenSearch search and vector platform | `blueprints/data-platform/opensearch/` | Available |
+| Data platform | OpenSearch search and vector platform | `blueprints/data-platform/opensearch/` | Available; includes sample tfvars and a real lifecycle test runner |
 | Data platform | MySQL HeatWave | `blueprints/data-platform/mysql-heatwave/` | Available |
 | Data platform | OCI + AWS MySQL HeatWave DR (OCI primary, IPSec connectivity, standby endpoint contracts) | `blueprints/data-platform/oci-aws-mysql-heatwave-dr/` | Available |
 | AI | OCI Generative AI private landing zone | `blueprints/ai/genai-private/` | Available |

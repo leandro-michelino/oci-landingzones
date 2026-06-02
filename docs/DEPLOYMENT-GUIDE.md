@@ -536,6 +536,14 @@ Security Posture Automation, Network Load Balancer, Secure Desktops, and
 Healthcare / PCI guardrails. They follow the same local README, Architecture
 architecture, Terraform, tfvars, and Ansible runner contract.
 
+OpenSearch also has a dedicated real lifecycle test script:
+`scripts/test-opensearch-lifecycle.sh`. It runs Terraform fmt/init/validate,
+plan, apply, OCI CLI verification, destroy, and post-destroy state checks when
+`OPENSEARCH_LIFECYCLE_CONFIRM=true` is set. Use the committed samples in
+`blueprints/data-platform/opensearch/samples/` for public-safe input shapes and
+put real compartment, region, profile, and sizing values in ignored local
+tfvars files.
+
 Keep real subnet, VCN, load balancer, availability domain, image, event filter,
 and SSH values in local ignored tfvars files. The committed examples show the
 shape only.

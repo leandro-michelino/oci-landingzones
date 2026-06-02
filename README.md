@@ -305,6 +305,11 @@ Networking lifecycle tests (create then destroy):
 - `scripts/test-networking-lifecycle.sh --blueprint blueprints/networking/aws-oci-hybrid-network-backbone --providers oci,aws`
 - `scripts/test-networking-lifecycle.sh --all-networking --providers oci` (heavy run)
 
+OpenSearch real lifecycle test:
+- `OPENSEARCH_LIFECYCLE_CONFIRM=true scripts/test-opensearch-lifecycle.sh --profile JNB --region sa-saopaulo-1`
+- Use `--keep-resources` only when you need manual endpoint or index validation before cleanup.
+- Committed non-secret OpenSearch samples live in `blueprints/data-platform/opensearch/samples/`; test fixtures live in `tests/fixtures/opensearch/`.
+
 Maintainer-focused validation details live in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Contributing

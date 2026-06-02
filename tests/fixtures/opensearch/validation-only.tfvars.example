@@ -1,0 +1,15 @@
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "sa-saopaulo-1"
+home_region       = "af-johannesburg-1"
+oci_config_profile = "JNB"
+
+org         = "test"
+environment = "dev"
+region_key  = "gru"
+
+create_cluster         = false
+create_private_network = false
+create_snapshot_bucket = false
+
+policy_statements = []
