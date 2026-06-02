@@ -52,6 +52,9 @@ Deploys an Oracle Integration Cloud instance with optional private outbound conn
 |---|---|---|
 | Resource | `oci_integration_integration_instance.this` | Declared directly in `main.tf` |
 | Resource | `oci_integration_private_endpoint_outbound_connection.this` | Declared directly in `main.tf` |
+| Samples | `samples/basic-instance.tfvars.example` | Minimal public-safe OIC instance input shape |
+| Samples | `samples/private-outbound-existing-network.tfvars.example` | Brownfield private outbound connection input shape |
+| Test runner | `scripts/test-oic-lifecycle.sh` | Real create attempt, OCI CLI verification when created, destroy, and state cleanup |
 
 ## Request And Deployment Flow
 
@@ -80,6 +83,10 @@ Deploys an Oracle Integration Cloud instance with optional private outbound conn
 - Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
 - Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
 - Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
+- Use `scripts/test-oic-lifecycle.sh` for approved disposable OIC lifecycle
+  tests; newer OIC types need `domain_id` or `idcs_access_token`, while legacy
+  types need tenancy entitlement. If OCI rejects creation before provisioning,
+  the runner still destroys any tracked resources and checks cleanup.
 - Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
 
 ## Review Checklist
@@ -89,3 +96,5 @@ Deploys an Oracle Integration Cloud instance with optional private outbound conn
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+- Confirm sample tfvars and lifecycle-test docs stay aligned with OIC quota,
+  entitlement, identity domain, and licensing decisions.

@@ -1,0 +1,36 @@
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "sa-saopaulo-1"
+home_region       = "me-abudhabi-1"
+oci_config_profile = "DEFAULT"
+
+org         = "test"
+environment = "dev"
+region_key  = "gru"
+
+compartment_ocid = "ocid1.compartment.oc1..example"
+
+enable_app_network       = true
+app_vcn_cidr             = "10.88.0.0/16"
+app_subnet_cidr          = "10.88.10.0/24"
+app_ingress_allowed_cidr = "10.0.0.0/8"
+
+table_name               = "test_dev_gru_db_nosql_orders"
+table_ddl_statement      = "CREATE TABLE test_dev_gru_db_nosql_orders (id STRING, customerId STRING, payload JSON, PRIMARY KEY(id))"
+table_max_read_units     = 10
+table_max_write_units    = 10
+table_max_storage_in_gbs = 1
+
+create_secondary_index = true
+secondary_index_name   = "test_dev_gru_db_nosql_customer"
+secondary_index_columns = [
+  {
+    column_name = "customerId"
+  }
+]
+
+enable_table_replica = false
+replica_region       = null
+create_alert_topic   = true
+alert_topic_name     = "test-dev-gru-top-nosql-alert"
+policy_statements    = []

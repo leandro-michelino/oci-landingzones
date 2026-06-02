@@ -60,6 +60,8 @@ optional cross-region replica, and deploy-and-use app networking for consumers.
 | Resource | `oci_identity_policy.access` | Optional policy shell for operators and app access groups. |
 | Resource | `terraform_data.app_network_contract` | Network ID contract output for downstream wiring. |
 | Resource | `terraform_data.nosql_contract` | Schema/capacity/replica contract output for hand-off. |
+| Sample | `samples/*.tfvars.example` | Public-safe table-only and app-network input shapes. |
+| Script | `scripts/test-nosql-lifecycle.sh` | Repository-level real lifecycle runner for create, OCI verification, destroy, and state cleanup. |
 
 ## Request And Deployment Flow
 
@@ -98,6 +100,8 @@ These notes expand the diagram with design details usually needed in reviews.
 - Keep tenancy-specific OCIDs, DDL variants, and access statements in local ignored tfvars.
 - Re-run plan whenever DDL, capacity, index, or replica settings change.
 - Use the output contracts in downstream runbooks and app onboarding checklists.
+- Use `--keep-resources` in the lifecycle runner only when manual table or
+  index validation is required before a later cleanup run.
 
 ## Review Checklist
 
@@ -108,3 +112,5 @@ These notes expand the diagram with design details usually needed in reviews.
 - Confirm app-network ingress and route assumptions when network resources are enabled.
 - Confirm policy statements map to intended operator and consumer groups.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared runner.
+- Confirm real lifecycle tests use ignored tfvars and either destroy
+  immediately or document the planned cleanup window.

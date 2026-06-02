@@ -207,3 +207,7 @@ families. Each entry point owns its local Architecture in
   OpenSearch, use `scripts/test-opensearch-lifecycle.sh` with an ignored local
   tfvars file; committed samples live under
   `blueprints/data-platform/opensearch/samples/`.
+- For NoSQL, use `scripts/test-nosql-lifecycle.sh` with an ignored local tfvars
+  file; committed samples live under `blueprints/data-platform/nosql/samples/`.
+- For OIC, use `scripts/test-oic-lifecycle.sh` with an ignored local tfvars
+  file; committed samples live under `blueprints/extensions/oic/samples/`.

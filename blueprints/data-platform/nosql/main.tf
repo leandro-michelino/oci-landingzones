@@ -87,7 +87,7 @@ resource "terraform_data" "app_network_contract" {
 resource "oci_nosql_table" "this" {
   compartment_id = local.target_compartment_ocid
   name           = local.nosql_table_name
-  ddl_statement  = var.table_ddl_statement
+  ddl_statement  = local.nosql_table_ddl
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
 

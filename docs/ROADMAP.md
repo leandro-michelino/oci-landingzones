@@ -1333,6 +1333,7 @@ and optional IAM/alert operations wiring.
 | NoSQL table replica | Optional `oci_nosql_table_replica.this` for cross-region resilience |
 | App network foundation | Optional VCN, route table, security list, and subnet resources |
 | IAM + alert operations | Optional `oci_identity_policy.access` and `oci_ons_notification_topic.alert` |
+| Lifecycle test samples | Public-safe tfvars examples and test fixtures for real deploy and cleanup validation |
 
 **Architecture.**
 
@@ -1353,6 +1354,8 @@ OCI NoSQL Table
 - Capacity mode and limits (`table_capacity_mode`, read/write/storage)
 - Whether to create secondary index and table replica
 - Whether to create app network resources or use existing app networking
+- Whether to run the real lifecycle test with cleanup or keep resources for
+  manual table/index validation
 
 **Outputs and hand-off.**
 
@@ -1363,6 +1366,13 @@ nosql_capacity_contract
 app_network_contract
 nosql_replica_region
 ```
+
+**Validation samples.**
+
+- `blueprints/data-platform/nosql/samples/table-with-app-network.tfvars.example`
+- `blueprints/data-platform/nosql/samples/table-only.tfvars.example`
+- `tests/fixtures/nosql/validation-minimal.tfvars.example`
+- `tests/fixtures/nosql/table-with-app-network.tfvars.example`
 
 ---
 

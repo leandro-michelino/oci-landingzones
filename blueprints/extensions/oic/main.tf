@@ -16,6 +16,17 @@ resource "oci_integration_integration_instance" "this" {
   idcs_at                      = var.idcs_access_token
   defined_tags                 = var.defined_tags
   freeform_tags                = local.common_freeform_tags
+
+  lifecycle {
+    precondition {
+      condition = (
+        !contains(["STANDARDX", "ENTERPRISEX", "HEALTHCARE"], var.integration_instance_type) ||
+        var.domain_id != null ||
+        var.idcs_access_token != null
+      )
+      error_message = "OIC instance types STANDARDX, ENTERPRISEX, and HEALTHCARE require domain_id or idcs_access_token."
+    }
+  }
 }
 
 resource "oci_integration_private_endpoint_outbound_connection" "this" {

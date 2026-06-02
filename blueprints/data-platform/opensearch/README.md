@@ -76,7 +76,7 @@ apply, use the repository script with a local ignored tfvars file:
 OPENSEARCH_LIFECYCLE_CONFIRM=true \
   scripts/test-opensearch-lifecycle.sh \
   --var-file blueprints/data-platform/opensearch/terraform.tfvars \
-  --profile JNB \
+  --profile YOUR_OCI_PROFILE \
   --region sa-saopaulo-1
 ```
 

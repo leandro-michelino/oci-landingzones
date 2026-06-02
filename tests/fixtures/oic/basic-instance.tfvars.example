@@ -1,0 +1,27 @@
+tenancy_ocid       = "ocid1.tenancy.oc1..example"
+current_user_ocid  = "ocid1.user.oc1..example"
+region             = "sa-saopaulo-1"
+home_region        = "me-abudhabi-1"
+oci_config_profile = "DEFAULT"
+
+org         = "test"
+environment = "dev"
+region_key  = "gru"
+
+compartment_ocid = "ocid1.compartment.oc1..example"
+
+enable_integration_instance = true
+integration_display_name    = "test-dev-gru-oic"
+integration_instance_type   = "STANDARDX"
+shape                       = "DEVELOPMENT"
+domain_id                   = "ocid1.domain.oc1..example"
+is_byol                     = false
+message_packs               = 1
+
+enable_private_outbound_connection = false
+
+defined_tags = {}
+freeform_tags = {
+  Owner       = "integration-platform-team"
+  Environment = "dev"
+}

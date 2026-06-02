@@ -123,8 +123,8 @@ clouds.
 
 1. Set OCI profile:
 ```bash
-export OCI_PROFILE=JNB
-export OCI_CLI_PROFILE=JNB
+export OCI_PROFILE=DEFAULT
+export OCI_CLI_PROFILE=DEFAULT
 ```
 2. Keep `connectivity_mode="without-interconnect"` during test runs.
 3. Use isolated stack names per run.

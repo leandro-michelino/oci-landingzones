@@ -192,8 +192,8 @@ ansible-playbook -i localhost, ansible/stop-hello-world.yml
 
 1. Set OCI profile and keep IPSec-first mode:
 ```bash
-export OCI_PROFILE=JNB
-export OCI_CLI_PROFILE=JNB
+export OCI_PROFILE=DEFAULT
+export OCI_CLI_PROFILE=DEFAULT
 ```
 2. Keep `connectivity_mode="without-interconnect"` for tests, with dedicated-circuit IDs unset.
 3. Use isolated stack names for repeated test loops:

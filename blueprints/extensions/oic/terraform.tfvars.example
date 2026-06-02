@@ -8,7 +8,9 @@ region_key        = "fra"
 compartment_ocid  = "ocid1.compartment.oc1..example"
 
 enable_integration_instance         = false
-integration_instance_type          = "STANDARD"
+integration_instance_type          = "STANDARDX"
+shape                              = "DEVELOPMENT"
+domain_id                          = "ocid1.domain.oc1..example"
 is_byol                            = false
 message_packs                      = 1
 enable_private_outbound_connection = false

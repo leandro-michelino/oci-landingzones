@@ -544,6 +544,21 @@ plan, apply, OCI CLI verification, destroy, and post-destroy state checks when
 put real compartment, region, profile, and sizing values in ignored local
 tfvars files.
 
+NoSQL has the same lifecycle-test pattern through
+`scripts/test-nosql-lifecycle.sh`. It creates the table, optional secondary
+index, optional alert topic, and optional app network from ignored local
+tfvars, verifies the table/index with OCI CLI, then destroys and checks state
+unless `--keep-resources` is set. Public-safe sample inputs live in
+`blueprints/data-platform/nosql/samples/`.
+
+OIC also has a disposable lifecycle runner:
+`scripts/test-oic-lifecycle.sh`. It attempts a real Oracle Integration Cloud
+instance create from ignored local tfvars, verifies the instance with OCI CLI
+when creation succeeds, then destroys and checks cleanup. Newer OIC types need
+`domain_id` or `idcs_access_token`; legacy types need tenancy entitlement
+before creation can succeed. Public-safe sample inputs live in
+`blueprints/extensions/oic/samples/`.
+
 Keep real subnet, VCN, load balancer, availability domain, image, event filter,
 and SSH values in local ignored tfvars files. The committed examples show the
 shape only.

@@ -14,15 +14,15 @@ app_vcn_cidr             = "10.84.0.0/16"
 app_subnet_cidr          = "10.84.10.0/24"
 app_ingress_allowed_cidr = "10.0.0.0/8"
 
-table_name             = "acme-dev-mad-db-nosql-orders"
-table_ddl_statement    = "CREATE TABLE orders (id STRING, customerId STRING, payload JSON, PRIMARY KEY(SHARD(id), id))"
+table_name             = "acme_dev_mad_db_nosql_orders"
+table_ddl_statement    = "CREATE TABLE acme_dev_mad_db_nosql_orders (id STRING, customerId STRING, payload JSON, PRIMARY KEY(id))"
 table_max_read_units   = 100
 table_max_write_units  = 100
 table_max_storage_in_gbs = 25
 table_capacity_mode    = "PROVISIONED"
 
 create_secondary_index = true
-secondary_index_name   = "acme-dev-mad-db-nosql-customer"
+secondary_index_name   = "acme_dev_mad_db_nosql_customer"
 secondary_index_columns = [
   {
     column_name = "customerId"

@@ -60,7 +60,7 @@ variable "integration_display_name" {
 variable "integration_instance_type" {
   description = "OIC instance type."
   type        = string
-  default     = "STANDARD"
+  default     = "STANDARDX"
 }
 variable "is_byol" {
   description = "Use BYOL licensing."
@@ -80,7 +80,7 @@ variable "consumption_model" {
 variable "shape" {
   description = "Optional OIC shape."
   type        = string
-  default     = null
+  default     = "DEVELOPMENT"
 }
 variable "is_file_server_enabled" {
   description = "Enable OIC File Server."

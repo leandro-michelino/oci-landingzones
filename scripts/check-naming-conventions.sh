@@ -31,7 +31,8 @@ check_generated_name_literals() {
   local matches
 
   matches="$(
-    perl -ne '
+    rg --files -0 -g '*.tf' "$REPO_ROOT/blueprints" "$REPO_ROOT/modules" |
+      xargs -0 perl -ne '
       while (/\$\{local\.(?:name_prefix|secondary_name_prefix|standby_name_prefix)\}-([^"]+)/g) {
         my $suffix = $1;
         $suffix =~ s/\$\{[^}]+\}//g;
@@ -40,7 +41,7 @@ check_generated_name_literals() {
         }
       }
       close ARGV if eof;
-    ' $(rg --files -g '*.tf' "$REPO_ROOT/blueprints" "$REPO_ROOT/modules") || true
+    ' || true
   )"
 
   if [[ -n "$matches" ]]; then
@@ -53,7 +54,8 @@ check_generated_name_resource_types() {
   local matches
 
   matches="$(
-    perl -ne '
+    rg --files -0 -g '*.tf' "$REPO_ROOT/blueprints" "$REPO_ROOT/modules" |
+      xargs -0 perl -ne '
       BEGIN {
         %allowed = map { $_ => 1 } qw(
           adb agent aip alm apidep apigw apm app bgt bgtal bkt bset bst build cg
@@ -73,7 +75,7 @@ check_generated_name_resource_types() {
         }
       }
       close ARGV if eof;
-    ' $(rg --files -g '*.tf' "$REPO_ROOT/blueprints" "$REPO_ROOT/modules") || true
+    ' || true
   )"
 
   if [[ -n "$matches" ]]; then
@@ -180,14 +182,15 @@ check_aws_resource_labels() {
   local matches
 
   matches="$(
-    perl -ne '
+    rg --files -0 -g '*.tf' "$REPO_ROOT/blueprints" "$REPO_ROOT/modules" |
+      xargs -0 perl -ne '
       if (/^[[:space:]]*resource[[:space:]]+"(aws_[^"]+)"[[:space:]]+"([^"]+)"/) {
         $label = $2;
         if ($label !~ /^[a-z][a-z0-9_]*$/) {
           print "$ARGV:$.:$label\n";
         }
       }
-    ' $(rg --files -g '*.tf' "$REPO_ROOT/blueprints" "$REPO_ROOT/modules") || true
+    ' || true
   )"
 
   if [[ -n "$matches" ]]; then

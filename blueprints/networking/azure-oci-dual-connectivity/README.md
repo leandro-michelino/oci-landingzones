@@ -189,8 +189,8 @@ ansible-playbook -i localhost, ansible/stop-hello-world.yml
 
 1. Set OCI profile and run low-cost mode with IPSec first:
 ```bash
-export OCI_PROFILE=JNB
-export OCI_CLI_PROFILE=JNB
+export OCI_PROFILE=DEFAULT
+export OCI_CLI_PROFILE=DEFAULT
 ```
 2. Keep `connectivity_mode="without-interconnect"` during tests, and leave `fastconnect_virtual_circuit_id` and `expressroute_circuit_id` as `null`.
 3. Run Azure apply:

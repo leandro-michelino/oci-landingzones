@@ -88,7 +88,7 @@ folder.
 | Extensions | Exadata extension | `blueprints/extensions/exadata/` | Available |
 | Extensions | API Gateway extension | `blueprints/extensions/apigw/` | Available |
 | Extensions | Oracle Analytics Cloud | `blueprints/extensions/oac/` | Available |
-| Extensions | Oracle Integration Cloud | `blueprints/extensions/oic/` | Available |
+| Extensions | Oracle Integration Cloud | `blueprints/extensions/oic/` | Available; includes sample tfvars and a real lifecycle test runner with identity-domain and entitlement prerequisites |
 | Extensions | Observability platform | `blueprints/extensions/observability/` | Available |
 | Extensions | Streaming extension | `blueprints/extensions/streaming/` | Available |
 | Extensions | WAF extension | `blueprints/extensions/waf/` | Available |
@@ -111,7 +111,7 @@ folder.
 | Operations | Ransomware-resilient backup (backup policies, immutable archive, restore evidence) | `blueprints/operations/backup-resilience/` | Planned |
 | Industry | WebLogic / Java app platform (LB, app tier, database, logs, bastion) | `blueprints/industry/weblogic-platform/` | Planned |
 | Industry | VMware / hybrid migration zone (FastConnect or VPN, DNS, migration segments) | `blueprints/industry/vmware-hybrid-migration/` | Planned |
-| Data platform | OCI NoSQL Database (key-value / document store, optional app network, IAM, replica) | `blueprints/data-platform/nosql/` | Available |
+| Data platform | OCI NoSQL Database (key-value / document store, optional app network, IAM, replica) | `blueprints/data-platform/nosql/` | Available; includes sample tfvars and a real lifecycle test runner |
 | Data platform | OCI Data Flow (managed Spark, private subnet, Object Storage lake, IAM) | `blueprints/data-platform/data-flow/` | Planned |
 | Data platform | OCI Data Integration (ETL/ELT pipelines, workspace, private endpoint) | `blueprints/data-platform/data-integration/` | Planned |
 | Compliance | OCI Data Safe (database activity monitoring, auditing, data masking, assessment) | `blueprints/compliance/data-safe/` | Planned |

@@ -74,12 +74,17 @@ variable "table_name" {
   description = "Optional NoSQL table name override."
   type        = string
   default     = null
+
+  validation {
+    condition     = var.table_name == null || can(regex("^[A-Za-z][A-Za-z0-9_]*$", var.table_name))
+    error_message = "table_name must be a valid NoSQL SQL identifier: start with a letter and use only letters, numbers, and underscores."
+  }
 }
 
 variable "table_ddl_statement" {
-  description = "DDL statement for the NoSQL table schema."
+  description = "Optional DDL statement for the NoSQL table schema. When null, the blueprint creates a default orders table DDL using table_name."
   type        = string
-  default     = "CREATE TABLE orders (id STRING, customerId STRING, payload JSON, PRIMARY KEY(SHARD(id), id))"
+  default     = null
 }
 
 variable "table_max_read_units" {
@@ -116,6 +121,11 @@ variable "secondary_index_name" {
   description = "Optional NoSQL secondary index name override."
   type        = string
   default     = null
+
+  validation {
+    condition     = var.secondary_index_name == null || can(regex("^[A-Za-z][A-Za-z0-9_]*$", var.secondary_index_name))
+    error_message = "secondary_index_name must be a valid NoSQL SQL identifier: start with a letter and use only letters, numbers, and underscores."
+  }
 }
 
 variable "secondary_index_columns" {

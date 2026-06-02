@@ -17,6 +17,14 @@ output "integration_instance_id" {
   description = "OIC instance OCID."
   value       = local.integration_instance_id
 }
+output "integration_display_name" {
+  description = "OIC instance display name."
+  value       = local.integration_display_name
+}
+output "integration_instance_state" {
+  description = "OIC instance lifecycle state when created by this blueprint."
+  value       = try(oci_integration_integration_instance.this[0].state, null)
+}
 output "outbound_connection_id" {
   description = "OIC private outbound connection OCID."
   value       = try(oci_integration_private_endpoint_outbound_connection.this[0].id, null)

@@ -68,6 +68,21 @@ CONFIRM_APPLY=true ansible-playbook -i localhost, -c local ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, -c local ansible/destroy.yml
 ```
 
+For a disposable end-to-end lifecycle test that creates real OCI NoSQL
+resources, verifies the table and optional index through OCI CLI, and then
+cleans up:
+
+```bash
+NOSQL_LIFECYCLE_CONFIRM=true \
+  scripts/test-nosql-lifecycle.sh \
+  --var-file blueprints/data-platform/nosql/terraform.tfvars \
+  --profile YOUR_OCI_PROFILE \
+  --region sa-saopaulo-1
+```
+
+Add `--keep-resources` only when the test should stop after apply and
+verification so the table or index can remain available for manual validation.
+
 ## What This Deploys
 
 Everything needed for this deployment starts in this folder: Terraform composes the
@@ -100,6 +115,7 @@ blueprints/data-platform/nosql/
 |-- providers.tf               OCI provider configuration
 |-- versions.tf                Terraform and provider constraints
 |-- terraform.tfvars.example   Example input shape
+|-- samples/                   Public-safe sample tfvars scenarios
 `-- ansible/
     |-- plan.yml               Local init, validate, and plan
     |-- apply.yml              Guarded init, validate, plan, and apply
@@ -132,7 +148,8 @@ Start with `terraform.tfvars.example`, then create a local ignored
 | --- | --- |
 | `compartment_ocid` | Compartment OCID where resources are created. |
 | `enable_app_network` | Create VCN/subnet/route/security resources for consumer workloads. |
-| `table_ddl_statement` | NoSQL table DDL schema contract. |
+| `table_name` | Optional NoSQL table name. Use a SQL-safe identifier with letters, numbers, and underscores. |
+| `table_ddl_statement` | Optional NoSQL table DDL schema contract. When set, the `CREATE TABLE` name must match `table_name`; when unset, the blueprint creates a default orders table DDL from `table_name`. |
 | `table_max_read_units` | Provisioned read limit. |
 | `table_max_write_units` | Provisioned write limit. |
 | `table_max_storage_in_gbs` | Max table storage. |
@@ -219,3 +236,13 @@ From the repository root:
 ```
 
 Use `./scripts/validate-all.sh` before release work or broad shared changes.
+
+## Samples
+
+Reusable non-secret sample inputs live under `samples/`:
+
+- `samples/table-with-app-network.tfvars.example`
+- `samples/table-only.tfvars.example`
+
+Test fixtures for minimal and app-network scenarios live under
+`tests/fixtures/nosql/`.

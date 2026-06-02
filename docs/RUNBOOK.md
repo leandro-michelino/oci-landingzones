@@ -64,7 +64,7 @@ cleanup coverage after static validation.
 ```bash
 OPENSEARCH_LIFECYCLE_CONFIRM=true \
   scripts/test-opensearch-lifecycle.sh \
-  --profile JNB \
+  --profile YOUR_OCI_PROFILE \
   --region sa-saopaulo-1
 ```
 
@@ -73,6 +73,43 @@ The runner uses an ignored local tfvars file by default and can also accept
 verification, destroy, and post-destroy state checks. Pass `--keep-resources`
 only when the cluster must remain available for manual endpoint or index
 validation before a later cleanup run.
+
+## NoSQL Lifecycle Test
+
+Use this when the NoSQL blueprint needs real create, OCI table/index
+verification, and cleanup coverage after static validation.
+
+```bash
+NOSQL_LIFECYCLE_CONFIRM=true \
+  scripts/test-nosql-lifecycle.sh \
+  --profile YOUR_OCI_PROFILE \
+  --region sa-saopaulo-1
+```
+
+The runner uses an ignored local tfvars file by default and can also accept
+`--var-file`. It runs Terraform fmt/init/validate, plan, apply, OCI CLI
+verification, destroy, and post-destroy state checks. Pass `--keep-resources`
+only when the table or secondary index must remain available for manual
+validation before a later cleanup run.
+
+## OIC Lifecycle Test
+
+Use this when the Oracle Integration Cloud blueprint needs a real create
+attempt, OCI instance verification when creation succeeds, and cleanup coverage
+after static validation.
+
+```bash
+OIC_LIFECYCLE_CONFIRM=true \
+  scripts/test-oic-lifecycle.sh \
+  --profile YOUR_OCI_PROFILE \
+  --region sa-saopaulo-1
+```
+
+The runner uses an ignored local tfvars file by default and can also accept
+`--var-file`. It runs Terraform fmt/init/validate, plan, apply, OCI CLI
+verification when creation succeeds, destroy, and post-destroy state checks.
+Newer OIC types such as `STANDARDX` need `domain_id` or `idcs_access_token`;
+legacy types need tenancy entitlement before a real create can succeed.
 
 ## Ephemeral Networking Tests (OCI, Azure, AWS)
 

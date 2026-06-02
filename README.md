@@ -20,53 +20,10 @@ It is built for real platform work:
 Simple approach:
 `pick the outcome -> review Architecture -> plan -> apply -> verify`
 
-About:
-- OCI is the primary control plane by design.
-- Azure and AWS patterns are included as first-class multicloud blueprints.
-- The repository focus is deploy-and-use multicloud architecture across networking, security, data, AI, Kubernetes, DR, and FinOps.
-
 ## Friendly Disclaimer
 
 This is a personal engineering project, not an official Oracle product or
 Oracle-supported package.
-
-## GitHub About (Copy/Paste)
-
-Use this repository description in GitHub About:
-
-```text
-OCI-primary multicloud landing zones with Terraform blueprints, Ansible workflows, and Architecture docs for OCI, Azure, and AWS across networking, security, data, AI, Kubernetes, disaster recovery, and FinOps.
-```
-
-Suggested GitHub topics:
-
-```text
-oracle-cloud
-oci
-oracle-cloud-infrastructure
-multicloud
-terraform
-ansible
-landing-zone
-landing-zones
-infrastructure-as-code
-cloud-architecture
-networking
-security
-cis
-oke
-genai
-autonomous-database
-mysql-heatwave
-devops
-disaster-recovery
-finops
-cost-optimization
-azure
-aws
-ipsec
-bgp
-```
 
 ## Start Here (2 Minutes)
 
@@ -135,16 +92,6 @@ The goal is not to hide complexity. The goal is to put it in predictable places.
 | vWAN transit backbone (OCI DRG primary, vWAN/vHub route domain, Interconnect default when present, IPSec-first test mode) | [Azure vWAN + OCI DRG Transit](blueprints/networking/azure-vwan-oci-drg-transit/) |
 | Hub-spoke via Azure vWAN ExpressRoute (OCI hub/spokes mapped to Azure VNets) | [Hub-Spoke With Azure vWAN ExpressRoute](blueprints/networking/hub-spoke-with-azure-vwan-expressroute/) |
 
-Azure + OCI transit quick test path (`without-interconnect`):
-1. Run OCI plan/apply in `blueprints/networking/azure-vwan-oci-drg-transit/`.
-2. Run Azure plan/apply in the same blueprint (`ansible/azure-*.yml`).
-3. Create one Linux VM in the OCI transit subnet and one Linux VM in the Azure workload subnet.
-4. Add explicit Azure route `OCI_CIDR -> VirtualNetworkGateway`.
-5. Allow ICMP and SSH between OCI and Azure CIDRs in Azure NSG and OCI security list.
-6. Run `ansible/azure-ipsec-verify.yml` with `AZURE_TEST_VM_RESOURCE_GROUP`, `AZURE_TEST_VM_NAME`, `OCI_PING_TARGET_IP`, and `OCI_CLI_REGION=sa-saopaulo-1`.
-7. Validate bidirectional traffic, then destroy in reverse order after confirmation.
-8. Wait for Azure resource-group deletion to reach completion before closing the test.
-
 ### AWS + OCI (Available)
 
 | Pattern | Blueprint |
@@ -154,29 +101,8 @@ Azure + OCI transit quick test path (`without-interconnect`):
 | Active/passive Kubernetes failover (OCI-primary OKE, EKS standby) | [EKS + OKE Active Passive](blueprints/extensions/eks-oke-active-passive/) |
 | MySQL DR over IPSec (OCI primary) | [OCI + AWS MySQL HeatWave DR](blueprints/data-platform/oci-aws-mysql-heatwave-dr/) |
 
-AWS deployment quick paths:
-- Plan only:
-  `ansible-playbook -i localhost, blueprints/networking/aws-oci-hybrid-network-backbone/ansible/aws-plan.yml`
-- Full lifecycle (create + delete for test):
-  `scripts/test-networking-lifecycle.sh --blueprint blueprints/networking/aws-oci-hybrid-network-backbone --providers aws`
-
-All Azure+OCI and AWS+OCI blueprints include:
-- deployable cloud-side sessions (`azure-*.yml` or `aws-*.yml`)
-- local `hello-world/index.html`
-- `ansible/serve-hello-world.yml` and `ansible/stop-hello-world.yml`
-
-Kubernetes multicloud blueprints should use the latest common Kubernetes minor
-version supported by all selected providers and regions. The Kubernetes
-multicloud extension blueprints use an OCI-primary active/passive failover
-model by default, with OCI Traffic Management as the DNS failover layer when a
-delegated public zone is available. Direct IPs validate each application
-endpoint, while browser failover tests require a real public domain or
-subdomain delegated to the OCI DNS zone nameservers. Active/active remains an
-intentional option when the application, data layer, and GSLB policy are ready
-for dual serving.
-
-Design notes and backlog:
-- [Multicloud Notes](docs/multicloud/README.md)
+Detailed multicloud deployment notes live in [Multicloud Notes](docs/multicloud/README.md)
+and in each blueprint README.
 
 ## Blueprint Shape
 
@@ -199,59 +125,6 @@ blueprints/<family>/<deployment>/
 The consistency is deliberate. It keeps review simple and makes sparse checkout
 usable when you only need one deployment pattern.
 
-## Typical Operator Flow
-
-```text
-choose outcome
-  |
-  v
-open blueprint folder
-  |
-  v
-read README + Architecture
-  |
-  v
-copy tfvars example
-  |
-  v
-terraform plan or ansible/plan.yml
-  |
-  v
-review and apply
-```
-
-## Local Workflow Options
-
-Use Terraform directly when you are iterating:
-
-```bash
-terraform init -backend=false
-terraform validate
-terraform plan
-```
-
-Use the local Ansible wrapper when you want the repo-standard guardrails:
-
-```bash
-ansible-playbook -i localhost, ansible/plan.yml
-CONFIRM_APPLY=true ansible-playbook -i localhost, ansible/apply.yml
-CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
-```
-
-Cloud-specific wrappers in multicloud blueprints:
-- Azure: `ansible/azure-plan.yml`, `ansible/azure-apply.yml`, `ansible/azure-destroy.yml`
-- AWS: `ansible/aws-plan.yml`, `ansible/aws-apply.yml`, `ansible/aws-destroy.yml`
-
-Cloud wrapper simulation:
-
-```bash
-make simulate-cloud
-```
-
-This checks every Azure and AWS wrapper, verifies template and parameter paths,
-and exits before any vendor CLI call. Real Azure what-if and AWS CloudFormation
-plan sessions still require logged-in `az` or `aws` CLIs.
-
 ## Pick By Family
 
 | Family | What it covers |
@@ -272,10 +145,9 @@ plan sessions still require logged-in `az` or `aws` CLIs.
 
 ## Quality Checks
 
-The repo is wired to catch the boring-but-important stuff: missing architecture
-files, stale blueprint indexes, bad Markdown links, mutable module refs,
-Terraform format or validation errors, scanner findings, and Ansible syntax
-drift.
+The repo is wired to catch missing architecture files, stale blueprint indexes,
+bad Markdown links, mutable module refs, Terraform format or validation errors,
+scanner findings, and Ansible syntax drift.
 
 Run checks for changed work:
 
@@ -289,28 +161,9 @@ Run checks for the full repository:
 ./scripts/validate-all.sh
 ```
 
-Simulate Azure and AWS deployment wrappers without creating resources:
-
-```bash
-./scripts/simulate-cloud-deployments.sh
-```
-
-Performance tips:
-- Shared Terraform provider cache is enabled by default with `TF_PLUGIN_CACHE_DIR`.
-- Validation keeps local `.terraform` workdirs by default for faster reruns.
-- Force full cleanup when needed:
-  `VALIDATION_CLEAN_TERRAFORM_WORKDIRS=1 ./scripts/validate-all.sh`
-
-Networking lifecycle tests (create then destroy):
-- `scripts/test-networking-lifecycle.sh --blueprint blueprints/networking/aws-oci-hybrid-network-backbone --providers oci,aws`
-- `scripts/test-networking-lifecycle.sh --all-networking --providers oci` (heavy run)
-
-OpenSearch real lifecycle test:
-- `OPENSEARCH_LIFECYCLE_CONFIRM=true scripts/test-opensearch-lifecycle.sh --profile JNB --region sa-saopaulo-1`
-- Use `--keep-resources` only when you need manual endpoint or index validation before cleanup.
-- Committed non-secret OpenSearch samples live in `blueprints/data-platform/opensearch/samples/`; test fixtures live in `tests/fixtures/opensearch/`.
-
-Maintainer-focused validation details live in [CONTRIBUTING.md](CONTRIBUTING.md).
+Lifecycle tests, provider-specific simulations, and maintainer-focused
+validation details live in [tests/README.md](tests/README.md),
+[docs/RUNBOOK.md](docs/RUNBOOK.md), and [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Contributing
 
