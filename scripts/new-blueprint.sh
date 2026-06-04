@@ -156,9 +156,9 @@ variable "oci_config_profile" {
 }
 
 variable "org" {
-  description = "Short organization prefix used in OCI resource names."
+  description = "Short provider-safe organization prefix used in OCI resource names."
   type        = string
-  default     = "acme"
+  default     = "leandro-michelino"
 }
 
 variable "environment" {
@@ -195,6 +195,7 @@ locals {
     {
       Blueprint = local.blueprint_name
       ManagedBy = "terraform"
+      Owner     = "Leandro_Michelino"
     },
     var.freeform_tags
   )
@@ -230,12 +231,14 @@ tenancy_ocid      = "ocid1.tenancy.oc1..example"
 current_user_ocid = "ocid1.user.oc1..example"
 region            = "eu-madrid-1"
 
-org         = "acme"
+org         = "leandro-michelino"
 environment = "dev"
 region_key  = "mad"
 
 defined_tags  = {}
-freeform_tags = {}
+freeform_tags = {
+  Owner = "Leandro_Michelino"
+}
 EOF
 
 read -r -d '' readme_md <<EOF || true

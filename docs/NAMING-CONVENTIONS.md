@@ -13,6 +13,8 @@ Rules:
 - Use lowercase names.
 - Use hyphens as delimiters.
 - Do not use underscores.
+- Keep human owner names such as `Leandro_Michelino` in tags or metadata, not
+  in provider resource-name segments.
 - Keep names below 100 characters.
 - Prefer stable semantic descriptions over delivery details.
 
@@ -163,6 +165,13 @@ Run the naming guard before committing broad blueprint changes:
 
 The repository contract check also runs this guard through
 `./scripts/check-repo-contracts.sh`.
+
+The guard checks Terraform source and `terraform.tfvars.example` files by
+default. To include ignored local deployment inputs in a focused review, run:
+
+```bash
+CHECK_LOCAL_TFVARS=1 ./scripts/check-naming-conventions.sh
+```
 
 ## Azure Naming Baseline
 

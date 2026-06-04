@@ -216,13 +216,20 @@ check_aws_tag_key_prefix() {
   fi
 }
 
-check_tfvars_examples() {
+check_tfvars_inputs() {
   local file
   local value
   local key
+  local find_names
   local valid_region_keys
 
   valid_region_keys='^(ams|dxb|fra|gru|iad|jnb|lhr|mad|nrt|phx|syd)$'
+
+  if [[ "${CHECK_LOCAL_TFVARS:-0}" == "1" ]]; then
+    find_names=( \( -name "terraform.tfvars.example" -o -name "terraform.tfvars" \) )
+  else
+    find_names=( -name "terraform.tfvars.example" )
+  fi
 
   while IFS= read -r file; do
     while IFS='=' read -r key value; do
@@ -233,8 +240,8 @@ check_tfvars_examples() {
 
       case "$key" in
         org)
-          [[ "$value" =~ ^[a-z][a-z0-9-]{1,15}$ ]] ||
-            fail "${file#$REPO_ROOT/}: org must be lowercase alphanumeric or hyphenated, 2-16 chars."
+          [[ "$value" =~ ^[a-z][a-z0-9-]{1,31}$ ]] ||
+            fail "${file#$REPO_ROOT/}: org must be lowercase alphanumeric or hyphenated, 2-32 chars."
           ;;
         environment)
           [[ "$value" =~ ^(dev|uat|prod|nonprod|dr)$ ]] ||
@@ -249,7 +256,7 @@ check_tfvars_examples() {
   done < <(
     find "$REPO_ROOT/blueprints" "$REPO_ROOT/environments" \
       -path "*/.terraform/*" -prune -o \
-      -name "terraform.tfvars.example" -type f -print | sort
+      "${find_names[@]}" -type f -print | sort
   )
 }
 
@@ -263,7 +270,7 @@ check_azure_parameter_name_values
 check_azure_bicep_default_names
 check_aws_resource_labels
 check_aws_tag_key_prefix
-check_tfvars_examples
+check_tfvars_inputs
 
 if [[ "$failures" -ne 0 ]]; then
   exit 1

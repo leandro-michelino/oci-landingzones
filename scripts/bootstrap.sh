@@ -4,7 +4,7 @@ set -euo pipefail
 usage() {
   cat <<'USAGE'
 Usage:
-  scripts/bootstrap.sh --org <org> --env <env> --region <oci-region>
+  scripts/bootstrap.sh [--org <org>] --env <env> --region <oci-region>
 
 Purpose:
   Run local bootstrap checks for an OCI landing zone deployment.
@@ -15,7 +15,8 @@ Current behavior:
 USAGE
 }
 
-ORG=""
+ORG="${LANDINGZONE_ORG:-leandro-michelino}"
+OWNER="${LANDINGZONE_OWNER:-Leandro_Michelino}"
 ENVIRONMENT=""
 REGION=""
 
@@ -45,7 +46,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ -z "$ORG" || -z "$ENVIRONMENT" || -z "$REGION" ]]; then
+if [[ -z "$ENVIRONMENT" || -z "$REGION" ]]; then
   echo "Missing required arguments." >&2
   usage
   exit 1
@@ -65,6 +66,7 @@ if command -v ansible-playbook >/dev/null 2>&1 && [[ "${BOOTSTRAP_SHELL_FALLBACK
       -i "$INVENTORY" \
       "$REPO_ROOT/ansible/playbooks/bootstrap.yml" \
       -e "landingzone_org=$ORG" \
+      -e "landingzone_owner=$OWNER" \
       -e "landingzone_environment=$ENVIRONMENT" \
       -e "landingzone_region=$REGION"
   exit 0
@@ -74,6 +76,7 @@ cat <<EOF
 Bootstrap context
 -----------------
 Organization : $ORG
+Owner        : $OWNER
 Environment  : $ENVIRONMENT
 Region       : $REGION
 

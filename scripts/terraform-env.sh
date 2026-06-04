@@ -25,6 +25,8 @@ terraform_env_export_common() {
   export CHECKPOINT_DISABLE="${CHECKPOINT_DISABLE:-1}"
   export TF_IN_AUTOMATION="${TF_IN_AUTOMATION:-true}"
   export TF_PLUGIN_CACHE_DIR="${TF_PLUGIN_CACHE_DIR:-${HOME}/.terraform.d/plugin-cache}"
+  export LANDINGZONE_OWNER="${LANDINGZONE_OWNER:-Leandro_Michelino}"
+  export LANDINGZONE_ORG="${LANDINGZONE_ORG:-leandro-michelino}"
   mkdir -p "$TF_PLUGIN_CACHE_DIR"
 
   if terraform_env_is_true "${TERRAFORM_ALLOW_LEGACY_X509_CN:-${TF_ALLOW_LEGACY_X509_CN:-false}}"; then
