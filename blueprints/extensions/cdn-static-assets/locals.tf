@@ -12,25 +12,25 @@ locals {
   object_storage_endpoint = "https://objectstorage.${var.region}.oraclecloud.com"
   origin_base_url         = local.bucket_name == null ? null : "${local.object_storage_endpoint}/n/${local.namespace}/b/${local.bucket_name}/o"
   origin_path             = local.bucket_name == null ? null : "/n/${local.namespace}/b/${local.bucket_name}/o/"
-  cloudflare_cache_host   = coalesce(var.cloudflare_cache_hostname, var.cdn_hostname, var.cloudflare_record_name)
+  cloudflare_cache_host   = try(coalesce(var.cloudflare_cache_hostname, var.cdn_hostname, var.cloudflare_record_name), null)
   cloudflare_origin_host  = coalesce(var.cloudflare_origin_host, "objectstorage.${var.region}.oraclecloud.com")
-  cloudflare_cache_expression = coalesce(
+  cloudflare_cache_expression = try(coalesce(
     var.cloudflare_cache_rule_expression,
-    "(http.host eq \"${local.cloudflare_cache_host}\" and starts_with(http.request.uri.path, \"${var.cloudflare_cache_path_prefix}\"))"
-  )
-  cloudflare_origin_expression = coalesce(
+    local.cloudflare_cache_host == null ? null : "(http.host eq \"${local.cloudflare_cache_host}\" and starts_with(http.request.uri.path, \"${var.cloudflare_cache_path_prefix}\"))"
+  ), null)
+  cloudflare_origin_expression = try(coalesce(
     var.cloudflare_origin_rule_expression,
-    "http.host eq \"${local.cloudflare_cache_host}\""
-  )
+    local.cloudflare_cache_host == null ? null : "http.host eq \"${local.cloudflare_cache_host}\""
+  ), null)
   cloudflare_worker_script_name = coalesce(var.cloudflare_worker_script_name, lower(replace("${local.name_prefix}-fn-oci-asset-proxy", "_", "-")))
-  cloudflare_worker_route_pattern = coalesce(
+  cloudflare_worker_route_pattern = try(coalesce(
     var.cloudflare_worker_route_pattern,
     local.cloudflare_cache_host == null ? null : "${local.cloudflare_cache_host}${var.cloudflare_worker_smoke_path}*"
-  )
-  cloudflare_worker_upstream_url = coalesce(
+  ), null)
+  cloudflare_worker_upstream_url = try(coalesce(
     var.cloudflare_worker_upstream_url,
     var.cloudflare_worker_upstream_preauth_key == null ? null : try("${local.object_storage_endpoint}${oci_objectstorage_preauthrequest.this[var.cloudflare_worker_upstream_preauth_key].access_uri}", null)
-  )
+  ), null)
   cloudflare_worker_smoke_url = local.cloudflare_cache_host == null ? null : "https://${local.cloudflare_cache_host}${var.cloudflare_worker_smoke_path}"
   cloudflare_worker_content   = <<-EOT
     export default {
