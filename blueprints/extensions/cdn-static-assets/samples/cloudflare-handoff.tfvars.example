@@ -1,0 +1,51 @@
+tenancy_ocid       = "ocid1.tenancy.oc1..example"
+current_user_ocid  = "ocid1.user.oc1..example"
+region             = "us-ashburn-1"
+home_region        = "us-ashburn-1"
+oci_config_profile = "NON_DEFAULT_TEST"
+
+org         = "acme"
+environment = "prod"
+region_key  = "iad"
+
+compartment_ocid = "ocid1.compartment.oc1..example"
+
+create_asset_bucket = true
+asset_bucket_name   = "acme-prod-iad-bkt-assets-origin"
+
+bucket_versioning      = "Enabled"
+object_events_enabled  = true
+create_sample_objects  = false
+create_lifecycle_policy = true
+
+lifecycle_rules = {
+  archive_older_public_assets = {
+    action             = "ARCHIVE"
+    time_amount        = 180
+    time_unit          = "DAYS"
+    inclusion_prefixes = ["public/"]
+  }
+}
+
+preauth_requests = {}
+
+cdn_mode     = "cloudflare_at_oci"
+cdn_hostname = "assets.example.com"
+
+# Enable after Cloudflare at OCI returns the target hostname and OCI DNS owns
+# the public zone.
+create_dns_cname    = false
+dns_zone_name_or_id = "example.com"
+cdn_target_hostname = "replace-with-cloudflare-target.example"
+dns_ttl             = 300
+
+policy_statements = [
+  "Allow dynamic-group acme-prod-par-brokers to manage objects in compartment app-prod where all {target.bucket.name='acme-prod-iad-bkt-assets-origin'}",
+  "Allow dynamic-group acme-prod-par-brokers to manage preauthrequests in compartment app-prod where all {target.bucket.name='acme-prod-iad-bkt-assets-origin'}"
+]
+
+freeform_tags = {
+  Owner       = "app-platform-team"
+  Environment = "prod"
+  Edge        = "cloudflare-at-oci"
+}

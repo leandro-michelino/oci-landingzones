@@ -1,0 +1,75 @@
+tenancy_ocid       = "ocid1.tenancy.oc1..example"
+current_user_ocid  = "ocid1.user.oc1..example"
+region             = "us-ashburn-1"
+home_region        = "us-ashburn-1"
+oci_config_profile = "NON_DEFAULT_TEST"
+
+org         = "acme"
+environment = "test"
+region_key  = "iad"
+
+compartment_ocid = "ocid1.compartment.oc1..example"
+
+asset_bucket_name = "acme-test-iad-bkt-cdn-assets-cloudflare-001"
+
+create_asset_bucket     = true
+create_sample_objects   = true
+bucket_storage_tier     = "Standard"
+bucket_versioning       = "Enabled"
+object_events_enabled   = true
+create_lifecycle_policy = false
+
+preauth_requests = {
+  statement_demo = {
+    access_type  = "ObjectRead"
+    object_name  = "private/demo-statement.txt"
+    time_expires = "2030-01-01T00:00:00Z"
+  }
+  cloudflare_smoke = {
+    access_type  = "ObjectRead"
+    object_name  = "public/cloudflare-smoke.txt"
+    time_expires = "2030-01-01T00:00:00Z"
+  }
+}
+
+cdn_mode     = "external_cloudflare"
+cdn_hostname = "assets.example.com"
+
+create_dns_cname = false
+
+# Requires CLOUDFLARE_API_TOKEN in the execution environment.
+create_cloudflare_dns_record = true
+cloudflare_zone_id           = "replace-with-cloudflare-zone-id"
+cloudflare_record_name       = "assets.example.com"
+cloudflare_record_type       = "CNAME"
+cloudflare_record_content    = "workers.dev"
+cloudflare_record_ttl        = 1
+cloudflare_record_proxied    = true
+
+create_cloudflare_cache_ruleset = true
+cloudflare_cache_hostname       = "assets.example.com"
+cloudflare_cache_path_prefix    = "/cloudflare-smoke"
+cloudflare_edge_ttl_seconds     = 300
+
+# Standard Cloudflare account path for this smoke test. The Worker keeps the
+# upstream OCI PAR URL in a secret binding and returns only the customer-facing
+# hostname to the client.
+create_cloudflare_worker_proxy       = true
+cloudflare_account_id                = "replace-with-cloudflare-account-id"
+cloudflare_worker_script_name        = "acme-test-iad-fn-oci-asset-proxy"
+cloudflare_worker_smoke_path         = "/cloudflare-smoke"
+cloudflare_worker_upstream_preauth_key = "cloudflare_smoke"
+cloudflare_worker_cache_ttl_seconds  = 300
+
+# Optional and entitlement-dependent. Many non-Enterprise accounts cannot use
+# Host Header override in Cloudflare origin rules; keep this disabled unless
+# the Cloudflare account is entitled for origin Host Header override.
+create_cloudflare_origin_ruleset = false
+
+policy_statements = []
+
+freeform_tags = {
+  Owner       = "app-platform-team"
+  Environment = "test"
+  Purpose     = "cdn-static-assets-cloudflare-full"
+}

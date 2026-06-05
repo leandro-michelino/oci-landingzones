@@ -107,7 +107,7 @@ terraform plan or ansible/plan.yml
 
 ## Blueprint Architecture Inventory
 
-The current catalog has 79 deployable blueprint entry points across 13
+The current catalog has 80 deployable blueprint entry points across 13
 families. Each entry point owns its local Architecture in
 `architecture/README.md`.
 
@@ -147,6 +147,7 @@ families. Each entry point owns its local Architecture in
 | extensions | [AKS + OKE Active Passive](../../blueprints/extensions/aks-oke-active-passive/) | [Architecture](../../blueprints/extensions/aks-oke-active-passive/architecture/) |
 | extensions | [EKS + OKE Active Passive](../../blueprints/extensions/eks-oke-active-passive/) | [Architecture](../../blueprints/extensions/eks-oke-active-passive/architecture/) |
 | extensions | [OCI Container Instances](../../blueprints/extensions/container-instances/) | [Architecture](../../blueprints/extensions/container-instances/architecture/) |
+| extensions | [CDN Static Asset Distribution](../../blueprints/extensions/cdn-static-assets/) | [Architecture](../../blueprints/extensions/cdn-static-assets/architecture/) |
 | extensions | [Event-Driven Application Platform](../../blueprints/extensions/event-driven-platform/) | [Architecture](../../blueprints/extensions/event-driven-platform/architecture/) |
 | extensions | [Exadata Extension](../../blueprints/extensions/exadata/) | [Architecture](../../blueprints/extensions/exadata/architecture/) |
 | extensions | [Oracle Functions Extension](../../blueprints/extensions/functions/) | [Architecture](../../blueprints/extensions/functions/architecture/) |
@@ -211,3 +212,7 @@ families. Each entry point owns its local Architecture in
   file; committed samples live under `blueprints/data-platform/nosql/samples/`.
 - For OIC, use `scripts/test-oic-lifecycle.sh` with an ignored local tfvars
   file; committed samples live under `blueprints/extensions/oic/samples/`.
+- For CDN Static Asset Distribution, use
+  `scripts/test-cdn-static-assets-lifecycle.sh` with an ignored local tfvars
+  file; committed samples live under
+  `blueprints/extensions/cdn-static-assets/samples/`.

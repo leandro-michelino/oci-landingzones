@@ -44,6 +44,18 @@ Deploy this after Core and the target private networking path. Use Functions
 and `genai-private` when the customer wants private orchestration and private
 GenAI access.
 
+## Deployment Notes
+
+- `create_document_project` depends on the regional Document Understanding
+  project quota. In restricted test tenancies, use `create_buckets = true` and
+  `create_document_project = false` for an intake-bucket smoke test.
+- `create_event_rule` requires a valid `handler_function_id`; keep it disabled
+  until the handler Function has been deployed and permissioned.
+- Use representative synthetic sample documents for validation. Do not commit
+  customer documents or extracted text.
+- Keep IAM statements scoped to the intake, output, failed, Document
+  Understanding, Function, and optional GenAI resources that the handler uses.
+
 ## Outputs
 
 | Output | Meaning |

@@ -14,7 +14,7 @@ resource "oci_objectstorage_bucket" "archive" {
   versioning            = var.archive_bucket_versioning
   object_events_enabled = true
   kms_key_id            = var.kms_key_id
-  defined_tags          = var.defined_tags
+  defined_tags          = local.defined_tags
   freeform_tags         = local.common_freeform_tags
 }
 
@@ -23,7 +23,7 @@ resource "oci_streaming_stream_pool" "this" {
 
   compartment_id = local.target_compartment_ocid
   name           = local.stream_pool_name
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 
   dynamic "custom_encryption_key" {
@@ -42,7 +42,7 @@ resource "oci_streaming_stream" "this" {
   name               = "${local.name_prefix}-stream-${each.key}"
   partitions         = each.value.partitions
   retention_in_hours = each.value.retention_in_hours
-  defined_tags       = var.defined_tags
+  defined_tags       = local.defined_tags
   freeform_tags      = local.common_freeform_tags
 }
 
@@ -53,7 +53,7 @@ resource "oci_streaming_stream" "in_pool" {
   partitions         = each.value.partitions
   retention_in_hours = each.value.retention_in_hours
   stream_pool_id     = local.stream_pool_id
-  defined_tags       = var.defined_tags
+  defined_tags       = local.defined_tags
   freeform_tags      = local.common_freeform_tags
 }
 
@@ -63,7 +63,7 @@ resource "oci_ons_notification_topic" "this" {
   compartment_id = local.target_compartment_ocid
   name           = local.topic_name
   description    = var.topic_description
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 }
 
@@ -75,7 +75,7 @@ resource "oci_events_rule" "this" {
   description    = coalesce(each.value.description, "Event-driven platform rule ${each.key}.")
   condition      = each.value.condition
   is_enabled     = coalesce(each.value.is_enabled, true)
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 
   actions {
@@ -85,8 +85,8 @@ resource "oci_events_rule" "this" {
       content {
         action_type = actions.value.action_type
         function_id = actions.value.function_id
-        stream_id   = coalesce(actions.value.stream_id, try(local.stream_ids[actions.value.stream_key], null))
-        topic_id    = coalesce(actions.value.topic_id, local.topic_id)
+        stream_id   = try(coalesce(actions.value.stream_id, try(local.stream_ids[actions.value.stream_key], null)), null)
+        topic_id    = try(coalesce(actions.value.topic_id, local.topic_id), null)
         description = actions.value.description
         is_enabled  = coalesce(actions.value.is_enabled, true)
       }
@@ -100,7 +100,7 @@ resource "oci_sch_service_connector" "this" {
   compartment_id = local.target_compartment_ocid
   display_name   = coalesce(var.connector_display_name, "${local.name_prefix}-sch-connector")
   description    = "Event-driven platform connector for ${local.name_prefix}."
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 
   source {
@@ -110,12 +110,12 @@ resource "oci_sch_service_connector" "this" {
 
   target {
     kind               = var.connector_target_kind
-    namespace          = coalesce(var.connector_target_namespace, try(data.oci_objectstorage_namespace.this[0].namespace, null))
-    bucket             = coalesce(var.connector_target_bucket, local.archive_bucket_name)
-    object_name_prefix = var.connector_object_prefix
-    function_id        = var.connector_target_function_id
-    stream_id          = var.connector_target_stream_id
-    topic_id           = coalesce(var.connector_target_topic_id, local.topic_id)
+    namespace          = var.connector_target_kind == "objectStorage" ? coalesce(var.connector_target_namespace, try(data.oci_objectstorage_namespace.this[0].namespace, null)) : null
+    bucket             = var.connector_target_kind == "objectStorage" ? coalesce(var.connector_target_bucket, local.archive_bucket_name) : null
+    object_name_prefix = var.connector_target_kind == "objectStorage" ? var.connector_object_prefix : null
+    function_id        = var.connector_target_kind == "functions" ? var.connector_target_function_id : null
+    stream_id          = var.connector_target_kind == "streaming" ? var.connector_target_stream_id : null
+    topic_id           = var.connector_target_kind == "notifications" ? try(coalesce(var.connector_target_topic_id, local.topic_id), null) : null
   }
 }
 
@@ -127,6 +127,6 @@ resource "oci_identity_policy" "access" {
   name           = "${local.name_prefix}-pol-access"
   description    = "Event-driven platform access policy for ${local.name_prefix}."
   statements     = var.policy_statements
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 }

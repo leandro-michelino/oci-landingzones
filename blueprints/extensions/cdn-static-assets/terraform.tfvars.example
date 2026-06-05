@@ -1,0 +1,74 @@
+# Copy to terraform.tfvars and replace placeholders before applying.
+
+tenancy_ocid      = "ocid1.tenancy.oc1..example"
+current_user_ocid = "ocid1.user.oc1..example"
+region            = "us-ashburn-1"
+home_region       = "us-ashburn-1"
+
+# Use a non-DEFAULT profile for validation whenever possible.
+oci_config_profile = "NON_DEFAULT_TEST"
+
+org         = "demo"
+environment = "dev"
+region_key  = "iad"
+
+compartment_ocid = "ocid1.compartment.oc1..example"
+
+create_asset_bucket = true
+asset_bucket_name   = null
+
+bucket_storage_tier   = "Standard"
+bucket_versioning     = "Enabled"
+object_events_enabled = true
+
+create_sample_objects = true
+
+# Optional: supplement or override the built-in synthetic samples.
+# sample_objects = {
+#   logo = {
+#     object_name   = "public/logo.txt"
+#     content       = "Synthetic public asset placeholder.\n"
+#     content_type  = "text/plain; charset=utf-8"
+#     cache_control = "public, max-age=86400"
+#     metadata      = { classification = "public-cacheable" }
+#   }
+# }
+
+# Terraform-managed PARs are for smoke tests and demos. For production, use the
+# Python sample under samples/python-par-broker to create 15-minute PARs at
+# request time.
+preauth_requests = {
+  statement_demo = {
+    access_type  = "ObjectRead"
+    object_name  = "private/demo-statement.txt"
+    time_expires = "2030-01-01T00:00:00Z"
+  }
+}
+
+create_lifecycle_policy = true
+lifecycle_rules = {
+  expire_private_test_objects = {
+    action             = "DELETE"
+    time_amount        = 7
+    time_unit          = "DAYS"
+    inclusion_prefixes = ["private/"]
+  }
+}
+
+cdn_mode     = "cloudflare_at_oci"
+cdn_hostname = "assets.example.com"
+
+# Set this only after Cloudflare at OCI returns the target hostname and OCI DNS
+# owns the public zone.
+create_dns_cname    = false
+dns_zone_name_or_id = "example.com"
+cdn_target_hostname = "replace-with-cloudflare-target.example"
+dns_ttl             = 300
+
+# Keep empty by default. Add least-privilege statements for the app identity
+# that generates runtime PARs and the CI/CD identity that publishes assets.
+policy_statements = []
+
+freeform_tags = {
+  Workload = "cdn-static-assets"
+}

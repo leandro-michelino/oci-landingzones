@@ -1,0 +1,46 @@
+tenancy_ocid       = "ocid1.tenancy.oc1..example"
+current_user_ocid  = "ocid1.user.oc1..example"
+region             = "us-ashburn-1"
+home_region        = "us-ashburn-1"
+oci_config_profile = "NON_DEFAULT_TEST"
+
+org         = "acme"
+environment = "test"
+region_key  = "iad"
+
+compartment_ocid = "ocid1.compartment.oc1..example"
+
+# Use a globally unique name within the Object Storage namespace.
+asset_bucket_name = "acme-test-iad-bkt-cdn-assets-001"
+
+create_asset_bucket     = true
+create_sample_objects   = true
+bucket_storage_tier     = "Standard"
+bucket_versioning       = "Enabled"
+object_events_enabled   = true
+create_lifecycle_policy = false
+
+# Optional. Enabling lifecycle policies can require an Object Storage
+# service-principal IAM grant in the target tenancy.
+lifecycle_rules = {}
+
+preauth_requests = {
+  statement_demo = {
+    access_type  = "ObjectRead"
+    object_name  = "private/demo-statement.txt"
+    time_expires = "2030-01-01T00:00:00Z"
+  }
+}
+
+cdn_mode     = "none"
+cdn_hostname = null
+
+create_dns_cname = false
+
+policy_statements = []
+
+freeform_tags = {
+  Owner       = "app-platform-team"
+  Environment = "test"
+  Purpose     = "cdn-static-assets-lifecycle"
+}

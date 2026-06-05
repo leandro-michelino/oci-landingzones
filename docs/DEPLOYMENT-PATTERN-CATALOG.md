@@ -95,6 +95,7 @@ folder.
 | Extensions | Container Instances | `blueprints/extensions/container-instances/` | Available |
 | Extensions | Oracle Functions | `blueprints/extensions/functions/` | Available |
 | Extensions | Event-driven application platform (Events, Service Connector Hub, Streaming, Functions, Notifications) | `blueprints/extensions/event-driven-platform/` | Available |
+| Extensions | CDN static asset distribution (private Object Storage origin, PAR broker, Cloudflare at OCI hand-off) | `blueprints/extensions/cdn-static-assets/` | Available; includes samples and a real lifecycle test runner |
 | Extensions | Redis Cache landing zone | `blueprints/extensions/redis-cache/` | Available |
 | Operations | Cost optimization | `blueprints/operations/cost-optimization/` | Available |
 | AI | OCI Data Science (notebooks, model catalog, deployment) | `blueprints/ai/data-science/` | Planned |

@@ -86,6 +86,10 @@ The handler Function is supplied as an OCID so teams can pair this blueprint
 with the existing Oracle Functions extension or with an externally managed
 function app.
 
+The Document Understanding project is optional because project quotas vary by
+tenancy and region. A smoke test can create only the intake, output, and failed
+buckets; a full deployment should enable the project once quota is confirmed.
+
 ## Operational Boundaries
 
 - Do not commit sample customer documents or extracted text.

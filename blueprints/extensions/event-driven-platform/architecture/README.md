@@ -84,6 +84,10 @@ Service Connector Hub is optional. Some designs send Events directly to
 Functions or Streaming. Others need a connector to archive or transform records.
 The folder supports both patterns.
 
+Connector targets must be modeled by target kind. An Object Storage connector
+target should set only bucket, namespace, and object prefix values; Notifications,
+Streaming, and Functions targets should set only their own destination IDs.
+
 The blueprint can be used as an extension-only brownfield add-on by supplying
 existing stream, topic, bucket, and function IDs.
 
@@ -91,6 +95,7 @@ existing stream, topic, bucket, and function IDs.
 
 - Do not commit customer event payloads or private function IDs.
 - Keep rule conditions and target IDs in ignored tfvars.
+- Check policy statement quota before creating Service Connector access policies.
 - Use `genai-guardrails` when event payloads contain prompt or model metadata.
 - Use Functions and Streaming extensions for service-specific runtime details.
 

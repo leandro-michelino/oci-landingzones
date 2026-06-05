@@ -525,16 +525,21 @@ Available extension entry points:
 - `blueprints/extensions/event-driven-platform/` creates optional event archive
   storage, stream pool, streams, notification topic, Events rules, Service
   Connector, and IAM policy statements for async app and AI automation patterns.
+- `blueprints/extensions/cdn-static-assets/` creates a private Object Storage
+  asset origin, synthetic smoke-test objects, lifecycle rules, smoke-test PARs,
+  an optional DNS CNAME, and Cloudflare at OCI hand-off outputs for approved
+  cacheable prefixes.
 - `blueprints/extensions/redis-cache/` creates optional private OCI Cache with
   Redis endpoint hand-offs, alarm hooks, Vault hand-off, and IAM controls.
 
 Additional service blueprints now cover Autonomous Database, APEX on Autonomous
 Database, OpenSearch, MySQL HeatWave, OCI Generative AI, GenAI gateway,
 fine-tuning, guardrails, document intelligence, embedding pipelines, AI Agents
-RAG, multi-agent orchestration, OCI AI Services, OCI DevOps, Redis Cache,
-Security Posture Automation, Network Load Balancer, Secure Desktops, and
-Healthcare / PCI guardrails. They follow the same local README, Architecture
-architecture, Terraform, tfvars, and Ansible runner contract.
+RAG, multi-agent orchestration, OCI AI Services, OCI DevOps, CDN Static Asset
+Distribution, Redis Cache, Security Posture Automation, Network Load Balancer,
+Secure Desktops, and Healthcare / PCI guardrails. They follow the same local
+README, Architecture architecture, Terraform, tfvars, and Ansible runner
+contract.
 
 OpenSearch also has a dedicated real lifecycle test script:
 `scripts/test-opensearch-lifecycle.sh`. It runs Terraform fmt/init/validate,
@@ -558,6 +563,14 @@ when creation succeeds, then destroys and checks cleanup. Newer OIC types need
 `domain_id` or `idcs_access_token`; legacy types need tenancy entitlement
 before creation can succeed. Public-safe sample inputs live in
 `blueprints/extensions/oic/samples/`.
+
+CDN Static Asset Distribution has a real lifecycle runner:
+`scripts/test-cdn-static-assets-lifecycle.sh`. It creates a private Object
+Storage bucket, synthetic public and private objects, and a Terraform-managed
+PAR from ignored local tfvars, verifies the bucket/object/PAR with OCI CLI,
+downloads the private sample through `curl`, then destroys and checks cleanup
+unless `--keep-resources` is set. Public-safe sample inputs live in
+`blueprints/extensions/cdn-static-assets/samples/`.
 
 Keep real subnet, VCN, load balancer, availability domain, image, event filter,
 and SSH values in local ignored tfvars files. The committed examples show the

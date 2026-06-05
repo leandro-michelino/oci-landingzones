@@ -1,0 +1,10 @@
+---
+- name: Run Terraform apply for CDN Static Asset Distribution
+  hosts: localhost
+  gather_facts: false
+  vars:
+    terraform_action: apply
+    terraform_backend_enabled: false
+    terraform_working_dir: "{{ playbook_dir }}/.."
+  roles:
+    - terraform_runner
