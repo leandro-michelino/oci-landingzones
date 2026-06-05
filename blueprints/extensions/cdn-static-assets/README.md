@@ -2,8 +2,8 @@
 
 Use this blueprint when an application team needs secure document delivery and
 low-latency static asset distribution from OCI Object Storage without exposing
-storage credentials. It creates the OCI origin and hand-off artifacts for the
-current Cloudflare at OCI model.
+storage credentials. It creates the OCI origin, short-lived PAR test path, and
+optional Cloudflare edge resources for cacheable public-safe assets.
 
 ## At A Glance
 
@@ -14,6 +14,18 @@ current Cloudflare at OCI model.
 | Terraform shape | Object Storage bucket, sample objects, lifecycle rules, smoke-test PARs, optional OCI DNS CNAME, optional Cloudflare DNS/cache/Worker resources, IAM policy shell. |
 | Default posture | Bucket is private with `NoPublicAccess`; sample objects, lifecycle, DNS, and PARs are explicit toggles. |
 | Customer paths | Extension-only beside an existing app backend, or base-plus-extension after Core, Networking, and DNS ownership are ready. |
+
+## Choose The Path
+
+| Path | Use When | Main Sample |
+| --- | --- | --- |
+| PAR-only private downloads | The application backend will generate short-lived PARs and return them to authenticated users. | `samples/par-only-existing-bucket.tfvars.example` |
+| Cloudflare at OCI hand-off | OCI owns the origin contract and the edge team provisions Cloudflare at OCI through the OCI partner flow. | `samples/cloudflare-handoff.tfvars.example` |
+| Full external Cloudflare smoke test | You have a Cloudflare account, zone, and API token and want Terraform to prove DNS, cache rule, Worker, route, OCI bucket, PAR, and cleanup end to end. | `samples/cloudflare-worker-full.tfvars.example` |
+
+For production, keep customer authentication in the application layer. Use
+Terraform-managed PARs only for demos and smoke tests; generate real PARs at
+request time from a backend service.
 
 ## Does This Still Make Sense?
 
@@ -69,17 +81,37 @@ Use two delivery paths:
 | `create_cloudflare_worker_proxy` | Whether Terraform should create a Cloudflare Worker route that hides a smoke-test OCI PAR behind the Cloudflare hostname. |
 | `cloudflare_account_id`, `cloudflare_zone_id` | External Cloudflare account and zone identifiers for DNS, cache rules, Workers, and routes. |
 
-## Deployment Order
+## Recommended Deployment Order
 
 1. Confirm the asset classes: private documents, public static assets, or both.
 2. Deploy or select the private Object Storage origin bucket.
 3. Enable synthetic samples and a demo PAR only for test environments.
-4. Provision Cloudflare at OCI through OCI Partner Offerings or use an existing Cloudflare account.
-5. Configure Cloudflare cache rules only for approved public-safe prefixes.
-6. Deploy the backend PAR broker for sensitive downloads.
+4. Deploy the backend PAR broker for sensitive downloads.
+5. Provision Cloudflare at OCI through OCI Partner Offerings or use an existing Cloudflare account.
+6. Configure Cloudflare cache rules only for approved public-safe prefixes.
 7. Destroy smoke-test PARs and synthetic objects after validation.
 
-## Cloudflare Account Next Steps
+## Terraform Quick Start
+
+```bash
+cd blueprints/extensions/cdn-static-assets
+cp terraform.tfvars.example terraform.tfvars
+terraform init -backend=false
+terraform plan -var-file=terraform.tfvars
+terraform apply -var-file=terraform.tfvars
+```
+
+Test the synthetic private object through the Terraform-managed PAR:
+
+```bash
+terraform output -json preauth_request_urls | jq -r '.statement_demo'
+curl "$(terraform output -json preauth_request_urls | jq -r '.statement_demo')"
+```
+
+The `preauth_request_urls` output is sensitive. Protect generated output files,
+CI logs, and local test workspaces because PAR URLs are bearer credentials.
+
+## Full Cloudflare Test
 
 Use `samples/cloudflare-worker-full.tfvars.example` when a real Cloudflare
 account is available and the test should include Cloudflare DNS, cache rules,
@@ -117,26 +149,6 @@ CDN_STATIC_ASSETS_VERIFY_CLOUDFLARE=true \
   --profile NON_DEFAULT_TEST \
   --region us-ashburn-1
 ```
-
-## Terraform Quick Start
-
-```bash
-cd blueprints/extensions/cdn-static-assets
-cp terraform.tfvars.example terraform.tfvars
-terraform init -backend=false
-terraform plan -var-file=terraform.tfvars
-terraform apply -var-file=terraform.tfvars
-```
-
-Test the synthetic private object through the Terraform-managed PAR:
-
-```bash
-terraform output -json preauth_request_urls | jq -r '.statement_demo'
-curl "$(terraform output -json preauth_request_urls | jq -r '.statement_demo')"
-```
-
-The `preauth_request_urls` output is sensitive. Protect generated output files,
-CI logs, and local test workspaces because PAR URLs are bearer credentials.
 
 ## Real Lifecycle Test
 
@@ -180,6 +192,13 @@ IAM policy.
 
 The blueprint was exercised against real OCI and Cloudflare resources on
 2026-06-05. All disposable resources were destroyed after the tests.
+
+| Result | Status |
+| --- | --- |
+| OCI-only deployment, verification, PAR download, destroy, and cleanup | Passed |
+| Full external Cloudflare DNS/cache/Worker/route deployment and proxied download | Passed |
+| Cloudflare Origin Rule with Host Header override | Not used by default; entitlement-dependent in the tested account |
+| Non-default profile first attempt | Blocked by tenancy Object Storage limit; partial resources were cleaned up |
 
 | Run | Evidence |
 | --- | --- |
