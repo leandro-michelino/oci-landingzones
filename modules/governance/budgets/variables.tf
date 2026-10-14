@@ -4,7 +4,7 @@ variable "tenancy_ocid" {
 }
 
 variable "compartment_ocid" {
-  description = "Parent compartment OCID for resources managed by this module."
+  description = "Default target compartment OCID tracked by budgets. Budget resources are created in tenancy_ocid."
   type        = string
 }
 

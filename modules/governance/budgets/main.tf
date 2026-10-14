@@ -4,7 +4,7 @@
 resource "oci_budget_budget" "this" {
   for_each = local.budgets
 
-  compartment_id                        = coalesce(each.value.compartment_ocid, var.compartment_ocid)
+  compartment_id                        = var.tenancy_ocid
   amount                                = each.value.amount
   reset_period                          = upper(each.value.reset_period)
   budget_processing_period_start_offset = each.value.budget_processing_period_start_offset
