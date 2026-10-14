@@ -4,14 +4,14 @@ This is the deployment architecture for `blueprints/networking/standalone-three-
 
 ## Deployment Purpose
 
-Creates a standalone three-tier VCN and applies Zero Trust Packet Routing configuration and policies for segmentation.
+Creates a standalone three-tier VCN with optional, separately authorized tenancy-root ZPR administration.
 
 ## Architecture At A Glance
 
 | Item | Details |
 | --- | --- |
 | Boundary | `blueprints/networking/standalone-three-tier-vcn-zpr` owns this deployment folder and its Terraform + Ansible runners. |
-| Purpose | Creates a standalone three-tier VCN and applies Zero Trust Packet Routing configuration and policies for segmentation. |
+| Purpose | Creates a standalone three-tier VCN with optional, separately authorized tenancy-root ZPR administration. |
 | Terraform components | `workload_vcn`, `zpr` |
 | Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
 
@@ -34,12 +34,12 @@ Creates a standalone three-tier VCN and applies Zero Trust Packet Routing config
 | [Workload VCN]                                                                                           |
 |         |-- [public web subnet]  -> route table -> Internet Gateway when enabled                         |
 |         |-- [private app subnet] -> route table -> NAT Gateway / Service Gateway                         |
-|         `-- [private db subnet]  -> route table -> private east-west only                                |
+|         `-- [private db subnet]  -> route table -> NAT Gateway / Service Gateway                                |
 |              |                                                                                           |
-|              +--> [security lists / NSGs] gate tier-to-tier traffic                                      |
+|              +--> [security lists] gate traffic; (workload NSGs supplied separately)                                      |
 |              +--> [gateway set] IGW / NAT / SGW according to blueprint variables                         |
 |                                                                                                          |
-| ZPR overlay: security attributes and policies add packet-level micro-segmentation above subnet routing.  |
+| Optional ZPR: tenancy-root policies; (security attributes assigned separately to workload resources).  |
 | North-south: client -> web tier -> app tier -> database tier.                                            |
 | Service path: private subnets -> service gateway for OCI services; outbound updates use NAT when         |
 | enabled.                                                                                                 |
@@ -71,7 +71,7 @@ Creates a standalone three-tier VCN and applies Zero Trust Packet Routing config
 
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
 
-- This deployment creates a standalone three-tier VCN and then applies ZPR configuration and policies.
+- The default deployment creates the VCN only; ZPR configuration and policies require explicit enable flags and tenancy-root administrative authorization.
 - The network still provides the web/app/db packet path through normal VCN routing and gateways.
 - ZPR policies add packet authorization for specific resources, subjects, compartments, and services.
 - Review policy blast radius and expected web-to-app/app-to-db flows before applying to production workloads.
@@ -90,3 +90,9 @@ These notes expand the diagram with the design details that usually matter durin
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+
+## October 2026 Review Boundaries
+
+Provider configuration ignores only OCI-managed `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn`; customer-defined tags remain managed. Live validation covers network provisioning and cleanup, without workload packet-flow tests.
+
+ZPR is disabled by default. Onboarding and ZPR policies are tenancy-root administrative resources, outside a compartment-only test. Onboarding requires the tenancy home region. This blueprint does not assign security attributes to workload resources, so provisioning policies alone does not prove enforcement. The corrected local ZPR module requires publication and a refreshed module pin before remote consumers receive its root-scope fix. Public HTTP/HTTPS ingress belongs only to the web subnet; app and database use an ingress-empty baseline.

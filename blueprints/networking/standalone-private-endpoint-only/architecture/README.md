@@ -32,7 +32,7 @@ Creates a private-only VCN pattern with service gateway access and optional NAT,
 |         |                                                                                                |
 |         v                                                                                                |
 | [Private VCN - no Internet Gateway]                                                                      |
-|         |-- [private endpoint subnet] -> NSGs -> private service endpoints                               |
+|         |-- [private endpoint-ready subnet] -> (service endpoint supplied separately)                               |
 |         |-- [private workload subnet] -> route table -> Service Gateway                                  |
 |         `-- [optional NAT route]     -> controlled outbound only when explicitly enabled                 |
 |              |                                                                                           |
@@ -66,6 +66,8 @@ Creates a private-only VCN pattern with service gateway access and optional NAT,
 
 ## Detailed Architecture Notes
 
+- This blueprint creates the VCN foundation, subnets, security lists, routes, service gateway, and optional NAT. It does not create NSGs or service-specific private endpoints. Deploy those separately and validate their DNS, IAM, and service support. A service gateway is not a private endpoint.
+
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
 
 - This VCN disables the Internet Gateway and is optimized for private endpoint and service gateway access.
@@ -87,3 +89,9 @@ These notes expand the diagram with the design details that usually matter durin
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+
+## October 2026 Review Boundaries
+
+Provider configuration ignores only OCI-managed `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn`; customer-defined tags remain managed. Live validation covers network provisioning and cleanup, without workload packet-flow tests.
+
+The default baseline permits HTTPS egress to the regional Oracle Services Network label, matching the service gateway route. Set `enable_service_gateway_https_egress=false` when supplying narrower service-specific rules. No service endpoint or workload is created.

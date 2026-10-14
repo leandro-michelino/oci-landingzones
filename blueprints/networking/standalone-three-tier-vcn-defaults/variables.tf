@@ -80,6 +80,7 @@ variable "subnets" {
       cidr_block                 = "10.10.0.0/24"
       dns_label                  = "web"
       route_table_key            = "public"
+      security_list_keys         = ["web"]
       prohibit_internet_ingress  = false
       prohibit_public_ip_on_vnic = false
     }
@@ -161,7 +162,7 @@ variable "security_lists" {
     })), [])
   }))
   default = {
-    baseline = {
+    web = {
       ingress_rules = [
         {
           description = "Allow HTTP to the public web tier."
@@ -176,6 +177,16 @@ variable "security_lists" {
           tcp_options = { min = 443, max = 443 }
         }
       ]
+      egress_rules = [
+        {
+          description = "Allow outbound traffic by default."
+          protocol    = "all"
+          destination = "0.0.0.0/0"
+        }
+      ]
+    }
+    baseline = {
+      ingress_rules = []
       egress_rules = [
         {
           description = "Allow outbound traffic by default."

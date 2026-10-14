@@ -50,6 +50,11 @@ variable "enable_zpr_configuration" {
   description = "Enable ZPR configuration for this landing zone. Optional and intentionally off by default."
   type        = bool
   default     = false
+  validation {
+    condition     = !var.enable_zpr_configuration || (var.home_region != null && var.region == var.home_region)
+    error_message = "ZPR onboarding is tenancy-wide and requires region to equal the explicitly supplied home_region. Keep onboarding disabled in a workload-region deployment."
+  }
+
 }
 
 variable "enable_zpr_policies" {

@@ -1,3 +1,7 @@
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful lifecycle: 2026-10-13 | DEFAULT | sa-saopaulo-1 | apply, drift=0, destroy/API cleanup.
+# Scope: OCI primary network only; Azure resources, IPSec fallback, DNS contract, and notifications disabled. No workload packet-flow verification.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 resource "oci_core_vcn" "primary" {
   count = var.enable_oci_primary_network ? 1 : 0
 
@@ -94,7 +98,7 @@ resource "oci_core_drg" "primary" {
 }
 
 resource "oci_core_drg_attachment" "primary" {
-  count = var.attach_oci_primary_vcn_to_drg && local.effective_primary_vcn_id != null && local.effective_primary_drg_id != null ? 1 : 0
+  count = var.attach_oci_primary_vcn_to_drg ? 1 : 0
 
   drg_id       = local.effective_primary_drg_id
   vcn_id       = local.effective_primary_vcn_id

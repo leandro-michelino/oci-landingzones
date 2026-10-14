@@ -33,6 +33,18 @@ the topology.
 
 ## What This Deploys
 
+ZPR onboarding is tenancy-wide and only supported in the tenancy home region.
+ZPR policies must be created at tenancy root, not in the workload compartment.
+Keep both ZPR flags disabled for compartment-only network tests. The corrected
+module scope must be published in a new immutable dependency revision before
+this blueprint can consume it remotely.
+
+This blueprint does not assign security attributes to VCNs or workload resources.
+Creating a policy alone does not protect unlabeled resources. Assign approved
+attributes and test permitted and denied flows separately. See
+[Oracle ZPR onboarding](https://docs.oracle.com/en-us/iaas/Content/zero-trust-packet-routing/enable-zpr.htm)
+and [policy scope](https://docs.oracle.com/en-us/iaas/Content/zero-trust-packet-routing/create-zpr-policy.htm).
+
 Everything needed for this deployment starts in this folder: Terraform composes the OCI resource
 graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere
 in the repo.

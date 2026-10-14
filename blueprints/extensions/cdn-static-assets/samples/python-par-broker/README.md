@@ -21,7 +21,7 @@ python3 -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
 
-export OCI_CONFIG_PROFILE=NON_DEFAULT_TEST
+export OCI_CONFIG_PROFILE=DEFAULT
 export OCI_ASSET_BUCKET=demo-dev-iad-bkt-assets-origin
 export OCI_OBJECT_STORAGE_NAMESPACE="$(terraform output -raw namespace)"
 export PAR_TTL_MINUTES=15

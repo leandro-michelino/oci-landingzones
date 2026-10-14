@@ -1,3 +1,7 @@
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful lifecycle: 2026-10-14 | DEFAULT | sa-saopaulo-1 | apply, drift=0, destroy/API cleanup.
+# Scope: NLB private service and empty backend set/listener; no targets; no workload packet-flow verification.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 resource "oci_network_load_balancer_network_load_balancer" "this" {
   count = var.create_network_load_balancer ? 1 : 0
 

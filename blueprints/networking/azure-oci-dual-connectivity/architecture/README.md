@@ -69,6 +69,7 @@ final cutover.
 | Resource | `terraform_data.routing_contract` | CIDR exchange and path preference contract output. |
 | Resource | `terraform_data.dns_contract` | Optional DNS forwarding and probe contract output. |
 | Resource | `terraform_data.runbook_contract` | Failover/failback operational sequence output. |
+| Resource | `oci_core_internet_gateway.primary` | Declared in this blueprint; creation depends on its count or for_each inputs. |
 
 ## Request And Deployment Flow
 
@@ -86,6 +87,10 @@ final cutover.
 - Connection IDs, public IP endpoints, and circuit identifiers must stay in ignored local tfvars or secure pipeline variables.
 
 ## Detailed Architecture Notes
+
+- The OCI provider preserves the automatically assigned `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn` provenance tags through `ignore_defined_tags`. Other defined tags remain managed. See [Oracle provider troubleshooting](https://docs.oracle.com/en-us/iaas/Content/dev/terraform/troubleshooting.htm).
+
+- DRG attachment creation is controlled by the explicit attachment flag. Resource IDs are attachment arguments, not inputs to `count`, so a new VCN and DRG can be planned together in one step.
 
 - OCI remains primary by contract (`oci_is_primary=true`) for this blueprint variant.
 - `connectivity_mode=interconnect` enforces both FastConnect and ExpressRoute IDs.

@@ -34,9 +34,9 @@ Creates a configurable standalone three-tier workload VCN with caller-controlled
 | [Workload VCN]                                                                                           |
 |         |-- [public web subnet]  -> route table -> Internet Gateway when enabled                         |
 |         |-- [private app subnet] -> route table -> NAT Gateway / Service Gateway                         |
-|         `-- [private db subnet]  -> route table -> private east-west only                                |
+|         `-- [private db subnet]  -> route table -> NAT Gateway / Service Gateway                                |
 |              |                                                                                           |
-|              +--> [security lists / NSGs] gate tier-to-tier traffic                                      |
+|              +--> [security lists] gate traffic; (workload NSGs supplied separately)                                      |
 |              +--> [gateway set] IGW / NAT / SGW according to blueprint variables                         |
 |                                                                                                          |
 | Custom stance: caller controls CIDRs, subnet maps, route tables, gateways, and security-list behavior.   |
@@ -89,3 +89,9 @@ These notes expand the diagram with the design details that usually matter durin
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+
+## October 2026 Review Boundaries
+
+Provider configuration ignores only OCI-managed `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn`; customer-defined tags remain managed. Live validation covers network provisioning and cleanup, without workload packet-flow tests.
+
+Default public HTTPS ingress is attached only to the web subnet. The application and database subnets use an ingress-empty baseline; add explicit application flows or NSGs before installing workloads.

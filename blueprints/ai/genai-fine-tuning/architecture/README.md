@@ -57,6 +57,16 @@ IAM: app caller -> endpoint invoke
 | `terraform.tfvars.example` | Safe local example with create flags disabled. |
 | `ansible/*.yml` | Standard plan, apply, and destroy wrappers. |
 
+Declared resource addresses:
+
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Resource | `oci_objectstorage_bucket.training` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_generative_ai_dedicated_ai_cluster.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_generative_ai_model.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_generative_ai_endpoint.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_identity_policy.access` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+
 ## Request And Deployment Flow
 
 1. Data owner approves dataset content and storage location.

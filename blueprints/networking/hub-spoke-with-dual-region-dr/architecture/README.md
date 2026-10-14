@@ -68,6 +68,8 @@ Creates matching hub-spoke network foundations in primary and secondary OCI regi
 
 ## Detailed Architecture Notes
 
+- The OCI provider preserves the automatically assigned `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn` provenance tags through `ignore_defined_tags`. Other defined tags remain managed. See [Oracle provider troubleshooting](https://docs.oracle.com/en-us/iaas/Content/dev/terraform/troubleshooting.htm).
+
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
 
 - The primary and secondary hub-spoke networks are independent module instances with separate region and region_key values.

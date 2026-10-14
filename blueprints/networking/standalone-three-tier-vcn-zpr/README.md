@@ -7,7 +7,7 @@ Start here for `blueprints/networking/standalone-three-tier-vcn-zpr`: what it bu
 | Item | Details |
 | --- | --- |
 | Folder | `blueprints/networking/standalone-three-tier-vcn-zpr` |
-| Best fit | Creates a standalone three-tier VCN with ZPR controls so micro-segmentation is built into the workload network. |
+| Best fit | Creates a standalone three-tier VCN with optional ZPR administration for the workload network. |
 | Terraform shape | `workload_vcn`, `zpr` |
 | Inputs to settle first | `compartment_ocid`, `vcn_label`, `vcn_dns_label`, `vcn_cidr_block`, `subnets`, `zpr_policies` |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `vcn_id`, `subnet_ids`, `zpr_configuration_id`, `zpr_policy_ids` |
@@ -15,7 +15,7 @@ Start here for `blueprints/networking/standalone-three-tier-vcn-zpr`: what it bu
 
 ## Deployment Purpose
 
-Creates a standalone three-tier VCN with ZPR controls so micro-segmentation is built into
+Creates a standalone three-tier VCN with optional ZPR administration for
 the workload network.
 
 ## When To Use This Deployment
@@ -187,3 +187,9 @@ The validator checks Terraform formatting, required deployment README files, req
 architecture README sections, `terraform init -backend=false`, `terraform validate`, root
 Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
 cleanup of generated Terraform artifacts.
+
+## October 2026 Review Boundaries
+
+Provider configuration ignores only OCI-managed `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn`; customer-defined tags remain managed. Live validation covers network provisioning and cleanup, without workload packet-flow tests.
+
+ZPR is disabled by default. Onboarding and ZPR policies are tenancy-root administrative resources, outside a compartment-only test. Onboarding requires the tenancy home region. This blueprint does not assign security attributes to workload resources, so provisioning policies alone does not prove enforcement. The corrected local ZPR module requires publication and a refreshed module pin before remote consumers receive its root-scope fix. Public HTTP/HTTPS ingress belongs only to the web subnet; app and database use an ingress-empty baseline.

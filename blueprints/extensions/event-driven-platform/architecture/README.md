@@ -56,6 +56,19 @@ Async Apps / AI Pipelines / Operators
 | `terraform.tfvars.example` | Example rule and disabled create flags. |
 | `ansible/*.yml` | Standard local runners. |
 
+Declared resource addresses:
+
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Resource | `oci_objectstorage_bucket.archive` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_streaming_stream_pool.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_streaming_stream.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_streaming_stream.in_pool` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_ons_notification_topic.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_events_rule.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_sch_service_connector.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_identity_policy.access` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+
 ## Request And Deployment Flow
 
 1. Identify event producers and event types.

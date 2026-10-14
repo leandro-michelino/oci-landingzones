@@ -146,7 +146,7 @@ CDN_STATIC_ASSETS_LIFECYCLE_CONFIRM=true \
 CDN_STATIC_ASSETS_VERIFY_CLOUDFLARE=true \
   scripts/test-cdn-static-assets-lifecycle.sh \
   --var-file .leo-local/cdn-static-assets-cloudflare.tfvars \
-  --profile NON_DEFAULT_TEST \
+  --profile DEFAULT \
   --region us-ashburn-1
 ```
 
@@ -176,7 +176,7 @@ Edit the OCIDs, region, profile, and bucket name, then run:
 CDN_STATIC_ASSETS_LIFECYCLE_CONFIRM=true \
   scripts/test-cdn-static-assets-lifecycle.sh \
   --var-file .leo-local/cdn-static-assets.tfvars \
-  --profile NON_DEFAULT_TEST \
+  --profile DEFAULT \
   --region us-ashburn-1
 ```
 

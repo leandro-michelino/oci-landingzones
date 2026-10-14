@@ -33,6 +33,10 @@ subnet pattern.
 
 ## What This Deploys
 
+This is an endpoint-ready network foundation. It does not create service-specific
+private endpoints or NSGs. Those resources require a separate service blueprint
+and service-specific DNS, IAM, and connectivity validation.
+
 Everything needed for this deployment starts in this folder: Terraform composes the OCI resource
 graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere
 in the repo.
@@ -186,3 +190,9 @@ The validator checks Terraform formatting, required deployment README files, req
 architecture README sections, `terraform init -backend=false`, `terraform validate`, root
 Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
 cleanup of generated Terraform artifacts.
+
+## October 2026 Review Boundaries
+
+Provider configuration ignores only OCI-managed `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn`; customer-defined tags remain managed. Live validation covers network provisioning and cleanup, without workload packet-flow tests.
+
+The default baseline permits HTTPS egress to the regional Oracle Services Network label, matching the service gateway route. Set `enable_service_gateway_https_egress=false` when supplying narrower service-specific rules. No service endpoint or workload is created.

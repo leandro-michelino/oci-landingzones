@@ -1,3 +1,6 @@
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 resource "oci_log_analytics_namespace" "this" {
   count = var.enable_log_analytics_namespace ? 1 : 0
 

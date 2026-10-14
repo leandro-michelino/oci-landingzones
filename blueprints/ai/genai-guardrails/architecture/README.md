@@ -53,6 +53,17 @@ Security Reviewer / Audit Reader Groups
 | `terraform.tfvars.example` | Example alarm and disabled create flags. |
 | `ansible/*.yml` | Local plan, apply, and destroy wrappers. |
 
+Declared resource addresses:
+
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Resource | `oci_objectstorage_bucket.audit` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_logging_log_group.guardrails` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_sch_service_connector.audit` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_cloud_guard_detector_recipe.genai` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_monitoring_alarm.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_identity_policy.access` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+
 ## Request And Deployment Flow
 
 1. Identify the GenAI log source and metrics namespace.

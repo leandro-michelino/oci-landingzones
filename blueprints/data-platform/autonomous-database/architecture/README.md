@@ -53,6 +53,9 @@ Deploys a private Autonomous Database pattern for ATP or ADW with optional manua
 |---|---|---|
 | Resource | `oci_database_autonomous_database.this` | Declared directly in `main.tf` |
 | Resource | `oci_database_autonomous_database_backup.manual` | Declared directly in `main.tf` |
+| Resource | `oci_core_vcn.adb` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_core_subnet.adb` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_core_network_security_group.adb` | Declared in this blueprint; creation depends on its count or for_each inputs. |
 
 ## Request And Deployment Flow
 

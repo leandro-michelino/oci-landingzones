@@ -174,3 +174,9 @@ variable "freeform_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "enable_service_gateway_https_egress" {
+  description = "Add HTTPS egress from the baseline security list to the regional Oracle Services Network. Disable when supplying service-specific rules."
+  type        = bool
+  default     = true
+}

@@ -62,6 +62,19 @@ Events-based response paths, report archives, alarms, and IAM policy hand-offs.
 | `outputs.tf` | Exposes target, scanner, bucket, rule, alarm, and policy outputs. |
 | `terraform.tfvars.example` | Provides safe disabled defaults and placeholder OCIDs. |
 
+Declared resource addresses:
+
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Resource | `oci_objectstorage_bucket.reports` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_ons_notification_topic.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_cloud_guard_target.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_vulnerability_scanning_host_scan_recipe.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_vulnerability_scanning_host_scan_target.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_events_rule.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_monitoring_alarm.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_identity_policy.access` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+
 ## Request And Deployment Flow
 
 1. Security owner chooses protected scope and detector/responder recipes.

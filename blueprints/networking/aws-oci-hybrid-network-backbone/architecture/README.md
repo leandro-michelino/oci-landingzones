@@ -63,6 +63,7 @@ Direct Connect + FastConnect interconnect contract metadata for final cutover.
 | Resource | `terraform_data.oci_network_contract` | OCI network IDs and subnet/route/security contract output. |
 | Resource | `terraform_data.connectivity_contract` | IPSec-first and optional interconnect mode contract output. |
 | Resource | `terraform_data.routing_contract` | Route governance contract output. |
+| Resource | `oci_core_internet_gateway.backbone` | Declared in this blueprint; creation depends on its count or for_each inputs. |
 
 ## Request And Deployment Flow
 
@@ -80,6 +81,10 @@ Direct Connect + FastConnect interconnect contract metadata for final cutover.
 - Connection IDs, public endpoint IPs, and account identifiers belong in ignored local tfvars or secure pipeline variable stores.
 
 ## Detailed Architecture Notes
+
+- The OCI provider preserves the automatically assigned `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn` provenance tags through `ignore_defined_tags`. Other defined tags remain managed. See [Oracle provider troubleshooting](https://docs.oracle.com/en-us/iaas/Content/dev/terraform/troubleshooting.htm).
+
+- DRG attachment creation is controlled by the explicit attachment flag. Resource IDs are attachment arguments, not inputs to `count`, so a new VCN and DRG can be planned together in one step.
 
 - OCI DRG is always created as the primary network hub for this pattern.
 - Backbone VCN resources are optional so this blueprint supports extension-only and deploy-and-use models.

@@ -68,6 +68,7 @@ Deploys a Fortinet FortiGate active-passive HA pair into a hub-spoke network for
 | Resource | `oci_core_private_ip.fortigate_floating` | Optional secondary or reserved private IPs used by failover automation and route-table next hops. |
 | Resource | `oci_identity_dynamic_group.fortigate` | Optional instance-principal dynamic group matching the FortiGate nodes. |
 | Resource | `oci_identity_policy.fortigate` | Optional tenancy policy for Fortinet-documented OCI SDN connector failover permissions. |
+| Resource | `terraform_data.fortigate_input_validation` | Local validation or metadata; does not provision cloud network services. |
 
 ## Request And Deployment Flow
 
@@ -88,6 +89,8 @@ Deploys a Fortinet FortiGate active-passive HA pair into a hub-spoke network for
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
 ## Detailed Architecture Notes
+
+- The OCI provider preserves the automatically assigned `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn` provenance tags through `ignore_defined_tags`. Other defined tags remain managed. See [Oracle provider troubleshooting](https://docs.oracle.com/en-us/iaas/Content/dev/terraform/troubleshooting.htm).
 
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
 

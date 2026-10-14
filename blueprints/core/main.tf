@@ -1,3 +1,6 @@
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "compartments" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/compartments?ref=v0.2.0"
 
@@ -17,6 +20,9 @@ module "compartments" {
   freeform_tags    = var.freeform_tags
 }
 
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "tagging" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/tagging?ref=v0.2.0"
 
@@ -41,6 +47,9 @@ module "tagging" {
   freeform_tags               = var.freeform_tags
 }
 
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "logging" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/logging?ref=v0.2.0"
 
@@ -62,6 +71,9 @@ module "logging" {
   freeform_tags               = var.freeform_tags
 }
 
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "cloud_guard" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/cloud-guard?ref=v0.2.0"
 
@@ -86,6 +98,9 @@ module "cloud_guard" {
   freeform_tags               = var.freeform_tags
 }
 
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "vault" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vault?ref=v0.2.0"
 
@@ -109,6 +124,9 @@ module "vault" {
   freeform_tags               = var.freeform_tags
 }
 
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "security_zones" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/security-zones?ref=v0.2.0"
 
@@ -134,6 +152,9 @@ module "security_zones" {
   ]
 }
 
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "vss" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vss?ref=v0.2.0"
 
@@ -159,6 +180,9 @@ module "vss" {
   freeform_tags                             = var.freeform_tags
 }
 
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "budgets" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/budgets?ref=v0.2.0"
 
@@ -184,6 +208,9 @@ module "budgets" {
   freeform_tags                       = var.freeform_tags
 }
 
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "events" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/events?ref=v0.2.0"
 
@@ -204,6 +231,9 @@ module "events" {
   freeform_tags              = var.freeform_tags
 }
 
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "monitoring" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/monitoring?ref=v0.2.0"
 
@@ -223,6 +253,9 @@ module "monitoring" {
   freeform_tags        = var.freeform_tags
 }
 
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "groups" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/groups?ref=v0.2.0"
 
@@ -243,6 +276,9 @@ module "groups" {
   freeform_tags         = var.freeform_tags
 }
 
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "dynamic_groups" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/dynamic-groups?ref=v0.2.0"
 
@@ -262,6 +298,9 @@ module "dynamic_groups" {
   freeform_tags    = var.freeform_tags
 }
 
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "policies" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/policies?ref=v0.2.0"
 

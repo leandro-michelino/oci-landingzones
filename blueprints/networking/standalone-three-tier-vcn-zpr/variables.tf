@@ -80,6 +80,7 @@ variable "subnets" {
       cidr_block                 = "10.30.0.0/24"
       dns_label                  = "web"
       route_table_key            = "public"
+      security_list_keys         = ["web"]
       prohibit_internet_ingress  = false
       prohibit_public_ip_on_vnic = false
     }
@@ -98,6 +99,11 @@ variable "enable_zpr_configuration" {
   description = "Enable ZPR configuration. Optional because ZPR is a stronger guardrail and should be an intentional choice."
   type        = bool
   default     = false
+
+  validation {
+    condition     = !var.enable_zpr_configuration || (var.home_region != null && var.region == var.home_region)
+    error_message = "ZPR onboarding is tenancy-wide and requires region to equal the explicitly supplied home_region. Keep onboarding disabled in a workload-region deployment."
+  }
 }
 
 variable "enable_zpr_policies" {
@@ -118,6 +124,109 @@ variable "zpr_policies" {
       name        = "three-tier-zpr-guardrails"
       description = "Starter ZPR policy definition for customer-specific micro-segmentation."
       statements  = []
+    }
+  }
+}
+
+variable "route_tables" {
+  description = "Route tables keyed by logical name."
+  type = map(object({
+    display_name = optional(string)
+    route_rules = optional(list(object({
+      description        = optional(string)
+      destination        = optional(string)
+      destination_key    = optional(string)
+      destination_type   = optional(string, "CIDR_BLOCK")
+      network_entity_id  = optional(string)
+      network_entity_key = optional(string)
+    })), [])
+  }))
+  default = {
+    public = {
+      route_rules = [
+        {
+          description        = "Internet ingress and egress for the web tier."
+          destination        = "0.0.0.0/0"
+          network_entity_key = "igw"
+        }
+      ]
+    }
+    private = {
+      route_rules = [
+        {
+          description        = "Controlled outbound internet access."
+          destination        = "0.0.0.0/0"
+          network_entity_key = "nat"
+        },
+        {
+          description        = "Private OCI service access."
+          destination_key    = "all-services"
+          destination_type   = "SERVICE_CIDR_BLOCK"
+          network_entity_key = "sgw"
+        }
+      ]
+    }
+  }
+}
+
+variable "security_lists" {
+  description = "Security lists keyed by logical name."
+  type = map(object({
+    display_name = optional(string)
+    ingress_rules = optional(list(object({
+      description  = optional(string)
+      protocol     = string
+      source       = string
+      source_type  = optional(string, "CIDR_BLOCK")
+      stateless    = optional(bool, false)
+      tcp_options  = optional(object({ min = number, max = number }))
+      udp_options  = optional(object({ min = number, max = number }))
+      icmp_options = optional(object({ type = number, code = optional(number) }))
+    })), [])
+    egress_rules = optional(list(object({
+      description      = optional(string)
+      protocol         = string
+      destination      = string
+      destination_type = optional(string, "CIDR_BLOCK")
+      stateless        = optional(bool, false)
+      tcp_options      = optional(object({ min = number, max = number }))
+      udp_options      = optional(object({ min = number, max = number }))
+      icmp_options     = optional(object({ type = number, code = optional(number) }))
+    })), [])
+  }))
+  default = {
+    web = {
+      ingress_rules = [
+        {
+          description = "Allow HTTP to the public web tier."
+          protocol    = "6"
+          source      = "0.0.0.0/0"
+          tcp_options = { min = 80, max = 80 }
+        },
+        {
+          description = "Allow HTTPS to the public web tier."
+          protocol    = "6"
+          source      = "0.0.0.0/0"
+          tcp_options = { min = 443, max = 443 }
+        }
+      ]
+      egress_rules = [
+        {
+          description = "Allow outbound traffic by default."
+          protocol    = "all"
+          destination = "0.0.0.0/0"
+        }
+      ]
+    }
+    baseline = {
+      ingress_rules = []
+      egress_rules = [
+        {
+          description = "Allow outbound traffic by default."
+          protocol    = "all"
+          destination = "0.0.0.0/0"
+        }
+      ]
     }
   }
 }

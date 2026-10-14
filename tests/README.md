@@ -3,8 +3,10 @@
 The full test entry point for this repository is `./scripts/validate-all.sh`.
 It discovers every Terraform blueprint, validates the documentation contract,
 runs Terraform formatting and validation without remote state, syntax-checks
-Ansible playbooks, runs optional scanners when installed, and removes generated
-local artifacts.
+Ansible playbooks, runs optional scanners when installed, and preserves existing
+deployment state, saved plans, and dependency lock files. Set
+`VALIDATION_CLEAN_TERRAFORM_WORKDIRS=1` only to remove disposable `.terraform`
+provider/module work directories after validation.
 
 For normal small edits, use `./scripts/validate-changed.sh` first. It compares
 the current branch and working tree to `origin/main`, maps changed files to the
@@ -53,3 +55,32 @@ The OIC lifecycle runner was last proven end to end on 2026-06-02 with a
 disposable `STANDARDX` instance in `af-johannesburg-1`: apply completed,
 OCI CLI verification returned `ACTIVE`, destroy completed, and the post-destroy
 state check found no managed resources.
+
+## Networking lifecycle safety
+
+`scripts/test-networking-lifecycle.sh` targets OCI by default. Real runs require
+`NETWORKING_LIFECYCLE_CONFIRM=true`, an isolated disposable workspace, and a
+review of the planned services and their costs. The runner refuses existing OCI
+managed resources and does not destroy after a failed plan. Never run the
+`--all-networking` lifecycle as a cost-free validation check.
+
+## DRG attachment plan regressions
+
+The AWS/OCI backbone and Azure/OCI dual-connectivity blueprints include
+`tests/drg-attachment.tftest.hcl`. Run `terraform test` from either initialized
+blueprint. The OCI provider is mocked: these checks create no cloud resources.
+They require a newly created VCN and DRG to plan their attachment in one step
+and verify that the explicit attachment flag can disable creation.
+
+## Firewall and ZPR module regressions
+
+`modules/networking/net-firewall/tests/disabled-mode.tftest.hcl` tests disabled
+Firewall plans with and without an existing policy reference.
+`modules/networking/zpr/tests/root-scope.tftest.hcl` verifies tenancy-root IDs
+for configuration and policies. Initialize the relevant module and run
+`terraform test`. OCI is mocked; these tests create no cloud resources.
+ZPR activation is not part of the compartment-only live tests.
+
+## Last Successful Validation Comments
+
+Module definitions and blueprint module calls contain English validation metadata: date, provider, test scope, and evidence. A schema validation is not a live deployment. Lifecycle dates apply only to the explicitly recorded reduced blueprint scope. After a functional change or dependency upgrade, rerun the relevant checks before updating the success date. Preserve the previous successful date when a new run fails, and record the failure separately with its cause. Dates describe historical evidence rather than a guarantee of future compatibility.

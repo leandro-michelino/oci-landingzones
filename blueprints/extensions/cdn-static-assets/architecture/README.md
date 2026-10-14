@@ -65,6 +65,22 @@ contract for Cloudflare at OCI or an existing Cloudflare account.
 | `samples/` | Provides real lifecycle, Cloudflare hand-off, PAR-only, and Python backend broker examples. |
 | `scripts/test-cdn-static-assets-lifecycle.sh` | Runs a real create, verify, PAR curl, destroy, and cleanup test from ignored local tfvars. |
 
+Declared resource addresses:
+
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Resource | `oci_objectstorage_bucket.asset` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_objectstorage_object.sample` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_objectstorage_preauthrequest.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_objectstorage_object_lifecycle_policy.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_dns_rrset.cdn_cname` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `cloudflare_dns_record.cdn` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `cloudflare_ruleset.cache_static_assets` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `cloudflare_ruleset.origin_route` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `cloudflare_workers_script.oci_asset_proxy` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `cloudflare_workers_route.oci_asset_proxy` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_identity_policy.access` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+
 ## Request And Deployment Flow
 
 1. Application owner classifies assets as private documents or public-safe static assets.

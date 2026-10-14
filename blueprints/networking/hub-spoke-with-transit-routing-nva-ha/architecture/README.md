@@ -40,9 +40,9 @@ Adds highly available network virtual appliances and route target private IPs to
 |                  v                                                                                       |
 | [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
 |   |             |                    |                                                                   |
-|   |             |                    +--> [spoke VCN A] web -> app -> db                                 |
-|   |             |                    +--> [spoke VCN B] web -> app -> db                                 |
-|   |             |                    `--> [future spoke] same attachment contract                        |
+|   |             |                    +--> [spoke app1: web/app/db subnets]                                 |
+|   |             |                    +--> (additional spokes require explicit network inputs)                                 |
+|   |             |                    `--> (future spokes: topology extension required)                        |
 |   |                                                                                                      |
 |   `--> [NVA HA pair] -> active/standby route targets -> centralized transit inspection                   |
 |             |                                                                                            |
@@ -76,6 +76,13 @@ Adds highly available network virtual appliances and route target private IPs to
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
 ## Detailed Architecture Notes
+
+- Traffic arrows express intended topology. The default network contains one workload spoke and no application hosts. Routing, ingress permissions, DNS resolution, inspection, and failover need separate runtime acceptance tests.
+
+- Preserve OCI provenance tags `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn` in provider configuration; other defined tags remain managed.
+
+- Deployment creates the declared network/service resources. DRG attachments alone do not prove hub-to-spoke reachability, centralized NAT, symmetric return routing, or inspected transit. Review VCN ingress routes, subnet routes, DRG route tables/distributions, and security rules before treating the diagram as an operational packet path.
+- Multiple appliance instances and reserved route IPs do not configure an HA protocol, health-based failover, guest forwarding software, or route steering. Supply the appliance configuration and test failover separately.
 
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
 

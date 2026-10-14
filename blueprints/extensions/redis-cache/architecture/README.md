@@ -60,6 +60,14 @@ and secret hand-offs so Redis does not become an unmanaged side component.
 | `outputs.tf` | Exposes cluster, endpoint, alarm, secret, and policy values. |
 | `terraform.tfvars.example` | Shows safe placeholder inputs for private deployments. |
 
+Declared resource addresses:
+
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Resource | `oci_redis_redis_cluster.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_monitoring_alarm.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_identity_policy.access` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+
 ## Request And Deployment Flow
 
 1. App owner defines the cache role and durability expectations.

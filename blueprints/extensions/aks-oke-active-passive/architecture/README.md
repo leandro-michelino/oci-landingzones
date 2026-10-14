@@ -80,6 +80,12 @@ for that run.
 | Optional resource | `oci_health_checks_http_monitor.traffic_failover` | HTTP(S) health monitor used by OCI Traffic Management failover. |
 | Optional resource | `oci_dns_steering_policy.traffic_failover` | OCI DNS failover policy with OCI primary and Azure standby answers. |
 | Optional resource | `oci_dns_steering_policy_attachment.traffic_failover` | Attachment between the steering policy, DNS zone, and application FQDN. |
+| Resource | `oci_core_internet_gateway.oke` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_core_security_list.oke_endpoint` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_core_security_list.oke_node` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_core_subnet.oke_endpoint` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_core_subnet.oke_service_lb` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_core_subnet.oke_nodes` | Declared in this blueprint; creation depends on its count or for_each inputs. |
 
 ## Request And Deployment Flow
 

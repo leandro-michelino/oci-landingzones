@@ -5,8 +5,8 @@ current_user_ocid = "ocid1.user.oc1..example"
 region            = "us-ashburn-1"
 home_region       = "us-ashburn-1"
 
-# Use a non-DEFAULT profile for validation whenever possible.
-oci_config_profile = "NON_DEFAULT_TEST"
+# Use DEFAULT for local OCI execution; review costs before any apply.
+oci_config_profile = "DEFAULT"
 
 org         = "demo"
 environment = "dev"

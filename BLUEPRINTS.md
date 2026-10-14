@@ -139,7 +139,7 @@ Run `make blueprints` after adding, moving, or removing a blueprint.
 | [Standalone Private Endpoint Only VCN](blueprints/networking/standalone-private-endpoint-only/) | Creates a private-first VCN shape with private endpoint access and no public application subnet pattern. | [Architecture](blueprints/networking/standalone-private-endpoint-only/architecture/README.md) |
 | [Standalone Three-Tier VCN Custom](blueprints/networking/standalone-three-tier-vcn-custom/) | Creates a standalone three-tier workload VCN with custom CIDRs, subnets, route tables, gateways, and security lists. | [Architecture](blueprints/networking/standalone-three-tier-vcn-custom/architecture/README.md) |
 | [Standalone Three-Tier VCN Defaults](blueprints/networking/standalone-three-tier-vcn-defaults/) | Creates a simple standalone three-tier workload VCN using defaults that are useful for demos, first plans, and baseline workload networks. | [Architecture](blueprints/networking/standalone-three-tier-vcn-defaults/architecture/README.md) |
-| [Standalone Three-Tier VCN With ZPR](blueprints/networking/standalone-three-tier-vcn-zpr/) | Creates a standalone three-tier VCN with ZPR controls so micro-segmentation is built into the workload network. | [Architecture](blueprints/networking/standalone-three-tier-vcn-zpr/architecture/README.md) |
+| [Standalone Three-Tier VCN With ZPR](blueprints/networking/standalone-three-tier-vcn-zpr/) | Creates a standalone three-tier VCN with optional ZPR administration for the workload network. | [Architecture](blueprints/networking/standalone-three-tier-vcn-zpr/architecture/README.md) |
 
 ## operating-entity
 

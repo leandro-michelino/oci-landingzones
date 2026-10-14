@@ -2,7 +2,7 @@ tenancy_ocid       = "ocid1.tenancy.oc1..example"
 current_user_ocid  = "ocid1.user.oc1..example"
 region             = "us-ashburn-1"
 home_region        = "us-ashburn-1"
-oci_config_profile = "NON_DEFAULT_TEST"
+oci_config_profile = "DEFAULT"
 
 org         = "acme"
 environment = "prod"

@@ -52,6 +52,17 @@ Object Storage Audit Bucket  Audit Reader Group
 | `terraform.tfvars.example` | Safe example with all expensive and exposed resources disabled. |
 | `ansible/*.yml` | Repo-standard local plan, apply, and destroy wrappers. |
 
+Declared resource addresses:
+
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Resource | `oci_objectstorage_bucket.audit` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_logging_log_group.gateway` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_apigateway_gateway.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_apigateway_deployment.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_apigateway_usage_plan.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_identity_policy.access` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+
 ## Request And Deployment Flow
 
 1. Customer chooses whether the gateway is private or public.

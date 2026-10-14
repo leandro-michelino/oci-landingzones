@@ -40,13 +40,13 @@ Adds Zero Trust Packet Routing configuration and policies to a hub-spoke network
 |                  v                                                                                       |
 | [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
 |   |             |                    |                                                                   |
-|   |             |                    +--> [spoke VCN A] web -> app -> db                                 |
-|   |             |                    +--> [spoke VCN B] web -> app -> db                                 |
-|   |             |                    `--> [future spoke] same attachment contract                        |
+|   |             |                    +--> [spoke app1: web/app/db subnets]                                 |
+|   |             |                    +--> (additional spokes require explicit network inputs)                                 |
+|   |             |                    `--> (future spokes: topology extension required)                        |
 |   |                                                                                                      |
-|   `--> [ZPR configuration] -> security attributes -> micro-segmentation policies                         |
+|   `--> [optional tenancy-root ZPR policies] -> (security attributes assigned separately)                         |
 |                                                                                                          |
-| Pattern extension: ZPR policy decisions layer on top of hub-spoke routing.                               |
+| Pattern extension: tenancy onboarding needs the home region; workload-region tests keep ZPR disabled.                               |
 | North-south: external or service traffic enters the hub, then routes through DRG attachments to spokes.  |
 | East-west: spoke-to-spoke traffic centralizes through the DRG and any hub inspection controls.           |
 | Hand-off: hub/spoke VCN IDs, DRG IDs, attachment IDs, subnet maps, route targets, and service edge IDs.  |
@@ -74,6 +74,22 @@ Adds Zero Trust Packet Routing configuration and policies to a hub-spoke network
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
 ## Detailed Architecture Notes
+
+- Traffic arrows express intended topology. The default network contains one workload spoke and no application hosts. Routing, ingress permissions, DNS resolution, inspection, and failover need separate runtime acceptance tests.
+
+- Preserve OCI provenance tags `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn` in provider configuration; other defined tags remain managed.
+
+ZPR onboarding is tenancy-wide and only supported in the tenancy home region.
+ZPR policies must be created at tenancy root, not in the workload compartment.
+Keep both ZPR flags disabled for compartment-only network tests. The corrected
+module scope must be published in a new immutable dependency revision before
+this blueprint can consume it remotely.
+
+This blueprint does not assign security attributes to VCNs or workload resources.
+Creating a policy alone does not protect unlabeled resources. Assign approved
+attributes and test permitted and denied flows separately. See
+[Oracle ZPR onboarding](https://docs.oracle.com/en-us/iaas/Content/zero-trust-packet-routing/enable-zpr.htm)
+and [policy scope](https://docs.oracle.com/en-us/iaas/Content/zero-trust-packet-routing/create-zpr-policy.htm).
 
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
 

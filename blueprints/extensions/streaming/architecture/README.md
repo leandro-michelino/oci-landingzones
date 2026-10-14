@@ -54,6 +54,8 @@ Creates an OCI Streaming stream pool and streams, with optional KMS encryption a
 | --- | --- | --- |
 | Resource | `oci_streaming_stream_pool.this` | `Declared directly in main.tf` |
 | Resource | `oci_streaming_stream.this` | `Declared directly in main.tf` |
+| Resource | `oci_streaming_stream.in_pool` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_streaming_stream.in_compartment` | Declared in this blueprint; creation depends on its count or for_each inputs. |
 
 ## Request And Deployment Flow
 

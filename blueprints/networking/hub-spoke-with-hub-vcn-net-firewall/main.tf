@@ -1,3 +1,7 @@
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful lifecycle: 2026-10-14 | DEFAULT | sa-saopaulo-1 | apply, drift=0, destroy/API cleanup.
+# Scope: OCI network foundation only; optional services disabled; no workload packet-flow verification.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "network" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=v0.2.0"
 
@@ -14,8 +18,12 @@ module "network" {
   freeform_tags      = var.freeform_tags
 }
 
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful lifecycle: 2026-10-14 | DEFAULT | sa-saopaulo-1 | apply, drift=0, destroy/API cleanup.
+# Scope: OCI network foundation only; optional services disabled; no workload packet-flow verification.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "network_firewall" {
-  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/net-firewall?ref=v0.2.0"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/net-firewall?ref=2369fef3285b79670b842a5072a6bebf38c4796d"
 
   tenancy_ocid               = var.tenancy_ocid
   compartment_ocid           = coalesce(var.compartment_ocid, var.tenancy_ocid)
