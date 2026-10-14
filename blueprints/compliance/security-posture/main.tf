@@ -123,9 +123,9 @@ resource "oci_events_rule" "this" {
         action_type = actions.value.action_type
         is_enabled  = actions.value.is_enabled
         description = actions.value.description
-        topic_id    = coalesce(actions.value.topic_id, local.topic_id)
-        function_id = actions.value.function_id
-        stream_id   = actions.value.stream_id
+        topic_id    = upper(actions.value.action_type) == "ONS" ? (actions.value.topic_id != null ? actions.value.topic_id : local.topic_id) : null
+        function_id = upper(actions.value.action_type) == "FAAS" ? actions.value.function_id : null
+        stream_id   = upper(actions.value.action_type) == "OSS" ? actions.value.stream_id : null
       }
     }
   }

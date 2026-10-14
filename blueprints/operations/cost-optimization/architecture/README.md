@@ -189,3 +189,7 @@ optional Optimizer profiles, and an optional FinOps access policy.
   groups.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml`
   still point at the shared Terraform runner.
+
+## Budget Dependency Follow-Up
+
+The Budget dependency selects the published root-ownership fix and inherits the home-region provider. Budget ownership is tenancy root; spending targets remain separate. This administrative operation was tested with mocked providers, not created in the workload compartment. Budgets are soft limits, not an automatic spending cap.

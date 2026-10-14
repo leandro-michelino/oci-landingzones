@@ -1,5 +1,6 @@
 # Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
+# Last successful lifecycle: 2026-10-14 | DEFAULT | sa-saopaulo-1 | network-only apply, drift=0, destroy/API cleanup.
+# Scope: VCN/private subnet/empty security list/NSG/client rule only; database and backups disabled.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 resource "oci_core_vcn" "mongodb_api" {
   count = var.create_private_network ? 1 : 0
@@ -17,6 +18,7 @@ resource "oci_core_subnet" "mongodb_api" {
 
   compartment_id             = local.target_compartment_ocid
   vcn_id                     = oci_core_vcn.mongodb_api[0].id
+  security_list_ids          = [oci_core_security_list.mongodb_api[0].id]
   cidr_block                 = var.subnet_cidr_block
   display_name               = local.subnet_display_name
   dns_label                  = var.subnet_dns_label
@@ -105,6 +107,17 @@ resource "oci_identity_policy" "access" {
   name           = "${local.name_prefix}-pol-mongodb-api-access"
   description    = "Autonomous Database MongoDB API access policy for ${local.name_prefix}."
   statements     = var.policy_statements
+  defined_tags   = var.defined_tags
+  freeform_tags  = local.common_freeform_tags
+}
+
+# Security lists and NSGs are additive; do not inherit default SSH ingress.
+resource "oci_core_security_list" "mongodb_api" {
+  #checkov:skip=CKV_OCI_16:The subnet intentionally attaches an ingress-empty list; explicit NSG rules govern access and avoid default SSH exposure.
+  count          = var.create_private_network ? 1 : 0
+  compartment_id = local.target_compartment_ocid
+  vcn_id         = oci_core_vcn.mongodb_api[0].id
+  display_name   = "${local.name_prefix}-sl-database-empty"
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
 }

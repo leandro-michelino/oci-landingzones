@@ -381,3 +381,7 @@ The remaining four Networking entries completed ephemeral network tests and veri
 ### Main Publication And Complete Repository Revalidation
 
 The [October 14 repository review](../REPOSITORY-VALIDATION-20261014.md) records integration into main, immutable dependency updates, 80 blueprint schema checks, 298 Ansible syntax checks, 17 mocked regressions, and explicit AI/runtime/cost limits. Static validation coverage remains distinct from full workload deployment coverage.
+
+### CIS, Compliance, Core, And Database Configuration Review
+
+The [ten-entry October 14 follow-up](../CIS-COMPLIANCE-DATA-REVIEW-20261014.md) records corrected null-safe plans, Budget ownership/provider scope, Events target fields, immutable Core/Firewall/ZPR dependencies, and closed database subnet security lists. Two network-only lifecycles passed and were cleaned up; full CIS/regulated/database outcomes remain outside that evidence.

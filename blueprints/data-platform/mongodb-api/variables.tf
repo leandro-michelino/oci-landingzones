@@ -205,6 +205,11 @@ variable "is_free_tier" {
   description = "Create as Always Free when supported."
   type        = bool
   default     = false
+
+  validation {
+    condition     = !var.enable_mongodb_api_database || !var.is_free_tier || (var.home_region != null && var.region == var.home_region && !var.create_private_network && var.subnet_id == null && !var.create_manual_backup)
+    error_message = "Always Free Autonomous Database requires an explicitly supplied matching home_region, public access, and no manual backup. It cannot use private endpoints. Paid-mode tests require separate cost authorization."
+  }
 }
 
 variable "license_model" {

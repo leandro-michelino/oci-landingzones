@@ -196,3 +196,9 @@ The validator checks Terraform formatting, required deployment README files, req
 architecture README sections, `terraform init -backend=false`, `terraform validate`, root
 Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
 cleanup of generated Terraform artifacts.
+
+## October 2026 Item Review
+
+Core administration and optional tenancy-root ZPR onboarding/policies are outside a single workload-compartment test. ZPR remains disabled unless that separate administrative scope is explicitly authorized. The network now references the published web-only ingress and ZPR home-region guard. Attribute assignment, traffic authorization, and a zero-trust outcome are not established by provisioning the network.
+
+The OCI provider ignores only Oracle-managed provenance tags. Validation comments remain in English and separate schema/mocked checks from live provisioning.

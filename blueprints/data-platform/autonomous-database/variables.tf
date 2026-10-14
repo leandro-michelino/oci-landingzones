@@ -142,6 +142,11 @@ variable "is_free_tier" {
   description = "Create as Always Free when supported."
   type        = bool
   default     = false
+
+  validation {
+    condition     = !var.enable_autonomous_database || !var.is_free_tier || (var.home_region != null && var.region == var.home_region && !var.create_private_network && var.subnet_id == null && !var.create_manual_backup)
+    error_message = "Always Free Autonomous Database requires an explicitly supplied matching home_region, public access, and no manual backup. It cannot use private endpoints. Paid-mode tests require separate cost authorization."
+  }
 }
 variable "license_model" {
   description = "Autonomous Database license model: LICENSE_INCLUDED or BRING_YOUR_OWN_LICENSE."
@@ -192,4 +197,15 @@ variable "manual_backup_retention_period_in_days" {
   description = "Manual backup retention in days."
   type        = number
   default     = null
+}
+
+variable "allowed_client_cidrs" {
+  description = "Explicit client CIDRs permitted on the database NSG when creating the private network. Empty by default."
+  type        = set(string)
+  default     = []
+}
+variable "database_port" {
+  description = "TCP listener port permitted from allowed_client_cidrs; 1522 is the mTLS default."
+  type        = number
+  default     = 1522
 }

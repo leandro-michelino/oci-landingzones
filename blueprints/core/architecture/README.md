@@ -64,7 +64,7 @@ Creates the shared OCI foundation: compartments, tags, logging, Cloud Guard, Vau
 | Module | `vault` | `modules/security/vault @ v0.2.0` |
 | Module | `security_zones` | `modules/security/security-zones @ v0.2.0` |
 | Module | `vss` | `modules/security/vss @ v0.2.0` |
-| Module | `budgets` | `modules/governance/budgets @ v0.2.0` |
+| Module | `budgets` | `modules/governance/budgets @ 80e439cd48a4b6dce4f63e54f53a45a621236601` |
 | Module | `events` | `modules/governance/events @ v0.2.0` |
 | Module | `monitoring` | `modules/operations/monitoring @ v0.2.0` |
 | Module | `groups` | `modules/iam/groups @ v0.2.0` |

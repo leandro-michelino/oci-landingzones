@@ -39,7 +39,7 @@ in the repo.
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `core` | `blueprints/core @ v0.2.0` |
+| Module | `core` | `blueprints/core @ fffa8dae83ef178236b3187dc4ba7b82ea2a5f84` |
 
 Use `variables.tf` as the input contract, then keep real OCIDs, CIDRs, names, and enable flags in an ignored local `terraform.tfvars`.
 
@@ -215,3 +215,9 @@ The validator checks Terraform formatting, required deployment README files, req
 architecture README sections, `terraform init -backend=false`, `terraform validate`, root
 Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
 cleanup of generated Terraform artifacts.
+
+## October 2026 Item Review
+
+This is a Core preset, not an independent CIS certification. It creates compartment/IAM scaffolding and can change tenancy Audit and Cloud Guard settings. Those are outside the selected workload-compartment-only test boundary; the preset was validated with mocked providers. Review the chosen benchmark version, existing reporting region, IAM/MFA controls, and evidence independently.
+
+The OCI provider ignores only Oracle-managed provenance tags. Validation comments remain in English and separate schema/mocked checks from live provisioning.

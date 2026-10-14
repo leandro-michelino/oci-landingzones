@@ -58,7 +58,7 @@ Builds the core landing-zone foundation with stricter CIS Level 2-oriented guard
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `core` | `blueprints/core @ v0.2.0` |
+| Module | `core` | `blueprints/core @ fffa8dae83ef178236b3187dc4ba7b82ea2a5f84` |
 
 ## Request And Deployment Flow
 
@@ -96,3 +96,9 @@ These notes expand the diagram with the design details that usually matter durin
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+
+## October 2026 Item Review
+
+The Level 2 profile is an input/preset for optional Core controls, not proof that every Level 2 benchmark recommendation is enforced. Vault and scanning choices remain explicit inputs. Creating compartments, IAM, Audit settings, or Cloud Guard configuration requires separate administrative scope, even when the service itself is free.
+
+The OCI provider ignores only Oracle-managed provenance tags. Validation comments remain in English and separate schema/mocked checks from live provisioning.

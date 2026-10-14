@@ -88,3 +88,7 @@ Module definitions and blueprint module calls contain English validation metadat
 ## AI Configuration Regression Coverage
 
 The AI test files use fully mocked OCI providers. They check distinct fine-tuning/hosting cluster roles, existing-dataset namespace requirements, Streaming/Object Storage connector targets, non-truncated HTTPS gateway URLs, rejection of placeholder deployments, and home-region IAM provider selection. The complete suite now has 17 cases across 8 suites. The [October 2026 repository review](../docs/REPOSITORY-VALIDATION-20261014.md) records static, schema, mock, and publication boundaries.
+
+## Administrative And Database Regression Coverage
+
+The suite now has 35 mocked cases in 16 suites. New cases separate Budget ownership from targets, verify the home provider in Core/Healthcare/Cost Optimization, exercise Function/Streaming Events without ONS topics, test disabled APEX/database plans and secret creation/reuse, reject incompatible Always Free inputs, and keep paid databases absent from network-only plans. See the [CIS/Compliance/database review](../docs/CIS-COMPLIANCE-DATA-REVIEW-20261014.md) for exact live boundaries and cleanup evidence.

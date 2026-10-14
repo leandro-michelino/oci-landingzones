@@ -70,6 +70,8 @@ Deploys an OCI-managed MongoDB-compatible document API by creating an Autonomous
 | Resource | `oci_database_autonomous_database_backup.manual` | Creates an optional initial manual backup when enabled. |
 | Resource | `oci_identity_policy.access` | Creates optional IAM policy statements in the tenancy home region. |
 
+| Resource | `oci_core_security_list.mongodb_api` | Explicit empty security list prevents inherited default SSH ingress. |
+
 ## Request And Deployment Flow
 
 - Operator supplies tenancy, region, compartment, subnet, NSG, credential, and optional KMS or IAM values.
@@ -115,3 +117,11 @@ Deploys an OCI-managed MongoDB-compatible document API by creating an Autonomous
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+
+## October 2026 Item Review
+
+Disabled/public-mode plans now support absent private endpoint inputs. The live test created only the private VCN/subnet/NSG and its TCP 27017 client rule. No Autonomous Database, MongoDB service, backup, authentication, or driver session was created or tested. Always Free constraints include home-region placement, no private endpoint, and no manual backup; model/shape/feature availability remains separate.
+
+The OCI provider ignores only Oracle-managed provenance tags. Validation comments remain in English and separate schema/mocked checks from live provisioning.
+
+The private subnet attaches an explicit ingress/egress-empty security list instead of inheriting the VCN default SSH/ICMP rules. Security lists and NSGs are additive, so the empty list leaves ingress controlled by the explicit NSG rules. Stateful return traffic is allowed by the corresponding NSG session; application-initiated flows require separately configured egress rules.

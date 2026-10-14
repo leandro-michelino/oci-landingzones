@@ -4,10 +4,7 @@ locals {
   adb_compartment_ocid    = try(data.oci_database_autonomous_database.this[0].compartment_id, null)
   target_compartment_ocid = coalesce(var.compartment_ocid, local.adb_compartment_ocid, var.tenancy_ocid)
 
-  autonomous_database_private_endpoint_ip = coalesce(
-    var.autonomous_database_private_endpoint_ip,
-    try(data.oci_database_autonomous_database.this[0].private_endpoint_ip, null)
-  )
+  autonomous_database_private_endpoint_ip = var.autonomous_database_private_endpoint_ip != null ? var.autonomous_database_private_endpoint_ip : try(data.oci_database_autonomous_database.this[0].private_endpoint_ip, null)
 
   ords_backend_ip_addresses = distinct(compact(concat(
     tolist(var.ords_backend_ip_addresses),
@@ -19,15 +16,9 @@ locals {
   backend_set_name           = coalesce(var.backend_set_name, "${local.name_prefix}-bset-ords")
   listener_name              = coalesce(var.listener_name, "${local.name_prefix}-lis-ords")
 
-  direct_apex_url = coalesce(
-    var.apex_url,
-    try(data.oci_database_autonomous_database.this[0].connection_urls[0].apex_url, null)
-  )
+  direct_apex_url = var.apex_url != null ? var.apex_url : try(data.oci_database_autonomous_database.this[0].connection_urls[0].apex_url, null)
 
-  direct_ords_url = coalesce(
-    var.ords_url,
-    try(data.oci_database_autonomous_database.this[0].connection_urls[0].ords_url, null)
-  )
+  direct_ords_url = var.ords_url != null ? var.ords_url : try(data.oci_database_autonomous_database.this[0].connection_urls[0].ords_url, null)
 
   private_apex_url = var.apex_fqdn != null ? "https://${var.apex_fqdn}${var.apex_path}" : null
   admin_secret_id  = var.admin_secret_id != null ? var.admin_secret_id : try(oci_vault_secret.apex_admin[0].id, null)

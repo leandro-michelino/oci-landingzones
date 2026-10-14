@@ -156,3 +156,9 @@ From the repository root:
 ```
 
 The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.
+
+## October 2026 Item Review
+
+IAM policies and Budget resources use the home-region provider. Budget ownership is tenancy root; its targets track the selected workload compartment. Budgets are soft limits, not hard spending caps. Data Safe registration references an existing database and does not create one. These optional objects do not establish HIPAA or PCI DSS compliance or replace a control assessment. All administrative/Data Safe actions were mocked in this review.
+
+The OCI provider ignores only Oracle-managed provenance tags. Validation comments remain in English and separate schema/mocked checks from live provisioning.

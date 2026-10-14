@@ -205,3 +205,11 @@ From the repository root:
 ```
 
 Use `./scripts/validate-all.sh` before release work or broad shared changes.
+
+## October 2026 Item Review
+
+Disabled/public-mode plans now support absent private endpoint inputs. The optional private network creates a VCN, private subnet, and NSG. allowed_client_cidrs is empty by default; when supplied, only database_port (default mTLS 1522) is permitted. Additional tool/HTTPS flows require explicit NSG configuration. The live test created only this network and one client rule, not a database, backup, application, or connection session. Always Free requires the actual tenancy home region and cannot use private endpoints or manual backups; sizing/feature eligibility still requires a separate check.
+
+The OCI provider ignores only Oracle-managed provenance tags. Validation comments remain in English and separate schema/mocked checks from live provisioning.
+
+The private subnet attaches an explicit ingress/egress-empty security list instead of inheriting the VCN default SSH/ICMP rules. Security lists and NSGs are additive, so the empty list leaves ingress controlled by the explicit NSG rules. Stateful return traffic is allowed by the corresponding NSG session; application-initiated flows require separately configured egress rules.

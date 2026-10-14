@@ -87,3 +87,9 @@ These notes expand the diagram with the design details that usually matter durin
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+
+## October 2026 Item Review
+
+Core can change tenancy-wide administration and create child compartments. The network dependency now selects the published Firewall disabled-mode fix, so network-only plans do not require a policy when Firewall is disabled. Vault, vulnerability scanning, OS management, and Firewall are optional operational components; no SCCA accreditation or workload inspection was tested.
+
+The OCI provider ignores only Oracle-managed provenance tags. Validation comments remain in English and separate schema/mocked checks from live provisioning.

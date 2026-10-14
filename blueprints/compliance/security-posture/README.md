@@ -79,3 +79,9 @@ ansible-playbook ansible/plan.yml
 ```
 
 Review `architecture/README.md` before enabling automatic responders.
+
+## October 2026 Item Review
+
+Events actions populate only the target fields required by their action type: ONS topic, FAAS function, or OSS stream. Function and Streaming actions no longer require an unrelated ONS topic. The blueprint does not deploy remediation functions, enable tenancy Cloud Guard, or prove that scanning/alarms find and remediate issues; validate existing targets and runtime handlers separately.
+
+The OCI provider ignores only Oracle-managed provenance tags. Validation comments remain in English and separate schema/mocked checks from live provisioning.

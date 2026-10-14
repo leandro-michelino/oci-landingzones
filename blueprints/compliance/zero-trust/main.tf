@@ -2,7 +2,7 @@
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "core" {
-  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/core?ref=v0.2.0"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/core?ref=fffa8dae83ef178236b3187dc4ba7b82ea2a5f84"
 
   tenancy_ocid       = var.tenancy_ocid
   current_user_ocid  = var.current_user_ocid
@@ -42,7 +42,7 @@ module "core" {
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "network" {
-  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/standalone-three-tier-vcn-zpr?ref=v0.2.0"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/standalone-three-tier-vcn-zpr?ref=7ed3eb9b344ce7ff5cc184975ec947d511fcdace"
 
   tenancy_ocid             = var.tenancy_ocid
   current_user_ocid        = var.current_user_ocid

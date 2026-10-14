@@ -58,7 +58,7 @@ Builds the core landing-zone foundation with CIS Level 1-oriented governance, se
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `core` | `blueprints/core @ v0.2.0` |
+| Module | `core` | `blueprints/core @ fffa8dae83ef178236b3187dc4ba7b82ea2a5f84` |
 
 ## Request And Deployment Flow
 
@@ -96,3 +96,9 @@ These notes expand the diagram with the design details that usually matter durin
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+
+## October 2026 Item Review
+
+This is a Core preset, not an independent CIS certification. It creates compartment/IAM scaffolding and can change tenancy Audit and Cloud Guard settings. Those are outside the selected workload-compartment-only test boundary; the preset was validated with mocked providers. Review the chosen benchmark version, existing reporting region, IAM/MFA controls, and evidence independently.
+
+The OCI provider ignores only Oracle-managed provenance tags. Validation comments remain in English and separate schema/mocked checks from live provisioning.

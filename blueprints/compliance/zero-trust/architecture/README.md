@@ -89,3 +89,9 @@ These notes expand the diagram with the design details that usually matter durin
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+
+## October 2026 Item Review
+
+Core administration and optional tenancy-root ZPR onboarding/policies are outside a single workload-compartment test. ZPR remains disabled unless that separate administrative scope is explicitly authorized. The network now references the published web-only ingress and ZPR home-region guard. Attribute assignment, traffic authorization, and a zero-trust outcome are not established by provisioning the network.
+
+The OCI provider ignores only Oracle-managed provenance tags. Validation comments remain in English and separate schema/mocked checks from live provisioning.

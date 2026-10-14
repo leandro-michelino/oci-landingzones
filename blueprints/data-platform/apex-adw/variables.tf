@@ -468,8 +468,8 @@ variable "enable_admin_secret" {
   default     = false
 
   validation {
-    condition     = !var.enable_admin_secret || var.admin_secret_id != null || (var.vault_id != null && var.key_id != null && var.admin_secret_content_base64 != null)
-    error_message = "When enable_admin_secret is true, provide admin_secret_id or vault_id, key_id, and admin_secret_content_base64."
+    condition     = !var.enable_admin_secret || (var.admin_secret_id == null && var.vault_id != null && var.key_id != null && var.admin_secret_content_base64 != null)
+    error_message = "When enable_admin_secret=true, provide vault_id, key_id, and secret content. To reuse admin_secret_id, keep enable_admin_secret=false."
   }
 }
 

@@ -216,3 +216,7 @@ The validator checks Terraform formatting, required deployment README files,
 required architecture README sections, `terraform init -backend=false`,
 `terraform validate`, Ansible syntax, optional scanners when installed, and
 cleanup of generated Terraform artifacts.
+
+## Budget Dependency Follow-Up
+
+The Budget dependency selects the published root-ownership fix and inherits the home-region provider. Budget ownership is tenancy root; spending targets remain separate. This administrative operation was tested with mocked providers, not created in the workload compartment. Budgets are soft limits, not an automatic spending cap.

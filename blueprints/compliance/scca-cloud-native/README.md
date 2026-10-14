@@ -197,3 +197,9 @@ The validator checks Terraform formatting, required deployment README files, req
 architecture README sections, `terraform init -backend=false`, `terraform validate`, root
 Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
 cleanup of generated Terraform artifacts.
+
+## October 2026 Item Review
+
+Core can change tenancy-wide administration and create child compartments. The network dependency now selects the published Firewall disabled-mode fix, so network-only plans do not require a policy when Firewall is disabled. Vault, vulnerability scanning, OS management, and Firewall are optional operational components; no SCCA accreditation or workload inspection was tested.
+
+The OCI provider ignores only Oracle-managed provenance tags. Validation comments remain in English and separate schema/mocked checks from live provisioning.

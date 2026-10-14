@@ -207,3 +207,9 @@ From the repository root:
 ```
 
 Use `./scripts/validate-all.sh` before release work or broad shared changes.
+
+## October 2026 Item Review
+
+No database is created here. Missing optional database/IP/URL inputs now remain null and allow a disabled integration plan. enable_admin_secret explicitly controls creation independently of sensitive secret content; reuse admin_secret_id with enable_admin_secret=false. Secret material remains in deployment state and needs an encrypted, access-controlled backend. OCI Load Balancer, Vault/Secrets, ORDS reachability, DNS, certificates, APEX workspace setup, and user authentication require separate validation; no live paid resources were created.
+
+The OCI provider ignores only Oracle-managed provenance tags. Validation comments remain in English and separate schema/mocked checks from live provisioning.

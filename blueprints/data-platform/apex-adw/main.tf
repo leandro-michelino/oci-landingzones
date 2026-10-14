@@ -111,7 +111,7 @@ resource "oci_load_balancer_listener" "https" {
 }
 
 resource "oci_vault_secret" "apex_admin" {
-  count = var.enable_admin_secret && var.vault_id != null && var.key_id != null && var.admin_secret_content_base64 != null ? 1 : 0
+  count = var.enable_admin_secret ? 1 : 0
 
   compartment_id = local.target_compartment_ocid
   vault_id       = var.vault_id

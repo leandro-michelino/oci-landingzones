@@ -219,3 +219,11 @@ From the repository root:
 ```
 
 The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.
+
+## October 2026 Item Review
+
+Disabled/public-mode plans now support absent private endpoint inputs. The live test created only the private VCN/subnet/NSG and its TCP 27017 client rule. No Autonomous Database, MongoDB service, backup, authentication, or driver session was created or tested. Always Free constraints include home-region placement, no private endpoint, and no manual backup; model/shape/feature availability remains separate.
+
+The OCI provider ignores only Oracle-managed provenance tags. Validation comments remain in English and separate schema/mocked checks from live provisioning.
+
+The private subnet attaches an explicit ingress/egress-empty security list instead of inheriting the VCN default SSH/ICMP rules. Security lists and NSGs are additive, so the empty list leaves ingress controlled by the explicit NSG rules. Stateful return traffic is allowed by the corresponding NSG session; application-initiated flows require separately configured egress rules.

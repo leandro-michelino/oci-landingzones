@@ -2,7 +2,8 @@
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 resource "oci_identity_policy" "guardrails" {
-  count = length(var.guardrail_policy_statements) > 0 ? 1 : 0
+  provider = oci.home
+  count    = length(var.guardrail_policy_statements) > 0 ? 1 : 0
 
   compartment_id = local.policy_compartment_ocid
   name           = "${local.name_prefix}-pol-regulated-guardrails"
@@ -13,21 +14,23 @@ resource "oci_identity_policy" "guardrails" {
 }
 
 resource "oci_budget_budget" "this" {
-  count = var.enable_budget ? 1 : 0
+  provider = oci.home
+  count    = var.enable_budget ? 1 : 0
 
-  compartment_id        = local.target_compartment_ocid
-  target_compartment_id = local.target_compartment_ocid
-  target_type           = "COMPARTMENT"
-  reset_period          = var.budget_reset_period
-  amount                = var.budget_amount
-  display_name          = "${local.name_prefix}-bgt-regulated"
-  description           = "Regulated workload budget for ${local.name_prefix}."
-  defined_tags          = var.defined_tags
-  freeform_tags         = local.common_freeform_tags
+  compartment_id = var.tenancy_ocid
+  targets        = [local.target_compartment_ocid]
+  target_type    = "COMPARTMENT"
+  reset_period   = var.budget_reset_period
+  amount         = var.budget_amount
+  display_name   = "${local.name_prefix}-bgt-regulated"
+  description    = "Regulated workload budget for ${local.name_prefix}."
+  defined_tags   = var.defined_tags
+  freeform_tags  = local.common_freeform_tags
 }
 
 resource "oci_budget_alert_rule" "this" {
-  count = var.enable_budget && var.budget_alert_recipients != null ? 1 : 0
+  provider = oci.home
+  count    = var.enable_budget && var.budget_alert_recipients != null ? 1 : 0
 
   budget_id      = oci_budget_budget.this[0].id
   display_name   = "${local.name_prefix}-bgtal-regulated"
@@ -42,6 +45,12 @@ resource "oci_budget_alert_rule" "this" {
 }
 
 resource "oci_data_safe_target_database" "this" {
+  lifecycle {
+    precondition {
+      condition     = var.data_safe_database_type != "AUTONOMOUS_DATABASE" || var.data_safe_autonomous_database_id != null
+      error_message = "An Autonomous Data Safe target requires data_safe_autonomous_database_id for an existing database."
+    }
+  }
   count = var.enable_data_safe_target_database ? 1 : 0
 
   compartment_id = local.target_compartment_ocid

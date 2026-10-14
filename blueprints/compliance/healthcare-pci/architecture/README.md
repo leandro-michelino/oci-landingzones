@@ -87,3 +87,9 @@ Deploys a regulated landing-zone control pack with IAM guardrail policy, budget 
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+
+## October 2026 Item Review
+
+IAM policies and Budget resources use the home-region provider. Budget ownership is tenancy root; its targets track the selected workload compartment. Budgets are soft limits, not hard spending caps. Data Safe registration references an existing database and does not create one. These optional objects do not establish HIPAA or PCI DSS compliance or replace a control assessment. All administrative/Data Safe actions were mocked in this review.
+
+The OCI provider ignores only Oracle-managed provenance tags. Validation comments remain in English and separate schema/mocked checks from live provisioning.
