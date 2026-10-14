@@ -295,3 +295,9 @@ The validator checks Terraform formatting, required deployment README files, req
 architecture README sections, `terraform init -backend=false`, `terraform validate`, root
 Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
 cleanup of generated Terraform artifacts.
+
+## October 2026 Administrative Review
+
+The Budget module uses the tenancy-root owner separately from its spending targets and inherits the home-region provider. Configure `home_region` explicitly. Compartment creation, IAM, tag defaults, and tenancy Audit/Cloud Guard configuration are administrative operations; deploying Core is not a workload-compartment-only test. Keep those operations out of ephemeral tests without separate scope authorization. Audit logs are currently retained for 365 days; this wrapper is not proof of a configurable shorter retention period. Cloud Guard reporting-region changes must be reviewed against the existing tenancy configuration.
+
+The CIS profile label and provisioned scaffolding do not establish benchmark certification, workload security, or regulatory compliance. Map a specific benchmark version to configured controls and independent evidence before making those claims.

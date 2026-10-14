@@ -184,7 +184,8 @@ module "vss" {
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "budgets" {
-  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/budgets?ref=v0.2.0"
+  providers = { oci = oci.home }
+  source    = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/budgets?ref=80e439cd48a4b6dce4f63e54f53a45a621236601"
 
   tenancy_ocid                        = var.tenancy_ocid
   compartment_ocid                    = module.compartments.compartment_ids["governance"]
