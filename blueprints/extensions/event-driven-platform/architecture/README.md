@@ -56,6 +56,19 @@ Async Apps / AI Pipelines / Operators
 | `terraform.tfvars.example` | Example rule and disabled create flags. |
 | `ansible/*.yml` | Standard local runners. |
 
+Declared resource addresses:
+
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Resource | `oci_objectstorage_bucket.archive` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_streaming_stream_pool.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_streaming_stream.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_streaming_stream.in_pool` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_ons_notification_topic.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_events_rule.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_sch_service_connector.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_identity_policy.access` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+
 ## Request And Deployment Flow
 
 1. Identify event producers and event types.
@@ -84,6 +97,10 @@ Service Connector Hub is optional. Some designs send Events directly to
 Functions or Streaming. Others need a connector to archive or transform records.
 The folder supports both patterns.
 
+Connector targets must be modeled by target kind. An Object Storage connector
+target should set only bucket, namespace, and object prefix values; Notifications,
+Streaming, and Functions targets should set only their own destination IDs.
+
 The blueprint can be used as an extension-only brownfield add-on by supplying
 existing stream, topic, bucket, and function IDs.
 
@@ -91,6 +108,7 @@ existing stream, topic, bucket, and function IDs.
 
 - Do not commit customer event payloads or private function IDs.
 - Keep rule conditions and target IDs in ignored tfvars.
+- Check policy statement quota before creating Service Connector access policies.
 - Use `genai-guardrails` when event payloads contain prompt or model metadata.
 - Use Functions and Streaming extensions for service-specific runtime details.
 

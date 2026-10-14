@@ -77,6 +77,10 @@ Creates a hub VCN, DRG, spoke VCNs, hub and spoke DRG attachments, and tiered su
 
 ## Detailed Architecture Notes
 
+- The OCI provider preserves the automatically assigned `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn` provenance tags through `ignore_defined_tags`. Other defined tags remain managed. See [Oracle provider troubleshooting](https://docs.oracle.com/en-us/iaas/Content/dev/terraform/troubleshooting.htm).
+
+- Deployment creates the declared network/service resources. DRG attachments alone do not prove hub-to-spoke reachability, centralized NAT, symmetric return routing, or inspected transit. Review VCN ingress routes, subnet routes, DRG route tables/distributions, and security rules before treating the diagram as an operational packet path.
+
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
 
 - The hub VCN and DRG are created before hub and spoke DRG attachments.

@@ -65,6 +65,18 @@ and OCI-to-AWS data movement is controlled through IPSec-only connectivity.
 | `oci_ons_notification_topic.dr_alert` | Optional DR alert topic for replication and failover events. |
 | `terraform_data.*_contract` | Machine-readable contracts for network, replication, DNS, and runbooks. |
 
+Declared resource addresses:
+
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Resource | `oci_core_internet_gateway.primary` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_core_drg_attachment.primary_db` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `terraform_data.oci_network_contract` | Local validation or metadata; does not provision cloud network services. |
+| Resource | `terraform_data.connectivity_contract` | Local validation or metadata; does not provision cloud network services. |
+| Resource | `terraform_data.replication_contract` | Local validation or metadata; does not provision cloud network services. |
+| Resource | `terraform_data.dns_failover_contract` | Local validation or metadata; does not provision cloud network services. |
+| Resource | `terraform_data.runbook_contract` | Local validation or metadata; does not provision cloud network services. |
+
 ## Request And Deployment Flow
 
 1. Operator sets baseline inputs for OCI tenancy, naming, and compartment scope.

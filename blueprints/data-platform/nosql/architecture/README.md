@@ -62,6 +62,7 @@ optional cross-region replica, and deploy-and-use app networking for consumers.
 | Resource | `terraform_data.nosql_contract` | Schema/capacity/replica contract output for hand-off. |
 | Sample | `samples/*.tfvars.example` | Public-safe table-only and app-network input shapes. |
 | Script | `scripts/test-nosql-lifecycle.sh` | Repository-level real lifecycle runner for create, OCI verification, destroy, and state cleanup. |
+| Resource | `oci_core_internet_gateway.app` | Declared in this blueprint; creation depends on its count or for_each inputs. |
 
 ## Request And Deployment Flow
 

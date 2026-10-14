@@ -75,6 +75,8 @@ Adds an OCI FastConnect virtual circuit to the hub-spoke DRG for private on-prem
 
 ## Detailed Architecture Notes
 
+- The OCI provider preserves the automatically assigned `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn` provenance tags through `ignore_defined_tags`. Other defined tags remain managed. See [Oracle provider troubleshooting](https://docs.oracle.com/en-us/iaas/Content/dev/terraform/troubleshooting.htm).
+
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
 
 - The hub-spoke network exposes the DRG ID, then FastConnect creates a virtual circuit against that DRG.

@@ -107,7 +107,7 @@ terraform plan or ansible/plan.yml
 
 ## Blueprint Architecture Inventory
 
-The current catalog has 79 deployable blueprint entry points across 13
+The current catalog has 80 deployable blueprint entry points across 13
 families. Each entry point owns its local Architecture in
 `architecture/README.md`.
 
@@ -147,6 +147,7 @@ families. Each entry point owns its local Architecture in
 | extensions | [AKS + OKE Active Passive](../../blueprints/extensions/aks-oke-active-passive/) | [Architecture](../../blueprints/extensions/aks-oke-active-passive/architecture/) |
 | extensions | [EKS + OKE Active Passive](../../blueprints/extensions/eks-oke-active-passive/) | [Architecture](../../blueprints/extensions/eks-oke-active-passive/architecture/) |
 | extensions | [OCI Container Instances](../../blueprints/extensions/container-instances/) | [Architecture](../../blueprints/extensions/container-instances/architecture/) |
+| extensions | [CDN Static Asset Distribution](../../blueprints/extensions/cdn-static-assets/) | [Architecture](../../blueprints/extensions/cdn-static-assets/architecture/) |
 | extensions | [Event-Driven Application Platform](../../blueprints/extensions/event-driven-platform/) | [Architecture](../../blueprints/extensions/event-driven-platform/architecture/) |
 | extensions | [Exadata Extension](../../blueprints/extensions/exadata/) | [Architecture](../../blueprints/extensions/exadata/architecture/) |
 | extensions | [Oracle Functions Extension](../../blueprints/extensions/functions/) | [Architecture](../../blueprints/extensions/functions/architecture/) |
@@ -211,3 +212,168 @@ families. Each entry point owns its local Architecture in
   file; committed samples live under `blueprints/data-platform/nosql/samples/`.
 - For OIC, use `scripts/test-oic-lifecycle.sh` with an ignored local tfvars
   file; committed samples live under `blueprints/extensions/oic/samples/`.
+- For CDN Static Asset Distribution, use
+  `scripts/test-cdn-static-assets-lifecycle.sh` with an ignored local tfvars
+  file; committed samples live under
+  `blueprints/extensions/cdn-static-assets/samples/`.
+
+## Review On 2026-10-13
+
+All 80 blueprint entry points passed `terraform init -backend=false` and
+`terraform validate` with OCI provider 9.9.0 in an isolated source copy. Git
+dependencies were materialized from their exact cached pinned revisions:
+`v0.2.0` at `7807b64a959fd3a2ed312a3e9088055d838a03b4` and
+`4fcd80386471010d9a4a22200e47edb1956bda11`. Source URLs were replaced only
+in that disposable copy; repository module references remain pinned.
+
+This establishes local schema compatibility and documentation component
+inventory alignment. It does not establish working routes, DNS resolution,
+service availability, IAM permission, runtime integration, HA, or production
+readiness. Manual traffic-path review was prioritized for Networking.
+
+The subsequent live Networking round is scoped to profile `DEFAULT`, region
+`sa-saopaulo-1`, and the compartment explicitly selected by the operator. It
+covers the first ten Networking blueprints in catalog order, with cleanup after
+each attempt. See [Ephemeral Deployment Evidence](../EPHEMERAL-DEPLOYMENT-EVIDENCE.md)
+for provisioning, verification, and cleanup results. Cost-bearing tests,
+external-cloud deployments, and second-region tests remain pending. There is no
+cost estimate or account-wide billing verification in this review.
+
+Live tests stage the corrected provider configuration into isolated dependency
+copies while preserving the original cached pinned revisions. These tests
+validate working-tree fixes. A new immutable dependency version must be published
+and selected before composed blueprints can consume the corrected shared
+provider configuration from a remote source.
+
+### Networking Review
+
+| Blueprint | Local Schema | Remaining Architecture Or Live-Test Condition |
+| --- | --- | --- |
+| `aws-oci-hybrid-network-backbone` | Passed | AWS connectivity requires a separate AWS side; no external account deployment. VPN parameters and CPE reachability remain untested. |
+| `azure-oci-dual-connectivity` | Passed | Azure and dedicated interconnect costs require review; no Azure deployment or circuit activation. |
+| `azure-vwan-oci-drg-transit` | Passed | Azure vWAN/vHub gateways and optional interconnect require cost review and external ownership. |
+| `externally-managed-vcns` | Passed | Creates no network resources; supplied OCIDs still require live ownership and route verification. |
+| `hub-spoke-with-azure-vwan-expressroute` | Passed | FastConnect/ExpressRoute and Azure vWAN require cost review; dedicated links were not created. |
+| `hub-spoke-with-drg-and-three-tier-vcns` | Passed | Foundation only; DRG attachments do not prove inspected transit, centralized NAT, or hub return routes. |
+| `hub-spoke-with-dual-region-dr` | Passed | A second region is required by this architecture; a Sao Paulo-only test cannot prove inter-region DR. |
+| `hub-spoke-with-fortigate-ha` | Passed | Compute, boot storage, and Fortinet licensing require cost review; no instances were created. |
+| `hub-spoke-with-hub-vcn-bastion-jump-host` | Passed | Deploys managed OCI Bastion, not a Compute jump host; sessions and target access remain untested. |
+| `hub-spoke-with-hub-vcn-fastconnect-vc` | Passed | Dedicated FastConnect circuit and partner charges require approval before activation. |
+| `hub-spoke-with-hub-vcn-ipsec-vpn` | Passed | Real tunnel and routing verification requires valid CPE/IP/BGP inputs; foundation validation only. |
+| `hub-spoke-with-hub-vcn-net-appliance` | Passed | Appliance Compute, boot storage, and licensing require review; guest forwarding and HA are external. |
+| `hub-spoke-with-hub-vcn-net-firewall` | Passed | Firewall instance hours and data processing require cost review; traffic insertion must be configured separately. |
+| `hub-spoke-with-multicloud-interconnect` | Passed | Dedicated links and external cloud prerequisites require review; no external cloud or circuit was deployed. |
+| `hub-spoke-with-private-dns-split-horizon` | Passed | DNS views/zones and endpoint configuration require service-specific live query and resolution tests. |
+| `hub-spoke-with-transit-routing-nva-ha` | Passed | Compute, boot storage, and licensing require review; multiple instances alone do not establish HA or inspected transit. |
+| `hub-spoke-with-zpr-micro-segmentation` | Passed | Security attributes/policies need workload-backed connectivity tests; Terraform validation does not prove enforcement. |
+| `multi-tenancy-shared-services` | Passed | Cross-tenancy IAM needs cooperation from the other tenancy; DEFAULT-only execution cannot prove that side. |
+| `network-load-balancer` | Passed | Backend connectivity, listeners, health, and traffic/egress cost review remain pending. |
+| `regional-prod-nonprod-hubs` | Passed | Prod/nonprod routing isolation and permitted flows require live tests with agreed inputs. |
+| `standalone-private-endpoint-only` | Passed | Creates endpoint-ready networking, not service-specific private endpoints or NSGs; documentation corrected. |
+| `standalone-three-tier-vcn-custom` | Passed | Custom CIDRs, routes, and security inputs determine connectivity and exposure. |
+| `standalone-three-tier-vcn-defaults` | Passed | Corrected web-only HTTP/HTTPS security list; app/database default ingress is empty. Custom maps must include referenced keys. |
+| `standalone-three-tier-vcn-zpr` | Passed | Private subnet and security attribute enforcement need workload-backed connectivity tests. |
+
+### Other Blueprint Entry Points
+
+These entry points passed schema validation and component inventory checks.
+Their live behavior and detailed service-specific acceptance remain pending.
+
+| Blueprint | Local Schema |
+| --- | --- |
+| `blueprints/ai/agents` | Passed |
+| `blueprints/ai/ai-services` | Passed |
+| `blueprints/ai/azure-oci-ai-gateway` | Passed |
+| `blueprints/ai/document-intelligence` | Passed |
+| `blueprints/ai/embedding-pipeline` | Passed |
+| `blueprints/ai/genai-fine-tuning` | Passed |
+| `blueprints/ai/genai-gateway` | Passed |
+| `blueprints/ai/genai-guardrails` | Passed |
+| `blueprints/ai/genai-private` | Passed |
+| `blueprints/ai/multi-agent` | Passed |
+| `blueprints/cis/level1` | Passed |
+| `blueprints/cis/level2` | Passed |
+| `blueprints/compliance/healthcare-pci` | Passed |
+| `blueprints/compliance/scca-cloud-native` | Passed |
+| `blueprints/compliance/security-posture` | Passed |
+| `blueprints/compliance/zero-trust` | Passed |
+| `blueprints/core` | Passed |
+| `blueprints/data-platform/apex-adw` | Passed |
+| `blueprints/data-platform/autonomous-database` | Passed |
+| `blueprints/data-platform/mongodb-api` | Passed |
+| `blueprints/data-platform/mysql-heatwave` | Passed |
+| `blueprints/data-platform/nosql` | Passed |
+| `blueprints/data-platform/oci-aws-mysql-heatwave-dr` | Passed |
+| `blueprints/data-platform/opensearch` | Passed |
+| `blueprints/data-platform/postgresql` | Passed |
+| `blueprints/data-platform/private-data-platform` | Passed |
+| `blueprints/devops/oci-devops-pipeline` | Passed |
+| `blueprints/disaster-recovery/aws-oci-cross-cloud-dr` | Passed |
+| `blueprints/disaster-recovery/azure-oci-cross-cloud-dr` | Passed |
+| `blueprints/disaster-recovery/fsdr` | Passed |
+| `blueprints/extensions/aks-oke-active-passive` | Passed |
+| `blueprints/extensions/apigw` | Passed |
+| `blueprints/extensions/cdn-static-assets` | Passed |
+| `blueprints/extensions/container-instances` | Passed |
+| `blueprints/extensions/digital-assistant` | Passed |
+| `blueprints/extensions/eks-oke-active-passive` | Passed |
+| `blueprints/extensions/event-driven-platform` | Passed |
+| `blueprints/extensions/exadata` | Passed |
+| `blueprints/extensions/functions` | Passed |
+| `blueprints/extensions/oac` | Passed |
+| `blueprints/extensions/observability` | Passed |
+| `blueprints/extensions/oic` | Passed |
+| `blueprints/extensions/oke-service-mesh` | Passed |
+| `blueprints/extensions/oke` | Passed |
+| `blueprints/extensions/redis-cache` | Passed |
+| `blueprints/extensions/streaming` | Passed |
+| `blueprints/extensions/waf` | Passed |
+| `blueprints/identity/cis-basic` | Passed |
+| `blueprints/identity/custom-identity-domain` | Passed |
+| `blueprints/identity/new-identity-domain` | Passed |
+| `blueprints/industry/secure-desktops` | Passed |
+| `blueprints/industry/telco-cloud-native` | Passed |
+| `blueprints/operating-entity` | Passed |
+| `blueprints/operating-entity/multi-operating-entities` | Passed |
+| `blueprints/operating-entity/workload-vending` | Passed |
+| `blueprints/operations/cost-optimization` | Passed |
+
+### Changes And Evidence
+
+- All 298 Ansible playbooks passed syntax checks. TFLint, Terraform formatting, repository contracts, and Markdown links passed.
+- Regression checks confirmed state/plan/lock preservation, existing-state refusal, no destroy after a failed plan, and cleanup after a failed apply.
+- A Terraform console assertion confirmed that only web receives default HTTP/HTTPS ingress.
+- Separate web ingress from app/database ingress in the default three-tier VCN.
+- Clarify that the private-endpoint-only foundation creates neither service-specific private endpoints nor NSGs.
+- Clarify routing and HA responsibilities in hub, firewall, and NVA diagrams.
+- Require OCI provider 9.9.x for the validated GenAI private endpoint baseline.
+- Preserve deployment state, saved plans, and dependency locks during validation cleanup.
+- Guard real Networking lifecycle runs against existing OCI managed resources and prevent destroy after a failed plan.
+- Reconcile exact resource addresses in 30 architecture component tables.
+- Align CDN examples and commands with the requested `DEFAULT` profile.
+
+Raw per-blueprint validation results and private execution logs are held locally
+in `.leo-local/architecture-review-20261013/`. They are not deployment evidence.
+
+Before any paid test, review the current [Oracle Cloud price list](https://www.oracle.com/cloud/price-list/),
+[Network Firewall pricing](https://www.oracle.com/cloud/networking/network-firewall/pricing/),
+and [FastConnect pricing](https://www.oracle.com/cloud/networking/fastconnect/pricing/)
+with the actual service inputs and duration.
+
+## Networking Follow-Up On 2026-10-14
+
+Catalog items 11 through 20 completed their approved OCI lifecycle modes with
+no-change drift checks and verified teardown in Sao Paulo. This includes a
+private NLB with an empty TCP backend set/listener and separate prod/nonprod
+network foundations. Firewall, Compute appliances, dedicated circuits, private
+DNS, ZPR activation, and external-tenancy integrations remained disabled.
+
+The follow-up corrected a stale Firewall module pin, the ZPR tenancy-root scope
+and home-region prerequisite, automatic tag handling, and diagram descriptions
+that implied workloads, additional spokes, or cross-tenancy connections not
+created by the default blueprint. See [the per-item evidence](../EPHEMERAL-DEPLOYMENT-EVIDENCE.md#networking-items-11-through-20-2026-10-14)
+for exact tested modes, remaining limits, and cleanup checks.
+
+### Networking Completion, October 14, 2026
+
+The remaining four Networking entries completed ephemeral network tests and verified cleanup. All 24 catalog entries are now reviewed, with paid/external/global dependencies and packet-flow limits explicitly retained in the [deployment evidence](../EPHEMERAL-DEPLOYMENT-EVIDENCE.md#networking-items-21-through-24-october-14-2026). This is catalog review coverage, not full end-to-end deployment coverage.

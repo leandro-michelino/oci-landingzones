@@ -40,9 +40,9 @@ Adds an OCI IPSec VPN and customer-premises equipment definition to the hub-spok
 |                  v                                                                                       |
 | [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
 |   |             |                    |                                                                   |
-|   |             |                    +--> [spoke VCN A] web -> app -> db                                 |
-|   |             |                    +--> [spoke VCN B] web -> app -> db                                 |
-|   |             |                    `--> [future spoke] same attachment contract                        |
+|   |             |                    +--> [spoke app1: web/app/db subnets]                                 |
+|   |             |                    +--> (additional spokes require explicit network inputs)                                 |
+|   |             |                    `--> (future spokes: topology extension required)                        |
 |   |                                                                                                      |
 |   `--> (customer network) -> [CPE] -> [IPSec tunnels] -> DRG                                             |
 |                                                                                                          |
@@ -74,6 +74,10 @@ Adds an OCI IPSec VPN and customer-premises equipment definition to the hub-spok
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
 ## Detailed Architecture Notes
+
+- Traffic arrows express intended topology. The default network contains one workload spoke and no application hosts. Routing, ingress permissions, DNS resolution, inspection, and failover need separate runtime acceptance tests.
+
+- Preserve OCI provenance tags `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn` in provider configuration; other defined tags remain managed.
 
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
 

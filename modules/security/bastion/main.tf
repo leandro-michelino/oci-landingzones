@@ -1,3 +1,6 @@
+# Last successful validation: 2026-10-14 | Terraform init/validate | oracle/oci 9.9.0.
+# Scope: isolated module schema validation; no live apply or traffic verification.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md (module validation metadata).
 resource "oci_bastion_bastion" "this" {
   count = var.enable_bastion ? 1 : 0
 

@@ -71,6 +71,7 @@ route domains.
 | Resource | `terraform_data.transit_contract` | CIDR segmentation and path preference contract output. |
 | Resource | `terraform_data.dns_contract` | Optional DNS forwarding and probe contract output. |
 | Resource | `terraform_data.runbook_contract` | Failover/failback operational sequence output. |
+| Resource | `oci_core_internet_gateway.primary` | Declared in this blueprint; creation depends on its count or for_each inputs. |
 
 ## Request And Deployment Flow
 
@@ -88,6 +89,8 @@ route domains.
 - Circuit IDs, public IP endpoints, and OCIDs must stay in ignored local tfvars or secure pipeline variables.
 
 ## Detailed Architecture Notes
+
+- The OCI provider preserves the automatically assigned `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn` provenance tags through `ignore_defined_tags`. Other defined tags remain managed. See [Oracle provider troubleshooting](https://docs.oracle.com/en-us/iaas/Content/dev/terraform/troubleshooting.htm).
 
 - OCI remains primary by contract (`oci_is_primary=true`) for this blueprint variant.
 - `connectivity_mode=interconnect` enforces both FastConnect and ExpressRoute IDs.

@@ -1,3 +1,6 @@
+# Last successful validation: 2026-10-14 | Terraform init/validate | oracle/oci 9.9.0.
+# Scope: isolated module schema validation; no live apply or traffic verification.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md (module validation metadata).
 resource "oci_vulnerability_scanning_host_scan_recipe" "this" {
   for_each = local.host_scan_recipes
 

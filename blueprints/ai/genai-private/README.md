@@ -32,6 +32,10 @@ Deploys a private OCI Generative AI endpoint pattern with optional archive bucke
 
 ## What This Deploys
 
+Use OCI provider 9.9.x, the validated baseline for this blueprint. Provider
+8.21.0 does not register the Generative AI private endpoint resource, even though
+older generated documentation lists it. Validate provider support before planning.
+
 Everything needed for this deployment starts in this folder: Terraform composes the OCI resource graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere in the repo.
 
 | Kind | Name | Source Or Role |

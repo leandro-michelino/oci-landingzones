@@ -33,6 +33,11 @@ demos, first plans, and baseline workload networks.
 
 ## What This Deploys
 
+The default web subnet alone uses the `web` security list with public HTTP/HTTPS
+ingress. App and database subnets use `baseline` with no ingress rules. Supply
+explicit approved rules for application and database connectivity. If overriding
+`security_lists`, include the `web` key or override the subnet key assignments.
+
 Everything needed for this deployment starts in this folder: Terraform composes the OCI resource
 graph, while the local Ansible files provide the same plan/apply/destroy rhythm everywhere
 in the repo.
@@ -184,3 +189,7 @@ The validator checks Terraform formatting, required deployment README files, req
 architecture README sections, `terraform init -backend=false`, `terraform validate`, root
 Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
 cleanup of generated Terraform artifacts.
+
+## October 2026 Review Boundaries
+
+Provider configuration ignores only OCI-managed `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn`; customer-defined tags remain managed. Live validation covers network provisioning and cleanup, without workload packet-flow tests.

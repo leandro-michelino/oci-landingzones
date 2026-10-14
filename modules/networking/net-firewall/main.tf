@@ -1,3 +1,6 @@
+# Last successful validation: 2026-10-14 | Terraform init/validate | oracle/oci 9.9.0.
+# Scope: isolated module schema validation; no live apply or traffic verification.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md (module validation metadata).
 resource "oci_network_firewall_network_firewall_policy" "this" {
   count = var.enable_network_firewall && var.network_firewall_policy_id == null ? 1 : 0
 

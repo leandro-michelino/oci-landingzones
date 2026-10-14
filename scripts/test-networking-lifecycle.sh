@@ -14,7 +14,12 @@ Purpose:
   attempts for selected providers.
 
 Provider values:
-  oci,azure,aws
+  oci,azure,aws (OCI only by default)
+
+Safety:
+  Set NETWORKING_LIFECYCLE_CONFIRM=true only for an isolated disposable
+  workspace after reviewing costs. Existing OCI state must contain no managed
+  resources. A failed plan never triggers destroy.
 
 Examples:
   scripts/test-networking-lifecycle.sh --blueprint blueprints/networking/aws-oci-hybrid-network-backbone --providers oci,aws
@@ -24,7 +29,7 @@ USAGE
 
 blueprint=""
 all_networking="false"
-providers_csv="oci,azure,aws"
+providers_csv="oci"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -63,7 +68,10 @@ if [[ "$all_networking" != "true" && -z "$blueprint" ]]; then
 fi
 
 if [[ "$all_networking" == "true" ]]; then
-  mapfile -t blueprints < <(find "$REPO_ROOT/blueprints/networking" -mindepth 1 -maxdepth 1 -type d | sort)
+  blueprints=()
+  while IFS= read -r networking_dir; do
+    blueprints+=("$networking_dir")
+  done < <(find "$REPO_ROOT/blueprints/networking" -mindepth 1 -maxdepth 1 -type d | sort)
 else
   if [[ "$blueprint" != /* ]]; then
     blueprint="$REPO_ROOT/$blueprint"
@@ -73,6 +81,11 @@ else
     exit 1
   fi
   blueprints=("$blueprint")
+fi
+
+if [[ "${NETWORKING_LIFECYCLE_CONFIRM:-false}" != "true" ]]; then
+  echo "ERROR: real lifecycle requires NETWORKING_LIFECYCLE_CONFIRM=true and reviewed costs in an isolated disposable workspace." >&2
+  exit 1
 fi
 
 IFS=',' read -r -a providers <<< "$providers_csv"
@@ -120,6 +133,20 @@ run_provider_lifecycle() {
     return 0
   fi
 
+  if [[ "$provider" == "oci" ]]; then
+    local existing_state
+    local state_rc=0
+    existing_state="$(terraform -chdir="$bp" state list 2>&1)" || state_rc=$?
+    if [[ $state_rc -eq 0 && -n "$existing_state" ]]; then
+      echo "ERROR: refusing lifecycle in a workspace with existing managed resources: ${bp#$REPO_ROOT/}" >&2
+      return 1
+    fi
+    if [[ $state_rc -ne 0 && "$existing_state" != *"No state file was found"* ]]; then
+      echo "ERROR: cannot establish that the OCI test workspace is empty: ${bp#$REPO_ROOT/}" >&2
+      return 1
+    fi
+  fi
+
   echo "==> [$provider] ${bp#$REPO_ROOT/}: plan"
   set +e
   run_playbook "$plan"
@@ -147,7 +174,7 @@ run_provider_lifecycle() {
     set -e
   else
     echo "==> [$provider] ${bp#$REPO_ROOT/}: apply skipped because plan failed"
-    apply_rc=4
+    return "$plan_rc"
   fi
 
   echo "==> [$provider] ${bp#$REPO_ROOT/}: destroy (always after apply attempt)"

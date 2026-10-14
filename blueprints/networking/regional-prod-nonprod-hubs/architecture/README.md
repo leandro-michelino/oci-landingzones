@@ -65,6 +65,8 @@ Creates separate prod and nonprod hub-spoke networks in the same region with dis
 
 ## Detailed Architecture Notes
 
+- Preserve OCI provenance tags `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn` in provider configuration; other defined tags remain managed.
+
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
 
 - Production and nonproduction networks are separate hub-spoke module instances in the same region.

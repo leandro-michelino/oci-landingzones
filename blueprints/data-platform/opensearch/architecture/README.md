@@ -52,6 +52,17 @@ Admins / Index Writers / Read-Only Consumers
 | `ansible/*.yml` | Standard local runners. |
 | `scripts/test-opensearch-lifecycle.sh` | Repository-level real lifecycle runner for create, OCI verification, destroy, and state cleanup. |
 
+Declared resource addresses:
+
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Resource | `oci_core_vcn.opensearch` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_core_subnet.opensearch` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_core_network_security_group.opensearch` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_objectstorage_bucket.snapshots` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_opensearch_opensearch_cluster.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_identity_policy.access` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+
 ## Request And Deployment Flow
 
 1. Confirm the workload: search, logs, RAG, vectors, or mixed use.

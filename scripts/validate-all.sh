@@ -11,28 +11,21 @@ export ANSIBLE_REMOTE_TEMP="${ANSIBLE_REMOTE_TEMP:-${ANSIBLE_LOCAL_TEMP}/remote}
 mkdir -p "$ANSIBLE_LOCAL_TEMP" "$ANSIBLE_REMOTE_TEMP"
 
 cleanup_generated_artifacts() {
+  # Validation must preserve deployment state, saved plans, and dependency locks.
+  # Only disposable provider/module work directories may be removed explicitly.
   if [[ "${VALIDATION_CLEAN_TERRAFORM_WORKDIRS:-0}" == "1" ]]; then
-    find "$REPO_ROOT" -name ".terraform" -type d -prune -exec rm -rf {} +
-    find "$REPO_ROOT" -name ".terraform.lock.hcl" -type f -delete
+    find "$REPO_ROOT/blueprints" "$REPO_ROOT/modules" \
+      -name ".terraform" -type d -prune -exec rm -rf {} +
   fi
-
-  find "$REPO_ROOT" \
-    \( -name "terraform.tfstate" \
-    -o -name "terraform.tfstate.backup" \
-    -o -name "tfplan" \
-    -o -name "tfplan.*" \
-    -o -name "*.tfplan" \
-    -o -name ".DS_Store" \) \
-    -type f -delete
 }
 
 trap cleanup_generated_artifacts EXIT
 
 echo "==> Terraform cache: TF_PLUGIN_CACHE_DIR=${TF_PLUGIN_CACHE_DIR}"
 if [[ "${VALIDATION_CLEAN_TERRAFORM_WORKDIRS:-0}" == "1" ]]; then
-  echo "==> Cleanup mode: full (.terraform and .terraform.lock.hcl will be removed)"
+  echo "==> Cleanup mode: provider/module workdirs only (state, plans, and locks preserved)"
 else
-  echo "==> Cleanup mode: fast (keeping .terraform and .terraform.lock.hcl for reuse)"
+  echo "==> Cleanup mode: fast (preserving existing local artifacts)"
 fi
 
 "$REPO_ROOT/scripts/check-repo-contracts.sh"

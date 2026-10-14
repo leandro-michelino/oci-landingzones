@@ -101,6 +101,8 @@ mapped to OCI spoke VCNs for route governance.
 
 ## Detailed Architecture Notes
 
+- The OCI provider preserves the automatically assigned `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn` provenance tags through `ignore_defined_tags`. Other defined tags remain managed. See [Oracle provider troubleshooting](https://docs.oracle.com/en-us/iaas/Content/dev/terraform/troubleshooting.htm).
+
 - OCI remains the hub-spoke owner: the DRG attaches to the hub and each spoke VCN.
 - Azure vWAN is explicit: Azure VNets connect to the Virtual Hub instead of being modeled as generic remote CIDRs.
 - ExpressRoute Gateway is the Azure transit edge for the private interconnect path.

@@ -1,3 +1,6 @@
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "core" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/core?ref=v0.2.0"
 
@@ -35,6 +38,9 @@ module "core" {
   )
 }
 
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "network" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/standalone-three-tier-vcn-zpr?ref=v0.2.0"
 

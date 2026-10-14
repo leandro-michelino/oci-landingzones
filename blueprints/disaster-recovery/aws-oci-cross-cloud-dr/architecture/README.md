@@ -64,6 +64,7 @@ without-interconnect operation modes.
 | Resource | `terraform_data.connectivity_contract` | Connectivity mode contract including interconnect IDs when provided. |
 | Resource | `terraform_data.dns_failover_contract` | DNS failover runbook contract for primary/standby cutover. |
 | Resource | `terraform_data.runbook_contract` | Runbook metadata for drill cadence and recovery targets. |
+| Resource | `oci_core_internet_gateway.primary` | Declared in this blueprint; creation depends on its count or for_each inputs. |
 
 ## Request And Deployment Flow
 

@@ -73,6 +73,10 @@ Deploys a private OCI Generative AI endpoint pattern with optional archive bucke
 
 ## Operational Boundaries
 
+Use OCI provider 9.9.x, the validated baseline for this blueprint. Provider
+8.21.0 does not register the Generative AI private endpoint resource, even though
+older generated documentation lists it. Validate provider support before planning.
+
 - Keep customer-specific OCIDs, CIDRs, DNS names, endpoints, contacts, and secrets in ignored local tfvars or approved pipeline variables.
 - Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
 - Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.

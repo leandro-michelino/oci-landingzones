@@ -52,6 +52,17 @@ IAM controls callers, service accounts, and bucket access.
 | `terraform.tfvars.example` | Service-selection example with create flags disabled. |
 | `ansible/*.yml` | Standard local runners. |
 
+Declared resource addresses:
+
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Resource | `oci_objectstorage_bucket.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_ai_document_project.document` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_ai_language_project.language` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_ai_vision_project.vision` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_ai_vision_vision_private_endpoint.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_identity_policy.access` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+
 ## Request And Deployment Flow
 
 1. Choose the pretrained service capabilities needed.

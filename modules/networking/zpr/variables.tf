@@ -4,7 +4,7 @@ variable "tenancy_ocid" {
 }
 
 variable "compartment_ocid" {
-  description = "Parent compartment OCID for resources managed by this module."
+  description = "Workload compartment context; ZPR configuration and policies are tenancy-root resources."
   type        = string
 }
 
@@ -40,7 +40,7 @@ variable "cis_level" {
 }
 
 variable "enable_zpr_configuration" {
-  description = "Create or manage the ZPR configuration status in the compartment."
+  description = "Onboard or manage ZPR at tenancy root. Use the tenancy home-region provider for configuration."
   type        = bool
   default     = false
 }

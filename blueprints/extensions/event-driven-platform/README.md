@@ -50,6 +50,21 @@ For extension-only use, supply existing compartment, stream, topic, function,
 bucket, and IAM values. For base-plus-extension use, deploy Core, Networking,
 and optional Functions first, then enable the specific async resources here.
 
+## Deployment Notes
+
+- Leave `retention_in_hours` unset unless the tenancy service limits and region
+  have been checked. Some test tenancies reject explicit low retention values.
+- Connector target fields are target-specific. Object Storage targets use
+  `namespace`, `bucket`, and `object_name_prefix`; notification targets use
+  `topic_id`; stream targets use `stream_id`; function targets use
+  `function_id`.
+- Events rules can target Notifications without a stream. ONS-only actions
+  should not require `stream_id`.
+- Service Connector Hub needs IAM statements for its source and target services.
+  Check the policy statement quota before enabling `policy_statements` in
+  crowded tenancies.
+- OCI-managed `Oracle-Tags` are preserved when no `defined_tags` are supplied.
+
 ## Outputs
 
 | Output | Meaning |

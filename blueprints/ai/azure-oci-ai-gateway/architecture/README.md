@@ -77,6 +77,8 @@ OpenAI with explicit routing policies for region, cost, and data residency.
 | Resource | `terraform_data.connectivity_contract` | Encodes interconnect versus no-interconnect operating mode. |
 | Resource | `terraform_data.routing_contract` | Encodes route decisions and residency metadata. |
 | Resource | `terraform_data.azure_contract` | Stores Azure-side hand-off metadata for operations. |
+| Resource | `oci_core_internet_gateway.gateway` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `terraform_data.oci_network_contract` | Local validation or metadata; does not provision cloud network services. |
 
 ## Request And Deployment Flow
 

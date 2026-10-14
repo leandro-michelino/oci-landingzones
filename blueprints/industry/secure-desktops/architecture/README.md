@@ -79,6 +79,14 @@ For Terraform/API-created Windows BYOL pools, this blueprint adds the immutable 
 | `outputs.tf` | Exposes desktop pool, state, active count, alarm, and policy identifiers. |
 | `terraform.tfvars.example` | Shows safe placeholder values for image and private network inputs. |
 
+Declared resource addresses:
+
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Resource | `oci_desktops_desktop_pool.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_monitoring_alarm.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_identity_policy.access` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+
 ## Request And Deployment Flow
 
 1. End-user population and data classification are confirmed.

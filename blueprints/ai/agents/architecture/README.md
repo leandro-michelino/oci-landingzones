@@ -72,6 +72,18 @@ All expensive or externally visible resources are disabled by default.
 | `outputs.tf` | Exposes bucket names, knowledge base, data source, agent, endpoint, and policy identifiers. |
 | `terraform.tfvars.example` | Shows safe placeholder values for extension-only and full deployment paths. |
 
+Declared resource addresses:
+
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Resource | `oci_objectstorage_bucket.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_generative_ai_agent_knowledge_base.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_generative_ai_agent_data_source.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_generative_ai_agent_data_ingestion_job.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_generative_ai_agent_agent.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_generative_ai_agent_agent_endpoint.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_identity_policy.access` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+
 ## Request And Deployment Flow
 
 1. Data owners approve document locations and prefixes.

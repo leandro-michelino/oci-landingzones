@@ -1,3 +1,6 @@
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 data "oci_objectstorage_namespace" "this" {
   count          = var.create_lakehouse_bucket ? 1 : 0
   compartment_id = var.tenancy_ocid

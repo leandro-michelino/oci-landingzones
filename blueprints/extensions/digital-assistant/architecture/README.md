@@ -63,6 +63,7 @@ optional endpoint attachment, and clear operational hand-off contracts.
 | Resource | `oci_identity_policy.access` | Optional policy shell for ODA administrators and integration callers. |
 | Resource | `terraform_data.oda_network_contract` | Network output contract for downstream wiring. |
 | Resource | `terraform_data.oda_contract` | ODA operational contract for access and endpoint metadata. |
+| Resource | `oci_core_internet_gateway.oda` | Declared in this blueprint; creation depends on its count or for_each inputs. |
 
 ## Request And Deployment Flow
 

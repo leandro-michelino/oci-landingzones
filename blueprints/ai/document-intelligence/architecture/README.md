@@ -53,6 +53,15 @@ Downstream App / Data Catalog / Analytics
 | `terraform.tfvars.example` | Disabled-by-default example values. |
 | `ansible/*.yml` | Standard local runners. |
 
+Declared resource addresses:
+
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Resource | `oci_objectstorage_bucket.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_ai_document_project.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_events_rule.intake` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_identity_policy.access` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+
 ## Request And Deployment Flow
 
 1. Confirm document types and target output schema.
@@ -85,6 +94,10 @@ inputs that could not be processed.
 The handler Function is supplied as an OCID so teams can pair this blueprint
 with the existing Oracle Functions extension or with an externally managed
 function app.
+
+The Document Understanding project is optional because project quotas vary by
+tenancy and region. A smoke test can create only the intake, output, and failed
+buckets; a full deployment should enable the project once quota is confirmed.
 
 ## Operational Boundaries
 

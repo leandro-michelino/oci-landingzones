@@ -34,9 +34,9 @@ Creates a straightforward standalone three-tier workload VCN using opinionated d
 | [Workload VCN]                                                                                           |
 |         |-- [public web subnet]  -> route table -> Internet Gateway when enabled                         |
 |         |-- [private app subnet] -> route table -> NAT Gateway / Service Gateway                         |
-|         `-- [private db subnet]  -> route table -> private east-west only                                |
+|         `-- [private db subnet]  -> route table -> NAT Gateway / Service Gateway                                |
 |              |                                                                                           |
-|              +--> [security lists / NSGs] gate tier-to-tier traffic                                      |
+|              +--> [security lists] gate traffic; (workload NSGs supplied separately)                                      |
 |              +--> [gateway set] IGW / NAT / SGW according to blueprint variables                         |
 |                                                                                                          |
 | Default stance: opinionated CIDRs, default subnet tiers, and default gateway behavior are supplied for   |
@@ -69,6 +69,8 @@ Creates a straightforward standalone three-tier workload VCN using opinionated d
 
 ## Detailed Architecture Notes
 
+- The public web subnet uses the `web` security list for HTTP/HTTPS ingress. App and database subnets use `baseline`, which has no ingress rules by default. Add only approved application-to-database flows through explicit inputs. Custom security list maps must include every key referenced by the subnet map.
+
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
 
 - This VCN creates a simple web/app/database tier pattern with Internet Gateway, NAT Gateway, and Service Gateway enabled.
@@ -90,3 +92,7 @@ These notes expand the diagram with the design details that usually matter durin
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+
+## October 2026 Review Boundaries
+
+Provider configuration ignores only OCI-managed `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn`; customer-defined tags remain managed. Live validation covers network provisioning and cleanup, without workload packet-flow tests.

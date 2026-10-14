@@ -1,3 +1,6 @@
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "tagging" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/tagging?ref=v0.2.0"
 
@@ -23,6 +26,9 @@ module "tagging" {
   freeform_tags               = local.common_freeform_tags
 }
 
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "budgets" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/budgets?ref=v0.2.0"
 
@@ -47,6 +53,9 @@ module "budgets" {
   freeform_tags                       = local.common_freeform_tags
 }
 
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "notifications" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/events?ref=v0.2.0"
 
@@ -66,6 +75,9 @@ module "notifications" {
   freeform_tags              = local.common_freeform_tags
 }
 
+# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Scope: schema validation only; full live lifecycle not verified.
+# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "monitoring" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/monitoring?ref=v0.2.0"
 

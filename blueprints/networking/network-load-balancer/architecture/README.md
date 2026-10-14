@@ -65,6 +65,16 @@ registrations, health checks, listeners, source preservation options, and IAM.
 | `outputs.tf` | Exposes NLB ID, IPs, backend set names, listeners, and policy output. |
 | `terraform.tfvars.example` | Shows a safe private TCP listener example. |
 
+Declared resource addresses:
+
+| Kind | Name | Source Or Role |
+| --- | --- | --- |
+| Resource | `oci_network_load_balancer_network_load_balancer.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_network_load_balancer_backend_set.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_network_load_balancer_backend.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_network_load_balancer_listener.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_identity_policy.access` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+
 ## Request And Deployment Flow
 
 1. Workload owner identifies protocol, port, and backend targets.
@@ -83,6 +93,8 @@ registrations, health checks, listeners, source preservation options, and IAM.
 - NSGs and route tables remain the primary network controls around targets.
 
 ## Detailed Architecture Notes
+
+- Preserve OCI provenance tags `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn` in provider configuration; other defined tags remain managed.
 
 - Backend sets and listeners are map-driven so multiple protocols can be
   modeled without new files.

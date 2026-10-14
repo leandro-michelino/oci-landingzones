@@ -40,9 +40,9 @@ Adds OCI Network Firewall in the hub VCN firewall subnet for centralized north-s
 |                  v                                                                                       |
 | [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
 |   |             |                    |                                                                   |
-|   |             |                    +--> [spoke VCN A] web -> app -> db                                 |
-|   |             |                    +--> [spoke VCN B] web -> app -> db                                 |
-|   |             |                    `--> [future spoke] same attachment contract                        |
+|   |             |                    +--> [spoke app1: web/app/db subnets]                                 |
+|   |             |                    +--> (additional spokes require explicit network inputs)                                 |
+|   |             |                    `--> (future spokes: topology extension required)                        |
 |   |                                                                                                      |
 |   `--> [OCI Network Firewall] -> firewall policy -> inspected north-south/east-west paths                |
 |                                                                                                          |
@@ -58,7 +58,7 @@ Adds OCI Network Firewall in the hub VCN firewall subnet for centralized north-s
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
 | Module | `network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.2.0` |
-| Module | `network_firewall` | `modules/networking/net-firewall @ v0.2.0` |
+| Module | `network_firewall` | `modules/networking/net-firewall @ 2369fef3285b79670b842a5072a6bebf38c4796d` |
 
 ## Request And Deployment Flow
 
@@ -74,6 +74,15 @@ Adds OCI Network Firewall in the hub VCN firewall subnet for centralized north-s
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
 ## Detailed Architecture Notes
+
+- Traffic arrows express intended topology. The default network contains one workload spoke and no application hosts. Routing, ingress permissions, DNS resolution, inspection, and failover need separate runtime acceptance tests.
+
+- Preserve OCI provenance tags `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn` in provider configuration; other defined tags remain managed.
+
+- The firewall module is pinned to the published revision that supports disabled mode without an existing policy ID. Disabled mode produces null firewall/policy outputs and creates no billed firewall instance.
+
+- Deployment creates the declared network/service resources. DRG attachments alone do not prove hub-to-spoke reachability, centralized NAT, symmetric return routing, or inspected transit. Review VCN ingress routes, subnet routes, DRG route tables/distributions, and security rules before treating the diagram as an operational packet path.
+- Creating a Network Firewall does not redirect traffic into it. The supplied policy and route insertion must be configured and tested separately; firewall instance hours can incur charges even without traffic.
 
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
 
