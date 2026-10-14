@@ -59,7 +59,7 @@ Adds network appliance route targets and reserved route IPs to a hub-spoke netwo
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.2.0` |
+| Module | `network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ d7938f4baef1aa512fc8dcee99a545ec17e0dab2` |
 | Module | `net_appliance` | `modules/networking/net-appliance @ v0.2.0` |
 
 ## Request And Deployment Flow

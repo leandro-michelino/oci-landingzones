@@ -19,3 +19,7 @@ dedicated_ai_cluster_id        = "ocid1.generativeaidedicatedaicluster.oc1..exam
 generative_ai_private_endpoint_id = "ocid1.generativeaiprivateendpoint.oc1..example"
 
 policy_statements = []
+
+# A separate compatible HOSTING cluster is required when create_endpoint=true.
+# Dedicated hosting can involve minimum billing commitments; obtain cost approval.
+hosting_dedicated_ai_cluster_id = null

@@ -201,3 +201,9 @@ variable "policy_statements" {
   type        = list(string)
   default     = []
 }
+
+variable "hosting_dedicated_ai_cluster_id" {
+  description = "Existing HOSTING cluster compatible with the model. A FINE_TUNING cluster cannot host an inference endpoint. Alternatively create a HOSTING cluster with cluster_type."
+  type        = string
+  default     = null
+}

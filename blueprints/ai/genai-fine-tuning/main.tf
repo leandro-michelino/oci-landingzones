@@ -1,4 +1,4 @@
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 data "oci_objectstorage_namespace" "this" {
@@ -35,6 +35,20 @@ resource "oci_generative_ai_dedicated_ai_cluster" "this" {
 }
 
 resource "oci_generative_ai_model" "this" {
+  lifecycle {
+    precondition {
+      condition     = !var.create_dedicated_ai_cluster || var.cluster_type == "FINE_TUNING"
+      error_message = "Fine-tuning requires a FINE_TUNING cluster, not a HOSTING cluster."
+    }
+    precondition {
+      condition     = local.cluster_id != null && var.base_model_id != null
+      error_message = "Fine-tuning requires a cluster and a compatible base_model_id."
+    }
+    precondition {
+      condition     = var.training_dataset_namespace != null || var.create_training_bucket
+      error_message = "Supply training_dataset_namespace when using an existing training bucket."
+    }
+  }
   count = var.create_fine_tuned_model ? 1 : 0
 
   compartment_id = local.target_compartment_ocid
@@ -49,7 +63,7 @@ resource "oci_generative_ai_model" "this" {
 
     training_dataset {
       bucket       = coalesce(var.training_dataset_bucket, local.training_bucket_name)
-      namespace    = coalesce(var.training_dataset_namespace, try(data.oci_objectstorage_namespace.this[0].namespace, null))
+      namespace    = var.training_dataset_namespace != null ? var.training_dataset_namespace : try(data.oci_objectstorage_namespace.this[0].namespace, null)
       object       = var.training_dataset_object
       dataset_type = var.training_dataset_type
     }
@@ -64,12 +78,18 @@ resource "oci_generative_ai_model" "this" {
 }
 
 resource "oci_generative_ai_endpoint" "this" {
+  lifecycle {
+    precondition {
+      condition     = local.hosting_cluster_id != null && local.model_id != null
+      error_message = "An inference endpoint requires a compatible HOSTING cluster and model. Set hosting_dedicated_ai_cluster_id or create a HOSTING cluster; never reuse a FINE_TUNING cluster."
+    }
+  }
   count = var.create_endpoint ? 1 : 0
 
   compartment_id                    = local.target_compartment_ocid
   display_name                      = local.endpoint_display_name
   description                       = var.endpoint_description
-  dedicated_ai_cluster_id           = local.cluster_id
+  dedicated_ai_cluster_id           = local.hosting_cluster_id
   model_id                          = local.model_id
   generative_ai_private_endpoint_id = var.generative_ai_private_endpoint_id
   defined_tags                      = local.defined_tags

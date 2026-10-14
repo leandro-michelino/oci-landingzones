@@ -1,0 +1,109 @@
+<mxfile host="app.diagrams.net" agent="Claude Code" version="24.7.17">
+  <diagram id="oci-3tier-adb" name="OCI 3-Tier (ADB)">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Internet -->
+        <mxCell id="internet" value="Internet" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#666666;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="520" y="24" width="150" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Region -->
+        <mxCell id="region" value="Region: sa-saopaulo-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#C74634;dashed=1;dashPattern=6 4;verticalAlign=top;fontSize=13;fontColor=#C74634;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="130" width="1090" height="670" as="geometry" />
+        </mxCell>
+
+        <!-- VCN -->
+        <mxCell id="vcn" value="VCN&#10;10.0.0.0/16" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F2F7FB;strokeColor=#3A6EA5;verticalAlign=top;fontSize=13;fontStyle=1;fontColor=#3A6EA5;" vertex="1" parent="1">
+          <mxGeometry x="70" y="170" width="1030" height="610" as="geometry" />
+        </mxCell>
+
+        <!-- Gateways -->
+        <mxCell id="igw" value="Internet Gateway" style="sketch=0;outlineConnect=0;fontColor=#312D2A;gradientColor=none;fillColor=#C74634;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.oci2.networking.internet_gateway;" vertex="1" parent="1">
+          <mxGeometry x="120" y="200" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="nat" value="NAT Gateway" style="sketch=0;outlineConnect=0;fontColor=#312D2A;gradientColor=none;fillColor=#C74634;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.oci2.networking.nat_gateway;" vertex="1" parent="1">
+          <mxGeometry x="300" y="200" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="sgw" value="Service Gateway" style="sketch=0;outlineConnect=0;fontColor=#312D2A;gradientColor=none;fillColor=#C74634;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.oci2.networking.service_gateway;" vertex="1" parent="1">
+          <mxGeometry x="480" y="200" width="48" height="48" as="geometry" />
+        </mxCell>
+
+        <!-- Web Tier subnet (public) -->
+        <mxCell id="sn-web" value="Public Subnet — Web / Presentation Tier&#10;10.0.1.0/24  •  NSG: nsg-web (ingress 443 from Internet)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2E7D32;verticalAlign=top;fontSize=12;fontStyle=1;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="110" y="290" width="950" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="lb" value="Public Load Balancer" style="sketch=0;outlineConnect=0;fontColor=#312D2A;gradientColor=none;fillColor=#C74634;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.oci2.networking.load_balancer;" vertex="1" parent="1">
+          <mxGeometry x="170" y="340" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="web1" value="Web VM 1" style="sketch=0;outlineConnect=0;fontColor=#312D2A;gradientColor=none;fillColor=#C74634;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.oci2.compute.instance;" vertex="1" parent="1">
+          <mxGeometry x="560" y="340" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="web2" value="Web VM 2" style="sketch=0;outlineConnect=0;fontColor=#312D2A;gradientColor=none;fillColor=#C74634;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.oci2.compute.instance;" vertex="1" parent="1">
+          <mxGeometry x="760" y="340" width="48" height="48" as="geometry" />
+        </mxCell>
+
+        <!-- App Tier subnet (private) -->
+        <mxCell id="sn-app" value="Private Subnet — Application Tier&#10;10.0.2.0/24  •  NSG: nsg-app (ingress from nsg-web only)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;verticalAlign=top;fontSize=12;fontStyle=1;fontColor=#1565C0;" vertex="1" parent="1">
+          <mxGeometry x="110" y="460" width="950" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="app1" value="App VM 1" style="sketch=0;outlineConnect=0;fontColor=#312D2A;gradientColor=none;fillColor=#C74634;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.oci2.compute.instance;" vertex="1" parent="1">
+          <mxGeometry x="560" y="510" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="app2" value="App VM 2" style="sketch=0;outlineConnect=0;fontColor=#312D2A;gradientColor=none;fillColor=#C74634;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.oci2.compute.instance;" vertex="1" parent="1">
+          <mxGeometry x="760" y="510" width="48" height="48" as="geometry" />
+        </mxCell>
+
+        <!-- Data Tier subnet (private) -->
+        <mxCell id="sn-data" value="Private Subnet — Data Tier&#10;10.0.3.0/24  •  NSG: nsg-data (ingress 1522 from nsg-app only)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE7F6;strokeColor=#5E35B1;verticalAlign=top;fontSize=12;fontStyle=1;fontColor=#5E35B1;" vertex="1" parent="1">
+          <mxGeometry x="110" y="630" width="950" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="adb" value="Autonomous Database&#10;(ADB-S, private endpoint)" style="sketch=0;outlineConnect=0;fontColor=#312D2A;gradientColor=none;fillColor=#C74634;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.oci2.database.autonomous_database;" vertex="1" parent="1">
+          <mxGeometry x="655" y="675" width="48" height="48" as="geometry" />
+        </mxCell>
+
+        <!-- Oracle Services (for Service Gateway) -->
+        <mxCell id="osn" value="Oracle Services Network&#10;(Object Storage, ADB control plane)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#999999;dashed=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="150" y="670" width="230" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Edges -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#666666;" edge="1" parent="1" source="internet" target="igw">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2E7D32;" edge="1" parent="1" source="igw" target="lb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="HTTPS" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2E7D32;fontSize=10;" edge="1" parent="1" source="lb" target="web1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2E7D32;" edge="1" parent="1" source="lb" target="web2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="app port" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#1565C0;fontSize=10;" edge="1" parent="1" source="web1" target="app1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#1565C0;" edge="1" parent="1" source="web2" target="app2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="SQL*Net 1522" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#5E35B1;fontSize=10;" edge="1" parent="1" source="app1" target="adb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#5E35B1;" edge="1" parent="1" source="app2" target="adb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="egress updates" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;dashed=1;strokeColor=#999999;fontSize=10;" edge="1" parent="1" source="app1" target="nat">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="Oracle services" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;dashed=1;strokeColor=#999999;fontSize=10;" edge="1" parent="1" source="app1" target="sgw">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;dashed=1;strokeColor=#999999;" edge="1" parent="1" source="sgw" target="osn">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

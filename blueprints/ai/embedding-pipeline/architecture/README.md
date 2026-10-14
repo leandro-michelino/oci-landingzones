@@ -119,3 +119,9 @@ checksums, or batch checkpoints.
 - [ ] Events rule is disabled until handlers are available.
 - [ ] IAM covers only required bucket, stream, GenAI, and index access.
 - [ ] Retry and failed-object handling are owned.
+
+## October 2026 Configuration Review
+
+Provisions optional buckets, Streaming resources, and an event rule targeting a supplied Function. Chunking, embedding generation, vector-index creation, OpenSearch capacity, and query quality remain external application responsibilities.
+
+Validation in this round is isolated Terraform schema/lint validation and applicable mocked regressions, not a live AI deployment. All cost-bearing services, inference, ingestion, dedicated clusters, and external-cloud resources remained disabled. Providers ignore only the two OCI-managed provenance tags; customer-defined tags remain managed.

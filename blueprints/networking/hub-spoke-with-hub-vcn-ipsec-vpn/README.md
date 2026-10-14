@@ -38,7 +38,7 @@ in the repo.
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.2.0` |
+| Module | `network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ d7938f4baef1aa512fc8dcee99a545ec17e0dab2` |
 | Module | `ipsec_vpn` | `modules/networking/ipsec-vpn @ v0.2.0` |
 
 Use `variables.tf` as the input contract, then keep real OCIDs, CIDRs, names, and enable flags in an ignored local `terraform.tfvars`.

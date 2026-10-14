@@ -108,3 +108,9 @@ touch confidential or regulated data.
 - [ ] Caller and service-account IAM statements are least privilege.
 - [ ] Output consumers are documented.
 - [ ] Sensitive data handling is approved.
+
+## October 2026 Configuration Review
+
+Document, Language, and Vision projects are service containers; this blueprint does not execute OCR, analysis, inference, or an application workflow. A Vision private endpoint requires a separately supplied compatible subnet.
+
+Validation in this round is isolated Terraform schema/lint validation and applicable mocked regressions, not a live AI deployment. All cost-bearing services, inference, ingestion, dedicated clusters, and external-cloud resources remained disabled. Providers ignore only the two OCI-managed provenance tags; customer-defined tags remain managed.

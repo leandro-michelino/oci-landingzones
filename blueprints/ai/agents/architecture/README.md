@@ -136,3 +136,9 @@ Declared resource addresses:
 - IAM statements are least-privilege and group-based.
 - Audit and trace retention are documented.
 - Terraform plan shows no unexpected public access or unmanaged document paths.
+
+## October 2026 Configuration Review
+
+Creates optional knowledge-base, ingestion, agent, endpoint, bucket, and IAM objects. OpenSearch indexes or existing references, document contents, model compatibility, permissions, and retrieval quality require separate validation. No RAG inference or ingestion was executed in this review.
+
+Validation in this round is isolated Terraform schema/lint validation and applicable mocked regressions, not a live AI deployment. All cost-bearing services, inference, ingestion, dedicated clusters, and external-cloud resources remained disabled. Providers ignore only the two OCI-managed provenance tags; customer-defined tags remain managed.

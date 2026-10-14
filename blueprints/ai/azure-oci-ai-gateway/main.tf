@@ -1,4 +1,4 @@
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 resource "oci_core_vcn" "gateway" {
@@ -153,11 +153,8 @@ resource "oci_apigateway_deployment" "this" {
       error_message = "When create_oci_gateway_deployment=true, set a gateway via create_oci_api_gateway=true or oci_gateway_id."
     }
     precondition {
-      condition = var.require_provider_endpoints ? (
-        var.oci_generative_ai_inference_url != null &&
-        var.azure_openai_inference_url != null
-      ) : true
-      error_message = "When require_provider_endpoints=true, set both oci_generative_ai_inference_url and azure_openai_inference_url."
+      condition     = var.oci_generative_ai_inference_url != null && var.azure_openai_inference_url != null
+      error_message = "Creating a gateway deployment requires real OCI and Azure HTTPS backend URLs; placeholder contract URLs are never deployable."
     }
   }
 }

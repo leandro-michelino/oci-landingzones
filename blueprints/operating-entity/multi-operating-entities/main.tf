@@ -1,4 +1,4 @@
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "entity_compartments" {
@@ -29,7 +29,7 @@ module "entity_compartments" {
   )
 }
 
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "groups" {
@@ -51,7 +51,7 @@ module "groups" {
   freeform_tags         = var.freeform_tags
 }
 
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "policies" {

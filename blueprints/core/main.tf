@@ -1,4 +1,4 @@
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "compartments" {
@@ -20,7 +20,7 @@ module "compartments" {
   freeform_tags    = var.freeform_tags
 }
 
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "tagging" {
@@ -47,7 +47,7 @@ module "tagging" {
   freeform_tags               = var.freeform_tags
 }
 
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "logging" {
@@ -71,7 +71,7 @@ module "logging" {
   freeform_tags               = var.freeform_tags
 }
 
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "cloud_guard" {
@@ -98,7 +98,7 @@ module "cloud_guard" {
   freeform_tags               = var.freeform_tags
 }
 
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "vault" {
@@ -124,7 +124,7 @@ module "vault" {
   freeform_tags               = var.freeform_tags
 }
 
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "security_zones" {
@@ -152,7 +152,7 @@ module "security_zones" {
   ]
 }
 
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "vss" {
@@ -180,7 +180,7 @@ module "vss" {
   freeform_tags                             = var.freeform_tags
 }
 
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "budgets" {
@@ -208,7 +208,7 @@ module "budgets" {
   freeform_tags                       = var.freeform_tags
 }
 
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "events" {
@@ -231,7 +231,7 @@ module "events" {
   freeform_tags              = var.freeform_tags
 }
 
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "monitoring" {
@@ -253,7 +253,7 @@ module "monitoring" {
   freeform_tags        = var.freeform_tags
 }
 
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "groups" {
@@ -276,7 +276,7 @@ module "groups" {
   freeform_tags         = var.freeform_tags
 }
 
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "dynamic_groups" {
@@ -298,7 +298,7 @@ module "dynamic_groups" {
   freeform_tags    = var.freeform_tags
 }
 
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "policies" {

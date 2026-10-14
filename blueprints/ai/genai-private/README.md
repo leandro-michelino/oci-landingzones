@@ -158,3 +158,9 @@ From the repository root:
 ```
 
 The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.
+
+## October 2026 Configuration Review
+
+Creates optional private transport, an archive bucket, and IAM policy. IAM policy creation uses the tenancy-home provider. A private endpoint does not prove model availability, inference, data residency, or absence of stored data; the optional bucket deliberately stores data. No endpoint or inference call was created in this review.
+
+Validation in this round is isolated Terraform schema/lint validation and applicable mocked regressions, not a live AI deployment. All cost-bearing services, inference, ingestion, dedicated clusters, and external-cloud resources remained disabled. Providers ignore only the two OCI-managed provenance tags; customer-defined tags remain managed.

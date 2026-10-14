@@ -52,7 +52,7 @@ Creates a standalone three-tier VCN with optional, separately authorized tenancy
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
 | Module | `workload_vcn` | `modules/networking/spoke-vcn @ v0.2.0` |
-| Module | `zpr` | `modules/networking/zpr @ v0.2.0` |
+| Module | `zpr` | `modules/networking/zpr @ d7938f4baef1aa512fc8dcee99a545ec17e0dab2` |
 
 ## Request And Deployment Flow
 

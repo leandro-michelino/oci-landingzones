@@ -316,3 +316,9 @@ The validator checks Terraform formatting, required deployment README files,
 required architecture README sections, `terraform init -backend=false`,
 `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax,
 optional scanners when installed, and cleanup of generated Terraform artifacts.
+
+## October 2026 Configuration Review
+
+HTTP backend URLs must be HTTPS and contain no literal query parameters. Invalid URLs are rejected rather than silently losing Azure api-version. Supply query-free adapter URLs, or supported API Gateway request policies/client parameters. An adapter must handle OCI request signing, Azure authentication/API version, and provider-specific payloads. This blueprint does not implement those adapters, frontend authentication, dynamic cost optimization, automatic residency enforcement, or an Azure deployment. Selecting a route strategy chooses a static backend; region labels alone do not enforce data residency. Real deployments require both backend URLs even when placeholder contracts are permitted.
+
+Validation in this round is isolated Terraform schema/lint validation and applicable mocked regressions, not a live AI deployment. All cost-bearing services, inference, ingestion, dedicated clusters, and external-cloud resources remained disabled. Providers ignore only the two OCI-managed provenance tags; customer-defined tags remain managed.

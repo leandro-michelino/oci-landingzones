@@ -77,3 +77,9 @@ ansible-playbook ansible/plan.yml
 ```
 
 Review `architecture/README.md` before using this pattern in a customer design.
+
+## October 2026 Configuration Review
+
+Training and hosting are distinct dedicated-cluster roles. A FINE_TUNING cluster cannot serve an inference endpoint. Set hosting_dedicated_ai_cluster_id to a compatible existing HOSTING cluster, or create a cluster with cluster_type=HOSTING while keeping model fine-tuning disabled. Creating a model with an existing dataset requires training_dataset_namespace. Privacy requires an explicitly supplied Generative AI private endpoint; a model endpoint by itself does not establish private transport. Dedicated hosting can have minimum billing commitments even after an ephemeral deletion; obtain explicit cost approval before any real cluster test.
+
+Validation in this round is isolated Terraform schema/lint validation and applicable mocked regressions, not a live AI deployment. All cost-bearing services, inference, ingestion, dedicated clusters, and external-cloud resources remained disabled. Providers ignore only the two OCI-managed provenance tags; customer-defined tags remain managed.

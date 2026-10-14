@@ -1,0 +1,3 @@
+# Architecture Diagram Sources
+
+`oci-3tier-adb.drawio` is an editable conceptual three-tier architecture with web and app VMs, a public load balancer, and an Autonomous Database private endpoint. It is not a deployment-evidence diagram for a specific Terraform blueprint. The application reaches regional Oracle services through the Service Gateway; database sessions use the separate private endpoint path. Customer-specific NSGs, routes, ports, DNS, availability placement, and workload resources require separate configuration and validation. The XML was parsed successfully during the October 14, 2026 repository review; rendered layout and packet flows were not tested.

@@ -84,3 +84,7 @@ ZPR activation is not part of the compartment-only live tests.
 ## Last Successful Validation Comments
 
 Module definitions and blueprint module calls contain English validation metadata: date, provider, test scope, and evidence. A schema validation is not a live deployment. Lifecycle dates apply only to the explicitly recorded reduced blueprint scope. After a functional change or dependency upgrade, rerun the relevant checks before updating the success date. Preserve the previous successful date when a new run fails, and record the failure separately with its cause. Dates describe historical evidence rather than a guarantee of future compatibility.
+
+## AI Configuration Regression Coverage
+
+The AI test files use fully mocked OCI providers. They check distinct fine-tuning/hosting cluster roles, existing-dataset namespace requirements, Streaming/Object Storage connector targets, non-truncated HTTPS gateway URLs, rejection of placeholder deployments, and home-region IAM provider selection. The complete suite now has 17 cases across 8 suites. The [October 2026 repository review](../docs/REPOSITORY-VALIDATION-20261014.md) records static, schema, mock, and publication boundaries.

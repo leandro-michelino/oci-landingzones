@@ -57,8 +57,8 @@ Adds Zero Trust Packet Routing configuration and policies to a hub-spoke network
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.2.0` |
-| Module | `zpr` | `modules/networking/zpr @ v0.2.0` |
+| Module | `network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ d7938f4baef1aa512fc8dcee99a545ec17e0dab2` |
+| Module | `zpr` | `modules/networking/zpr @ d7938f4baef1aa512fc8dcee99a545ec17e0dab2` |
 
 ## Request And Deployment Flow
 

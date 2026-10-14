@@ -24,7 +24,7 @@ reviewer access.
 
 | Resource | Enable Flag |
 | --- | --- |
-| Redacted audit bucket | `create_audit_bucket` |
+| Audit bucket (redaction must be implemented upstream) | `create_audit_bucket` |
 | Guardrail log group | `create_log_group` |
 | Service Connector | `create_service_connector` |
 | Cloud Guard detector recipe | `create_cloud_guard_recipe` |
@@ -72,3 +72,9 @@ terraform init -backend=false
 terraform validate
 ansible-playbook ansible/plan.yml
 ```
+
+## October 2026 Configuration Review
+
+This is an observability scaffold. Storage/logging/alarms and a detector-recipe shell do not implement prompt filtering, PII redaction, output moderation, or an active safety policy. Streaming connector targets do not require Object Storage namespaces; Object Storage targets must supply a namespace or create the audit bucket. The source log group and a target stream must be explicitly supplied where applicable.
+
+Validation in this round is isolated Terraform schema/lint validation and applicable mocked regressions, not a live AI deployment. All cost-bearing services, inference, ingestion, dedicated clusters, and external-cloud resources remained disabled. Providers ignore only the two OCI-managed provenance tags; customer-defined tags remain managed.

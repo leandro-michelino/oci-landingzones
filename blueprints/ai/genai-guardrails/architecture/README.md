@@ -110,3 +110,9 @@ shell and leaves detector rule tuning to the security review.
 - [ ] Notification destinations are owned by the right operations team.
 - [ ] Cloud Guard recipe scope is reviewed before enforcement.
 - [ ] Audit-reader IAM is least privilege.
+
+## October 2026 Configuration Review
+
+This is an observability scaffold. Storage/logging/alarms and a detector-recipe shell do not implement prompt filtering, PII redaction, output moderation, or an active safety policy. Streaming connector targets do not require Object Storage namespaces; Object Storage targets must supply a namespace or create the audit bucket. The source log group and a target stream must be explicitly supplied where applicable.
+
+Validation in this round is isolated Terraform schema/lint validation and applicable mocked regressions, not a live AI deployment. All cost-bearing services, inference, ingestion, dedicated clusters, and external-cloud resources remained disabled. Providers ignore only the two OCI-managed provenance tags; customer-defined tags remain managed.

@@ -169,12 +169,22 @@ variable "oci_generative_ai_inference_url" {
   description = "OCI Generative AI inference endpoint URL used by OCI API Gateway backend routes."
   type        = string
   default     = null
+
+  validation {
+    condition     = var.oci_generative_ai_inference_url == null ? true : can(regex("^https://[^?# ]+$", var.oci_generative_ai_inference_url))
+    error_message = "Use an HTTPS adapter/backend URL without literal query parameters or fragments. Configure provider authentication and Azure api-version in the adapter or supported request policies; query parameters must not be silently removed."
+  }
 }
 
 variable "azure_openai_inference_url" {
   description = "Azure OpenAI inference endpoint URL used by OCI API Gateway backend routes."
   type        = string
   default     = null
+
+  validation {
+    condition     = var.azure_openai_inference_url == null ? true : can(regex("^https://[^?# ]+$", var.azure_openai_inference_url))
+    error_message = "Use an HTTPS adapter/backend URL without literal query parameters or fragments. Configure provider authentication and Azure api-version in the adapter or supported request policies; query parameters must not be silently removed."
+  }
 }
 
 variable "routing_strategy_region_provider" {

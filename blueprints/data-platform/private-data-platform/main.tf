@@ -2,7 +2,7 @@ data "oci_objectstorage_namespace" "this" {
   compartment_id = var.tenancy_ocid
 }
 
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "network" {
@@ -21,7 +21,7 @@ module "network" {
   freeform_tags      = local.common_freeform_tags
 }
 
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "vault" {
@@ -79,7 +79,7 @@ resource "oci_objectstorage_private_endpoint" "data" {
   depends_on = [oci_objectstorage_bucket.data]
 }
 
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "streaming" {

@@ -116,3 +116,9 @@ retention, redaction, and incident-review processes.
 - [ ] Audit storage and log retention are approved.
 - [ ] IAM policy statements are scoped to callers, operators, and auditors.
 - [ ] Outputs are passed only to approved downstream application owners.
+
+## October 2026 Configuration Review
+
+Provisions optional HTTP routes, quotas, logs, storage, and IAM. It does not sign OCI inference requests, translate model payloads, implement a provider adapter, or create model hosting. HTTP backends and client authentication require separate implementation and end-to-end validation.
+
+Validation in this round is isolated Terraform schema/lint validation and applicable mocked regressions, not a live AI deployment. All cost-bearing services, inference, ingestion, dedicated clusters, and external-cloud resources remained disabled. Providers ignore only the two OCI-managed provenance tags; customer-defined tags remain managed.

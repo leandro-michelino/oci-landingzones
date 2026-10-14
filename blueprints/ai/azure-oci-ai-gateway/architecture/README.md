@@ -132,3 +132,9 @@ These notes expand the diagram with design details usually needed in reviews.
 - Confirm OCI gateway exposure model and ingress CIDR values meet security requirements.
 - Confirm Azure deployment outputs are captured and mirrored into Terraform inputs.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, `ansible/destroy.yml`, and `ansible/azure-*.yml` still point to the shared runners.
+
+## October 2026 Configuration Review
+
+HTTP backend URLs must be HTTPS and contain no literal query parameters. Invalid URLs are rejected rather than silently losing Azure api-version. Supply query-free adapter URLs, or supported API Gateway request policies/client parameters. An adapter must handle OCI request signing, Azure authentication/API version, and provider-specific payloads. This blueprint does not implement those adapters, frontend authentication, dynamic cost optimization, automatic residency enforcement, or an Azure deployment. Selecting a route strategy chooses a static backend; region labels alone do not enforce data residency. Real deployments require both backend URLs even when placeholder contracts are permitted.
+
+Validation in this round is isolated Terraform schema/lint validation and applicable mocked regressions, not a live AI deployment. All cost-bearing services, inference, ingestion, dedicated clusters, and external-cloud resources remained disabled. Providers ignore only the two OCI-managed provenance tags; customer-defined tags remain managed.

@@ -3,7 +3,7 @@
 # Scope: OCI network foundation only; optional services disabled; no workload packet-flow verification.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "network" {
-  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=v0.2.0"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2"
 
   tenancy_ocid       = var.tenancy_ocid
   current_user_ocid  = var.current_user_ocid
@@ -23,7 +23,7 @@ module "network" {
 # Scope: OCI network foundation only; optional services disabled; no workload packet-flow verification.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 module "zpr" {
-  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/zpr?ref=v0.2.0"
+  source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/zpr?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2"
 
   tenancy_ocid             = var.tenancy_ocid
   compartment_ocid         = local.target_compartment_ocid

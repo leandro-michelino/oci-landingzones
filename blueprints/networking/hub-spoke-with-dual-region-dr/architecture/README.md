@@ -50,8 +50,8 @@ Creates matching hub-spoke network foundations in primary and secondary OCI regi
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `primary_network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.2.0` |
-| Module | `secondary_network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.2.0` |
+| Module | `primary_network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ d7938f4baef1aa512fc8dcee99a545ec17e0dab2` |
+| Module | `secondary_network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ d7938f4baef1aa512fc8dcee99a545ec17e0dab2` |
 
 ## Request And Deployment Flow
 

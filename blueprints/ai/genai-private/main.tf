@@ -1,4 +1,4 @@
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 data "oci_objectstorage_namespace" "this" {
@@ -35,7 +35,8 @@ resource "oci_objectstorage_bucket" "archive" {
 }
 
 resource "oci_identity_policy" "access" {
-  count = length(var.policy_statements) > 0 ? 1 : 0
+  provider = oci.home
+  count    = length(var.policy_statements) > 0 ? 1 : 0
 
   compartment_id = local.policy_compartment_ocid
   name           = "${local.name_prefix}-pol-genai"

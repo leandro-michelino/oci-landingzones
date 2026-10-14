@@ -115,3 +115,9 @@ buckets; a full deployment should enable the project once quota is confirmed.
 - [ ] IAM allows only required bucket, Document, Function, and GenAI actions.
 - [ ] Failed-document operations and retry runbook are clear.
 - [ ] Downstream consumers understand output location and format.
+
+## October 2026 Configuration Review
+
+Provisions optional buckets, an AI Document project, and an event rule referencing an existing Function. It does not deploy that Function, invoke OCR, redact PII, or implement review/exception routing. Validate the supplied function and event condition separately.
+
+Validation in this round is isolated Terraform schema/lint validation and applicable mocked regressions, not a live AI deployment. All cost-bearing services, inference, ingestion, dedicated clusters, and external-cloud resources remained disabled. Providers ignore only the two OCI-managed provenance tags; customer-defined tags remain managed.

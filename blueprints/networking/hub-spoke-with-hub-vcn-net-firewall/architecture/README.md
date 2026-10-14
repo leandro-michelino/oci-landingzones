@@ -57,7 +57,7 @@ Adds OCI Network Firewall in the hub VCN firewall subnet for centralized north-s
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.2.0` |
+| Module | `network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ d7938f4baef1aa512fc8dcee99a545ec17e0dab2` |
 | Module | `network_firewall` | `modules/networking/net-firewall @ 2369fef3285b79670b842a5072a6bebf38c4796d` |
 
 ## Request And Deployment Flow

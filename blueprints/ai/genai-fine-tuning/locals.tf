@@ -9,6 +9,7 @@ locals {
   model_display_name      = coalesce(var.model_display_name, "${local.name_prefix}-model-default")
   endpoint_display_name   = coalesce(var.endpoint_display_name, "${local.name_prefix}-ep-default")
   cluster_id              = var.create_dedicated_ai_cluster ? try(oci_generative_ai_dedicated_ai_cluster.this[0].id, null) : var.dedicated_ai_cluster_id
+  hosting_cluster_id      = var.hosting_dedicated_ai_cluster_id != null ? var.hosting_dedicated_ai_cluster_id : (var.create_dedicated_ai_cluster && var.cluster_type == "HOSTING" ? local.cluster_id : null)
   model_id                = var.create_fine_tuned_model ? try(oci_generative_ai_model.this[0].id, null) : var.model_id
   common_freeform_tags = merge(var.freeform_tags, {
     ManagedBy = "Terraform"

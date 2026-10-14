@@ -40,7 +40,7 @@ in the repo.
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
 | Module | `workload_vcn` | `modules/networking/spoke-vcn @ v0.2.0` |
-| Module | `zpr` | `modules/networking/zpr @ v0.2.0` |
+| Module | `zpr` | `modules/networking/zpr @ d7938f4baef1aa512fc8dcee99a545ec17e0dab2` |
 
 Use `variables.tf` as the input contract, then keep real OCIDs, CIDRs, names, and enable flags in an ignored local `terraform.tfvars`.
 

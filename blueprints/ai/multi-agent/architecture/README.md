@@ -118,3 +118,9 @@ RAG before allowing external actions.
 - [ ] Agent IAM boundaries are least privilege.
 - [ ] Session audit destination and retention are approved.
 - [ ] Streaming task retention and reader permissions are clear.
+
+## October 2026 Configuration Review
+
+Creates optional agent/tool definitions, knowledge-base references, Streaming, and audit storage. Tool definitions do not deploy function implementations. Task routing, tool authorization, document handling, queue consumers, and multi-agent execution require supplied runtime code and separate testing.
+
+Validation in this round is isolated Terraform schema/lint validation and applicable mocked regressions, not a live AI deployment. All cost-bearing services, inference, ingestion, dedicated clusters, and external-cloud resources remained disabled. Providers ignore only the two OCI-managed provenance tags; customer-defined tags remain managed.

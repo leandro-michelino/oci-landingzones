@@ -55,7 +55,7 @@ in the repo.
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Module | `network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ v0.2.0` |
+| Module | `network` | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns @ d7938f4baef1aa512fc8dcee99a545ec17e0dab2` |
 | Resource | `oci_core_instance.fortigate` | FortiGate active and standby compute nodes. |
 | Resource | `oci_core_vnic_attachment.fortigate_interface` | Secondary untrust, trust, and HA sync VNICs. |
 | Resource | `oci_core_private_ip.fortigate_floating` | Optional reserved private IPs for failover and route targets. |

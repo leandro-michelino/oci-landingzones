@@ -119,6 +119,11 @@ variable "connector_target_kind" {
   description = "Service Connector target kind."
   type        = string
   default     = "objectStorage"
+
+  validation {
+    condition     = contains(["objectStorage", "streaming"], var.connector_target_kind)
+    error_message = "connector_target_kind must be objectStorage or streaming."
+  }
 }
 variable "connector_target_bucket" {
   description = "Target bucket name when the connector target is Object Storage."

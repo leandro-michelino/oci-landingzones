@@ -11,6 +11,7 @@ output "resource_ids" {
   value = {
     training_bucket      = try(oci_objectstorage_bucket.training[0].id, null)
     dedicated_ai_cluster = local.cluster_id
+    hosting_ai_cluster   = local.hosting_cluster_id
     fine_tuned_model     = local.model_id
     endpoint             = try(oci_generative_ai_endpoint.this[0].id, null)
     access_policy        = try(oci_identity_policy.access[0].id, null)
@@ -35,4 +36,9 @@ output "endpoint_id" {
 output "access_policy_id" {
   description = "IAM policy OCID for fine-tuning access."
   value       = try(oci_identity_policy.access[0].id, null)
+}
+
+output "hosting_dedicated_ai_cluster_id" {
+  description = "Resolved HOSTING cluster OCID used by the inference endpoint."
+  value       = local.hosting_cluster_id
 }

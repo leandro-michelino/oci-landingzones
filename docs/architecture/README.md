@@ -377,3 +377,7 @@ for exact tested modes, remaining limits, and cleanup checks.
 ### Networking Completion, October 14, 2026
 
 The remaining four Networking entries completed ephemeral network tests and verified cleanup. All 24 catalog entries are now reviewed, with paid/external/global dependencies and packet-flow limits explicitly retained in the [deployment evidence](../EPHEMERAL-DEPLOYMENT-EVIDENCE.md#networking-items-21-through-24-october-14-2026). This is catalog review coverage, not full end-to-end deployment coverage.
+
+### Main Publication And Complete Repository Revalidation
+
+The [October 14 repository review](../REPOSITORY-VALIDATION-20261014.md) records integration into main, immutable dependency updates, 80 blueprint schema checks, 298 Ansible syntax checks, 17 mocked regressions, and explicit AI/runtime/cost limits. Static validation coverage remains distinct from full workload deployment coverage.

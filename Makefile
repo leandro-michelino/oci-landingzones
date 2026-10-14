@@ -5,7 +5,7 @@ help:
 	@printf '%s\n' "Targets:"
 	@printf '%s\n' "  make validate                         Run full repository validation"
 	@printf '%s\n' "  make changed                          Validate changed files against origin/main"
-	@printf '%s\n' "  make clean                            Remove local Terraform and test artifacts"
+	@printf '%s\n' "  make clean                            Remove disposable Terraform workdirs; preserve deployment artifacts"
 	@printf '%s\n' "  make blueprint family=<family> name=<name> [title='Nice Name']"
 	@printf '%s\n' "  make blueprint path=blueprints/<family>/<name> [title='Nice Name']"
 	@printf '%s\n' "  make blueprints                       Regenerate BLUEPRINTS.md"
@@ -19,9 +19,8 @@ changed:
 	./scripts/validate-changed.sh
 
 clean:
-	find . -name ".terraform" -type d -prune -exec rm -rf {} +
-	find . \( -name ".terraform.lock.hcl" -o -name "terraform.tfstate*" -o -name "tfplan" -o -name "tfplan.*" -o -name "*.tfplan" -o -name ".DS_Store" \) -type f -delete
-	rm -rf .leo-local .claude .ansible
+	find blueprints modules -name ".terraform" -type d -prune -exec rm -rf {} +
+	find blueprints modules -name ".DS_Store" -type f -delete
 
 blueprint:
 	@if [ -n "$(path)" ]; then \

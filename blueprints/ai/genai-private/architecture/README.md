@@ -89,3 +89,9 @@ older generated documentation lists it. Validate provider support before plannin
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+
+## October 2026 Configuration Review
+
+Creates optional private transport, an archive bucket, and IAM policy. IAM policy creation uses the tenancy-home provider. A private endpoint does not prove model availability, inference, data residency, or absence of stored data; the optional bucket deliberately stores data. No endpoint or inference call was created in this review.
+
+Validation in this round is isolated Terraform schema/lint validation and applicable mocked regressions, not a live AI deployment. All cost-bearing services, inference, ingestion, dedicated clusters, and external-cloud resources remained disabled. Providers ignore only the two OCI-managed provenance tags; customer-defined tags remain managed.

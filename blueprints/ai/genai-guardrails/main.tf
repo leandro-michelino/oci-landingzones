@@ -1,4 +1,4 @@
-# Last successful validation: 2026-10-13 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
 # Scope: schema validation only; full live lifecycle not verified.
 # Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
 data "oci_objectstorage_namespace" "this" {
@@ -32,6 +32,20 @@ resource "oci_logging_log_group" "guardrails" {
 }
 
 resource "oci_sch_service_connector" "audit" {
+  lifecycle {
+    precondition {
+      condition     = var.connector_source_log_group_id != null
+      error_message = "A logging connector requires connector_source_log_group_id."
+    }
+    precondition {
+      condition     = var.connector_target_kind != "objectStorage" || var.connector_target_namespace != null || var.create_audit_bucket
+      error_message = "An Object Storage connector requires connector_target_namespace or create_audit_bucket=true."
+    }
+    precondition {
+      condition     = var.connector_target_kind != "streaming" || var.connector_target_stream_id != null
+      error_message = "A Streaming connector requires connector_target_stream_id."
+    }
+  }
   count = var.create_service_connector ? 1 : 0
 
   compartment_id = local.target_compartment_ocid
@@ -52,10 +66,10 @@ resource "oci_sch_service_connector" "audit" {
 
   target {
     kind               = var.connector_target_kind
-    namespace          = coalesce(var.connector_target_namespace, try(data.oci_objectstorage_namespace.this[0].namespace, null))
-    bucket             = coalesce(var.connector_target_bucket, local.audit_bucket_name)
-    object_name_prefix = var.connector_object_prefix
-    stream_id          = var.connector_target_stream_id
+    namespace          = var.connector_target_kind == "objectStorage" ? (var.connector_target_namespace != null ? var.connector_target_namespace : try(data.oci_objectstorage_namespace.this[0].namespace, null)) : null
+    bucket             = var.connector_target_kind == "objectStorage" ? coalesce(var.connector_target_bucket, local.audit_bucket_name) : null
+    object_name_prefix = var.connector_target_kind == "objectStorage" ? var.connector_object_prefix : null
+    stream_id          = var.connector_target_kind == "streaming" ? var.connector_target_stream_id : null
   }
 }
 

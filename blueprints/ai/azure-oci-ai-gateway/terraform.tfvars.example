@@ -24,8 +24,8 @@ create_oci_gateway_deployment    = true
 gateway_path_prefix              = "/ai"
 route_methods                    = ["POST"]
 
-oci_generative_ai_inference_url  = "https://inference.generativeai.eu-madrid-1.oci.oraclecloud.com/20231130/actions/chat"
-azure_openai_inference_url       = "https://aoai-oci-gateway-dev.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-10-21"
+oci_generative_ai_inference_url  = "https://oci-adapter.example.com/inference"
+azure_openai_inference_url       = "https://azure-adapter.example.com/inference"
 
 routing_strategy_region_provider         = "oci"
 routing_strategy_cost_provider           = "azure"
