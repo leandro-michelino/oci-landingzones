@@ -1,4 +1,4 @@
-# OCI + AWS MySQL HeatWave DR (OCI Primary over IPSec)
+# OCI + AWS MySQL HeatWave DR Foundation (OCI Primary)
 
 Start here for `blueprints/data-platform/oci-aws-mysql-heatwave-dr`: what it builds, which inputs deserve a careful look, how to run Terraform or the local Ansible wrappers, and where the detailed architecture notes live.
 
@@ -7,7 +7,7 @@ Start here for `blueprints/data-platform/oci-aws-mysql-heatwave-dr`: what it bui
 | Item | Details |
 | --- | --- |
 | Folder | `blueprints/data-platform/oci-aws-mysql-heatwave-dr` |
-| Best fit | OCI-primary MySQL HeatWave with AWS standby endpoint and IPSec-only cross-cloud replication lane. |
+| Best fit | OCI primary and AWS standby foundation with explicit integration work for VPN, replication, DNS, and failover. |
 | Terraform shape | `oci_core_vcn.primary`, `oci_core_route_table.primary_db`, `oci_core_security_list.primary_db`, `oci_core_subnet.primary_db`, `oci_core_drg.primary`, `oci_core_cpe.aws`, `oci_core_ipsec.aws`, `oci_mysql_mysql_db_system.primary`, `oci_mysql_heat_wave_cluster.primary`, `terraform_data.*_contract` |
 | Inputs to settle first | `enable_ipsec_connectivity`, `aws_cpe_public_ip`, `aws_replication_cidr`, `create_db_system`, `create_heatwave_cluster`, `oci_primary_endpoint`, `aws_secondary_endpoint`, `target_rto_minutes`, `target_rpo_minutes` |
 | Outputs to hand off | `resource_ids`, `oci_network_contract`, `connectivity_contract`, `replication_contract`, `dns_failover_contract`, `runbook_contract` |
@@ -15,9 +15,12 @@ Start here for `blueprints/data-platform/oci-aws-mysql-heatwave-dr`: what it bui
 
 ## Deployment Purpose
 
-Deploy an OCI-first MySQL HeatWave DR pattern where OCI remains the primary
-write location and AWS acts as the secondary standby endpoint, with encrypted
-IPSec connectivity and explicit replication/failover contracts.
+Define an OCI-primary MySQL HeatWave DR foundation. This blueprint can create
+the OCI database, private network, and OCI side of a static-route IPSec
+connection. The AWS template can create a private RDS endpoint. The repository
+does not create an AWS VPN gateway or VPN connection, AWS route to OCI, MySQL
+replication channel, or DNS cutover. Its replication and failover outputs are
+handoff contracts, not evidence that DR is operational.
 
 ## When To Use This Deployment
 
@@ -32,19 +35,23 @@ IPSec connectivity and explicit replication/failover contracts.
 | --- | --- |
 | OCI-primary cross-cloud DR | Keeps the production write path in OCI while preparing AWS as a standby endpoint. |
 | DR tabletop and runbook validation | Produces replication, DNS, connectivity, and runbook contracts that can be used in exercises before a real incident. |
-| Regulated cross-cloud replication lane | Uses DRG, CPE, and IPSec resources so replication traffic has an explicit encrypted path. |
-| MySQL HeatWave resilience pattern | Combines OCI MySQL HeatWave primary resources with AWS standby artifacts in one reviewable folder. |
+| Cross-cloud network preparation | Can create the OCI DRG, CPE, and IPSec connection; the AWS VPN edge, tunnel setup, and routes require a separate implementation and verification. |
+| MySQL HeatWave resilience planning | Keeps OCI primary resources and AWS standby artifacts together for review before integration and drills. |
 | Evidence and operations hand-off | Optional bucket, alert topic, endpoint contracts, and RTO/RPO values support audit and operations teams. |
 
 ## What This Deploys
 
 | Kind | Name | Purpose |
 | --- | --- | --- |
-| OCI networking | `oci_core_vcn.primary`, `oci_core_subnet.primary_db`, `oci_core_route_table.primary_db`, `oci_core_security_list.primary_db` | Deploy-and-use primary database network foundation. |
-| OCI connectivity | `oci_core_drg.primary`, `oci_core_cpe.aws`, `oci_core_ipsec.aws`, `oci_core_drg_attachment.primary_db` | IPSec connectivity plumbing between OCI and AWS. |
+| OCI networking | `oci_core_vcn.primary`, `oci_core_subnet.primary_db`, `oci_core_route_table.primary_db`, `oci_core_security_list.primary_db` | Private database subnet with no Internet Gateway or default route. |
+| OCI connectivity | `oci_core_drg.primary`, `oci_core_cpe.aws`, `oci_core_ipsec.aws`, `oci_core_drg_attachment.primary_db` | Optional OCI side of a static-route IPSec connection. |
 | OCI database | `oci_mysql_mysql_db_system.primary`, `oci_mysql_heat_wave_cluster.primary` | Primary MySQL HeatWave service components. |
 | OCI operations | `oci_objectstorage_bucket.lakehouse`, `oci_ons_notification_topic.dr_alert` | Optional lakehouse/evidence storage and alerting surface. |
 | Contracts | `terraform_data.oci_network_contract`, `terraform_data.connectivity_contract`, `terraform_data.replication_contract`, `terraform_data.dns_failover_contract`, `terraform_data.runbook_contract` | Machine-readable runbook and integration metadata. |
+
+The primary subnet permits application MySQL ingress from
+`oci_app_ingress_allowed_cidr`. Its AWS replication ingress rule appears only
+when `enable_ipsec_connectivity = true`.
 
 AWS standby deployment artifacts are under `aws/` and executed through
 `ansible/aws-plan.yml`, `ansible/aws-apply.yml`, and `ansible/aws-destroy.yml`.
@@ -102,6 +109,7 @@ Start from `terraform.tfvars.example`, then fill a local ignored
 | `oci_is_primary` | Must remain `true` in this blueprint variant. |
 | `enable_oci_primary_network` | Build OCI network resources in this deployment. |
 | `enable_ipsec_connectivity` | Build DRG/CPE/IPSec resources in this deployment. |
+| `require_complete_dr_contracts` | Keep true for operational handoff; set false only for an intentionally incomplete foundation plan. |
 | `aws_cpe_public_ip` | AWS VPN endpoint public IP for OCI CPE. |
 | `aws_replication_cidr` | AWS CIDR allowed for replication path. |
 | `create_db_system` | Build OCI MySQL DB System now or reference an existing one. |
@@ -119,8 +127,8 @@ Start from `terraform.tfvars.example`, then fill a local ignored
 | `resource_ids` | Complete resource/contract ID map for integration and cleanup automation. |
 | `oci_network_contract` | OCI network topology hand-off metadata. |
 | `connectivity_contract` | IPSec connectivity details and expected cross-cloud CIDR scope. |
-| `replication_contract` | Replication channel expectations (endpoints, TLS, target RPO). |
-| `dns_failover_contract` | DNS cutover contract for OCI primary to AWS secondary switch. |
+| `replication_contract` | Replication expectations and a `complete` flag for nonblank endpoints; it does not create a channel. |
+| `dns_failover_contract` | DNS cutover expectations and a `complete` flag for nonblank endpoints; it does not update DNS. |
 | `runbook_contract` | Failover/failback sequence and objective metadata. |
 | `oci_mysql_primary_endpoints` | OCI DB endpoint metadata when DB System is created here. |
 
@@ -154,7 +162,7 @@ CONFIRM_AWS_APPLY=true ansible-playbook -i localhost, ansible/aws-apply.yml
 CONFIRM_AWS_DESTROY=true ansible-playbook -i localhost, ansible/aws-destroy.yml
 ```
 
-The AWS CloudFormation template supports E2E-safe RDS overrides:
+The AWS CloudFormation template exposes RDS lifecycle and cost controls:
 
 - `DbDeletionProtection=false` for disposable test stacks that are short-lived.
 - `DbBackupRetentionPeriod=0` for accounts or plans that reject seven-day
@@ -162,9 +170,9 @@ The AWS CloudFormation template supports E2E-safe RDS overrides:
 - `DbPerformanceInsightsEnabled=false` for small instance classes or regions
   that do not support Performance Insights.
 - Stack-scoped names are used for VPC, subnet group, security group, and RDS
-  tags so repeated E2E runs do not collide with earlier stacks.
+  tags so repeated disposable AWS stack runs do not collide.
 
-Known-good E2E shape:
+Illustrative AWS RDS parameters to review against the target account and region:
 
 ```text
 AWS region: eu-west-1
@@ -177,8 +185,10 @@ Publicly accessible: false
 ```
 
 After AWS apply, feed `AwsStandbyEndpoint` and `AwsStandbyPort` back into
-Terraform as `aws_secondary_endpoint` so OCI-side replication, DNS, and runbook
-contracts reference the real RDS standby endpoint.
+Terraform as `aws_secondary_endpoint`. The endpoint value alone does not
+configure replication. Complete AWS VPN routing, seed the replica, configure
+the MySQL replication channel and TLS, validate lag, and rehearse DNS cutover
+and failback before describing the architecture as DR-ready.
 
 ## Architecture
 
@@ -203,10 +213,12 @@ ansible-playbook -i localhost, ansible/stop-hello-world.yml
 ## Review Before Apply
 
 - Confirm OCI remains primary and AWS remains standby.
+- Confirm the paid OCI MySQL/HeatWave, AWS RDS/VPN, and storage costs before
+  enabling those resources. No cross-cloud live lifecycle was run on 2026-10-15.
 - Confirm IPSec CIDR and CPE public IP values are correct.
 - Confirm MySQL credential handling is secure and not committed.
 - Confirm endpoints for replication and DNS contracts are accurate.
-- Confirm RDS deletion protection is disabled only for disposable E2E runs and
+- Confirm RDS deletion protection is disabled only for disposable AWS runs and
   enabled for long-lived environments.
 - Confirm backup retention and Performance Insights settings match the AWS
   account, region, instance class, and cost model.

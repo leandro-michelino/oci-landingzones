@@ -13,7 +13,7 @@ compartment_ocid = "ocid1.compartment.oc1..example"
 enable_app_network       = true
 app_vcn_cidr             = "10.87.0.0/16"
 app_subnet_cidr          = "10.87.10.0/24"
-app_ingress_allowed_cidr = "10.0.0.0/8"
+app_ingress_allowed_cidr = null
 
 table_name                = "acme_dev_gru_db_nosql_orders"
 table_ddl_statement       = "CREATE TABLE acme_dev_gru_db_nosql_orders (id STRING, customerId STRING, payload JSON, PRIMARY KEY(id))"

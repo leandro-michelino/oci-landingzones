@@ -11,6 +11,11 @@ variable "region" {
 variable "standby_region" {
   description = "Standby OCI region name."
   type        = string
+
+  validation {
+    condition     = var.standby_region != var.region
+    error_message = "standby_region must differ from the primary region in this cross-region blueprint."
+  }
 }
 
 variable "oci_config_profile" {
@@ -97,6 +102,20 @@ variable "enable_dr_protection_groups" {
   description = "Create primary and standby FSDR protection groups."
   type        = bool
   default     = true
+
+  validation {
+    condition = !var.enable_dr_protection_groups || var.enable_dr_log_buckets || (
+      try(trimspace(var.primary_log_bucket_name), "") != "" &&
+      try(trimspace(var.standby_log_bucket_name), "") != ""
+    )
+    error_message = "When creating DR protection groups without log buckets, provide both existing log bucket names."
+  }
+}
+
+variable "disassociate_trigger" {
+  description = "Increment when tearing down associated DR protection groups so the OCI provider disassociates the pair before deletion."
+  type        = number
+  default     = 0
 }
 
 variable "primary_dr_protection_group_name" {
@@ -132,13 +151,18 @@ variable "standby_members" {
 }
 
 variable "enable_dr_plan" {
-  description = "Create a DR plan for the primary protection group."
+  description = "Create a DR plan on the associated standby protection group."
   type        = bool
   default     = false
+
+  validation {
+    condition     = !var.enable_dr_plan || var.enable_dr_protection_groups
+    error_message = "enable_dr_plan requires enable_dr_protection_groups=true."
+  }
 }
 
 variable "dr_plan_display_name" {
-  description = "Optional display name for the primary DR plan."
+  description = "Optional display name for the standby DR plan."
   type        = string
   default     = null
 }
@@ -147,6 +171,11 @@ variable "dr_plan_type" {
   description = "FSDR plan type, such as SWITCHOVER or FAILOVER."
   type        = string
   default     = "SWITCHOVER"
+
+  validation {
+    condition     = contains(["SWITCHOVER", "FAILOVER"], upper(var.dr_plan_type))
+    error_message = "dr_plan_type must be SWITCHOVER or FAILOVER."
+  }
 }
 
 variable "defined_tags" {

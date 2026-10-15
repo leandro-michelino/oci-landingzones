@@ -7,7 +7,6 @@ locals {
   db_subnet_name      = "${local.name_prefix}-sn-mysql-primary"
   db_route_table_name = "${local.name_prefix}-rt-mysql-primary"
   db_security_name    = "${local.name_prefix}-sl-mysql-primary"
-  db_igw_name         = "${local.name_prefix}-igw-mysql-primary"
   drg_name            = "${local.name_prefix}-drg-mysql-primary"
   drg_attachment_name = "${local.name_prefix}-drga-mysql-primary"
   cpe_name            = "${local.name_prefix}-cpe-aws"
@@ -33,7 +32,7 @@ locals {
   }
 
   connectivity_contract = {
-    mode                  = "ipsec"
+    mode                  = var.enable_ipsec_connectivity ? "ipsec-static" : "disabled"
     oci_drg_id            = try(oci_core_drg.primary[0].id, null)
     aws_cpe_public_ip     = var.aws_cpe_public_ip
     aws_bgp_asn           = var.aws_bgp_asn
@@ -43,6 +42,7 @@ locals {
   }
 
   replication_contract = {
+    complete              = try(trimspace(var.oci_primary_endpoint), "") != "" && try(trimspace(var.aws_secondary_endpoint), "") != ""
     channel_name          = var.replication_channel_name
     source_cloud          = "oci"
     target_cloud          = "aws"
@@ -54,6 +54,7 @@ locals {
   }
 
   dns_failover_contract = {
+    complete                  = try(trimspace(var.oci_primary_endpoint), "") != "" && try(trimspace(var.aws_secondary_endpoint), "") != "" && try(trimspace(var.primary_dns_name), "") != ""
     primary_dns_name          = var.primary_dns_name
     primary_cloud             = "oci"
     secondary_cloud           = "aws"

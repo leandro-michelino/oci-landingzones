@@ -4,14 +4,15 @@ This is the deployment architecture for `blueprints/devops/oci-devops-pipeline`.
 
 ## Deployment Purpose
 
-Deploys an OCI DevOps project with notification topic, code repository, build pipeline, and deploy pipeline.
+Optionally creates an OCI DevOps project with a notification topic, code
+repository, and empty build and deploy pipeline shells.
 
 ## Architecture At A Glance
 
 | Item | Details |
 |---|---|
 | Boundary | `blueprints/devops/oci-devops-pipeline` owns this deployment folder and its Terraform + Ansible runners. |
-| Purpose | Deploys an OCI DevOps project with notification topic, code repository, build pipeline, and deploy pipeline. |
+| Purpose | Creates optional OCI DevOps control-plane shells. Runtime stages and delivery are configured separately. |
 | Terraform components | `oci_ons_notification_topic.this`, `oci_devops_project.this`, `oci_devops_repository.this`, `oci_devops_build_pipeline.this`, `oci_devops_deploy_pipeline.this` |
 | Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic or control flow for this exact deployment. |
 
@@ -29,17 +30,17 @@ Deploys an OCI DevOps project with notification topic, code repository, build pi
 |         v                    v                         v                                                 |
 | {OCI DevOps compartment / selected region}                                                               |
 |         |                                                                                                |
-|         +--> [notification topic] -> build/deploy event subscribers                                      |
+|         +--> [notification topic] -> (subscriptions configured separately)                               |
 |         |                                                                                                |
 |         +--> [DevOps project]                                                                            |
 |         |      |-- [code repository]                                                                     |
-|         |      |-- [build pipeline]  source -> stages -> artifacts                                       |
-|         |      `-- [deploy pipeline] environment -> stages -> approval/release path                      |
+|         |      |-- [empty build pipeline]  (stages, source, artifacts outside this folder)                |
+|         |      `-- [empty deploy pipeline] (environment and stages outside this folder)                 |
 |         |                                                                                                |
 |         `--> [IAM policies outside this folder] must permit project, build, deploy, and artifact actions |
 |                                                                                                          |
 | Control flow: topic first, project second, repository/pipelines after the project ID exists.             |
-| Delivery flow: commit or manual trigger -> build pipeline -> deploy pipeline -> notification topic.      |
+| Delivery flow: none until logging, triggers, stages, artifacts, and environments are configured.        |
 | Hand-off: project, repository, build pipeline, deploy pipeline, and notification topic IDs.              |
 +----------------------------------------------------------------------------------------------------------+
 ```
@@ -69,9 +70,10 @@ Deploys an OCI DevOps project with notification topic, code repository, build pi
 
 ## Detailed Architecture Notes
 
-- Confirm notification recipients and topic ownership.
+- Confirm notification topic ownership and arrange subscriptions separately.
 - Confirm repository naming and branch strategy.
-- Add stages after project, repository, and pipeline IDs are approved.
+- Add project logging, build/deploy stages, triggers, artifacts, and target environments before runtime use.
+- A project requires a new or existing topic; child resources require a new or existing project. Plan-time validation enforces both dependencies.
 
 ## Operational Boundaries
 

@@ -51,6 +51,13 @@ variable "enable_devops_project" {
   description = "Create the OCI DevOps project."
   type        = bool
   default     = false
+
+  validation {
+    condition = !var.enable_devops_project || var.create_notification_topic || (
+      try(trimspace(var.notification_topic_id), "") != ""
+    )
+    error_message = "A DevOps project requires create_notification_topic=true or a nonempty notification_topic_id."
+  }
 }
 variable "project_name" {
   description = "Optional DevOps project name override."
@@ -81,6 +88,13 @@ variable "enable_repository" {
   description = "Create an OCI DevOps code repository."
   type        = bool
   default     = false
+
+  validation {
+    condition = !var.enable_repository || var.enable_devops_project || (
+      try(trimspace(var.existing_project_id), "") != ""
+    )
+    error_message = "A repository requires enable_devops_project=true or a nonempty existing_project_id."
+  }
 }
 variable "repository_name" {
   description = "Optional repository name override."
@@ -106,6 +120,13 @@ variable "enable_build_pipeline" {
   description = "Create an empty build pipeline shell."
   type        = bool
   default     = false
+
+  validation {
+    condition = !var.enable_build_pipeline || var.enable_devops_project || (
+      try(trimspace(var.existing_project_id), "") != ""
+    )
+    error_message = "A build pipeline requires enable_devops_project=true or a nonempty existing_project_id."
+  }
 }
 variable "build_pipeline_name" {
   description = "Optional build pipeline display name override."
@@ -121,6 +142,13 @@ variable "enable_deploy_pipeline" {
   description = "Create an empty deployment pipeline shell."
   type        = bool
   default     = false
+
+  validation {
+    condition = !var.enable_deploy_pipeline || var.enable_devops_project || (
+      try(trimspace(var.existing_project_id), "") != ""
+    )
+    error_message = "A deploy pipeline requires enable_devops_project=true or a nonempty existing_project_id."
+  }
 }
 variable "deploy_pipeline_name" {
   description = "Optional deploy pipeline display name override."

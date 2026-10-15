@@ -1,12 +1,14 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-15 | Terraform validate and 6 mocked cases | oracle/oci 9.9.0.
+# Scope: disabled plan and standby association/plan contract; no live DRPG or failover.
+# Evidence: blueprints/disaster-recovery/fsdr/tests/standby-plan.tftest.hcl.
 data "oci_objectstorage_namespace" "primary" {
+  count          = var.enable_dr_log_buckets || var.enable_dr_protection_groups ? 1 : 0
   compartment_id = var.tenancy_ocid
 }
 
 data "oci_objectstorage_namespace" "standby" {
   provider       = oci.standby
+  count          = var.enable_dr_log_buckets || var.enable_dr_protection_groups ? 1 : 0
   compartment_id = var.tenancy_ocid
 }
 
@@ -22,7 +24,7 @@ resource "oci_objectstorage_bucket" "primary_dr_logs" {
 
   compartment_id        = local.primary_compartment_ocid
   name                  = local.primary_log_bucket_name
-  namespace             = data.oci_objectstorage_namespace.primary.namespace
+  namespace             = data.oci_objectstorage_namespace.primary[0].namespace
   access_type           = "NoPublicAccess"
   object_events_enabled = var.enable_object_events
   storage_tier          = var.log_bucket_storage_tier
@@ -44,7 +46,7 @@ resource "oci_objectstorage_bucket" "standby_dr_logs" {
 
   compartment_id        = local.standby_compartment_ocid
   name                  = local.standby_log_bucket_name
-  namespace             = data.oci_objectstorage_namespace.standby.namespace
+  namespace             = data.oci_objectstorage_namespace.standby[0].namespace
   access_type           = "NoPublicAccess"
   object_events_enabled = var.enable_object_events
   storage_tier          = var.log_bucket_storage_tier
@@ -70,7 +72,7 @@ resource "oci_disaster_recovery_dr_protection_group" "primary" {
 
   log_location {
     bucket    = local.primary_log_bucket_name
-    namespace = data.oci_objectstorage_namespace.primary.namespace
+    namespace = data.oci_objectstorage_namespace.primary[0].namespace
   }
 
   dynamic "members" {
@@ -104,8 +106,18 @@ resource "oci_disaster_recovery_dr_protection_group" "standby" {
 
   log_location {
     bucket    = local.standby_log_bucket_name
-    namespace = data.oci_objectstorage_namespace.standby.namespace
+    namespace = data.oci_objectstorage_namespace.standby[0].namespace
   }
+
+  # Associate the newly created standby group with the primary group; FSDR
+  # assigns the peer its PRIMARY role when the association is established.
+  association {
+    role        = "STANDBY"
+    peer_id     = oci_disaster_recovery_dr_protection_group.primary[0].id
+    peer_region = var.region
+  }
+
+  disassociate_trigger = var.disassociate_trigger
 
   dynamic "members" {
     for_each = var.standby_members
@@ -120,8 +132,9 @@ resource "oci_disaster_recovery_dr_protection_group" "standby" {
   depends_on = [oci_objectstorage_bucket.standby_dr_logs]
 }
 
-resource "oci_disaster_recovery_dr_plan" "primary" {
-  count = var.enable_dr_plan && var.enable_dr_protection_groups ? 1 : 0
+resource "oci_disaster_recovery_dr_plan" "standby" {
+  provider = oci.standby
+  count    = var.enable_dr_plan && var.enable_dr_protection_groups ? 1 : 0
 
   lifecycle {
     ignore_changes = [
@@ -130,8 +143,8 @@ resource "oci_disaster_recovery_dr_plan" "primary" {
     ]
   }
 
-  dr_protection_group_id = oci_disaster_recovery_dr_protection_group.primary[0].id
-  display_name           = coalesce(var.dr_plan_display_name, "${local.name_prefix}-dr-plan-${lower(var.dr_plan_type)}")
+  dr_protection_group_id = oci_disaster_recovery_dr_protection_group.standby[0].id
+  display_name           = coalesce(var.dr_plan_display_name, "${local.standby_name_prefix}-dr-plan-${lower(var.dr_plan_type)}")
   type                   = upper(var.dr_plan_type)
   defined_tags           = var.defined_tags
   freeform_tags          = local.common_freeform_tags

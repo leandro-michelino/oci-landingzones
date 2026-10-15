@@ -51,11 +51,36 @@ variable "enable_db_system" {
   description = "Create the PostgreSQL DB system."
   type        = bool
   default     = false
+
+  validation {
+    condition = !var.enable_db_system || var.create_private_network || (
+      var.subnet_id != null && length(var.nsg_ids) > 0
+    )
+    error_message = "PostgreSQL requires the created private network or an existing subnet with at least one NSG."
+  }
+
+  validation {
+    condition = !var.enable_db_system || (
+      (var.admin_password_type == "PLAIN_TEXT" && var.admin_password != null && var.admin_password_secret_id == null && var.admin_password_secret_version == null) || # gitleaks:allow - credential mode enum, no secret value
+      (var.admin_password_type == "VAULT_SECRET" && var.admin_password == null && var.admin_password_secret_id != null && var.admin_password_secret_version != null)  # gitleaks:allow - credential mode enum, no secret value
+    )
+    error_message = "Set either PLAIN_TEXT with a password or VAULT_SECRET with a secret OCID and version before enabling PostgreSQL."
+  }
+
+  validation {
+    condition     = !var.enable_db_system || var.is_regionally_durable || var.availability_domain != null
+    error_message = "Non-regionally durable PostgreSQL storage requires an availability domain."
+  }
 }
 variable "create_private_network" {
   description = "Create a small private VCN, subnet, and NSG for PostgreSQL."
   type        = bool
   default     = false
+
+  validation {
+    condition     = !var.create_private_network || (var.subnet_id == null && length(var.nsg_ids) == 0)
+    error_message = "Do not create an unused private network while supplying an existing PostgreSQL subnet or NSG."
+  }
 }
 variable "vcn_cidr_block" {
   description = "CIDR block for the optional private VCN."
@@ -266,4 +291,8 @@ variable "policy_statements" {
   description = "Optional IAM policy statements for PostgreSQL operators, DBAs, or app groups."
   type        = list(string)
   default     = []
+  validation {
+    condition     = length(var.policy_statements) == 0 || var.home_region != null
+    error_message = "Set the tenancy home_region when creating a PostgreSQL IAM policy."
+  }
 }

@@ -52,11 +52,35 @@ variable "create_cluster" {
   description = "Create an OCI Search with OpenSearch cluster."
   type        = bool
   default     = false
+
+  validation {
+    condition = !var.create_cluster || var.create_private_network || (
+      var.vcn_id != null && var.subnet_id != null && var.nsg_id != null
+    )
+    error_message = "OpenSearch requires a created private network or existing VCN, subnet, and NSG OCIDs."
+  }
 }
 variable "create_private_network" {
   description = "Create a private VCN, subnet, and NSG for OpenSearch."
   type        = bool
   default     = false
+
+  validation {
+    condition = !var.create_private_network || (
+      var.vcn_id == null && var.subnet_id == null && var.nsg_id == null
+    )
+    error_message = "Do not create an unused private network while supplying existing OpenSearch VCN, subnet, or NSG OCIDs."
+  }
+}
+variable "allowed_search_client_cidrs" {
+  description = "Approved client CIDRs for OpenSearch API access on TCP/9200 when creating the private network. Empty denies all inbound API traffic."
+  type        = set(string)
+  default     = []
+}
+variable "allowed_dashboard_client_cidrs" {
+  description = "Approved client CIDRs for OpenSearch Dashboards on TCP/5601 when creating the private network. Empty denies all inbound dashboard traffic."
+  type        = set(string)
+  default     = []
 }
 variable "vcn_cidr_block" {
   description = "CIDR block for the optional private VCN."
@@ -239,4 +263,8 @@ variable "policy_statements" {
   description = "IAM policy statements for OpenSearch admins, index writers, and read-only consumers."
   type        = list(string)
   default     = []
+  validation {
+    condition     = length(var.policy_statements) == 0 || var.home_region != null
+    error_message = "Set the tenancy home_region when creating an OpenSearch IAM policy."
+  }
 }

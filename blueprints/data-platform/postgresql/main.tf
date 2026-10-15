@@ -1,6 +1,8 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-15 | Terraform init/validate and 5 mocked regression cases | oracle/oci 9.9.0.
+# Scope: local mock plan/apply of network and IAM contracts; live test covered only OCI networking, not PostgreSQL or traffic.
+# Evidence: tests/configuration-regressions.tftest.hcl; local Terraform test results.
+# Last successful reduced lifecycle: 2026-10-15 | DEFAULT, sa-saopaulo-1 | OCI network-only apply, no-drift plan, destroy, API/state cleanup | oracle/oci 9.9.0.
+# Live evidence: docs/DATA-DEVOPS-DR-REVIEW-20261015.md; private logs in .leo-local/data-devops-dr-20261015/.
 resource "oci_core_vcn" "postgresql" {
   count = var.create_private_network ? 1 : 0
 
@@ -21,8 +23,20 @@ resource "oci_core_subnet" "postgresql" {
   display_name               = local.subnet_display_name
   dns_label                  = var.subnet_dns_label
   prohibit_public_ip_on_vnic = true
+  security_list_ids          = [oci_core_security_list.postgresql[0].id]
   defined_tags               = var.defined_tags
   freeform_tags              = local.common_freeform_tags
+}
+
+resource "oci_core_security_list" "postgresql" {
+  #checkov:skip=CKV_OCI_16:Explicit ingress-empty list prevents inherited default SSH; approved database ingress is managed on the NSG.
+  count = var.create_private_network ? 1 : 0
+
+  compartment_id = local.target_compartment_ocid
+  vcn_id         = oci_core_vcn.postgresql[0].id
+  display_name   = "${local.name_prefix}-sl-postgresql"
+  defined_tags   = var.defined_tags
+  freeform_tags  = local.common_freeform_tags
 }
 
 resource "oci_core_network_security_group" "postgresql" {
@@ -149,6 +163,7 @@ resource "oci_psql_db_system" "this" {
 resource "oci_identity_policy" "access" {
   count = length(var.policy_statements) > 0 ? 1 : 0
 
+  provider       = oci.home
   compartment_id = local.policy_compartment_ocid
   name           = "${local.name_prefix}-pol-postgresql"
   description    = "Scoped PostgreSQL access for ${local.name_prefix}."

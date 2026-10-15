@@ -11,6 +11,7 @@ output "resource_ids" {
   value = {
     vcn                = try(oci_core_vcn.opensearch[0].id, null)
     subnet             = try(oci_core_subnet.opensearch[0].id, null)
+    security_list      = try(oci_core_security_list.opensearch[0].id, null)
     nsg                = try(oci_core_network_security_group.opensearch[0].id, null)
     opensearch_cluster = try(oci_opensearch_opensearch_cluster.this[0].id, null)
     snapshot_bucket    = try(oci_objectstorage_bucket.snapshots[0].id, null)
@@ -20,9 +21,10 @@ output "resource_ids" {
 output "private_network" {
   description = "Optional private network resources created by this blueprint."
   value = {
-    vcn_id    = try(oci_core_vcn.opensearch[0].id, null)
-    subnet_id = try(oci_core_subnet.opensearch[0].id, null)
-    nsg_id    = try(oci_core_network_security_group.opensearch[0].id, null)
+    vcn_id           = try(oci_core_vcn.opensearch[0].id, null)
+    subnet_id        = try(oci_core_subnet.opensearch[0].id, null)
+    security_list_id = try(oci_core_security_list.opensearch[0].id, null)
+    nsg_id           = try(oci_core_network_security_group.opensearch[0].id, null)
   }
 }
 output "opensearch_cluster_id" {

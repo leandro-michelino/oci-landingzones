@@ -4,16 +4,16 @@ This is the deployment architecture for `blueprints/disaster-recovery/azure-oci-
 
 ## Deployment Purpose
 
-Implements a cross-cloud DR pattern where OCI is primary and Azure is standby,
-with DNS failover runbook contracts and optional interconnect or
-without-interconnect operation modes.
+Defines OCI primary resources and Azure standby references for a proposed
+cross-cloud DR design. DNS and interconnect values are runbook contracts;
+this Terraform folder does not provision or test those traffic paths.
 
 ## Architecture At A Glance
 
 | Item | Details |
 | --- | --- |
 | Boundary | `blueprints/disaster-recovery/azure-oci-cross-cloud-dr` owns this deployment folder and its Terraform + Ansible runners. |
-| Purpose | OCI-primary to Azure-standby DR with contract outputs for connectivity, DNS failover, and runbook execution. |
+| Purpose | Optional OCI network and evidence resources plus metadata for an externally built Azure standby, connectivity path, and DNS workflow. |
 | Terraform components | `oci_core_vcn.primary`, `oci_core_route_table.primary`, `oci_core_security_list.primary_app`, `oci_core_subnet.primary_app`, `oci_objectstorage_namespace.this`, `oci_objectstorage_bucket.dr_evidence`, `oci_ons_notification_topic.dr_alert`, `terraform_data.connectivity_contract`, `terraform_data.dns_failover_contract`, `terraform_data.runbook_contract` |
 | Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
 
@@ -45,7 +45,7 @@ without-interconnect operation modes.
 |         v                                                                                                |
 | (Standby app endpoint)                                                                                   |
 |                                                                                                          |
-| [Clients] -> [DNS steering layer] -> OCI primary endpoint                                                |
+| (Clients) -> (external DNS steering layer) -> (OCI primary endpoint)                                     |
 |                               `-> Azure standby endpoint on failover                                    |
 |                                                                                                          |
 | Guardrail: OCI remains primary in this blueprint variant.                                                |
@@ -70,14 +70,14 @@ without-interconnect operation modes.
 
 - Operator sets connectivity mode and endpoint assumptions in local tfvars.
 - Terraform creates optional OCI primary networking, evidence, and alert resources.
-- Terraform publishes connectivity, DNS failover, and runbook contracts as outputs.
+- Terraform publishes connectivity, DNS failover, and runbook metadata as outputs; it does not configure DNS or circuits.
 - Runbook owners consume outputs for drills, failover, and failback procedures.
 
 ## Traffic And Trust Boundaries
 
 - Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
-- Data plane traffic is the application path shown in the Architecture diagram: client traffic targets OCI primary and shifts to Azure standby during runbook-driven failover.
-- Trust boundaries are the OCI tenancy boundary, Azure boundary represented by external standby endpoint IDs, and optional interconnect boundary represented by FastConnect + ExpressRoute partner links.
+- The application traffic path in the diagram is an intended design, not a path established by this Terraform configuration. Validate OCI primary, Azure standby, DNS cutover, and failover separately.
+- Trust boundaries are the OCI tenancy, the separately deployed Azure standby, and any separately provisioned FastConnect + ExpressRoute interconnect.
 - Secrets, OCIDs, endpoint URLs, circuit IDs, and operational contacts belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
 ## Detailed Architecture Notes
@@ -86,9 +86,11 @@ These notes expand the diagram with the design details that usually matter
 during review, plan, and hand-off.
 
 - The blueprint keeps OCI as primary through variable validation and output contracts.
-- Connectivity can run with partner interconnect (`interconnect`) or explicitly without interconnect (`without-interconnect`) for staged or constrained environments.
+- `connectivity_mode` records an intended partner interconnect or no-interconnect mode. Circuit IDs are references; this blueprint creates no circuits or cross-cloud routes.
 - The DNS failover contract captures endpoint and TTL assumptions so operational teams can align cutover timing with runbook tests.
 - The runbook contract stores drill cadence and RTO/RPO targets so governance checks can compare planned versus measured recovery behavior.
+- A network-only OCI lifecycle proves only creation and cleanup of the selected VCN, gateway, route table, security list, and subnet. It cannot prove Azure standby health, cross-cloud connectivity, DNS cutover, data replication, or failover.
+- The committed example explicitly disables OCI cloud resources and contract requirements. The historical variable defaults remain enabled for state compatibility. An enabled public subnet requires an explicit ingress CIDR; review its internet route and unrestricted egress before use.
 - Azure resources are provisioned through the local Azure session artifacts (`azure/main.bicep` and `ansible/azure-*.yml`) and referenced in Terraform by standby endpoint values.
 - `hello-world/index.html` is included as a lightweight drill/demo status page that mirrors the same primary/standby assumptions.
 - Azure Container Apps capacity is regional. Treat

@@ -15,9 +15,15 @@ Start here for `blueprints/disaster-recovery/azure-oci-cross-cloud-dr`: what it 
 
 ## Deployment Purpose
 
-Implements a cross-cloud DR pattern where OCI is primary and Azure is standby,
-with explicit DNS failover runbook contracts and connectivity operation either
-through interconnect or without interconnect.
+Defines OCI-primary and Azure-standby DR inputs and runbook metadata.
+OCI primary networking, an evidence bucket, and an alert topic are optional.
+The separate Azure template can provision a standby endpoint after its own
+review and authorization.
+
+This Terraform folder does not create DNS records, health checks, interconnect
+circuits, application replication, a standby workload, or failover automation.
+Circuit IDs and endpoints are references; their presence does not prove a
+working connection or healthy service.
 
 ## When To Use This Deployment
 
@@ -43,6 +49,28 @@ provide the same plan/apply/destroy rhythm everywhere in the repo.
 | Resource | `terraform_data.runbook_contract` | Failover/failback execution contract with RTO/RPO metadata. |
 
 Use `variables.tf` as the input contract, then keep real OCIDs, CIDRs, names, and enable flags in an ignored local `terraform.tfvars`.
+
+The committed `terraform.tfvars.example` explicitly disables OCI networking,
+the Object Storage bucket, the Notifications topic, and the DNS contract; it
+selects `without-interconnect`. The historical Terraform variable defaults
+still enable those resources and select `interconnect` to avoid an implicit
+delete plan for existing states. Do not apply without explicit flags and IDs.
+Creating the public OCI application subnet now requires an explicit ingress
+CIDR. Its route points to an internet gateway and allows broad outbound
+traffic, so inspect the CIDR, route, and prospective workload before applying.
+The Azure standby template provisions resources that may incur charges;
+OCI Object Storage and Notifications usage may also incur charges.
+
+A network-only OCI apply validates creation and cleanup of the selected VCN,
+gateway, route table, security list, and subnet. It does not validate Azure
+standby provisioning, cross-cloud connectivity, application traffic, DNS
+cutover, data replication, RTO/RPO, or failover. Run those tests only under
+their own approved cloud and cost scope.
+
+Upgrade note: the previous default ingress source was `0.0.0.0/0`. Existing
+states with an enabled network must now provide
+`oci_primary_ingress_allowed_cidr` explicitly before planning. This fails
+closed instead of silently retaining unrestricted ingress.
 
 ## Folder Contract
 
@@ -86,6 +114,7 @@ Start with `terraform.tfvars.example`, then create a local ignored
 | `region` | OCI region name for primary resources and contracts. |
 | `home_region` | OCI tenancy home region. |
 | `oci_config_profile` | Optional OCI CLI config profile for local execution. |
+| `compartment_ocid` | Explicit OCI target compartment; verify it before enabling any OCI resource. |
 | `org` | Short organization prefix used in names. |
 | `environment` | Deployment environment name. |
 | `region_key` | Short OCI region key used in resource names. |
@@ -185,7 +214,8 @@ approved Azure region such as `spaincentral`.
 2. Confirm connectivity mode (`interconnect` or `without-interconnect`) and ownership.
 3. Populate `terraform.tfvars` with endpoints, FQDN, and DR objectives.
 4. Run plan and review connectivity, DNS failover, and runbook contract outputs.
-5. Apply, then execute failover drills using the contract outputs as runbook references.
+5. Apply only the approved resources; add and validate the separate standby,
+   connectivity, replication, DNS, and recovery workflows before a DR drill.
 
 ## Architecture
 
@@ -238,3 +268,7 @@ The validator checks Terraform formatting, required deployment README files,
 required architecture README sections, `terraform init -backend=false`,
 `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax,
 optional scanners when installed, and cleanup of generated Terraform artifacts.
+
+Last successful validation: 2026-10-15, oracle/oci 9.9.0, Terraform schema
+and eight mocked plans in `tests/safe-defaults.tftest.hcl`. No OCI or standby
+resources were created, and no connectivity or failover was exercised.

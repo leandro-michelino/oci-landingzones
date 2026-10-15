@@ -9,7 +9,7 @@ Start here for `blueprints/data-platform/nosql`: what it builds, which inputs de
 | Folder | `blueprints/data-platform/nosql` |
 | Best fit | Managed OCI NoSQL table with deploy-and-use app networking, optional secondary index and cross-region replica, and IAM/alert contracts. |
 | Terraform shape | `oci_core_vcn.app`, `oci_core_route_table.app`, `oci_core_security_list.app`, `oci_core_subnet.app`, `oci_nosql_table.this`, `oci_nosql_index.secondary`, `oci_nosql_table_replica.this`, `oci_ons_notification_topic.alert`, `terraform_data.app_network_contract`, `terraform_data.nosql_contract` |
-| Inputs to settle first | `compartment_ocid`, `table_ddl_statement`, `table_max_read_units`, `table_max_write_units`, `table_max_storage_in_gbs`, `create_secondary_index`, `enable_table_replica`, `replica_region` |
+| Inputs to settle first | `compartment_ocid`, `create_table`, `table_ddl_statement`, `table_max_read_units`, `table_max_write_units`, `table_max_storage_in_gbs`, `create_secondary_index`, `enable_table_replica`, `replica_region` |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `nosql_table_id`, `nosql_table_name`, `nosql_capacity_contract`, `app_network_contract` |
 | Local runner | `terraform plan` for quick iteration; `ansible/plan.yml` and guarded `ansible/apply.yml` for the repo-standard flow. |
 
@@ -44,7 +44,8 @@ consumer workloads.
 | Table only | Production or shared environments already have app networking. | `enable_app_network = false`, table DDL and capacity inputs |
 | Table plus index | Query patterns need a secondary index from day one. | `create_secondary_index = true`, `secondary_index_columns` |
 | Table plus replica | Cross-region read or recovery posture is approved. | `enable_table_replica = true`, `replica_region` |
-| Validation only | You want CI or local validation without creating resources. | Keep resource enable flags disabled or use validation tfvars. |
+| Network foundation only | Review or test the optional app VCN without a NoSQL table. | `create_table = false`, `create_alert_topic = false`, `enable_app_network = true` |
+| Contract only | You want local plan validation without OCI resources. | `create_table = false`, `enable_app_network = false`, `create_alert_topic = false`, `policy_statements = []` |
 
 ## Quick Start
 
@@ -68,15 +69,14 @@ CONFIRM_APPLY=true ansible-playbook -i localhost, -c local ansible/apply.yml
 CONFIRM_DESTROY=true ansible-playbook -i localhost, -c local ansible/destroy.yml
 ```
 
-For a disposable end-to-end lifecycle test that creates real OCI NoSQL
-resources, verifies the table and optional index through OCI CLI, and then
-cleans up:
+For a disposable table lifecycle test that creates real OCI NoSQL resources,
+verifies the table and optional index through OCI CLI, and then cleans up:
 
 ```bash
 NOSQL_LIFECYCLE_CONFIRM=true \
   scripts/test-nosql-lifecycle.sh \
   --var-file blueprints/data-platform/nosql/terraform.tfvars \
-  --profile YOUR_OCI_PROFILE \
+  --profile DEFAULT \
   --region sa-saopaulo-1
 ```
 
@@ -92,7 +92,7 @@ plan/apply/destroy rhythm used across the repo.
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
 | Resource | `oci_core_vcn.app`, `oci_core_route_table.app`, `oci_core_security_list.app`, `oci_core_subnet.app` | Optional app-network resources for NoSQL consumers. |
-| Resource | `oci_nosql_table.this` | Core NoSQL table resource. |
+| Resource | `oci_nosql_table.this` | NoSQL table when `create_table = true` (the normal deployment default). |
 | Resource | `oci_nosql_index.secondary` | Optional secondary index for query acceleration. |
 | Resource | `oci_nosql_table_replica.this` | Optional cross-region table replica. |
 | Resource | `oci_ons_notification_topic.alert` | Optional alert and operations topic. |
@@ -148,6 +148,8 @@ Start with `terraform.tfvars.example`, then create a local ignored
 | --- | --- |
 | `compartment_ocid` | Compartment OCID where resources are created. |
 | `enable_app_network` | Create VCN/subnet/route/security resources for consumer workloads. |
+| `app_ingress_allowed_cidr` | Optional source CIDR for TCP/443 into future app workloads; null allows no inbound app traffic. |
+| `create_table` | Create the NoSQL table, or set false for a network-only/contract-only plan. |
 | `table_name` | Optional NoSQL table name. Use a SQL-safe identifier with letters, numbers, and underscores. |
 | `table_ddl_statement` | Optional NoSQL table DDL schema contract. When set, the `CREATE TABLE` name must match `table_name`; when unset, the blueprint creates a default orders table DDL from `table_name`. |
 | `table_max_read_units` | Provisioned read limit. |
@@ -205,6 +207,17 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, -c local ansible/destroy.yml
 
 `apply.yml` and `destroy.yml` are intentionally guarded.
 
+## Existing Table Upgrade
+
+The optional `create_table` switch changes the managed table address from
+`oci_nosql_table.this` to `oci_nosql_table.this[0]`. The `moved` block in
+`main.tf` preserves an existing table at the new address when `create_table`
+remains `true`. Back up the state and review the first upgraded plan before
+apply: it should report an address move without replacing the table. Do not set
+`create_table = false` in a workspace that already owns a table unless deleting
+that table and its data is intentional. This migration has been validated at
+Terraform schema level only, not against an existing production table state.
+
 ## Architecture
 
 The full detailed Architecture is local to this deployment:
@@ -224,6 +237,11 @@ blueprint.
 - Confirm replication region, if enabled, is intentional.
 - Confirm index columns match expected query patterns.
 - Confirm app-network ingress CIDRs and route behavior if app-network resources are enabled.
+- The optional app subnet is public and routes egress through an Internet Gateway.
+  It does not deploy application compute, a private NoSQL endpoint, or a Service
+  Gateway. No inbound app rule is created until `app_ingress_allowed_cidr` is set.
+- Review the NoSQL table's provisioned read/write/storage limits before apply;
+  setting `create_table = false` is required for a network-only live test.
 - Confirm `architecture/README.md` matches `main.tf`, `variables.tf`, and `outputs.tf`.
 - Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
 

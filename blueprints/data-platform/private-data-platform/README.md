@@ -8,7 +8,7 @@ Start here for `blueprints/data-platform/private-data-platform`: what it builds,
 | --- | --- |
 | Folder | `blueprints/data-platform/private-data-platform` |
 | Best fit | Builds a private data-platform pattern with network placement, vault/KMS, object storage, private endpoint, and streaming hooks. |
-| Terraform shape | `network`, `vault`, `streaming`, `oci_objectstorage_bucket.data`, `oci_objectstorage_private_endpoint.data`, plus 1 more |
+| Terraform shape | Private network module, optional Vault/KMS, Object Storage bucket and private endpoint, optional Streaming, plus managed endpoint NSGs when using the created subnet. |
 | Inputs to settle first | `compartment_ocid`, `vaults`, `vault_keys`, `data_bucket_name`, `bucket_kms_key_id`, `bucket_auto_tiering`, `bucket_storage_tier`, plus 12 more |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `vcn_id`, `subnet_ids`, `vault_ids`, `vault_key_ids`, plus 4 more |
 | Local runner | `terraform plan` for quick iteration; `ansible/plan.yml` and guarded `ansible/apply.yml` for the repo-standard flow. |
@@ -17,6 +17,8 @@ Start here for `blueprints/data-platform/private-data-platform`: what it builds,
 
 Builds a private data-platform pattern with network placement, vault/KMS, object storage,
 private endpoint, and streaming hooks.
+
+The private VCN, subnets, security list, route table, and service gateway are always created. The Networking module now selects immutable revision `c07231c91d146265a46836757f3c399861a59fff`, which preserves its resource addresses, adds regional Oracle Services Network HTTPS egress, and suppresses drift from OCI provenance tags. Review an existing deployment's plan before apply because its baseline egress rule may update. Vault and Streaming stay pinned to `v0.2.0` to preserve their resource addresses. Vault/key, bucket, Object Storage private endpoint, and Streaming remain enabled by their existing defaults; explicitly set their `enable_*` inputs to `false` for a network-only plan. Review every paid service before applying.
 
 ## When To Use This Deployment
 
@@ -47,6 +49,8 @@ in the repo.
 | Module | `streaming` | Streaming extension module. |
 | Resource | `oci_objectstorage_bucket.data` | Declared directly in `main.tf` |
 | Resource | `oci_objectstorage_private_endpoint.data` | Declared directly in `main.tf` |
+| Resource | `oci_core_network_security_group.object_storage_endpoint` | Managed HTTPS NSG when the Object Storage endpoint uses the created subnet and no existing NSG is supplied. |
+| Resource | `oci_core_network_security_group.streaming_endpoint` | Managed REST/Kafka NSG when a new stream pool uses the created subnet and no existing NSG is supplied. |
 | Data source | `data.oci_objectstorage_namespace.this` | Read during plan/apply |
 
 Use `variables.tf` as the input contract, then keep real OCIDs, CIDRs, names, and enable flags in an ignored local `terraform.tfvars`.
@@ -105,12 +109,14 @@ real OCIDs, CIDRs, names, recipients, and enable flags.
 | `private_endpoint_subnet_id` | Optional subnet OCID for the Object Storage private endpoint. |
 | `private_endpoint_subnet_key` | Subnet key from the private network module used when private_endpoint_subnet_id is omitted. |
 | `private_endpoint_nsg_ids` | Optional NSG OCIDs for the Object Storage private endpoint. |
+| `private_endpoint_allowed_client_cidrs` | Approved TCP/443 client CIDRs for the managed Object Storage endpoint NSG. Empty denies ingress; existing NSGs need separately managed rules. |
 | `create_stream_pool` | Create a stream pool when enable_streaming is true. |
 | `stream_pool_id` | Existing stream pool OCID used when create_stream_pool is false. |
 | `stream_pool_name` | Optional stream pool name. |
 | `streaming_kms_key_id` | Optional KMS key OCID for stream pool encryption. |
 | `streaming_private_endpoint_subnet_id` | Optional subnet OCID for Streaming private endpoint access. |
 | `streaming_private_endpoint_nsg_ids` | Optional NSG OCIDs for the Streaming private endpoint. |
+| `streaming_allowed_client_cidrs` | Approved TCP/443 REST and TCP/9092 Kafka client CIDRs for the managed Streaming NSG. Empty denies ingress. |
 | `streams` | Streams to create for private data pipelines. |
 
 ### Enable Flags And Switches
@@ -125,6 +131,8 @@ real OCIDs, CIDRs, names, recipients, and enable flags.
 | `enable_bucket_versioning` | Enable Object Storage bucket versioning. |
 | `enable_object_storage_private_endpoint` | Create an Object Storage private endpoint. |
 | `enable_streaming` | Create OCI Streaming resources for private data pipelines. |
+
+An Object Storage private endpoint requires the managed bucket. A supplied external endpoint subnet also requires explicit NSG IDs. A new private stream pool uses the network module's `endpoints` subnet by default; a supplied external subnet requires explicit NSG IDs. Existing stream pools can be public or private and must be checked separately.
 
 ## Outputs And Hand-Off
 
@@ -141,7 +149,7 @@ the same change.
 | `subnet_ids` | Private data platform subnet OCIDs keyed by role. |
 | `vault_ids` | Vault OCIDs keyed by logical name. |
 | `vault_key_ids` | KMS key OCIDs keyed by logical name. |
-| `data_bucket_name` | Private data platform Object Storage bucket name. |
+| `data_bucket_name` | Created Object Storage bucket name, or null when disabled. |
 | `object_storage_private_endpoint_id` | Object Storage private endpoint OCID. |
 | `stream_pool_id` | Streaming stream pool OCID. |
 | `stream_ids` | Stream OCIDs keyed by logical name. |
@@ -193,8 +201,11 @@ Ansible output at the end of the deployment.
 ## Review Before Apply
 
 - Confirm private endpoint subnet and DNS behavior.
+- Confirm the endpoint NSG allows only approved client CIDRs. The managed Object Storage endpoint receives TCP/443 ingress rules only when `private_endpoint_allowed_client_cidrs` is set ([Oracle Object Storage guidance](https://docs.oracle.com/en-us/iaas/Content/Object/Tasks/private-endpoints.htm)).
+- Confirm Streaming REST TCP/443 and Kafka TCP/9092 access separately ([Oracle Streaming troubleshooting](https://docs.oracle.com/en-us/iaas/Content/Streaming/Reference/troubleshootingstreaming.htm)).
 - Review bucket naming, encryption, and access policies.
 - Check streaming partitions, retention, and cost impact.
+- The Object Storage private endpoint uses a private IP inside the VCN. Service gateway routing is a separate path to Oracle Services Network endpoints; its packet flow has not been validated in this blueprint.
 - Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
 - Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
 
@@ -207,3 +218,5 @@ From the repository root:
 ```
 
 Use `./scripts/validate-all.sh` before release work or broad shared changes.
+
+The 2026-10-15 local checks passed `terraform init`, `terraform validate`, and four plan-only regression cases with OCI provider 9.9.0. They do not establish endpoint traffic, DNS, data transfer, or successful paid-service provisioning. An attempted mock apply on 2026-10-15 unexpectedly reached the nested network module's own OCI provider and returned `404 NotAuthorizedOrNotFound` against a placeholder compartment; the test stopped, Terraform retained no test state, and an API inventory of the authorized São Paulo compartment found no VCN. Keep tests of this legacy provider-configured module in plan mode unless fully isolated provider injection is established.

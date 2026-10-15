@@ -65,9 +65,14 @@ variable "oci_primary_app_subnet_cidr" {
 }
 
 variable "oci_primary_ingress_allowed_cidr" {
-  description = "Source CIDR allowed for OCI primary application ingress."
+  description = "Explicit source CIDR allowed for OCI primary HTTP/HTTPS ingress when networking is enabled."
   type        = string
-  default     = "0.0.0.0/0"
+  default     = null
+
+  validation {
+    condition     = !var.enable_oci_primary_network || try(trimspace(var.oci_primary_ingress_allowed_cidr), "") != ""
+    error_message = "Enabling OCI primary networking requires an explicit oci_primary_ingress_allowed_cidr."
+  }
 }
 
 variable "oci_is_primary" {

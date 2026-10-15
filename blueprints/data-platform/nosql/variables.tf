@@ -65,9 +65,20 @@ variable "app_subnet_cidr" {
 }
 
 variable "app_ingress_allowed_cidr" {
-  description = "Ingress source CIDR allowed to reach the app subnet."
+  description = "Optional CIDR allowed to reach app workloads on TCP/443. Null creates no app ingress rule; this is not a NoSQL service endpoint rule."
   type        = string
-  default     = "10.0.0.0/8"
+  default     = null
+}
+
+variable "create_table" {
+  description = "Create the NoSQL table. Disable for a network-only foundation plan or lifecycle test; index and replica then remain disabled."
+  type        = bool
+  default     = true
+
+  validation {
+    condition     = var.create_table || (!var.create_secondary_index && !var.enable_table_replica)
+    error_message = "When create_table=false, disable create_secondary_index and enable_table_replica."
+  }
 }
 
 variable "table_name" {

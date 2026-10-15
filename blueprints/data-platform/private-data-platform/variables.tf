@@ -139,6 +139,16 @@ variable "enable_object_storage_private_endpoint" {
   description = "Create an Object Storage private endpoint."
   type        = bool
   default     = true
+
+  validation {
+    condition = !var.enable_object_storage_private_endpoint || (
+      var.enable_data_bucket && (
+        (var.private_endpoint_subnet_id == null) ||
+        (var.private_endpoint_subnet_id != null && length(var.private_endpoint_nsg_ids) > 0)
+      )
+    )
+    error_message = "Object Storage private endpoint requires the managed bucket and either the created private network or an existing private subnet with explicit NSGs."
+  }
 }
 
 variable "private_endpoint_name" {
@@ -171,10 +181,28 @@ variable "private_endpoint_nsg_ids" {
   default     = []
 }
 
+variable "private_endpoint_allowed_client_cidrs" {
+  description = "Approved HTTPS client CIDRs for the managed Object Storage private endpoint NSG. Empty denies ingress; existing NSGs are managed separately."
+  type        = set(string)
+  default     = []
+  validation {
+    condition     = alltrue([for cidr in var.private_endpoint_allowed_client_cidrs : can(cidrhost(cidr, 0))])
+    error_message = "Every Object Storage private endpoint client CIDR must be valid."
+  }
+}
+
 variable "enable_streaming" {
   description = "Create OCI Streaming resources for private data pipelines."
   type        = bool
   default     = true
+
+  validation {
+    condition = !var.enable_streaming || !var.create_stream_pool || (
+      (var.streaming_private_endpoint_subnet_id == null) ||
+      (var.streaming_private_endpoint_subnet_id != null && length(var.streaming_private_endpoint_nsg_ids) > 0)
+    )
+    error_message = "A new private stream pool requires the created network or an existing subnet with explicit NSGs."
+  }
 }
 
 variable "create_stream_pool" {
@@ -213,6 +241,15 @@ variable "streaming_private_endpoint_nsg_ids" {
   default     = []
 }
 
+variable "streaming_allowed_client_cidrs" {
+  description = "Approved REST (TCP/443) and Kafka (TCP/9092) client CIDRs for the managed Streaming private endpoint NSG. Empty denies ingress."
+  type        = set(string)
+  default     = []
+  validation {
+    condition     = alltrue([for cidr in var.streaming_allowed_client_cidrs : can(cidrhost(cidr, 0))])
+    error_message = "Every Streaming private endpoint client CIDR must be valid."
+  }
+}
 variable "streams" {
   description = "Streams to create for private data pipelines."
   type = map(object({

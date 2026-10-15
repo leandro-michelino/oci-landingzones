@@ -42,7 +42,7 @@ is primary, and use `primary_subnet_id` when switching back.
 
 ## Drill Order
 
-1. Apply the main FSDR blueprint and associate the primary and standby DRPGs.
+1. Enable and apply the main FSDR blueprint; it associates the new standby DRPG with the primary DRPG.
 2. Apply this lab.
 3. Add the lab volume group and compute instance to the current primary DRPG.
 4. Confirm the volume-group replica is `AVAILABLE`.

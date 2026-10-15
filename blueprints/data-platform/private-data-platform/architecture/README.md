@@ -12,7 +12,7 @@ Creates a private data landing zone with a private VCN, Vault/KMS, Object Storag
 | --- | --- |
 | Boundary | `blueprints/data-platform/private-data-platform` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Creates a private data landing zone with a private VCN, Vault/KMS, Object Storage bucket access through a private endpoint, and optional Streaming. |
-| Terraform components | `oci_objectstorage_namespace.this`, `network`, `vault`, `oci_objectstorage_bucket.data`, `oci_objectstorage_private_endpoint.data`, `streaming` |
+| Terraform components | `oci_objectstorage_namespace.this`, `network`, `vault`, optional Object Storage bucket and endpoint, managed endpoint NSGs and rules, `streaming` |
 | Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
 
 
@@ -37,12 +37,12 @@ Creates a private data landing zone with a private VCN, Vault/KMS, Object Storag
 |         |      key path for bucket and stream encryption when enabled                                    |
 |         |                                                                                                |
 |         +--> [Object Storage bucket]                                                                     |
-|         |      NoPublicAccess -> private endpoint -> service gateway path                                |
+|         |      NoPublicAccess; client -> private endpoint IP (TCP/443) -> Object Storage                  |
 |         |                                                                                                |
 |         `--> [Streaming]                                                                                 |
 |                stream pool -> streams -> optional private endpoint -> optional KMS key                   |
 |                                                                                                          |
-| Data path: private workload subnet -> private endpoint or service gateway -> Object Storage / Streaming. |
+| Data path: client -> approved endpoint NSG -> Object Storage or Streaming private endpoint.              |
 | Control flow: network first, Vault/KMS second, data services last.                                       |
 | Hand-off: private network IDs, bucket name, private endpoint ID, vault/key IDs, stream pool, and stream  |
 | IDs.                                                                                                     |
@@ -58,6 +58,8 @@ Creates a private data landing zone with a private VCN, Vault/KMS, Object Storag
 | Module | `vault` | `../../../modules/security/vault` |
 | Resource | `oci_objectstorage_bucket.data` | `Declared directly in main.tf` |
 | Resource | `oci_objectstorage_private_endpoint.data` | `Declared directly in main.tf` |
+| Resource | `oci_core_network_security_group.object_storage_endpoint` and HTTPS ingress | Managed Object Storage endpoint NSG and approved TCP/443 client rules. |
+| Resource | `oci_core_network_security_group.streaming_endpoint` and client ingress | Managed Streaming endpoint NSG and approved TCP/443 and TCP/9092 client rules. |
 | Module | `streaming` | `../../../blueprints/extensions/streaming` |
 
 ## Request And Deployment Flow
@@ -79,8 +81,10 @@ These notes expand the diagram with the design details that usually matter durin
 
 - The private endpoint VCN is created before data services so Object Storage and Streaming can use private network paths.
 - Vault/KMS supplies the default key path for the bucket and stream pool unless explicit KMS key IDs are supplied.
-- Object Storage remains NoPublicAccess; access should flow through the object storage private endpoint, service gateway, and configured NSGs.
-- Streaming can be private-endpoint enabled and should share the same private subnet and key-management review as the bucket path.
+- Object Storage remains NoPublicAccess. The private endpoint is a VNIC with a private IP in the VCN; the managed NSG allows HTTPS only from explicitly approved client CIDRs. A service gateway is a separate route to regional Oracle Services Network endpoints, not a hop through the Object Storage private endpoint.
+- The root pins the Networking module at revision `c07231c91d146265a46836757f3c399861a59fff`. Its subnet security list has no ingress, is explicitly attached, and permits HTTPS egress to the regional Oracle Services Network through the Service Gateway. Endpoint connectivity and traffic were not tested.
+- A new Streaming pool uses the created `endpoints` subnet by default. Its managed NSG uses separate stateful TCP/443 and TCP/9092 rules from approved CIDRs. Existing stream pools and externally supplied NSGs require their own private/public and rule review.
+- Enabling Object Storage private endpoint requires the managed bucket. Creating the bucket and endpoint does not prove client DNS, IAM, application access, or data transfer.
 
 ## Operational Boundaries
 
@@ -88,10 +92,11 @@ These notes expand the diagram with the design details that usually matter durin
 - Run plan from this blueprint folder so relative module paths, provider files, and local Ansible runners resolve predictably.
 - Treat apply and destroy as approval-gated operations; use the guarded Ansible playbooks or a reviewed Terraform workflow.
 - Re-check route exposure, IAM scope, compartment boundaries, tags, and output hand-offs whenever inputs change.
+- The historical service defaults are enabled. Explicitly disable Vault, bucket, Object Storage endpoint, and Streaming for a network-only lifecycle test; enabling them can incur charges.
 
 ## Review Checklist
 
-- Confirm the diagram matches `main.tf`: `oci_objectstorage_namespace.this`, `network`, `vault`, `oci_objectstorage_bucket.data`, `oci_objectstorage_private_endpoint.data`, `streaming`.
+- Confirm the diagram matches `main.tf`: `oci_objectstorage_namespace.this`, `network`, `vault`, bucket, Object Storage private endpoint, managed endpoint NSGs and ingress rules, and `streaming`.
 - Confirm the described traffic path is the path you want in OCI before apply.
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.

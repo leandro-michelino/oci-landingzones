@@ -1,6 +1,8 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-15 | Terraform init/validate and 5 mocked plans | oracle/oci 9.9.0.
+# Scope: local schema and plan assertions; live test covered only app OCI networking, not a NoSQL table, replica, or app traffic.
+# Evidence: blueprints/data-platform/nosql/tests/configuration-regressions.tftest.hcl.
+# Last successful reduced lifecycle: 2026-10-15 | DEFAULT, sa-saopaulo-1 | OCI network-only apply, no-drift plan, destroy, API/state cleanup | oracle/oci 9.9.0.
+# Live evidence: docs/DATA-DEVOPS-DR-REVIEW-20261015.md; private logs in .leo-local/data-devops-dr-20261015/.
 resource "oci_core_vcn" "app" {
   count = var.enable_app_network ? 1 : 0
 
@@ -47,12 +49,15 @@ resource "oci_core_security_list" "app" {
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
 
-  ingress_security_rules {
-    protocol = "6"
-    source   = var.app_ingress_allowed_cidr
-    tcp_options {
-      min = 443
-      max = 443
+  dynamic "ingress_security_rules" {
+    for_each = var.app_ingress_allowed_cidr == null ? [] : [var.app_ingress_allowed_cidr]
+    content {
+      protocol = "6"
+      source   = ingress_security_rules.value
+      tcp_options {
+        min = 443
+        max = 443
+      }
     }
   }
 
@@ -87,7 +92,16 @@ resource "terraform_data" "app_network_contract" {
   }
 }
 
+# Preserve existing NoSQL tables when enabling the optional table switch.
+# Review the first upgraded plan before apply; do not set create_table=false on
+# an existing table deployment unless deleting that table is intentional.
+moved {
+  from = oci_nosql_table.this
+  to   = oci_nosql_table.this[0]
+}
+
 resource "oci_nosql_table" "this" {
+  count          = var.create_table ? 1 : 0
   compartment_id = local.target_compartment_ocid
   name           = local.nosql_table_name
   ddl_statement  = local.nosql_table_ddl
@@ -103,10 +117,10 @@ resource "oci_nosql_table" "this" {
 }
 
 resource "oci_nosql_index" "secondary" {
-  count = var.create_secondary_index ? 1 : 0
+  count = var.create_table && var.create_secondary_index ? 1 : 0
 
   name             = local.nosql_index_name
-  table_name_or_id = oci_nosql_table.this.id
+  table_name_or_id = oci_nosql_table.this[0].id
 
   dynamic "keys" {
     for_each = var.secondary_index_columns
@@ -125,9 +139,9 @@ resource "oci_nosql_index" "secondary" {
 }
 
 resource "oci_nosql_table_replica" "this" {
-  count = var.enable_table_replica ? 1 : 0
+  count = var.create_table && var.enable_table_replica ? 1 : 0
 
-  table_name_or_id = oci_nosql_table.this.id
+  table_name_or_id = oci_nosql_table.this[0].id
   region           = var.replica_region
   max_read_units   = var.replica_max_read_units
   max_write_units  = var.replica_max_write_units
@@ -164,15 +178,15 @@ resource "oci_identity_policy" "access" {
 
 resource "terraform_data" "nosql_contract" {
   input = {
-    table_id        = oci_nosql_table.this.id
-    table_name      = oci_nosql_table.this.name
+    table_id        = try(oci_nosql_table.this[0].id, null)
+    table_name      = try(oci_nosql_table.this[0].name, null)
     secondary_index = var.create_secondary_index ? try(oci_nosql_index.secondary[0].name, null) : null
     replica_region  = var.enable_table_replica ? var.replica_region : null
-    capacity = {
+    capacity = var.create_table ? {
       mode           = var.table_capacity_mode
       max_read       = var.table_max_read_units
       max_write      = var.table_max_write_units
       max_storage_gb = var.table_max_storage_in_gbs
-    }
+    } : null
   }
 }

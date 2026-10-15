@@ -11,6 +11,7 @@ output "resource_ids" {
   value = {
     vcn              = try(oci_core_vcn.mysql[0].id, null)
     subnet           = try(oci_core_subnet.mysql[0].id, null)
+    security_list    = try(oci_core_security_list.mysql[0].id, null)
     nsg              = try(oci_core_network_security_group.mysql[0].id, null)
     db_system        = local.db_system_id
     heatwave_cluster = local.heatwave_cluster_id
@@ -21,9 +22,10 @@ output "resource_ids" {
 output "private_network" {
   description = "Optional private network resources created by this blueprint."
   value = {
-    vcn_id    = try(oci_core_vcn.mysql[0].id, null)
-    subnet_id = try(oci_core_subnet.mysql[0].id, null)
-    nsg_id    = try(oci_core_network_security_group.mysql[0].id, null)
+    vcn_id           = try(oci_core_vcn.mysql[0].id, null)
+    subnet_id        = try(oci_core_subnet.mysql[0].id, null)
+    security_list_id = try(oci_core_security_list.mysql[0].id, null)
+    nsg_id           = try(oci_core_network_security_group.mysql[0].id, null)
   }
 }
 output "mysql_db_system_id" {

@@ -8,7 +8,7 @@ Start here for `blueprints/data-platform/postgresql`: what it builds, which inpu
 |---|---|
 | Folder | `blueprints/data-platform/postgresql` |
 | Best fit | Private PostgreSQL database tier for app teams that need managed open-source database foundations. |
-| Terraform shape | Optional private VCN/subnet/NSG, `oci_psql_db_system.this`, `oci_identity_policy.access` |
+| Terraform shape | Optional private VCN/subnet/ingress-empty security list/NSG, `oci_psql_db_system.this`, `oci_identity_policy.access` |
 | Inputs to settle first | Base tenancy values, private network mode or existing subnet/NSGs, shape, DB version, admin secret model, storage durability, and backup policy. |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `private_network`, `postgresql_db_system_id`, `postgresql_db_system_state`, `postgresql_primary_endpoint`, `postgresql_instance_endpoints`, `postgresql_reader_endpoint`, `postgresql_instances`, `access_policy_id` |
 | Local runner | `terraform plan` for quick iteration; `ansible/plan.yml` and guarded `ansible/apply.yml` for the repo-standard flow. |
@@ -72,6 +72,8 @@ Everything needed for this deployment starts in this folder: Terraform composes 
 | Kind | Name | Source Or Role |
 |---|---|---|
 | Resource | `oci_psql_db_system.this` | Declared directly in `main.tf` |
+| Resource | `oci_core_security_list.postgresql` | Explicit ingress-empty list attached to the optional private subnet |
+| Resource | `oci_core_network_security_group_security_rule.postgresql_ingress` | Approved client CIDRs on TCP/5432 |
 | Resource | `oci_identity_policy.access` | Optional scoped IAM policy declared directly in `main.tf` |
 
 Use `variables.tf` as the input contract, then keep real OCIDs, CIDRs, names, and enable flags in an ignored local `terraform.tfvars`.
@@ -121,13 +123,14 @@ Start with `terraform.tfvars.example`, then create a local ignored `terraform.tf
 | `vcn_cidr_block`, `subnet_cidr_block`, `allowed_client_cidrs` | CIDR model for the optional private network and approved client ranges. |
 | `db_version`, `shape` | PostgreSQL version and compute shape. |
 | `instance_count`, `instance_ocpu_count`, `instance_memory_size_in_gbs` | HA and sizing model. |
-| `admin_username`, `admin_password`, `admin_password_secret_id` | Credential source and rotation ownership. |
+| `admin_username`, `admin_password_type`, `admin_password`, `admin_password_secret_id`, `admin_password_secret_version` | `PLAIN_TEXT` requires a password; `VAULT_SECRET` requires a secret OCID and version ([OCI provider contract](https://docs.oracle.com/en-us/iaas/tools/terraform-provider-oci/latest/docs/r/psql_db_system.html)). Keep secrets out of committed tfvars and protect the state file. |
 | `subnet_id`, `nsg_ids` | Private endpoint subnet and source controls. |
 | `is_reader_endpoint_enabled` | Reader endpoint behavior when supported by the chosen shape and topology. |
 | `storage_system_type`, `is_regionally_durable`, `availability_domain`, `iops` | Storage durability, placement, and performance. |
 | `backup_policy`, `maintenance_window_start` | Backup start time, retention, and maintenance window. |
 | `db_source` | Optional restore or clone source. |
 | `policy_statements` | Optional IAM statements for DBAs, operators, or app groups. |
+| `home_region` | Required when enabling the IAM policy; the policy uses the tenancy-home provider. |
 
 ### Enable Flags And Switches
 
@@ -140,7 +143,7 @@ All cost-bearing resources are disabled by default where possible. Turn on only 
 | `blueprint_name` | Blueprint identifier for automation. |
 | `name_prefix` | Standard OCI naming prefix. |
 | `resource_ids` | Map of resource identifiers created by this blueprint. |
-| `private_network` | Optional VCN, subnet, and NSG OCIDs created by this blueprint. |
+| `private_network` | Optional VCN, subnet, ingress-empty security list, and NSG OCIDs created by this blueprint. |
 | `postgresql_db_system_id` | PostgreSQL DB system OCID. |
 | `postgresql_db_system_state` | DB system lifecycle state. |
 | `postgresql_primary_endpoint` | Primary private endpoint FQDN, IP, and port. |
@@ -187,7 +190,9 @@ architecture/README.md
 
 - Confirm PostgreSQL version, shape, memory, OCPU count, and instance count.
 - Confirm private subnet, NSGs, optional created network CIDRs, and reader endpoint behavior.
+- The created subnet attaches a dedicated ingress-empty security list. For an existing subnet, inspect every attached security list in addition to the supplied NSGs.
 - Confirm admin password source is secure and not committed.
+- A disabled DB system avoids credential requirements. Enabling it requires an approved network and complete credentials; PostgreSQL provisioning and connectivity are still untested by local validation.
 - Confirm backup policy includes an approved `backup_start`, maintenance window, storage durability, availability domain for one-AD regions, and restore source if used.
 - Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
 - Confirm no generated Terraform files, state files, plans, or local tfvars are committed.

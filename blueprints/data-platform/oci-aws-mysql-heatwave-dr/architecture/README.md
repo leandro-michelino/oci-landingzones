@@ -2,9 +2,10 @@
 
 ## Deployment Purpose
 
-Provide a cross-cloud MySQL disaster recovery architecture where OCI is the
-primary write platform with MySQL HeatWave, AWS is the secondary standby target,
-and OCI-to-AWS data movement is controlled through IPSec-only connectivity.
+Provide a reviewable foundation for cross-cloud MySQL disaster recovery. OCI is
+the intended primary write platform and AWS the intended standby target. OCI
+IPSec resources are optional. AWS VPN routing, MySQL replication, and DNS
+cutover are external implementation steps and must be verified separately.
 
 ## Architecture At A Glance
 
@@ -14,9 +15,9 @@ and OCI-to-AWS data movement is controlled through IPSec-only connectivity.
 | Secondary database cloud | AWS |
 | Primary database service | OCI MySQL HeatWave (DB System + HeatWave cluster) |
 | Secondary database endpoint | AWS standby endpoint from CloudFormation session outputs |
-| Cross-cloud network | OCI DRG + CPE + IPSec to AWS VPN endpoint |
-| Replication style | MySQL asynchronous replication with TLS requirement contract |
-| Failover control | DNS cutover contract + runbook contract outputs |
+| Cross-cloud network | Optional OCI DRG + CPE + static-route IPSec; AWS VPN gateway, tunnel configuration, and routes are not created here |
+| Replication style | Asynchronous replication and TLS requirements documented in a contract; no channel is configured |
+| Failover control | DNS cutover and runbook contract outputs; no automated DNS change or failover |
 
 ## Architecture
 
@@ -34,10 +35,10 @@ and OCI-to-AWS data movement is controlled through IPSec-only connectivity.
 |         |                              |                                                         |
 |         |                              +--> backups / lakehouse bucket                           |
 |         |                              |                                                         |
-|         |                              +--> replication channel (TLS)                            |
+|         |                              +--> replication channel (manual setup required)          |
 |         |                                         |                                               |
 |         |                                         v                                               |
-|         |                              [OCI DRG] == IPSec Tunnel A/B == [AWS VPN/TGW edge]      |
+|         |                              [OCI DRG] == IPSec == (AWS VPN edge, external prerequisite) |
 |         |                                                                      |                  |
 |         |                                                                      v                  |
 |         |                                                [AWS standby database endpoint]          |
@@ -54,10 +55,10 @@ and OCI-to-AWS data movement is controlled through IPSec-only connectivity.
 | --- | --- |
 | `oci_core_vcn.primary` | OCI primary network boundary for database resources. |
 | `oci_core_subnet.primary_db` | Private subnet for OCI MySQL DB System endpoint. |
-| `oci_core_route_table.primary_db` | Route control for default egress and AWS CIDR over DRG. |
+| `oci_core_route_table.primary_db` | Private subnet route to the AWS replication CIDR through the DRG when IPSec is enabled; no Internet Gateway/default route. |
 | `oci_core_security_list.primary_db` | MySQL ingress policy from app CIDR and AWS replication CIDR. |
 | `oci_core_drg.primary` | OCI routing hub for IPSec connectivity to AWS. |
-| `oci_core_cpe.aws` | AWS-side customer premises profile used by OCI IPSec. |
+| `oci_core_cpe.aws` | OCI-side representation of the AWS VPN endpoint public IP. |
 | `oci_core_ipsec.aws` | IPSec connection resource with static route to AWS replication CIDR. |
 | `oci_mysql_mysql_db_system.primary` | OCI primary MySQL database service resource. |
 | `oci_mysql_heat_wave_cluster.primary` | OCI HeatWave analytics cluster on primary database. |
@@ -69,7 +70,6 @@ Declared resource addresses:
 
 | Kind | Name | Source Or Role |
 | --- | --- | --- |
-| Resource | `oci_core_internet_gateway.primary` | Declared in this blueprint; creation depends on its count or for_each inputs. |
 | Resource | `oci_core_drg_attachment.primary_db` | Declared in this blueprint; creation depends on its count or for_each inputs. |
 | Resource | `terraform_data.oci_network_contract` | Local validation or metadata; does not provision cloud network services. |
 | Resource | `terraform_data.connectivity_contract` | Local validation or metadata; does not provision cloud network services. |
@@ -90,7 +90,14 @@ Declared resource addresses:
 
 - OCI is the write-primary trust zone for application traffic.
 - AWS is the standby trust zone, reachable only through approved DR procedures.
-- IPSec is the only intended cross-cloud transport path for replication traffic.
+- The generated OCI database subnet is private and has no Internet Gateway or
+  default route. Its attached security list limits MySQL ingress to the
+  configured application and AWS replication CIDRs. The application CIDR
+  defaults to the example VCN range (`10.74.0.0/16`); change it when deploying
+  a different VCN or approved client network. AWS replication ingress is
+  omitted when `enable_ipsec_connectivity = false`.
+- IPSec is the intended cross-cloud transport path, but the AWS VPN endpoint,
+  matching tunnel settings, and AWS routes are outside this template.
 - Security boundaries are enforced by OCI security list rules, AWS security groups,
   and route tables scoped to known replication CIDRs.
 - DNS failover is an explicit control-plane action and should require operator approval.
@@ -99,17 +106,16 @@ Declared resource addresses:
 
 - This blueprint models OCI as mandatory primary (`oci_is_primary=true`).
 - Replication is modeled as asynchronous with explicit RPO contract values.
+  Neither Terraform nor CloudFormation configures a MySQL replication channel.
+- `aws_bgp_asn` is informational for a separate AWS network design. This
+  Terraform configuration uses static-route IPSec and does not configure BGP.
 - AWS standby endpoint values are inputs/outputs for runbooks; exact secondary engine
   delivery is driven by AWS deployment session parameters and standards.
-- CloudFormation AWS session includes a MySQL-compatible standby deployment path to keep
-  end-to-end DR testing deployable from this repository.
+- CloudFormation can create a MySQL-compatible RDS instance but does not seed
+  it from OCI, build an AWS VPN edge, or provide an end-to-end DR deployment.
 - The AWS standby template exposes deletion protection, backup retention, and
-  Performance Insights switches so E2E runs can use the smallest accepted RDS
-  shape and still delete cleanly afterward.
-- For constrained accounts, a deployable E2E path is `db.t4g.micro` in
-  `eu-west-1` with backup retention `0`, Performance Insights disabled, and
-  deletion protection disabled. Use a paid-compatible class only when the
-  smaller shape is unavailable in the target account or region.
+  Performance Insights switches for account-specific sizing and teardown.
+  Validate shape availability and all AWS/OCI charges before any live test.
 - For production, enforce secure secret injection for MySQL credentials and avoid
   committing any live endpoint or password values in tfvars files.
 
@@ -121,6 +127,11 @@ Declared resource addresses:
 - Keep DNS TTL aligned with runbook timing assumptions.
 - Capture drill evidence (timestamps, approvals, lag checks, validation queries) in
   the configured evidence bucket and runbook systems.
+- The 2026-10-15 checks were Terraform schema and mocked plan/apply only. No OCI
+  database, IPSec connection, AWS stack, replication, DNS, or failover was
+  provisioned or tested.
+
+Implementation references: [OCI static-route Site-to-Site VPN](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/settingupIPsec.htm), [OCI outbound MySQL replication](https://docs.oracle.com/en-us/iaas/mysql-database/doc/configuring-outbound-replication-from-db-system-external-replica.html).
 
 ## Review Checklist
 

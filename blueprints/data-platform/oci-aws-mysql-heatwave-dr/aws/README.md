@@ -13,6 +13,11 @@ networking and database endpoint provisioning.
 | DB subnet group | Places standby database in dedicated private subnets. |
 | Optional MySQL-compatible RDS instance | Provides deployable standby endpoint with storage encryption, IAM database authentication, Performance Insights, and deletion protection. |
 
+This template does not create an AWS VPN gateway, customer gateway, VPN
+connection, or routes to OCI. It also does not seed the RDS database, configure
+replication, or update application DNS. The VPC and private RDS endpoint alone
+do not provide a functional disaster recovery path.
+
 ## CloudFormation Files
 
 | File | Purpose |
@@ -48,3 +53,5 @@ CONFIRM_AWS_DESTROY=true ansible-playbook -i localhost, ../ansible/aws-destroy.y
 - For plan-only tests, the shared AWS runner automatically removes temporary
   review stacks created by no-execute changesets.
 - Destroy sessions should always be executed after ephemeral tests.
+- AWS network, RDS, KMS, Flow Logs, and VPN options can incur charges. Obtain
+  cost approval and verify complete cleanup before any live cross-cloud test.

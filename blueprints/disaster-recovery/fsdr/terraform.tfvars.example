@@ -2,8 +2,15 @@ tenancy_ocid       = "ocid1.tenancy.oc1..example"
 region             = "af-johannesburg-1"
 standby_region     = "eu-frankfurt-1"
 oci_config_profile = "DEFAULT"
+compartment_ocid   = "ocid1.compartment.oc1..example"
 
 org                = "acme"
 environment        = "prod"
 region_key         = "jnb"
 standby_region_key = "fra"
+
+# Explicitly disable cross-region resources until a separately reviewed
+# deployment and cost scope is approved.
+enable_dr_log_buckets       = false
+enable_dr_protection_groups = false
+enable_dr_plan              = false

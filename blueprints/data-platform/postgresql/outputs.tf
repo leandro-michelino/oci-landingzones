@@ -11,6 +11,7 @@ output "resource_ids" {
   value = {
     vcn           = try(oci_core_vcn.postgresql[0].id, null)
     subnet        = try(oci_core_subnet.postgresql[0].id, null)
+    security_list = try(oci_core_security_list.postgresql[0].id, null)
     nsg           = try(oci_core_network_security_group.postgresql[0].id, null)
     db_system     = try(oci_psql_db_system.this[0].id, null)
     access_policy = try(oci_identity_policy.access[0].id, null)
@@ -19,9 +20,10 @@ output "resource_ids" {
 output "private_network" {
   description = "Optional private network resources created by this blueprint."
   value = {
-    vcn_id    = try(oci_core_vcn.postgresql[0].id, null)
-    subnet_id = try(oci_core_subnet.postgresql[0].id, null)
-    nsg_id    = try(oci_core_network_security_group.postgresql[0].id, null)
+    vcn_id           = try(oci_core_vcn.postgresql[0].id, null)
+    subnet_id        = try(oci_core_subnet.postgresql[0].id, null)
+    security_list_id = try(oci_core_security_list.postgresql[0].id, null)
+    nsg_id           = try(oci_core_network_security_group.postgresql[0].id, null)
   }
 }
 output "postgresql_db_system_id" {

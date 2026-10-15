@@ -15,7 +15,7 @@ optional cross-region replica, and deploy-and-use app networking for consumers.
 | Item | Details |
 | --- | --- |
 | Boundary | `blueprints/data-platform/nosql` owns this deployment folder and its Terraform + Ansible runners. |
-| Purpose | Build a production-ready NoSQL table contract plus optional index/replica and app network hand-off. |
+| Purpose | Build a NoSQL table contract plus optional index/replica and app network hand-off. |
 | Terraform components | `oci_core_vcn.app`, `oci_core_route_table.app`, `oci_core_security_list.app`, `oci_core_subnet.app`, `oci_nosql_table.this`, `oci_nosql_index.secondary`, `oci_nosql_table_replica.this`, `oci_ons_notification_topic.alert`, `terraform_data.app_network_contract`, `terraform_data.nosql_contract` |
 | Primary architecture view | The Architecture diagram below shows dependency order and table/consumer flow for this deployment. |
 
@@ -76,8 +76,11 @@ optional cross-region replica, and deploy-and-use app networking for consumers.
 
 - Control plane traffic is local/CI authentication into OCI provider and
   Terraform runner through Ansible wrappers.
-- Data plane traffic is application-to-NoSQL API traffic governed by app-side
-  subnet and security controls when app-network resources are enabled.
+- The optional app subnet is public, with an Internet Gateway route for
+  outbound traffic. It does not put the managed NoSQL API inside this VCN.
+  No application compute or NoSQL private endpoint is deployed here.
+- App subnet security rules govern any future application VNICs. HTTPS ingress
+  is absent by default and requires an explicit `app_ingress_allowed_cidr`.
 - Trust boundaries include compartment ownership, optional policy ownership,
   and optional cross-region replica boundary.
 - Secrets and private identifiers belong in ignored local tfvars or secure
@@ -93,6 +96,8 @@ These notes expand the diagram with design details usually needed in reviews.
 - Replica creation is optional and enforces a target region when enabled.
 - App-network resources are optional because some consumers already run in existing VCN estates.
 - Optional IAM policy statements let teams codify access in the same blueprint when desired.
+- Set `create_table = false` and disable the alert topic for a network-only
+  lifecycle test; index and replica creation must remain disabled.
 
 ## Operational Boundaries
 
@@ -103,6 +108,10 @@ These notes expand the diagram with design details usually needed in reviews.
 - Use the output contracts in downstream runbooks and app onboarding checklists.
 - Use `--keep-resources` in the lifecycle runner only when manual table or
   index validation is required before a later cleanup run.
+- The 2026-10-15 checks were Terraform schema and mocked plans only. No table,
+  replica, app traffic, or public subnet was provisioned or tested in OCI.
+
+OCI reference: [NoSQL table capacity modes](https://docs.oracle.com/en-us/iaas/tools/python/latest/api/nosql/models/oci.nosql.models.TableLimits.html).
 
 ## Review Checklist
 

@@ -77,6 +77,8 @@ Declared resource addresses:
 - OpenSearch should normally live in private subnets.
 - NSGs should separate app callers, ingestion jobs, and admin access.
 - Dashboard access should be more restricted than application search access.
+- The optional subnet attaches an ingress-empty security list instead of inheriting the VCN default list. The attached NSG permits API TCP/9200 and Dashboard TCP/5601 only from the separate approved CIDR sets. Empty sets block client ingress.
+- Existing subnet security lists and NSG rules are external and must be audited before cluster creation.
 - Snapshot buckets may contain sensitive indexed data.
 - Vector indexes can expose source-document semantics and should be protected.
 
@@ -93,6 +95,7 @@ pipeline because they change more often than the landing-zone foundation.
 
 Snapshot bucket creation is optional so customers can use centralized backup or
 data-platform storage when that already exists.
+The bucket is not connected to the cluster by this Terraform configuration; repository registration, export jobs, and restore checks remain separate work.
 
 ## Operational Boundaries
 

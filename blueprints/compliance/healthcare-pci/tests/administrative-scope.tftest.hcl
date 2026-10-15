@@ -31,7 +31,7 @@ run "root_budget_and_home_region_policy" {
 }
 
 run "data_safe_requires_existing_autonomous_database" {
- command = plan
- variables { enable_data_safe_target_database = true }
- expect_failures = [oci_data_safe_target_database.this]
+  command = plan
+  variables { enable_data_safe_target_database = true }
+  expect_failures = [oci_data_safe_target_database.this]
 }

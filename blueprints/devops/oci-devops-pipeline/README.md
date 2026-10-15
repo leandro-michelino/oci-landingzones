@@ -15,7 +15,23 @@ Start here for `blueprints/devops/oci-devops-pipeline`: what it builds, which in
 
 ## Deployment Purpose
 
-Deploys an OCI DevOps project with notification topic, code repository, build pipeline, and deploy pipeline.
+Optionally creates an OCI DevOps project, Notifications topic, code repository,
+and empty build and deploy pipeline shells.
+
+All creation flags default to `false`. A new project requires either a new
+Notifications topic or `notification_topic_id`. Repository and pipeline creation
+requires a new project or `existing_project_id`. These relationships are checked
+at plan time.
+
+Oracle's [DevOps project guide](https://docs.oracle.com/en-us/iaas/Content/devops/using/create_project.htm)
+documents the required notification topic and project logging needed to run
+pipelines.
+
+The blueprint does not configure topic subscriptions, project logging, build or
+deploy stages, artifacts, triggers, deployment environments, or IAM policies.
+It is a control-plane bootstrap, not an executable CI/CD workflow. Review OCI
+DevOps, build execution, logging, Notifications, and artifact costs before
+activating those services.
 
 ## When To Use This Deployment
 
@@ -75,7 +91,8 @@ Start with `terraform.tfvars.example`, then create a local ignored `terraform.tf
 
 ### Deployment-Specific Decisions
 
-Review every variable after the base section in `variables.tf`, especially enable flags, private endpoint IDs, policy statements, notification recipients, and service-specific sizing values.
+Review the enable flags, the required topic ID for a new project, and the
+required existing project ID when creating child resources without a new project.
 
 ### Enable Flags And Switches
 
@@ -129,9 +146,9 @@ architecture/README.md
 
 ## Review Before Apply
 
-- Confirm notification recipients and topic ownership.
+- Confirm the project topic exists and arrange subscriptions separately; this blueprint does not create recipients.
 - Confirm repository naming and branch strategy.
-- Add stages after project, repository, and pipeline IDs are approved.
+- Add project logging, stages, triggers, artifacts, and target environments before claiming CI/CD runtime readiness.
 - Confirm the local `architecture/README.md` still matches `main.tf`, `variables.tf`, and `outputs.tf`.
 - Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
 
@@ -144,3 +161,7 @@ From the repository root:
 ```
 
 The validator checks Terraform formatting, required deployment README files, required architecture README sections, `terraform init -backend=false`, `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and cleanup of generated Terraform artifacts.
+
+Last successful validation: 2026-10-15, oracle/oci 9.9.0, Terraform schema and
+seven mocked plan cases in `tests/configuration-regressions.tftest.hcl`.
+No OCI DevOps resource was provisioned or exercised live.

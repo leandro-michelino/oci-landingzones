@@ -57,6 +57,11 @@ variable "create_private_network" {
   description = "Create a private VCN, subnet, and NSG for the MySQL endpoint."
   type        = bool
   default     = false
+
+  validation {
+    condition     = !var.create_private_network || (var.subnet_id == null && length(var.nsg_ids) == 0)
+    error_message = "When create_private_network=true, omit external subnet_id and nsg_ids so the created DB subnet and NSG stay in the same VCN."
+  }
 }
 variable "vcn_cidr_block" {
   description = "CIDR block for the optional private VCN."

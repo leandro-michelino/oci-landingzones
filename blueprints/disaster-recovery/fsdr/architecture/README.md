@@ -12,7 +12,7 @@ Creates OCI Full Stack Disaster Recovery protection groups, log buckets, and an 
 | --- | --- |
 | Boundary | `blueprints/disaster-recovery/fsdr` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Creates OCI Full Stack Disaster Recovery protection groups, log buckets, and an optional DR plan across primary and standby regions. |
-| Terraform components | `oci_objectstorage_namespace.primary`, `oci_objectstorage_namespace.standby`, `oci_objectstorage_bucket.primary_dr_logs`, `oci_objectstorage_bucket.standby_dr_logs`, `oci_disaster_recovery_dr_protection_group.primary`, `oci_disaster_recovery_dr_protection_group.standby`, `oci_disaster_recovery_dr_plan.primary` |
+| Terraform components | `oci_objectstorage_namespace.primary`, `oci_objectstorage_namespace.standby`, `oci_objectstorage_bucket.primary_dr_logs`, `oci_objectstorage_bucket.standby_dr_logs`, `oci_disaster_recovery_dr_protection_group.primary`, `oci_disaster_recovery_dr_protection_group.standby`, `oci_disaster_recovery_dr_plan.standby` |
 | Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
 
 
@@ -34,14 +34,14 @@ Creates OCI Full Stack Disaster Recovery protection groups, log buckets, and an 
 | [primary region]                                      [standby region]                                   |
 |         |-- [Object Storage namespace]                         |-- [Object Storage namespace]            |
 |         |-- [primary DR log bucket]                             |-- [standby DR log bucket]              |
-|         `-- [primary DR protection group] <---- peer ---->       `-- [standby DR protection group]       |
-|                          |                                                                               |
-|                          v                                                                               |
-|                  [primary DR plan]                                                                       |
-|                  |-- switchover / failover / start-stop orchestration                                    |
-|                  `-- members supplied from application resource IDs                                      |
+|         `-- [primary DR protection group] <---- association ----> [standby DR protection group]         |
+|                                                                  |                                       |
+|                                                                  v                                       |
+|                                                       [standby DR plan, optional]                        |
+|                                                       |-- switchover / failover orchestration            |
+|                                                       `-- members supplied from application IDs         |
 |                                                                                                          |
-| Control flow: log buckets first, both protection groups second, DR plan last.                            |
+| Control flow: log buckets, primary group, associated standby group, then optional standby plan.         |
 | Runtime flow: application replication remains outside this folder; FSDR orchestrates recovery actions.   |
 | Hand-off: primary/standby protection group IDs, log bucket names, and DR plan ID.                        |
 +----------------------------------------------------------------------------------------------------------+
@@ -57,7 +57,7 @@ Creates OCI Full Stack Disaster Recovery protection groups, log buckets, and an 
 | Resource | `oci_objectstorage_bucket.standby_dr_logs` | `Declared directly in main.tf` |
 | Resource | `oci_disaster_recovery_dr_protection_group.primary` | `Declared directly in main.tf` |
 | Resource | `oci_disaster_recovery_dr_protection_group.standby` | `Declared directly in main.tf` |
-| Resource | `oci_disaster_recovery_dr_plan.primary` | `Declared directly in main.tf` |
+| Resource | `oci_disaster_recovery_dr_plan.standby` | Optional plan owned by the associated standby DRPG. |
 
 ## Request And Deployment Flow
 
@@ -76,12 +76,14 @@ Creates OCI Full Stack Disaster Recovery protection groups, log buckets, and an 
 
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
 
-- The primary and standby OCI providers target different regions and create region-local log buckets before DR protection groups.
+- The primary and standby OCI providers target different regions. Bucket and DRPG creation is opt-in; existing log buckets may be named instead.
+- The standby DRPG associates with the newly created primary DRPG and is assigned `STANDBY`; OCI assigns the peer its corresponding `PRIMARY` role.
 - Protection group members should map to real application resources that can be moved, recovered, or orchestrated by FSDR.
-- The DR plan is created only after protection groups exist and should be reviewed against the intended failover or switchover type.
+- The optional DR plan is created only on the associated standby DRPG and should be reviewed against the intended failover or switchover type.
 - Runtime application replication is outside this folder; this deployment prepares the FSDR control plane and log locations.
 - FSDR resource-principal access is an IAM prerequisite. The DR protection groups need dynamic-group and policy coverage for the resource families they orchestrate.
 - Switchover and failover execution is an operational action, not a normal Terraform apply action. Plans are generated and executed from the DR protection group that is currently standby.
+- OCI role reversal can change which DRPG is standby; review the state file before any subsequent apply. Disassociate the pair during destroy using the provider's `disassociate_trigger` workflow, then verify the state file and OCI API.
 - Movable compute recovery depends on the compute instance, its destination subnet mapping, and a replicated volume group that covers all attached boot and block volumes.
 - Windows AD domain-joined member servers need workload runbook coverage for AD DNS, domain-controller reachability, Kerberos time sync, hostname conflicts, secure-channel validation, SPNs, service accounts, certificates, monitoring, backups, and application bindings.
 - FSDR drills can create a duplicate Windows member-server identity while production stays online. Isolate the drill network, use lab AD, or add custom plan steps before the drill copy can contact production AD.
@@ -99,7 +101,7 @@ These notes expand the diagram with the design details that usually matter durin
 
 ## Review Checklist
 
-- Confirm the diagram matches `main.tf`: `oci_objectstorage_namespace.primary`, `oci_objectstorage_namespace.standby`, `oci_objectstorage_bucket.primary_dr_logs`, `oci_objectstorage_bucket.standby_dr_logs`, `oci_disaster_recovery_dr_protection_group.primary`, `oci_disaster_recovery_dr_protection_group.standby`, `oci_disaster_recovery_dr_plan.primary`.
+- Confirm the diagram matches `main.tf`: `oci_objectstorage_namespace.primary`, `oci_objectstorage_namespace.standby`, `oci_objectstorage_bucket.primary_dr_logs`, `oci_objectstorage_bucket.standby_dr_logs`, `oci_disaster_recovery_dr_protection_group.primary`, `oci_disaster_recovery_dr_protection_group.standby`, `oci_disaster_recovery_dr_plan.standby`.
 - Confirm the described traffic path is the path you want in OCI before apply.
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.

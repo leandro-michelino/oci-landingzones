@@ -1,6 +1,6 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-15 | Terraform validate and 7 mocked plans | oracle/oci 9.9.0.
+# Scope: topic/project dependency and disabled/opted-in shell plans; no live DevOps execution.
+# Evidence: blueprints/devops/oci-devops-pipeline/tests/configuration-regressions.tftest.hcl.
 resource "oci_ons_notification_topic" "this" {
   count = var.create_notification_topic ? 1 : 0
 

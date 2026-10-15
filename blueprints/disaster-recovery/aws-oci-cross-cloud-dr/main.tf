@@ -1,6 +1,8 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-15 | Terraform validate and 8 mocked plans | oracle/oci 9.9.0.
+# Scope: disabled fixture, explicit ingress, and contract guards; live test covered only OCI primary networking, not AWS or DR runtime.
+# Evidence: blueprints/disaster-recovery/aws-oci-cross-cloud-dr/tests/safe-defaults.tftest.hcl.
+# Last successful reduced lifecycle: 2026-10-15 | DEFAULT, sa-saopaulo-1 | OCI network-only apply, no-drift plan, destroy, API/state cleanup | oracle/oci 9.9.0.
+# Live evidence: docs/DATA-DEVOPS-DR-REVIEW-20261015.md; private logs in .leo-local/data-devops-dr-20261015/.
 resource "oci_core_vcn" "primary" {
   count = var.enable_oci_primary_network ? 1 : 0
 
@@ -96,6 +98,7 @@ resource "terraform_data" "oci_network_contract" {
 }
 
 data "oci_objectstorage_namespace" "this" {
+  count          = var.enable_dr_evidence_bucket ? 1 : 0
   compartment_id = local.target_compartment_ocid
 }
 
@@ -103,7 +106,7 @@ resource "oci_objectstorage_bucket" "dr_evidence" {
   count = var.enable_dr_evidence_bucket ? 1 : 0
 
   compartment_id = local.target_compartment_ocid
-  namespace      = data.oci_objectstorage_namespace.this.namespace
+  namespace      = data.oci_objectstorage_namespace.this[0].namespace
   name           = local.evidence_bucket_name
 
   storage_tier = "Standard"
@@ -153,9 +156,9 @@ resource "terraform_data" "dns_failover_contract" {
   lifecycle {
     precondition {
       condition = (
-        var.oci_primary_endpoint != null &&
-        var.aws_standby_endpoint != null &&
-        trimspace(var.app_fqdn) != ""
+        try(trimspace(var.oci_primary_endpoint), "") != "" &&
+        try(trimspace(var.aws_standby_endpoint), "") != "" &&
+        try(trimspace(var.app_fqdn), "") != ""
       )
       error_message = "When enable_dns_failover_contract=true, set app_fqdn, oci_primary_endpoint, and aws_standby_endpoint."
     }

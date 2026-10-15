@@ -58,7 +58,7 @@ variable "oci_is_primary" {
 }
 
 variable "enable_oci_primary_network" {
-  description = "Create OCI primary networking resources (VCN, subnet, route table, security list, and DRG attachment)."
+  description = "Create OCI primary VCN, subnet, route table, and security list. DRG attachment is optional with enable_ipsec_connectivity."
   type        = bool
   default     = true
 }
@@ -78,7 +78,7 @@ variable "oci_primary_db_subnet_cidr" {
 variable "oci_app_ingress_allowed_cidr" {
   description = "Source CIDR allowed for application access to OCI MySQL port 3306."
   type        = string
-  default     = "10.0.0.0/8"
+  default     = "10.74.0.0/16"
 }
 
 variable "aws_replication_cidr" {
@@ -90,7 +90,12 @@ variable "aws_replication_cidr" {
 variable "enable_ipsec_connectivity" {
   description = "Create OCI DRG, CPE, and IPSec connection for OCI-to-AWS encrypted connectivity."
   type        = bool
-  default     = true
+  default     = false
+
+  validation {
+    condition     = !var.enable_ipsec_connectivity || var.enable_oci_primary_network
+    error_message = "enable_ipsec_connectivity requires enable_oci_primary_network so the DRG is attached to this blueprint's VCN."
+  }
 }
 
 variable "aws_cpe_public_ip" {
@@ -100,9 +105,15 @@ variable "aws_cpe_public_ip" {
 }
 
 variable "aws_bgp_asn" {
-  description = "AWS side BGP ASN used for IPSec dynamic routing contracts."
+  description = "AWS side ASN for external network planning only. This blueprint creates static-route IPSec and does not configure BGP sessions."
   type        = number
   default     = 64512
+}
+
+variable "require_complete_dr_contracts" {
+  description = "Reject missing OCI/AWS endpoint values when publishing DR hand-off contracts for an operational deployment."
+  type        = bool
+  default     = true
 }
 
 variable "create_db_system" {

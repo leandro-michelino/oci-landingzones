@@ -19,6 +19,8 @@ output "resource_ids" {
     var.enable_object_storage_private_endpoint ? {
       object_storage_private_endpoint = oci_objectstorage_private_endpoint.data[0].id
     } : {},
+    { for key, group in oci_core_network_security_group.object_storage_endpoint : "object_storage_endpoint_nsg.${key}" => group.id },
+    { for key, group in oci_core_network_security_group.streaming_endpoint : "streaming_endpoint_nsg.${key}" => group.id },
     { for key, id in module.streaming.resource_ids : "streaming.${key}" => id }
   )
 }
@@ -45,7 +47,7 @@ output "vault_key_ids" {
 
 output "data_bucket_name" {
   description = "Private data platform Object Storage bucket name."
-  value       = local.data_bucket_name
+  value       = try(oci_objectstorage_bucket.data[0].name, null)
 }
 
 output "object_storage_private_endpoint_id" {

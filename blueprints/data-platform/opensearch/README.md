@@ -8,7 +8,7 @@ Start here for `blueprints/data-platform/opensearch`: what it builds, which inpu
 | --- | --- |
 | Folder | `blueprints/data-platform/opensearch` |
 | Best fit | Managed OpenSearch cluster for search and vector index workloads. |
-| Terraform shape | Optional private VCN/subnet/NSG, `oci_opensearch_opensearch_cluster.this`, optional snapshot bucket, optional IAM policy. |
+| Terraform shape | Optional private VCN/subnet/ingress-empty security list/NSG rules, `oci_opensearch_opensearch_cluster.this`, optional snapshot bucket, optional IAM policy. |
 | Inputs to settle first | Private network mode, cluster sizing, security mode, snapshot bucket, and IAM policy statements. |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `private_network`, `opensearch_cluster_id`, `opensearch_endpoint`, `opendashboard_endpoint`, `snapshot_bucket_name`, `access_policy_id` |
 | Local runner | `terraform plan` for quick iteration; `ansible/plan.yml` and guarded `ansible/apply.yml` for the repo-standard flow. |
@@ -18,7 +18,7 @@ Start here for `blueprints/data-platform/opensearch`: what it builds, which inpu
 Deploys an OCI Search with OpenSearch foundation for application search,
 log-style indexing, semantic search, vector indexes, and RAG workloads. The
 blueprint can consume an existing private subnet or create a small private VCN,
-subnet, and NSG so the cluster is ready for controlled app-team access.
+subnet, and NSG. Access on TCP/9200 and TCP/5601 requires separate approved client CIDRs; both are denied by default.
 
 ## When To Use This Deployment
 
@@ -88,6 +88,8 @@ so the cluster can remain available for manual database/index validation.
 | Resource | Enable Flag |
 | --- | --- |
 | Optional private VCN/subnet/NSG | `create_private_network` |
+| Explicit ingress-empty subnet security list | `create_private_network`; prevents attachment to the VCN default list |
+| OpenSearch and Dashboard NSG ingress | `allowed_search_client_cidrs`, `allowed_dashboard_client_cidrs`; empty sets deny ingress |
 | OpenSearch cluster | `create_cluster` |
 | Snapshot/export bucket | `create_snapshot_bucket` |
 | IAM policy shell | `policy_statements` not empty |
@@ -97,6 +99,7 @@ so the cluster can remain available for manual database/index validation.
 | Input | What To Decide |
 | --- | --- |
 | `create_private_network`, `vcn_id`, `subnet_id`, `nsg_id` | Private network placement. |
+| `allowed_search_client_cidrs`, `allowed_dashboard_client_cidrs` | Independent client ranges for API TCP/9200 and Dashboard TCP/5601. For an existing network, configure and audit its NSG and subnet security lists separately. |
 | `master_node_*`, `data_node_*`, `opendashboard_*` | Cluster shape and cost profile. Leader and data nodes should be reviewed against the current OCI minimums. |
 | `security_*` | OpenSearch security mode and admin identity. |
 | `create_snapshot_bucket`, `snapshot_bucket_name`, `kms_key_id` | Snapshot/export bucket and encryption behavior. |
@@ -117,7 +120,7 @@ so the cluster can remain available for manual database/index validation.
 
 | Output | Meaning |
 | --- | --- |
-| `private_network` | Optional VCN, subnet, and NSG OCIDs created by this blueprint. |
+| `private_network` | Optional VCN, subnet, ingress-empty security list, and NSG OCIDs created by this blueprint. |
 | `opensearch_cluster_id` | OpenSearch cluster OCID. |
 | `opensearch_endpoint` | Search endpoint FQDN. |
 | `opendashboard_endpoint` | Dashboard endpoint FQDN. |
@@ -136,8 +139,11 @@ architecture/README.md
 
 - Confirm OpenSearch version, node counts, OCPU, memory, and storage values.
 - Confirm private subnet, NSG, and optional created network CIDRs.
+- Confirm the created subnet uses its dedicated ingress-empty security list. For an existing subnet, inspect every attached security list; the blueprint cannot change those rules.
+- OpenSearch API TCP/9200 and Dashboard TCP/5601 are separate allowlists. Supply approved client CIDRs only when traffic is required ([Oracle connectivity guide](https://docs.oracle.com/en-us/iaas/Content/search-opensearch/Tasks/ingestingociopensearchdata.htm)).
 - Confirm security mode, master user handling, and any secret hand-off process.
 - Confirm snapshot bucket naming, KMS behavior, and retention/export ownership.
+- Creating a bucket does not register a snapshot repository, configure exports, or verify recovery.
 - Confirm IAM policy statements are scoped to approved admin, writer, and reader groups.
 - Confirm no generated Terraform files, state files, plans, or local tfvars are committed.
 

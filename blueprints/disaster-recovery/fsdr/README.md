@@ -8,15 +8,33 @@ Start here for `blueprints/disaster-recovery/fsdr`: what it builds, which inputs
 | --- | --- |
 | Folder | `blueprints/disaster-recovery/fsdr` |
 | Best fit | Creates OCI Full Stack Disaster Recovery primary and standby protection groups, log buckets, and DR plan wiring. |
-| Terraform shape | `oci_objectstorage_bucket.primary_dr_logs`, `oci_objectstorage_bucket.standby_dr_logs`, `oci_disaster_recovery_dr_protection_group.primary`, `oci_disaster_recovery_dr_protection_group.standby`, `oci_disaster_recovery_dr_plan.primary`, plus 2 more |
+| Terraform shape | Optional regional log buckets, paired primary and standby DRPGs, and `oci_disaster_recovery_dr_plan.standby`. |
 | Inputs to settle first | `standby_region`, `standby_region_key`, `compartment_ocid`, `primary_compartment_ocid`, `standby_compartment_ocid`, `primary_log_bucket_name`, `standby_log_bucket_name`, plus 7 more |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `standby_name_prefix`, `resource_ids`, `primary_dr_protection_group_id`, `standby_dr_protection_group_id`, `primary_log_bucket_name`, plus 2 more |
 | Local runner | `terraform plan` for quick iteration; `ansible/plan.yml` and guarded `ansible/apply.yml` for the repo-standard flow. |
 
 ## Deployment Purpose
 
-Creates OCI Full Stack Disaster Recovery primary and standby protection groups, log
-buckets, and DR plan wiring.
+Optionally creates OCI Full Stack Disaster Recovery primary and standby protection
+groups, pairs them with the standby role, and creates an optional DR plan on the
+standby group. Log buckets can be created here or supplied by name.
+
+The committed `terraform.tfvars.example` explicitly disables log bucket,
+protection group, and plan creation. The historical Terraform defaults for log
+buckets and DRPGs remain enabled to preserve existing state behavior; always
+set these flags explicitly for a new deployment. Enabling protection groups
+without bucket creation requires both existing bucket names.
+Enabling a plan requires protection groups. This blueprint does not create
+replication, destination workload resources, or FSDR IAM policies. Review FSDR,
+Object Storage, replication, and protected workload costs before deployment.
+A single-region network test cannot validate a cross-region DR lifecycle or
+failover.
+
+Upgrade note: the optional plan resource moved from
+`oci_disaster_recovery_dr_plan.primary` to
+`oci_disaster_recovery_dr_plan.standby`, and its output key changed from
+`primary_dr_plan_id` to `standby_dr_plan_id`. Existing deployments need a
+reviewed state and role migration; do not apply a replacement plan blindly.
 
 ## When To Use This Deployment
 
@@ -48,7 +66,7 @@ in the repo.
 | Resource | `oci_objectstorage_bucket.standby_dr_logs` | Declared directly in `main.tf` |
 | Resource | `oci_disaster_recovery_dr_protection_group.primary` | Declared directly in `main.tf` |
 | Resource | `oci_disaster_recovery_dr_protection_group.standby` | Declared directly in `main.tf` |
-| Resource | `oci_disaster_recovery_dr_plan.primary` | Declared directly in `main.tf` |
+| Resource | `oci_disaster_recovery_dr_plan.standby` | Optional plan on the associated standby DRPG. |
 | Data source | `data.oci_objectstorage_namespace.primary` | Read during plan/apply |
 | Data source | `data.oci_objectstorage_namespace.standby` | Read during plan/apply |
 
@@ -108,7 +126,7 @@ real OCIDs, CIDRs, names, recipients, and enable flags.
 | `standby_dr_protection_group_name` | Optional display name for the standby DR protection group. |
 | `primary_members` | Primary DR protection group members. |
 | `standby_members` | Standby DR protection group members. |
-| `dr_plan_display_name` | Optional display name for the primary DR plan. |
+| `dr_plan_display_name` | Optional display name for the standby DR plan. |
 | `dr_plan_type` | FSDR plan type, such as SWITCHOVER or FAILOVER. |
 
 ### Enable Flags And Switches
@@ -119,7 +137,8 @@ real OCIDs, CIDRs, names, recipients, and enable flags.
 | `enable_object_events` | Enable Object Storage events on DR log buckets. |
 | `enable_bucket_versioning` | Enable versioning on DR log buckets. |
 | `enable_dr_protection_groups` | Create primary and standby FSDR protection groups. |
-| `enable_dr_plan` | Create a DR plan for the primary protection group. |
+| `enable_dr_plan` | Create a DR plan on the associated standby protection group. |
+| `disassociate_trigger` | Increment during reviewed teardown to disassociate the pair before deletion. |
 
 ## Outputs And Hand-Off
 
@@ -137,7 +156,7 @@ the same change.
 | `standby_dr_protection_group_id` | Standby DR protection group OCID. |
 | `primary_log_bucket_name` | Primary DR log bucket name. |
 | `standby_log_bucket_name` | Standby DR log bucket name. |
-| `primary_dr_plan_id` | Primary DR plan OCID. |
+| `standby_dr_plan_id` | Plan OCID on the configured standby DRPG. |
 
 ## Terraform And Ansible Workflow
 
@@ -161,7 +180,20 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, ansible/destroy.yml
 ```
 
 `apply.yml` and `destroy.yml` are intentionally guarded. Keep that behavior for
-customer or shared environments.
+customer or shared environments. The generic destroy wrapper does not inject
+`disassociate_trigger`; for an associated pair, use the provider's documented
+destroy invocation with a trigger value greater than the last applied value:
+
+```bash
+terraform plan -destroy -var "disassociate_trigger=1"
+terraform destroy -var "disassociate_trigger=1"
+```
+
+Review the destroy plan and use the actual next trigger value for that state.
+The OCI provider disassociates the protection groups during destroy; verify
+both groups and log buckets afterward. This paired teardown has not been live
+tested in this review. See the
+[OCI provider DRPG resource](https://docs.oracle.com/en-us/iaas/tools/terraform-provider-oci/latest/docs/r/disaster_recovery_dr_protection_group.html).
 
 ## Optional Real DR Lab
 
@@ -263,6 +295,7 @@ Ansible output at the end of the deployment.
 - Confirm primary and standby region providers.
 - Validate protected resources and IAM permissions before activation.
 - Create and execute switchover or failover plans from the current standby DR protection group.
+- After a role reversal, review the state file against the new roles before applying changes to the pair.
 - For movable compute, confirm every attached boot and block volume is covered by a replicated volume group that is also an FSDR member.
 - For Windows AD domain-joined member servers, confirm AD DNS, domain-controller reachability, time sync, hostname label availability, and secure-channel checks are part of the runbook.
 - For FSDR drills, do not let a duplicate domain-joined Windows drill copy contact production AD unless that identity conflict is explicitly planned and controlled.
@@ -281,5 +314,10 @@ From the repository root:
 
 The validator checks Terraform formatting, required deployment README files, required
 architecture README sections, `terraform init -backend=false`, `terraform validate`, root
-Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
-cleanup of generated Terraform artifacts.
+Ansible syntax, blueprint-local Ansible syntax, and optional scanners when installed.
+It preserves state files, saved plans, and dependency locks.
+
+Last successful validation: 2026-10-15, oracle/oci 9.9.0, Terraform schema and
+six mocked cases in `tests/standby-plan.tftest.hcl`. Association, plan creation,
+role reversal, disassociation, and cleanup have not been verified against OCI.
+Oracle documents that [DR plans belong to an associated standby DRPG](https://docs.oracle.com/en-us/iaas/disaster-recovery/doc/manage-dr-plans.html).

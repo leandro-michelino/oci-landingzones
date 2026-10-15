@@ -84,11 +84,14 @@ Deploys a private OCI PostgreSQL DB system with network controls, storage durabi
 
 - Keep PostgreSQL in a private subnet and expose it only to app subnets or approved admin paths.
 - The optional network path is intentionally small: one VCN, one private subnet, one NSG, and only port 5432 from approved client CIDRs.
+- The created subnet explicitly attaches an ingress-empty security list, so it does not inherit the VCN default SSH/ICMP rules. Stateful TCP/5432 ingress lives on the attached NSG.
+- Existing subnet security lists are outside this blueprint's control and must be checked independently.
 - Prefer Vault secret references for admin credentials when the deployment process can read approved secret OCIDs.
 - Review storage durability and availability domain placement together; regional durability and AD-specific placement are different operational choices.
 - In one-AD regions, set `is_regionally_durable = false` and provide `availability_domain`; regional durability is for supported multi-AD regions.
 - Use backup and maintenance policy settings deliberately so restore and maintenance expectations are visible before apply.
 - Use IAM policy statements only for approved DBA, operator, or application groups.
+- The IAM policy is created through the tenancy-home provider. Set `home_region` explicitly when enabling it; policy creation is outside a compartment-only network test.
 
 ## Operational Boundaries
 

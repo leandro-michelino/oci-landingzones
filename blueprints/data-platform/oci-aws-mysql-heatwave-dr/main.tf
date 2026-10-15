@@ -1,23 +1,14 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-15 | Terraform init/validate, 5 mocked plans, 1 mocked apply | oracle/oci 9.9.0.
+# Scope: local schema and simulated resource assertions; live test covered only OCI primary networking, not AWS VPN, database, replication, or failover.
+# Evidence: blueprints/data-platform/oci-aws-mysql-heatwave-dr/tests/configuration-regressions.tftest.hcl.
+# Last successful reduced lifecycle: 2026-10-15 | DEFAULT, sa-saopaulo-1 | OCI network-only apply, no-drift plan, destroy, API/state cleanup | oracle/oci 9.9.0.
+# Live evidence: docs/DATA-DEVOPS-DR-REVIEW-20261015.md; private logs in .leo-local/data-devops-dr-20261015/.
 resource "oci_core_vcn" "primary" {
   count = var.enable_oci_primary_network ? 1 : 0
 
   compartment_id = local.target_compartment_ocid
   cidr_block     = var.oci_primary_vcn_cidr
   display_name   = local.db_vcn_name
-  defined_tags   = var.defined_tags
-  freeform_tags  = local.common_freeform_tags
-}
-
-resource "oci_core_internet_gateway" "primary" {
-  count = var.enable_oci_primary_network ? 1 : 0
-
-  compartment_id = local.target_compartment_ocid
-  vcn_id         = oci_core_vcn.primary[0].id
-  display_name   = local.db_igw_name
-  enabled        = true
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
 }
@@ -39,12 +30,6 @@ resource "oci_core_route_table" "primary_db" {
   display_name   = local.db_route_table_name
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
-
-  route_rules {
-    destination       = "0.0.0.0/0"
-    destination_type  = "CIDR_BLOCK"
-    network_entity_id = oci_core_internet_gateway.primary[0].id
-  }
 
   dynamic "route_rules" {
     for_each = var.enable_ipsec_connectivity ? [var.aws_replication_cidr] : []
@@ -80,12 +65,15 @@ resource "oci_core_security_list" "primary_db" {
     }
   }
 
-  ingress_security_rules {
-    protocol = "6"
-    source   = var.aws_replication_cidr
-    tcp_options {
-      min = 3306
-      max = 3306
+  dynamic "ingress_security_rules" {
+    for_each = var.enable_ipsec_connectivity ? [var.aws_replication_cidr] : []
+    content {
+      protocol = "6"
+      source   = ingress_security_rules.value
+      tcp_options {
+        min = 3306
+        max = 3306
+      }
     }
   }
 }
@@ -107,37 +95,33 @@ resource "oci_core_subnet" "primary_db" {
 resource "oci_core_drg_attachment" "primary_db" {
   count = var.enable_oci_primary_network && var.enable_ipsec_connectivity ? 1 : 0
 
-  drg_id         = oci_core_drg.primary[0].id
-  vcn_id         = oci_core_vcn.primary[0].id
-  display_name   = local.drg_attachment_name
-  defined_tags   = var.defined_tags
-  freeform_tags  = local.common_freeform_tags
-  route_table_id = oci_core_route_table.primary_db[0].id
+  drg_id        = oci_core_drg.primary[0].id
+  vcn_id        = oci_core_vcn.primary[0].id
+  display_name  = local.drg_attachment_name
+  defined_tags  = var.defined_tags
+  freeform_tags = local.common_freeform_tags
 }
 
 resource "oci_core_cpe" "aws" {
   count = var.enable_ipsec_connectivity ? 1 : 0
 
-  compartment_id      = local.target_compartment_ocid
-  ip_address          = var.aws_cpe_public_ip
-  cpe_device_shape_id = "CPE"
-  display_name        = local.cpe_name
-  defined_tags        = var.defined_tags
-  freeform_tags       = local.common_freeform_tags
+  compartment_id = local.target_compartment_ocid
+  ip_address     = var.aws_cpe_public_ip
+  display_name   = local.cpe_name
+  defined_tags   = var.defined_tags
+  freeform_tags  = local.common_freeform_tags
 }
 
 resource "oci_core_ipsec" "aws" {
   count = var.enable_ipsec_connectivity ? 1 : 0
 
-  compartment_id            = local.target_compartment_ocid
-  cpe_id                    = oci_core_cpe.aws[0].id
-  drg_id                    = oci_core_drg.primary[0].id
-  static_routes             = [var.aws_replication_cidr]
-  display_name              = local.ipsec_name
-  cpe_local_identifier      = tostring(var.aws_bgp_asn)
-  cpe_local_identifier_type = "ASN"
-  defined_tags              = var.defined_tags
-  freeform_tags             = local.common_freeform_tags
+  compartment_id = local.target_compartment_ocid
+  cpe_id         = oci_core_cpe.aws[0].id
+  drg_id         = oci_core_drg.primary[0].id
+  static_routes  = [var.aws_replication_cidr]
+  display_name   = local.ipsec_name
+  defined_tags   = var.defined_tags
+  freeform_tags  = local.common_freeform_tags
 }
 
 data "oci_objectstorage_namespace" "this" {
@@ -242,12 +226,8 @@ resource "terraform_data" "connectivity_contract" {
 
   lifecycle {
     precondition {
-      condition = (
-        var.enable_ipsec_connectivity == false && var.aws_cpe_public_ip == null
-        ) || (
-        var.enable_ipsec_connectivity == true && var.aws_cpe_public_ip != null
-      )
-      error_message = "When enable_ipsec_connectivity=true, set aws_cpe_public_ip. When false, keep aws_cpe_public_ip null."
+      condition     = !var.enable_ipsec_connectivity || var.aws_cpe_public_ip != null
+      error_message = "When enable_ipsec_connectivity=true, set aws_cpe_public_ip."
     }
   }
 }
@@ -257,8 +237,8 @@ resource "terraform_data" "replication_contract" {
 
   lifecycle {
     precondition {
-      condition     = var.oci_primary_endpoint != null && var.aws_secondary_endpoint != null
-      error_message = "Set oci_primary_endpoint and aws_secondary_endpoint to publish replication contract output."
+      condition     = !var.require_complete_dr_contracts || local.replication_contract.complete
+      error_message = "When require_complete_dr_contracts=true, set oci_primary_endpoint and aws_secondary_endpoint."
     }
   }
 }
@@ -268,8 +248,8 @@ resource "terraform_data" "dns_failover_contract" {
 
   lifecycle {
     precondition {
-      condition     = trimspace(var.primary_dns_name) != "" && var.oci_primary_endpoint != null && var.aws_secondary_endpoint != null
-      error_message = "Set primary_dns_name, oci_primary_endpoint, and aws_secondary_endpoint for DNS failover contract output."
+      condition     = !var.require_complete_dr_contracts || local.dns_failover_contract.complete
+      error_message = "When require_complete_dr_contracts=true, set primary_dns_name, oci_primary_endpoint, and aws_secondary_endpoint."
     }
   }
 }

@@ -1,6 +1,8 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-15 | Terraform init/validate and 4 mocked regression cases | oracle/oci 9.9.0.
+# Scope: local mock plan/apply of network and IAM contracts; live test covered only OCI networking, not OpenSearch or traffic.
+# Evidence: tests/configuration-regressions.tftest.hcl; local Terraform test results.
+# Last successful reduced lifecycle: 2026-10-15 | DEFAULT, sa-saopaulo-1 | OCI network-only apply, no-drift plan, destroy, API/state cleanup | oracle/oci 9.9.0.
+# Live evidence: docs/DATA-DEVOPS-DR-REVIEW-20261015.md; private logs in .leo-local/data-devops-dr-20261015/.
 data "oci_objectstorage_namespace" "this" {
   count          = var.create_snapshot_bucket ? 1 : 0
   compartment_id = var.tenancy_ocid
@@ -26,8 +28,20 @@ resource "oci_core_subnet" "opensearch" {
   display_name               = local.subnet_display_name
   dns_label                  = var.subnet_dns_label
   prohibit_public_ip_on_vnic = true
+  security_list_ids          = [oci_core_security_list.opensearch[0].id]
   defined_tags               = var.defined_tags
   freeform_tags              = local.common_freeform_tags
+}
+
+resource "oci_core_security_list" "opensearch" {
+  #checkov:skip=CKV_OCI_16:Explicit ingress-empty list prevents inherited default SSH; approved client ingress is managed on the NSG.
+  count = var.create_private_network ? 1 : 0
+
+  compartment_id = local.target_compartment_ocid
+  vcn_id         = oci_core_vcn.opensearch[0].id
+  display_name   = "${local.name_prefix}-sl-opensearch"
+  defined_tags   = var.defined_tags
+  freeform_tags  = local.common_freeform_tags
 }
 
 resource "oci_core_network_security_group" "opensearch" {
@@ -38,6 +52,44 @@ resource "oci_core_network_security_group" "opensearch" {
   display_name   = local.nsg_display_name
   defined_tags   = var.defined_tags
   freeform_tags  = local.common_freeform_tags
+}
+
+resource "oci_core_network_security_group_security_rule" "search_ingress" {
+  #checkov:skip=CKV_OCI_21:Stateful ingress limits return traffic to approved OpenSearch clients.
+  for_each = var.create_private_network ? toset(var.allowed_search_client_cidrs) : toset([])
+
+  network_security_group_id = oci_core_network_security_group.opensearch[0].id
+  direction                 = "INGRESS"
+  protocol                  = "6"
+  source                    = each.value
+  source_type               = "CIDR_BLOCK"
+  stateless                 = false
+
+  tcp_options {
+    destination_port_range {
+      min = 9200
+      max = 9200
+    }
+  }
+}
+
+resource "oci_core_network_security_group_security_rule" "dashboard_ingress" {
+  #checkov:skip=CKV_OCI_21:Stateful ingress limits return traffic to approved dashboard clients.
+  for_each = var.create_private_network ? toset(var.allowed_dashboard_client_cidrs) : toset([])
+
+  network_security_group_id = oci_core_network_security_group.opensearch[0].id
+  direction                 = "INGRESS"
+  protocol                  = "6"
+  source                    = each.value
+  source_type               = "CIDR_BLOCK"
+  stateless                 = false
+
+  tcp_options {
+    destination_port_range {
+      min = 5601
+      max = 5601
+    }
+  }
 }
 
 resource "oci_objectstorage_bucket" "snapshots" {

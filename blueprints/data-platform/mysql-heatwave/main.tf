@@ -1,6 +1,8 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-15 | Terraform init/validate and 5 mocked plans | oracle/oci 9.9.0.
+# Scope: local schema and plan assertions; live test covered only private OCI networking, not MySQL, HeatWave, or backups.
+# Evidence: blueprints/data-platform/mysql-heatwave/tests/configuration-regressions.tftest.hcl.
+# Last successful reduced lifecycle: 2026-10-15 | DEFAULT, sa-saopaulo-1 | OCI network-only apply, no-drift plan, destroy, API/state cleanup | oracle/oci 9.9.0.
+# Live evidence: docs/DATA-DEVOPS-DR-REVIEW-20261015.md; private logs in .leo-local/data-devops-dr-20261015/.
 data "oci_objectstorage_namespace" "this" {
   count          = var.create_lakehouse_bucket ? 1 : 0
   compartment_id = var.tenancy_ocid
@@ -25,9 +27,21 @@ resource "oci_core_subnet" "mysql" {
   cidr_block                 = var.subnet_cidr_block
   display_name               = local.subnet_display_name
   dns_label                  = var.subnet_dns_label
+  security_list_ids          = [oci_core_security_list.mysql[0].id]
   prohibit_public_ip_on_vnic = true
   defined_tags               = var.defined_tags
   freeform_tags              = local.common_freeform_tags
+}
+
+resource "oci_core_security_list" "mysql" {
+  #checkov:skip=CKV_OCI_16:An explicitly empty list removes the VCN default SSH/ICMP rules; the DB endpoint uses CIDR-scoped NSG ingress instead.
+  count = var.create_private_network ? 1 : 0
+
+  compartment_id = local.target_compartment_ocid
+  vcn_id         = oci_core_vcn.mysql[0].id
+  display_name   = "${local.name_prefix}-sl-mysql-empty"
+  defined_tags   = var.defined_tags
+  freeform_tags  = local.common_freeform_tags
 }
 
 resource "oci_core_network_security_group" "mysql" {
@@ -111,6 +125,17 @@ resource "oci_mysql_mysql_db_system" "this" {
       key_id              = encrypt_data.value
     }
   }
+
+  lifecycle {
+    precondition {
+      condition     = local.effective_subnet_id != null
+      error_message = "When create_db_system=true, set subnet_id or enable create_private_network."
+    }
+    precondition {
+      condition     = var.admin_username != null && var.admin_password != null
+      error_message = "When create_db_system=true, set admin_username and admin_password securely."
+    }
+  }
 }
 
 resource "oci_mysql_heat_wave_cluster" "this" {
@@ -120,6 +145,13 @@ resource "oci_mysql_heat_wave_cluster" "this" {
   shape_name           = var.heatwave_shape_name
   cluster_size         = var.heatwave_cluster_size
   is_lakehouse_enabled = var.enable_heatwave_lakehouse
+
+  lifecycle {
+    precondition {
+      condition     = local.db_system_id != null
+      error_message = "When create_heatwave_cluster=true, create a DB System or set db_system_id."
+    }
+  }
 }
 
 resource "oci_identity_policy" "access" {

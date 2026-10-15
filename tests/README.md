@@ -91,4 +91,14 @@ The AI test files use fully mocked OCI providers. They check distinct fine-tunin
 
 ## Administrative And Database Regression Coverage
 
-The suite now has 35 mocked cases in 16 suites. New cases separate Budget ownership from targets, verify the home provider in Core/Healthcare/Cost Optimization, exercise Function/Streaming Events without ONS topics, test disabled APEX/database plans and secret creation/reuse, reject incompatible Always Free inputs, and keep paid databases absent from network-only plans. See the [CIS/Compliance/database review](../docs/CIS-COMPLIANCE-DATA-REVIEW-20261014.md) for exact live boundaries and cleanup evidence.
+The October 14 review established 35 mocked cases in 16 suites. Those cases separate Budget ownership from targets, verify the home provider in Core/Healthcare/Cost Optimization, exercise Function/Streaming Events without ONS topics, test disabled APEX/database plans and secret creation/reuse, reject incompatible Always Free inputs, and keep paid databases absent from network-only plans. See the [CIS/Compliance/database review](../docs/CIS-COMPLIANCE-DATA-REVIEW-20261014.md) for its exact live boundaries and cleanup evidence.
+
+## Data, DevOps, And DR Regression Coverage
+
+The repository now contains 93 cases across 26 Terraform test files. The
+October 15 round added or revised 58 cases in ten blueprint suites. They check
+safe network-only plans, private subnet ingress, endpoint and credential
+prerequisites, explicit DR contracts, and FSDR standby plan placement. The
+Private Data Platform tests are plan-only because a nested provider configured
+at `v0.2.0` was not isolated by an apply-style mock. The [October 15 review](../docs/DATA-DEVOPS-DR-REVIEW-20261015.md)
+records the executed cases, reduced OCI lifecycle checks, and test limits.

@@ -14,7 +14,7 @@ output "resource_ids" {
     app_network_contract = terraform_data.app_network_contract.id
     app_vcn_id           = try(oci_core_vcn.app[0].id, null)
     app_subnet_id        = try(oci_core_subnet.app[0].id, null)
-    nosql_table_id       = oci_nosql_table.this.id
+    nosql_table_id       = try(oci_nosql_table.this[0].id, null)
     secondary_index_id   = try(oci_nosql_index.secondary[0].id, null)
     replica_id           = try(oci_nosql_table_replica.this[0].id, null)
     alert_topic_id       = try(oci_ons_notification_topic.alert[0].id, null)
@@ -25,17 +25,17 @@ output "resource_ids" {
 
 output "nosql_table_id" {
   description = "OCI NoSQL table OCID."
-  value       = oci_nosql_table.this.id
+  value       = try(oci_nosql_table.this[0].id, null)
 }
 
 output "nosql_table_name" {
   description = "OCI NoSQL table name."
-  value       = oci_nosql_table.this.name
+  value       = try(oci_nosql_table.this[0].name, null)
 }
 
 output "nosql_table_state" {
   description = "OCI NoSQL table lifecycle state."
-  value       = oci_nosql_table.this.state
+  value       = try(oci_nosql_table.this[0].state, null)
 }
 
 output "nosql_secondary_index_name" {

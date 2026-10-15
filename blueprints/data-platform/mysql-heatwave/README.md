@@ -8,7 +8,7 @@ Start here for `blueprints/data-platform/mysql-heatwave`: what it builds, which 
 | --- | --- |
 | Folder | `blueprints/data-platform/mysql-heatwave` |
 | Best fit | Private MySQL with HeatWave analytics, ML, or Lakehouse options. |
-| Terraform shape | Optional private VCN/subnet/NSG, `oci_mysql_mysql_db_system.this`, optional HeatWave cluster, optional Object Storage lakehouse bucket, optional IAM policy. |
+| Terraform shape | Optional private VCN/subnet/empty security list/NSG, `oci_mysql_mysql_db_system.this`, optional HeatWave cluster, optional Object Storage lakehouse bucket, optional IAM policy. |
 | Inputs to settle first | Private network mode, AD, MySQL shape, admin password, backup policy, HeatWave sizing, Lakehouse bucket, and IAM statements. |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `private_network`, `mysql_db_system_id`, `mysql_endpoints`, `heatwave_cluster_id`, `lakehouse_bucket_name`, `access_policy_id` |
 | Local runner | `terraform plan` for quick iteration; `ansible/plan.yml` and guarded `ansible/apply.yml` for the repo-standard flow. |
@@ -37,7 +37,7 @@ statements in one reviewable deployment surface.
 | Operational analytics acceleration | Adds HeatWave when the same MySQL workload needs analytics acceleration without a separate analytics database. |
 | Lakehouse-ready MySQL pattern | Adds the bucket and IAM hand-off for teams preparing HeatWave Lakehouse or Object Storage-based analytics. |
 | MySQL extension deployment | Can attach HeatWave or Lakehouse pieces to an existing DB System by supplying `db_system_id`. |
-| Governance-ready database rollout | Captures HA, backup, shape, subnet, NSG, IAM, and deletion-policy decisions before apply. |
+| Governed database rollout | Captures HA, backup, shape, subnet, NSG, and IAM decisions before apply. |
 
 ## Deployment Modes
 
@@ -77,7 +77,7 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, -c local ansible/destroy.yml
 
 | Resource | Enable Flag |
 | --- | --- |
-| Optional private VCN/subnet/NSG | `create_private_network` |
+| Optional private VCN/subnet/empty security list/NSG | `create_private_network` |
 | MySQL DB System | `create_db_system` |
 | HeatWave cluster | `create_heatwave_cluster` |
 | Lakehouse Object Storage bucket | `create_lakehouse_bucket` |
@@ -91,10 +91,17 @@ CONFIRM_DESTROY=true ansible-playbook -i localhost, -c local ansible/destroy.yml
 | `db_shape_name`, `data_storage_size_in_gb` | MySQL capacity and storage baseline. |
 | `admin_username`, `admin_password` | Credential source and rotation ownership. |
 | `is_highly_available` | Whether this is standalone or HA. |
-| `backup_window_start_time`, `backup_retention_in_days`, `enable_point_in_time_recovery` | Backup posture and recovery window. |
+| `backup_enabled`, `backup_window_start_time`, `backup_retention_in_days` | Backup posture and recovery window. |
 | `heatwave_shape_name`, `heatwave_cluster_size` | Analytics capacity. |
 | `enable_heatwave_lakehouse` | Whether Object Storage lakehouse integration is part of day one. |
 | `policy_statements` | Optional IAM statements for DBAs, operators, analytics users, or app groups. |
+
+The generated private subnet attaches only the blueprint's empty security list,
+so it does not inherit the VCN default SSH/ICMP rules. The generated NSG admits
+TCP/3306 only from `allowed_client_cidrs`. Existing subnets and NSGs are
+external inputs: review their own security lists, rules, and VCN placement.
+Creating a bucket does not configure Lakehouse Object Storage permissions or
+load data into HeatWave.
 
 ## Deployment Order
 

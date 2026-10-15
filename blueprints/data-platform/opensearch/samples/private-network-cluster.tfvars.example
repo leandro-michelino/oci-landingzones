@@ -16,6 +16,9 @@ create_snapshot_bucket = true
 
 vcn_cidr_block    = "10.85.0.0/16"
 subnet_cidr_block = "10.85.10.0/24"
+# Add only approved private client ranges. Empty sets keep both endpoints unreachable.
+allowed_search_client_cidrs    = []
+allowed_dashboard_client_cidrs = []
 
 master_node_count                  = 1
 master_node_host_ocpu_count        = 1

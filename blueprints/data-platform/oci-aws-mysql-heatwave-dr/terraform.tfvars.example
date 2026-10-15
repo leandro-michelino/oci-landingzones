@@ -17,7 +17,7 @@ oci_is_primary             = true
 enable_oci_primary_network = true
 oci_primary_vcn_cidr       = "10.74.0.0/16"
 oci_primary_db_subnet_cidr = "10.74.10.0/24"
-oci_app_ingress_allowed_cidr = "10.0.0.0/8"
+oci_app_ingress_allowed_cidr = "10.74.0.0/16"
 
 enable_ipsec_connectivity = true
 aws_cpe_public_ip         = "203.0.113.10"

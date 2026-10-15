@@ -3,6 +3,7 @@ current_user_ocid  = "ocid1.user.oc1..example"
 region             = "eu-madrid-1"
 home_region        = "eu-madrid-1"
 oci_config_profile = "DEFAULT"
+compartment_ocid   = "ocid1.compartment.oc1..example"
 
 org         = "acme"
 environment = "prod"
@@ -11,27 +12,26 @@ region_key  = "mad"
 # This blueprint variant keeps OCI as primary.
 oci_is_primary = true
 
-# OCI primary networking defaults are deploy-and-use and create:
-# VCN + route table + security list + primary application subnet.
-enable_oci_primary_network     = true
+# Opt in only after reviewing the public subnet route and ingress CIDR.
+enable_oci_primary_network     = false
 oci_primary_vcn_cidr           = "10.52.0.0/16"
 oci_primary_app_subnet_cidr    = "10.52.10.0/24"
-oci_primary_ingress_allowed_cidr = "0.0.0.0/0"
+# oci_primary_ingress_allowed_cidr = "203.0.113.8/32"
 
 # Choose connectivity mode: interconnect or without-interconnect.
-connectivity_mode = "interconnect"
+connectivity_mode = "without-interconnect"
 # fastconnect_virtual_circuit_id = "ocid1.virtualcircuit.oc1..example"
 # direct_connect_connection_id = "dxcon-example123456"
 
 # Optional OCI resources.
-enable_dr_evidence_bucket = true
+enable_dr_evidence_bucket = false
 # dr_evidence_bucket_name = "acme-prod-mad-bkt-dr-evidence"
 
-enable_dr_alert_topic = true
+enable_dr_alert_topic = false
 # dr_alert_topic_name = "acme-prod-mad-top-dr-alert"
 
 # DNS failover runbook contract.
-enable_dns_failover_contract = true
+enable_dns_failover_contract = false
 app_fqdn                     = "app.example.com"
 # oci_primary_endpoint       = "oci.app.example.com"
 # aws_standby_endpoint     = "aws.app.example.com"

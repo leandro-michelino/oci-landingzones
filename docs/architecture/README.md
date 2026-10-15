@@ -231,13 +231,21 @@ inventory alignment. It does not establish working routes, DNS resolution,
 service availability, IAM permission, runtime integration, HA, or production
 readiness. Manual traffic-path review was prioritized for Networking.
 
-The subsequent live Networking round is scoped to profile `DEFAULT`, region
+The first live Networking round used profile `DEFAULT`, region
 `sa-saopaulo-1`, and the compartment explicitly selected by the operator. It
-covers the first ten Networking blueprints in catalog order, with cleanup after
-each attempt. See [Ephemeral Deployment Evidence](../EPHEMERAL-DEPLOYMENT-EVIDENCE.md)
-for provisioning, verification, and cleanup results. Cost-bearing tests,
-external-cloud deployments, and second-region tests remain pending. There is no
-cost estimate or account-wide billing verification in this review.
+covered the first ten Networking blueprints in catalog order, with cleanup after
+each attempt. Later Networking rounds completed the remaining catalog items,
+including authorized ephemeral NAT tests. See
+[Ephemeral Deployment Evidence](../EPHEMERAL-DEPLOYMENT-EVIDENCE.md) for
+provisioning, verification, cleanup, and untested paths. External-cloud and
+second-region tests remain pending. No cost estimate or account-wide billing
+verification was performed.
+
+The later [Data Platform, DevOps, and DR review](../DATA-DEVOPS-DR-REVIEW-20261015.md)
+covers catalog items 21-30. Its eight live checks validate disposable OCI
+network foundations and cleanup only; DevOps and FSDR were local-only checks.
+Refer to each blueprint architecture file for the implemented resource scope
+and the report for untested service and cross-cloud paths.
 
 Live tests stage the corrected provider configuration into isolated dependency
 copies while preserving the original cached pinned revisions. These tests

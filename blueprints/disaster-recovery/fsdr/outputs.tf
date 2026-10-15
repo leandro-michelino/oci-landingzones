@@ -25,7 +25,7 @@ output "resource_ids" {
       standby_dr_protection_group = oci_disaster_recovery_dr_protection_group.standby[0].id
     } : {},
     var.enable_dr_plan && var.enable_dr_protection_groups ? {
-      primary_dr_plan = oci_disaster_recovery_dr_plan.primary[0].id
+      standby_dr_plan = oci_disaster_recovery_dr_plan.standby[0].id
     } : {}
   )
 }
@@ -50,7 +50,7 @@ output "standby_log_bucket_name" {
   value       = local.standby_log_bucket_name
 }
 
-output "primary_dr_plan_id" {
-  description = "Primary DR plan OCID."
-  value       = try(oci_disaster_recovery_dr_plan.primary[0].id, null)
+output "standby_dr_plan_id" {
+  description = "DR plan OCID on the currently configured standby protection group."
+  value       = try(oci_disaster_recovery_dr_plan.standby[0].id, null)
 }
