@@ -51,7 +51,7 @@ variable "freeform_tags" {
 variable "create_asset_bucket" {
   description = "Create the private Object Storage asset origin bucket."
   type        = bool
-  default     = true
+  default     = false
 }
 variable "existing_asset_bucket_name" {
   description = "Existing Object Storage bucket name when create_asset_bucket is false."

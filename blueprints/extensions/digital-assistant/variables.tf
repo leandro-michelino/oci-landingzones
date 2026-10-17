@@ -49,7 +49,7 @@ variable "compartment_ocid" {
 variable "enable_oda_network" {
   description = "Create deploy-and-use network resources for ODA private endpoint placement."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "oda_vcn_cidr" {
@@ -64,22 +64,20 @@ variable "oda_subnet_cidr" {
   default     = "10.86.10.0/24"
 }
 
-variable "oda_ingress_allowed_cidr" {
-  description = "Source CIDR allowed to access ODA private endpoint HTTPS."
-  type        = string
-  default     = "10.0.0.0/8"
-}
-
 variable "oda_egress_allowed_cidr" {
-  description = "Destination CIDR allowed for ODA private endpoint HTTPS egress."
-  type        = string
-  default     = "10.0.0.0/8"
+  type    = string
+  default = null
+
+  validation {
+    condition     = !var.enable_oda_network || (var.oda_egress_allowed_cidr != null && can(cidrhost(var.oda_egress_allowed_cidr, 0)))
+    error_message = "Set oda_egress_allowed_cidr to an approved backend CIDR when enabling the ODA network."
+  }
 }
 
 variable "create_oda_instance" {
   description = "Create Oracle Digital Assistant instance."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "oda_instance_id" {
@@ -121,7 +119,7 @@ variable "oda_is_role_based_access" {
 variable "create_oda_private_endpoint" {
   description = "Create ODA private endpoint."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "oda_private_endpoint_id" {
@@ -157,13 +155,13 @@ variable "oda_private_endpoint_additional_nsg_ids" {
 variable "attach_private_endpoint_to_instance" {
   description = "Attach ODA private endpoint to ODA instance."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "create_alert_topic" {
   description = "Create a notifications topic for ODA operations and channel alerts."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "alert_topic_name" {

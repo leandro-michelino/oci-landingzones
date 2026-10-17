@@ -1,6 +1,6 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-17 | blueprint Terraform validate | oracle/oci 9.10.0.
+# Scope: schema and 3 mocked plans; no live Functions, image pull, or invocation test.
+# Evidence: docs/EXTENSIONS-REVIEW-20261017.md; ignored local logs where applicable.
 resource "oci_artifacts_container_repository" "this" {
   count = var.enable_container_repository ? 1 : 0
 
@@ -73,14 +73,18 @@ resource "oci_functions_function" "this" {
 
   application_id                   = local.application_id
   display_name                     = coalesce(each.value.display_name, "${local.name_prefix}-fn-${each.key}")
-  image                            = each.value.image
-  image_digest                     = each.value.image_digest
   memory_in_mbs                    = tostring(each.value.memory_in_mbs)
   timeout_in_seconds               = each.value.timeout_in_seconds
   detached_mode_timeout_in_seconds = each.value.detached_mode_timeout_in_seconds
   config                           = each.value.config
   defined_tags                     = var.defined_tags
   freeform_tags                    = local.common_freeform_tags
+
+  source_details {
+    source_type  = "CONTAINER_IMAGE"
+    image        = each.value.image
+    image_digest = each.value.image_digest
+  }
 
   dynamic "trace_config" {
     for_each = each.value.trace_enabled == null ? [] : [each.value.trace_enabled]

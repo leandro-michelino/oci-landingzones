@@ -308,3 +308,13 @@ drift, and was completely cleaned before a corrected retest. Items 27 and 30
 were validated locally only. The final scoped inventory found no active
 network resources or test leftovers in the selected compartment. No database,
 DevOps, FSDR, AWS, or Azure service was deployed by these tests.
+
+## Extensions Items 31-40, October 17, 2026
+
+The [item-by-item extensions review](EXTENSIONS-REVIEW-20261017.md) records
+one reduced six-resource Digital Assistant network lifecycle, a first
+OCI-managed-tag drift attempt that was completely removed, and a clean retest.
+The final state and scoped OCI API inventory were empty. Nine other extension
+blueprints received schema validation only; CDN and Functions also received
+mocked plans. No paid extension workload or external-cloud service was created
+in this round.

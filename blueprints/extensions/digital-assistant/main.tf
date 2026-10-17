@@ -1,24 +1,13 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-17 | blueprint Terraform validate | oracle/oci 9.10.0.
+# Scope: schema, 3 mocked plans, and reduced OCI private-network lifecycle (6 resources); no ODA service or traffic test.
+# Evidence: docs/EXTENSIONS-REVIEW-20261017.md; ignored local logs where applicable.
 resource "oci_core_vcn" "oda" {
   count = var.enable_oda_network ? 1 : 0
 
   compartment_id = local.target_compartment_ocid
   cidr_block     = var.oda_vcn_cidr
   display_name   = local.oda_vcn_name
-  defined_tags   = var.defined_tags
-  freeform_tags  = local.common_freeform_tags
-}
-
-resource "oci_core_internet_gateway" "oda" {
-  count = var.enable_oda_network ? 1 : 0
-
-  compartment_id = local.target_compartment_ocid
-  vcn_id         = oci_core_vcn.oda[0].id
-  display_name   = local.oda_igw_name
-  enabled        = true
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 }
 
@@ -28,14 +17,8 @@ resource "oci_core_route_table" "oda" {
   compartment_id = local.target_compartment_ocid
   vcn_id         = oci_core_vcn.oda[0].id
   display_name   = local.oda_rt_name
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
-
-  route_rules {
-    destination       = "0.0.0.0/0"
-    destination_type  = "CIDR_BLOCK"
-    network_entity_id = oci_core_internet_gateway.oda[0].id
-  }
 }
 
 resource "oci_core_security_list" "oda" {
@@ -44,17 +27,8 @@ resource "oci_core_security_list" "oda" {
   compartment_id = local.target_compartment_ocid
   vcn_id         = oci_core_vcn.oda[0].id
   display_name   = local.oda_sl_name
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
-
-  ingress_security_rules {
-    protocol = "6"
-    source   = var.oda_ingress_allowed_cidr
-    tcp_options {
-      min = 443
-      max = 443
-    }
-  }
 
   egress_security_rules {
     protocol         = "6"
@@ -77,8 +51,8 @@ resource "oci_core_subnet" "oda" {
   display_name               = local.oda_subnet_name
   route_table_id             = oci_core_route_table.oda[0].id
   security_list_ids          = [oci_core_security_list.oda[0].id]
-  prohibit_public_ip_on_vnic = false
-  defined_tags               = var.defined_tags
+  prohibit_public_ip_on_vnic = true
+  defined_tags               = local.defined_tags
   freeform_tags              = local.common_freeform_tags
 }
 
@@ -88,27 +62,8 @@ resource "oci_core_network_security_group" "oda" {
   compartment_id = local.target_compartment_ocid
   vcn_id         = oci_core_vcn.oda[0].id
   display_name   = local.oda_nsg_name
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
-}
-
-resource "oci_core_network_security_group_security_rule" "oda_ingress_https" {
-  count = var.enable_oda_network ? 1 : 0
-
-  network_security_group_id = oci_core_network_security_group.oda[0].id
-  direction                 = "INGRESS"
-  protocol                  = "6"
-  source                    = var.oda_ingress_allowed_cidr
-  source_type               = "CIDR_BLOCK"
-  stateless                 = true
-  description               = "Allow HTTPS ingress to ODA private endpoint NSG."
-
-  tcp_options {
-    destination_port_range {
-      min = 443
-      max = 443
-    }
-  }
 }
 
 resource "oci_core_network_security_group_security_rule" "oda_egress_all" {
@@ -148,7 +103,7 @@ resource "oci_oda_oda_instance" "this" {
   description          = var.oda_description
   identity_domain      = var.oda_identity_domain
   is_role_based_access = var.oda_is_role_based_access
-  defined_tags         = var.defined_tags
+  defined_tags         = local.defined_tags
   freeform_tags        = local.common_freeform_tags
 }
 
@@ -160,7 +115,7 @@ resource "oci_oda_oda_private_endpoint" "this" {
   description    = var.oda_private_endpoint_description
   subnet_id      = local.oda_private_endpoint_subnet_id_effective
   nsg_ids        = local.oda_private_endpoint_nsg_ids_effective
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 
   lifecycle {
@@ -199,7 +154,7 @@ resource "oci_ons_notification_topic" "alert" {
   compartment_id = local.target_compartment_ocid
   name           = local.alert_topic_name
   description    = "ODA operations and channel integration alerts for ${local.name_prefix}."
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 }
 
@@ -211,7 +166,7 @@ resource "oci_identity_policy" "access" {
   name           = "${local.name_prefix}-pol-oda-access"
   description    = "ODA access policy for ${local.name_prefix}."
   statements     = var.policy_statements
-  defined_tags   = var.defined_tags
+  defined_tags   = local.defined_tags
   freeform_tags  = local.common_freeform_tags
 }
 

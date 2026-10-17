@@ -95,10 +95,20 @@ The October 14 review established 35 mocked cases in 16 suites. Those cases sepa
 
 ## Data, DevOps, And DR Regression Coverage
 
-The repository now contains 93 cases across 26 Terraform test files. The
+The repository contained 93 cases across 26 Terraform test files after that round. The
 October 15 round added or revised 58 cases in ten blueprint suites. They check
 safe network-only plans, private subnet ingress, endpoint and credential
 prerequisites, explicit DR contracts, and FSDR standby plan placement. The
 Private Data Platform tests are plan-only because a nested provider configured
 at `v0.2.0` was not isolated by an apply-style mock. The [October 15 review](../docs/DATA-DEVOPS-DR-REVIEW-20261015.md)
 records the executed cases, reduced OCI lifecycle checks, and test limits.
+
+## Extensions Regression Coverage
+
+The October 17 extensions review adds seven plan-only mocked cases in three
+files: CDN default resource safety, ODA default and private-backend network
+guards, and Functions container-image source and existing-application wiring.
+The repository now has 100 cases across 29 Terraform test files. The
+[item-by-item review](../docs/EXTENSIONS-REVIEW-20261017.md) distinguishes
+these plans from the reduced ODA live network test and from untested paid
+workloads.

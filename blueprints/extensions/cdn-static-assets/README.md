@@ -12,7 +12,7 @@ optional Cloudflare edge resources for cacheable public-safe assets.
 | Folder | `blueprints/extensions/cdn-static-assets` |
 | Best fit | Private Object Storage origin with short-lived PAR downloads and Cloudflare at OCI edge hand-off for cacheable assets. |
 | Terraform shape | Object Storage bucket, sample objects, lifecycle rules, smoke-test PARs, optional OCI DNS CNAME, optional Cloudflare DNS/cache/Worker resources, IAM policy shell. |
-| Default posture | Bucket is private with `NoPublicAccess`; sample objects, lifecycle, DNS, and PARs are explicit toggles. |
+| Default posture | All creation is disabled; when enabled, the bucket is private with `NoPublicAccess`. Sample objects, lifecycle, DNS, and PARs are explicit toggles. |
 | Customer paths | Extension-only beside an existing app backend, or base-plus-extension after Core, Networking, and DNS ownership are ready. |
 
 ## Choose The Path

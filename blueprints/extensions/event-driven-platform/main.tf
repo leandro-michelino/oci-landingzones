@@ -1,6 +1,6 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-17 | blueprint Terraform validate | oracle/oci 8.21.0.
+# Scope: blueprint schema validation only; no live workload or end-to-end test.
+# Evidence: docs/EXTENSIONS-REVIEW-20261017.md; ignored local logs where applicable.
 data "oci_objectstorage_namespace" "this" {
   count          = var.create_archive_bucket ? 1 : 0
   compartment_id = var.tenancy_ocid

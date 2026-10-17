@@ -3,9 +3,9 @@ locals {
   name_prefix             = "${var.org}-${var.environment}-${var.region_key}"
   target_compartment_ocid = coalesce(var.compartment_ocid, var.tenancy_ocid)
   policy_compartment_ocid = coalesce(var.policy_compartment_ocid, var.tenancy_ocid)
+  defined_tags            = length(var.defined_tags) > 0 ? var.defined_tags : null
 
   oda_vcn_name    = "${local.name_prefix}-vcn-oda"
-  oda_igw_name    = "${local.name_prefix}-igw-oda"
   oda_rt_name     = "${local.name_prefix}-rt-oda"
   oda_sl_name     = "${local.name_prefix}-sl-oda"
   oda_subnet_name = "${local.name_prefix}-sn-oda"

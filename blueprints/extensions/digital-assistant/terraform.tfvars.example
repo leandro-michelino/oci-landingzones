@@ -12,7 +12,6 @@ compartment_ocid = "ocid1.compartment.oc1..example"
 enable_oda_network      = true
 oda_vcn_cidr            = "10.86.0.0/16"
 oda_subnet_cidr         = "10.86.10.0/24"
-oda_ingress_allowed_cidr = "10.0.0.0/8"
 oda_egress_allowed_cidr  = "10.0.0.0/8"
 
 create_oda_instance      = true

@@ -9,7 +9,7 @@ Start here for `blueprints/extensions/digital-assistant`: what it builds, which 
 | Folder | `blueprints/extensions/digital-assistant` |
 | Best fit | Oracle Digital Assistant landing zone with optional deploy-and-use private endpoint network, ODA instance, private endpoint attachment, and IAM/alert contracts. |
 | Terraform shape | `oci_core_vcn.oda`, `oci_core_route_table.oda`, `oci_core_security_list.oda`, `oci_core_subnet.oda`, `oci_core_network_security_group.oda`, `oci_oda_oda_instance.this`, `oci_oda_oda_private_endpoint.this`, `oci_oda_oda_private_endpoint_attachment.this`, `oci_ons_notification_topic.alert`, `terraform_data.oda_network_contract`, `terraform_data.oda_contract` |
-| Inputs to settle first | `compartment_ocid`, `create_oda_instance`, `oda_shape_name`, `create_oda_private_endpoint`, `attach_private_endpoint_to_instance`, `enable_oda_network`, `oda_ingress_allowed_cidr`, `oda_egress_allowed_cidr` |
+| Inputs to settle first | `compartment_ocid`, `create_oda_instance`, `oda_shape_name`, `create_oda_private_endpoint`, `attach_private_endpoint_to_instance`, `enable_oda_network`, `oda_egress_allowed_cidr` |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `oda_instance_id`, `oda_instance_connector_url`, `oda_private_endpoint_id`, `oda_network_contract`, `oda_operational_contract` |
 | Local runner | `terraform plan` for quick iteration; `ansible/plan.yml` and guarded `ansible/apply.yml` for the repo-standard flow. |
 
@@ -18,6 +18,11 @@ Start here for `blueprints/extensions/digital-assistant`: what it builds, which 
 Implements an Oracle Digital Assistant platform blueprint with private endpoint
 networking, optional attachment wiring, and operational hand-off contracts for
 bot/channel operations.
+
+All resource creation is disabled by default. The ODA private endpoint lets the
+assistant reach approved private backend services; it is not an inbound private
+endpoint for users or channels. Enable only reviewed resources and confirm
+service pricing and capacity before applying.
 
 ## When To Use This Deployment
 
@@ -101,8 +106,7 @@ Start with `terraform.tfvars.example`, then create a local ignored
 | `compartment_ocid` | Compartment OCID for ODA resources. |
 | `enable_oda_network` | Create VCN/subnet/route/security resources for private endpoint. |
 | `oda_vcn_cidr` and `oda_subnet_cidr` | CIDRs for ODA network resources. |
-| `oda_ingress_allowed_cidr` | Allowed source CIDR to private endpoint HTTPS. |
-| `oda_egress_allowed_cidr` | Allowed destination CIDR for private endpoint HTTPS egress. |
+| `oda_egress_allowed_cidr` | Required approved backend CIDR for private endpoint HTTPS egress when creating the network. |
 | `create_oda_instance` | Create ODA instance in this deployment. |
 | `oda_shape_name` | ODA shape/edition selection. |
 | `oda_identity_domain` | Optional identity domain override. |

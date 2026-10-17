@@ -16,7 +16,7 @@ optional endpoint attachment, and clear operational hand-off contracts.
 | --- | --- |
 | Boundary | `blueprints/extensions/digital-assistant` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Deploy ODA instance resources and private endpoint wiring with reusable network/IAM guardrails. |
-| Terraform components | `oci_core_vcn.oda`, `oci_core_route_table.oda`, `oci_core_security_list.oda`, `oci_core_subnet.oda`, `oci_core_network_security_group.oda`, `oci_core_network_security_group_security_rule.oda_ingress_https`, `oci_core_network_security_group_security_rule.oda_egress_all`, `oci_oda_oda_instance.this`, `oci_oda_oda_private_endpoint.this`, `oci_oda_oda_private_endpoint_attachment.this`, `oci_ons_notification_topic.alert`, `terraform_data.oda_network_contract`, `terraform_data.oda_contract` |
+| Terraform components | `oci_core_vcn.oda`, `oci_core_route_table.oda`, `oci_core_security_list.oda`, `oci_core_subnet.oda`, `oci_core_network_security_group.oda`, `oci_core_network_security_group_security_rule.oda_egress_all`, `oci_oda_oda_instance.this`, `oci_oda_oda_private_endpoint.this`, `oci_oda_oda_private_endpoint_attachment.this`, `oci_ons_notification_topic.alert`, `terraform_data.oda_network_contract`, `terraform_data.oda_contract` |
 | Primary architecture view | The Architecture diagram below shows ODA components, endpoint path, and contract outputs for this deployment. |
 
 ## Architecture
@@ -33,7 +33,7 @@ optional endpoint attachment, and clear operational hand-off contracts.
 |         v                    v                         v                                                       |
 | {OCI tenancy boundary}                                                                                         |
 |   |                                                                                                            |
-|   |-- [VCN + route table + security list + subnet + NSG] (optional)                                           |
+|   |-- [VCN + private subnet + empty route table + security list + NSG] (optional)                              |
 |   |-- [ODA instance]                                                                                           |
 |   |      |-- role-based access                                                                                |
 |   |      `-- identity domain integration (optional)                                                           |
@@ -45,7 +45,7 @@ optional endpoint attachment, and clear operational hand-off contracts.
 |          |-- network hand-off                                                                                 |
 |          `-- instance/endpoint operational contract                                                           |
 |                                                                                                                |
-| [Integration clients / channels] -> HTTPS -> [ODA private endpoint] -> [ODA instance connectors]             |
+| [ODA instance] -> [ODA private endpoint] -> HTTPS -> (approved private backend)                                |
 +----------------------------------------------------------------------------------------------------------------+
 ```
 
@@ -55,7 +55,7 @@ optional endpoint attachment, and clear operational hand-off contracts.
 | --- | --- | --- |
 | Resource | `oci_core_vcn.oda`, `oci_core_route_table.oda`, `oci_core_security_list.oda`, `oci_core_subnet.oda` | Optional deploy-and-use network foundation for ODA private endpoint placement. |
 | Resource | `oci_core_network_security_group.oda` | NSG boundary for ODA private endpoint traffic. |
-| Resource | `oci_core_network_security_group_security_rule.oda_ingress_https`, `oci_core_network_security_group_security_rule.oda_egress_all` | Stateless HTTPS ingress and scoped HTTPS egress guardrails. |
+| Resource | `oci_core_network_security_group_security_rule.oda_egress_all` | Stateful HTTPS egress to an approved backend CIDR. |
 | Resource | `oci_oda_oda_instance.this` | ODA instance for conversational platform workloads. |
 | Resource | `oci_oda_oda_private_endpoint.this` | ODA private endpoint for controlled channel integration. |
 | Resource | `oci_oda_oda_private_endpoint_attachment.this` | Optional attachment between ODA instance and private endpoint. |
@@ -63,7 +63,6 @@ optional endpoint attachment, and clear operational hand-off contracts.
 | Resource | `oci_identity_policy.access` | Optional policy shell for ODA administrators and integration callers. |
 | Resource | `terraform_data.oda_network_contract` | Network output contract for downstream wiring. |
 | Resource | `terraform_data.oda_contract` | ODA operational contract for access and endpoint metadata. |
-| Resource | `oci_core_internet_gateway.oda` | Declared in this blueprint; creation depends on its count or for_each inputs. |
 
 ## Request And Deployment Flow
 
@@ -76,7 +75,7 @@ optional endpoint attachment, and clear operational hand-off contracts.
 ## Traffic And Trust Boundaries
 
 - Control plane traffic is local/CI authentication into OCI provider via Terraform runner.
-- Data plane traffic is HTTPS integration traffic from approved CIDRs to ODA private endpoint and ODA connectors.
+- Data plane traffic originates from ODA through the private endpoint toward approved private backends. This endpoint does not provide private inbound access for channels or users.
 - Trust boundaries include tenancy compartment ownership, endpoint subnet ownership, and optional policy ownership.
 - Secrets and tenancy identifiers remain in ignored local tfvars or approved pipeline secret stores.
 
@@ -87,7 +86,8 @@ These notes expand the diagram with design details usually needed in reviews.
 - ODA instance creation and private endpoint creation are decoupled so teams can stage rollout safely.
 - Attachment step is explicit and precondition-guarded to prevent partial misconfiguration.
 - Network creation is optional to support extension-only mode in existing customer estates.
-- Security rules are intentionally minimal: HTTPS ingress from the allowed CIDR and CIDR-scoped HTTPS egress.
+- The created subnet prohibits public IPs. Its route table has no internet route; local VCN destinations work, while on-premises or peered backends require separately reviewed DRG or peering routes.
+- Security rules allow stateful HTTPS egress only to an explicitly supplied backend CIDR. No inbound rule is created for the endpoint.
 - Optional IAM policies let platform teams codify role boundaries in the same deployment.
 - Alert topic creation is optional and intended for runbook and channel-monitoring hooks.
 
@@ -101,7 +101,7 @@ These notes expand the diagram with design details usually needed in reviews.
 
 ## Review Checklist
 
-- Confirm the diagram matches `main.tf`: `oci_core_vcn.oda`, `oci_core_route_table.oda`, `oci_core_security_list.oda`, `oci_core_subnet.oda`, `oci_core_network_security_group.oda`, `oci_core_network_security_group_security_rule.oda_ingress_https`, `oci_core_network_security_group_security_rule.oda_egress_all`, `oci_oda_oda_instance.this`, `oci_oda_oda_private_endpoint.this`, `oci_oda_oda_private_endpoint_attachment.this`, `oci_ons_notification_topic.alert`, `terraform_data.oda_network_contract`, `terraform_data.oda_contract`.
+- Confirm the diagram matches `main.tf`: `oci_core_vcn.oda`, `oci_core_route_table.oda`, `oci_core_security_list.oda`, `oci_core_subnet.oda`, `oci_core_network_security_group.oda`, `oci_core_network_security_group_security_rule.oda_egress_all`, `oci_oda_oda_instance.this`, `oci_oda_oda_private_endpoint.this`, `oci_oda_oda_private_endpoint_attachment.this`, `oci_ons_notification_topic.alert`, `terraform_data.oda_network_contract`, `terraform_data.oda_contract`.
 - Confirm ODA shape/edition and role-based-access choices align with platform policy.
 - Confirm private endpoint subnet, NSG IDs, and allowed CIDR values are correct.
 - Confirm attachment mode and sequencing are intentional for this environment.
