@@ -46,10 +46,11 @@ variable "compartment_ocid" {
   default     = null
 }
 
+# Vault and key creation must be explicitly selected after cost review.
 variable "enable_vault" {
   description = "Create Vault resources for telco platform encryption."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "enable_default_vault" {
@@ -88,10 +89,11 @@ variable "kubernetes_version" {
   default     = null
 }
 
+# The pinned network blueprint exports dmz, firewall, and shared by default.
 variable "oke_endpoint_subnet_key" {
   description = "Hub subnet key used for the OKE API endpoint."
   type        = string
-  default     = "services"
+  default     = "shared"
 }
 
 variable "oke_service_lb_subnet_key" {
@@ -103,7 +105,7 @@ variable "oke_service_lb_subnet_key" {
 variable "oke_node_subnet_key" {
   description = "Hub subnet key used for OKE worker nodes."
   type        = string
-  default     = "services"
+  default     = "shared"
 }
 
 variable "node_shape" {

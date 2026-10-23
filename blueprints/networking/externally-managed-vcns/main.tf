@@ -1,7 +1,9 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
 # Last successful lifecycle: 2026-10-13 | DEFAULT | sa-saopaulo-1 | apply, drift=0, destroy/API cleanup.
-# Scope: Local output-contract smoke test with empty external-reference maps; no existing network adopted or created. No workload packet-flow verification.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Historical lifecycle scope: Local output-contract smoke test with empty external-reference maps; no existing network adopted or created. No workload packet-flow verification.
+# Current scope: schema and DEFAULT Sao Paulo no-change plan with empty references; no network adoption.
+# Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
+# Review: no functional change; earlier local output-contract lifecycle remains historical evidence.
 locals {
   external_resource_ids = merge(
     { for key, vcn_id in var.vcn_ids : "vcn_${key}" => vcn_id },

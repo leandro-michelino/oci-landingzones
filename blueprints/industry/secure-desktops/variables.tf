@@ -174,7 +174,8 @@ variable "windows_10_11_byol_acknowledged" {
   default     = false
 
   validation {
-    condition     = !var.create_desktop_pool || length(regexall("(?i)windows[ _-]*(10|11)", coalesce(var.image_operating_system, ""))) == 0 || var.windows_10_11_byol_acknowledged
+    # coalesce(null, "") fails because Terraform ignores empty-string candidates.
+    condition     = !var.create_desktop_pool || length(regexall("(?i)windows[ _-]*(10|11)", var.image_operating_system == null ? "" : var.image_operating_system)) == 0 || var.windows_10_11_byol_acknowledged
     error_message = "Set windows_10_11_byol_acknowledged=true when creating a Secure Desktops pool from a Windows 10 or Windows 11 image."
   }
 }

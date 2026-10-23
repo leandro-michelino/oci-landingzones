@@ -1,7 +1,9 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
 # Last successful lifecycle: 2026-10-13 | DEFAULT | sa-saopaulo-1 | apply, drift=0, destroy/API cleanup.
-# Scope: OCI hub/spoke foundation only; Azure, ExpressRoute, FastConnect, and IPSec paths disabled. No workload packet-flow verification.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Historical lifecycle scope: OCI hub/spoke foundation only; Azure, ExpressRoute, FastConnect, and IPSec paths disabled. No workload packet-flow verification.
+# Current scope: schema and DEFAULT Sao Paulo OCI-foundation plan; no apply or Azure path test.
+# Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
+# Review: no functional change; ExpressRoute, FastConnect, and IPSec were not exercised.
 module "network" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2"
 
@@ -25,10 +27,12 @@ module "network" {
   spoke_security_lists = var.spoke_security_lists
 }
 
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
 # Last successful lifecycle: 2026-10-13 | DEFAULT | sa-saopaulo-1 | apply, drift=0, destroy/API cleanup.
-# Scope: OCI hub/spoke foundation only; Azure, ExpressRoute, FastConnect, and IPSec paths disabled. No workload packet-flow verification.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Historical lifecycle scope: OCI hub/spoke foundation only; Azure, ExpressRoute, FastConnect, and IPSec paths disabled. No workload packet-flow verification.
+# Current scope: schema and DEFAULT Sao Paulo OCI-foundation plan; no apply or Azure path test.
+# Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
+# Review: no functional change; ExpressRoute, FastConnect, and IPSec were not exercised.
 module "fastconnect" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/fastconnect?ref=4fcd80386471010d9a4a22200e47edb1956bda11"
 
@@ -49,10 +53,12 @@ module "fastconnect" {
   freeform_tags             = var.freeform_tags
 }
 
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
 # Last successful lifecycle: 2026-10-13 | DEFAULT | sa-saopaulo-1 | apply, drift=0, destroy/API cleanup.
-# Scope: OCI hub/spoke foundation only; Azure, ExpressRoute, FastConnect, and IPSec paths disabled. No workload packet-flow verification.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Historical lifecycle scope: OCI hub/spoke foundation only; Azure, ExpressRoute, FastConnect, and IPSec paths disabled. No workload packet-flow verification.
+# Current scope: schema and DEFAULT Sao Paulo OCI-foundation plan; no apply or Azure path test.
+# Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
+# Review: no functional change; ExpressRoute, FastConnect, and IPSec were not exercised.
 module "ipsec_vpn" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/ipsec-vpn?ref=v0.2.0"
 

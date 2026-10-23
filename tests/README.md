@@ -119,3 +119,11 @@ The October 23 review adds 15 plan-only mocked cases in six files. The
 repository now has 115 cases across 35 Terraform test files. The
 [item-by-item review](../docs/EXTENSIONS-IDENTITY-REVIEW-20261023.md) describes
 the checks and the untested live-service, IAM, cost, and traffic boundaries.
+
+## Industry and Networking Regression Coverage
+
+The October 23 items 51-60 review adds four plan-only mocked cases in two
+files: three for Secure Desktops BYOL/default safety and one for telco Vault
+and subnet-key defaults. The repository now has 119 cases across 37 Terraform
+test files. The [item-by-item review](../docs/INDUSTRY-NETWORK-REVIEW-20261023.md)
+also records four existing networking cases and the read-only plan limits.

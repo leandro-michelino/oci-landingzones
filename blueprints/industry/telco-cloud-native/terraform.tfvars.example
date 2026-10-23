@@ -5,3 +5,6 @@ oci_config_profile = "DEFAULT"
 org         = "acme"
 environment = "prod"
 region_key  = "jnb"
+
+# Vault and KMS key creation are opt-in. Keep this false for a network-only plan.
+enable_vault = false

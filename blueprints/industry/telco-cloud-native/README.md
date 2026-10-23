@@ -18,6 +18,12 @@ Start here for `blueprints/industry/telco-cloud-native`: what it builds, which i
 Composes network, vault, OKE, monitoring, and OS Management foundations for telco-oriented
 cloud-native workloads.
 
+The default network foundation includes a NAT gateway. Vault and KMS key
+creation are opt-in; review regional pricing before enabling them. The default
+OKE endpoint and worker subnet keys are `shared`, matching the pinned network
+blueprint's default hub subnets. Existing Terraform-managed vaults must retain
+`enable_vault=true` explicitly before upgrading, or a plan may propose deletion.
+
 ## When To Use This Deployment
 
 - Telco workloads need a cloud-native landing-zone baseline.
@@ -59,7 +65,7 @@ Use `variables.tf` as the input contract, then keep real OCIDs, CIDRs, names, an
 
 | Mode | Enable Flags |
 | --- | --- |
-| Network foundation | Keep `enable_oke_cluster`, `enable_oke_node_pool`, `enable_monitoring`, and `enable_os_management` false. Disable Vault if the test only needs VCN, subnet, and DRG wiring. |
+| Network foundation | Keep `enable_vault`, `enable_oke_cluster`, `enable_oke_node_pool`, `enable_monitoring`, and `enable_os_management` false. The default network still includes a NAT gateway. |
 | Platform foundation | Enable Vault/KMS and monitoring after notification topics, tags, and owner contacts are agreed. |
 | Full telco platform | Enable OKE cluster/node pool and OS Management after Kubernetes version, node shape, subnet keys, patching scope, and regional quotas are confirmed. |
 

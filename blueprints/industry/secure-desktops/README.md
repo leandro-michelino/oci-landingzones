@@ -114,3 +114,10 @@ with `create_desktop_pool = false` and one disabled alarm or policy statement,
 then run plan/apply/readback/destroy from this folder.
 
 Review `architecture/README.md` before onboarding end users.
+
+The Windows 10/11 BYOL acknowledgement check accepts an unset OS label during
+planning; it still rejects a Windows 10/11 pool without explicit acknowledgement.
+To plan a pool, supply `availability_domain`, `storage_backup_policy_id`,
+`image_id`, `image_name`, `subnet_id`, and `vcn_id` as required by the provider.
+No desktop capacity, image licensing, or end-user session is exercised by a
+disabled-pool plan.

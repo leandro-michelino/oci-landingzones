@@ -1,6 +1,7 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
+# Scope: schema, 3 mocked plans, DEFAULT Sao Paulo no-change plan; no desktop apply or session test.
+# Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md.
+# Correction: null OS labels no longer break the BYOL check; Windows 10/11 still requires explicit acknowledgement.
 resource "oci_desktops_desktop_pool" "this" {
   count = var.create_desktop_pool ? 1 : 0
 

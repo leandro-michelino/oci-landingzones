@@ -1,7 +1,9 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
 # Last successful lifecycle: 2026-10-13 | DEFAULT | sa-saopaulo-1 | apply, drift=0, destroy/API cleanup.
-# Scope: OCI backbone only; VPN, Direct Connect/FastConnect, AWS resources, and notifications disabled. No workload packet-flow verification.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Historical lifecycle scope: OCI backbone only; VPN, Direct Connect/FastConnect, AWS resources, and notifications disabled. No workload packet-flow verification.
+# Current scope: schema, 2 mocked plans, DEFAULT Sao Paulo OCI-only plan with VPN disabled; no apply.
+# Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
+# 2026-10-23 full-default plan blocked: AWS CPE public IP was not supplied; no cross-cloud test.
 resource "oci_core_vcn" "backbone" {
   count = var.enable_oci_backbone_network ? 1 : 0
 

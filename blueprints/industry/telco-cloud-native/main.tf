@@ -1,6 +1,7 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
+# Scope: schema, 1 mocked plan, DEFAULT Sao Paulo network-only plan with NAT; no apply or CNF test.
+# Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md.
+# Correction: Vault/KMS is opt-in and default OKE subnet keys match the pinned hub network.
 module "network" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2"
 
@@ -17,9 +18,10 @@ module "network" {
   freeform_tags      = local.common_freeform_tags
 }
 
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
+# Scope: schema, 1 mocked plan, DEFAULT Sao Paulo network-only plan with NAT; no apply or CNF test.
+# Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md.
+# Correction: Vault/KMS is opt-in and default OKE subnet keys match the pinned hub network.
 module "vault" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vault?ref=v0.2.0"
 
@@ -36,9 +38,10 @@ module "vault" {
   freeform_tags        = local.common_freeform_tags
 }
 
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
+# Scope: schema, 1 mocked plan, DEFAULT Sao Paulo network-only plan with NAT; no apply or CNF test.
+# Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md.
+# Correction: Vault/KMS is opt-in and default OKE subnet keys match the pinned hub network.
 module "oke" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/extensions/oke?ref=v0.2.0"
 
@@ -67,9 +70,10 @@ module "oke" {
   freeform_tags            = local.common_freeform_tags
 }
 
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
+# Scope: schema, 1 mocked plan, DEFAULT Sao Paulo network-only plan with NAT; no apply or CNF test.
+# Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md.
+# Correction: Vault/KMS is opt-in and default OKE subnet keys match the pinned hub network.
 module "monitoring" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/monitoring?ref=v0.2.0"
 
@@ -88,9 +92,10 @@ module "monitoring" {
   freeform_tags        = local.common_freeform_tags
 }
 
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
+# Scope: schema, 1 mocked plan, DEFAULT Sao Paulo network-only plan with NAT; no apply or CNF test.
+# Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md.
+# Correction: Vault/KMS is opt-in and default OKE subnet keys match the pinned hub network.
 module "os_management" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/os-management?ref=v0.2.0"
 

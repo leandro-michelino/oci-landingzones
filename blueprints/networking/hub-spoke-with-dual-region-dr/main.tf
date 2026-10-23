@@ -1,6 +1,7 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
+# Scope: schema only; no DEFAULT live plan because a second region is outside the selected scope.
+# Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md.
+# Review: no functional change; cross-region DR and failover remain untested.
 module "primary_network" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2"
 
@@ -17,9 +18,10 @@ module "primary_network" {
   freeform_tags      = merge(var.freeform_tags, { RegionRole = "primary" })
 }
 
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
+# Scope: schema only; no DEFAULT live plan because a second region is outside the selected scope.
+# Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md.
+# Review: no functional change; cross-region DR and failover remain untested.
 module "secondary_network" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2"
 
