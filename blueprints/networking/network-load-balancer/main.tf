@@ -1,7 +1,9 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate and DEFAULT Sao Paulo plan | oracle/oci 9.10.0.
 # Last successful lifecycle: 2026-10-14 | DEFAULT | sa-saopaulo-1 | apply, drift=0, destroy/API cleanup.
-# Scope: NLB private service and empty backend set/listener; no targets; no workload packet-flow verification.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Historical lifecycle scope: NLB private service and empty backend set/listener; no targets; no workload packet-flow verification.
+# Current scope: schema and DEFAULT Sao Paulo plan; no new apply, cleanup, or workload test.
+# Evidence: docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
+# Review: Default no-change plan; no NLB or backend is proposed without an existing subnet or explicit enablement.
 resource "oci_network_load_balancer_network_load_balancer" "this" {
   count = var.create_network_load_balancer ? 1 : 0
 

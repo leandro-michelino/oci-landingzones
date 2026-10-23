@@ -68,6 +68,8 @@ Creates a configurable standalone three-tier workload VCN with caller-controlled
 
 ## Detailed Architecture Notes
 
+- Current validation: The 2026-10-23 DEFAULT Sao Paulo plan proposed a custom three-tier VCN with NAT and an internet gateway. No workload or packet path was tested. See [review evidence](../../../../docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md).
+
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
 
 - This VCN lets the caller control CIDR blocks, gateways, route tables, subnets, and security lists.

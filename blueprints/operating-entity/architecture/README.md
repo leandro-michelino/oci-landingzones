@@ -36,7 +36,7 @@ Creates one operating entity compartment tree with entity-specific IAM groups an
 |         |-- workload compartments and optional child boundaries                                          |
 |         `-- naming and tag alignment for ownership reporting                                             |
 |                  |                                                                                       |
-|                  +--> [groups] admin, operator, auditor, and workload-facing groups                      |
+|                  +--> [groups] entity administrators and auditors                                        |
 |                  `--> [policies] scoped permissions for the owned compartment tree                       |
 |                                                                                                          |
 | Control flow: compartment tree -> groups -> policies.                                                    |
@@ -68,6 +68,8 @@ Creates one operating entity compartment tree with entity-specific IAM groups an
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
 ## Detailed Architecture Notes
+
+- Current validation: The 2026-10-23 check covered Terraform schema only. This pattern creates tenancy-root IAM groups and requires the tenancy home region, so no Sao Paulo live plan or deployment was attempted. See [review evidence](../../../docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md).
 
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
 

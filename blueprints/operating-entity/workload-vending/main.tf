@@ -1,6 +1,7 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
+# Scope: schema only; no live plan or apply because tenancy-root IAM requires the home region outside the Sao Paulo-only scope.
+# Evidence: docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md.
+# Review: Workload compartments require an explicitly selected parent; no live plan or apply.
 module "compartments" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/compartments?ref=v0.2.0"
 
@@ -28,9 +29,10 @@ module "compartments" {
   )
 }
 
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
+# Scope: schema only; no live plan or apply because tenancy-root IAM requires the home region outside the Sao Paulo-only scope.
+# Evidence: docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md.
+# Review: Workload groups are tenancy-root IAM resources in the home region; outside this scope.
 module "groups" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/groups?ref=v0.2.0"
 
@@ -50,9 +52,10 @@ module "groups" {
   freeform_tags         = var.freeform_tags
 }
 
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
+# Scope: schema only; no live plan or apply because tenancy-root IAM requires the home region outside the Sao Paulo-only scope.
+# Evidence: docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md.
+# Review: Workload policies depend on created groups and compartments; no live plan or apply.
 module "policies" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/policies?ref=v0.2.0"
 

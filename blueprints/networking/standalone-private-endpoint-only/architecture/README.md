@@ -66,6 +66,8 @@ Creates a private-only VCN pattern with service gateway access and optional NAT,
 
 ## Detailed Architecture Notes
 
+- Current validation: The 2026-10-23 DEFAULT Sao Paulo plan proposed a private VCN without internet or NAT gateways. No private endpoint workload or traffic path was tested. See [review evidence](../../../../docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md).
+
 - This blueprint creates the VCN foundation, subnets, security lists, routes, service gateway, and optional NAT. It does not create NSGs or service-specific private endpoints. Deploy those separately and validate their DNS, IAM, and service support. A service gateway is not a private endpoint.
 
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.

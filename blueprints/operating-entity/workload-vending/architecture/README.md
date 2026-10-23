@@ -36,7 +36,7 @@ Creates a workload compartment tree, workload IAM groups, and scoped policies fo
 |         |-- workload compartments and optional child boundaries                                          |
 |         `-- naming and tag alignment for ownership reporting                                             |
 |                  |                                                                                       |
-|                  +--> [groups] admin, operator, auditor, and workload-facing groups                      |
+|                  +--> [groups] workload administrators, operators, and auditors                          |
 |                  `--> [policies] scoped permissions for the owned compartment tree                       |
 |                                                                                                          |
 | Control flow: compartment tree -> groups -> policies.                                                    |
@@ -68,6 +68,8 @@ Creates a workload compartment tree, workload IAM groups, and scoped policies fo
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
 ## Detailed Architecture Notes
+
+- Current validation: The 2026-10-23 check covered Terraform schema only. Workload IAM groups are tenancy-root resources requiring the home region, so no Sao Paulo live plan or deployment was attempted. See [review evidence](../../../../docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md).
 
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
 

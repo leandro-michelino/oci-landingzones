@@ -69,6 +69,8 @@ Creates a standalone three-tier VCN with optional, separately authorized tenancy
 
 ## Detailed Architecture Notes
 
+- Current validation: The 2026-10-23 DEFAULT Sao Paulo plan proposed the three-tier VCN with NAT while leaving tenancy-root ZPR configuration and policies disabled. No ZPR enforcement test was performed. See [review evidence](../../../../docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md).
+
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
 
 - The default deployment creates the VCN only; ZPR configuration and policies require explicit enable flags and tenancy-root administrative authorization.

@@ -1,6 +1,7 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate and 1 mocked provider test | oracle/oci 9.10.0.
+# Scope: schema and mocked home-provider contract only; no live plan or apply in Sao Paulo-only scope.
+# Evidence: docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md.
+# Review: Tagging is enabled by default and uses the home-region provider; no live tagging plan or apply.
 module "tagging" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/tagging?ref=v0.2.0"
 
@@ -26,9 +27,10 @@ module "tagging" {
   freeform_tags               = local.common_freeform_tags
 }
 
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate and 1 mocked provider test | oracle/oci 9.10.0.
+# Scope: schema and mocked home-provider contract only; no live plan or apply in Sao Paulo-only scope.
+# Evidence: docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md.
+# Review: Budget resources are disabled by default; mocked test confirms home-region provider inheritance, not billing behavior.
 module "budgets" {
   providers = { oci = oci.home }
   source    = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/budgets?ref=80e439cd48a4b6dce4f63e54f53a45a621236601"
@@ -54,9 +56,10 @@ module "budgets" {
   freeform_tags                       = local.common_freeform_tags
 }
 
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate and 1 mocked provider test | oracle/oci 9.10.0.
+# Scope: schema and mocked home-provider contract only; no live plan or apply in Sao Paulo-only scope.
+# Evidence: docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md.
+# Review: Notifications and external subscriptions remained disabled; no delivery test.
 module "notifications" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/events?ref=v0.2.0"
 
@@ -76,9 +79,10 @@ module "notifications" {
   freeform_tags              = local.common_freeform_tags
 }
 
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate and 1 mocked provider test | oracle/oci 9.10.0.
+# Scope: schema and mocked home-provider contract only; no live plan or apply in Sao Paulo-only scope.
+# Evidence: docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md.
+# Review: Monitoring alarms remained disabled; no alarm or signal test.
 module "monitoring" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/monitoring?ref=v0.2.0"
 
@@ -97,6 +101,7 @@ module "monitoring" {
   freeform_tags        = local.common_freeform_tags
 }
 
+# Review: optional Optimizer enrollment was schema-checked only; no live enrollment change.
 resource "oci_optimizer_enrollment_status" "this" {
   count = var.enable_optimizer_enrollment && var.optimizer_enrollment_status_id != null ? 1 : 0
 
@@ -104,6 +109,7 @@ resource "oci_optimizer_enrollment_status" "this" {
   status               = upper(var.optimizer_enrollment_status)
 }
 
+# Review: optional Optimizer profiles were schema-checked only; no live profile creation.
 resource "oci_optimizer_profile" "this" {
   for_each = local.optimizer_profiles
 
@@ -155,6 +161,7 @@ resource "oci_optimizer_profile" "this" {
   }
 }
 
+# Review: optional FinOps IAM policy uses the home-region provider; no live policy creation.
 resource "oci_identity_policy" "finops_access" {
   count = length(var.finops_policy_statements) > 0 ? 1 : 0
 

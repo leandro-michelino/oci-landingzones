@@ -94,6 +94,8 @@ Declared resource addresses:
 
 ## Detailed Architecture Notes
 
+- Current validation: The 2026-10-23 DEFAULT Sao Paulo plan made no changes because NLB creation is opt-in and no subnet or targets were supplied. The earlier lifecycle tested a private NLB with an empty backend set and listener, without backend traffic. See [review evidence](../../../../docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md).
+
 - Preserve OCI provenance tags `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn` in provider configuration; other defined tags remain managed.
 
 - Backend sets and listeners are map-driven so multiple protocols can be

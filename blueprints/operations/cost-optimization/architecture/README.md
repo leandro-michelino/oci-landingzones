@@ -141,6 +141,8 @@ optional Optimizer profiles, and an optional FinOps access policy.
 
 ## Detailed Architecture Notes
 
+- Current validation: The 2026-10-23 checks covered Terraform schema and one mocked home-provider test only. Tagging is enabled by default and uses the home-region provider; no live plan, cost estimate, or resource creation was performed. See [review evidence](../../../../docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md).
+
 - Tag defaults are intentionally separate from tag definitions. Create tag
   definitions broadly, then enforce defaults only where the operating model is
   ready.

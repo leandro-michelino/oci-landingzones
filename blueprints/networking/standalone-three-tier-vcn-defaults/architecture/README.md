@@ -69,6 +69,8 @@ Creates a straightforward standalone three-tier workload VCN using opinionated d
 
 ## Detailed Architecture Notes
 
+- Current validation: The 2026-10-23 DEFAULT Sao Paulo plan proposed a default three-tier VCN with NAT and an internet gateway. No workload or packet path was tested. See [review evidence](../../../../docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md).
+
 - The public web subnet uses the `web` security list for HTTP/HTTPS ingress. App and database subnets use `baseline`, which has no ingress rules by default. Add only approved application-to-database flows through explicit inputs. Custom security list maps must include every key referenced by the subnet map.
 
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
