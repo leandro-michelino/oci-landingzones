@@ -112,3 +112,10 @@ The repository now has 100 cases across 29 Terraform test files. The
 [item-by-item review](../docs/EXTENSIONS-REVIEW-20261017.md) distinguishes
 these plans from the reduced ODA live network test and from untested paid
 workloads.
+
+## Extensions and Identity Regression Coverage
+
+The October 23 review adds 15 plan-only mocked cases in six files. The
+repository now has 115 cases across 35 Terraform test files. The
+[item-by-item review](../docs/EXTENSIONS-IDENTITY-REVIEW-20261023.md) describes
+the checks and the untested live-service, IAM, cost, and traffic boundaries.

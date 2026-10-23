@@ -19,6 +19,12 @@ variable "home_region" {
   default     = null
 }
 
+variable "oci_config_profile" {
+  description = "Optional OCI CLI config profile for local execution."
+  type        = string
+  default     = null
+}
+
 variable "org" {
   description = "Short organization prefix used in names."
   type        = string
@@ -57,11 +63,7 @@ variable "identity_domains" {
     is_primary_email_required = optional(bool, true)
     replica_regions           = optional(set(string), [])
   }))
-  default = {
-    workforce = {
-      description = "Custom workforce identity domain managed by Terraform."
-    }
-  }
+  default = {}
 }
 
 variable "defined_tags" {

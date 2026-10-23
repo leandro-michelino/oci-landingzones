@@ -1,6 +1,6 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
+# Scope: schema, 4 mocked plans, and DEFAULT Sao Paulo no-change plan; no apply.
+# Evidence: docs/EXTENSIONS-IDENTITY-REVIEW-20261023.md; module calls validated in this blueprint context.
 resource "oci_integration_integration_instance" "this" {
   count = var.enable_integration_instance ? 1 : 0
 
@@ -38,4 +38,15 @@ resource "oci_integration_private_endpoint_outbound_connection" "this" {
   integration_instance_id = local.integration_instance_id
   subnet_id               = var.outbound_subnet_id
   nsg_ids                 = var.outbound_nsg_ids
+
+  lifecycle {
+    precondition {
+      condition     = local.integration_instance_id != null
+      error_message = "A private outbound connection requires a new OIC instance or existing_integration_instance_id."
+    }
+    precondition {
+      condition     = var.outbound_subnet_id != null
+      error_message = "A private outbound connection requires outbound_subnet_id."
+    }
+  }
 }

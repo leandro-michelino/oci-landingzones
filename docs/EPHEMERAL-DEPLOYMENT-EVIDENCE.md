@@ -318,3 +318,12 @@ The final state and scoped OCI API inventory were empty. Nine other extension
 blueprints received schema validation only; CDN and Functions also received
 mocked plans. No paid extension workload or external-cloud service was created
 in this round.
+
+## Extensions and Identity Items 41-50, October 23, 2026
+
+The [item-by-item review](EXTENSIONS-IDENTITY-REVIEW-20261023.md) records ten
+schema validations, ten DEFAULT-configured no-change plans, three inspected
+enabled-resource plans, and 15 plan-only mocked cases. No resources were
+created, so there was no deployment cleanup. Log Analytics
+namespace onboarding and IAM changes require tenancy-level authority or home
+region handling; paid or quota-dependent service workloads remain untested.

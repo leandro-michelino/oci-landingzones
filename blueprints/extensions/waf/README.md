@@ -18,6 +18,10 @@ Start here for `blueprints/extensions/waf`: what it builds, which inputs deserve
 Adds OCI WAF policy and web application firewall resources for workloads that need managed
 edge or application protection.
 
+Attaching a Web App Firewall requires a load balancer OCID and either an
+existing WAF policy OCID or `enable_waf_policy=true`. The blueprint rejects
+an incomplete attachment before apply.
+
 ## When To Use This Deployment
 
 - A public or exposed application needs WAF controls.

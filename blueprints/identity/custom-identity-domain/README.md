@@ -18,6 +18,12 @@ Start here for `blueprints/identity/custom-identity-domain`: what it builds, whi
 Creates one or more custom OCI identity domains and optional regional replicas for a named
 identity boundary.
 
+`identity_domains` now defaults to an empty map, so creation requires an
+explicit domain definition. IAM API writes use the tenancy home region, while
+each domain retains its declared `home_region` field. Existing managed domains
+must keep their keys explicitly in the map before adopting this default to
+avoid a destroy plan. Replicas need separate region and cost review.
+
 ## When To Use This Deployment
 
 - A customer needs custom identity-domain naming or structure.

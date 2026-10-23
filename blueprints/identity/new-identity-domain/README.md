@@ -17,6 +17,11 @@ Start here for `blueprints/identity/new-identity-domain`: what it builds, which 
 
 Creates a new OCI identity domain and optional replicas for a single identity boundary.
 
+Domain creation is now opt-in with `enable_identity_domain=true`. IAM API
+writes use the tenancy home region. Existing managed domains must retain an
+explicit true value before adopting this default to avoid a destroy plan.
+Replicas need separate region and cost review.
+
 ## When To Use This Deployment
 
 - A new isolated identity domain is required.

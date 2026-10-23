@@ -18,6 +18,12 @@ Start here for `blueprints/identity/cis-basic`: what it builds, which inputs des
 Creates CIS-oriented IAM groups, dynamic groups, and policies without deploying the full
 core landing-zone stack.
 
+The default groups and policies are now opt-in. IAM writes use the tenancy
+home-region API endpoint. Existing Terraform-managed baselines must review
+their next plan: omitting flags that were previously enabled by default can
+schedule group and policy deletion. Set both flags explicitly when retaining
+those resources.
+
 ## When To Use This Deployment
 
 - Identity baseline is needed as a standalone task.

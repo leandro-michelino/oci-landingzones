@@ -1,6 +1,6 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
+# Scope: schema, 4 mocked plans, DEFAULT Sao Paulo no-change and policy creation plans; no apply.
+# Evidence: docs/EXTENSIONS-IDENTITY-REVIEW-20261023.md; module calls validated in this blueprint context.
 resource "oci_waf_web_app_firewall_policy" "this" {
   count = var.enable_waf_policy ? 1 : 0
 
@@ -20,4 +20,15 @@ resource "oci_waf_web_app_firewall" "this" {
   display_name               = local.firewall_name
   defined_tags               = var.defined_tags
   freeform_tags              = local.common_freeform_tags
+
+  lifecycle {
+    precondition {
+      condition     = var.load_balancer_id != null
+      error_message = "A Web App Firewall attachment requires load_balancer_id."
+    }
+    precondition {
+      condition     = local.waf_policy_id != null
+      error_message = "A Web App Firewall attachment requires an existing waf_policy_id or enable_waf_policy=true."
+    }
+  }
 }

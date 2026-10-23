@@ -400,3 +400,11 @@ The [items 31-40 review](../EXTENSIONS-REVIEW-20261017.md) records the
 Digital Assistant private-backend network correction and reduced live
 lifecycle, CDN opt-in bucket default, Functions provider migration, mocked
 regressions, and explicit limits for paid and external services.
+
+## Extensions and Identity Review, October 23, 2026
+
+The [items 41-50 review](../EXTENSIONS-IDENTITY-REVIEW-20261023.md) records
+schema validation and DEFAULT-configured no-change plans for ten blueprints,
+three enabled-resource plans, 15 plan-only mocked cases, safer IAM defaults,
+home-region provider targeting, and prerequisite checks for OIC and WAF
+attachments. No live service was provisioned in this round.

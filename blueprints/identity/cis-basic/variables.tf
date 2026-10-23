@@ -19,6 +19,12 @@ variable "home_region" {
   default     = null
 }
 
+variable "oci_config_profile" {
+  description = "Optional OCI CLI config profile for local execution."
+  type        = string
+  default     = null
+}
+
 variable "org" {
   description = "Short organization prefix used in names."
   type        = string
@@ -43,13 +49,13 @@ variable "compartment_ocid" {
 variable "enable_default_groups" {
   description = "Create the default CIS landing zone IAM groups."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "enable_default_policies" {
   description = "Create baseline CIS IAM policies."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "groups" {

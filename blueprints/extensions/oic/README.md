@@ -17,6 +17,9 @@ Start here for `blueprints/extensions/oic`: what it builds, which inputs deserve
 
 Deploys an Oracle Integration Cloud instance with optional private outbound connection.
 
+The outbound connection requires a new or existing OIC instance and an approved
+subnet. Terraform rejects an enabled connection when either input is absent.
+
 ## When To Use This Deployment
 
 - Private integration platform for SaaS, ERP, and application connectivity.

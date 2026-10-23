@@ -19,6 +19,12 @@ variable "home_region" {
   default     = null
 }
 
+variable "oci_config_profile" {
+  description = "Optional OCI CLI config profile for local execution."
+  type        = string
+  default     = null
+}
+
 variable "org" {
   description = "Short organization prefix used in names."
   type        = string
@@ -43,7 +49,7 @@ variable "compartment_ocid" {
 variable "enable_identity_domain" {
   description = "Create the identity domain."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "domain_display_name" {

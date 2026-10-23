@@ -17,6 +17,11 @@ Start here for `blueprints/extensions/observability`: what it builds, which inpu
 
 Deploys an observability layer with optional Log Analytics namespace and group, APM domain, and Operations Insights private endpoint.
 
+Log Analytics namespace onboarding is a tenancy-root operation, even when
+the log group and other observability resources use a selected compartment.
+Keep `enable_log_analytics_namespace=false` for compartment-only deployments;
+onboarding needs separate tenancy-scope authorization and cost review.
+
 ## When To Use This Deployment
 
 - Shared observability foundation above the core logging and monitoring baseline.

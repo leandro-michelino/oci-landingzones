@@ -1,6 +1,6 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
-# Scope: schema validation only; full live lifecycle not verified.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
+# Scope: schema, 2 mocked plans, and DEFAULT home-region no-change plan; no apply.
+# Evidence: docs/EXTENSIONS-IDENTITY-REVIEW-20261023.md; module calls validated in this blueprint context.
 resource "oci_identity_domain" "this" {
   for_each = local.identity_domains
 
