@@ -2,6 +2,7 @@ tenancy_ocid      = "ocid1.tenancy.oc1..example"
 current_user_ocid = "ocid1.user.oc1..example"
 region            = "eu-frankfurt-1"
 home_region       = "eu-frankfurt-1"
+# Keep true for an identity domain already managed by this blueprint.
 enable_identity_domain = false
 
 org         = "acme"

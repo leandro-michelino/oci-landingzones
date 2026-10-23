@@ -2,6 +2,7 @@ tenancy_ocid      = "ocid1.tenancy.oc1..example"
 current_user_ocid = "ocid1.user.oc1..example"
 region            = "eu-frankfurt-1"
 home_region       = "eu-frankfurt-1"
+# Keep existing managed IAM baselines enabled explicitly during upgrades.
 enable_default_groups   = false
 enable_default_policies = false
 

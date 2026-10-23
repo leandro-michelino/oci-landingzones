@@ -1,9 +1,11 @@
 # Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
 # Scope: schema, 2 mocked plans, DEFAULT Sao Paulo no-change and APM-only creation plans; no apply.
-# Evidence: docs/EXTENSIONS-IDENTITY-REVIEW-20261023.md; module calls validated in this blueprint context.
+# Correction: Log Analytics namespace onboarding uses the tenancy root; compartment resources remain scoped separately.
+# Evidence: docs/EXTENSIONS-IDENTITY-REVIEW-20261023.md; no namespace onboarding or service apply.
 resource "oci_log_analytics_namespace" "this" {
   count = var.enable_log_analytics_namespace ? 1 : 0
 
+  # The namespace API requires the tenancy OCID, not the workload compartment OCID.
   compartment_id = var.tenancy_ocid
   namespace      = var.log_analytics_namespace
   is_onboarded   = var.log_analytics_is_onboarded

@@ -1,6 +1,7 @@
 # Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
 # Scope: schema, 4 mocked plans, and DEFAULT Sao Paulo no-change plan; no apply.
-# Evidence: docs/EXTENSIONS-IDENTITY-REVIEW-20261023.md; module calls validated in this blueprint context.
+# Correction: private outbound attachments now reject missing instance and subnet IDs before apply.
+# Evidence: docs/EXTENSIONS-IDENTITY-REVIEW-20261023.md; no OIC instance or connection was deployed.
 resource "oci_integration_integration_instance" "this" {
   count = var.enable_integration_instance ? 1 : 0
 
@@ -40,6 +41,7 @@ resource "oci_integration_private_endpoint_outbound_connection" "this" {
   nsg_ids                 = var.outbound_nsg_ids
 
   lifecycle {
+    # Require a new or existing instance and an explicit outbound subnet.
     precondition {
       condition     = local.integration_instance_id != null
       error_message = "A private outbound connection requires a new OIC instance or existing_integration_instance_id."

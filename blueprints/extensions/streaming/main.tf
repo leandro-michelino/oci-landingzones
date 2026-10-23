@@ -1,6 +1,7 @@
 # Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
 # Scope: schema, DEFAULT Sao Paulo no-change and stream-pool creation plans; no apply.
-# Evidence: docs/EXTENSIONS-IDENTITY-REVIEW-20261023.md; module calls validated in this blueprint context.
+# Review: no functional change; the enabled pool plan was inspected but never applied.
+# Evidence: docs/EXTENSIONS-IDENTITY-REVIEW-20261023.md; producer and consumer paths untested.
 resource "oci_streaming_stream_pool" "this" {
   count = var.enable_streaming && var.create_stream_pool ? 1 : 0
 

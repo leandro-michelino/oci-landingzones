@@ -63,6 +63,8 @@ variable "identity_domains" {
     is_primary_email_required = optional(bool, true)
     replica_regions           = optional(set(string), [])
   }))
+  # An empty default avoids creating a workforce domain from a sample plan.
+  # Existing managed domains must be listed explicitly before upgrading.
   default = {}
 }
 

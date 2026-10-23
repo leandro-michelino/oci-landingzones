@@ -1,6 +1,7 @@
 # Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
 # Scope: schema and DEFAULT Sao Paulo no-change plan; no apply or workload test.
-# Evidence: docs/EXTENSIONS-IDENTITY-REVIEW-20261023.md; module calls validated in this blueprint context.
+# Review: no functional change; cluster, node pools, and workloads were not deployed or exercised.
+# Evidence: docs/EXTENSIONS-IDENTITY-REVIEW-20261023.md.
 resource "oci_containerengine_cluster" "this" {
   count = var.enable_cluster ? 1 : 0
 

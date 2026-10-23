@@ -1,6 +1,7 @@
 # Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
 # Scope: schema, 4 mocked plans, DEFAULT Sao Paulo no-change and policy creation plans; no apply.
-# Evidence: docs/EXTENSIONS-IDENTITY-REVIEW-20261023.md; module calls validated in this blueprint context.
+# Correction: firewall attachment now requires a load balancer and an effective policy ID.
+# Evidence: docs/EXTENSIONS-IDENTITY-REVIEW-20261023.md; no WAF policy or attachment was applied.
 resource "oci_waf_web_app_firewall_policy" "this" {
   count = var.enable_waf_policy ? 1 : 0
 
@@ -22,6 +23,7 @@ resource "oci_waf_web_app_firewall" "this" {
   freeform_tags              = local.common_freeform_tags
 
   lifecycle {
+    # Reject incomplete attachments before OCI receives a create request.
     precondition {
       condition     = var.load_balancer_id != null
       error_message = "A Web App Firewall attachment requires load_balancer_id."

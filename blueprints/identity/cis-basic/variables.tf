@@ -46,12 +46,14 @@ variable "compartment_ocid" {
   default     = null
 }
 
+# Opt in explicitly; the old true default could create tenancy IAM groups unexpectedly.
 variable "enable_default_groups" {
   description = "Create the default CIS landing zone IAM groups."
   type        = bool
   default     = false
 }
 
+# Existing managed baselines must retain true explicitly before an upgrade plan.
 variable "enable_default_policies" {
   description = "Create baseline CIS IAM policies."
   type        = bool

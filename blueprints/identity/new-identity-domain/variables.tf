@@ -46,6 +46,7 @@ variable "compartment_ocid" {
   default     = null
 }
 
+# Opt in explicitly; existing managed domains must retain true before upgrading.
 variable "enable_identity_domain" {
   description = "Create the identity domain."
   type        = bool

@@ -1,6 +1,7 @@
 # Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
 # Scope: schema and DEFAULT Sao Paulo no-change plan; no apply or data-path test.
-# Evidence: docs/EXTENSIONS-IDENTITY-REVIEW-20261023.md; module calls validated in this blueprint context.
+# Review: no functional change; Redis availability, data path, and failover were not exercised.
+# Evidence: docs/EXTENSIONS-IDENTITY-REVIEW-20261023.md.
 resource "oci_redis_redis_cluster" "this" {
   count = var.create_cluster ? 1 : 0
 
