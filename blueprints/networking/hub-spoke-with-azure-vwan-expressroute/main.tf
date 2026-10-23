@@ -3,7 +3,7 @@
 # Historical lifecycle scope: OCI hub/spoke foundation only; Azure, ExpressRoute, FastConnect, and IPSec paths disabled. No workload packet-flow verification.
 # Current scope: schema and DEFAULT Sao Paulo OCI-foundation plan; no apply or Azure path test.
 # Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
-# Review: no functional change; ExpressRoute, FastConnect, and IPSec were not exercised.
+# Review: OCI hub/spoke foundation only; no Azure or cross-cloud traffic path was exercised.
 module "network" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2"
 
@@ -32,7 +32,7 @@ module "network" {
 # Historical lifecycle scope: OCI hub/spoke foundation only; Azure, ExpressRoute, FastConnect, and IPSec paths disabled. No workload packet-flow verification.
 # Current scope: schema and DEFAULT Sao Paulo OCI-foundation plan; no apply or Azure path test.
 # Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
-# Review: no functional change; ExpressRoute, FastConnect, and IPSec were not exercised.
+# Review: FastConnect virtual circuit and ExpressRoute dependency stayed disabled; no circuit test.
 module "fastconnect" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/fastconnect?ref=4fcd80386471010d9a4a22200e47edb1956bda11"
 
@@ -58,7 +58,7 @@ module "fastconnect" {
 # Historical lifecycle scope: OCI hub/spoke foundation only; Azure, ExpressRoute, FastConnect, and IPSec paths disabled. No workload packet-flow verification.
 # Current scope: schema and DEFAULT Sao Paulo OCI-foundation plan; no apply or Azure path test.
 # Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
-# Review: no functional change; ExpressRoute, FastConnect, and IPSec were not exercised.
+# Review: IPSec fallback stayed disabled; no tunnel establishment or failover test.
 module "ipsec_vpn" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/ipsec-vpn?ref=v0.2.0"
 

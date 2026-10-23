@@ -89,7 +89,8 @@ variable "kubernetes_version" {
   default     = null
 }
 
-# The pinned network blueprint exports dmz, firewall, and shared by default.
+# The pinned network exports dmz, firewall, and shared by default. The corrected
+# endpoint and worker defaults below use shared; the service load balancer uses dmz.
 variable "oke_endpoint_subnet_key" {
   description = "Hub subnet key used for the OKE API endpoint."
   type        = string

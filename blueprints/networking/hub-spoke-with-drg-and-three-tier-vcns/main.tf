@@ -3,7 +3,7 @@
 # Historical lifecycle scope: Declared hub/spoke/DRG foundation; no workload packet paths or HA probes tested. No workload packet-flow verification.
 # Current scope: schema and DEFAULT Sao Paulo hub/spoke/DRG plan; no apply or packet-flow test.
 # Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
-# Review: no functional change; prior lifecycle date is retained separately.
+# Review: hub VCN topology was planned; no new apply or packet-flow test in this round.
 module "hub_vcn" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0"
 
@@ -29,7 +29,7 @@ module "hub_vcn" {
 # Historical lifecycle scope: Declared hub/spoke/DRG foundation; no workload packet paths or HA probes tested. No workload packet-flow verification.
 # Current scope: schema and DEFAULT Sao Paulo hub/spoke/DRG plan; no apply or packet-flow test.
 # Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
-# Review: no functional change; prior lifecycle date is retained separately.
+# Review: DRG attachments and routing were planned; no new apply or route-propagation test in this round.
 module "drg" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/drg?ref=v0.2.0"
 
@@ -49,7 +49,7 @@ module "drg" {
 # Historical lifecycle scope: Declared hub/spoke/DRG foundation; no workload packet paths or HA probes tested. No workload packet-flow verification.
 # Current scope: schema and DEFAULT Sao Paulo hub/spoke/DRG plan; no apply or packet-flow test.
 # Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
-# Review: no functional change; prior lifecycle date is retained separately.
+# Review: spoke VCN topology was planned; no new apply or spoke-to-hub traffic test in this round.
 module "spoke_vcns" {
   source   = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0"
   for_each = var.spoke_vcns

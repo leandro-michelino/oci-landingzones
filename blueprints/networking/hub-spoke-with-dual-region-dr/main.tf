@@ -1,7 +1,7 @@
 # Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
 # Scope: schema only; no DEFAULT live plan because a second region is outside the selected scope.
 # Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md.
-# Review: no functional change; cross-region DR and failover remain untested.
+# Review: primary network call passed schema validation only; no new regional plan or apply.
 module "primary_network" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2"
 
@@ -21,7 +21,7 @@ module "primary_network" {
 # Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
 # Scope: schema only; no DEFAULT live plan because a second region is outside the selected scope.
 # Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md.
-# Review: no functional change; cross-region DR and failover remain untested.
+# Review: secondary region is outside the approved Sao Paulo-only scope; no plan, apply, or failover test.
 module "secondary_network" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2"
 

@@ -1,7 +1,7 @@
 # Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
 # Scope: schema, 1 mocked plan, DEFAULT Sao Paulo network-only plan with NAT; no apply or CNF test.
 # Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md.
-# Correction: Vault/KMS is opt-in and default OKE subnet keys match the pinned hub network.
+# Review: the pinned hub/spoke network supplies the shared subnet used by OKE; the default plan includes NAT.
 module "network" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2"
 
@@ -21,7 +21,7 @@ module "network" {
 # Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
 # Scope: schema, 1 mocked plan, DEFAULT Sao Paulo network-only plan with NAT; no apply or CNF test.
 # Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md.
-# Correction: Vault/KMS is opt-in and default OKE subnet keys match the pinned hub network.
+# Correction: Vault/KMS is now opt-in; existing deployments relying on the old default must set enable_vault=true before upgrading.
 module "vault" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vault?ref=v0.2.0"
 
@@ -41,7 +41,7 @@ module "vault" {
 # Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
 # Scope: schema, 1 mocked plan, DEFAULT Sao Paulo network-only plan with NAT; no apply or CNF test.
 # Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md.
-# Correction: Vault/KMS is opt-in and default OKE subnet keys match the pinned hub network.
+# Correction: default endpoint and worker subnet keys now select the pinned hub network's shared subnet; OKE remained disabled in the plan.
 module "oke" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/extensions/oke?ref=v0.2.0"
 
@@ -73,7 +73,7 @@ module "oke" {
 # Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
 # Scope: schema, 1 mocked plan, DEFAULT Sao Paulo network-only plan with NAT; no apply or CNF test.
 # Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md.
-# Correction: Vault/KMS is opt-in and default OKE subnet keys match the pinned hub network.
+# Review: no monitoring change; notifications and alarms were disabled in the network-only plan.
 module "monitoring" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/monitoring?ref=v0.2.0"
 
@@ -95,7 +95,7 @@ module "monitoring" {
 # Last successful validation: 2026-10-23 | blueprint Terraform validate | oracle/oci 9.10.0.
 # Scope: schema, 1 mocked plan, DEFAULT Sao Paulo network-only plan with NAT; no apply or CNF test.
 # Evidence: docs/INDUSTRY-NETWORK-REVIEW-20261023.md.
-# Correction: Vault/KMS is opt-in and default OKE subnet keys match the pinned hub network.
+# Review: no OS Management change; managed groups and jobs were disabled in the network-only plan.
 module "os_management" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/os-management?ref=v0.2.0"
 
