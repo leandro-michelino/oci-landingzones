@@ -75,6 +75,8 @@ Adds Zero Trust Packet Routing configuration and policies to a hub-spoke network
 
 ## Detailed Architecture Notes
 
+- Current validation: The 2026-10-23 DEFAULT Sao Paulo plan includes only the hub/spoke network; tenancy-root ZPR onboarding and policies remain disabled and outside this compartment-only test scope. See [Networking review](../../../../docs/NETWORKING-REVIEW-20261023-61-70.md).
+
 - Traffic arrows express intended topology. The default network contains one workload spoke and no application hosts. Routing, ingress permissions, DNS resolution, inspection, and failover need separate runtime acceptance tests.
 
 - Preserve OCI provenance tags `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn` in provider configuration; other defined tags remain managed.

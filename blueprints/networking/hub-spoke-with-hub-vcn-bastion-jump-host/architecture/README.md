@@ -76,6 +76,8 @@ Adds OCI Bastion access to the hub-spoke landing-zone network so administrators 
 
 ## Detailed Architecture Notes
 
+- Current validation: The 2026-10-23 DEFAULT Sao Paulo plan includes only the hub/spoke network; Bastion is disabled by default and requires approved client CIDRs before a separate session test. See [Networking review](../../../../docs/NETWORKING-REVIEW-20261023-61-70.md).
+
 - The OCI provider preserves the automatically assigned `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn` provenance tags through `ignore_defined_tags`. Other defined tags remain managed. See [Oracle provider troubleshooting](https://docs.oracle.com/en-us/iaas/Content/dev/terraform/troubleshooting.htm).
 
 These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.

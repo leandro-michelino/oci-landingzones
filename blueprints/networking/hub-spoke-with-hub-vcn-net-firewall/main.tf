@@ -1,7 +1,9 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate and DEFAULT Sao Paulo plan | oracle/oci 9.10.0.
 # Last successful lifecycle: 2026-10-14 | DEFAULT | sa-saopaulo-1 | apply, drift=0, destroy/API cleanup.
-# Scope: OCI network foundation only; optional services disabled; no workload packet-flow verification.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Historical lifecycle scope: OCI network foundation only; optional services disabled; no workload packet-flow verification.
+# Current scope: schema and DEFAULT Sao Paulo plan; no new apply, cleanup, or workload test.
+# Evidence: docs/NETWORKING-REVIEW-20261023-61-70.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
+# Review: OCI hub/spoke foundation planned; no inspected traffic path test.
 module "network" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2"
 
@@ -18,10 +20,12 @@ module "network" {
   freeform_tags      = var.freeform_tags
 }
 
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate and DEFAULT Sao Paulo plan | oracle/oci 9.10.0.
 # Last successful lifecycle: 2026-10-14 | DEFAULT | sa-saopaulo-1 | apply, drift=0, destroy/API cleanup.
-# Scope: OCI network foundation only; optional services disabled; no workload packet-flow verification.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Historical lifecycle scope: OCI network foundation only; optional services disabled; no workload packet-flow verification.
+# Current scope: schema and DEFAULT Sao Paulo plan; no new apply, cleanup, or workload test.
+# Evidence: docs/NETWORKING-REVIEW-20261023-61-70.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
+# Review: OCI Network Firewall remained disabled; no policy, inspection, or traffic test.
 module "network_firewall" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/net-firewall?ref=2369fef3285b79670b842a5072a6bebf38c4796d"
 

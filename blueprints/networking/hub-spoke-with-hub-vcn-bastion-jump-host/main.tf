@@ -1,7 +1,9 @@
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate and DEFAULT Sao Paulo plan | oracle/oci 9.10.0.
 # Last successful lifecycle: 2026-10-13 | DEFAULT | sa-saopaulo-1 | apply, drift=0, destroy/API cleanup.
-# Scope: OCI network foundation only; managed Bastion disabled because approved client CIDRs were not supplied. No workload packet-flow verification.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Historical lifecycle scope: OCI network foundation only; Bastion disabled for missing approved client CIDRs. No session or packet-flow test.
+# Current scope: schema and DEFAULT Sao Paulo plan; no new apply, cleanup, or workload test.
+# Evidence: docs/NETWORKING-REVIEW-20261023-61-70.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
+# Review: OCI hub/spoke foundation planned; Bastion remained disabled.
 module "network" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2"
 
@@ -18,10 +20,12 @@ module "network" {
   freeform_tags      = var.freeform_tags
 }
 
-# Last successful validation: 2026-10-14 | blueprint Terraform init/validate | oracle/oci 9.9.0.
+# Last successful validation: 2026-10-23 | blueprint Terraform validate and DEFAULT Sao Paulo plan | oracle/oci 9.10.0.
 # Last successful lifecycle: 2026-10-13 | DEFAULT | sa-saopaulo-1 | apply, drift=0, destroy/API cleanup.
-# Scope: OCI network foundation only; managed Bastion disabled because approved client CIDRs were not supplied. No workload packet-flow verification.
-# Evidence: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md; module call validated in this blueprint context.
+# Historical lifecycle scope: OCI network foundation only; Bastion disabled for missing approved client CIDRs. No session or packet-flow test.
+# Current scope: schema and DEFAULT Sao Paulo plan; no new apply, cleanup, or workload test.
+# Evidence: docs/NETWORKING-REVIEW-20261023-61-70.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
+# Review: Bastion remained disabled because approved client CIDRs were not supplied; no session test.
 module "bastion" {
   source = "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/bastion?ref=v0.2.0"
 
