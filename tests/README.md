@@ -137,3 +137,8 @@ and mocked OCI providers. Three database suites now set their disabled-service
 defaults explicitly, so ignored operator `terraform.tfvars` files cannot turn
 their safe-plan regression scenarios into paid database plans. These tests did
 not create OCI resources and do not establish live database or network behavior.
+
+A follow-up added two plan-only, mocked networking cases. One checks that the
+private-endpoint foundation exports no internet or NAT gateway and only private
+subnets; the other checks distinct production and nonproduction hub/DRG output
+contracts. Both passed. The repository now has 121 cases in 39 test files.

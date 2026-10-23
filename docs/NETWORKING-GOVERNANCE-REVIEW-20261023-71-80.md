@@ -22,3 +22,16 @@ No functional Terraform correction was needed. The diagrams for items 77-79 inco
 The plans were inspected before any apply. The user previously authorized ephemeral NAT tests, but no resource was created in this round, so there was no new deployment to destroy or inventory-check. No current price estimate was verified. Plan files and logs are stored only under ignored `.leo-local/networking-governance-review-20261023/`.
 
 Repository-wide `./scripts/validate-all.sh` passed after these documentation changes: Terraform validation, TFLint, Checkov (274 passed, 0 failed, 13 skipped), Ansible checks, cloud deployment simulations, and pre-commit. Trivy was unavailable and was skipped by the script. These static checks do not extend the live-test scope above.
+
+## Follow-up validation on 2026-10-23
+
+Trivy 0.76.1 scanned 109 configuration targets with zero reported
+misconfigurations. This is scanner coverage, not proof of runtime security.
+Saved plans for items 72 and 73 were re-inspected: all proposed OCI resources
+with `compartment_id` target the requested compartment. Item 72 proposes two
+separate DRGs and NAT gateways across production and nonproduction foundations;
+item 73 proposes only a private route through the service gateway, three
+private subnets, and no NAT or internet gateway. Two new mocked Terraform
+regression cases for these foundation contracts passed. No new `apply` or OCI
+resource creation occurred, so traffic isolation and endpoint connectivity
+remain untested.

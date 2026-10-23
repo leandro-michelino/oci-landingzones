@@ -1,7 +1,7 @@
-# Last successful validation: 2026-10-23 | blueprint Terraform validate and DEFAULT Sao Paulo plan | oracle/oci 9.10.0.
+# Last successful validation: 2026-10-23 | Terraform validate, mocked private-foundation test, and DEFAULT Sao Paulo plan | oracle/oci 9.10.0.
 # Last successful lifecycle: 2026-10-14 | DEFAULT | sa-saopaulo-1 | apply, drift=0, destroy/API cleanup.
 # Historical lifecycle scope: default network foundation; ZPR disabled; no workload packet-flow verification.
-# Current scope: schema and DEFAULT Sao Paulo plan; no new apply, cleanup, or workload test.
+# Current scope: schema, mocked private-foundation test, and DEFAULT Sao Paulo plan; no new apply, cleanup, or workload test.
 # Evidence: docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
 # Review: Private VCN foundation planned without NAT or internet gateway; no private endpoint workload or traffic test.
 module "private_vcn" {

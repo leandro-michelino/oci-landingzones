@@ -1,7 +1,7 @@
-# Last successful validation: 2026-10-23 | blueprint Terraform validate and DEFAULT Sao Paulo plan | oracle/oci 9.10.0.
+# Last successful validation: 2026-10-23 | Terraform validate, mocked foundation-separation test, and DEFAULT Sao Paulo plan | oracle/oci 9.10.0.
 # Last successful lifecycle: 2026-10-14 | DEFAULT | sa-saopaulo-1 | apply, drift=0, destroy/API cleanup.
 # Historical lifecycle scope: OCI network foundation only; optional services disabled; no workload packet-flow verification.
-# Current scope: schema and DEFAULT Sao Paulo plan; no new apply, cleanup, or workload test.
+# Current scope: schema, mocked foundation-separation test, and DEFAULT Sao Paulo plan; no new apply, cleanup, or workload test.
 # Evidence: docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
 # Review: Production hub and spoke planned in the selected compartment; one NAT gateway; no packet-flow test.
 module "prod_network" {
@@ -58,10 +58,10 @@ module "prod_network" {
   freeform_tags = merge(var.freeform_tags, { EnvironmentClass = "prod" })
 }
 
-# Last successful validation: 2026-10-23 | blueprint Terraform validate and DEFAULT Sao Paulo plan | oracle/oci 9.10.0.
+# Last successful validation: 2026-10-23 | Terraform validate, mocked foundation-separation test, and DEFAULT Sao Paulo plan | oracle/oci 9.10.0.
 # Last successful lifecycle: 2026-10-14 | DEFAULT | sa-saopaulo-1 | apply, drift=0, destroy/API cleanup.
 # Historical lifecycle scope: OCI network foundation only; optional services disabled; no workload packet-flow verification.
-# Current scope: schema and DEFAULT Sao Paulo plan; no new apply, cleanup, or workload test.
+# Current scope: schema, mocked foundation-separation test, and DEFAULT Sao Paulo plan; no new apply, cleanup, or workload test.
 # Evidence: docs/NETWORKING-GOVERNANCE-REVIEW-20261023-71-80.md; prior lifecycle: docs/EPHEMERAL-DEPLOYMENT-EVIDENCE.md.
 # Review: Nonproduction hub and spoke planned separately in the same compartment; one NAT gateway; no isolation traffic test.
 module "nonprod_network" {
