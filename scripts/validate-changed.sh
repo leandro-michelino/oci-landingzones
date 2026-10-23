@@ -144,16 +144,20 @@ echo "==> Changed files against $BASE_REF"
 printf '  %s\n' "${changed_files[@]}"
 
 terraform_roots=()
+terraform_test_roots=()
 ansible_playbooks=()
 run_root_ansible_syntax=false
 run_pre_commit=false
 
 for changed_file in "${changed_files[@]}"; do
   case "$changed_file" in
-    *.tf|*.tfvars.example|blueprints/*/README.md|blueprints/*/*/README.md|blueprints/*/architecture/README.md|blueprints/*/*/architecture/README.md)
+    *.tf|*.tftest.hcl|*.tfvars.example|blueprints/*/README.md|blueprints/*/*/README.md|blueprints/*/architecture/README.md|blueprints/*/*/architecture/README.md)
       tf_root="$(nearest_tf_root "$changed_file" || true)"
       if [[ -n "${tf_root:-}" ]] && add_unique "$tf_root" "${terraform_roots[@]}"; then
         terraform_roots+=("$tf_root")
+      fi
+      if [[ "$changed_file" == *.tftest.hcl ]] && [[ -n "${tf_root:-}" ]] && add_unique "$tf_root" "${terraform_test_roots[@]}"; then
+        terraform_test_roots+=("$tf_root")
       fi
       ;;
   esac
@@ -185,6 +189,22 @@ if command -v terraform >/dev/null 2>&1 && [[ "${#terraform_roots[@]}" -gt 0 ]];
 
     echo "==> terraform validate ${terraform_label}"
     (cd "$terraform_root" && terraform validate -no-color)
+
+    if ! add_unique "$terraform_root" "${terraform_test_roots[@]}"; then
+      # A test may use `command = apply`; require mocked cloud providers before running it.
+      while IFS= read -r test_file; do
+        if ! rg -q '^mock_provider[[:space:]]+"oci"' "$test_file" || rg -q '^provider[[:space:]]+"' "$test_file"; then
+          echo "ERROR: Terraform test requires a mocked OCI provider and no real provider block: $test_file" >&2
+          exit 1
+        fi
+        if rg -q 'source[[:space:]]*=[[:space:]]*"cloudflare/cloudflare"' "$terraform_root/versions.tf" && ! rg -q '^mock_provider[[:space:]]+"cloudflare"' "$test_file"; then
+          echo "ERROR: Terraform test requires a mocked Cloudflare provider: $test_file" >&2
+          exit 1
+        fi
+      done < <(rg --files -g '*.tftest.hcl' "$terraform_root/tests")
+      echo "==> terraform test ${terraform_label} (mocked providers)"
+      (cd "$terraform_root" && terraform test -no-color)
+    fi
   done
 elif [[ "${#terraform_roots[@]}" -gt 0 ]]; then
   echo "==> Skipping changed Terraform validation; terraform command not found"

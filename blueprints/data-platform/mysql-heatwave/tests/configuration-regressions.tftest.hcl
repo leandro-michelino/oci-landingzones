@@ -11,6 +11,9 @@ variables {
   org                = "test"
   environment        = "dev"
   region_key         = "sao"
+  # Keep regression defaults independent of an operator's ignored terraform.tfvars.
+  create_db_system       = false
+  create_private_network = false
 }
 
 run "disabled_without_external_subnet" {

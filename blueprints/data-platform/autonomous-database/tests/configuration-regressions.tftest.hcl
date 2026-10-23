@@ -10,6 +10,9 @@ variables {
   org                = "test"
   environment        = "dev"
   region_key         = "sao"
+  # Keep regression defaults independent of an operator's ignored terraform.tfvars.
+  enable_autonomous_database = false
+  create_private_network     = false
 }
 run "disabled_database_and_network" {
   command = plan

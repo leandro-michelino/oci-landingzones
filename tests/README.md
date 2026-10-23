@@ -11,7 +11,9 @@ provider/module work directories after validation.
 For normal small edits, use `./scripts/validate-changed.sh` first. It compares
 the current branch and working tree to `origin/main`, maps changed files to the
 nearest blueprint or module Terraform root, and validates only that touched
-surface while still running the repository contract guard.
+surface while still running the repository contract guard. Changed
+`.tftest.hcl` files also run `terraform test` after a mock-provider safety
+check; ignored local `terraform.tfvars` files must not control test defaults.
 
 OpenSearch fixture samples live under `fixtures/opensearch/`:
 
@@ -127,3 +129,11 @@ files: three for Secure Desktops BYOL/default safety and one for telco Vault
 and subnet-key defaults. The repository now has 119 cases across 37 Terraform
 test files. The [item-by-item review](../docs/INDUSTRY-NETWORK-REVIEW-20261023.md)
 also records four existing networking cases and the read-only plan limits.
+
+## October 23, 2026 Terraform Test Run
+
+All 119 cases in the 37 Terraform test files passed with Terraform 1.15.6
+and mocked OCI providers. Three database suites now set their disabled-service
+defaults explicitly, so ignored operator `terraform.tfvars` files cannot turn
+their safe-plan regression scenarios into paid database plans. These tests did
+not create OCI resources and do not establish live database or network behavior.
