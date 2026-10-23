@@ -1,4 +1,4 @@
-![OCI Landing Zones architecture banner](docs/assets/oci-landing-zones-banner.png)
+![OCI Landing Zones architecture banner](docs/assets/oci-landing-zones-banner-80-blueprints.png)
 
 # OCI Landing Zones
 
