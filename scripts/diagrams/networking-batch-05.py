@@ -31,7 +31,6 @@ def header(title,index):
 
 def footer(d,text,y=1300):
     d.box(text,20,y,2360,120,kind='note')
-    d.text('Source defaults and operator inputs, not discovered live inventory. Arrows show configuration / intended routing, not verified traffic.\nReview: 2026-10-28. No new provisioning, provider validation, workload connectivity, isolation or failover test.',20,y+155,2360,65,size=12)
 
 
 def vwan(title,index):

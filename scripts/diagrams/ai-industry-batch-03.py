@@ -48,7 +48,7 @@ def embedding(title,index):
  d.connect(chunk,state,kind='dashed',label='External checkpoint / failure writes',exit=(.8,1),entry=(1,.5),waypoints=[(1536,475),(1680,475),(1680,940)])
  d.text('Buckets: private / Standard / versioned / object events enabled.\nExisting KMS key optional for buckets and pool. No key is created.\nAn Events condition is operator supplied; enabling bucket events does not bind this rule.',45,340,1580,95,parent=r,size=15)
  policy(d,r)
- return finish(d,'DEFAULT RESULT: No cloud resources. All creation flags false; policy statements empty; streams map contains chunks and vectors but is gated off.\nSolid event-to-Function arrow is declared configuration; dashed arrows describe application code that is not deployed here. Stream retention is per-entry optional.\nNo Function application, embedding endpoint, search cluster/index, source objects, producer/consumer or retry worker is created.\nNo private network, ingestion, embedding call, indexing, IAM access or working data path was tested. Resource pages enumerate all declarations and existing-resource inputs.')
+ return finish(d,'DEFAULT RESULT: No cloud resources. All creation flags false; policy statements empty; streams map contains chunks and vectors but is gated off.\nSolid event-to-Function arrow is declared configuration; dashed arrows describe application code that is not deployed here. Stream retention is per-entry optional.\nNo Function application, embedding endpoint, search cluster/index, source objects, producer/consumer or retry worker is created.\nResource pages enumerate all declarations and existing-resource inputs.')
 
 def multi(title,index):
  d,r=frame(title,index)
@@ -68,7 +68,7 @@ def multi(title,index):
  d.connect(runtime,stream,kind='dashed',label='External task producer / consumer',exit=(0,.5),entry=(0,.5),waypoints=[(60,685),(60,950)])
  d.icon('OCI Object Storage',1120,790,parent=r,size=50,label='Audit + tools buckets / create_buckets=false\nPrivate / versioned / no registry loader or audit writer',label_pos='top')
  policy(d,r)
- return finish(d,'DEFAULT RESULT: No resources. Creation flags false; specialist_agents={}, agent_tools={} and policy_statements=[]. Existing IDs may be supplied instead.\nKnowledge base references an existing OpenSearch cluster; no cluster, data source, ingestion job or knowledge population is declared.\nLLM model/endpoint IDs are existing resources. Tool metadata does not deploy executable Functions, authorization or a tool invocation service.\nBucket/pool KMS keys are supplied externally. No network or private endpoint is created; no delegation, retrieval, tool execution or stream consumption was tested.')
+ return finish(d,'DEFAULT RESULT: No resources. Creation flags false; specialist_agents={}, agent_tools={} and policy_statements=[]. Existing IDs may be supplied instead.\nKnowledge base references an existing OpenSearch cluster; no cluster, data source, ingestion job or knowledge population is declared.\nLLM model/endpoint IDs are existing resources. Tool metadata does not deploy executable Functions, authorization or a tool invocation service.\nBucket/pool KMS keys are supplied externally.')
 
 def agents(title,index):
  d,r=frame(title,index)
@@ -86,7 +86,7 @@ def agents(title,index):
  d.icon('OCI Object Storage',160,580,parent=r,size=55,label='Processed + audit buckets\nSame create_buckets flag\nNo processor or audit writer deployed',label_pos='top')
  policy(d,r,x=700,y=790)
  d.text('All buckets: NoPublicAccess / Standard / versioned / events enabled; optional existing KMS key.\nIndex/schema descriptors reference existing search infrastructure; they do not create a search cluster or a separate managed index resource.',40,325,490,175,parent=r,size=14)
- return finish(d,'DEFAULT RESULT: No cloud resources. All creation flags false; policy statements and explicit KB/prefix lists empty.\nThe source-prefix binding is added only when both bucket creation and data-source creation are enabled; supplied existing prefixes can be appended.\nThe declared ingestion job can initiate one ingestion when explicitly enabled; creation does not prove completion, indexing quality or retrieval.\nNo FaaS processor, chat client, private endpoint, VCN, model hosting or application authentication layer is created. No ingestion or agent request was executed.')
+ return finish(d,'DEFAULT RESULT: No cloud resources. All creation flags false; policy statements and explicit KB/prefix lists empty.\nThe source-prefix binding is added only when both bucket creation and data-source creation are enabled; supplied existing prefixes can be appended.\nThe declared ingestion job can initiate one ingestion when explicitly enabled; creation does not prove completion, indexing quality or retrieval.\nNo FaaS processor, chat client, private endpoint, VCN, model hosting or application authentication layer is created.')
 
 def devops(title,index):
  d,r=frame(title,index)
@@ -102,7 +102,7 @@ def devops(title,index):
   d.connect(node,project,kind='plain',label='project_id',exit=(.5,0),entry=(.2+.3*i,1),waypoints=[(x,540),(project.abs[0]+project.w*(.2+.3*i),540)])
  d.text('Exactly five resource declarations: topic, project, repository, build pipeline and deploy pipeline.\nAn existing project can own the repository and shells. No automatic repository → build → deploy execution path is configured.',50,625,2340,75,parent=r,size=16)
  d.text('External implementation required: source connections, triggers, build specification, pipeline stages, artifacts,\ndeployment environments and workload targets. IAM grants, subscriptions and delivery validation are also external.',50,720,2320,100,parent=r,size=17)
- return finish(d,'DEFAULT RESULT: No resources; all five opt-in flags false. Project/topic prerequisites are enforced by blueprint checks.\nPlain lines show the exact project/topic associations only. Empty pipeline shells have no executable stages, no trigger and no build-to-deploy handoff.\nThe blueprint declares no external GitHub/AWS/Azure/GCP resources, artifact repository, network, application deployment or execution.\nThis is a source/diagram review. Historical mocked-plan validation is unchanged; no build, deploy, notification delivery or live cloud test was run.')
+ return finish(d,'DEFAULT RESULT: No resources; all five opt-in flags false. Project/topic prerequisites are enforced by blueprint checks.\nPlain lines show the exact project/topic associations only. Empty pipeline shells have no executable stages, no trigger and no build-to-deploy handoff.\nThe blueprint declares no external GitHub/AWS/Azure/GCP resources, artifact repository, network, application deployment or execution.\nThis is a source/diagram review.')
 
 def telco(title,index):
  d=network.build(title,'base',index,subtitle='INDUSTRY 35 / Source-pinned network foundation + disabled optional services',scope_note='DEFAULT FOUNDATION: Hub + one three-tier spoke + DRG + IGW/NAT/SGW routes. Optional OKE, Vault, monitoring and OS Management Hub are disabled.\nThe panel on the right shows module bindings, not another physical network. No CNF, Kubernetes workload, service Load Balancer or traffic test is created.')
@@ -118,7 +118,6 @@ def telco(title,index):
  d.connect(key,vault,kind='plain',label='management_endpoint',straight=True)
  d.text('Vault key is not automatically bound to OKE.\nAlarms/topics/subscriptions are optional map-driven resources;\nno metrics or notification delivery are implied.',35,655,820,90,parent=p,size=14)
  d.text('OS Management Hub / disabled\nGroup + scheduled-job maps empty; managed hosts, software\nsources and group IDs are operator inputs, not OKE outputs.',35,760,820,90,parent=p,size=14)
- d.text('Source pins: network d7938f4; OKE / Vault / Monitoring / OS Management modules v0.2.0.\nNo current module version is substituted. Network default egress paths do not establish pod networking or CNF readiness.\nNative resource-detail pages enumerate every transitive declaration, condition and existing-resource input.',1770,1120,880,150,size=14)
  return d
 
 def main():

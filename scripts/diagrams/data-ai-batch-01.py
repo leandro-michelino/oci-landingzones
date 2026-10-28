@@ -48,7 +48,7 @@ def database(title,index,search=False):
  else:
   d.connect(db,bucket,kind='dashed',label='Snapshot registration / export: external',exit=(1,.5),entry=(0,.5),waypoints=[(1720,520),(1720,400)])
  d.connect(nsg,db,kind='plain',label='NSG attachment',straight=True)
- base.footer(d,('DEFAULT RESULT: No resources; all creation flags false and policy statements empty.\nCluster requires the created private network or existing VCN, subnet and NSG IDs. No mixed unused created network is allowed.\nNo client workloads, indexes, ingestion, automated snapshots or tested API/Dashboard access are delivered.' if search else 'DEFAULT RESULT: No resources; all creation flags false and policy statements empty.\nReuse a supplied subnet/NSGs or create the optional network; HeatWave can attach to a supplied DB System ID.\nBucket creation does not authorize Lakehouse reads. No schemas, data loads, queries, backup restore or database connection was executed.'))
+ base.footer(d,('DEFAULT RESULT: No resources; all creation flags false and policy statements empty.\nCluster requires the created private network or existing VCN, subnet and NSG IDs. No mixed unused created network is allowed.\nNo client workloads, indexes, ingestion, automated snapshots or tested API/Dashboard access are delivered.' if search else 'DEFAULT RESULT: No resources; all creation flags false and policy statements empty.\nReuse a supplied subnet/NSGs or create the optional network; HeatWave can attach to a supplied DB System ID.\nBucket creation does not authorize Lakehouse reads.'))
  return d
 
 def dr(title,index):
@@ -104,7 +104,7 @@ def genai(title,index):
  d.icon('Policies',140,445,parent=services,size=55,label='IAM access policy / optional',label_pos='top')
  d.text('policy_statements=[] / home provider\nPolicy compartment defaults to tenancy root\nNo group, dynamic group or model created',280,380,550,145,parent=services,size=15)
  d.connect(caller,archive,kind='dashed',label='Optional archive writes / external',exit=(.5,0),entry=(0,.5),waypoints=[(290,410),(1490,410)])
- base.footer(d,'DEFAULT RESULT: No resources; private endpoint and archive bucket flags false, policy statements empty.\nThe endpoint provides a private-transport configuration resource. No model deployment, dedicated AI cluster, inference application or archival pipeline is declared.\nNo inference, model availability, private DNS resolution, endpoint traffic or data-residency behavior was verified. The bucket is an independent storage resource.')
+ base.footer(d,'DEFAULT RESULT: No resources; private endpoint and archive bucket flags false, policy statements empty.\nThe endpoint provides a private-transport configuration resource. No model deployment, dedicated AI cluster, inference application or archival pipeline is declared.\nThe bucket is an independent storage resource.')
  return d
 
 def ai(title,index):

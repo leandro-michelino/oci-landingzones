@@ -25,7 +25,6 @@ def frame(title,index,wide=False):
 def finish(d,text,wide=False):
  if not wide:return base.finish(d,text)
  d.box(text,20,1360,2940,160,kind='note')
- d.text('Source and rendered-diagram review: 2026-10-28. Historical Terraform/provider validation metadata is unchanged.\nNo provisioning, image build/pull, invocation, event delivery, application traffic or cloud test was run.',20,1570,2940,60,size=13)
  return d
 
 def streaming(title,index):
@@ -39,7 +38,7 @@ def streaming(title,index):
  config=d.box('Optional created-pool settings / existing identifiers only\nprivate_endpoint_subnet_id=null / private_endpoint_nsg_ids=[]\nkms_key_id=null / no network, NSG or key created\nkafka_settings=null / nested pool settings, not another service',60,690,1100,145,parent=r,kind='optional')
  d.connect(pool,config,kind='plain',label='Optional private_endpoint_settings / custom_encryption_key',exit=(0,.5),entry=(0,.5),waypoints=[(45,360),(45,922.5)],label_offset=(250,0))
  d.text('Three declarations: optional pool plus two mutually exclusive stream branches.\nNo producer, consumer, source data, topic ingestion worker, IAM grant or\npacket path is created. Existing pool override affects stream placement only;\na separately enabled new pool can still be created and remain unused.',1350,690,1000,150,parent=r,size=17)
- return finish(d,'DEFAULT RESULT: No resources; enable_streaming=false and streams empty. create_stream_pool=true is gated by enable_streaming.\nPool-bound and compartment-scoped stream declarations never create the same map entry together. Source partitions/retention are per stream.\nPlain lines show configured IDs only. Private endpoint settings are emitted only with an existing subnet ID; no VCN/subnet/NSG/route or KMS key is created.\nNo producer/consumer authentication, stream publish/read, private DNS, Kafka compatibility or runtime delivery was tested.')
+ return finish(d,'DEFAULT RESULT: No resources; enable_streaming=false and streams empty. create_stream_pool=true is gated by enable_streaming.\nPool-bound and compartment-scoped stream declarations never create the same map entry together. Source partitions/retention are per stream.\nPlain lines show configured IDs only. Private endpoint settings are emitted only with an existing subnet ID; no VCN/subnet/NSG/route or KMS key is created.')
 
 def waf(title,index):
  d,r=frame(title,index)
@@ -51,7 +50,7 @@ def waf(title,index):
  d.connect(firewall,old,kind='plain',label='Explicit policy ID / if supplied',exit=(.5,1),entry=(1,.5),waypoints=[(1220,790)])
  d.connect(firewall,lb,kind='plain',label='load_balancer_id / attachment association',straight=True)
  d.text('Attachment preconditions require both an existing Load Balancer ID and an effective policy ID.\nThe policy is configuration associated with the attachment, not a separate packet-forwarding hop.\nNo Internet ingress, request protection rule, logging, alarm or protected application traffic is inferred.',1000,650,1380,170,parent=r,size=19)
- return finish(d,'DEFAULT RESULT: No resources; both WAF flags false. Two resource declarations: optional policy and optional Load Balancer attachment.\nAn explicit existing policy ID wins even if policy creation is also enabled. The newly created policy can therefore remain unused.\nThe policy declaration has no rule blocks. Creation or association alone is not evidence of configured protection, origin reachability or blocked attacks.\nNo request, rule evaluation, false-positive assessment, TLS behavior, logging or live protection test was run.')
+ return finish(d,'DEFAULT RESULT: No resources; both WAF flags false. Two resource declarations: optional policy and optional Load Balancer attachment.\nAn explicit existing policy ID wins even if policy creation is also enabled. The newly created policy can therefore remain unused.\nThe policy declaration has no rule blocks. Creation or association alone is not evidence of configured protection, origin reachability or blocked attacks.')
 
 def containers(title,index):
  d,r=frame(title,index)
@@ -65,7 +64,7 @@ def containers(title,index):
  d.connect(ci,config,kind='plain',label='Image pull / DNS / volumes',exit=(1,.7),entry=(0,.5),waypoints=[(1050,455),(1050,700)],label_offset=(0,80))
  d.icon('Policies',2150,780,parent=r,size=55,label='Independent optional IAM policy / statements=[]\nRegional provider / policy compartment defaults to tenancy',label_pos='top')
  d.text('Availability domain input=null; fault domain optional. Enabling the instance requires at least one container definition.\nContainer image registry access, configured health checks and application ports remain operator/application responsibilities.\nNo resource-principal grants are inferred from a container flag or arbitrary policy statement list.',50,760,1850,110,parent=r,size=17)
- return finish(d,'DEFAULT RESULT: No resources; container instance disabled and IAM policy statements empty. Exactly two resource declarations.\nContainers, VNIC, volumes, DNS, health checks and image-pull settings are nested instance blocks, not independently managed cloud resources here.\nPrivate/public reachability depends on the existing subnet and rules. Resource-principal disabling defaults false per container; access still requires actual reviewed IAM.\nNo image pull, secret retrieval, container start, health probe, application request, persistence, scaling or runtime service readiness was tested.')
+ return finish(d,'DEFAULT RESULT: No resources; container instance disabled and IAM policy statements empty. Exactly two resource declarations.\nContainers, VNIC, volumes, DNS, health checks and image-pull settings are nested instance blocks, not independently managed cloud resources here.\nPrivate/public reachability depends on the existing subnet and rules. Resource-principal disabling defaults false per container; access still requires actual reviewed IAM.')
 
 def functions(title,index):
  d,r=frame(title,index,True)
@@ -86,7 +85,7 @@ def functions(title,index):
  d.connect(dep,gateway,kind='plain',label='local.gateway_id / created or supplied selection',exit=(.51315789,1),entry=(.5,0),straight=True)
  d.icon('Policies',450,1050,parent=r,size=50,label='Independent optional IAM policy / statements=[]\nHome provider / policy compartment defaults to tenancy',label_pos='top')
  d.text('Function creation uses supplied images; code builds/pushes remain external.\nNo target-service creation, caller auth policy, DNS or automatic image binding.\nTracing and result-destination delivery still need runtime verification.',40,600,850,100,parent=r,size=17)
- return finish(d,'DEFAULT RESULT: No resources; all creation/enable flags false, function/event/API-route maps empty and IAM statements empty. Seven declarations.\nCreated application/gateway selection requires both their enable and create flags; existing IDs are selected otherwise. No new settings are applied to existing services.\nAPI route actions and FAAS event actions are declared invocation intent. External function IDs need not select the created Function collection.\nRepository URL is an output/reference only, not the function image input. No public API exposure, caller authentication, image build/pull or successful invocation was tested.',True)
+ return finish(d,'DEFAULT RESULT: No resources; all creation/enable flags false, function/event/API-route maps empty and IAM statements empty. Seven declarations.\nCreated application/gateway selection requires both their enable and create flags; existing IDs are selected otherwise. No new settings are applied to existing services.\nAPI route actions and FAAS event actions are declared invocation intent. External function IDs need not select the created Function collection.\nRepository URL is an output/reference only, not the function image input.',True)
 
 def events(title,index):
  d,r=frame(title,index,True)
@@ -108,7 +107,7 @@ def events(title,index):
  d.connect(connector,bucket,label='objectStorage / default bucket + namespace (no overrides)',exit=(.5,1),entry=(1,.5),waypoints=[(1470,1250),(950,1250),(950,750)],label_offset=(150,60))
  d.icon('Policies',450,1050,parent=r,size=50,label='Independent optional IAM policy / statements=[]\nHome provider / policy compartment defaults to tenancy',label_pos='top')
  d.text('No Functions, source objects, publisher, consumer or retry worker.\nNo automatic bucket→Events match, stream DLQ or alarm subscription.\nKMS key IDs are references only. Namespace lookup is read-only and\nonly runs when create_archive_bucket=true.',40,800,850,165,parent=r,size=17)
- return finish(d,'DEFAULT RESULT: No resources; all create flags false and IAM statements empty. Eight resource declarations plus a gated namespace lookup.\nEach selected Events action requires matching conditions, service permissions and reachable targets. FAAS IDs, OSS stream IDs/keys and ONS topics are independently supplied.\nService Connector selects one target kind: objectStorage default, or supplied Function/stream/topic. Explicit target bucket/namespace override fallback values.\nThe bucket-name fallback can exist even when bucket creation is disabled; an existing bucket/namespace must actually exist. No object write, event delivery, stream processing, retry or alert was tested.',True)
+ return finish(d,'DEFAULT RESULT: No resources; all create flags false and IAM statements empty. Eight resource declarations plus a gated namespace lookup.\nEach selected Events action requires matching conditions, service permissions and reachable targets. FAAS IDs, OSS stream IDs/keys and ONS topics are independently supplied.\nService Connector selects one target kind: objectStorage default, or supplied Function/stream/topic. Explicit target bucket/namespace override fallback values.\nThe bucket-name fallback can exist even when bucket creation is disabled; an existing bucket/namespace must actually exist.',True)
 
 def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--render',action='store_true');p.add_argument('--blueprint',action='append',choices=[v[0] for v in ITEMS]);a=p.parse_args()

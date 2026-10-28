@@ -84,7 +84,6 @@ def build(index):
  placement=['Move a complete three-tier VM stack from onprem to OCVS in controlled waves','Example: web/API on AVS, database on OCVS; measure latency before accepting split tiers','Start onprem, pilot on AVS, final target OCVS; keep each active stack colocated'][index]
  workloads(d,width,1370,placement)
  d.box('DISABLED DEFAULTS / no cloud resources or network reads. Costs, offering/region, CIDRs, BGP, security, routes, MTU, DNS/NTP and licensing require review.\nOCI creates optional SDDC/DRG/attachment/partner VCs; existing VCN/subnets/VLANs, NSX routing and firewall policy remain external.\nAVS-to-Oracle Global Reach is a proposed pairing requiring vendor confirmation. A VNet gateway does not transit two circuits; onprem needs independent cloud legs.\nNo site pairing, guest VM, package, database, backup, replication or automatic failover is deployed. Complete source inventory and input pages accompany this overview.',20,1630,width,155,kind='note')
- d.text('Review 2026-10-28 / local schema, isolated mocked wrapper plans and Bicep compilation only. No paid activation, cloud deployment, HCX session, migration or application test.',20,1820,width,60,size=13)
  return d
 
 def main():

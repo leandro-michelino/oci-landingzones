@@ -75,7 +75,7 @@ def database(title,index,postgres=False):
   lines='enable_autonomous_database=false\nDefault workload OLTP; DW is operator choice\n2 ECPU / 1 TB / autoscaling enabled\nmTLS required / paid tier / License Included\nAdmin password defaults null\nExisting KMS key ID optional\nManual backup disabled by default\nOptional backup retention / long-term settings'
  d.text(lines,25,80,520,490,parent=panel,size=16)
  if postgres:
-  footer(d,'DEFAULT RESULT: No resources; DB system and network flags are false, policy_statements=[].\nOptional IAM policy uses home-region provider; policy compartment defaults to tenancy root. No Vault/secret is created.\nRequested size/version/storage settings are source defaults, not quota, availability or compatibility validation. No PostgreSQL traffic or restore was tested.')
+  footer(d,'DEFAULT RESULT: No resources; DB system and network flags are false, policy_statements=[].\nOptional IAM policy uses home-region provider; policy compartment defaults to tenancy root. No Vault/secret is created.\nRequested size/version/storage settings are source defaults, not quota, availability or compatibility validation.')
  else:
   footer(d,'DEFAULT RESULT: No resources; database, private network and manual backup flags are false.\nThe private topology shown requires an existing subnet or the optional network. Enabling only the database does not establish a private endpoint.\nOnly one workload is selected per database (OLTP default, or DW); no simultaneous ATP/ADW pair, replicas, Vault, clients or access path is created.')
  return d
@@ -132,7 +132,7 @@ def apex(title,index):
  d.icon('Vault',90,85,parent=sec,size=45,label='',label_pos='top')
  d.text('Existing Vault + key required for optional secret creation.\nAlternatively reuse admin_secret_id. No Vault/key is created.',200,45,840,75,parent=sec,size=14)
  d.text('FQDN is an input for URL output only; no DNS record is created.\nExisting network must permit LB-to-ORDS traffic. External certificates\nand endpoint reachability remain operator prerequisites.',1330,640,1040,145,parent=reg,size=16)
- footer(d,'DEFAULT RESULT: No created resources; load balancer and admin secret flags are false and ADB ID is null.\nThis blueprint adds ingress and secret support to an existing ADB. It does not create ADW/ATP, APEX workspace, users or application deployment.\nListener, backend set, backends and secret are explicitly enumerated in resource-detail pages. No health probe, TLS session or APEX login was tested.')
+ footer(d,'DEFAULT RESULT: No created resources; load balancer and admin secret flags are false and ADB ID is null.\nThis blueprint adds ingress and secret support to an existing ADB. It does not create ADW/ATP, APEX workspace, users or application deployment.\nListener, backend set, backends and secret are explicitly enumerated in resource-detail pages.')
  return d
 
 

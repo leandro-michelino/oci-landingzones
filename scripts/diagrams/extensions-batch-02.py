@@ -22,7 +22,7 @@ def frame(title,index,scope='OCI / selected region and compartment; tenancy fall
  d.text('Plain: ID/configuration association. Solid arrow: configured route intent. Dashed: external prerequisite. No line proves working traffic.',20,108,2460,30,size=13)
  r=d.group('region',scope,20,160,2460,900)
  return d,r
-def finish(d,text):return base.finish(d,text+'\nSource and rendered-diagram review: 2026-10-28. Historical Terraform/provider validation metadata is unchanged; no provisioning or runtime test was run.')
+def finish(d,text):return base.finish(d,text)
 
 def exadata(title,index):
  d,r=frame(title,index)
@@ -34,7 +34,7 @@ def exadata(title,index):
  d.box('Capacity inputs / all null by default\nshape / compute_count / storage_count\ndatabase_server_type / storage_server_type\nNo maintenance_window block is declared',60,520,1100,185,parent=r,kind='note')
  d.box('Downstream database stack / NOT CREATED\nVM clusters / DB homes / databases / backups\nVCN / client and backup subnets / NSGs / routes\nPrivate connectivity and operator access are external',1300,520,1080,185,parent=r,kind='note')
  d.text('One resource declaration. Infrastructure OCID is the output hand-off; no VM-cluster association or database traffic is configured.\nThe official Exadata service glyph identifies infrastructure capacity, not a deployed database system.',60,760,2320,90,parent=r,size=17)
- return finish(d,'DEFAULT RESULT: No resources; Exadata infrastructure is opt-in. Shape, placement, server types and capacity require operator review.\nLines show declared placement/contact configuration only. No maintenance policy, VM cluster, database, storage network or application connection is implied.\nNo capacity reservation, paid infrastructure, availability, backup, SQL connection or end-to-end database stack was tested.')
+ return finish(d,'DEFAULT RESULT: No resources; Exadata infrastructure is opt-in. Shape, placement, server types and capacity require operator review.\nLines show declared placement/contact configuration only. No maintenance policy, VM cluster, database, storage network or application connection is implied.')
 
 def apigw(title,index):
  d,r=frame(title,index)
@@ -62,7 +62,7 @@ def oac(title,index):
  net=d.box('Existing VCN + subnet + NSGs\nvcn_id=null / subnet_id=null / NSGs=[]\nNo network or DNS zone is created',1420,510,930,160,parent=r,kind='optional')
  d.connect(pac,net,kind='plain',label='vcn_id / subnet_id / network_security_group_ids',straight=True)
  d.text('The private access channel is a separate instance attachment using supplied network IDs.\nNo data source, data connection, dataset, workbook, agent, ingress endpoint or content migration is declared.\nemail_notification is an instance property; no notification subscription or delivery path is created.',60,750,2320,105,parent=r,size=18)
- return finish(d,'DEFAULT RESULT: No resources; both creation flags false. Two resource declarations, with optional existing-instance fallback.\nPrivate source DNS zone entries do not create OCI DNS zones or resolver rules. A private channel does not establish an application/data-source connection.\nNo Analytics UI access, private DNS, data source authentication, query, workbook, encryption entitlement or cloud deployment was tested.')
+ return finish(d,'DEFAULT RESULT: No resources; both creation flags false. Two resource declarations, with optional existing-instance fallback.\nPrivate source DNS zone entries do not create OCI DNS zones or resolver rules. A private channel does not establish an application/data-source connection.')
 
 def oic(title,index):
  d,r=frame(title,index)
@@ -74,7 +74,7 @@ def oic(title,index):
  net=d.box('Existing outbound subnet + NSGs\noutbound_subnet_id=null / outbound_nsg_ids=[]\nNo network, NSG rules, routes or DNS created',1420,510,930,160,parent=r,kind='optional')
  d.connect(outbound,net,kind='plain',label='subnet_id / nsg_ids',straight=True)
  d.text('File server, Visual Builder and disaster recovery flags default to false; consumption model, shape and retention inputs are null.\nNo integration flow, adapter connection, hospital/FHIR endpoint, messaging target or credentials are deployed.\nPrivate outbound attachment is an ID association; actual target access and return routing require separate implementation.',60,745,2320,110,parent=r,size=17)
- return finish(d,'DEFAULT RESULT: No resources; both creation flags false. Exactly two optional resource declarations.\nThe instance type is a source selection, not a deployment or service-availability check. No DR topology or replication is inferred from a feature flag.\nNo adapter invocation, private DNS, target connection, inbound access, file transfer, Visual Builder application or runtime integration was tested.')
+ return finish(d,'DEFAULT RESULT: No resources; both creation flags false. Exactly two optional resource declarations.\nThe instance type is a source selection, not a deployment or service-availability check. No DR topology or replication is inferred from a feature flag.')
 
 def observability(title,index):
  d,r=frame(title,index,'OCI / selected region; tenancy-root namespace onboarding + compartment-scoped services')
@@ -86,7 +86,7 @@ def observability(title,index):
  net=d.box('Existing VCN + subnet + NSGs\nvcn_id=null / subnet_id=null / nsg_ids=[]\nNo network or database onboarding created',1260,690,1100,120,parent=r,kind='optional')
  d.connect(pe,net,kind='plain',label='vcn_id / subnet_id / nsg_ids',exit=(.5,1),entry=(.4,0),straight=True)
  d.text('APM is independent of Log Analytics and OPSI.\nNo service connector, trace/log ingestion, agent,\ndashboard, alarm, subscription or notification\nis declared. No automatic telemetry lines are inferred.',60,690,1050,140,parent=r,size=18)
- return finish(d,'DEFAULT RESULT: No resources; all four service flags false. Namespace onboarding is tenancy-root scope and requires separate review.\nLog group namespace is the optional created namespace string or supplied value; the line is a configuration association, not log delivery.\nOperations Insights endpoint selects existing network IDs. No database onboarding, collector, telemetry ingestion, alert delivery or runtime private access was tested.')
+ return finish(d,'DEFAULT RESULT: No resources; all four service flags false. Namespace onboarding is tenancy-root scope and requires separate review.\nLog group namespace is the optional created namespace string or supplied value; the line is a configuration association, not log delivery.\nOperations Insights endpoint selects existing network IDs.')
 
 def main():
  parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--render',action='store_true');parser.add_argument('--blueprint',action='append',choices=[i[0] for i in ITEMS]);args=parser.parse_args()

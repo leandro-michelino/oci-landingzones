@@ -121,7 +121,6 @@ def build(title, variant, index, fortigate=False, scope_note=None, subtitle=None
         'nva': 'OPTIONAL APPLIANCES: enable_net_appliance=false; enable_reserved_route_ips=false; appliance/route-IP maps are empty.\nImage, availability domain, subnet and route-target inputs are required. The blueprint does not force hub placement or establish HA / guest forwarding.',
     }
     d.box(scope_note or notes[variant], 20, 1300, 1680, 95, kind='note' if variant=='base' else 'optional')
-    d.text('All CIDRs shown are blueprint defaults, not discovered live networks. Subnet badges denote route-table / security-list associations.\nSolid arrows show configured routes or an explicitly optional link; plain lines show associations / attachments. Baseline ingress is empty; egress allows all.\nReview: 2026-10-28 against blueprint/module sources. No new OCI provisioning, provider validation, packet-flow or failover test.', 20, 1420, 1680, 70, size=12)
     return d
 
 

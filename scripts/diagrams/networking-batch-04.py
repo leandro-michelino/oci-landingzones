@@ -58,7 +58,6 @@ def dual(title,index):
     regional(d,1200,'Secondary region / eu-amsterdam-1 default')
     d.box('NO INTER-REGION LINK IS DECLARED\nTwo separate hub/spoke foundations and regional DRGs. No RPC, replication, application failover or DR orchestration is created.',20,1020,2280,110,kind='note')
     d.box('ADDRESSING / DEFAULTS\nBoth module calls inherit the same hub 10.0.0.0/16 and spoke 10.1.0.0/16 CIDRs. Do not infer routable inter-region connectivity.\nThe wrapper does not expose network CIDR overrides; connected designs require a reviewed addressing/configuration change.',20,1180,2280,110,kind='note')
-    d.text('CIDRs and secondary region are source defaults, not live inventory. Primary and secondary compartment values are supplied / inherited.\nSolid-free attachment lines are topology associations only. Routing descriptions do not prove packet flow. Review: 2026-10-28; no new OCI validation.',20,1330,2280,65,size=12)
     return d
 
 
@@ -119,7 +118,6 @@ def crosscloud(title,index,cloud):
         d.box('AZURE CONTRACTS / metadata, not deployed DNS or failover\nBGP ASN/timers, path weights, corp.internal DNS and the 120-second failover target are input/runbook data.\nThe OCI root declares static IPSec routes; it does not configure tunnel BGP settings or a failover controller.',20,1270,2340,130,kind='note')
     else:
         d.box('AWS / OCI ROUTING LIMIT\nThe two cloud templates are separate deployments, not an automatically paired VPN.\nPeer addressing, tunnel parameters, route exchange and cloud-specific routing must be reconciled before packet tests.',20,1270,2340,130,kind='note')
-    d.text('Defaults are source examples, not live inventory or approved costs. External-cloud cards use provider-native icons; unmapped associations retain explicit labels.\nSolid arrows are requested/configured route or VPN intent, not verified traffic. Detail scope: root Terraform + separate CloudFormation/Bicep template.\nReview: 2026-10-28. No provisioning, new provider validation, packet-flow, BGP or failover test.',20,1440,2340,75,size=12)
     return d
 
 

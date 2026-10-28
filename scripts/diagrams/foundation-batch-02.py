@@ -30,7 +30,6 @@ def header(title,index):
 
 def footer(d,text,y=1170):
     d.box(text,20,y,2360,130,kind='note')
-    d.text('Arrows show configuration dependencies / IAM bindings, not application traffic or proven isolation.\nSource review: 2026-10-28. No cloud provisioning, provider revalidation, login/permission test or compliance certification.\nRegions, parent compartments and names are supplied or derived from inputs. Historical validation metadata is unchanged.',20,y+165,2360,80,size=12)
 
 
 def domains(title,index):

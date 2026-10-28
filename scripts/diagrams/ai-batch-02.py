@@ -32,7 +32,7 @@ def gateway(title,index):
  d.icon('OCI Object Storage',240,780,parent=reg,size=55,label='Optional private audit bucket\nStandard / versioned / events enabled',label_pos='top')
  d.icon('Logging',1720,780,parent=reg,size=55,label='Optional log group\nNo log resource, source binding or log sink declared',label_pos='top')
  d.icon('Policies',2210,780,parent=reg,size=50,label='Optional IAM policy\nHome provider / statements=[]',label_pos='top')
- footer(d,'DEFAULT RESULT: No cloud resources. Gateway, deployment, usage plans, audit bucket and log group creation flags are false; policy statements empty.\nGateway/deployment IDs can reuse existing resources. Creating a private gateway does not create a private network or a working client/backend path.\nNo subscriber/API-key bootstrap, authentication policy, OCI request signing, AI payload translation or dynamic model selection is implemented.\nAudit bucket and log group are independent optional containers; there is no automatic request logging or object writer. No inference or quota behavior was tested.')
+ footer(d,'DEFAULT RESULT: No cloud resources. Gateway, deployment, usage plans, audit bucket and log group creation flags are false; policy statements empty.\nGateway/deployment IDs can reuse existing resources. Creating a private gateway does not create a private network or a working client/backend path.\nNo subscriber/API-key bootstrap, authentication policy, OCI request signing, AI payload translation or dynamic model selection is implemented.\nAudit bucket and log group are independent optional containers; there is no automatic request logging or object writer.')
  return d
 
 def azure(title,index):
@@ -65,7 +65,7 @@ def azure(title,index):
  d.connect(adapter,account,kind='dashed',label='External authenticated inference',exit=(.5,0),entry=(.5,1),waypoints=[(1855,720),(2250,720)])
  d.connect(account,model,kind='plain',label='Parent account',exit=(1,.5),entry=(1,.5),waypoints=[(2450,640),(2450,865)])
  d.connect(dep,adapter,kind='dashed',label='Azure backend URL / external adapter',label_offset=(125,150),exit=(.5,1),entry=(0,.5),waypoints=[(780,560),(1240,560),(1240,855)])
- footer(d,'DEFAULT INPUTS ARE INCOMPLETE: OCI network/gateway/deployment/bucket/log group enabled, but both provider inference URLs and circuit IDs are null.\nInterconnect mode requires existing FastConnect + ExpressRoute IDs; no circuits/DRG/private peering are created here. HTTP routes do not establish private transport.\nRegion/cost/residency routes use operator-selected static provider mappings (OCI/Azure/OCI defaults); no real-time pricing, geolocation or residency enforcement.\nFour local contracts record network/connectivity/routing/Azure outputs. Usage plans disabled; IAM statements empty. No authentication adapter, inference or cross-cloud traffic was verified.')
+ footer(d,'DEFAULT INPUTS ARE INCOMPLETE: OCI network/gateway/deployment/bucket/log group enabled, but both provider inference URLs and circuit IDs are null.\nInterconnect mode requires existing FastConnect + ExpressRoute IDs; no circuits/DRG/private peering are created here. HTTP routes do not establish private transport.\nRegion/cost/residency routes use operator-selected static provider mappings (OCI/Azure/OCI defaults); no real-time pricing, geolocation or residency enforcement.\nFour local contracts record network/connectivity/routing/Azure outputs. Usage plans disabled; IAM statements empty.')
  return d
 
 def tuning(title,index):
@@ -86,7 +86,7 @@ def tuning(title,index):
  d.connect(base_model,model,kind='plain',label='base_model_id',exit=(.5,0),entry=(1,.8),waypoints=[(1390,705),(1980,705),(1980,480),(1475,480),(1475,441)])
  d.connect(hosting,endpoint,kind='plain',label='hosting cluster reference',exit=(.5,0),entry=(.5,1),straight=True)
  d.text('Optional existing generative_ai_private_endpoint_id can attach the inference endpoint.\nIts null default does not establish private transport; this blueprint creates no private endpoint or subnet.\nOptional IAM policy uses the home provider; policy compartment defaults to tenancy root.',50,785,2300,95,parent=reg,size=16)
- footer(d,'DEFAULT RESULT: No cloud resources; all creation flags false and policy statements empty.\nA FINE_TUNING cluster must not be reused for inference hosting. Supplying a HOSTING cluster enables the separate endpoint path.\nModel creation references the dataset object but does not upload/curate training data. Base model/shape availability, compatibility and training completion were not tested.\nNo inference call, private access, quality evaluation or production readiness is verified by this diagram.')
+ footer(d,'DEFAULT RESULT: No cloud resources; all creation flags false and policy statements empty.\nA FINE_TUNING cluster must not be reused for inference hosting. Supplying a HOSTING cluster enables the separate endpoint path.\nModel creation references the dataset object but does not upload/curate training data.\nNo inference call, private access, quality evaluation or production readiness is verified by this diagram.')
  return d
 
 def guardrails(title,index):
@@ -106,7 +106,7 @@ def guardrails(title,index):
  topic=d.box('Existing notification destination IDs\nPer-alarm destinations override\nnotification_topic_id fallback (null)',1900,650,480,120,parent=reg,kind='optional')
  d.connect(alarm,topic,kind='plain',label='Alarm destinations',straight=True)
  d.text('Optional IAM policy and existing KMS key references remain separately supplied.\nNo application logger, PII processor, policy enforcement code or token metric emitter is created.',50,820,2300,65,parent=reg,size=15)
- footer(d,'DEFAULT RESULT: No resources. Creation flags false; alarms={} and policy_statements=[].\nCreating a log group does not wire a producer or automatically set connector_source_log_group_id; the source ID is an explicit prerequisite.\nObject Storage targets can use the created bucket/namespace or explicit overrides. Streaming is an alternative, not a second simultaneous sink.\nThe Cloud Guard recipe is a configurable placeholder, not an implemented PII/GenAI detector. No redaction, safety filtering, token metering or notification delivery was tested.')
+ footer(d,'DEFAULT RESULT: No resources. Creation flags false; alarms={} and policy_statements=[].\nCreating a log group does not wire a producer or automatically set connector_source_log_group_id; the source ID is an explicit prerequisite.\nObject Storage targets can use the created bucket/namespace or explicit overrides. Streaming is an alternative, not a second simultaneous sink.\nThe Cloud Guard recipe is a configurable placeholder, not an implemented PII/GenAI detector.')
  return d
 
 def document(title,index):
@@ -125,7 +125,7 @@ def document(title,index):
  d.connect(handler,failed,kind='dashed',label='External failure writes',exit=(.8,1),entry=(1,.5),waypoints=[(1670,650),(2450,650),(2450,800)])
  d.text('create_buckets=false gates a map with intake / output / failed buckets.\nAll private / Standard / versioned / events enabled; optional existing KMS key.\nNo objects, event condition, Function application, job or retry/dead-letter worker is created.',50,460,1250,130,parent=reg,size=16)
  d.icon('Policies',280,780,parent=reg,size=55,label='Optional IAM policy / statements=[]\nHome provider; policy compartment defaults tenancy root',label_pos='top')
- footer(d,'DEFAULT RESULT: No cloud resources. Bucket, Document project and event-rule creation flags false; policy statements empty.\nObject events being enabled does not bind the event condition to the intake bucket. The operator must scope and validate event_rule_condition and supply the function ID.\nHandler → OCR → output/failure lines describe external code that this blueprint does not deploy. No OCR, GenAI enrichment, retries, schema extraction or data processing was executed.\nThe blueprint does not declare any GenAI model/endpoint or private network. Runtime processing and service access require separate implementation and testing.')
+ footer(d,'DEFAULT RESULT: No cloud resources. Bucket, Document project and event-rule creation flags false; policy statements empty.\nObject events being enabled does not bind the event condition to the intake bucket. The operator must scope and validate event_rule_condition and supply the function ID.\nHandler → OCR → output/failure lines describe external code that this blueprint does not deploy.\nThe blueprint does not declare any GenAI model/endpoint or private network. Runtime processing and service access require separate implementation and testing.')
  return d
 
 def main():

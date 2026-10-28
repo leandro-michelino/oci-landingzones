@@ -37,7 +37,7 @@ def build():
  services=d.icon('Oracle Services Network',160,95,parent=osn,size=56,label='Supported regional services',label_pos='bottom')
  d.connect(sg,services,exit=(.5,1),entry=(0,.5),waypoints=[(1420,1090),(2160,1090),(2160,895)])
  d.text('Illustrative route and security intent only. NSGs, route tables, return paths, DNS, TLS certificates and availability placement require design and configuration.\nDatabase traffic uses the private endpoint; the Service Gateway path reaches regional Oracle services. NAT has no inbound client path.',360,1140,2100,65,size=14)
- d.box('CONCEPTUAL SCOPE: Solid arrows show proposed request / outbound paths, not Terraform-created bindings or working sessions.\nNo cloud resources, runtime connectivity or failover were validated. Example CIDRs are not inventory.\nEditable draw.io and PNG regenerated with official OCI Toolkit v24.2 on 2026-10-28.',20,1220,2500,140,kind='note')
+ d.box('CONCEPTUAL SCOPE: Solid arrows show proposed request / outbound paths, not Terraform-created bindings or working sessions.',20,1220,2500,140,kind='note')
  return d
 if __name__=='__main__':
  d=build();assert not d.check(),d.check()

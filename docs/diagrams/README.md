@@ -823,3 +823,18 @@ This adds **104 declarations**, **30 reference inputs/collections**, **17 review
 Both cloud sides and the pinned module declarations are covered, including the separate GCP roots whose Terraform entry is `infrastructure.tf`. GCP resource/input namespaces prevent collisions with identically named OCI root contracts. Six inventory regression tests passed. All ten new roots passed schema validation and 30 mocked plans; the shared GCP network module passed four additional mocked plans. All 30 Ansible runners passed syntax checks. The five overviews and 20 companion PNGs were visually inspected.
 
 Partner Interconnect and HA VPN use distinct routers/ASNs, with staged four-tunnel endpoint and key handoff. DR data transfer, application recovery, MySQL replication, cutover and inference-adapter identity remain external where explicitly stated in source. Default cloud creation is disabled. See the [validation and operational limits](../multicloud/GCP-COUNTERPARTS-20261028.md). No live provisioning, traffic, replication, failover or workload acceptance is claimed.
+
+## Diagram Presentation Cleanup - 2026-10-28
+
+Generic source-review dates, validation summaries and process disclaimers were removed from the exported overviews and companion resource/input pages. Architecture-specific defaults, connector legends, conditional creation gates, existing-resource lookups and external prerequisites remain part of the technical view. Validation evidence belongs in repository reports.
+
+The authoring generators and repository instructions now retain this presentation convention. `regenerate-all.py` rebuilds every registered overview, composes the resource/input pages and can export paired PNGs sequentially in one draw.io batch:
+
+```bash
+python3 scripts/diagrams/regenerate-all.py --render
+python3 scripts/diagrams/check-connections.py --write-report
+python3 scripts/diagrams/multicloud-resource-coverage.py --check
+python3 scripts/diagrams/multicloud-resource-coverage.py --first-39 --check
+```
+
+For overview-only PNG refreshes, add `--overviews-only`; native resource/input composition is still rebuilt. This presentation change preserves the existing resource inventories and reviewed connector contract. Catalog coverage remains 93 blueprint overviews plus one conceptual view, with 348 native documents/PNGs and 732 reviewed connectors.

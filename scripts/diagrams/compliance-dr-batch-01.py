@@ -30,7 +30,6 @@ def header(title,index):
 
 def footer(d,text,y=1200):
  d.box(text,20,y,2460,135,kind='note')
- d.text('Source review: 2026-10-28. No cloud provisioning, provider revalidation, compliance certification, packet test or recovery drill.\nPlacement values are source defaults or marked operator inputs. Arrows are configuration relationships / stated route intent, not verified runtime behavior.',20,y+170,2460,65,size=12)
 
 
 def zero(title,index):

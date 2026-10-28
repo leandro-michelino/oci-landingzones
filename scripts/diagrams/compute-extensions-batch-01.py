@@ -39,7 +39,7 @@ def desktops(title,index):
  d.connect(alarms,dest,kind='plain',label='destinations / explicit IDs',exit=(.5,1),entry=(.24285714,0),straight=True)
  d.icon('Policies',260,790,parent=r,size=50,label='Optional IAM policy / statements=[]\nHome provider / policy compartment fallback tenancy',label_pos='top')
  d.text('Pool configuration: display/keyboard/pointer on; audio, clipboard, drives, printing and video off.\nStart/stop schedules null; session lifecycle actions false with disconnect/inactivity inputs null.\nUser onboarding, identity groups, access transport and application targets remain external.',600,735,1000,110,parent=r,size=15)
- return base.finish(d,'DEFAULT RESULT: No cloud resources; pool disabled, alarms empty and policy statements empty. Image, network, AD and backup-policy selections are operator inputs.\nPrivate-access details are pool configuration, not a created VCN, subnet, NSG, VPN or standalone endpoint. No user-to-desktop or application data path is invented.\nAn existing desktop_pool_id is only an output/reference fallback; this code does not attach new policies or configuration to an existing pool.\nNo desktop session, client reachability, BYOL entitlement, backup/restore, alarm delivery or cloud deployment was tested. Historical provider validation is unchanged.')
+ return base.finish(d,'DEFAULT RESULT: No cloud resources; pool disabled, alarms empty and policy statements empty. Image, network, AD and backup-policy selections are operator inputs.\nPrivate-access details are pool configuration, not a created VCN, subnet, NSG, VPN or standalone endpoint. No user-to-desktop or application data path is invented.\nAn existing desktop_pool_id is only an output/reference fallback; this code does not attach new policies or configuration to an existing pool.\nHistorical provider validation is unchanged.')
 
 def oke(title,index):
  d=header(title,index)
@@ -64,7 +64,7 @@ def mesh(title,index):
  d.connect(addon,cluster,kind='plain',label='cluster_id',straight=True)
  apm=d.icon('Application Performance Monitoring',380,680,parent=r,size=70,label='Optional APM domain / enable_apm_domain=false\nis_free_tier=true',label_pos='top')
  d.text('Independent resource: no add-on-to-APM binding, agent injection, exporter,\ningestion key or tracing endpoint configuration is declared. The operator must\nconfigure tracing separately; no automatic telemetry connector is drawn.',850,585,1450,160,parent=r,size=19)
- return base.finish(d,'DEFAULT RESULT: No resources; both flags false. Exactly two declarations: oci_containerengine_addon.service_mesh and oci_apm_apm_domain.tracing.\nThe ServiceMesh add-on name is a source default, not a verified supported add-on/version for a particular cluster or region. No mesh-policy resources are created.\nNo cluster, network, proxies, application manifests, virtual services/deployments, mTLS policy, traffic routing or tracing exporter is declared here.\nThe add-on ID association is configuration only. No installation, service-to-service traffic, mTLS, tracing or cloud deployment was tested.')
+ return base.finish(d,'DEFAULT RESULT: No resources; both flags false. Exactly two declarations: oci_containerengine_addon.service_mesh and oci_apm_apm_domain.tracing.\nThe ServiceMesh add-on name is a source default, not a verified supported add-on/version for a particular cluster or region. No mesh-policy resources are created.\nNo cluster, network, proxies, application manifests, virtual services/deployments, mTLS policy, traffic routing or tracing exporter is declared here.\nThe add-on ID association is configuration only.')
 
 def primary(d):
  r=d.group('region','OCI primary / selected region and compartment; tenancy fallback',20,160,1420,1120)
@@ -153,8 +153,7 @@ def multicloud(title,index,azure_side):
  d=header(title,index,True);vc=primary(d);other=azure(d) if azure_side else aws(d)
  d.connect(vc,other,kind='dashed',label='EXTERNAL partner Interconnect / supplied circuit IDs only; edge gateways, peering and routes not created',exit=(1,.95),entry=(0,.95),straight=True,label_offset=(0,65))
  dns(d,'Azure' if azure_side else 'AWS')
- d.box('SOURCE DEFAULTS ARE INCOMPLETE: OCI network enabled, OKE/node flags false, real Traffic Management false; circuit/secondary/application IDs null.\nIPSec backup is explicitly forbidden by this pattern. Companion Azure/AWS templates deploy separately and do not establish the intercloud path.\nNo workloads, GitOps controller, cluster autoscaling, application LB, data replication or working recovery path is delivered by the OCI contracts.\nAll conditional OCI/cloud declarations and metadata contracts are enumerated in native companion pages; no provisioning or failover was tested.',20,1840,2940,140,kind='note')
- d.text('Source / rendered-diagram review: 2026-10-28. Historical Terraform/provider and earlier live-test evidence remain unchanged. No cloud operations were run in this diagram batch.',20,2020,2940,45,size=13)
+ d.box('SOURCE DEFAULTS ARE INCOMPLETE: OCI network enabled, OKE/node flags false, real Traffic Management false; circuit/secondary/application IDs null.\nIPSec backup is explicitly forbidden by this pattern. Companion Azure/AWS templates deploy separately and do not establish the intercloud path.\nNo workloads, GitOps controller, cluster autoscaling, application LB, data replication or working recovery path is delivered by the OCI contracts.',20,1840,2940,140,kind='note')
  return d
 
 def aks(title,index):return multicloud(title,index,True)

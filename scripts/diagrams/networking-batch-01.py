@@ -86,7 +86,6 @@ def network(slug, title, prefix, ports, index):
         scope = 'WORKLOAD HAND-OFF\nNo compute, load balancer or database is created. App/database ingress is empty.\nTier-to-tier application permissions must be configured separately.'
     d.box(scope, 20, 875, 1700, 95, kind='optional' if index in (2,3,4) else 'note')
     security = 'Baseline egress: VCN CIDR + TCP 443 to regional OSN.' if private else 'All subnet security lists allow outbound traffic by default.'
-    d.text(f'{security} Subnet badges denote associated route tables and security lists.\nLines show configured routing / associations, not verified packet flows. Review: 2026-10-28; no new OCI apply or runtime validation.\nSources: blueprint main.tf, variables.tf and the referenced spoke-vcn module. CIDRs are defaults, not a discovered live network.', 20, 995, 1700, 70, size=12)
     return d
 
 
@@ -113,7 +112,6 @@ def external(title, index):
     downstream = d.box('Downstream deployment / separate operator wiring\nConsumes exported identifiers without adopting the existing resource lifecycle', 520, 790, 900, 100, kind='thirdparty_component')
     d.connect(outputs, downstream, kind='dashed', exit=(.5,1), entry=(.9,0), waypoints=[(1475,750),(1330,750)])
     d.box('OWNERSHIP BOUNDARY\nNo OCI resources or network data-source lookups are declared here. No creation, import, adoption or modification.\nExisting IDs, region, compartment, routes and security must be verified independently.', 20, 930, 1700, 90, kind='note')
-    d.text('Dashed arrows represent identifier flow, not network traffic. Source: main.tf, variables.tf and outputs.tf.\nReview: 2026-10-28. No new OCI deployment, inventory verification or packet-flow test.', 20, 1040, 1700, 50, size=12)
     return d
 
 

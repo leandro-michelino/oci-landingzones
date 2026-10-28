@@ -21,126 +21,126 @@
       "blueprint": "networking/standalone-three-tier-vcn-defaults",
       "connections": 9,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "6d91e9b62f71fbff2148b89b1540299ed989bd4c279ba42c2e7cc83b73d5149d",
+      "overview_png_sha256": "11548258cb719eee4671399304a1647d2df39c5501241543d6ef2bf210001960",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/standalone-three-tier-vcn-custom",
       "connections": 9,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "fc4c4f6b54bc685eb5a4364112af41b019242ed0ec730ac43a136b811ef47d85",
+      "overview_png_sha256": "5075e6ace385a8ee5b5214e23ec1ef183b0e4be8d23b332b1ca5a9ac5e92c1f8",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/standalone-three-tier-vcn-zpr",
       "connections": 9,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "3fc352341fce75ed1d03b8fd74e407fba3dfc1dc1f6be70cec5aa4c5c1c2b4fa",
+      "overview_png_sha256": "271f6c218d9c8a0bf67f49ea533f9fdb99cc7baf8ddd5caa92141c26ed521a10",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/standalone-private-endpoint-only",
       "connections": 5,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "f71324c177ac03e309033a324a247406fe149d85fea4c3f43de71cbb814971d6",
+      "overview_png_sha256": "60885e5980953666e05bde28bc0a936ba22da223520734f53c81ce4396b23c6a",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/externally-managed-vcns",
       "connections": 3,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "50c6e5c7ec9986eff9e54440503c09c6a66f003e6f89de8a9cd3dc55a62258a6",
+      "overview_png_sha256": "baa543b7a6823ae53756e9e998e386f4ca47ff7378fe4e61caf989c1362fab5b",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/hub-spoke-with-drg-and-three-tier-vcns",
       "connections": 17,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "3d7fc132207a1ec7d8b527ef95e0e241ab9d75cfc1d2bef74a59c66f45c33df1",
+      "overview_png_sha256": "b7f23c33557083ee151cf9968db1df9fcc06e94956affa3fecb46e42cdb8b27f",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/hub-spoke-with-hub-vcn-ipsec-vpn",
       "connections": 18,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "603302e40b039b62b2526f9bc36275d732beb49e4f0996d41bb1dc7d55bf2a64",
+      "overview_png_sha256": "d15a42a6060f8ddbe3a4536320e6c5bec44014768aa5b8508d98d22b64c022d0",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/hub-spoke-with-hub-vcn-fastconnect-vc",
       "connections": 18,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "b7c8a2b1e83d3156d580a45d0ecc54a8411e80e61831166cd2cca21e742e3ed5",
+      "overview_png_sha256": "d68902230754ae5b209affdf2131dfcbed75858a42a29cb8fbd378bc30fda428",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/hub-spoke-with-hub-vcn-net-firewall",
       "connections": 17,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "9470dbe546b97060197e0e5e26fb2ddf02108a59862be2b417926d606fbf1e82",
+      "overview_png_sha256": "ee13fb3e2192ccdf2926b1c9946de7e35029e075a401f23d3b5e18e0759f778e",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/hub-spoke-with-hub-vcn-net-appliance",
       "connections": 17,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "e71a3ccff381f8d3cf9b27184b88abbd8f1c7c9d532222084bc92279757c60ee",
+      "overview_png_sha256": "a87043e3d0d4d243e6800f6b0fb34ccc7f4fa3366be6d8c2c7d3262261789506",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/hub-spoke-with-fortigate-ha",
       "connections": 18,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "57ce6704569aa928623dd5942c09104fb6bff8b56b5b7b0c6683463d198eef7b",
+      "overview_png_sha256": "514b99b3fdaf701946676683069ab72d2e55a6d060c2debee00663807b7b0fb0",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/hub-spoke-with-hub-vcn-bastion-jump-host",
       "connections": 17,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "9187d0afc3fedc7bc556b3e944c978f56e1d5e66e1c2aea48d77c571bbfe0158",
+      "overview_png_sha256": "f7bbf78651d579f0ae08b7bd8197243bd5345b95f468bf8417b2e5dbec75ed67",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/hub-spoke-with-transit-routing-nva-ha",
       "connections": 17,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "550c86b1dd0e2c19eff56cc6cb626889fbe4c4521214a97b4255cad48e429826",
+      "overview_png_sha256": "8599f44575490954e57adac628b81b5bb0421465aabc6319c8d5ce8a1705dbb5",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/hub-spoke-with-private-dns-split-horizon",
       "connections": 20,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "5b7e4f5983ab33cefcdc7bb2cfdd833b4faeeee0e2b15b2788ccf707cf04f349",
+      "overview_png_sha256": "41702c98e7e696e1b587ddf6ddd6754b31dcb2acf3e6b42d865845f5f4c5f497",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/hub-spoke-with-zpr-micro-segmentation",
       "connections": 17,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "00757ccd6c5b36c197545b82bfa503eba2a21a53ad9484868970a1e460ae9fda",
+      "overview_png_sha256": "5f807257f0e246d171c765f9a3f71670be3fcf20afb2cb62565f91571eff6baa",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/hub-spoke-with-dual-region-dr",
       "connections": 26,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "d672939dc6776af11e122606339ebbee999d4689edd926e8b69b5720c3cd1eca",
+      "overview_png_sha256": "4ad3fd025365d3b4b94f828c923291aa6eb0e6babaa1da60783ff6bbe467b9e1",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/multi-tenancy-shared-services",
       "connections": 19,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "b297588443197dedc8f5417a61b8dbd11cde234f833a5833f4e8ef233c186cd1",
+      "overview_png_sha256": "c503a9e8f300a32915cf629c37f93464302ca616b39c253fb961643baf0041ad",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/hub-spoke-with-multicloud-interconnect",
       "connections": 19,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "a3277a90bea832a9e329948407f2aa94257c985d3224043379ca98b42673aaba",
+      "overview_png_sha256": "bb53bd90c7f1359a7d6e47a5629d6a00d4e4d87ad4cbd0fa77ca54f81efd7724",
       "layout_warnings": []
     },
     {
@@ -157,7 +157,7 @@
           ]
         }
       ],
-      "overview_png_sha256": "cc681a7a9e049debeef8dcdf583b74bc00a924086cca4d5b29edbc6053c1ff87",
+      "overview_png_sha256": "f77c2c896bf69269b0383281a4aa3fad1fec0d5cdf08e9056253cbf8cccb884e",
       "layout_warnings": []
     },
     {
@@ -174,7 +174,7 @@
           ]
         }
       ],
-      "overview_png_sha256": "647c0c21349ad8b033bb1f21dc56cf468ade0cdce608e5be67cd2fe9c7dfb1da",
+      "overview_png_sha256": "533b69670d20c7f4508e6a22a567d2c24ec0defd089fc1c068286990176f79d6",
       "layout_warnings": []
     },
     {
@@ -191,21 +191,21 @@
           ]
         }
       ],
-      "overview_png_sha256": "6ae5abb142bf8ebe62e2149c5e761e9d05f42dae1167454d3a946ce2593162e1",
+      "overview_png_sha256": "6c4bd5d34e7950f1702dcc266ebc667423ba721cf080ad2874e64210066de49e",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/regional-prod-nonprod-hubs",
       "connections": 26,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "f6cc3352f63c251da6e7d2c3ad09146ddf46b89d7ea058141477c6119a1fdb3d",
+      "overview_png_sha256": "028929b2d94852a3209a81cf06b0aee35a7219c3d825de7b155b889cdbd2644c",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/network-load-balancer",
       "connections": 2,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "5ebd74b2255381edebeac795008759f599a3cbb89b01549db6662781e2356dce",
+      "overview_png_sha256": "727390b5b38630a72340d588ae2cd79aa770e14e9e0936d507588b5cf1d3bdd2",
       "layout_warnings": []
     },
     {
@@ -214,7 +214,7 @@
       "cross_cloud_bridges": [
         {
           "source": "n5",
-          "target": "n182",
+          "target": "n181",
           "label": "Optional FastConnect / ExpressRoute: external key + peering",
           "clouds": [
             "OCI",
@@ -222,105 +222,105 @@
           ]
         }
       ],
-      "overview_png_sha256": "d998d587683b56b436876d7e78d65bf6fcf3f377fbb0d71b351758137d8c5147",
+      "overview_png_sha256": "7532124159f889096a2cbf2610e70aaa911c470a99531a0f7d2d8f59dab6f2c3",
       "layout_warnings": []
     },
     {
       "blueprint": "core",
       "connections": 1,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "020bc78475dd730f69fb5509b58ff5fcb4fec181cbc09cbfde26c8ce3e10f50e",
+      "overview_png_sha256": "62f45ab1e4a3b2ef6fbf616df8124e88ee94d83087dd951267b51025cd989d6c",
       "layout_warnings": []
     },
     {
       "blueprint": "cis/level1",
       "connections": 2,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "1c52e5a204950042383c7d7a8dee652232a9e034d78d366e45184fff0676a057",
+      "overview_png_sha256": "51d1e0f9a7c0a9114d935b8561ae5dc2dd05221f37170e9fccc291e80365a64a",
       "layout_warnings": []
     },
     {
       "blueprint": "cis/level2",
       "connections": 2,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "01900359d9bf5bcb2f2e7534ad7eb362c37282e2132909ecce56196a5efa931e",
+      "overview_png_sha256": "551120524992f49919350905f734763aa2b25860d967fa09bee5d396e4612b11",
       "layout_warnings": []
     },
     {
       "blueprint": "identity/cis-basic",
       "connections": 1,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "199a4737483f05ffb7a36afb1f7d6219a39146f088daf27d971d75bf07ebb2bf",
+      "overview_png_sha256": "d9b53fda4e7181f66c02002a08be1fe2e9fabe19086d150993a167fd80c9dc11",
       "layout_warnings": []
     },
     {
       "blueprint": "identity/new-identity-domain",
       "connections": 1,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "a43a0c8efd058a369dc30f1dfef7638e3ec4731a9c8716a14a725bc96429c85f",
+      "overview_png_sha256": "0b9e56de9d85eaace6d42a6d4d2a8dca0adf2668f4f4bad1a68ad5aac51143c5",
       "layout_warnings": []
     },
     {
       "blueprint": "identity/custom-identity-domain",
       "connections": 2,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "171011c967a51c407ce2fc1741c884926a9a352eb8518321b63e61cd6f2e14a6",
+      "overview_png_sha256": "c6168a1b0cd8784c010001c7f2f6286d56fb25ce76d5a72d2dd9d18c7f1c6800",
       "layout_warnings": []
     },
     {
       "blueprint": "operating-entity",
       "connections": 1,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "f3bb863a61504a1775fa114f3a3bf41c4e528ed71b0cbaae7ff5a024facd3ddf",
+      "overview_png_sha256": "7c3cd64a5ea0d8c9447a53add9feccbd0870e7e00986df6d62bced1fd9272d64",
       "layout_warnings": []
     },
     {
       "blueprint": "operating-entity/multi-operating-entities",
       "connections": 2,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "88b0c69e97120286f9fdeef53aabe5340ecf30fa651eaa88db6cfda6b2a67a71",
+      "overview_png_sha256": "cbc20b0bd6ca84c103184b1b5aa58d9cd03e75c4f6207ca66d1df76b779aea90",
       "layout_warnings": []
     },
     {
       "blueprint": "operating-entity/workload-vending",
       "connections": 1,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "f91d2628771b930ea2094aedc8ca295e0d7782e156131141b9caeb6a5aef07f0",
+      "overview_png_sha256": "ef244fb341356bf75c92a1525a2223c42bf8493146dbe028aee813f38afcc42d",
       "layout_warnings": []
     },
     {
       "blueprint": "compliance/scca-cloud-native",
       "connections": 17,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "ebebdabdbf738927c9e61593fe8833adf16bce04b7f7911e1474243b4bce7b43",
+      "overview_png_sha256": "41f903c0283b4fad2d32eb56de6d94e2eff654dadec6901eb56294f89f8d2bf1",
       "layout_warnings": []
     },
     {
       "blueprint": "compliance/zero-trust",
       "connections": 9,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "d964b12b039a38ef306fe7ba74707763128bc9cf6a46f99d8d888b6b6a122391",
+      "overview_png_sha256": "7ab8970672aeb48b45c3e4ee04b88ec374c1ac19c7865295959bae54f069cf8b",
       "layout_warnings": []
     },
     {
       "blueprint": "compliance/healthcare-pci",
       "connections": 1,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "eb9623c61fa3126cfcbe48fa509e923aa47c3c343c8be894b8c45cc86a2c50be",
+      "overview_png_sha256": "80d012d667fb8d1d12c3a0a5e397c2e65baf8d848f87eb108e122ce4c336f0d0",
       "layout_warnings": []
     },
     {
       "blueprint": "compliance/security-posture",
       "connections": 1,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "1b83bfc295178401d1ee11e3c453f28fe46465550bbf8d259fcc9cc156e9adc0",
+      "overview_png_sha256": "fec6846a21a07199d8e308b4fbdf07bcf7e3d5cab63eda96ceb02f7c8196c304",
       "layout_warnings": []
     },
     {
       "blueprint": "disaster-recovery/fsdr",
       "connections": 3,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "896c1e3b16cd0e9ba867ba47055dd452a952d96e43291a08802a62de1a7b11da",
+      "overview_png_sha256": "208e64e54e1be7668081001084817d9eb164a1e379d01a36bee5fe8d006a15c3",
       "layout_warnings": []
     },
     {
@@ -337,7 +337,7 @@
           ]
         }
       ],
-      "overview_png_sha256": "417c6df00ddde87dd2447143a1817c4d494b6cbf1c4fa047e1a0b524ce3ae1cf",
+      "overview_png_sha256": "a99af6dd06747f61b6be99edf8b41f60808acf20177fd76c1cee51bea7ef07c6",
       "layout_warnings": []
     },
     {
@@ -354,49 +354,49 @@
           ]
         }
       ],
-      "overview_png_sha256": "c4f95d7c07cccd5c5e4807b6103c4168d2cabb92288f250894d70f3a48091716",
+      "overview_png_sha256": "8a0f56997681524abce0813f7003bca1835fdfa56f32285ee3663850441c3146",
       "layout_warnings": []
     },
     {
       "blueprint": "data-platform/autonomous-database",
       "connections": 1,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "33b32e422efadcf76d2fc7a18d63877e5263bde9922beda95c26ef64166713a9",
+      "overview_png_sha256": "25f924486b4640d0a37146010ef08d9ff502d0f4747f21ed1b21cec69f657e3c",
       "layout_warnings": []
     },
     {
       "blueprint": "data-platform/private-data-platform",
       "connections": 7,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "ae4079eaf8d5b84421f434872e752372e9d2da9daab2ef873ce680f84ac54dc8",
+      "overview_png_sha256": "e696801e2f2c0d91e8c2df1d0a48e26e3dfd2fd76c8f479b34e11b3dc6753d3a",
       "layout_warnings": []
     },
     {
       "blueprint": "data-platform/postgresql",
       "connections": 1,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "3965ce193200a4e36c8cbe5dae4b3a7c137c21fb9dba22c4f1899b836d938d00",
+      "overview_png_sha256": "aa77c8a1b9cc6e52db471d5077b2cdbe70f788bcb8995a5ed2540b16ee4d0cc1",
       "layout_warnings": []
     },
     {
       "blueprint": "data-platform/apex-adw",
       "connections": 1,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "ab86eceb36d807a6d5be12e23e552f2d7cee474f3d5b4add4b6905a33a3b7e30",
+      "overview_png_sha256": "fef960b52d4b1233fd8b95061eb28a4ab85f0e1c5e177beff65389810fd542fd",
       "layout_warnings": []
     },
     {
       "blueprint": "data-platform/opensearch",
       "connections": 2,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "631aa63310312a498376a62284e30682dd5b580b3ea23b1e808d3a11c9831dab",
+      "overview_png_sha256": "68c296d86a5a1fc279631f2925c8fd3f04a0c22e6721d868c14ccf6c37744157",
       "layout_warnings": []
     },
     {
       "blueprint": "data-platform/mysql-heatwave",
       "connections": 3,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "a93ae9019483063fa32f54d12d3c9a5557f217c80d0eb4c469cf7d7b84c44399",
+      "overview_png_sha256": "2c5863df3f54781c4cb2406bd62c5856096a78c46df61f4529f44698967a8b03",
       "layout_warnings": []
     },
     {
@@ -422,28 +422,28 @@
           ]
         }
       ],
-      "overview_png_sha256": "7bf3cb8f0a2a02256b3a32a5edc1c3a7b5c9c185eac65c92b460707cb178ce85",
+      "overview_png_sha256": "9df3213e5b4f77066d680e2ea2f2f111e5be5c61fef50b88e0216db4028c17bf",
       "layout_warnings": []
     },
     {
       "blueprint": "ai/genai-private",
       "connections": 2,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "f971ce62533128ba18a4214f0dbf2237246ed758b376fe101cc619bd5bf2f77c",
+      "overview_png_sha256": "262ce041b92d5019701f4eee1c4de80fca639869cbd233824cca7d9380a75927",
       "layout_warnings": []
     },
     {
       "blueprint": "ai/ai-services",
       "connections": 6,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "1eb66d3f0b9256b3c55337fbd340119d9d0b09cd0b65bffa719f0137289cdd84",
+      "overview_png_sha256": "b207bf8daf0ce1be37494db2b35b865a629a59971675e63d256274e67593bf43",
       "layout_warnings": []
     },
     {
       "blueprint": "ai/genai-gateway",
       "connections": 3,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "254992242c8a5b0e97a64f942ba573bf8034f1e1f135868f4a7ea08e0546b55d",
+      "overview_png_sha256": "11ccde6c13633a1104c1528ca50f7e0006472d9ab7775dd1eabf10ec1cf6d857",
       "layout_warnings": []
     },
     {
@@ -460,77 +460,77 @@
           ]
         }
       ],
-      "overview_png_sha256": "52e194d0f9079fd221960bd63ce2f2baee931ff6003715c98ae805794ce183cc",
+      "overview_png_sha256": "12b7d7cecc0f5236d4a15be794d1e2bde248b0c0e67af121ce841cb2ce457bd8",
       "layout_warnings": []
     },
     {
       "blueprint": "ai/genai-fine-tuning",
       "connections": 5,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "506d63a0facd4fbb190f9213afa898327109d45cc2f008fa0ba29c08d58d91c1",
+      "overview_png_sha256": "6f6e532df9bb4e068b328a54326aa36ba392c718958e0f3150279c240d237e05",
       "layout_warnings": []
     },
     {
       "blueprint": "ai/genai-guardrails",
       "connections": 5,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "bdd8d5e3db160fad942977f5e838dd10ed419a5378036dab106b45b3be00be5f",
+      "overview_png_sha256": "14e90c66ed9447eff0f8fd5632f45bec0d91e04d80ccb02efd189d7f6fc7a060",
       "layout_warnings": []
     },
     {
       "blueprint": "ai/document-intelligence",
       "connections": 5,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "90587f0c3da439343db23605aa79dd06bdfcc6b3474e2ae669673557df72696d",
+      "overview_png_sha256": "c664643e4a4f8651f6229d1597634f1cde0444cecce800f7517b7db871d515aa",
       "layout_warnings": []
     },
     {
       "blueprint": "ai/embedding-pipeline",
       "connections": 7,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "12c4700d306900ec1c09801d7ea74199aaf954bff962e9e43e54eb320049b674",
+      "overview_png_sha256": "e0768e549d4ea1a33cf15da48e8d05ccedcfd4ac87c23d32498f538abfc713e3",
       "layout_warnings": []
     },
     {
       "blueprint": "ai/multi-agent",
       "connections": 7,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "9bdc264b20ac00a0501e7a6cb4a5a01f5b8463265c889d35059824632718b2e5",
+      "overview_png_sha256": "8ee7f405ed4071d08ef737aca66dcf486d3dfc12993c1dd6894f9823b7968e1f",
       "layout_warnings": []
     },
     {
       "blueprint": "ai/agents",
       "connections": 5,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "c67b325e4dc3790f6b76f4a9442075d790145851768b83b2cb95c9d2dfebc067",
+      "overview_png_sha256": "dbbfe1f1755e78c0878b8bd7ea36429f9c16f60a069927ef24f80afd438a3536",
       "layout_warnings": []
     },
     {
       "blueprint": "devops/oci-devops-pipeline",
       "connections": 4,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "dae663501752a2453d806cb064f48115510c062e7585df6ce5cd2ce39c626ae0",
+      "overview_png_sha256": "24115dfd7c84ac1d4605b3a4873343e11a975ffb9df1ea09d8802e6d50198d16",
       "layout_warnings": []
     },
     {
       "blueprint": "industry/telco-cloud-native",
       "connections": 21,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "a22d4cee70a1d5a34f75e74767350812be8c5bfe49e76a4d56322be49adfaf27",
+      "overview_png_sha256": "928afedb574f4b66ed64620d023bfb1deb1a7411d36e1ddb2aebc3a46a13665c",
       "layout_warnings": []
     },
     {
       "blueprint": "industry/secure-desktops",
       "connections": 4,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "93cb81df00d6f5705dcab1a4f23d4f0a92313edb4f84cf7ede3c2d650189455e",
+      "overview_png_sha256": "edca7694639a4e588f51443bab738f295a5898662777fef027b7e6ff42340775",
       "layout_warnings": []
     },
     {
       "blueprint": "extensions/oke",
       "connections": 2,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "e336794096b3c731cec0e3232e7285a7e1c384e475f2ae72570c14b429eb5b86",
+      "overview_png_sha256": "3a91ba3ec7a6e5fa98879c48ac01aab02f88dc2f2bf2b2c68746a333ca6c04d7",
       "layout_warnings": []
     },
     {
@@ -547,7 +547,7 @@
           ]
         }
       ],
-      "overview_png_sha256": "7d4c177c1195d0790d49e7bbc254788dc9fbbaf75689012e4d8ebda0bfe43639",
+      "overview_png_sha256": "fa30e924ff23048cace8a4a737f766247ec4584f0cc04316b58f4a2fb1b7e598",
       "layout_warnings": []
     },
     {
@@ -564,84 +564,84 @@
           ]
         }
       ],
-      "overview_png_sha256": "2314c243f204a9e0942f1542f9a0377d41c638f1e3125de042dadc7437aa7d61",
+      "overview_png_sha256": "2dca1f3d946f173330bba4c762a6f313a7df2c849eaafe0cee7541f81a1abd80",
       "layout_warnings": []
     },
     {
       "blueprint": "extensions/oke-service-mesh",
       "connections": 1,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "7faa9f14203178add67c61d5a17cc4e948b459cd165b30250201d9dc657a3d8a",
+      "overview_png_sha256": "3a7fc143bb5e6327fc325c57b2ddaad6bed95db91d98f7e9b0c87374c4a735e6",
       "layout_warnings": []
     },
     {
       "blueprint": "extensions/exadata",
       "connections": 2,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "1a00bcf2f11577ec7a8aead4f520fef6918a18a1fd03fb21d483ef28c61195c7",
+      "overview_png_sha256": "45e12f3849ee0c706d5547a94d64e950214603d2933038463824d572e05ad427",
       "layout_warnings": []
     },
     {
       "blueprint": "extensions/apigw",
       "connections": 5,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "e40314eaf71b14b267c0c31b01d0ba426ae5dac2d913cc0957cf2dc581d1f25b",
+      "overview_png_sha256": "bc0b510a197173ee22c51c0ff179b40d1df331753601a93c73da8fdbadca7494",
       "layout_warnings": []
     },
     {
       "blueprint": "extensions/oac",
       "connections": 3,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "2e65d5909607ba4a5e8c551b64a137ba227ced6debebf7b07e75ae1faf24c2a3",
+      "overview_png_sha256": "6c814ec4fce7f28e292c585b05992f0cec40ac380f4f3aeee504a964c157378e",
       "layout_warnings": []
     },
     {
       "blueprint": "extensions/oic",
       "connections": 3,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "7068a794e4a1cbac8d105ea8b2ab4c8178f7906868c1ca3e3efee843f5be146f",
+      "overview_png_sha256": "20889c184e8cd42160f5760b401ced39306a610449e2b6f5ed3c5488db42b68d",
       "layout_warnings": []
     },
     {
       "blueprint": "extensions/observability",
       "connections": 2,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "93959416e40033e7655d5f3c5ac417aaee006629ac2158e247bb75b638629a30",
+      "overview_png_sha256": "47e3a03fd37bbc1ca7e5c0ee8f316df093c8e43a15129473ceb0ae908be12c0b",
       "layout_warnings": []
     },
     {
       "blueprint": "extensions/streaming",
       "connections": 3,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "0a8af29d384281c1516da923a2cdf685af0fb271c55e1d3088868cfafae46eb9",
+      "overview_png_sha256": "5d4a7aa41cd0c5ee990608ce73d3a86b3142493a922aea0df1a3b3c7ab18dc42",
       "layout_warnings": []
     },
     {
       "blueprint": "extensions/waf",
       "connections": 3,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "59d00a44a983d05ea9d0b412e1f0ceb9ae1e3f2705259b015176bfc70b28cddf",
+      "overview_png_sha256": "f95cf6d862f26ff017ad58e3b3450d893fccb460522c9843f398c188dbced775",
       "layout_warnings": []
     },
     {
       "blueprint": "extensions/container-instances",
       "connections": 3,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "7e6a96e08492f7a7af79804bc30a4cc69dd9c24a368e7a17142314789f22983a",
+      "overview_png_sha256": "17844311a0ef82f3dc470cc343a33b4a52f28f972a54a5c71144cf20c21fda15",
       "layout_warnings": []
     },
     {
       "blueprint": "extensions/functions",
       "connections": 7,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "07fa810b78877e83927dc3e7b3287bf40439ffec5da3ba05874950b4f84c9801",
+      "overview_png_sha256": "3878ee814faf4b91e3a3c7f4df3778eaa86981c66085187e0b7f38b5f4e49085",
       "layout_warnings": []
     },
     {
       "blueprint": "extensions/event-driven-platform",
       "connections": 8,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "570b04833db2d641577a590b045d9959f772271bb57c09f510d299e4930092b6",
+      "overview_png_sha256": "48cb05f155b2a582b3b76cb9b040eee362bac33a2eb985784c184338b2843a45",
       "layout_warnings": []
     },
     {
@@ -658,35 +658,35 @@
           ]
         }
       ],
-      "overview_png_sha256": "d655e0736fc0b926b7dad04287ee3ee61f18c71e60db50e227933b62881a9a65",
+      "overview_png_sha256": "ee6ee80bf2c034e789553687723597041c2e4a400a92caac5b9fd5baefe8a7b4",
       "layout_warnings": []
     },
     {
       "blueprint": "extensions/redis-cache",
       "connections": 2,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "200dd1f5f059f5c725ec0a085e96d74eb3fc5fd0b2e4ce8ebb227c9a3268a260",
+      "overview_png_sha256": "602af27ef9968d27b56fec56184f61a084f48aed31e1acf754ec4dfdc0960bdd",
       "layout_warnings": []
     },
     {
       "blueprint": "data-platform/nosql",
       "connections": 5,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "89179beb628d239999403dc3cb3cf217d84886d896a9f2d9b0dfdb6d02724f33",
+      "overview_png_sha256": "394e6b294d0c66cd2db8d8f40f92e7f8f50494393b5b40d98c7d6ef2914c86d6",
       "layout_warnings": []
     },
     {
       "blueprint": "data-platform/mongodb-api",
       "connections": 5,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "9317f1fa01ffbe3421627309cab4828ea1fa501f58f756e7f5943b3aa1d7c98f",
+      "overview_png_sha256": "c047259ee34fe2f6d059bce27c18fcd7bf067d375538c7250b81d6e6c65f7c7a",
       "layout_warnings": []
     },
     {
       "blueprint": "extensions/digital-assistant",
       "connections": 6,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "531b33561d699346732e5f8ab6bedb1b159da62871ecbcc18e62c9c02e34caf7",
+      "overview_png_sha256": "5ead3c75433a6b801c108eaea4668df38a7e9247a96e6e6ac91f67b92594da2b",
       "layout_warnings": []
     },
     {
@@ -703,7 +703,7 @@
           ]
         }
       ],
-      "overview_png_sha256": "99c82bcb87bddc2dbe91dc91db47d9d65fa436bc0fb864ad8c868e4fe83bd9bb",
+      "overview_png_sha256": "1dcd8ce47d1a04e4a7196a763e2fa2422357b65cd95a73e14c89012cd9583b43",
       "layout_warnings": []
     },
     {
@@ -720,14 +720,14 @@
           ]
         }
       ],
-      "overview_png_sha256": "680fae14a2f3d4b57a39b6889b8d1cd67efd8c3ba0b84425de5065975821f6d6",
+      "overview_png_sha256": "f03a3e8ade1fe9f9aff7cb5e7d24877a235621002618cff20b652e2446eb3167",
       "layout_warnings": []
     },
     {
       "blueprint": "vmware/ocvs-onprem-hcx",
       "connections": 9,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "df866c79bbf343dbada6f53cb6b571092570bfe926da6dba23b27396fb45942f",
+      "overview_png_sha256": "8ea054a2cab0eb52eabb1c92bb2c153405eb065845a6eb84816d37a77895f0fa",
       "layout_warnings": []
     },
     {
@@ -753,7 +753,7 @@
           ]
         }
       ],
-      "overview_png_sha256": "1ee20658e2b5391199851d11c507a85e1d18fc368db5cd88a90cecf600aed160",
+      "overview_png_sha256": "6263cb8f0367df573878d60b488bcc5a00230debf001670cf69fc45dfaf35b23",
       "layout_warnings": []
     },
     {
@@ -779,7 +779,7 @@
           ]
         }
       ],
-      "overview_png_sha256": "4b4e56c5da02b6370afaf46bdcf10cb71c44829bff958e0d759bcdb57539f44e",
+      "overview_png_sha256": "58f6484727a9aee1c73c7f61f0b3854ef708ddf9951ce14829991e4a65fa3a87",
       "layout_warnings": []
     },
     {
@@ -805,7 +805,7 @@
           ]
         }
       ],
-      "overview_png_sha256": "98a4cd89a2ad1d589303bdd65fd59c5c1f5ad8b855231249e050bac60a069e5a",
+      "overview_png_sha256": "1315349a2a12fed1c42941d8def2e058f45e4381025e9092e17d3db93b35f667",
       "layout_warnings": []
     },
     {
@@ -822,7 +822,7 @@
           ]
         }
       ],
-      "overview_png_sha256": "70380c5a68d32004c2e18e23af04709afc840cf970403bacaae702b7463691fe",
+      "overview_png_sha256": "07e7bf598a55367ac819cf7fa6126da57fb3b6fe0ebccf328c2c2a6f5fe93a5d",
       "layout_warnings": []
     },
     {
@@ -839,7 +839,7 @@
           ]
         }
       ],
-      "overview_png_sha256": "f0d339d553c787569deb86cc8f1275c26807fc1ecdde750de39440edaf47e013",
+      "overview_png_sha256": "45d44eef1f41662dfa5c0e6bf2ea5a77b8752928375f7acc7565269796ae3e73",
       "layout_warnings": []
     },
     {
@@ -856,7 +856,7 @@
           ]
         }
       ],
-      "overview_png_sha256": "30f102ee289f1f35507b692b0aa94cfe03dcfd661d7c93735a65aa8a3d5d3887",
+      "overview_png_sha256": "afd12a2e9a1ff03cae062be613ae1c92ab8dffc7f5dad42d7ddf12dcb8e4fd8b",
       "layout_warnings": []
     },
     {
@@ -873,35 +873,35 @@
           ]
         }
       ],
-      "overview_png_sha256": "c4c9f97b6deca7e50029631103b0288c2bcdbf066e455eb18b6a3207996b3e9e",
+      "overview_png_sha256": "64a3e54c54a1424250a1336e33d6f6b8bfb578980d6580b666d625171870fabb",
       "layout_warnings": []
     },
     {
       "blueprint": "operations/cost-optimization",
       "connections": 5,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "1e8968312f86f298bf32e122bb89c88ca136fcec57c8294cbdab0f6886dd30b0",
+      "overview_png_sha256": "eb76b7bf820f40ce5abaae9e670f39cee7c55c6843dd1078edf0e11e5cad8a8f",
       "layout_warnings": []
     },
     {
       "blueprint": "vmware/ocvs",
       "connections": 11,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "d184c12c24d1c427a959b267abc062755e185104b38e9f2070b96f306667e7f8",
+      "overview_png_sha256": "251696f3b542c2fe1322cbfb6e912a4f94f56d474aa11223fdc3ea304cc2209b",
       "layout_warnings": []
     },
     {
       "blueprint": "industry/healthcare-platform",
       "connections": 19,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "8ed6c839db59837853f615125cb6b39be62292768a6490a78e62023a59bfd156",
+      "overview_png_sha256": "cbc34e4bc6755e7dd1c26fb5827e4c4aee052d2bb50c06f4cc7f805c6e8537ce",
       "layout_warnings": []
     },
     {
       "blueprint": "industry/healthcare-fhir-integration",
       "connections": 16,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "7a28585a5e59f53f5b107b6fc850062082ea1eea46da7f74d46791e5ab184422",
+      "overview_png_sha256": "eca57645dfdd480ce4ccc2974211d76daf4a0e62689c5e1b3bde787b6c6812b0",
       "layout_warnings": []
     }
   ]

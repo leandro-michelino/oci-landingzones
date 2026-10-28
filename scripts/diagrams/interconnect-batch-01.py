@@ -11,13 +11,12 @@ base=load('data-dr-batch-01');cloud=load('cloud-icons')
 ITEMS=['networking/aws-oci-managed-interconnect','networking/gcp-oci-partner-interconnect']
 def footer(d,text):
  d.box(text,20,1150,2460,135,kind='note')
- d.text('Local review 2026-10-28: schema validation and mocked plans only; no provisioning, BGP, packet flow or resilience test.\nSource CIDRs are examples; regions, provider offerings and BGP addresses require operator verification.',20,1340,2460,55,size=13)
 
 def build(gcp=False):
  title='OCI + GCP | FastConnect and redundant Partner VLAN attachments' if gcp else 'OCI + AWS | Managed Interconnect with explicit create / accept activation'
  d=base.base.base.Diagram(toolkit=base.base.base.TOOLKIT,title=title)
  d.text(title,20,10,2460,45,size=25,bold=True)
- d.text('INTERCONNECT / Source review 2026-10-28 / Configuration topology, not operational evidence',20,65,2460,30,size=13)
+ d.text('INTERCONNECT / Configuration topology, not operational evidence',20,65,2460,30,size=13)
  reg=d.group('region','OCI / supported region pair / explicit workload compartment',20,160,1090,900)
  vc=d.group('vcn','Private VCN\n10.56.0.0/16',30,80,990,660,parent=reg)
  sn=d.group('subnet','Workload subnet\n10.56.10.0/24',40,120,700,300,parent=vc)
@@ -50,7 +49,7 @@ def build(gcp=False):
   d.text('Subnet route table + association / OCI subnet → VGW\nDXGW association advertises remote subnet only\nDXGW ASN 64512 / VGW ASN 64513',400,560,650,80,parent=vpc,size=15)
   d.text('OCI-first request targets aws_account_id and aws_region. Operator copies\nthe activation key and accepts it in AWS against the created DXGW.\nThe provider-managed Interconnect object is external to this Terraform root.',35,780,1090,85,parent=remote,size=15)
  d.connect(drg,edge,kind='fastconnect',label='2 private VCs / Partner Interconnect' if gcp else 'Managed Interconnect / create + accept',exit=(1,.5),entry=(0,.5),waypoints=[(1160,720),(1260,720),(1260,720)])
- footer(d,'DISABLED DEFAULTS: enable_foundation=false / enable_interconnect=false / costs_approved=false / region_pair_verified=false / application TCP port set empty.\n'+('Foundation creates two Google Partner attachments; activate_attachments=false. enable_bgp=false; enabling circuits requires two approved BGP address pairs.\nPartner bandwidth is selected through OCI; no guessed Google PARTNER bandwidth, VLAN or physical cross-connect is created. Private transport does not imply encryption.' if gcp else 'A single OCI managed-interconnect VC represents provider-managed redundant infrastructure. No customer VIF, BGP peer or physical cross-connect is invented.\nAWS acceptance/activation is an explicit operator step. Verify regional offering/account eligibility; generic hosted Direct Connect is a separate service.')+'\nAll source-declared resources and operator-supplied identifiers appear on companion detail pages. No live provisioning, packet flow or failover was tested.')
+ footer(d,'DISABLED DEFAULTS: enable_foundation=false / enable_interconnect=false / costs_approved=false / region_pair_verified=false / application TCP port set empty.'+('Foundation creates two Google Partner attachments; activate_attachments=false. enable_bgp=false; enabling circuits requires two approved BGP address pairs.\nPartner bandwidth is selected through OCI; no guessed Google PARTNER bandwidth, VLAN or physical cross-connect is created. Private transport does not imply encryption.' if gcp else 'A single OCI managed-interconnect VC represents provider-managed redundant infrastructure. No customer VIF, BGP peer or physical cross-connect is invented.\nAWS acceptance/activation is an explicit operator step. Verify regional offering/account eligibility; generic hosted Direct Connect is a separate service.')+'\nAll source-declared resources and operator-supplied identifiers appear on companion detail pages.')
  return d
 
 def main():

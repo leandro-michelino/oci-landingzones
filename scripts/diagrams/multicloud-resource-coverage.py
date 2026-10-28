@@ -255,7 +255,7 @@ def render_map(slug,cloud,entries,lookups,render,page_number=1):
  rows=(len(entries)+columns-1)//columns
  d=base.Diagram(toolkit=base.TOOLKIT,title=cloud+' resource declarations')
  d.text(cloud+' resources | '+slug.split('/')[-1]+(f' | Page {page_number}' if page_number>1 else ''),20,10,2540,45,size=25,bold=True)
- d.text('Complete declaration map / paired with architecture.png for topology / Source review 2026-10-28',20,65,2540,30,size=13)
+ d.text('Complete declaration map / paired with architecture.png for topology',20,65,2540,30,size=13)
  group=d.group('thirdparty' if cloud in ('Azure','AWS','GCP') else 'other',cloud+' / source-declared resources; conditional declarations remain visible',20,135,2560,70+rows*row_height)
  for i,e in enumerate(entries):
   x=20+(i%columns)*step; y=60+(i//columns)*row_height
@@ -273,10 +273,10 @@ def render_map(slug,cloud,entries,lookups,render,page_number=1):
   e['diagram']={'file':cloud.lower()+'-resources'+suffix+'.drawio','page_name':cloud+' resources'+(f' {page_number}' if page_number>1 else ''),'node_id':card.id,'source_symbol':e['symbol'],'provider_icon':e['type'] if vendor_icon else None,'oci_icon':icon}
  y=group.y+group.h+35
  lookup_names=', '.join(e['address'] for e in lookups if e['cloud']==cloud)
- notes='Counts are declarations, not deployed instances. for_each and Bicep collections expand from inputs; gates retain their source expressions.\nPinned-module declarations use the module call-site inputs; the overview explains default enablement. Companion templates deploy separately.\nResource cards enumerate coverage only; card order does not imply dependency or traffic. IAM, DNS, circuits and workloads are not inferred beyond source.'
- if lookup_names: notes+='\nRead-only data lookups (not created resources): '+wrapped(lookup_names,160)
- note_height=max(130,40+20*len(notes.splitlines()))
- d.box(notes,20,y,2560,note_height,kind='note')
+ if lookup_names:
+  notes='Read-only data lookups (not created resources): '+wrapped(lookup_names,160)
+  note_height=max(80,40+20*len(notes.splitlines()))
+  d.box(notes,20,y,2560,note_height,kind='note')
  warnings=d.check()
  if warnings: raise RuntimeError(str(warnings))
  suffix=f'-{page_number:02}' if page_number>1 else ''
@@ -332,7 +332,6 @@ def render_inputs(slug,refs,render):
   label=e['address']+'\n'+wrapped(e['description'],85)+'\nDefault expression: '+wrapped(e['default_expression'],85)
   d.text(label,20,15,780,175,parent=card,size=12)
   e['diagram']={'file':'existing-resources.drawio','page_name':'Existing resources / inputs','node_id':card.id}
- d.box('These inputs identify separately managed resources or override a default selection. The overview and module call-site decide their use.\nNull/empty defaults do not prove that an external resource exists. Input names and defaults are source contracts, not discovered cloud inventory.\nCollection inputs can contain further resource references; consult their source schemas and the overview prerequisites. No ownership adoption is implied.',20,165+rows*230,2540,130,kind='note')
  if d.check():raise RuntimeError(str(d.check()))
  path=ROOT/'blueprints'/slug/'architecture/existing-resources.drawio'
  d.save(str(path))

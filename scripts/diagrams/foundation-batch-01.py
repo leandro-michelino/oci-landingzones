@@ -32,7 +32,6 @@ def header(title,index):
 
 def footer(d,text,y=1190):
     d.box(text,20,y,2360,130,kind='note')
-    d.text('Arrows describe dependencies / configuration, not application traffic or a validated security outcome.\nSource review: 2026-10-28. No cloud resources created, no new provider validation, compliance audit or enforcement test.\nDeployment regions, parent compartment, org and environment are operator inputs. Historical validation dates are unchanged.',20,y+165,2360,80,size=12)
 
 
 def foundation(title,index,kind):
