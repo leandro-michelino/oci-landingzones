@@ -13,40 +13,17 @@ Creates an OCI Streaming stream pool and streams, with optional KMS encryption a
 | Boundary | `blueprints/extensions/streaming` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Creates an OCI Streaming stream pool and streams, with optional KMS encryption and private endpoint settings. |
 | Terraform components | `oci_streaming_stream_pool.this`, `oci_streaming_stream.this` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram shows source-defined components and configuration associations; it is not runtime evidence. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Streaming Extension                                                                                      |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Existing compartment / VCN / subnet / service boundary as required}                                     |
-|         |                                                                                                |
-|         v                                                                                                |
-| [OCI Streaming]                                                                                          |
-|         |-- stream pool with optional custom encryption key                                              |
-|         |-- one or more streams with configured partitions and retention                                 |
-|         |-- optional private endpoint path through supplied VCN/subnet/NSGs                              |
-|         `-- tags, compartment scope, and optional private access controls                                |
-|                  |                                                                                       |
-|                  v                                                                                       |
-| [producers] -> [stream endpoint / private endpoint] -> [stream pool] -> [streams]                        |
-| [consumers] <- [stream endpoint / private endpoint] <- [consumer group offsets]                          |
-|                                                                                                          |
-| Review focus: partition count, retention, KMS key, private endpoint subnet, NSGs, and producer/consumer  |
-| IAM policies.                                                                                            |
-| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
-| teams.                                                                                                   |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Source-bounded streaming architecture](architecture.png)
+
+[Editable overview and native detail pages](architecture.drawio) · [Source resource inventory](resource-inventory.json)
+
+Native pages enumerate every conditional declaration and existing identifier input.
+They describe declaration coverage, not expanded deployed resource counts.
 
 ## Terraform Components
 
@@ -59,25 +36,29 @@ Creates an OCI Streaming stream pool and streams, with optional KMS encryption a
 
 ## Request And Deployment Flow
 
-- Operator supplies the existing network, compartment, service, or backend IDs required by the extension.
-- Terraform creates the optional service resource graph declared in main.tf.
-- Outputs expose service IDs, endpoint names, or attachment IDs for applications and runbooks.
+1. Supply the required compartment, service/network identifiers and per-resource configuration.
+2. Review each conditional resource and the disabled default result before enabling creation.
+3. Review source-defined ID bindings and optional action/target selections against existing dependencies.
+4. Implement external image, application, producer/consumer and permissions work where applicable.
+5. Test actual service access, data handling and runtime behavior separately from this diagram review.
 
 ## Traffic And Trust Boundaries
 
-- Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
-- Data plane traffic is the packet or service path shown in the Architecture diagram; if this deployment only creates identity or governance resources, the data plane is intentionally permission and signal flow instead of network packets.
-- Trust boundaries are the tenancy, compartment, VCN, subnet, DRG, private endpoint, identity domain, or managed service edges shown in the diagram.
-- Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
+- Plain lines represent declared IDs or nested configuration. Solid arrows represent configured invocation/delivery intent only.
+- Dashed lines identify external work or conditional event-source matching. No connector proves a successful request or working network path.
+- Existing network and service identifiers do not imply ownership adoption, permission grants, private DNS, Internet egress or end-to-end connectivity.
+- IAM policies use supplied statements; their provider and compartment/tenancy scope require separate review where present.
+- Keep credentials, secrets, OCIDs and customer-specific configurations in ignored local inputs or approved secure pipeline stores.
 
 ## Detailed Architecture Notes
 
-These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
+- No cloud resources by default: `enable_streaming=false`, `streams={}`. The default `create_stream_pool=true` is gated by `enable_streaming`.
+- Three declarations cover one optional pool and mutually exclusive pool-bound/compartment-scoped stream branches. They do not create duplicate streams for the same map entry.
+- An explicit `stream_pool_id` overrides the created pool for stream placement, even when new pool creation remains enabled. The new pool can therefore remain unused.
+- Created-pool private endpoint settings require an existing subnet ID; NSGs, a KMS key and Kafka settings are optional inputs. No VCN, subnet, NSG, key or producer/consumer is created.
+- Plain lines show ID/configuration associations only. Existing pool properties and application endpoints are not discovered or updated.
 
-- The stream pool can be created here or referenced by stream_pool_id, which changes lifecycle ownership.
-- KMS encryption, private endpoint subnet ID, NSG IDs, and Kafka-compatible settings are pool-level controls.
-- Each entry in var.streams creates a stream with its own partition count and retention hours.
-- Producer and consumer teams should use the stream IDs and stream pool ID outputs rather than discovering resources manually.
+Diagram/source review: 2026-10-28. Historical infrastructure/provider validation metadata is unchanged. No provisioning or runtime test was run for this conversion.
 
 ## Operational Boundaries
 

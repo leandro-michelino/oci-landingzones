@@ -1,0 +1,139 @@
+{
+  "schema_version": 2,
+  "blueprint": "extensions/waf",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 2
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_waf_web_app_firewall_policy.this",
+      "type": "oci_waf_web_app_firewall_policy",
+      "symbol": "this",
+      "source": "blueprints/extensions/waf/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_waf_policy ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_waf_policy ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_waf_web_app_firewall.this",
+      "type": "oci_waf_web_app_firewall",
+      "symbol": "this",
+      "source": "blueprints/extensions/waf/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_web_app_firewall ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_web_app_firewall ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n6",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "WAF"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 2
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/extensions/waf/variables.tf",
+      "description": "Compartment OCID where WAF resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.waf_policy_id",
+      "source": "blueprints/extensions/waf/variables.tf",
+      "description": "Existing WAF policy OCID used when attaching a firewall to an existing policy.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.load_balancer_id",
+      "source": "blueprints/extensions/waf/variables.tf",
+      "description": "Load balancer OCID protected by the Web App Firewall.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 3
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/extensions/waf/locals.tf",
+      "revision": "working-tree",
+      "sha256": "ce64e1e81d2b88a1240fbdcbe8a647602a42e9919f2db530add9beee0d5a2245"
+    },
+    {
+      "path": "blueprints/extensions/waf/main.tf",
+      "revision": "working-tree",
+      "sha256": "4a5522f7ada75b90f1861709f84cbc2acf0ca8ecd54ca41837f728702d408004"
+    },
+    {
+      "path": "blueprints/extensions/waf/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "57e80ad4a119b38bf18256af4f8f9073d6d0b3450af060e0d2f4cf5d39ceb370"
+    },
+    {
+      "path": "blueprints/extensions/waf/providers.tf",
+      "revision": "working-tree",
+      "sha256": "2ee529fdf155bf2f2d0d63966264b97faa465ab7aac410b2a79a15001387d0ce"
+    },
+    {
+      "path": "blueprints/extensions/waf/variables.tf",
+      "revision": "working-tree",
+      "sha256": "9ab0b92f658c9cc4428b13f3a131528937d3f8a940aa59df295ae4e59bb966e5"
+    },
+    {
+      "path": "blueprints/extensions/waf/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

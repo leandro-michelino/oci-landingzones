@@ -1,0 +1,186 @@
+{
+  "schema_version": 2,
+  "blueprint": "extensions/streaming",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 3
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_streaming_stream_pool.this",
+      "type": "oci_streaming_stream_pool",
+      "symbol": "this",
+      "source": "blueprints/extensions/streaming/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_streaming && var.create_stream_pool ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_streaming && var.create_stream_pool ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "OCI Streaming"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_streaming_stream.in_pool",
+      "type": "oci_streaming_stream",
+      "symbol": "in_pool",
+      "source": "blueprints/extensions/streaming/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enable_streaming && (var.create_stream_pool || var.stream_pool_id != null) ? var.streams : {}",
+      "creation_expression": {
+        "for_each": "var.enable_streaming && (var.create_stream_pool || var.stream_pool_id != null) ? var.streams : {}"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n35",
+        "source_symbol": "in_pool",
+        "provider_icon": null,
+        "oci_icon": "OCI Streaming"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_streaming_stream.in_compartment",
+      "type": "oci_streaming_stream",
+      "symbol": "in_compartment",
+      "source": "blueprints/extensions/streaming/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enable_streaming && !var.create_stream_pool && var.stream_pool_id == null ? var.streams : {}",
+      "creation_expression": {
+        "for_each": "var.enable_streaming && !var.create_stream_pool && var.stream_pool_id == null ? var.streams : {}"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n66",
+        "source_symbol": "in_compartment",
+        "provider_icon": null,
+        "oci_icon": "OCI Streaming"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 3
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/extensions/streaming/variables.tf",
+      "description": "Compartment OCID where Streaming resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.stream_pool_id",
+      "source": "blueprints/extensions/streaming/variables.tf",
+      "description": "Existing stream pool OCID used when create_stream_pool is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.kms_key_id",
+      "source": "blueprints/extensions/streaming/variables.tf",
+      "description": "Optional Vault key OCID for stream pool encryption.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.private_endpoint_subnet_id",
+      "source": "blueprints/extensions/streaming/variables.tf",
+      "description": "Optional subnet OCID for private stream pool access.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.private_endpoint_nsg_ids",
+      "source": "blueprints/extensions/streaming/variables.tf",
+      "description": "Optional NSG OCIDs for the stream pool private endpoint.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 5
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/extensions/streaming/locals.tf",
+      "revision": "working-tree",
+      "sha256": "51033c2a1a2f15e2559c7657bcdbb2a1c0875fa8cf1f05fd25aa05f6323e488a"
+    },
+    {
+      "path": "blueprints/extensions/streaming/main.tf",
+      "revision": "working-tree",
+      "sha256": "724612954365386c804f1ee22d92e0af3a2fa876cdd5a3d473a75545d8b8648e"
+    },
+    {
+      "path": "blueprints/extensions/streaming/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "8f6955034068784b1d53f83ca2155dc3dac3e356bd20c3dbc72b5c765f4b32c1"
+    },
+    {
+      "path": "blueprints/extensions/streaming/providers.tf",
+      "revision": "working-tree",
+      "sha256": "2ee529fdf155bf2f2d0d63966264b97faa465ab7aac410b2a79a15001387d0ce"
+    },
+    {
+      "path": "blueprints/extensions/streaming/variables.tf",
+      "revision": "working-tree",
+      "sha256": "6706357673815e5a5e16389125667f64cfa621da6382599cc3fa6b952b02718d"
+    },
+    {
+      "path": "blueprints/extensions/streaming/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

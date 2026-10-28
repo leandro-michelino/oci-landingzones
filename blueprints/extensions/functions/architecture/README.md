@@ -17,75 +17,16 @@ and scoped IAM policy hand-offs.
 | Boundary | `blueprints/extensions/functions` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Runs OCI-native serverless functions from approved container images, with optional HTTP and event-driven invocation paths. |
 | Terraform components | `oci_artifacts_container_repository.this`, `oci_functions_application.this`, `oci_functions_function.this`, `oci_apigateway_gateway.this`, `oci_apigateway_deployment.this`, `oci_events_rule.this`, `oci_identity_policy.access` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and invocation paths for this exact deployment. |
+| Primary architecture view | The diagram shows source-defined components, ID associations and optional configured invocation intent. |
 
 ## Architecture
 
-```text
-+------------------------------------------------------------------------------------------------------------------+
-| Oracle Functions Extension                                                                                        |
-+------------------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow                         |
-|                                                                                                                  |
-| [Operator / CI]                                                                                                  |
-|      |                                                                                                           |
-|      | terraform plan/apply or guarded Ansible runner                                                            |
-|      v                                                                                                           |
-| [Terraform OCI provider]                                                                                         |
-|      |                                                                                                           |
-|      +--> [Artifact Registry container repository, optional]                                                      |
-|      |        |-- repository path: <region>.ocir.io/<namespace>/<name-prefix>/<repository_name>                  |
-|      |        |-- mutable or immutable tags by input                                                             |
-|      |        `-- image README metadata when supplied                                                            |
-|      |                                                                                                           |
-|      +--> (function image built outside Terraform)                                                               |
-|      |        |                                                                                                  |
-|      |        +--> sample: samples/hello-python/                                                                 |
-|      |        |       |-- Python FDK handler                                                                       |
-|      |        |       |-- Dockerfile based on Fn Python images                                                       |
-|      |        |       `-- pushed to OCIR before function create/update                                         |
-|      |        |                                                                                                  |
-|      |        `--> [Function image tag and optional digest]                                                       |
-|      |                                                                                                           |
-|      +--> {application compartment}                                                                              |
-|      |        |                                                                                                  |
-|      |        +--> (private subnet IDs)                                                                          |
-|      |        |        |                                                                                         |
-|      |        |        +--> [Functions application]                                                             |
-|      |        |        |       |-- optional NSGs                                                                      |
-|      |        |        |       |-- optional application config                                                          |
-|      |        |        |       |-- optional signed image policy                                                         |
-|      |        |        |       `-- optional tracing and syslog                                                     |
-|      |        |        |                                                                                         |
-|      |        |        `--> [OCI Functions]                                                                  |
-|      |        |                |-- image URL required for each function                                                  |
-|      |        |                |-- memory and timeout per function                                                       |
-|      |        |                |-- optional provisioned concurrency                                                       |
-|      |        |                |-- optional success or failure destinations                                               |
-|      |        |                `-- invoke endpoint output                                                            |
-|      |        |                                                                                                  |
-|      |        +--> [API Gateway, optional]                                                                       |
-|      |        |       |-- private or public endpoint type                                                       |
-|      |        |       |-- subnet, NSGs, optional certificate                                                     |
-|      |        |       `-- [API deployment] -> ORACLE_FUNCTIONS_BACKEND -> [OCI Function]                    |
-|      |        |                                                                                                  |
-|      |        +--> [OCI Events rules, optional]                                                                  |
-|      |        |       |-- event condition from local tfvars                                                      |
-|      |        |       `-- FAAS action -> [OCI Function]                                                   |
-|      |        |                                                                                                  |
-|      |        `--> [IAM access policy, optional]                                                                 |
-|      |                |-- deployer and invoker groups                                                           |
-|      |                |-- Functions service network access                                                       |
-|      |                |-- Events and API Gateway invoke permissions where required                               |
-|      |                `-- OCIR repository permissions                                                            |
-|      |                                                                                                           |
-| HTTP path: client -> API Gateway route -> Oracle Functions backend -> selected function.                         |
-| Event path: OCI service event -> Events rule condition -> FAAS action -> selected function.                      |
-| Image path: local build or CI -> OCIR repository -> Functions application pulls approved image.                  |
-| Control path: Terraform creates repository, application, functions, routes, event rules, and policies.           |
-| Hand-off: repository URL, application ID, function IDs/endpoints, route URL, event rule IDs, policy ID.          |
-+------------------------------------------------------------------------------------------------------------------+
-```
+![Source-bounded functions architecture](architecture.png)
+
+[Editable overview and native detail pages](architecture.drawio) · [Source resource inventory](resource-inventory.json)
+
+Native pages enumerate every conditional declaration and existing identifier input.
+They describe declaration coverage, not expanded deployed resource counts.
 
 ## Terraform Components
 
@@ -101,60 +42,33 @@ and scoped IAM policy hand-offs.
 
 ## Request And Deployment Flow
 
-- Operator or CI builds the function image from a reviewed source tree such as
-  `samples/hello-python/`.
-- The image is pushed to OCIR or another approved Functions-compatible image
-  location.
-- Terraform creates or references the Functions application in approved private
-  subnets.
-- Terraform creates one or more functions using explicit image URLs from local
-  ignored tfvars.
-- Terraform optionally creates API Gateway resources and routes HTTP requests to
-  function backends.
-- Terraform optionally creates OCI Events rules that invoke functions through
-  FAAS actions.
-- Outputs expose repository, application, function, route, event, and policy
-  identifiers for downstream runbooks and application teams.
+1. Supply the required compartment, service/network identifiers and per-resource configuration.
+2. Review each conditional resource and the disabled default result before enabling creation.
+3. Review source-defined ID bindings and optional action/target selections against existing dependencies.
+4. Implement external image, application, producer/consumer and permissions work where applicable.
+5. Test actual service access, data handling and runtime behavior separately from this diagram review.
 
 ## Traffic And Trust Boundaries
 
-- Control plane traffic is local operator or CI authentication into the OCI
-  provider and the Ansible Terraform runner.
-- Image traffic moves from local build or CI to OCIR, then from Functions to the
-  image repository when the function is created or updated.
-- HTTP traffic enters through API Gateway only when the gateway deployment is
-  enabled and routes are defined.
-- Event traffic enters through OCI Events only when event rules and FAAS actions
-  are enabled.
-- Runtime egress leaves the function application subnets and must be reviewed
-  through route tables, service gateway or NAT behavior, NSGs, and downstream
-  service policies.
-- Trust boundaries are the tenancy, application compartment, private subnets,
-  NSGs, OCIR repository, API Gateway, Events rules, IAM policy, and downstream
-  services reached by the function.
-- Image credentials, OCIDs, event filters, customer route targets, function
-  config values, and IAM group names belong in ignored local tfvars or secure
-  pipeline variables.
+- Plain lines represent declared IDs or nested configuration. Solid arrows represent configured invocation/delivery intent only.
+- Dashed lines identify external work or conditional event-source matching. No connector proves a successful request or working network path.
+- Existing network and service identifiers do not imply ownership adoption, permission grants, private DNS, Internet egress or end-to-end connectivity.
+- IAM policies use supplied statements; their provider and compartment/tenancy scope require separate review where present.
+- Keep credentials, secrets, OCIDs and customer-specific configurations in ignored local inputs or approved secure pipeline stores.
 
 ## Detailed Architecture Notes
 
-- Function source build is outside Terraform on purpose. Terraform consumes an
-  approved image URL so plan output shows exactly which function image will run.
-- Each function requires an explicit image URL. Use immutable tags or image
-  digest review when the environment needs stricter change control.
-- Keep API Gateway disabled until endpoint type, certificates, route paths,
-  methods, and caller authentication are reviewed.
-- Keep Events rules disabled until the event condition is narrow and tested.
-  Broad filters can create surprising invocation volume.
-- Use application-level signed image policy when image provenance matters and
-  the KMS key process is ready.
-- Use provisioned concurrency only for latency-sensitive paths. It is useful,
-  but it changes cost behavior.
-- Async success and failure destinations are available per function for queues,
-  streams, topics, or channels when downstream processing needs explicit
-  hand-off.
-- IAM policy statements stay input-driven so customers can choose existing
-  dynamic groups, identity domains, and compartment boundaries.
+- No cloud resources by default: all creation/enablement flags are false, function/API-route/event maps empty and IAM statements empty. Seven resource declarations are fully enumerated in the native detail page.
+- Functions select the created application only when both application enable/create flags are true; otherwise `application_id` is selected. API deployment uses the analogous created/supplied gateway selection. New settings are not applied to existing services.
+- The created application consumes existing subnets/NSGs and optional signed-image KMS key IDs, APM domain, log format and syslog endpoint. No network, key, domain or logging service is created.
+- Every created function requires its own image URL; optional digest, memory, timeout, tracing, concurrency and success/failure destination IDs are per-function settings. Destination services remain external.
+- The optional repository is private and mutable by default. Its output URL is not automatically passed into function source details; image build, push, signing and reference selection remain external.
+- API routes use `ORACLE_FUNCTIONS_BACKEND` and either a created function key or an explicit existing Function ID. User `api_routes` entries override the synthesized default route. The default route is absent until its function key is selected.
+- Events rules configure FAAS actions only, per action choosing a created Function key or explicit existing Function ID. Rule/action enablement and event matching must be reviewed; no successful invocation is claimed.
+- The default created gateway endpoint is PRIVATE. This source does not configure caller authentication policies, public client access, DNS or successful Function/image/trace/destination delivery.
+- The optional IAM policy uses the home provider and policy-compartment/tenancy fallback. Statements are supplied; no automatic invoke/image/target permission is inferred.
+
+Diagram/source review: 2026-10-28. Historical infrastructure/provider validation metadata is unchanged. No provisioning or runtime test was run for this conversion.
 
 ## Operational Boundaries
 

@@ -13,39 +13,17 @@ Creates or attaches an OCI Web Application Firewall policy and binds WAF enforce
 | Boundary | `blueprints/extensions/waf` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Creates or attaches an OCI Web Application Firewall policy and binds WAF enforcement to an existing load balancer backend. |
 | Terraform components | `oci_waf_web_app_firewall_policy.this`, `oci_waf_web_app_firewall.this` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram shows source-defined components and configuration associations; it is not runtime evidence. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| WAF Extension                                                                                            |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Existing compartment / VCN / subnet / service boundary as required}                                     |
-|         |                                                                                                |
-|         v                                                                                                |
-| [Web Application Firewall]                                                                               |
-|         |-- WAF policy with access, protection, and rule configuration                                   |
-|         |-- web app firewall attachment to the supplied load balancer or web application target          |
-|         |-- logging/monitoring integration handled by operational layers                                 |
-|         `-- tags, compartment scope, and optional private access controls                                |
-|                  |                                                                                       |
-|                  v                                                                                       |
-| [internet clients] -> [WAF policy] -> [web app firewall] -> [load balancer / web application]            |
-|                                                                                                          |
-| Review focus: policy mode, target ID, rule actions, TLS/header behavior, logging, and false-positive     |
-| review path.                                                                                             |
-| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
-| teams.                                                                                                   |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Source-bounded waf architecture](architecture.png)
+
+[Editable overview and native detail pages](architecture.drawio) · [Source resource inventory](resource-inventory.json)
+
+Native pages enumerate every conditional declaration and existing identifier input.
+They describe declaration coverage, not expanded deployed resource counts.
 
 ## Terraform Components
 
@@ -56,25 +34,29 @@ Creates or attaches an OCI Web Application Firewall policy and binds WAF enforce
 
 ## Request And Deployment Flow
 
-- Operator supplies the existing network, compartment, service, or backend IDs required by the extension.
-- Terraform creates the optional service resource graph declared in main.tf.
-- Outputs expose service IDs, endpoint names, or attachment IDs for applications and runbooks.
+1. Supply the required compartment, service/network identifiers and per-resource configuration.
+2. Review each conditional resource and the disabled default result before enabling creation.
+3. Review source-defined ID bindings and optional action/target selections against existing dependencies.
+4. Implement external image, application, producer/consumer and permissions work where applicable.
+5. Test actual service access, data handling and runtime behavior separately from this diagram review.
 
 ## Traffic And Trust Boundaries
 
-- Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
-- Data plane traffic is the packet or service path shown in the Architecture diagram; if this deployment only creates identity or governance resources, the data plane is intentionally permission and signal flow instead of network packets.
-- Trust boundaries are the tenancy, compartment, VCN, subnet, DRG, private endpoint, identity domain, or managed service edges shown in the diagram.
-- Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
+- Plain lines represent declared IDs or nested configuration. Solid arrows represent configured invocation/delivery intent only.
+- Dashed lines identify external work or conditional event-source matching. No connector proves a successful request or working network path.
+- Existing network and service identifiers do not imply ownership adoption, permission grants, private DNS, Internet egress or end-to-end connectivity.
+- IAM policies use supplied statements; their provider and compartment/tenancy scope require separate review where present.
+- Keep credentials, secrets, OCIDs and customer-specific configurations in ignored local inputs or approved secure pipeline stores.
 
 ## Detailed Architecture Notes
 
-These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
+- No cloud resources by default: `enable_waf_policy=false` and `enable_web_app_firewall=false`.
+- The optional new policy declares only compartment, display name and tags. No access rules, protection rules, rate limits or actions are configured by this source.
+- An explicit `waf_policy_id` overrides a newly created policy. Attachment preconditions require both an effective policy ID and `load_balancer_id`.
+- The firewall resource associates that policy with an existing Load Balancer using the `LOAD_BALANCER` backend default. No Load Balancer, listener, backend set, certificate or application is created.
+- The policy is an ID/configuration association, not a separate packet-forwarding hop. No Internet ingress, protection effectiveness, logging, monitoring or request-blocking result is inferred.
 
-- The WAF policy can be created here or an existing waf_policy_id can be supplied.
-- The Web App Firewall binds the policy to the supplied load_balancer_id and backend_type.
-- Traffic evaluation happens on the load balancer path before requests reach backend sets, so policy readiness should be reviewed before association.
-- The policy ID and Web App Firewall ID are the operational hand-offs for security and application teams.
+Diagram/source review: 2026-10-28. Historical infrastructure/provider validation metadata is unchanged. No provisioning or runtime test was run for this conversion.
 
 ## Operational Boundaries
 

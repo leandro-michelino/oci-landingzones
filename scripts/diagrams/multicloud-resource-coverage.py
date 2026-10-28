@@ -26,6 +26,11 @@ base=importlib.util.module_from_spec(spec); spec.loader.exec_module(base)
 icon_spec=importlib.util.spec_from_file_location('cloud_icons',Path(__file__).with_name('cloud-icons.py'))
 cloud_icons=importlib.util.module_from_spec(icon_spec); icon_spec.loader.exec_module(cloud_icons)
 DEFAULTS=[
+ 'extensions/streaming',
+ 'extensions/waf',
+ 'extensions/container-instances',
+ 'extensions/functions',
+ 'extensions/event-driven-platform',
  'industry/ocvs-onprem-hcx',
  'industry/azure-avs-ocvs-interconnect',
  'industry/azure-avs-ocvs-onprem-triangle',
@@ -74,6 +79,11 @@ DEFAULTS=[
 ]
 DECL=re.compile(r'^(resource|data|module)\s+"([^"]+)"(?:\s+"([^"]+)")?\s*\{',re.M)
 ICONS={
+ 'oci_container_instances_container_instance':'Container Instances',
+ 'oci_artifacts_container_repository':'OCI Container Registry',
+ 'oci_functions_application':'OCI Functions',
+ 'oci_functions_function':'OCI Functions',
+ 'oci_waf_web_app_firewall':'WAF',
  'oci_database_cloud_exadata_infrastructure':'Oracle Exadata Database Service',
  'oci_analytics_analytics_instance':'Oracle Analytics Cloud',
  'oci_integration_integration_instance':'Integration',
@@ -266,6 +276,9 @@ def render_map(slug,cloud,entries,lookups,render,page_number=1):
 
 # Collections whose nested existing identifiers must be visible as input cards.
 COLLECTION_REFERENCE_INPUTS = {
+ 'blueprints/extensions/container-instances': {'image_pull_secrets'},
+ 'blueprints/extensions/functions': {'functions', 'api_routes', 'event_rules'},
+ 'blueprints/extensions/event-driven-platform': {'event_rules'},
  'blueprints/industry/ocvs': {'workload_clusters'},
  **{'blueprints/industry/'+slug: {'workload_clusters', 'circuits'} for slug in ['ocvs-onprem-hcx','azure-avs-ocvs-interconnect','azure-avs-ocvs-onprem-triangle']}
 }

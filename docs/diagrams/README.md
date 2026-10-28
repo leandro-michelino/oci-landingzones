@@ -699,3 +699,60 @@ with 11 original entries pending. Native documents/PNGs remain 287. GCP
 counterparts remain in the planned final phase. Historical Terraform/provider
 validation metadata is unchanged; no circuit order, cloud operation or runtime
 connection test was performed.
+
+## Streaming, WAF And Application Runtime Extensions / October 28, 2026
+
+Five original catalog entries now include native draw.io overviews, PNGs,
+complete declaration maps and existing-identifier input pages. Every source
+creation gate remains visible; no cloud operation or provider revalidation
+was performed in this diagram/documentation batch.
+
+| Blueprint | OCI declarations | Existing-reference inputs/collections | Overview connectors |
+| --- | ---: | ---: | ---: |
+| [Streaming](../../blueprints/extensions/streaming/architecture/README.md) | 3 | 5 | 3 |
+| [WAF](../../blueprints/extensions/waf/architecture/README.md) | 2 | 3 | 3 |
+| [Container Instances](../../blueprints/extensions/container-instances/architecture/README.md) | 2 | 5 | 3 |
+| [Functions](../../blueprints/extensions/functions/architecture/README.md) | 7 | 14 | 7 |
+| [Event-driven platform](../../blueprints/extensions/event-driven-platform/architecture/README.md) | 8 | 10 | 8 |
+
+This adds **22 OCI resource declarations**, **37 existing-reference inputs or
+collections**, **24 reviewed connectors** and **15 native documents with paired
+PNGs**. Each main document contains its overview, declaration page and input
+page. Nested collection schemas preserve Function destination IDs, API/Events
+target selections and image-pull secret references in the JSON inventory.
+Official OCI Streaming, WAF, Container Instances, Functions and Container
+Registry glyphs identify the corresponding service resources. Unmapped policy,
+deployment and configuration resources remain explicitly named boxes.
+
+Streaming distinguishes created/existing pool selection from the alternative
+compartment-scoped branch. WAF declares an empty policy and existing-LB
+association, without inventing rules or a packet-forwarding policy hop.
+Container/VNIC/volume/health-check settings are nested instance blocks, not
+separate resource declarations. Functions distinguishes image build/push work,
+created service configuration and explicitly selected external Function IDs.
+Events actions and Service Connector targets show conditional configured
+intent. A stream named deadletter does not install a retry or DLQ workflow.
+
+```bash
+python3 scripts/diagrams/extensions-batch-03.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint extensions/streaming --blueprint extensions/waf --blueprint extensions/container-instances --blueprint extensions/functions --blueprint extensions/event-driven-platform --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --check
+python3 scripts/diagrams/check-connections.py --write-report
+python3 -m unittest discover -s scripts/diagrams -p test_resource_coverage.py
+bash scripts/check-repo-contracts.sh
+```
+
+Current original conversion progress is **74/80**, with **6 pending**. Including
+the eight additional Interconnect, healthcare and VMware projects, current
+coverage is **82/88** entry points, plus the separate conceptual view. Current
+audit totals are **687 reviewed connectors** and **302 native documents/PNGs**;
+14 source-defined multicloud overviews retain explicit OCI/cloud bridges.
+
+The remaining original entries are CDN static assets, Redis Cache, NoSQL,
+MongoDB API, Digital Assistant and Cost Optimization. Further GCP counterparts
+remain in the final phase after the original conversion backlog, as recorded
+in the [GCP plan](../multicloud/GCP-OCI-BLUEPRINTS.md). VMware folder reorganization
+was discussed but is not part of this conversion batch; current paths remain.
+Historical Terraform/provider validation dates and evidence are unchanged.
+No image build/pull, runtime deployment, invocation, event delivery, WAF request,
+producer/consumer operation, notification or application traffic was tested.

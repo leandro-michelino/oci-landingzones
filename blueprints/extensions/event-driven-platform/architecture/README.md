@@ -20,31 +20,12 @@ folder.
 
 ## Architecture
 
-```text
-OCI Services / Apps / Buckets
-        |
-        | events
-        v
-OCI Events Rules
- |-- action: Streaming
- |-- action: Functions
- `-- action: Notifications
-        |
-        v
-Streaming Pool
- |-- events stream
- `-- deadletter stream
-        |
-        v
-Service Connector Hub
- |-- Object Storage archive
- |-- Function processor
- |-- Notification topic
- `-- Downstream stream
-        |
-        v
-Async Apps / AI Pipelines / Operators
-```
+![Source-bounded event-driven-platform architecture](architecture.png)
+
+[Editable overview and native detail pages](architecture.drawio) · [Source resource inventory](resource-inventory.json)
+
+Native pages enumerate every conditional declaration and existing identifier input.
+They describe declaration coverage, not expanded deployed resource counts.
 
 ## Terraform Components
 
@@ -71,38 +52,33 @@ Declared resource addresses:
 
 ## Request And Deployment Flow
 
-1. Identify event producers and event types.
-2. Decide stream names, partitions, and retention.
-3. Decide archive and dead-letter behavior.
-4. Configure Events rule conditions and actions.
-5. Configure Service Connector target.
-6. Hand stream/topic outputs to app or AI pipeline owners.
+1. Supply the required compartment, service/network identifiers and per-resource configuration.
+2. Review each conditional resource and the disabled default result before enabling creation.
+3. Review source-defined ID bindings and optional action/target selections against existing dependencies.
+4. Implement external image, application, producer/consumer and permissions work where applicable.
+5. Test actual service access, data handling and runtime behavior separately from this diagram review.
 
 ## Traffic And Trust Boundaries
 
-- Events can carry resource names and metadata that may be sensitive.
-- Function targets need least-privilege resource access.
-- Archive buckets should be private and retention-managed.
-- Stream readers should be scoped to the owning application or pipeline.
-- Notification topics should point to approved operational channels.
+- Plain lines represent declared IDs or nested configuration. Solid arrows represent configured invocation/delivery intent only.
+- Dashed lines identify external work or conditional event-source matching. No connector proves a successful request or working network path.
+- Existing network and service identifiers do not imply ownership adoption, permission grants, private DNS, Internet egress or end-to-end connectivity.
+- IAM policies use supplied statements; their provider and compartment/tenancy scope require separate review where present.
+- Keep credentials, secrets, OCIDs and customer-specific configurations in ignored local inputs or approved secure pipeline stores.
 
 ## Detailed Architecture Notes
 
-This blueprint is intentionally generic because many workloads share the same
-async foundation: object-created pipelines, AI automation, integration events,
-and operational fan-out. The event rules map lets teams add new event actions
-without changing the resource layout.
+- No cloud resources by default: all create flags are false and policy statements empty. Eight resource declarations and one gated read-only Object Storage namespace lookup are enumerated.
+- The private Standard archive bucket defaults to versioning Enabled and object events enabled. A rule must still explicitly match relevant events; enabling bucket events does not bind an Events condition.
+- The `events` and `deadletter` map defaults each have one partition. Pool-bound and compartment-scoped declarations are mutually exclusive. The name `deadletter` does not create a DLQ processor, retry policy or consumer.
+- The selected pool is created when `create_stream_pool=true`, otherwise `stream_pool_id` is used. An existing KMS key can be supplied for the bucket and created pool; no key is created.
+- Events actions use caller-supplied action types and independent Function, stream or topic selections. The optional selected topic has no subscription or recipient configured.
+- The Service Connector source uses an explicit stream ID before its selected created-stream key (`events` by default). Enabling the connector requires an effective source and valid target fields, not only an enable flag.
+- Exactly one connector target kind is selected: objectStorage by default, or functions, streaming or notifications. Explicit namespace/bucket and target IDs override their respective fallbacks; different target IDs can identify different existing services.
+- The Object Storage name fallback can be computed with bucket creation disabled. That does not create the bucket or establish a valid namespace; external target existence and service permissions must be supplied and reviewed.
+- The IAM policy uses the home provider and policy-compartment/tenancy fallback. No producers, consumers, Function code, source objects, retry workers, subscriptions or working notification delivery are created.
 
-Service Connector Hub is optional. Some designs send Events directly to
-Functions or Streaming. Others need a connector to archive or transform records.
-The folder supports both patterns.
-
-Connector targets must be modeled by target kind. An Object Storage connector
-target should set only bucket, namespace, and object prefix values; Notifications,
-Streaming, and Functions targets should set only their own destination IDs.
-
-The blueprint can be used as an extension-only brownfield add-on by supplying
-existing stream, topic, bucket, and function IDs.
+Diagram/source review: 2026-10-28. Historical infrastructure/provider validation metadata is unchanged. No provisioning or runtime test was run for this conversion.
 
 ## Operational Boundaries
 

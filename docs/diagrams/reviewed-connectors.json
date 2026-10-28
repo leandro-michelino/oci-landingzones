@@ -21710,6 +21710,754 @@
       }
     ]
   },
+  "extensions/streaming": {
+    "relationships": [
+      {
+        "source": "Pool-bound streams / stream map entries\nenable_streaming AND (create_stream_pool OR supplied ID)\nPer-entry partitions + optional retention",
+        "target": "Created pool / enable_streaming=false\ncreate_stream_pool=true / streams={}",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "stream_pool_id / created fallback only if supplied ID=null",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.4,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Pool-bound streams / stream map entries\nenable_streaming AND (create_stream_pool OR supplied ID)\nPer-entry partitions + optional retention",
+        "target": "Existing pool override / stream_pool_id=null\nExplicit ID takes precedence over a created pool\nNo existing pool configuration is changed",
+        "source_kind": "group:component",
+        "target_kind": "group:optional",
+        "label": "stream_pool_id / explicit override if non-null",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.35
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1240,
+            649
+          ],
+          [
+            1240,
+            360
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Created pool / enable_streaming=false\ncreate_stream_pool=true / streams={}",
+        "target": "Optional created-pool settings / existing identifiers only\nprivate_endpoint_subnet_id=null / private_endpoint_nsg_ids=[]\nkms_key_id=null / no network, NSG or key created\nkafka_settings=null / nested pool settings, not another service",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "Optional private_endpoint_settings / custom_encryption_key",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            45,
+            360
+          ],
+          [
+            45,
+            922.5
+          ]
+        ],
+        "straight": false
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/extensions/streaming/locals.tf",
+        "revision": "working-tree",
+        "sha256": "51033c2a1a2f15e2559c7657bcdbb2a1c0875fa8cf1f05fd25aa05f6323e488a"
+      },
+      {
+        "path": "blueprints/extensions/streaming/main.tf",
+        "revision": "working-tree",
+        "sha256": "724612954365386c804f1ee22d92e0af3a2fa876cdd5a3d473a75545d8b8648e"
+      },
+      {
+        "path": "blueprints/extensions/streaming/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "8f6955034068784b1d53f83ca2155dc3dac3e356bd20c3dbc72b5c765f4b32c1"
+      },
+      {
+        "path": "blueprints/extensions/streaming/providers.tf",
+        "revision": "working-tree",
+        "sha256": "2ee529fdf155bf2f2d0d63966264b97faa465ab7aac410b2a79a15001387d0ce"
+      },
+      {
+        "path": "blueprints/extensions/streaming/variables.tf",
+        "revision": "working-tree",
+        "sha256": "6706357673815e5a5e16389125667f64cfa621da6382599cc3fa6b952b02718d"
+      },
+      {
+        "path": "blueprints/extensions/streaming/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
+  "extensions/waf": {
+    "relationships": [
+      {
+        "source": "Optional Web App Firewall attachment\nenable_web_app_firewall=false\nbackend_type=LOAD_BALANCER",
+        "target": "Optional new WAF policy / enable_waf_policy=false\nCompartment, display name and tags only\nNo access/protection/rate-limit rules or actions declared",
+        "source_kind": "icon",
+        "target_kind": "group:component",
+        "label": "Created policy fallback / only if waf_policy_id=null",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1050,
+            460
+          ],
+          [
+            1050,
+            472.5
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Optional Web App Firewall attachment\nenable_web_app_firewall=false\nbackend_type=LOAD_BALANCER",
+        "target": "Existing policy override / waf_policy_id=null\nExplicit ID takes precedence over the newly created policy\nExisting policy rules are not inspected or changed",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "Explicit policy ID / if supplied",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1220,
+            790
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Optional Web App Firewall attachment\nenable_web_app_firewall=false\nbackend_type=LOAD_BALANCER",
+        "target": "Existing Load Balancer / load_balancer_id=null\nNo LB, listener, backend set, certificate or application created",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "load_balancer_id / attachment association",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/extensions/waf/locals.tf",
+        "revision": "working-tree",
+        "sha256": "ce64e1e81d2b88a1240fbdcbe8a647602a42e9919f2db530add9beee0d5a2245"
+      },
+      {
+        "path": "blueprints/extensions/waf/main.tf",
+        "revision": "working-tree",
+        "sha256": "4a5522f7ada75b90f1861709f84cbc2acf0ca8ecd54ca41837f728702d408004"
+      },
+      {
+        "path": "blueprints/extensions/waf/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "57e80ad4a119b38bf18256af4f8f9073d6d0b3450af060e0d2f4cf5d39ceb370"
+      },
+      {
+        "path": "blueprints/extensions/waf/providers.tf",
+        "revision": "working-tree",
+        "sha256": "2ee529fdf155bf2f2d0d63966264b97faa465ab7aac410b2a79a15001387d0ce"
+      },
+      {
+        "path": "blueprints/extensions/waf/variables.tf",
+        "revision": "working-tree",
+        "sha256": "9ab0b92f658c9cc4428b13f3a131528937d3f8a940aa59df295ae4e59bb966e5"
+      },
+      {
+        "path": "blueprints/extensions/waf/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
+  "extensions/container-instances": {
+    "relationships": [
+      {
+        "source": "Nested containers[] / empty by default\nEach image_url is required; commands, args, env and working directory optional\nPer-container CPU/memory limits, mounts and health checks optional\nNo separate container resource declaration",
+        "target": "Container Instance / enable_container_instance=false\nCI.Standard.E4.Flex / 1 OCPU / 2 GB\nRestart ALWAYS / shutdown timeout 30 s",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "containers / creation-time nested specifications",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Container Instance / enable_container_instance=false\nCI.Standard.E4.Flex / 1 OCPU / 2 GB\nRestart ALWAYS / shutdown timeout 30 s",
+        "target": "Nested VNIC / existing subnet + nsg_ids=[]\nPublic IP=false / private_ip=null / skip_source_dest_check=false\nNo subnet, NSG, route, gateway or standalone VNIC resource",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "vnics / supplied network identifiers",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.51111111,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Container Instance / enable_container_instance=false\nCI.Standard.E4.Flex / 1 OCPU / 2 GB\nRestart ALWAYS / shutdown timeout 30 s",
+        "target": "Optional instance settings / input collections empty\nimage_pull_secrets: existing registry endpoint / optional Vault secret ID\nCustom DNS + volumes[] / CONFIGFILE or supplied type/backing store\nNo registry, secret, DNS server or durable-volume resource created",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "Image pull / DNS / volumes",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.7
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1050,
+            455
+          ],
+          [
+            1050,
+            700
+          ]
+        ],
+        "straight": false
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/extensions/container-instances/locals.tf",
+        "revision": "working-tree",
+        "sha256": "675f41e9f7a3196e12bcc3f324ff051e9e21f69f916789cbde6806ca61290b1a"
+      },
+      {
+        "path": "blueprints/extensions/container-instances/main.tf",
+        "revision": "working-tree",
+        "sha256": "9a4119da3e795532f97385f294d9bf2fbc93ed002ae451c956c941dcb8ae4db3"
+      },
+      {
+        "path": "blueprints/extensions/container-instances/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "41e59e25ace7bc5ba4e7bdb78d42be21c934f743d5ccc62f562f265546b8532b"
+      },
+      {
+        "path": "blueprints/extensions/container-instances/providers.tf",
+        "revision": "working-tree",
+        "sha256": "9ace0aeb9a214bbdff10c76453708d4fe6d9602bdbd3e38badbc4ac4eb6e0603"
+      },
+      {
+        "path": "blueprints/extensions/container-instances/variables.tf",
+        "revision": "working-tree",
+        "sha256": "d2198fac83143843b9daad40c38df02d8c200821ecd53606595bce356d7b9fad"
+      },
+      {
+        "path": "blueprints/extensions/container-instances/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
+  "extensions/functions": {
+    "relationships": [
+      {
+        "source": "Selected Functions application\nCreate if enable_application AND create_application\nOtherwise supplied application_id / creation disabled",
+        "target": "Created-application inputs / existing identifiers\nSubnet IDs + NSGs / no network created\nOptional signed-image KMS key IDs / tracing domain ID\nConfig, syslog URL and log-line format / no key or APM domain created",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "Creation only: subnet_ids / NSGs / optional config",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.48235294,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Function definitions / enable_functions=false / functions={}\nTargets: created Functions OR explicit existing Function IDs\nCreated-function defaults: 256 MB / timeout 30 s",
+        "target": "Selected Functions application\nCreate if enable_application AND create_application\nOtherwise supplied application_id / creation disabled",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Created Functions only: selected application_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Function definitions / enable_functions=false / functions={}\nTargets: created Functions OR explicit existing Function IDs\nCreated-function defaults: 256 MB / timeout 30 s",
+        "target": "Per-function source and optional configuration\nsource_details.image / image_digest are supplied per function\nOptional trace flag / provisioned concurrency\nOptional success/failure destination kind + channel/queue/stream/topic IDs\nNo target services or application image build is created here",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "Created Functions only: image / optional settings",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.41176471,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional OCIR repository / enable_container_repository=false\nPrivate / mutable defaults / repository URL is output only",
+        "target": "Per-function source and optional configuration\nsource_details.image / image_digest are supplied per function\nOptional trace flag / provisioned concurrency\nOptional success/failure destination kind + channel/queue/stream/topic IDs\nNo target services or application image build is created here",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "External build/push; copy image URL into function input",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional Events rules / enable_event_rules=false\nevent_rules={} / FAAS actions only\nPer-action function ID or created-function key",
+        "target": "Function definitions / enable_functions=false / functions={}\nTargets: created Functions OR explicit existing Function IDs\nCreated-function defaults: 256 MB / timeout 30 s",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Optional FAAS: created function_key OR supplied function_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            2070,
+            360
+          ],
+          [
+            2070,
+            530
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Optional API deployment / enable_api_gateway_deployment=false\nORACLE_FUNCTIONS_BACKEND / function ID or created key\nExplicit api_routes override a synthesized default route\nDefault route key=null / path /hello / GET + POST when selected",
+        "target": "Function definitions / enable_functions=false / functions={}\nTargets: created Functions OR explicit existing Function IDs\nCreated-function defaults: 256 MB / timeout 30 s",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "Optional backend: created key OR supplied function_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.75
+        ],
+        "waypoints": [
+          [
+            2070,
+            725
+          ],
+          [
+            2070,
+            548.75
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Optional API deployment / enable_api_gateway_deployment=false\nORACLE_FUNCTIONS_BACKEND / function ID or created key\nExplicit api_routes override a synthesized default route\nDefault route key=null / path /hello / GET + POST when selected",
+        "target": "Selected API Gateway / PRIVATE default when created\nCreate if enable_api_gateway AND create_gateway; else gateway_id\nExisting subnet, NSGs, certificate IDs / no network created",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "local.gateway_id / created or supplied selection",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.51315789,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/extensions/functions/locals.tf",
+        "revision": "working-tree",
+        "sha256": "5ef524b442571203b501bb3f1b4f38ad0dc9a485489d5c1030e9953314c2c27e"
+      },
+      {
+        "path": "blueprints/extensions/functions/main.tf",
+        "revision": "working-tree",
+        "sha256": "e5ce2854eee0937860f55f65b8b582817a36233ef2118037ee029849dffbb96b"
+      },
+      {
+        "path": "blueprints/extensions/functions/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "9acd7a91d0bf941d945f1d45752f905926f03a754c68847fb8edeafb0c9a03cd"
+      },
+      {
+        "path": "blueprints/extensions/functions/providers.tf",
+        "revision": "working-tree",
+        "sha256": "9ace0aeb9a214bbdff10c76453708d4fe6d9602bdbd3e38badbc4ac4eb6e0603"
+      },
+      {
+        "path": "blueprints/extensions/functions/variables.tf",
+        "revision": "working-tree",
+        "sha256": "8413635c41daf01b2b6303eb3be8836305d40efc2e4911e971f008353184a2d1"
+      },
+      {
+        "path": "blueprints/extensions/functions/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
+  "extensions/event-driven-platform": {
+    "relationships": [
+      {
+        "source": "Optional Events rules / create_event_rules=false\nevent_rules={} / configured action_type + target fields",
+        "target": "Existing FAAS action Function / explicit function_id\nNo Function application, image or function is created here",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "Optional FAAS action / declared function_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional Events rules / create_event_rules=false\nevent_rules={} / configured action_type + target fields",
+        "target": "Topic targets / create_topic=false\nCreated topic or topic_id fallback / per-action override allowed\nNo subscription, recipient or delivery validation",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Optional ONS action / explicit topic_id or selected fallback",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.8
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": [
+          [
+            980,
+            368
+          ],
+          [
+            980,
+            470
+          ],
+          [
+            2520,
+            470
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Optional Events rules / create_event_rules=false\nevent_rules={} / configured action_type + target fields",
+        "target": "Stream declarations / create_streams=false\nevents + deadletter defaults / one partition each\nMutually exclusive compartment or selected-pool placement\nNames do not install a DLQ processor, consumer or retry workflow",
+        "source_kind": "icon",
+        "target_kind": "group:component",
+        "label": "Optional OSS action / supplied stream ID or stream_key",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.41176471,
+          0
+        ],
+        "waypoints": [
+          [
+            520,
+            550
+          ],
+          [
+            1470,
+            550
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Stream declarations / create_streams=false\nevents + deadletter defaults / one partition each\nMutually exclusive compartment or selected-pool placement\nNames do not install a DLQ processor, consumer or retry workflow",
+        "target": "Selected stream pool / create_stream_pool=false\nCreated pool if enabled; else stream_pool_id\nOptional existing KMS key on created pool",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "Only in_pool branch: stream_pool_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional archive bucket / create_archive_bucket=false\nPrivate / Standard / versioning Enabled / object events on\nOptional existing KMS key; default name is not proof of existence",
+        "target": "Optional Events rules / create_event_rules=false\nevent_rules={} / configured action_type + target fields",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "External event condition must match the chosen bucket",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            100,
+            750
+          ],
+          [
+            100,
+            350
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Stream declarations / create_streams=false\nevents + deadletter defaults / one partition each\nMutually exclusive compartment or selected-pool placement\nNames do not install a DLQ processor, consumer or retry workflow",
+        "target": "Optional connector / create_service_connector=false\nSource: explicit connector_source_stream_id\nor selected stream key (events default)",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "Streaming source / when explicit source ID=null",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.41176471,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional connector / create_service_connector=false\nSource: explicit connector_source_stream_id\nor selected stream key (events default)",
+        "target": "Alternative target configuration / one kind selected\nobjectStorage override: supplied namespace + bucket name\nfunctions: connector_target_function_id\nstreaming: connector_target_stream_id\nnotifications: explicit target topic ID or selected topic\nNo external target service is created by these identifiers",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "Target kind + supplied identifiers",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional connector / create_service_connector=false\nSource: explicit connector_source_stream_id\nor selected stream key (events default)",
+        "target": "Optional archive bucket / create_archive_bucket=false\nPrivate / Standard / versioning Enabled / object events on\nOptional existing KMS key; default name is not proof of existence",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "objectStorage / default bucket + namespace (no overrides)",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1470,
+            1250
+          ],
+          [
+            950,
+            1250
+          ],
+          [
+            950,
+            750
+          ]
+        ],
+        "straight": false
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/extensions/event-driven-platform/locals.tf",
+        "revision": "working-tree",
+        "sha256": "19328fd5f6827453e78ee2b39c862918d4c9a9ca655a09d9ae9700dc5d38584c"
+      },
+      {
+        "path": "blueprints/extensions/event-driven-platform/main.tf",
+        "revision": "working-tree",
+        "sha256": "cba021b6deea320dec509a55392e734e7d66cdf7f724f15da1176499c0aa717c"
+      },
+      {
+        "path": "blueprints/extensions/event-driven-platform/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "7012e0c894b7856dcee01f6a33d1cb6745d7a36723bee98511934179434a591a"
+      },
+      {
+        "path": "blueprints/extensions/event-driven-platform/providers.tf",
+        "revision": "working-tree",
+        "sha256": "9ace0aeb9a214bbdff10c76453708d4fe6d9602bdbd3e38badbc4ac4eb6e0603"
+      },
+      {
+        "path": "blueprints/extensions/event-driven-platform/variables.tf",
+        "revision": "working-tree",
+        "sha256": "beac5c07368a8fc792614002608e16bdc868d0ec91d4d4d44992d782f6303ecd"
+      },
+      {
+        "path": "blueprints/extensions/event-driven-platform/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
   "networking/aws-oci-managed-interconnect": {
     "relationships": [
       {

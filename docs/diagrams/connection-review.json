@@ -10,11 +10,11 @@
     "Reviewed endpoints, labels, arrows, paths and source hashes match contract",
     "Subnet routing and DNS-view semantic regression checks"
   ],
-  "overview_count": 77,
+  "overview_count": 82,
   "conceptual_overviews": 1,
-  "native_documents": 287,
-  "main_document_pages": 287,
-  "connector_count": 663,
+  "native_documents": 302,
+  "main_document_pages": 302,
+  "connector_count": 687,
   "cross_cloud_overviews": 14,
   "blueprints": [
     {
@@ -607,6 +607,41 @@
       "connections": 2,
       "cross_cloud_bridges": [],
       "overview_png_sha256": "93959416e40033e7655d5f3c5ac417aaee006629ac2158e247bb75b638629a30",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "extensions/streaming",
+      "connections": 3,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "0a8af29d384281c1516da923a2cdf685af0fb271c55e1d3088868cfafae46eb9",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "extensions/waf",
+      "connections": 3,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "59d00a44a983d05ea9d0b412e1f0ceb9ae1e3f2705259b015176bfc70b28cddf",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "extensions/container-instances",
+      "connections": 3,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "7e6a96e08492f7a7af79804bc30a4cc69dd9c24a368e7a17142314789f22983a",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "extensions/functions",
+      "connections": 7,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "07fa810b78877e83927dc3e7b3287bf40439ffec5da3ba05874950b4f84c9801",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "extensions/event-driven-platform",
+      "connections": 8,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "570b04833db2d641577a590b045d9959f772271bb57c09f510d299e4930092b6",
       "layout_warnings": []
     },
     {

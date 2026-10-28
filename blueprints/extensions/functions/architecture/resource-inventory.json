@@ -1,0 +1,387 @@
+{
+  "schema_version": 2,
+  "blueprint": "extensions/functions",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 7
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_artifacts_container_repository.this",
+      "type": "oci_artifacts_container_repository",
+      "symbol": "this",
+      "source": "blueprints/extensions/functions/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_container_repository ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_container_repository ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "OCI Container Registry"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_functions_application.this",
+      "type": "oci_functions_application",
+      "symbol": "this",
+      "source": "blueprints/extensions/functions/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_application && var.create_application ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_application && var.create_application ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n15",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "OCI Functions"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_functions_function.this",
+      "type": "oci_functions_function",
+      "symbol": "this",
+      "source": "blueprints/extensions/functions/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enable_functions ? var.functions : {}",
+      "creation_expression": {
+        "for_each": "var.enable_functions ? var.functions : {}"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n27",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "OCI Functions"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_apigateway_gateway.this",
+      "type": "oci_apigateway_gateway",
+      "symbol": "this",
+      "source": "blueprints/extensions/functions/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_api_gateway && var.create_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_api_gateway && var.create_gateway ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n39",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "API Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_apigateway_deployment.this",
+      "type": "oci_apigateway_deployment",
+      "symbol": "this",
+      "source": "blueprints/extensions/functions/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_api_gateway_deployment ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_api_gateway_deployment ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n54",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_events_rule.this",
+      "type": "oci_events_rule",
+      "symbol": "this",
+      "source": "blueprints/extensions/functions/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enable_event_rules ? var.event_rules : {}",
+      "creation_expression": {
+        "for_each": "var.enable_event_rules ? var.event_rules : {}"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n56",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Events"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/extensions/functions/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n62",
+        "source_symbol": "access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 7
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/extensions/functions/variables.tf",
+      "description": "Compartment OCID where Functions resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.application_id",
+      "source": "blueprints/extensions/functions/variables.tf",
+      "description": "Existing Functions application OCID used when create_application is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.application_subnet_ids",
+      "source": "blueprints/extensions/functions/variables.tf",
+      "description": "Subnet OCIDs used by the Functions application.",
+      "default_expression": "[]",
+      "type_expression": "list(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.application_network_security_group_ids",
+      "source": "blueprints/extensions/functions/variables.tf",
+      "description": "NSG OCIDs attached to the Functions application.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.image_policy_kms_key_ids",
+      "source": "blueprints/extensions/functions/variables.tf",
+      "description": "KMS key OCIDs trusted for signed function images.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.application_trace_domain_id",
+      "source": "blueprints/extensions/functions/variables.tf",
+      "description": "APM domain OCID for Functions application tracing.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.functions",
+      "source": "blueprints/extensions/functions/variables.tf",
+      "description": "Functions keyed by logical name.",
+      "default_expression": "{}",
+      "type_expression": "map(object({\n    display_name                     = optional(string)\n    image                            = optional(string)\n    image_digest                     = optional(string)\n    memory_in_mbs                    = optional(number, 256)\n    timeout_in_seconds               = optional(number, 30)\n    detached_mode_timeout_in_seconds = optional(number)\n    config                           = optional(map(string), {})\n    trace_enabled                    = optional(bool)\n    provisioned_concurrency = optional(object({\n      strategy = string\n      count    = optional(number)\n    }))\n    success_destination = optional(object({\n      kind       = string\n      channel_id = optional(string)\n      queue_id   = optional(string)\n      stream_id  = optional(string)\n      topic_id   = optional(string)\n    }))\n    failure_destination = optional(object({\n      kind       = string\n      channel_id = optional(string)\n      queue_id   = optional(string)\n      stream_id  = optional(string)\n      topic_id   = optional(string)\n    }))\n  }))",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    },
+    {
+      "address": "var.gateway_id",
+      "source": "blueprints/extensions/functions/variables.tf",
+      "description": "Existing API Gateway OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n17"
+      }
+    },
+    {
+      "address": "var.gateway_subnet_id",
+      "source": "blueprints/extensions/functions/variables.tf",
+      "description": "Subnet OCID for API Gateway.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n19"
+      }
+    },
+    {
+      "address": "var.gateway_network_security_group_ids",
+      "source": "blueprints/extensions/functions/variables.tf",
+      "description": "NSG OCIDs for API Gateway.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n21"
+      }
+    },
+    {
+      "address": "var.gateway_certificate_id",
+      "source": "blueprints/extensions/functions/variables.tf",
+      "description": "Optional API Gateway certificate OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n23"
+      }
+    },
+    {
+      "address": "var.api_routes",
+      "source": "blueprints/extensions/functions/variables.tf",
+      "description": "API Gateway routes keyed by logical name.",
+      "default_expression": "{}",
+      "type_expression": "map(object({\n    path                       = string\n    methods                    = optional(list(string))\n    function_key               = optional(string)\n    function_id                = optional(string)\n    connect_timeout_in_seconds = optional(number)\n    read_timeout_in_seconds    = optional(number)\n    send_timeout_in_seconds    = optional(number)\n  }))",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n25"
+      }
+    },
+    {
+      "address": "var.event_rules",
+      "source": "blueprints/extensions/functions/variables.tf",
+      "description": "OCI Events rules keyed by logical name.",
+      "default_expression": "{}",
+      "type_expression": "map(object({\n    display_name     = optional(string)\n    description      = optional(string)\n    compartment_ocid = optional(string)\n    condition        = string\n    is_enabled       = optional(bool, true)\n    actions = list(object({\n      function_key = optional(string)\n      function_id  = optional(string)\n      description  = optional(string)\n      is_enabled   = optional(bool, true)\n    }))\n  }))",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n27"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/extensions/functions/variables.tf",
+      "description": "Compartment OCID where optional IAM policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n29"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 14
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/extensions/functions/locals.tf",
+      "revision": "working-tree",
+      "sha256": "5ef524b442571203b501bb3f1b4f38ad0dc9a485489d5c1030e9953314c2c27e"
+    },
+    {
+      "path": "blueprints/extensions/functions/main.tf",
+      "revision": "working-tree",
+      "sha256": "e5ce2854eee0937860f55f65b8b582817a36233ef2118037ee029849dffbb96b"
+    },
+    {
+      "path": "blueprints/extensions/functions/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "9acd7a91d0bf941d945f1d45752f905926f03a754c68847fb8edeafb0c9a03cd"
+    },
+    {
+      "path": "blueprints/extensions/functions/providers.tf",
+      "revision": "working-tree",
+      "sha256": "9ace0aeb9a214bbdff10c76453708d4fe6d9602bdbd3e38badbc4ac4eb6e0603"
+    },
+    {
+      "path": "blueprints/extensions/functions/variables.tf",
+      "revision": "working-tree",
+      "sha256": "8413635c41daf01b2b6303eb3be8836305d40efc2e4911e971f008353184a2d1"
+    },
+    {
+      "path": "blueprints/extensions/functions/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "schema_version": 2,
+  "blueprint": "extensions/container-instances",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 2
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_container_instances_container_instance.this",
+      "type": "oci_container_instances_container_instance",
+      "symbol": "this",
+      "source": "blueprints/extensions/container-instances/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_container_instance ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_container_instance ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Container Instances"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/extensions/container-instances/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n16",
+        "source_symbol": "access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 2
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/extensions/container-instances/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.subnet_id",
+      "source": "blueprints/extensions/container-instances/variables.tf",
+      "description": "Subnet OCID for the Container Instance VNIC.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.nsg_ids",
+      "source": "blueprints/extensions/container-instances/variables.tf",
+      "description": "Network security group OCIDs for the Container Instance VNIC.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.image_pull_secrets",
+      "source": "blueprints/extensions/container-instances/variables.tf",
+      "description": "Optional image pull secrets. Prefer Vault secret IDs instead of inline passwords.",
+      "default_expression": "[]",
+      "type_expression": "list(object({\n    registry_endpoint = string\n    secret_type       = string\n    username          = optional(string)\n    password          = optional(string)\n    secret_id         = optional(string)\n  }))",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/extensions/container-instances/variables.tf",
+      "description": "Compartment OCID where the optional IAM policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 5
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/extensions/container-instances/locals.tf",
+      "revision": "working-tree",
+      "sha256": "675f41e9f7a3196e12bcc3f324ff051e9e21f69f916789cbde6806ca61290b1a"
+    },
+    {
+      "path": "blueprints/extensions/container-instances/main.tf",
+      "revision": "working-tree",
+      "sha256": "9a4119da3e795532f97385f294d9bf2fbc93ed002ae451c956c941dcb8ae4db3"
+    },
+    {
+      "path": "blueprints/extensions/container-instances/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "41e59e25ace7bc5ba4e7bdb78d42be21c934f743d5ccc62f562f265546b8532b"
+    },
+    {
+      "path": "blueprints/extensions/container-instances/providers.tf",
+      "revision": "working-tree",
+      "sha256": "9ace0aeb9a214bbdff10c76453708d4fe6d9602bdbd3e38badbc4ac4eb6e0603"
+    },
+    {
+      "path": "blueprints/extensions/container-instances/variables.tf",
+      "revision": "working-tree",
+      "sha256": "d2198fac83143843b9daad40c38df02d8c200821ecd53606595bce356d7b9fad"
+    },
+    {
+      "path": "blueprints/extensions/container-instances/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

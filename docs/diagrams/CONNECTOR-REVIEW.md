@@ -204,3 +204,37 @@ files/PNGs and 14 source-defined multicloud overviews with explicit OCI/cloud
 bridges. Resource declaration/input counts and cloud creation conditions are
 unchanged. Geometry, PNG and native-page/source checks passed. This is a
 source/diagram clarification, not provisioning or a connectivity test.
+
+## Subsequent Streaming And Application Runtime Batch
+
+The next five overviews add **24 reviewed connectors**: Streaming 3, WAF 3,
+Container Instances 3, Functions 7 and Event-driven Platform 8. Streaming pool
+bindings distinguish explicit existing IDs from created fallbacks. Its separate
+compartment-scoped branch has no invented explicit pool attachment. WAF lines
+associate a selected policy and existing Load Balancer; no protection rule or
+policy-as-packet-hop is inferred.
+
+Container lines represent nested configuration blocks. Its independent IAM
+policy has no invented grant/application association. Function configuration
+lines apply only to created Functions; API/FAAS arrows can select created keys
+or independent existing Function IDs. OCIR-to-image linkage is dashed because
+build/push/reference selection remains external. The created repository URL is
+not automatically bound to a Function's image field.
+
+Events actions distinguish FAAS, OSS and ONS target selections. Bucket-to-Events
+is dashed and requires a matching supplied event condition. Service Connector
+source selection shows the created-stream-key fallback; the default archive
+path is conditional on objectStorage and no bucket/namespace override. Other
+target identifiers are configuration choices, not automatically created services.
+The archive name can be computed without creating its bucket; a deadletter name
+is not retry/DLQ automation. No subscription, application or telemetry path is
+invented to connect an independent resource.
+
+The [review contract](reviewed-connectors.json) includes endpoint, label, style,
+path and source fingerprints. Main PNGs and native declaration/input pages were
+inspected. Current [audit](connection-review.json) totals are **82 blueprint plus
+one conceptual overviews**, **687 connectors** and **302 native documents/PNGs**.
+Fourteen source-defined multicloud overviews retain explicit OCI/cloud bridges.
+Original conversion progress is **74/80**, with **6 pending**; current coverage
+including eight additions is **82/88**. These are static source and diagram
+checks, not provisioning, invocation, protection effectiveness or runtime proof.

@@ -4,7 +4,7 @@ This is the deployment architecture for `blueprints/extensions/container-instanc
 
 ## Deployment Purpose
 
-Deploys a private OCI Container Instance runtime with VNIC, container definitions, optional pull secrets, optional volumes, and optional scoped IAM policy.
+Defines an optional OCI Container Instance runtime with VNIC, container definitions, optional pull secrets, optional volumes, and optional scoped IAM policy.
 
 ## Architecture At A Glance
 
@@ -13,43 +13,16 @@ Deploys a private OCI Container Instance runtime with VNIC, container definition
 | Boundary | `blueprints/extensions/container-instances` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Runs one or more approved container images without an OKE cluster. |
 | Terraform components | `oci_container_instances_container_instance.this`, `oci_identity_policy.access` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic or control flow for this exact deployment. |
+| Primary architecture view | The diagram shows source-defined components and configuration associations; it is not runtime evidence. |
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| OCI Container Instances                                                                                  |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {App compartment / selected availability domain}                                                         |
-|         |                                                                                                |
-|         +--> (private subnet)                                                                            |
-|         |        |                                                                                       |
-|         |        v                                                                                       |
-|         |   [Container Instance VNIC]                                                                    |
-|         |        |-- NSGs allow approved app, service, and admin paths only                              |
-|         |        `-- public IP disabled by default                                                       |
-|         |                                                                                                |
-|         +--> [Container Instance]                                                                        |
-|         |        |-- container image from OCIR or approved registry                                      |
-|         |        |-- optional image pull secret from Vault or local secure input                         |
-|         |        |-- optional health checks and resource limits                                         |
-|         |        `-- optional config or empty volumes                                                    |
-|         |                                                                                                |
-|         `--> [IAM access policy]                                                                         |
-|                  optional operator or service-principal statements                                       |
-|                                                                                                          |
-| Runtime path: app callers -> NSG-approved private IP -> container listener.                              |
-| Image path: container runtime -> registry endpoint using approved pull secret when needed.                |
-| Hand-off: container instance ID, VNIC IDs, container IDs, state, and optional access policy ID.           |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Source-bounded container-instances architecture](architecture.png)
+
+[Editable overview and native detail pages](architecture.drawio) · [Source resource inventory](resource-inventory.json)
+
+Native pages enumerate every conditional declaration and existing identifier input.
+They describe declaration coverage, not expanded deployed resource counts.
 
 ## Terraform Components
 
@@ -60,25 +33,30 @@ Deploys a private OCI Container Instance runtime with VNIC, container definition
 
 ## Request And Deployment Flow
 
-- Operator supplies tenancy values, availability domain, private subnet, NSGs, and approved container image details.
-- Terraform creates the Container Instance, VNIC, container definitions, optional pull secrets, optional volumes, and optional IAM policy.
-- Outputs expose runtime IDs, VNIC IDs, container IDs, state, and policy ID for app teams and runbooks.
+1. Supply the required compartment, service/network identifiers and per-resource configuration.
+2. Review each conditional resource and the disabled default result before enabling creation.
+3. Review source-defined ID bindings and optional action/target selections against existing dependencies.
+4. Implement external image, application, producer/consumer and permissions work where applicable.
+5. Test actual service access, data handling and runtime behavior separately from this diagram review.
 
 ## Traffic And Trust Boundaries
 
-- Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
-- Data plane traffic enters the Container Instance through the VNIC private IP and NSG-approved paths.
-- Image pull traffic goes from the runtime to OCIR or an approved registry endpoint using the configured image pull secret when needed.
-- Trust boundaries are the tenancy, compartment, private subnet, VNIC, NSG, image registry, Vault secret, and IAM policy edges shown in the diagram.
-- Secrets, OCIDs, customer CIDRs, image credentials, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
+- Plain lines represent declared IDs or nested configuration. Solid arrows represent configured invocation/delivery intent only.
+- Dashed lines identify external work or conditional event-source matching. No connector proves a successful request or working network path.
+- Existing network and service identifiers do not imply ownership adoption, permission grants, private DNS, Internet egress or end-to-end connectivity.
+- IAM policies use supplied statements; their provider and compartment/tenancy scope require separate review where present.
+- Keep credentials, secrets, OCIDs and customer-specific configurations in ignored local inputs or approved secure pipeline stores.
 
 ## Detailed Architecture Notes
 
-- Keep public IP assignment disabled unless the design explicitly needs a public runtime endpoint.
-- Prefer private subnets and NSGs that only allow source CIDRs or application tiers that need the container listener.
-- Prefer Vault-backed registry secrets over inline pull passwords.
-- Use health checks and container resource limits for long-running service containers.
-- Use optional IAM policy statements only when the runtime or operators need additional OCI permissions.
+- No cloud resources by default: `enable_container_instance=false` and `policy_statements=[]`. Two resource declarations cover the instance and an independent optional IAM policy.
+- Default instance settings are `CI.Standard.E4.Flex`, one OCPU, 2 GB memory, ALWAYS restart and a 30-second graceful shutdown timeout. Availability domain is supplied explicitly; defaults are not regional availability or capacity evidence.
+- The instance has a nested VNIC in a supplied existing subnet with `is_public_ip_assigned=false`, `nsg_ids=[]`, optional private IP and source/destination checks enabled by default. No subnet, NSG, route or gateway is created.
+- `containers[]` must be nonempty when enabling the instance. Image URLs, commands, arguments, environment/configuration, limits, mounts and optional health checks are nested creation-time settings.
+- Image-pull secrets, custom DNS and volumes are nested instance blocks. Existing registry/Vault references do not create a registry, secret, DNS server or independent durable-storage resource.
+- The IAM policy uses the regional provider and an explicit policy compartment or tenancy fallback. Arbitrary policy statements do not establish working access to images, secrets or application resources.
+
+Diagram/source review: 2026-10-28. Historical infrastructure/provider validation metadata is unchanged. No provisioning or runtime test was run for this conversion.
 
 ## Operational Boundaries
 
