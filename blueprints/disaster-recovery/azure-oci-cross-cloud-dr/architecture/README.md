@@ -1,6 +1,6 @@
 # Azure + OCI Cross-Cloud DR Architecture
 
-This is the deployment architecture for `blueprints/disaster-recovery/azure-oci-cross-cloud-dr`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/disaster-recovery/azure-oci-cross-cloud-dr`. The PNG provides a GitHub-readable preview; the draw.io source preserves editable shapes and official OCI icons.
 
 ## Deployment Purpose
 
@@ -15,41 +15,53 @@ this Terraform folder does not provision or test those traffic paths.
 | Boundary | `blueprints/disaster-recovery/azure-oci-cross-cloud-dr` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Optional OCI network and evidence resources plus metadata for an externally built Azure standby, connectivity path, and DNS workflow. |
 | Terraform components | `oci_core_vcn.primary`, `oci_core_route_table.primary`, `oci_core_security_list.primary_app`, `oci_core_subnet.primary_app`, `oci_objectstorage_namespace.this`, `oci_objectstorage_bucket.dr_evidence`, `oci_ons_notification_topic.dr_alert`, `terraform_data.connectivity_contract`, `terraform_data.dns_failover_contract`, `terraform_data.runbook_contract` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram shows source-default resources, conditional controls and configuration dependencies; it is not runtime evidence. |
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Azure + OCI Cross-Cloud DR                                                                              |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {OCI primary cloud boundary}                                                                             |
-|         |                                                                                                |
-|         |-- [Primary VCN + route table + security list + app subnet]                                    |
-|         |-- [Object Storage namespace]                                                                   |
-|         |-- [DR evidence bucket]                                                                         |
-|         |-- [DR alert topic]                                                                             |
-|         `-- [terraform_data contracts]                                                                   |
-|               |-- connectivity mode: interconnect or without-interconnect                                |
-|               |-- DNS failover: app FQDN, primary endpoint, standby endpoint                            |
-|               `-- runbook: drill cadence, RTO/RPO, failover/failback steps                              |
-|                                                                                                          |
-| {Azure standby cloud boundary}                                                                            |
-|         |                                                                                                |
-|         v                                                                                                |
-| (Standby app endpoint)                                                                                   |
-|                                                                                                          |
-| (Clients) -> (external DNS steering layer) -> (OCI primary endpoint)                                     |
-|                               `-> Azure standby endpoint on failover                                    |
-|                                                                                                          |
-| Guardrail: OCI remains primary in this blueprint variant.                                                |
-+----------------------------------------------------------------------------------------------------------+
+![Azure + OCI Cross-Cloud DR Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep this source aligned with
+the PNG documentation preview after diagram changes.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. From the repository root,
+run `python3 scripts/diagrams/compliance-dr-batch-01.py --render` after installing
+the skill and official toolkit. The toolkit is not redistributed here.
+
+The view distinguishes default service enablement, conditional controls, external
+prerequisites, provider/compartment scope and configuration contracts. Defaults
+are source values, not evidence of a deployed or certified architecture.
+
+Diagram documentation reviewed on 2026-10-28 against Terraform, variables, locals,
+providers, referenced modules and any accompanying Bicep template. No cloud
+resources were created and no Terraform/provider validation date was updated.
+Arrows do not establish packet flow, assessment coverage, replication or a
+successful recovery drill.
+
+## Resource Detail And Coverage
+
+The main draw.io document includes the overview and a resource-detail page for
+each cloud below. Every root/transitive OCI declaration and companion-template
+declaration is mapped to a named resource card, including conditional resources.
+Collection cards represent source declarations, not resolved deployment counts.
+
+| Scope | Source declarations | PNG detail | Editable detail |
+| --- | --- | --- | --- |
+| Azure | 7 | [PNG](azure-resources.png) | [draw.io](azure-resources.drawio) |
+| Contracts | 4 | [PNG](contracts-resources.png) | [draw.io](contracts-resources.drawio) |
+| OCI | 7 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
+
+[Resource inventory and source-to-node coverage](resource-inventory.json).
+Contracts are local Terraform metadata resources, not deployed cloud services.
+Data lookups are recorded separately. Pinned module sources and source hashes
+are retained in the inventory; the overview describes default enablement.
+
+After regenerating the overview, rebuild all resource pages and verify coverage:
+
+```bash
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint disaster-recovery/azure-oci-cross-cloud-dr --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint disaster-recovery/azure-oci-cross-cloud-dr --check
 ```
 
 ## Terraform Components

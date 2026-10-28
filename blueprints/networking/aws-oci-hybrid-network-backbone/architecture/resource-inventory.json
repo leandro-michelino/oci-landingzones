@@ -1,0 +1,500 @@
+{
+  "schema_version": 1,
+  "blueprint": "networking/aws-oci-hybrid-network-backbone",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "AWS": 17,
+    "Contracts": 3,
+    "OCI": 10
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_vcn.backbone",
+      "type": "oci_core_vcn",
+      "symbol": "backbone",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_backbone_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "backbone"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_internet_gateway.backbone",
+      "type": "oci_core_internet_gateway",
+      "symbol": "backbone",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_backbone_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n10",
+        "source_symbol": "backbone"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_route_table.backbone",
+      "type": "oci_core_route_table",
+      "symbol": "backbone",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_backbone_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n22",
+        "source_symbol": "backbone"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_security_list.backbone",
+      "type": "oci_core_security_list",
+      "symbol": "backbone",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_backbone_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n46",
+        "source_symbol": "backbone"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_subnet.backbone",
+      "type": "oci_core_subnet",
+      "symbol": "backbone",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_backbone_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n58",
+        "source_symbol": "backbone"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_drg.primary",
+      "type": "oci_core_drg",
+      "symbol": "primary",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.existing_oci_primary_drg_id == null ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n60",
+        "source_symbol": "primary"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_drg_attachment.backbone",
+      "type": "oci_core_drg_attachment",
+      "symbol": "backbone",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.attach_oci_backbone_vcn_to_drg ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n69",
+        "source_symbol": "backbone"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_cpe.aws",
+      "type": "oci_core_cpe",
+      "symbol": "aws",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_site_to_site_vpn ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n71",
+        "source_symbol": "aws"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_ipsec.aws",
+      "type": "oci_core_ipsec",
+      "symbol": "aws",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_site_to_site_vpn ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n81",
+        "source_symbol": "aws"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_ons_notification_topic.backbone_alert",
+      "type": "oci_ons_notification_topic",
+      "symbol": "backbone_alert",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_backbone_alert_topic ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n83",
+        "source_symbol": "backbone_alert"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.oci_network_contract",
+      "type": "terraform_data",
+      "symbol": "oci_network_contract",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "oci_network_contract"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.connectivity_contract",
+      "type": "terraform_data",
+      "symbol": "connectivity_contract",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n6",
+        "source_symbol": "connectivity_contract"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.routing_contract",
+      "type": "terraform_data",
+      "symbol": "routing_contract",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n8",
+        "source_symbol": "routing_contract"
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "BackboneVpc",
+      "symbol": "BackboneVpc",
+      "type": "AWS::EC2::VPC",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "BackboneVpc"
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "BackboneLogKey",
+      "symbol": "BackboneLogKey",
+      "type": "AWS::KMS::Key",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "node_id": "n6",
+        "source_symbol": "BackboneLogKey"
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "BackboneFlowLogGroup",
+      "symbol": "BackboneFlowLogGroup",
+      "type": "AWS::Logs::LogGroup",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "node_id": "n8",
+        "source_symbol": "BackboneFlowLogGroup"
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "BackboneFlowLogRole",
+      "symbol": "BackboneFlowLogRole",
+      "type": "AWS::IAM::Role",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "node_id": "n10",
+        "source_symbol": "BackboneFlowLogRole"
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "BackboneVpcFlowLog",
+      "symbol": "BackboneVpcFlowLog",
+      "type": "AWS::EC2::FlowLog",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "node_id": "n12",
+        "source_symbol": "BackboneVpcFlowLog"
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "InternetGateway",
+      "symbol": "InternetGateway",
+      "type": "AWS::EC2::InternetGateway",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "node_id": "n14",
+        "source_symbol": "InternetGateway"
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "VpcIgwAttachment",
+      "symbol": "VpcIgwAttachment",
+      "type": "AWS::EC2::VPCGatewayAttachment",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "node_id": "n16",
+        "source_symbol": "VpcIgwAttachment"
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "BackboneRouteTable",
+      "symbol": "BackboneRouteTable",
+      "type": "AWS::EC2::RouteTable",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "node_id": "n18",
+        "source_symbol": "BackboneRouteTable"
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "DefaultRoute",
+      "symbol": "DefaultRoute",
+      "type": "AWS::EC2::Route",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "node_id": "n20",
+        "source_symbol": "DefaultRoute"
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "BackboneSubnet",
+      "symbol": "BackboneSubnet",
+      "type": "AWS::EC2::Subnet",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "node_id": "n22",
+        "source_symbol": "BackboneSubnet"
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "SubnetRouteAssociation",
+      "symbol": "SubnetRouteAssociation",
+      "type": "AWS::EC2::SubnetRouteTableAssociation",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "node_id": "n24",
+        "source_symbol": "SubnetRouteAssociation"
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "BackboneSecurityGroup",
+      "symbol": "BackboneSecurityGroup",
+      "type": "AWS::EC2::SecurityGroup",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "node_id": "n26",
+        "source_symbol": "BackboneSecurityGroup"
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "TransitGateway",
+      "symbol": "TransitGateway",
+      "type": "AWS::EC2::TransitGateway",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "node_id": "n28",
+        "source_symbol": "TransitGateway"
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "TransitGatewayAttachment",
+      "symbol": "TransitGatewayAttachment",
+      "type": "AWS::EC2::TransitGatewayAttachment",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "node_id": "n30",
+        "source_symbol": "TransitGatewayAttachment"
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "OciCustomerGateway",
+      "symbol": "OciCustomerGateway",
+      "type": "AWS::EC2::CustomerGateway",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Condition: EnableSiteToSiteVpnCondition",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "node_id": "n32",
+        "source_symbol": "OciCustomerGateway"
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "OciSiteToSiteVpnConnection",
+      "symbol": "OciSiteToSiteVpnConnection",
+      "type": "AWS::EC2::VPNConnection",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Condition: EnableSiteToSiteVpnCondition",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "node_id": "n34",
+        "source_symbol": "OciSiteToSiteVpnConnection"
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "BackboneToOciTransitRoute",
+      "symbol": "BackboneToOciTransitRoute",
+      "type": "AWS::EC2::Route",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Condition: EnableSiteToSiteVpnCondition",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "node_id": "n36",
+        "source_symbol": "BackboneToOciTransitRoute"
+      }
+    }
+  ],
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/networking/aws-oci-hybrid-network-backbone/locals.tf",
+      "revision": "working-tree",
+      "sha256": "56ae47e6d9149fd455f44b992d57ff462f484534549927201323dc55584cc6da"
+    },
+    {
+      "path": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "sha256": "fa2eaea8674025aad45496cac4bcb16f02f2fed6dd28bc63fb0f53082e5f828d"
+    },
+    {
+      "path": "blueprints/networking/aws-oci-hybrid-network-backbone/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "fb12fc37f857d6f0bce6973071599204dfec8846c948c5cead2ddbcf8d90e01b"
+    },
+    {
+      "path": "blueprints/networking/aws-oci-hybrid-network-backbone/providers.tf",
+      "revision": "working-tree",
+      "sha256": "61d51863680b66dcc2092245706bd8cae8d35d6e26b2d0a1135a94c3342d7668"
+    },
+    {
+      "path": "blueprints/networking/aws-oci-hybrid-network-backbone/variables.tf",
+      "revision": "working-tree",
+      "sha256": "b9c5e1c67a6b9db881abddc656b21c4733f19c197e0f866665a0b8e52e4028a1"
+    },
+    {
+      "path": "blueprints/networking/aws-oci-hybrid-network-backbone/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "blueprints/networking/aws-oci-hybrid-network-backbone/aws/main.yaml",
+      "sha256": "7458658cb57762c0c619edf5db4a07f7675cb19edb671051ff35106c4ac9819a"
+    }
+  ]
+}

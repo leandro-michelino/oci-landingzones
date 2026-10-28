@@ -1,6 +1,6 @@
 # Full Stack Disaster Recovery Architecture
 
-This is the deployment architecture for `blueprints/disaster-recovery/fsdr`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/disaster-recovery/fsdr`. The PNG provides a GitHub-readable preview; the draw.io source preserves editable shapes and official OCI icons.
 
 ## Deployment Purpose
 
@@ -13,39 +13,30 @@ Creates OCI Full Stack Disaster Recovery protection groups, log buckets, and an 
 | Boundary | `blueprints/disaster-recovery/fsdr` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Creates OCI Full Stack Disaster Recovery protection groups, log buckets, and an optional DR plan across primary and standby regions. |
 | Terraform components | `oci_objectstorage_namespace.primary`, `oci_objectstorage_namespace.standby`, `oci_objectstorage_bucket.primary_dr_logs`, `oci_objectstorage_bucket.standby_dr_logs`, `oci_disaster_recovery_dr_protection_group.primary`, `oci_disaster_recovery_dr_protection_group.standby`, `oci_disaster_recovery_dr_plan.standby` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram shows source-default resources, conditional controls and configuration dependencies; it is not runtime evidence. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Full Stack Disaster Recovery                                                                             |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Primary OCI provider alias}                         {Standby OCI provider alias}                        |
-|         |                                                       |                                        |
-|         v                                                       v                                        |
-| [primary region]                                      [standby region]                                   |
-|         |-- [Object Storage namespace]                         |-- [Object Storage namespace]            |
-|         |-- [primary DR log bucket]                             |-- [standby DR log bucket]              |
-|         `-- [primary DR protection group] <---- association ----> [standby DR protection group]         |
-|                                                                  |                                       |
-|                                                                  v                                       |
-|                                                       [standby DR plan, optional]                        |
-|                                                       |-- switchover / failover orchestration            |
-|                                                       `-- members supplied from application IDs         |
-|                                                                                                          |
-| Control flow: log buckets, primary group, associated standby group, then optional standby plan.         |
-| Runtime flow: application replication remains outside this folder; FSDR orchestrates recovery actions.   |
-| Hand-off: primary/standby protection group IDs, log bucket names, and DR plan ID.                        |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Full Stack Disaster Recovery Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep this source aligned with
+the PNG documentation preview after diagram changes.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. From the repository root,
+run `python3 scripts/diagrams/compliance-dr-batch-01.py --render` after installing
+the skill and official toolkit. The toolkit is not redistributed here.
+
+The view distinguishes default service enablement, conditional controls, external
+prerequisites, provider/compartment scope and configuration contracts. Defaults
+are source values, not evidence of a deployed or certified architecture.
+
+Diagram documentation reviewed on 2026-10-28 against Terraform, variables, locals,
+providers, referenced modules and any accompanying Bicep template. No cloud
+resources were created and no Terraform/provider validation date was updated.
+Arrows do not establish packet flow, assessment coverage, replication or a
+successful recovery drill.
 
 ## Terraform Components
 

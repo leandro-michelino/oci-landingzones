@@ -124,5 +124,76 @@ On October 28, 2026, all five passed layout checks, PNG export and visual review
 repository contracts and Markdown links passed. No cloud resource was created
 and no historical Terraform/provider validation date was changed.
 
-Latest coverage: 34 of 80 existing blueprint entry points have editable draw.io
-and PNG architecture diagrams; 46 remain pending conversion.
+Coverage after the preceding batch was 34 of 80. Latest coverage is recorded below.
+
+
+## Compliance And Disaster Recovery Diagrams
+
+The following five patterns now have draw.io sources and PNG previews replacing
+ASCII. The diagrams distinguish service creation from compliance outcomes,
+Data Safe registration from database provisioning, FSDR associations from workload
+replication, and cross-cloud metadata contracts from implemented failover.
+
+| Batch order | Blueprint | PNG preview | Editable source |
+| --- | --- | --- | --- |
+| 11 | `compliance/zero-trust` | [PNG](../../blueprints/compliance/zero-trust/architecture/architecture.png) | [draw.io](../../blueprints/compliance/zero-trust/architecture/architecture.drawio) |
+| 12 | `compliance/healthcare-pci` | [PNG](../../blueprints/compliance/healthcare-pci/architecture/architecture.png) | [draw.io](../../blueprints/compliance/healthcare-pci/architecture/architecture.drawio) |
+| 13 | `compliance/security-posture` | [PNG](../../blueprints/compliance/security-posture/architecture/architecture.png) | [draw.io](../../blueprints/compliance/security-posture/architecture/architecture.drawio) |
+| 14 | `disaster-recovery/fsdr` | [PNG](../../blueprints/disaster-recovery/fsdr/architecture/architecture.png) | [draw.io](../../blueprints/disaster-recovery/fsdr/architecture/architecture.drawio) |
+| 15 | `disaster-recovery/azure-oci-cross-cloud-dr` | [PNG](../../blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/architecture.png) | [draw.io](../../blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/architecture.drawio) |
+
+Regenerate with the same skill and official toolkit prerequisites:
+
+```bash
+python3 scripts/diagrams/compliance-dr-batch-01.py --render
+```
+
+On October 28, 2026, all five passed layout checks, draw.io export and visual
+review; repository contracts and Markdown links passed. No provisioning,
+provider revalidation, compliance assessment or recovery drill was performed.
+Historical validation metadata remains unchanged.
+
+Latest coverage: 39 of 80 existing blueprint entry points have editable draw.io
+and PNG diagrams; 41 remain pending conversion.
+
+
+## Cross-Cloud Resource Coverage
+
+Cross-cloud overview diagrams are accompanied by explicit resource maps for every
+cloud represented in the source templates. Main draw.io documents include the
+overview plus each resource-detail page. Each companion PNG has one named card
+per source resource declaration, including conditional and collection declarations.
+The separate contracts page enumerates local Terraform metadata, not cloud services.
+
+The coverage generator reads root Terraform, recursively follows pinned
+same-repository module sources, and enumerates companion Bicep, CloudFormation
+and Terraform templates. OCI, Azure, AWS and GCP Terraform resource prefixes
+are classified separately. No GCP resource definitions were found in the current
+repository; a GCP resource map is generated when GCP definitions are present.
+
+The following completed cross-cloud overviews have full resource-detail companions:
+
+| Blueprint | OCI detail | External-cloud detail | Source coverage |
+| --- | --- | --- | --- |
+| `networking/hub-spoke-with-azure-vwan-expressroute` | [OCI PNG](../../blueprints/networking/hub-spoke-with-azure-vwan-expressroute/architecture/oci-resources.png) | [AZURE PNG](../../blueprints/networking/hub-spoke-with-azure-vwan-expressroute/architecture/azure-resources.png) | [Inventory](../../blueprints/networking/hub-spoke-with-azure-vwan-expressroute/architecture/resource-inventory.json) |
+| `networking/azure-vwan-oci-drg-transit` | [OCI PNG](../../blueprints/networking/azure-vwan-oci-drg-transit/architecture/oci-resources.png) | [AZURE PNG](../../blueprints/networking/azure-vwan-oci-drg-transit/architecture/azure-resources.png) | [Inventory](../../blueprints/networking/azure-vwan-oci-drg-transit/architecture/resource-inventory.json) |
+| `networking/azure-oci-dual-connectivity` | [OCI PNG](../../blueprints/networking/azure-oci-dual-connectivity/architecture/oci-resources.png) | [AZURE PNG](../../blueprints/networking/azure-oci-dual-connectivity/architecture/azure-resources.png) | [Inventory](../../blueprints/networking/azure-oci-dual-connectivity/architecture/resource-inventory.json) |
+| `networking/aws-oci-hybrid-network-backbone` | [OCI PNG](../../blueprints/networking/aws-oci-hybrid-network-backbone/architecture/oci-resources.png) | [AWS PNG](../../blueprints/networking/aws-oci-hybrid-network-backbone/architecture/aws-resources.png) | [Inventory](../../blueprints/networking/aws-oci-hybrid-network-backbone/architecture/resource-inventory.json) |
+| `disaster-recovery/azure-oci-cross-cloud-dr` | [OCI PNG](../../blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/oci-resources.png) | [AZURE PNG](../../blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/azure-resources.png) | [Inventory](../../blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/resource-inventory.json) |
+
+Regenerate overviews first, then rebuild and validate the resource-detail pages:
+
+```bash
+python3 scripts/diagrams/multicloud-resource-coverage.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --check
+```
+
+The inventory maps source addresses/symbols to diagram node IDs and retains source
+file hashes and module revisions. Coverage checks compare declarations with the
+current source, verify diagram labels and ensure PNG files exist. Declarations
+are not a Terraform plan, resolved instance count or deployment inventory.
+
+For subsequent cross-cloud conversions, include every cloud's source-declared
+resources, preserve conditional/collection status, and run the coverage generator
+after the overview export. External services only referenced by input IDs remain
+explicit prerequisites rather than resources purportedly created by the blueprint.

@@ -1,6 +1,6 @@
 # Healthcare PCI Compliance Architecture
 
-This is the deployment architecture for `blueprints/compliance/healthcare-pci`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/compliance/healthcare-pci`. The PNG provides a GitHub-readable preview; the draw.io source preserves editable shapes and official OCI icons.
 
 ## Deployment Purpose
 
@@ -17,33 +17,25 @@ Deploys a regulated landing-zone control pack with IAM guardrail policy, budget 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Healthcare PCI Compliance                                                                                |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Compliance landing-zone boundary}                                                                       |
-|         |                                                                                                |
-|         v                                                                                                |
-| [Healthcare / PCI guardrail, budget, and Data Safe controls]                                             |
-|         |-- identity and compartment guardrails                                                          |
-|         |-- logging, monitoring, budget, and evidence paths                                              |
-|         |-- private or inspected network path where applicable                                           |
-|         `-- workload-specific security service attachments                                               |
-|                  |                                                                                       |
-|                  v                                                                                       |
-| [review evidence lane] findings -> logs -> alarms -> operator action                                     |
-|                                                                                                          |
-| Control flow: foundation controls first, then network or workload-specific compliance services.          |
-| Trust boundary: the compliance scope is explicit; exceptions should be documented before apply.          |
-| Hand-off: guardrail policies, budget and alert IDs, network/security IDs, and review evidence locations. |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Healthcare PCI Compliance Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep this source aligned with
+the PNG documentation preview after diagram changes.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. From the repository root,
+run `python3 scripts/diagrams/compliance-dr-batch-01.py --render` after installing
+the skill and official toolkit. The toolkit is not redistributed here.
+
+The view distinguishes default service enablement, conditional controls, external
+prerequisites, provider/compartment scope and configuration contracts. Defaults
+are source values, not evidence of a deployed or certified architecture.
+
+Diagram documentation reviewed on 2026-10-28 against Terraform, variables, locals,
+providers, referenced modules and any accompanying Bicep template. No cloud
+resources were created and no Terraform/provider validation date was updated.
+Arrows do not establish packet flow, assessment coverage, replication or a
+successful recovery drill.
 
 ## Terraform Components
 

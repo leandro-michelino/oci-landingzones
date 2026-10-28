@@ -1,0 +1,485 @@
+{
+  "schema_version": 1,
+  "blueprint": "networking/azure-vwan-oci-drg-transit",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "Azure": 13,
+    "Contracts": 6,
+    "OCI": 10
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_vcn.primary",
+      "type": "oci_core_vcn",
+      "symbol": "primary",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "primary"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_internet_gateway.primary",
+      "type": "oci_core_internet_gateway",
+      "symbol": "primary",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n10",
+        "source_symbol": "primary"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_route_table.primary",
+      "type": "oci_core_route_table",
+      "symbol": "primary",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n22",
+        "source_symbol": "primary"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_security_list.primary_hub",
+      "type": "oci_core_security_list",
+      "symbol": "primary_hub",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n46",
+        "source_symbol": "primary_hub"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_subnet.primary_hub",
+      "type": "oci_core_subnet",
+      "symbol": "primary_hub",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n58",
+        "source_symbol": "primary_hub"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_drg.primary",
+      "type": "oci_core_drg",
+      "symbol": "primary",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.existing_drg_id == null ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n60",
+        "source_symbol": "primary"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_drg_attachment.primary",
+      "type": "oci_core_drg_attachment",
+      "symbol": "primary",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n69",
+        "source_symbol": "primary"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_cpe.azure",
+      "type": "oci_core_cpe",
+      "symbol": "azure",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_ipsec_fallback ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n71",
+        "source_symbol": "azure"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_ipsec.azure",
+      "type": "oci_core_ipsec",
+      "symbol": "azure",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_ipsec_fallback ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n81",
+        "source_symbol": "azure"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_ons_notification_topic.transit_alert",
+      "type": "oci_ons_notification_topic",
+      "symbol": "transit_alert",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_transit_alert_topic ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n83",
+        "source_symbol": "transit_alert"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.oci_network_contract",
+      "type": "terraform_data",
+      "symbol": "oci_network_contract",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "oci_network_contract"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.interconnect_contract",
+      "type": "terraform_data",
+      "symbol": "interconnect_contract",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n6",
+        "source_symbol": "interconnect_contract"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.ipsec_fallback_contract",
+      "type": "terraform_data",
+      "symbol": "ipsec_fallback_contract",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n8",
+        "source_symbol": "ipsec_fallback_contract"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.transit_contract",
+      "type": "terraform_data",
+      "symbol": "transit_contract",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n10",
+        "source_symbol": "transit_contract"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.dns_contract",
+      "type": "terraform_data",
+      "symbol": "dns_contract",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_dns_contract ? 1 : 0",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n12",
+        "source_symbol": "dns_contract"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.runbook_contract",
+      "type": "terraform_data",
+      "symbol": "runbook_contract",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n14",
+        "source_symbol": "runbook_contract"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "virtualWan",
+      "symbol": "virtualWan",
+      "type": "Microsoft.Network/virtualWans",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "virtualWan"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "virtualHub",
+      "symbol": "virtualHub",
+      "type": "Microsoft.Network/virtualHubs",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n6",
+        "source_symbol": "virtualHub"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "vhubRouteTable",
+      "symbol": "vhubRouteTable",
+      "type": "Microsoft.Network/virtualHubs/hubRouteTables",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n8",
+        "source_symbol": "vhubRouteTable"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "vnet",
+      "symbol": "vnet",
+      "type": "Microsoft.Network/virtualNetworks",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n10",
+        "source_symbol": "vnet"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "networkSecurityGroup",
+      "symbol": "networkSecurityGroup",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n12",
+        "source_symbol": "networkSecurityGroup"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "workloadRouteTable",
+      "symbol": "workloadRouteTable",
+      "type": "Microsoft.Network/routeTables",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n14",
+        "source_symbol": "workloadRouteTable"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "workloadSubnet",
+      "symbol": "workloadSubnet",
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n16",
+        "source_symbol": "workloadSubnet"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "gatewaySubnet",
+      "symbol": "gatewaySubnet",
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "if (deployVpnGateway) {",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n18",
+        "source_symbol": "gatewaySubnet"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "vhubConnection",
+      "symbol": "vhubConnection",
+      "type": "Microsoft.Network/virtualHubs/hubVirtualNetworkConnections",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n20",
+        "source_symbol": "vhubConnection"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "vpnGatewayPublicIp",
+      "symbol": "vpnGatewayPublicIp",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "if (deployVpnGateway) {",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n22",
+        "source_symbol": "vpnGatewayPublicIp"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "vpnGateway",
+      "symbol": "vpnGateway",
+      "type": "Microsoft.Network/virtualNetworkGateways",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "if (deployVpnGateway) {",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n24",
+        "source_symbol": "vpnGateway"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "localNetworkGateway",
+      "symbol": "localNetworkGateway",
+      "type": "Microsoft.Network/localNetworkGateways",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "if (deployVpnGateway) {",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n26",
+        "source_symbol": "localNetworkGateway"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "vpnConnection",
+      "symbol": "vpnConnection",
+      "type": "Microsoft.Network/connections",
+      "source": "blueprints/networking/azure-vwan-oci-drg-transit/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "if (deployVpnGateway) {",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n28",
+        "source_symbol": "vpnConnection"
+      }
+    }
+  ],
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/networking/azure-vwan-oci-drg-transit/locals.tf",
+      "revision": "working-tree",
+      "sha256": "643496e008106df0fcdab418adf094e9e018391b5292425735b5e7d964d669b2"
+    },
+    {
+      "path": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
+      "revision": "working-tree",
+      "sha256": "bd55ca15d52e35a1e74d9795ce1fa92c1bfa97c12c5d9274d5f30858b2a4fe87"
+    },
+    {
+      "path": "blueprints/networking/azure-vwan-oci-drg-transit/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "08ffd8b0ec246d36e650d1aaf9b936f4a48d10f4f6c00eb1f51e724f31531bd1"
+    },
+    {
+      "path": "blueprints/networking/azure-vwan-oci-drg-transit/providers.tf",
+      "revision": "working-tree",
+      "sha256": "61d51863680b66dcc2092245706bd8cae8d35d6e26b2d0a1135a94c3342d7668"
+    },
+    {
+      "path": "blueprints/networking/azure-vwan-oci-drg-transit/variables.tf",
+      "revision": "working-tree",
+      "sha256": "f710829be41550f10e95ed6bb3b9c131ba219d15aaccffa149d76a53de97c3f9"
+    },
+    {
+      "path": "blueprints/networking/azure-vwan-oci-drg-transit/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "blueprints/networking/azure-vwan-oci-drg-transit/azure/main.bicep",
+      "sha256": "64de7166e6425198608b7f90c78ef78c266e7ade0b3e13ba706d2445133b88d5"
+    }
+  ]
+}

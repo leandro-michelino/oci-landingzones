@@ -18,40 +18,25 @@ Events-based response paths, report archives, alarms, and IAM policy hand-offs.
 
 ## Architecture
 
-```text
-+--------------------------------------------------------------------------------+
-|                     Security Posture Automation Blueprint                       |
-+--------------------------------------------------------------------------------+
-|                                                                                |
-|  Protected Compartment / Resource Scope                                        |
-|      |                                                                         |
-|      +--> Cloud Guard Target                                                   |
-|      |       |                                                                 |
-|      |       +--> Detector recipes                                             |
-|      |       +--> Responder recipes                                            |
-|      |       `--> Problems and findings                                        |
-|      |                                                                         |
-|      +--> Vulnerability Scanning                                               |
-|      |       |                                                                 |
-|      |       +--> Host scan recipe                                             |
-|      |       +--> Host scan target                                             |
-|      |       `--> Scheduled scan results                                       |
-|      |                                                                         |
-|      v                                                                         |
-|  OCI Events Rules                                                              |
-|      |                                                                         |
-|      +--> ONS topic for notify-only flows                                      |
-|      +--> Functions for reviewed auto-remediation                              |
-|      `--> Streaming for downstream security pipelines                          |
-|                                                                                |
-|  Evidence And Operations                                                       |
-|      |                                                                         |
-|      +--> Object Storage report bucket                                         |
-|      +--> Monitoring alarms                                                    |
-|      +--> Tags and ownership metadata                                          |
-|      `--> IAM policies for admin / responder / auditor roles                   |
-+--------------------------------------------------------------------------------+
-```
+![Security Posture Automation Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep this source aligned with
+the PNG documentation preview after diagram changes.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. From the repository root,
+run `python3 scripts/diagrams/compliance-dr-batch-01.py --render` after installing
+the skill and official toolkit. The toolkit is not redistributed here.
+
+The view distinguishes default service enablement, conditional controls, external
+prerequisites, provider/compartment scope and configuration contracts. Defaults
+are source values, not evidence of a deployed or certified architecture.
+
+Diagram documentation reviewed on 2026-10-28 against Terraform, variables, locals,
+providers, referenced modules and any accompanying Bicep template. No cloud
+resources were created and no Terraform/provider validation date was updated.
+Arrows do not establish packet flow, assessment coverage, replication or a
+successful recovery drill.
 
 ## Terraform Components
 

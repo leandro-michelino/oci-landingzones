@@ -1,0 +1,331 @@
+{
+  "schema_version": 1,
+  "blueprint": "disaster-recovery/azure-oci-cross-cloud-dr",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "Azure": 7,
+    "Contracts": 4,
+    "OCI": 7
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_vcn.primary",
+      "type": "oci_core_vcn",
+      "symbol": "primary",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "primary"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_internet_gateway.primary",
+      "type": "oci_core_internet_gateway",
+      "symbol": "primary",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n10",
+        "source_symbol": "primary"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_route_table.primary",
+      "type": "oci_core_route_table",
+      "symbol": "primary",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n22",
+        "source_symbol": "primary"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_security_list.primary_app",
+      "type": "oci_core_security_list",
+      "symbol": "primary_app",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n46",
+        "source_symbol": "primary_app"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_subnet.primary_app",
+      "type": "oci_core_subnet",
+      "symbol": "primary_app",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n58",
+        "source_symbol": "primary_app"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.oci_network_contract",
+      "type": "terraform_data",
+      "symbol": "oci_network_contract",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "oci_network_contract"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_bucket.dr_evidence",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "dr_evidence",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_dr_evidence_bucket ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n60",
+        "source_symbol": "dr_evidence"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_ons_notification_topic.dr_alert",
+      "type": "oci_ons_notification_topic",
+      "symbol": "dr_alert",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_dr_alert_topic ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n70",
+        "source_symbol": "dr_alert"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.connectivity_contract",
+      "type": "terraform_data",
+      "symbol": "connectivity_contract",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n6",
+        "source_symbol": "connectivity_contract"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.dns_failover_contract",
+      "type": "terraform_data",
+      "symbol": "dns_failover_contract",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_dns_failover_contract ? 1 : 0",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n8",
+        "source_symbol": "dns_failover_contract"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.runbook_contract",
+      "type": "terraform_data",
+      "symbol": "runbook_contract",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_runbook_contract ? 1 : 0",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n10",
+        "source_symbol": "runbook_contract"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "vnet",
+      "symbol": "vnet",
+      "type": "Microsoft.Network/virtualNetworks",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "vnet"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "routeTable",
+      "symbol": "routeTable",
+      "type": "Microsoft.Network/routeTables",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n6",
+        "source_symbol": "routeTable"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "networkSecurityGroup",
+      "symbol": "networkSecurityGroup",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n8",
+        "source_symbol": "networkSecurityGroup"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "containerAppSubnet",
+      "symbol": "containerAppSubnet",
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n10",
+        "source_symbol": "containerAppSubnet"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "logAnalyticsWorkspace",
+      "symbol": "logAnalyticsWorkspace",
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n12",
+        "source_symbol": "logAnalyticsWorkspace"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "managedEnvironment",
+      "symbol": "managedEnvironment",
+      "type": "Microsoft.App/managedEnvironments",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n14",
+        "source_symbol": "managedEnvironment"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "containerApp",
+      "symbol": "containerApp",
+      "type": "Microsoft.App/containerApps",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n16",
+        "source_symbol": "containerApp"
+      }
+    }
+  ],
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_objectstorage_namespace.this",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "this",
+      "source": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_dr_evidence_bucket ? 1 : 0"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/locals.tf",
+      "revision": "working-tree",
+      "sha256": "e129ec807420aeade71b8191747876ddc35bca0adb312a95baf00cb7708fb698"
+    },
+    {
+      "path": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/main.tf",
+      "revision": "working-tree",
+      "sha256": "a6ceef26d0b58d608488e57b2df43c0dfd267b8e8a772ed1605cf97fa4d1aafd"
+    },
+    {
+      "path": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "0201b5f7cd4d09b4a4b3f6f28c53aee5f6769206d7d17b7696b07edd7a7b3b5b"
+    },
+    {
+      "path": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/providers.tf",
+      "revision": "working-tree",
+      "sha256": "ac00704a97385dddcd85a46ca9077c15bf6c2ce90a4ac52e5760d21892fa9c09"
+    },
+    {
+      "path": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/variables.tf",
+      "revision": "working-tree",
+      "sha256": "60fa5b029321f3e606edd03daef211029530954064cbf751ada425427f6cfa15"
+    },
+    {
+      "path": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/azure/main.bicep",
+      "sha256": "99c887d06052f57be0f61bacbfd1835d54d9c18b2086a3c7f9644dea4ad3be6c"
+    }
+  ]
+}

@@ -1,0 +1,778 @@
+{
+  "schema_version": 1,
+  "blueprint": "networking/hub-spoke-with-azure-vwan-expressroute",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "Azure": 9,
+    "Contracts": 1,
+    "OCI": 21
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.hub_vcn.oci_core_vcn.this",
+      "type": "oci_core_vcn",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "module_inputs": [
+        "module.network.module.hub_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "this"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.hub_vcn.oci_core_internet_gateway.this",
+      "type": "oci_core_internet_gateway",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_internet_gateway ? 1 : 0",
+      "module_inputs": [
+        "module.network.module.hub_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n10",
+        "source_symbol": "this"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.hub_vcn.oci_core_nat_gateway.this",
+      "type": "oci_core_nat_gateway",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_nat_gateway ? 1 : 0",
+      "module_inputs": [
+        "module.network.module.hub_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n22",
+        "source_symbol": "this"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.hub_vcn.oci_core_service_gateway.this",
+      "type": "oci_core_service_gateway",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_service_gateway ? 1 : 0",
+      "module_inputs": [
+        "module.network.module.hub_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n31",
+        "source_symbol": "this"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.hub_vcn.oci_core_security_list.this",
+      "type": "oci_core_security_list",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.security_lists",
+      "module_inputs": [
+        "module.network.module.hub_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n41",
+        "source_symbol": "this"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.hub_vcn.oci_core_route_table.this",
+      "type": "oci_core_route_table",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.route_tables",
+      "module_inputs": [
+        "module.network.module.hub_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n53",
+        "source_symbol": "this"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.hub_vcn.oci_core_subnet.this",
+      "type": "oci_core_subnet",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.subnets",
+      "module_inputs": [
+        "module.network.module.hub_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n77",
+        "source_symbol": "this"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.drg.oci_core_drg.this",
+      "type": "oci_core_drg",
+      "symbol": "this",
+      "source": "modules/networking/drg/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "module_inputs": [
+        "module.network.module.drg (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n79",
+        "source_symbol": "this"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.drg.oci_core_drg_attachment.vcn",
+      "type": "oci_core_drg_attachment",
+      "symbol": "vcn",
+      "source": "modules/networking/drg/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.vcn_attachments",
+      "module_inputs": [
+        "module.network.module.drg (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n88",
+        "source_symbol": "vcn"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.spoke_vcns.oci_core_vcn.this",
+      "type": "oci_core_vcn",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "module_inputs": [
+        "module.network.module.spoke_vcns (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n90",
+        "source_symbol": "this"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.spoke_vcns.oci_core_internet_gateway.this",
+      "type": "oci_core_internet_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_internet_gateway ? 1 : 0",
+      "module_inputs": [
+        "module.network.module.spoke_vcns (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n96",
+        "source_symbol": "this"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.spoke_vcns.oci_core_nat_gateway.this",
+      "type": "oci_core_nat_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_nat_gateway ? 1 : 0",
+      "module_inputs": [
+        "module.network.module.spoke_vcns (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n108",
+        "source_symbol": "this"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.spoke_vcns.oci_core_service_gateway.this",
+      "type": "oci_core_service_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_service_gateway ? 1 : 0",
+      "module_inputs": [
+        "module.network.module.spoke_vcns (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n117",
+        "source_symbol": "this"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.spoke_vcns.oci_core_security_list.this",
+      "type": "oci_core_security_list",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.security_lists",
+      "module_inputs": [
+        "module.network.module.spoke_vcns (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n127",
+        "source_symbol": "this"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.spoke_vcns.oci_core_route_table.this",
+      "type": "oci_core_route_table",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.route_tables",
+      "module_inputs": [
+        "module.network.module.spoke_vcns (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n139",
+        "source_symbol": "this"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.spoke_vcns.oci_core_subnet.this",
+      "type": "oci_core_subnet",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.subnets",
+      "module_inputs": [
+        "module.network.module.spoke_vcns (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n163",
+        "source_symbol": "this"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.oci_core_drg_attachment.hub",
+      "type": "oci_core_drg_attachment",
+      "symbol": "hub",
+      "source": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n165",
+        "source_symbol": "hub"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.oci_core_drg_attachment.spokes",
+      "type": "oci_core_drg_attachment",
+      "symbol": "spokes",
+      "source": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "condition": "for_each = module.spoke_vcns",
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n167",
+        "source_symbol": "spokes"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.fastconnect.oci_core_virtual_circuit.this",
+      "type": "oci_core_virtual_circuit",
+      "symbol": "this",
+      "source": "modules/networking/fastconnect/main.tf",
+      "revision": "4fcd80386471010d9a4a22200e47edb1956bda11",
+      "condition": "count = var.enable_fastconnect ? 1 : 0",
+      "module_inputs": [
+        "module.fastconnect (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n169",
+        "source_symbol": "this"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.ipsec_vpn.oci_core_cpe.this",
+      "type": "oci_core_cpe",
+      "symbol": "this",
+      "source": "modules/networking/ipsec-vpn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_ipsec ? 1 : 0",
+      "module_inputs": [
+        "module.ipsec_vpn (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n171",
+        "source_symbol": "this"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.ipsec_vpn.oci_core_ipsec.this",
+      "type": "oci_core_ipsec",
+      "symbol": "this",
+      "source": "modules/networking/ipsec-vpn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_ipsec ? 1 : 0",
+      "module_inputs": [
+        "module.ipsec_vpn (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n181",
+        "source_symbol": "this"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.azure_vwan_contract",
+      "type": "terraform_data",
+      "symbol": "azure_vwan_contract",
+      "source": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "azure_vwan_contract"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "virtualWan",
+      "symbol": "virtualWan",
+      "type": "Microsoft.Network/virtualWans",
+      "source": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "virtualWan"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "virtualHub",
+      "symbol": "virtualHub",
+      "type": "Microsoft.Network/virtualHubs",
+      "source": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n6",
+        "source_symbol": "virtualHub"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "vhubRouteTable",
+      "symbol": "vhubRouteTable",
+      "type": "Microsoft.Network/virtualHubs/hubRouteTables",
+      "source": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n8",
+        "source_symbol": "vhubRouteTable"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "expressRouteGateway",
+      "symbol": "expressRouteGateway",
+      "type": "Microsoft.Network/expressRouteGateways",
+      "source": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "if (deployExpressRouteGateway) {",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n10",
+        "source_symbol": "expressRouteGateway"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "expressRouteConnection",
+      "symbol": "expressRouteConnection",
+      "type": "Microsoft.Network/expressRouteGateways/expressRouteConnections",
+      "source": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "if (deployExpressRouteGateway && !empty(expressRouteCircuitPeeringId)) {",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n12",
+        "source_symbol": "expressRouteConnection"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "networkSecurityGroups",
+      "symbol": "networkSecurityGroups",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "source": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "[for spokeVnet in spokeVnets: {",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n14",
+        "source_symbol": "networkSecurityGroups"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "vnets",
+      "symbol": "vnets",
+      "type": "Microsoft.Network/virtualNetworks",
+      "source": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "[for spokeVnet in spokeVnets: {",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n16",
+        "source_symbol": "vnets"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "workloadSubnets",
+      "symbol": "workloadSubnets",
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "source": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "[for (spokeVnet, i) in spokeVnets: {",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n18",
+        "source_symbol": "workloadSubnets"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "vhubConnections",
+      "symbol": "vhubConnections",
+      "type": "Microsoft.Network/virtualHubs/hubVirtualNetworkConnections",
+      "source": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "[for (spokeVnet, i) in spokeVnets: {",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n20",
+        "source_symbol": "vhubConnections"
+      }
+    }
+  ],
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "module.network.module.hub_vcn.oci_core_services.all_services",
+      "type": "oci_core_services",
+      "symbol": "all_services",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "module_inputs": [
+        "module.network.module.hub_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ]
+    },
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "module.network.module.spoke_vcns.oci_core_services.all_services",
+      "type": "oci_core_services",
+      "symbol": "all_services",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "module_inputs": [
+        "module.network.module.spoke_vcns (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ]
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/locals.tf",
+      "revision": "working-tree",
+      "sha256": "ff752e93e997b2388e4e60115daf62eec102663d482ef8ea0255801298233e2b"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+      "revision": "working-tree",
+      "sha256": "3913daf2f81777244f0387bc6a1f07b5a77fce995a9cd2f5d860a884e52639f7"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/locals.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "sha256": "4f927f1ade9289a48cf638fb69810877e338596a53e0caac14e6f65aa77393e7"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "sha256": "09308affa4db36d98d8360b3b096ea537d3cb8dcf3816e2ab5ca9f01b1326c60"
+    },
+    {
+      "path": "modules/networking/hub-vcn/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "bcc200a519b143b445f578e4ce602348a273b09f45e474a706af5433f423d9b0"
+    },
+    {
+      "path": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "63999259916589058d5dc97da07c23ab64d243fd58286e00bb70fc31612133f1"
+    },
+    {
+      "path": "modules/networking/hub-vcn/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "25166a91b8e7a4b0cfbc753c7ad86b469b14442cb05279b4281ffbb7be960b39"
+    },
+    {
+      "path": "modules/networking/hub-vcn/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "d469a7f19b64b9276503bc722feaffa1bf65112215702eac0a1774cecfcbd2c0"
+    },
+    {
+      "path": "modules/networking/hub-vcn/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/networking/drg/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "f98b7462505ed6e0b65ee449ee7da38b9a9c49f134d0dbb950718df7f4effaad"
+    },
+    {
+      "path": "modules/networking/drg/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "209d980138a98db264a58dc7a042ea7b11224fee092763d8c309326c7a2b85ca"
+    },
+    {
+      "path": "modules/networking/drg/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "a41a27109dbcaeac61a9ae52dec335d2fea94fec3a4ecb4de9b5404103d027be"
+    },
+    {
+      "path": "modules/networking/drg/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "78207f9ff5fa4ad2eced9669fc9f044580f988e29101b5a85b376170899feacb"
+    },
+    {
+      "path": "modules/networking/drg/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "54ff05acc9098b1d7183085d8bd789a2d0887245f3c422d5fadaaca35e7fa135"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "63999259916589058d5dc97da07c23ab64d243fd58286e00bb70fc31612133f1"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "25166a91b8e7a4b0cfbc753c7ad86b469b14442cb05279b4281ffbb7be960b39"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "0d8c6607271ec5c51ada52890fe5fb2790e7ded827b4b213d3d526f177487870"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/outputs.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "sha256": "c4f95640533b421098addf5eabb05af024ed1c68995fc7403f80a61f04100c87"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/providers.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "sha256": "61d51863680b66dcc2092245706bd8cae8d35d6e26b2d0a1135a94c3342d7668"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/variables.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "sha256": "69fe818f235ee81acf5c55eef06008437259308197fb73aff04547b5d13dd182"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/versions.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "modules/networking/fastconnect/locals.tf",
+      "revision": "4fcd80386471010d9a4a22200e47edb1956bda11",
+      "sha256": "233b1f80586c9be6fe8f2cfad0c9e83f1efc80995cfd838dfc10f8868b618d47"
+    },
+    {
+      "path": "modules/networking/fastconnect/main.tf",
+      "revision": "4fcd80386471010d9a4a22200e47edb1956bda11",
+      "sha256": "f4911615cef352f3b5279f261be34a552e97fa1d2c0852d3d26ab206db970ed5"
+    },
+    {
+      "path": "modules/networking/fastconnect/outputs.tf",
+      "revision": "4fcd80386471010d9a4a22200e47edb1956bda11",
+      "sha256": "3a2582b22837c05daafccdfc730e157ed2d50c0ed363b6ee0ad1945967127712"
+    },
+    {
+      "path": "modules/networking/fastconnect/variables.tf",
+      "revision": "4fcd80386471010d9a4a22200e47edb1956bda11",
+      "sha256": "0af8c5cb253a2d208900e2a5317c24e2db4c96f7b4215da1055726956bae2f78"
+    },
+    {
+      "path": "modules/networking/fastconnect/versions.tf",
+      "revision": "4fcd80386471010d9a4a22200e47edb1956bda11",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "modules/networking/ipsec-vpn/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "770201e44b1073c28274b3a5b2918c66ee3424b070c881ae3675b57424e67d1a"
+    },
+    {
+      "path": "modules/networking/ipsec-vpn/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "80239127aa1db501efc1f9e1798364d7e8e1b20e5e1f26ee9234214a5e546995"
+    },
+    {
+      "path": "modules/networking/ipsec-vpn/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "d3d755b6c02896b0321e8b2f2620242c58d047cf4583ee8e8951384cb8200b3e"
+    },
+    {
+      "path": "modules/networking/ipsec-vpn/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "e5128d84508e187b0460e367a3dbe9c732e925635004b76d3a7137e7699b4efd"
+    },
+    {
+      "path": "modules/networking/ipsec-vpn/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "5a375414425739b2bd2f8710d4074bab501497be2baf61f79bc0e6bc3c925a8a"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/providers.tf",
+      "revision": "working-tree",
+      "sha256": "61d51863680b66dcc2092245706bd8cae8d35d6e26b2d0a1135a94c3342d7668"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/variables.tf",
+      "revision": "working-tree",
+      "sha256": "87519c5307ba614b361ac114b314441db821530fba34d80ea0952a79fd03bfef"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/azure/main.bicep",
+      "sha256": "aafee31bb6b03a10a43c81fc25b4a94eea9b82822639c419fb53d4fa7990a5b5"
+    }
+  ]
+}

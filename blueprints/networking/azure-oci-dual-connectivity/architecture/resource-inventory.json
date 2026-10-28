@@ -1,0 +1,425 @@
+{
+  "schema_version": 1,
+  "blueprint": "networking/azure-oci-dual-connectivity",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "Azure": 9,
+    "Contracts": 6,
+    "OCI": 10
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_vcn.primary",
+      "type": "oci_core_vcn",
+      "symbol": "primary",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "primary"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_internet_gateway.primary",
+      "type": "oci_core_internet_gateway",
+      "symbol": "primary",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n10",
+        "source_symbol": "primary"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_route_table.primary",
+      "type": "oci_core_route_table",
+      "symbol": "primary",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n22",
+        "source_symbol": "primary"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_security_list.primary_hub",
+      "type": "oci_core_security_list",
+      "symbol": "primary_hub",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n46",
+        "source_symbol": "primary_hub"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_subnet.primary_hub",
+      "type": "oci_core_subnet",
+      "symbol": "primary_hub",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n58",
+        "source_symbol": "primary_hub"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_drg.primary",
+      "type": "oci_core_drg",
+      "symbol": "primary",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.existing_oci_primary_drg_id == null ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n60",
+        "source_symbol": "primary"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_drg_attachment.primary",
+      "type": "oci_core_drg_attachment",
+      "symbol": "primary",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.attach_oci_primary_vcn_to_drg ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n69",
+        "source_symbol": "primary"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_cpe.azure",
+      "type": "oci_core_cpe",
+      "symbol": "azure",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_ipsec_fallback ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n71",
+        "source_symbol": "azure"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_ipsec.azure",
+      "type": "oci_core_ipsec",
+      "symbol": "azure",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_ipsec_fallback ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n81",
+        "source_symbol": "azure"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_ons_notification_topic.connectivity_alert",
+      "type": "oci_ons_notification_topic",
+      "symbol": "connectivity_alert",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_connectivity_alert_topic ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n83",
+        "source_symbol": "connectivity_alert"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.oci_network_contract",
+      "type": "terraform_data",
+      "symbol": "oci_network_contract",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "oci_network_contract"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.connectivity_contract",
+      "type": "terraform_data",
+      "symbol": "connectivity_contract",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n6",
+        "source_symbol": "connectivity_contract"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.ipsec_fallback_contract",
+      "type": "terraform_data",
+      "symbol": "ipsec_fallback_contract",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n8",
+        "source_symbol": "ipsec_fallback_contract"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.routing_contract",
+      "type": "terraform_data",
+      "symbol": "routing_contract",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n10",
+        "source_symbol": "routing_contract"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.dns_contract",
+      "type": "terraform_data",
+      "symbol": "dns_contract",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_dns_contract ? 1 : 0",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n12",
+        "source_symbol": "dns_contract"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.runbook_contract",
+      "type": "terraform_data",
+      "symbol": "runbook_contract",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "node_id": "n14",
+        "source_symbol": "runbook_contract"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "vnet",
+      "symbol": "vnet",
+      "type": "Microsoft.Network/virtualNetworks",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "vnet"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "routeTable",
+      "symbol": "routeTable",
+      "type": "Microsoft.Network/routeTables",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n6",
+        "source_symbol": "routeTable"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "networkSecurityGroup",
+      "symbol": "networkSecurityGroup",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n8",
+        "source_symbol": "networkSecurityGroup"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "workloadSubnet",
+      "symbol": "workloadSubnet",
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n10",
+        "source_symbol": "workloadSubnet"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "gatewaySubnet",
+      "symbol": "gatewaySubnet",
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "if (deployVpnGateway) {",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n12",
+        "source_symbol": "gatewaySubnet"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "vpnGatewayPublicIp",
+      "symbol": "vpnGatewayPublicIp",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "if (deployVpnGateway) {",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n14",
+        "source_symbol": "vpnGatewayPublicIp"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "vpnGateway",
+      "symbol": "vpnGateway",
+      "type": "Microsoft.Network/virtualNetworkGateways",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "if (deployVpnGateway) {",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n16",
+        "source_symbol": "vpnGateway"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "localNetworkGateway",
+      "symbol": "localNetworkGateway",
+      "type": "Microsoft.Network/localNetworkGateways",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "if (deployVpnGateway) {",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n18",
+        "source_symbol": "localNetworkGateway"
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "vpnConnection",
+      "symbol": "vpnConnection",
+      "type": "Microsoft.Network/connections",
+      "source": "blueprints/networking/azure-oci-dual-connectivity/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "if (deployVpnGateway) {",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "node_id": "n20",
+        "source_symbol": "vpnConnection"
+      }
+    }
+  ],
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/networking/azure-oci-dual-connectivity/locals.tf",
+      "revision": "working-tree",
+      "sha256": "eacb00f40630e2054a9fd1d4bc98e0fd5ad439be2313a9ef72407fa786eb71f7"
+    },
+    {
+      "path": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
+      "revision": "working-tree",
+      "sha256": "5e21d65a4c77f31d979d31fd0e26aef11efee06fe6bf69f16b43cc345e38043f"
+    },
+    {
+      "path": "blueprints/networking/azure-oci-dual-connectivity/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "bb3a918424b168d8c9d39b53d5b191a2f8c2dfb299e4322888549fec8e22e843"
+    },
+    {
+      "path": "blueprints/networking/azure-oci-dual-connectivity/providers.tf",
+      "revision": "working-tree",
+      "sha256": "61d51863680b66dcc2092245706bd8cae8d35d6e26b2d0a1135a94c3342d7668"
+    },
+    {
+      "path": "blueprints/networking/azure-oci-dual-connectivity/variables.tf",
+      "revision": "working-tree",
+      "sha256": "e14edcd9f3523705b19f68c930adbaa586a85790e75ac2ea42ba33c5d09b06bb"
+    },
+    {
+      "path": "blueprints/networking/azure-oci-dual-connectivity/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "blueprints/networking/azure-oci-dual-connectivity/azure/main.bicep",
+      "sha256": "5eb06998be7dbe1e6115b967defef9910b7f28656cba43e49b6f0a9821129444"
+    }
+  ]
+}

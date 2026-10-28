@@ -41,6 +41,31 @@ modules, and any accompanying CloudFormation/Bicep template. No cloud resources
 were provisioned and no Terraform/provider validation date was changed.
 This diagram is not evidence of connectivity, BGP, failover or DR readiness.
 
+## Resource Detail And Coverage
+
+The main draw.io document includes the overview and a resource-detail page for
+each cloud below. Every root/transitive OCI declaration and companion-template
+declaration is mapped to a named resource card, including conditional resources.
+Collection cards represent source declarations, not resolved deployment counts.
+
+| Scope | Source declarations | PNG detail | Editable detail |
+| --- | --- | --- | --- |
+| Azure | 9 | [PNG](azure-resources.png) | [draw.io](azure-resources.drawio) |
+| Contracts | 6 | [PNG](contracts-resources.png) | [draw.io](contracts-resources.drawio) |
+| OCI | 10 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
+
+[Resource inventory and source-to-node coverage](resource-inventory.json).
+Contracts are local Terraform metadata resources, not deployed cloud services.
+Data lookups are recorded separately. Pinned module sources and source hashes
+are retained in the inventory; the overview describes default enablement.
+
+After regenerating the overview, rebuild all resource pages and verify coverage:
+
+```bash
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint networking/azure-oci-dual-connectivity --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint networking/azure-oci-dual-connectivity --check
+```
+
 ## Terraform Components
 
 | Kind | Name | Source Or Role |
