@@ -18512,6 +18512,1431 @@
       }
     ]
   },
+  "ai/embedding-pipeline": {
+    "relationships": [
+      {
+        "source": "Source bucket / create_buckets=false",
+        "target": "Events rule / create_event_rule=false",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Supplied condition must match source events",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Events rule / create_event_rule=false",
+        "target": "Existing chunking Function\nchunking_function_id=null / not created",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "Declared FAAS action / function_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Existing chunking Function\nchunking_function_id=null / not created",
+        "target": "External embedding + indexing workers\nNot created / application implementation required",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "External handoff",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "chunks + vectors streams\ncreate_streams=false / 1 partition each",
+        "target": "Optional stream pool\ncreate_stream_pool=false / existing ID fallback",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "stream_pool_id / if selected",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "External embedding + indexing workers\nNot created / application implementation required",
+        "target": "chunks + vectors streams\ncreate_streams=false / 1 partition each",
+        "source_kind": "group:optional",
+        "target_kind": "icon",
+        "label": "External producers / consumers",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0,
+          1
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1720,
+            435
+          ],
+          [
+            1720,
+            680
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "External embedding + indexing workers\nNot created / application implementation required",
+        "target": "Existing model + vector target / EXTERNAL\nembedding_model_id=null / opensearch_endpoint=null\nvector_index_name=documents; inputs exported only",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "External model call + index writes",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Existing chunking Function\nchunking_function_id=null / not created",
+        "target": "State + failed buckets / same bucket flag\nNo writer or retry process deployed",
+        "source_kind": "group:optional",
+        "target_kind": "icon",
+        "label": "External checkpoint / failure writes",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.8,
+          1
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1536,
+            475
+          ],
+          [
+            1680,
+            475
+          ],
+          [
+            1680,
+            940
+          ]
+        ],
+        "straight": false
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/ai/embedding-pipeline/locals.tf",
+        "revision": "working-tree",
+        "sha256": "d90230c4154aeb8cacb7971f8e795c47cf782368c182eb56ef1bbfd64c4d5527"
+      },
+      {
+        "path": "blueprints/ai/embedding-pipeline/main.tf",
+        "revision": "working-tree",
+        "sha256": "73315858b915ab801f607998b5cac3af5fa559d9136b5edfcbe2e3916e4ae04d"
+      },
+      {
+        "path": "blueprints/ai/embedding-pipeline/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "a35c8cd1bacb8ad44ab80c047a063b09a61062e26adc190fa2058c1fc530673c"
+      },
+      {
+        "path": "blueprints/ai/embedding-pipeline/providers.tf",
+        "revision": "working-tree",
+        "sha256": "8f85e8539190ef04ab19c8d4c834aa1f74fa02d185b70ac6875df16eb1088de5"
+      },
+      {
+        "path": "blueprints/ai/embedding-pipeline/variables.tf",
+        "revision": "working-tree",
+        "sha256": "c6ab89297170c13b5ac34b622f87c2f7b2829e0297f9ae1c49a25b06b2b6bf77"
+      },
+      {
+        "path": "blueprints/ai/embedding-pipeline/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
+  "ai/multi-agent": {
+    "relationships": [
+      {
+        "source": "Orchestrator endpoint / create=false\nAgent ID: created orchestrator or supplied ID\nSessions + traces true / citations true",
+        "target": "Orchestrator agent / create=false\nKnowledge-base IDs: explicit list + selected KB\nOptional MODEL or ENDPOINT LLM selection",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "agent_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Orchestrator agent / create=false\nKnowledge-base IDs: explicit list + selected KB\nOptional MODEL or ENDPOINT LLM selection",
+        "target": "Knowledge base / create=false\nOCI_OPEN_SEARCH_INDEX_CONFIG\nExisting OpenSearch cluster ID required",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "knowledge_base_ids",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "External dispatcher / tool runtime\nNot created / implements delegation and handoffs",
+        "target": "Orchestrator endpoint / create=false\nAgent ID: created orchestrator or supplied ID\nSessions + traces true / citations true",
+        "source_kind": "group:optional",
+        "target_kind": "group:component",
+        "label": "External endpoint invocation",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "External dispatcher / tool runtime\nNot created / implements delegation and handoffs",
+        "target": "Specialist agent definitions / specialist_agents={}\nPer-agent knowledge bases and model/endpoint IDs\nNo automatic orchestrator-to-specialist delegation",
+        "source_kind": "group:optional",
+        "target_kind": "group:component",
+        "label": "External dispatch / delegation",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Agent tool definitions / agent_tools={}\nExplicit agent_id; else specialist key or orchestrator\nFunction name / description / parameter metadata only",
+        "target": "Specialist agent definitions / specialist_agents={}\nPer-agent knowledge bases and model/endpoint IDs\nNo automatic orchestrator-to-specialist delegation",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "agent_id / selected specialist only",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Agent tool definitions / agent_tools={}\nExplicit agent_id; else specialist key or orchestrator\nFunction name / description / parameter metadata only",
+        "target": "Orchestrator agent / create=false\nKnowledge-base IDs: explicit list + selected KB\nOptional MODEL or ENDPOINT LLM selection",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "Alternative orchestrator binding",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          1,
+          1
+        ],
+        "waypoints": [
+          [
+            2100,
+            560
+          ],
+          [
+            1560,
+            560
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "External dispatcher / tool runtime\nNot created / implements delegation and handoffs",
+        "target": "Task stream + optional pool / flags=false\n1 partition / 24 h; no task producer deployed",
+        "source_kind": "group:optional",
+        "target_kind": "icon",
+        "label": "External task producer / consumer",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            60,
+            685
+          ],
+          [
+            60,
+            950
+          ]
+        ],
+        "straight": false
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/ai/multi-agent/locals.tf",
+        "revision": "working-tree",
+        "sha256": "496607a992213fe28ca28da83697a8adeb86aec1c0f8d3142d8989dbf7479d77"
+      },
+      {
+        "path": "blueprints/ai/multi-agent/main.tf",
+        "revision": "working-tree",
+        "sha256": "f49ca6b3a3c895eedd355851541adc4446bb08e97be68ecf7ffa3c83cfcc40ea"
+      },
+      {
+        "path": "blueprints/ai/multi-agent/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "917e0db6684881e32da38e1afa013f44405826863defe2de29fee02cd3f2f26c"
+      },
+      {
+        "path": "blueprints/ai/multi-agent/providers.tf",
+        "revision": "working-tree",
+        "sha256": "8f85e8539190ef04ab19c8d4c834aa1f74fa02d185b70ac6875df16eb1088de5"
+      },
+      {
+        "path": "blueprints/ai/multi-agent/variables.tf",
+        "revision": "working-tree",
+        "sha256": "d91bfbb4fb1a3d234743a2068726bb7b30cc08c50497946b395abeeab18bfc70"
+      },
+      {
+        "path": "blueprints/ai/multi-agent/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
+  "ai/agents": {
+    "relationships": [
+      {
+        "source": "Data source / create_data_source=false\nOCI_OBJECT_STORAGE_PREFIXES\nCreated source prefix + supplied prefix list",
+        "target": "Source bucket / create_buckets=false",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "Namespace / bucket / prefix binding",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Data source / create_data_source=false\nOCI_OBJECT_STORAGE_PREFIXES\nCreated source prefix + supplied prefix list",
+        "target": "Knowledge base / create=false\nExisting OpenSearch cluster ID\nOptional index/schema descriptors",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "knowledge_base_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "One-time ingestion job / create=false\nSelected created or existing data_source_id\nNo schedule or successful ingestion assumed",
+        "target": "Data source / create_data_source=false\nOCI_OBJECT_STORAGE_PREFIXES\nCreated source prefix + supplied prefix list",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "data_source_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "GenAI Agent / create_agent=false\nExplicit KB IDs + selected knowledge base\nOptional existing MODEL or ENDPOINT selection",
+        "target": "Knowledge base / create=false\nExisting OpenSearch cluster ID\nOptional index/schema descriptors",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "knowledge_base_ids",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Agent endpoint / create_agent_endpoint=false\nSessions / traces / citations true\nNo private-network attachment declared",
+        "target": "GenAI Agent / create_agent=false\nExplicit KB IDs + selected knowledge base\nOptional existing MODEL or ENDPOINT selection",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "agent_id / created or existing",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/ai/agents/locals.tf",
+        "revision": "working-tree",
+        "sha256": "4c3cdc7e928680e415dcf1d2a0612265976791727de91a71beffa058bcbda3ca"
+      },
+      {
+        "path": "blueprints/ai/agents/main.tf",
+        "revision": "working-tree",
+        "sha256": "5707ae5a11e8752080712f75845eaeb47457b39b52fcd4be9fe6743a11ddffc9"
+      },
+      {
+        "path": "blueprints/ai/agents/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "3dc50bd010505401742d0676a5f0b3eeb4ae3f48485970e1d08ff069b8f12d39"
+      },
+      {
+        "path": "blueprints/ai/agents/providers.tf",
+        "revision": "working-tree",
+        "sha256": "8f85e8539190ef04ab19c8d4c834aa1f74fa02d185b70ac6875df16eb1088de5"
+      },
+      {
+        "path": "blueprints/ai/agents/variables.tf",
+        "revision": "working-tree",
+        "sha256": "bfee2230135aeb0df299f34e61de6c79185fe8f7663b29d1128a7dce8ab9298a"
+      },
+      {
+        "path": "blueprints/ai/agents/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
+  "devops/oci-devops-pipeline": {
+    "relationships": [
+      {
+        "source": "DevOps project / enable_devops_project=false\nOr reuse existing_project_id",
+        "target": "Notification topic / create=false\nOr supplied notification_topic_id",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "notification_config.topic_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Code repository / enable_repository=false\nProject ID binding; repository type + branch inputs",
+        "target": "DevOps project / enable_devops_project=false\nOr reuse existing_project_id",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "project_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.2,
+          1
+        ],
+        "waypoints": [
+          [
+            455.0,
+            540
+          ],
+          [
+            888.0,
+            540
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Empty build pipeline / enable_build_pipeline=false\nProject ID binding / no build stages",
+        "target": "DevOps project / enable_devops_project=false\nOr reuse existing_project_id",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "project_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": [
+          [
+            1245.0,
+            540
+          ],
+          [
+            1110.0,
+            540
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Empty deploy pipeline / enable_deploy_pipeline=false\nProject ID binding / no deploy stages",
+        "target": "DevOps project / enable_devops_project=false\nOr reuse existing_project_id",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "project_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.8,
+          1
+        ],
+        "waypoints": [
+          [
+            2060.0,
+            540
+          ],
+          [
+            1332.0,
+            540
+          ]
+        ],
+        "straight": false
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/devops/oci-devops-pipeline/locals.tf",
+        "revision": "working-tree",
+        "sha256": "aa931f7ba7c2c079946a0a42087d5dd235fb48c43df4a9e63626b90b0d470b99"
+      },
+      {
+        "path": "blueprints/devops/oci-devops-pipeline/main.tf",
+        "revision": "working-tree",
+        "sha256": "6044b32df49916ea7f34ae5fa8bbc752acffad154b77131b6c58d85bdb463114"
+      },
+      {
+        "path": "blueprints/devops/oci-devops-pipeline/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "976c81b3247a012dd4297dea713a8245330271080e55614a74c92c438da5abdf"
+      },
+      {
+        "path": "blueprints/devops/oci-devops-pipeline/providers.tf",
+        "revision": "working-tree",
+        "sha256": "b2c3b649c7e80c3f4e4f8df66663daef9fe857240e0c86137896c9305fb70d77"
+      },
+      {
+        "path": "blueprints/devops/oci-devops-pipeline/variables.tf",
+        "revision": "working-tree",
+        "sha256": "89010978e0a040c22d45789c38bdc907f659663d675b1ff54a49af4f6db3f4c9"
+      },
+      {
+        "path": "blueprints/devops/oci-devops-pipeline/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
+  "industry/telco-cloud-native": {
+    "relationships": [
+      {
+        "source": "DRG / VCN attachments",
+        "target": "Hub VCN\n10.0.0.0/16 (default)",
+        "source_kind": "icon",
+        "target_kind": "group:vcn",
+        "label": "Hub attachment",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.35,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            990,
+            345
+          ],
+          [
+            635,
+            345
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "DRG / VCN attachments",
+        "target": "Spoke app1 VCN\n10.1.0.0/16 (one default spoke)",
+        "source_kind": "icon",
+        "target_kind": "group:vcn",
+        "label": "Spoke attachment",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.65,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            1010,
+            330
+          ],
+          [
+            1355,
+            330
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Public RT\n0.0.0.0/0 \u2192 IGW",
+        "target": "IGW",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "DMZ subnet\n10.0.0.0/24",
+        "target": "Public RT\n0.0.0.0/0 \u2192 IGW",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "FIREWALL subnet\n10.0.1.0/24",
+        "target": "Private RT\n0.0.0.0/0 \u2192 NAT\nOSN label \u2192 SGW",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.65
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            470,
+            720
+          ],
+          [
+            470,
+            765
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "SHARED subnet\n10.0.2.0/24",
+        "target": "Private RT\n0.0.0.0/0 \u2192 NAT\nOSN label \u2192 SGW",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            470,
+            860
+          ],
+          [
+            470,
+            765
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Private RT\n0.0.0.0/0 \u2192 NAT\nOSN label \u2192 SGW",
+        "target": "NAT",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            390,
+            765
+          ],
+          [
+            390,
+            690
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Private RT\n0.0.0.0/0 \u2192 NAT\nOSN label \u2192 SGW",
+        "target": "Hub SGW",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            415,
+            915
+          ],
+          [
+            450,
+            915
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "IGW",
+        "target": "No ingress rules\nby default",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "NAT",
+        "target": "Same Internet\nshown twice",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "WEB subnet\n10.1.0.0/24",
+        "target": "Private RT\n0.0.0.0/0 \u2192 DRG\nOSN label \u2192 SGW",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1470,
+            522.5
+          ],
+          [
+            1470,
+            685
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "APP subnet\n10.1.1.0/24",
+        "target": "Private RT\n0.0.0.0/0 \u2192 DRG\nOSN label \u2192 SGW",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1470,
+            677.5
+          ],
+          [
+            1470,
+            685
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "DB subnet\n10.1.2.0/24",
+        "target": "Private RT\n0.0.0.0/0 \u2192 DRG\nOSN label \u2192 SGW",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1470,
+            832.5
+          ],
+          [
+            1470,
+            685
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Private RT\n0.0.0.0/0 \u2192 DRG\nOSN label \u2192 SGW",
+        "target": "DRG / VCN attachments",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Default route to DRG",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": [
+          [
+            1530,
+            365
+          ],
+          [
+            1000,
+            365
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Private RT\n0.0.0.0/0 \u2192 DRG\nOSN label \u2192 SGW",
+        "target": "Spoke SGW",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            1610,
+            685
+          ],
+          [
+            1610,
+            910
+          ],
+          [
+            1355,
+            910
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Hub SGW",
+        "target": "Oracle Services Network",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            450,
+            1185
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Spoke SGW",
+        "target": "Oracle Services Network",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1355,
+            1070
+          ],
+          [
+            1150,
+            1070
+          ],
+          [
+            1150,
+            1185
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Hub subnet inputs / default keys\nAPI endpoint = shared (10.0.2.0/24)\nWorker nodes = shared / service LB eligibility = dmz\nNo service Load Balancer resource is created",
+        "target": "OKE cluster / enable_oke_cluster=false\nPrivate API / OCI_VCN_IP_NATIVE",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "VCN / API / service-LB subnet IDs",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.8
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1780,
+            343
+          ],
+          [
+            1780,
+            505
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Node pool / enable_oke_node_pool=false\n1 node per subnet / node shape + version required\nRoot supplies no node image ID",
+        "target": "OKE cluster / enable_oke_cluster=false\nPrivate API / OCI_VCN_IP_NATIVE",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "cluster_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Hub subnet inputs / default keys\nAPI endpoint = shared (10.0.2.0/24)\nWorker nodes = shared / service LB eligibility = dmz\nNo service Load Balancer resource is created",
+        "target": "Node pool / enable_oke_node_pool=false\n1 node per subnet / node shape + version required\nRoot supplies no node image ID",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "node_subnet_ids",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.8,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            2459,
+            410
+          ],
+          [
+            2432.5,
+            410
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Key / gated by Vault settings",
+        "target": "Vault / disabled",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "management_endpoint",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/industry/telco-cloud-native/locals.tf",
+        "revision": "working-tree",
+        "sha256": "a9686e6f0d5173f4d5805c548ba9f006623381423d8419b339e955d40d94169e"
+      },
+      {
+        "path": "blueprints/industry/telco-cloud-native/main.tf",
+        "revision": "working-tree",
+        "sha256": "8a5ed129c7b1864cd5e9d208ca67fdbb4e0320a9a932badca5076fd2f8ce6959"
+      },
+      {
+        "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/locals.tf",
+        "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+        "sha256": "4f927f1ade9289a48cf638fb69810877e338596a53e0caac14e6f65aa77393e7"
+      },
+      {
+        "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+        "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+        "sha256": "09308affa4db36d98d8360b3b096ea537d3cb8dcf3816e2ab5ca9f01b1326c60"
+      },
+      {
+        "path": "modules/networking/hub-vcn/locals.tf",
+        "revision": "v0.2.0",
+        "sha256": "bcc200a519b143b445f578e4ce602348a273b09f45e474a706af5433f423d9b0"
+      },
+      {
+        "path": "modules/networking/hub-vcn/main.tf",
+        "revision": "v0.2.0",
+        "sha256": "63999259916589058d5dc97da07c23ab64d243fd58286e00bb70fc31612133f1"
+      },
+      {
+        "path": "modules/networking/hub-vcn/outputs.tf",
+        "revision": "v0.2.0",
+        "sha256": "25166a91b8e7a4b0cfbc753c7ad86b469b14442cb05279b4281ffbb7be960b39"
+      },
+      {
+        "path": "modules/networking/hub-vcn/variables.tf",
+        "revision": "v0.2.0",
+        "sha256": "d469a7f19b64b9276503bc722feaffa1bf65112215702eac0a1774cecfcbd2c0"
+      },
+      {
+        "path": "modules/networking/hub-vcn/versions.tf",
+        "revision": "v0.2.0",
+        "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+      },
+      {
+        "path": "modules/networking/drg/locals.tf",
+        "revision": "v0.2.0",
+        "sha256": "f98b7462505ed6e0b65ee449ee7da38b9a9c49f134d0dbb950718df7f4effaad"
+      },
+      {
+        "path": "modules/networking/drg/main.tf",
+        "revision": "v0.2.0",
+        "sha256": "209d980138a98db264a58dc7a042ea7b11224fee092763d8c309326c7a2b85ca"
+      },
+      {
+        "path": "modules/networking/drg/outputs.tf",
+        "revision": "v0.2.0",
+        "sha256": "a41a27109dbcaeac61a9ae52dec335d2fea94fec3a4ecb4de9b5404103d027be"
+      },
+      {
+        "path": "modules/networking/drg/variables.tf",
+        "revision": "v0.2.0",
+        "sha256": "78207f9ff5fa4ad2eced9669fc9f044580f988e29101b5a85b376170899feacb"
+      },
+      {
+        "path": "modules/networking/drg/versions.tf",
+        "revision": "v0.2.0",
+        "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+      },
+      {
+        "path": "modules/networking/spoke-vcn/locals.tf",
+        "revision": "v0.2.0",
+        "sha256": "54ff05acc9098b1d7183085d8bd789a2d0887245f3c422d5fadaaca35e7fa135"
+      },
+      {
+        "path": "modules/networking/spoke-vcn/main.tf",
+        "revision": "v0.2.0",
+        "sha256": "63999259916589058d5dc97da07c23ab64d243fd58286e00bb70fc31612133f1"
+      },
+      {
+        "path": "modules/networking/spoke-vcn/outputs.tf",
+        "revision": "v0.2.0",
+        "sha256": "25166a91b8e7a4b0cfbc753c7ad86b469b14442cb05279b4281ffbb7be960b39"
+      },
+      {
+        "path": "modules/networking/spoke-vcn/variables.tf",
+        "revision": "v0.2.0",
+        "sha256": "0d8c6607271ec5c51ada52890fe5fb2790e7ded827b4b213d3d526f177487870"
+      },
+      {
+        "path": "modules/networking/spoke-vcn/versions.tf",
+        "revision": "v0.2.0",
+        "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+      },
+      {
+        "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/outputs.tf",
+        "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+        "sha256": "c4f95640533b421098addf5eabb05af024ed1c68995fc7403f80a61f04100c87"
+      },
+      {
+        "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/providers.tf",
+        "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+        "sha256": "61d51863680b66dcc2092245706bd8cae8d35d6e26b2d0a1135a94c3342d7668"
+      },
+      {
+        "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/variables.tf",
+        "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+        "sha256": "69fe818f235ee81acf5c55eef06008437259308197fb73aff04547b5d13dd182"
+      },
+      {
+        "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/versions.tf",
+        "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      },
+      {
+        "path": "modules/security/vault/locals.tf",
+        "revision": "v0.2.0",
+        "sha256": "931f0d0978ebb473109e0487a01e355fde11a30f6281fd1c5bf77cef04a9c76c"
+      },
+      {
+        "path": "modules/security/vault/main.tf",
+        "revision": "v0.2.0",
+        "sha256": "60e1a9c07f49e54da2c589b81510b46d6e8889d71c54c9cd8945a06c37041f8f"
+      },
+      {
+        "path": "modules/security/vault/outputs.tf",
+        "revision": "v0.2.0",
+        "sha256": "37b35277067ecbca0438abf45516d0b2bd151c7f63feb0e980c00f7b35363c26"
+      },
+      {
+        "path": "modules/security/vault/variables.tf",
+        "revision": "v0.2.0",
+        "sha256": "5d116b16c4ef42a77297258aee95bc7da06b260dee9273da775cbffe49566e4c"
+      },
+      {
+        "path": "modules/security/vault/versions.tf",
+        "revision": "v0.2.0",
+        "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+      },
+      {
+        "path": "blueprints/extensions/oke/locals.tf",
+        "revision": "v0.2.0",
+        "sha256": "39cdc25712d1db82b66244543bc11943219c945df6d9b1fec8ba260658e7aaf1"
+      },
+      {
+        "path": "blueprints/extensions/oke/main.tf",
+        "revision": "v0.2.0",
+        "sha256": "43b64d0246983b2bc5d9d8c012fc3fac011770bd33f6f5ff1e4522202dba26b7"
+      },
+      {
+        "path": "blueprints/extensions/oke/outputs.tf",
+        "revision": "v0.2.0",
+        "sha256": "02507a1e23d070a5e5c670f997fcfff2f9136b0f8645a1e998cd181f0234a575"
+      },
+      {
+        "path": "blueprints/extensions/oke/providers.tf",
+        "revision": "v0.2.0",
+        "sha256": "6b12039586767ec076751f6ef772e8b771137169d74854aee33b5fa93cb52be3"
+      },
+      {
+        "path": "blueprints/extensions/oke/variables.tf",
+        "revision": "v0.2.0",
+        "sha256": "cef7e938489bc8a7bc4cb4a36a41b2f078ad6ac362085ba186a0bef34bf0e2f0"
+      },
+      {
+        "path": "blueprints/extensions/oke/versions.tf",
+        "revision": "v0.2.0",
+        "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+      },
+      {
+        "path": "modules/operations/monitoring/locals.tf",
+        "revision": "v0.2.0",
+        "sha256": "57e30dccd6eaf1ba3b7fc2e0b92095a385a2864ccc652bc967e4ba69481cc3f5"
+      },
+      {
+        "path": "modules/operations/monitoring/main.tf",
+        "revision": "v0.2.0",
+        "sha256": "f09f3b0becfaf1fea49e363c780ad9c3f68d7654f18dbac758e9ccd23031b389"
+      },
+      {
+        "path": "modules/operations/monitoring/outputs.tf",
+        "revision": "v0.2.0",
+        "sha256": "03d63afd289e3c1a3f71e44ba064534a8ceb0d1965b1b575ed8c44ea04334b19"
+      },
+      {
+        "path": "modules/operations/monitoring/variables.tf",
+        "revision": "v0.2.0",
+        "sha256": "264c9f9d7f1ed15e375f7d82dd4c26d8f9f04c670dd75e6680699a825981876b"
+      },
+      {
+        "path": "modules/operations/monitoring/versions.tf",
+        "revision": "v0.2.0",
+        "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+      },
+      {
+        "path": "modules/operations/os-management/locals.tf",
+        "revision": "v0.2.0",
+        "sha256": "72d87b47688429e8f13101c1a76d6e445a0049dbc788bb4ff6056f1b571841f4"
+      },
+      {
+        "path": "modules/operations/os-management/main.tf",
+        "revision": "v0.2.0",
+        "sha256": "39d4e54e2d9c4a902c29646052cf812f60ba67f4124e35c7391789673cbfc67c"
+      },
+      {
+        "path": "modules/operations/os-management/outputs.tf",
+        "revision": "v0.2.0",
+        "sha256": "4d64aee2dab0b74ccc0667df824a704c2862ac302d96d8d8a77bb83f74e558ea"
+      },
+      {
+        "path": "modules/operations/os-management/variables.tf",
+        "revision": "v0.2.0",
+        "sha256": "f01ebf51444f96f8eb64729e3041430dbddb0e8050e41494589d065c8f9e6a0d"
+      },
+      {
+        "path": "modules/operations/os-management/versions.tf",
+        "revision": "v0.2.0",
+        "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+      },
+      {
+        "path": "blueprints/industry/telco-cloud-native/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "1cba472620e68fcc18bc82221499c8e90c6b7e414a40fc4e7a8776b69859dc00"
+      },
+      {
+        "path": "blueprints/industry/telco-cloud-native/providers.tf",
+        "revision": "working-tree",
+        "sha256": "2ee529fdf155bf2f2d0d63966264b97faa465ab7aac410b2a79a15001387d0ce"
+      },
+      {
+        "path": "blueprints/industry/telco-cloud-native/variables.tf",
+        "revision": "working-tree",
+        "sha256": "594d2fe791f455f5bad7d18f94f33ec4ac225eb5dedaa079a391fb60568c3c75"
+      },
+      {
+        "path": "blueprints/industry/telco-cloud-native/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
   "networking/aws-oci-managed-interconnect": {
     "relationships": [
       {

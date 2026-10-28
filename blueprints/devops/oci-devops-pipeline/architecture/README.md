@@ -18,32 +18,16 @@ repository, and empty build and deploy pipeline shells.
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| OCI DevOps Pipeline                                                                                      |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {OCI DevOps compartment / selected region}                                                               |
-|         |                                                                                                |
-|         +--> [notification topic] -> (subscriptions configured separately)                               |
-|         |                                                                                                |
-|         +--> [DevOps project]                                                                            |
-|         |      |-- [code repository]                                                                     |
-|         |      |-- [empty build pipeline]  (stages, source, artifacts outside this folder)                |
-|         |      `-- [empty deploy pipeline] (environment and stages outside this folder)                 |
-|         |                                                                                                |
-|         `--> [IAM policies outside this folder] must permit project, build, deploy, and artifact actions |
-|                                                                                                          |
-| Control flow: topic first, project second, repository/pipelines after the project ID exists.             |
-| Delivery flow: none until logging, triggers, stages, artifacts, and environments are configured.        |
-| Hand-off: project, repository, build pipeline, deploy pipeline, and notification topic IDs.              |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Source-bounded architecture overview](architecture.png)
+
+[Edit the multi-page draw.io diagram](architecture.drawio). Resource-detail pages
+enumerate all source declarations, including disabled conditions and transitive
+pinned modules. The existing-resource page lists identifier inputs; it does not
+create their dependencies. See [source coverage](resource-inventory.json).
+
+Plain connectors show declared ID associations. Solid arrows show configured
+routes or action targets. Dashed lines explicitly mark external application
+steps or prerequisites. No connector proves working service traffic.
 
 ## Terraform Components
 
@@ -89,3 +73,15 @@ repository, and empty build and deploy pipeline shells.
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+
+## October 28, 2026 Diagram Source Review
+
+All five resource flags default false. Repository and pipeline shells bind to
+a created or supplied existing project ID; the project references a created or
+supplied topic ID. No pipeline stages, triggers, build specification, artifacts,
+environments, IAM grants, subscriptions or build-to-deploy execution are
+configured. No external cloud or GitHub resource is declared.
+
+This change reviews documentation and rendered diagrams only. Historical
+Terraform/provider validation metadata is unchanged. No cloud provisioning,
+application execution or runtime connectivity test was performed.

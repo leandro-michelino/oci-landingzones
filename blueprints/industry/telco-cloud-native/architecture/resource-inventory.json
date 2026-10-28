@@ -1,0 +1,1514 @@
+{
+  "schema_version": 2,
+  "blueprint": "industry/telco-cloud-native",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 27
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.hub_vcn.oci_core_vcn.this",
+      "type": "oci_core_vcn",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.network.module.hub_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.hub_vcn.oci_core_internet_gateway.this",
+      "type": "oci_core_internet_gateway",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_internet_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_internet_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.network.module.hub_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n10",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Internet Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.hub_vcn.oci_core_nat_gateway.this",
+      "type": "oci_core_nat_gateway",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_nat_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_nat_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.network.module.hub_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n22",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "NAT Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.hub_vcn.oci_core_service_gateway.this",
+      "type": "oci_core_service_gateway",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_service_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_service_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.network.module.hub_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n31",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Service Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.hub_vcn.oci_core_security_list.this",
+      "type": "oci_core_security_list",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.security_lists",
+      "creation_expression": {
+        "for_each": "var.security_lists"
+      },
+      "module_inputs": [
+        "module.network.module.hub_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n41",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.hub_vcn.oci_core_route_table.this",
+      "type": "oci_core_route_table",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.route_tables",
+      "creation_expression": {
+        "for_each": "var.route_tables"
+      },
+      "module_inputs": [
+        "module.network.module.hub_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n53",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Route Table"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.hub_vcn.oci_core_subnet.this",
+      "type": "oci_core_subnet",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.subnets",
+      "creation_expression": {
+        "for_each": "var.subnets"
+      },
+      "module_inputs": [
+        "module.network.module.hub_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n77",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.drg.oci_core_drg.this",
+      "type": "oci_core_drg",
+      "symbol": "this",
+      "source": "modules/networking/drg/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.network.module.drg (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.drg",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/drg?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n79",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "DRG"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.drg.oci_core_drg_attachment.vcn",
+      "type": "oci_core_drg_attachment",
+      "symbol": "vcn",
+      "source": "modules/networking/drg/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.vcn_attachments",
+      "creation_expression": {
+        "for_each": "var.vcn_attachments"
+      },
+      "module_inputs": [
+        "module.network.module.drg (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.drg",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/drg?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n88",
+        "source_symbol": "vcn",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.spoke_vcns.oci_core_vcn.this",
+      "type": "oci_core_vcn",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.network.module.spoke_vcns (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n90",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.spoke_vcns.oci_core_internet_gateway.this",
+      "type": "oci_core_internet_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_internet_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_internet_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.network.module.spoke_vcns (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n96",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Internet Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.spoke_vcns.oci_core_nat_gateway.this",
+      "type": "oci_core_nat_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_nat_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_nat_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.network.module.spoke_vcns (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n108",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "NAT Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.spoke_vcns.oci_core_service_gateway.this",
+      "type": "oci_core_service_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_service_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_service_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.network.module.spoke_vcns (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n117",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Service Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.spoke_vcns.oci_core_security_list.this",
+      "type": "oci_core_security_list",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.security_lists",
+      "creation_expression": {
+        "for_each": "var.security_lists"
+      },
+      "module_inputs": [
+        "module.network.module.spoke_vcns (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n127",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.spoke_vcns.oci_core_route_table.this",
+      "type": "oci_core_route_table",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.route_tables",
+      "creation_expression": {
+        "for_each": "var.route_tables"
+      },
+      "module_inputs": [
+        "module.network.module.spoke_vcns (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n139",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Route Table"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.spoke_vcns.oci_core_subnet.this",
+      "type": "oci_core_subnet",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.subnets",
+      "creation_expression": {
+        "for_each": "var.subnets"
+      },
+      "module_inputs": [
+        "module.network.module.spoke_vcns (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n163",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.oci_core_drg_attachment.hub",
+      "type": "oci_core_drg_attachment",
+      "symbol": "hub",
+      "source": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n165",
+        "source_symbol": "hub",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.oci_core_drg_attachment.spokes",
+      "type": "oci_core_drg_attachment",
+      "symbol": "spokes",
+      "source": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "condition": "for_each = module.spoke_vcns",
+      "creation_expression": {
+        "for_each": "module.spoke_vcns"
+      },
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n167",
+        "source_symbol": "spokes",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.vault.oci_kms_vault.this",
+      "type": "oci_kms_vault",
+      "symbol": "this",
+      "source": "modules/security/vault/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.vaults",
+      "creation_expression": {
+        "for_each": "local.vaults"
+      },
+      "module_inputs": [
+        "module.vault (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.vault",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vault?ref=v0.2.0",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_vault": "var.enable_vault",
+            "enable_default_vault": "var.enable_default_vault",
+            "enable_default_key": "var.enable_default_key"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Vault"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.vault.oci_kms_key.this",
+      "type": "oci_kms_key",
+      "symbol": "this",
+      "source": "modules/security/vault/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.keys",
+      "creation_expression": {
+        "for_each": "local.keys"
+      },
+      "module_inputs": [
+        "module.vault (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.vault",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vault?ref=v0.2.0",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_vault": "var.enable_vault",
+            "enable_default_vault": "var.enable_default_vault",
+            "enable_default_key": "var.enable_default_key"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n18",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Key Management"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.oke.oci_containerengine_cluster.this",
+      "type": "oci_containerengine_cluster",
+      "symbol": "this",
+      "source": "blueprints/extensions/oke/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_cluster ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_cluster ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.oke (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.oke",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/extensions/oke?ref=v0.2.0",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_cluster": "var.enable_oke_cluster",
+            "enable_node_pool": "var.enable_oke_node_pool"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n25",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "OCI Container Engine for Kubernetes"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.oke.oci_containerengine_node_pool.this",
+      "type": "oci_containerengine_node_pool",
+      "symbol": "this",
+      "source": "blueprints/extensions/oke/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_node_pool ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_node_pool ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.oke (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.oke",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/extensions/oke?ref=v0.2.0",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_cluster": "var.enable_oke_cluster",
+            "enable_node_pool": "var.enable_oke_node_pool"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n37",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.monitoring.oci_ons_notification_topic.this",
+      "type": "oci_ons_notification_topic",
+      "symbol": "this",
+      "source": "modules/operations/monitoring/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.notification_topics",
+      "creation_expression": {
+        "for_each": "local.notification_topics"
+      },
+      "module_inputs": [
+        "module.monitoring (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.monitoring",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/monitoring?ref=v0.2.0",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_monitoring": "var.enable_monitoring",
+            "enable_default_topic": "var.enable_default_monitoring_topic"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n39",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Notifications"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.monitoring.oci_ons_subscription.this",
+      "type": "oci_ons_subscription",
+      "symbol": "this",
+      "source": "modules/operations/monitoring/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.subscriptions",
+      "creation_expression": {
+        "for_each": "local.subscriptions"
+      },
+      "module_inputs": [
+        "module.monitoring (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.monitoring",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/monitoring?ref=v0.2.0",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_monitoring": "var.enable_monitoring",
+            "enable_default_topic": "var.enable_default_monitoring_topic"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n71",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Notifications"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.monitoring.oci_monitoring_alarm.this",
+      "type": "oci_monitoring_alarm",
+      "symbol": "this",
+      "source": "modules/operations/monitoring/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.alarms",
+      "creation_expression": {
+        "for_each": "local.alarms"
+      },
+      "module_inputs": [
+        "module.monitoring (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.monitoring",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/monitoring?ref=v0.2.0",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_monitoring": "var.enable_monitoring",
+            "enable_default_topic": "var.enable_default_monitoring_topic"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n103",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Alarms"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.os_management.oci_os_management_hub_managed_instance_group.this",
+      "type": "oci_os_management_hub_managed_instance_group",
+      "symbol": "this",
+      "source": "modules/operations/os-management/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.managed_instance_groups",
+      "creation_expression": {
+        "for_each": "local.managed_instance_groups"
+      },
+      "module_inputs": [
+        "module.os_management (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.os_management",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/os-management?ref=v0.2.0",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_os_management": "var.enable_os_management"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n123",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.os_management.oci_os_management_hub_scheduled_job.this",
+      "type": "oci_os_management_hub_scheduled_job",
+      "symbol": "this",
+      "source": "modules/operations/os-management/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.scheduled_jobs",
+      "creation_expression": {
+        "for_each": "local.scheduled_jobs"
+      },
+      "module_inputs": [
+        "module.os_management (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.os_management",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/os-management?ref=v0.2.0",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_os_management": "var.enable_os_management"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n125",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 18
+    },
+    {
+      "file": "oci-resources-02.drawio",
+      "page_name": "OCI resources 2",
+      "declarations": 9
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/industry/telco-cloud-native/variables.tf",
+      "description": "Compartment OCID where telco cloud-native resources are created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 1
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "module.network.module.hub_vcn.oci_core_services.all_services",
+      "type": "oci_core_services",
+      "symbol": "all_services",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.network.module.hub_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ]
+    },
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "module.network.module.spoke_vcns.oci_core_services.all_services",
+      "type": "oci_core_services",
+      "symbol": "all_services",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.network.module.spoke_vcns (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/industry/telco-cloud-native/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ]
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/industry/telco-cloud-native/locals.tf",
+      "revision": "working-tree",
+      "sha256": "a9686e6f0d5173f4d5805c548ba9f006623381423d8419b339e955d40d94169e"
+    },
+    {
+      "path": "blueprints/industry/telco-cloud-native/main.tf",
+      "revision": "working-tree",
+      "sha256": "8a5ed129c7b1864cd5e9d208ca67fdbb4e0320a9a932badca5076fd2f8ce6959"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/locals.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "sha256": "4f927f1ade9289a48cf638fb69810877e338596a53e0caac14e6f65aa77393e7"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "sha256": "09308affa4db36d98d8360b3b096ea537d3cb8dcf3816e2ab5ca9f01b1326c60"
+    },
+    {
+      "path": "modules/networking/hub-vcn/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "bcc200a519b143b445f578e4ce602348a273b09f45e474a706af5433f423d9b0"
+    },
+    {
+      "path": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "63999259916589058d5dc97da07c23ab64d243fd58286e00bb70fc31612133f1"
+    },
+    {
+      "path": "modules/networking/hub-vcn/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "25166a91b8e7a4b0cfbc753c7ad86b469b14442cb05279b4281ffbb7be960b39"
+    },
+    {
+      "path": "modules/networking/hub-vcn/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "d469a7f19b64b9276503bc722feaffa1bf65112215702eac0a1774cecfcbd2c0"
+    },
+    {
+      "path": "modules/networking/hub-vcn/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/networking/drg/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "f98b7462505ed6e0b65ee449ee7da38b9a9c49f134d0dbb950718df7f4effaad"
+    },
+    {
+      "path": "modules/networking/drg/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "209d980138a98db264a58dc7a042ea7b11224fee092763d8c309326c7a2b85ca"
+    },
+    {
+      "path": "modules/networking/drg/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "a41a27109dbcaeac61a9ae52dec335d2fea94fec3a4ecb4de9b5404103d027be"
+    },
+    {
+      "path": "modules/networking/drg/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "78207f9ff5fa4ad2eced9669fc9f044580f988e29101b5a85b376170899feacb"
+    },
+    {
+      "path": "modules/networking/drg/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "54ff05acc9098b1d7183085d8bd789a2d0887245f3c422d5fadaaca35e7fa135"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "63999259916589058d5dc97da07c23ab64d243fd58286e00bb70fc31612133f1"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "25166a91b8e7a4b0cfbc753c7ad86b469b14442cb05279b4281ffbb7be960b39"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "0d8c6607271ec5c51ada52890fe5fb2790e7ded827b4b213d3d526f177487870"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/outputs.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "sha256": "c4f95640533b421098addf5eabb05af024ed1c68995fc7403f80a61f04100c87"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/providers.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "sha256": "61d51863680b66dcc2092245706bd8cae8d35d6e26b2d0a1135a94c3342d7668"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/variables.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "sha256": "69fe818f235ee81acf5c55eef06008437259308197fb73aff04547b5d13dd182"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/versions.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "modules/security/vault/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "931f0d0978ebb473109e0487a01e355fde11a30f6281fd1c5bf77cef04a9c76c"
+    },
+    {
+      "path": "modules/security/vault/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "60e1a9c07f49e54da2c589b81510b46d6e8889d71c54c9cd8945a06c37041f8f"
+    },
+    {
+      "path": "modules/security/vault/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "37b35277067ecbca0438abf45516d0b2bd151c7f63feb0e980c00f7b35363c26"
+    },
+    {
+      "path": "modules/security/vault/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "5d116b16c4ef42a77297258aee95bc7da06b260dee9273da775cbffe49566e4c"
+    },
+    {
+      "path": "modules/security/vault/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "blueprints/extensions/oke/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "39cdc25712d1db82b66244543bc11943219c945df6d9b1fec8ba260658e7aaf1"
+    },
+    {
+      "path": "blueprints/extensions/oke/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "43b64d0246983b2bc5d9d8c012fc3fac011770bd33f6f5ff1e4522202dba26b7"
+    },
+    {
+      "path": "blueprints/extensions/oke/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "02507a1e23d070a5e5c670f997fcfff2f9136b0f8645a1e998cd181f0234a575"
+    },
+    {
+      "path": "blueprints/extensions/oke/providers.tf",
+      "revision": "v0.2.0",
+      "sha256": "6b12039586767ec076751f6ef772e8b771137169d74854aee33b5fa93cb52be3"
+    },
+    {
+      "path": "blueprints/extensions/oke/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "cef7e938489bc8a7bc4cb4a36a41b2f078ad6ac362085ba186a0bef34bf0e2f0"
+    },
+    {
+      "path": "blueprints/extensions/oke/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/operations/monitoring/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "57e30dccd6eaf1ba3b7fc2e0b92095a385a2864ccc652bc967e4ba69481cc3f5"
+    },
+    {
+      "path": "modules/operations/monitoring/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "f09f3b0becfaf1fea49e363c780ad9c3f68d7654f18dbac758e9ccd23031b389"
+    },
+    {
+      "path": "modules/operations/monitoring/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "03d63afd289e3c1a3f71e44ba064534a8ceb0d1965b1b575ed8c44ea04334b19"
+    },
+    {
+      "path": "modules/operations/monitoring/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "264c9f9d7f1ed15e375f7d82dd4c26d8f9f04c670dd75e6680699a825981876b"
+    },
+    {
+      "path": "modules/operations/monitoring/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/operations/os-management/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "72d87b47688429e8f13101c1a76d6e445a0049dbc788bb4ff6056f1b571841f4"
+    },
+    {
+      "path": "modules/operations/os-management/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "39d4e54e2d9c4a902c29646052cf812f60ba67f4124e35c7391789673cbfc67c"
+    },
+    {
+      "path": "modules/operations/os-management/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "4d64aee2dab0b74ccc0667df824a704c2862ac302d96d8d8a77bb83f74e558ea"
+    },
+    {
+      "path": "modules/operations/os-management/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "f01ebf51444f96f8eb64729e3041430dbddb0e8050e41494589d065c8f9e6a0d"
+    },
+    {
+      "path": "modules/operations/os-management/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "blueprints/industry/telco-cloud-native/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "1cba472620e68fcc18bc82221499c8e90c6b7e414a40fc4e7a8776b69859dc00"
+    },
+    {
+      "path": "blueprints/industry/telco-cloud-native/providers.tf",
+      "revision": "working-tree",
+      "sha256": "2ee529fdf155bf2f2d0d63966264b97faa465ab7aac410b2a79a15001387d0ce"
+    },
+    {
+      "path": "blueprints/industry/telco-cloud-native/variables.tf",
+      "revision": "working-tree",
+      "sha256": "594d2fe791f455f5bad7d18f94f33ec4ac225eb5dedaa079a391fb60568c3c75"
+    },
+    {
+      "path": "blueprints/industry/telco-cloud-native/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

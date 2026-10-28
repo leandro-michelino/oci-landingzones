@@ -1,0 +1,404 @@
+{
+  "schema_version": 2,
+  "blueprint": "ai/multi-agent",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 9
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_bucket.this",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "this",
+      "source": "blueprints/ai/multi-agent/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.create_buckets ? local.bucket_names : {}",
+      "creation_expression": {
+        "for_each": "var.create_buckets ? local.bucket_names : {}"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_streaming_stream_pool.this",
+      "type": "oci_streaming_stream_pool",
+      "symbol": "this",
+      "source": "blueprints/ai/multi-agent/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_stream_pool ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_stream_pool ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n14",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "OCI Streaming"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_streaming_stream.tasks",
+      "type": "oci_streaming_stream",
+      "symbol": "tasks",
+      "source": "blueprints/ai/multi-agent/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_task_stream ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_task_stream ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n45",
+        "source_symbol": "tasks",
+        "provider_icon": null,
+        "oci_icon": "OCI Streaming"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_generative_ai_agent_knowledge_base.this",
+      "type": "oci_generative_ai_agent_knowledge_base",
+      "symbol": "this",
+      "source": "blueprints/ai/multi-agent/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_knowledge_base ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_knowledge_base ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n76",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_generative_ai_agent_agent.orchestrator",
+      "type": "oci_generative_ai_agent_agent",
+      "symbol": "orchestrator",
+      "source": "blueprints/ai/multi-agent/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_orchestrator_agent ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_orchestrator_agent ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n78",
+        "source_symbol": "orchestrator",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_generative_ai_agent_agent.specialist",
+      "type": "oci_generative_ai_agent_agent",
+      "symbol": "specialist",
+      "source": "blueprints/ai/multi-agent/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.specialist_agents",
+      "creation_expression": {
+        "for_each": "var.specialist_agents"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n80",
+        "source_symbol": "specialist",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_generative_ai_agent_agent_endpoint.orchestrator",
+      "type": "oci_generative_ai_agent_agent_endpoint",
+      "symbol": "orchestrator",
+      "source": "blueprints/ai/multi-agent/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_orchestrator_endpoint ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_orchestrator_endpoint ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n82",
+        "source_symbol": "orchestrator",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_generative_ai_agent_tool.this",
+      "type": "oci_generative_ai_agent_tool",
+      "symbol": "this",
+      "source": "blueprints/ai/multi-agent/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.agent_tools",
+      "creation_expression": {
+        "for_each": "var.agent_tools"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n84",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/ai/multi-agent/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n86",
+        "source_symbol": "access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 9
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/ai/multi-agent/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.kms_key_id",
+      "source": "blueprints/ai/multi-agent/variables.tf",
+      "description": "Optional KMS key OCID for bucket and stream encryption.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.stream_pool_id",
+      "source": "blueprints/ai/multi-agent/variables.tf",
+      "description": "Existing stream pool OCID when create_stream_pool is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.knowledge_base_id",
+      "source": "blueprints/ai/multi-agent/variables.tf",
+      "description": "Existing knowledge base OCID when create_knowledge_base is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.opensearch_cluster_id",
+      "source": "blueprints/ai/multi-agent/variables.tf",
+      "description": "OpenSearch cluster OCID for knowledge base indexing.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.orchestrator_agent_id",
+      "source": "blueprints/ai/multi-agent/variables.tf",
+      "description": "Existing orchestrator agent OCID when create_orchestrator_agent is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.orchestrator_knowledge_base_ids",
+      "source": "blueprints/ai/multi-agent/variables.tf",
+      "description": "Existing knowledge base OCIDs attached to the orchestrator.",
+      "default_expression": "[]",
+      "type_expression": "list(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    },
+    {
+      "address": "var.orchestrator_model_id",
+      "source": "blueprints/ai/multi-agent/variables.tf",
+      "description": "Model OCID used for orchestrator routing.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n17"
+      }
+    },
+    {
+      "address": "var.orchestrator_endpoint_model_id",
+      "source": "blueprints/ai/multi-agent/variables.tf",
+      "description": "Model endpoint OCID used for orchestrator routing.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n19"
+      }
+    },
+    {
+      "address": "var.orchestrator_endpoint_id",
+      "source": "blueprints/ai/multi-agent/variables.tf",
+      "description": "Existing orchestrator endpoint OCID when create_orchestrator_endpoint is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n21"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/ai/multi-agent/variables.tf",
+      "description": "Compartment OCID where the IAM policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n23"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 11
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_objectstorage_namespace.this",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "this",
+      "source": "blueprints/ai/multi-agent/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_buckets ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_buckets ? 1 : 0"
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/ai/multi-agent/locals.tf",
+      "revision": "working-tree",
+      "sha256": "496607a992213fe28ca28da83697a8adeb86aec1c0f8d3142d8989dbf7479d77"
+    },
+    {
+      "path": "blueprints/ai/multi-agent/main.tf",
+      "revision": "working-tree",
+      "sha256": "f49ca6b3a3c895eedd355851541adc4446bb08e97be68ecf7ffa3c83cfcc40ea"
+    },
+    {
+      "path": "blueprints/ai/multi-agent/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "917e0db6684881e32da38e1afa013f44405826863defe2de29fee02cd3f2f26c"
+    },
+    {
+      "path": "blueprints/ai/multi-agent/providers.tf",
+      "revision": "working-tree",
+      "sha256": "8f85e8539190ef04ab19c8d4c834aa1f74fa02d185b70ac6875df16eb1088de5"
+    },
+    {
+      "path": "blueprints/ai/multi-agent/variables.tf",
+      "revision": "working-tree",
+      "sha256": "d91bfbb4fb1a3d234743a2068726bb7b30cc08c50497946b395abeeab18bfc70"
+    },
+    {
+      "path": "blueprints/ai/multi-agent/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

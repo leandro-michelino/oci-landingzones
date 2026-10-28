@@ -445,3 +445,50 @@ Latest diagram coverage is **58/84** current entry points. The original catalog
 backlog remains **54/80**; neither healthcare addition counts as an original
 conversion. Both projects include local schema and mocked-plan evidence, not
 live patient-data or interoperability validation.
+
+## AI, DevOps and Industry Continuation / October 28, 2026
+
+Five further original-catalog entry points now have editable multi-page draw.io
+documents, PNG overviews, complete resource inventories and existing-resource
+reference pages. ASCII architecture drawings have been replaced in their local
+architecture READMEs. Official toolkit icons are used where an exact service
+glyph exists; unsupported agent subtypes use explicit labelled boxes.
+
+| Batch order | Blueprint | Preview | Editable source | Source inventory |
+| --- | --- | --- | --- | --- |
+| 31 | `ai/embedding-pipeline` | [PNG](../../blueprints/ai/embedding-pipeline/architecture/architecture.png) | [draw.io](../../blueprints/ai/embedding-pipeline/architecture/architecture.drawio) | [Inventory](../../blueprints/ai/embedding-pipeline/architecture/resource-inventory.json) |
+| 32 | `ai/multi-agent` | [PNG](../../blueprints/ai/multi-agent/architecture/architecture.png) | [draw.io](../../blueprints/ai/multi-agent/architecture/architecture.drawio) | [Inventory](../../blueprints/ai/multi-agent/architecture/resource-inventory.json) |
+| 33 | `ai/agents` | [PNG](../../blueprints/ai/agents/architecture/architecture.png) | [draw.io](../../blueprints/ai/agents/architecture/architecture.drawio) | [Inventory](../../blueprints/ai/agents/architecture/resource-inventory.json) |
+| 34 | `devops/oci-devops-pipeline` | [PNG](../../blueprints/devops/oci-devops-pipeline/architecture/architecture.png) | [draw.io](../../blueprints/devops/oci-devops-pipeline/architecture/architecture.drawio) | [Inventory](../../blueprints/devops/oci-devops-pipeline/architecture/resource-inventory.json) |
+| 35 | `industry/telco-cloud-native` | [PNG](../../blueprints/industry/telco-cloud-native/architecture/architecture.png) | [draw.io](../../blueprints/industry/telco-cloud-native/architecture/architecture.drawio) | [Inventory](../../blueprints/industry/telco-cloud-native/architecture/resource-inventory.json) |
+
+The five inventories enumerate **53 OCI resource declarations** and **32 existing
+identifier inputs**, not deployed instances. Six resource-detail pages preserve
+conditional declarations and all pinned transitive modules; five input pages
+record existing-resource prerequisites. Together with the five overviews, this
+batch adds **16 native documents and 16 PNGs**.
+
+Embedding and multi-agent processing remain external application workflows. The
+RAG blueprint includes a separately enabled one-time ingestion job, with no
+successful indexing implied. DevOps resources are empty shells with project/topic
+associations, without invented repository-to-build-to-deploy execution. Telco
+uses network revision `d7938f4baef1aa512fc8dcee99a545ec17e0dab2` and `v0.2.0`
+service modules, showing exact hub subnet bindings and no created service LB/CNF.
+No external-cloud resource is declared by these five entry points.
+
+```bash
+python3 scripts/diagrams/ai-industry-batch-03.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint ai/embedding-pipeline --blueprint ai/multi-agent --blueprint ai/agents --blueprint devops/oci-devops-pipeline --blueprint industry/telco-cloud-native --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --check
+python3 scripts/diagrams/check-connections.py --write-report
+```
+
+Latest original backlog: **59/80 converted**, **21 pending**. Including the four
+additional Interconnect/healthcare projects, current diagram coverage is
+**63/84** entry points. The separate conceptual drawing is excluded from that
+denominator. Remaining GCP counterparts are still the final phase after the
+original conversion backlog; see the [GCP plan](../multicloud/GCP-OCI-BLUEPRINTS.md).
+
+This batch changes documentation, diagrams and their authoring/validation
+registry only. Historical provider validation metadata remains unchanged; no
+cloud deployment, inference, indexing, CI/CD execution or traffic test was run.

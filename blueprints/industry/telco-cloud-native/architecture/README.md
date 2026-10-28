@@ -18,35 +18,16 @@ Combines hub-spoke networking, Vault/KMS, OKE, monitoring, and OS management for
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Telco Cloud Native                                                                                       |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Telco cloud-native landing-zone boundary}                                                               |
-|         |                                                                                                |
-|         +--> [hub-spoke network]                                                                         |
-|         |      DRG, hub subnets, spoke subnets, service gateway, and controlled egress                   |
-|         |                                                                                                |
-|         +--> [Vault/KMS]                                                                                 |
-|         |      key material for platform and workload services                                           |
-|         |                                                                                                |
-|         +--> [OKE cluster and node pool]                                                                 |
-|         |      private worker placement, service load balancer subnet decisions, CNI review              |
-|         |                                                                                                |
-|         +--> [monitoring alarms] -> notification path for platform operators                             |
-|         `--> [OS Management]    -> managed groups and scheduled patch jobs                               |
-|                                                                                                          |
-| Traffic flow: ingress/shared services -> hub -> DRG -> spoke/OKE workloads.                              |
-| Operations flow: alarms and patch jobs return to platform owners for closed-loop operations.             |
-| Hand-off: network IDs, OKE IDs, vault/key IDs, monitoring IDs, and OS management IDs.                    |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Source-bounded architecture overview](architecture.png)
+
+[Edit the multi-page draw.io diagram](architecture.drawio). Resource-detail pages
+enumerate all source declarations, including disabled conditions and transitive
+pinned modules. The existing-resource page lists identifier inputs; it does not
+create their dependencies. See [source coverage](resource-inventory.json).
+
+Plain connectors show declared ID associations. Solid arrows show configured
+routes or action targets. Dashed lines explicitly mark external application
+steps or prerequisites. No connector proves working service traffic.
 
 ## Terraform Components
 
@@ -100,3 +81,19 @@ These notes expand the diagram with the design details that usually matter durin
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+
+## October 28, 2026 Diagram Source Review
+
+The network source is pinned to d7938f4baef1aa512fc8dcee99a545ec17e0dab2;
+OKE, Vault, Monitoring and OS Management Hub are pinned to v0.2.0. The network
+foundation is enabled; the four service module flags default false. OKE defaults
+to a private API in the hub shared subnet, worker placement in shared, and
+service-LB eligibility in dmz. The subnet choices do not create a load balancer.
+The root does not supply a worker image. Vault keys are not automatically bound
+to OKE. Monitoring and OS Management use explicit maps and external identifiers;
+no CNF software, Kubernetes workloads, managed-host onboarding or tested
+connectivity is delivered.
+
+This change reviews documentation and rendered diagrams only. Historical
+Terraform/provider validation metadata is unchanged. No cloud provisioning,
+application execution or runtime connectivity test was performed.

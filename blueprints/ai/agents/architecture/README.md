@@ -19,49 +19,16 @@ All expensive or externally visible resources are disabled by default.
 
 ## Architecture
 
-```text
-+--------------------------------------------------------------------------------+
-|                         AI Agents RAG Landing Zone                              |
-+--------------------------------------------------------------------------------+
-|                                                                                |
-|  Data Steward                                                                  |
-|      |                                                                         |
-|      v                                                                         |
-|  Source Documents                                                              |
-|  Object Storage bucket or approved existing prefixes                           |
-|      |                                                                         |
-|      v                                                                         |
-|  GenAI Agent Data Source                                                       |
-|      |                                                                         |
-|      v                                                                         |
-|  Data Ingestion Job                                                            |
-|      |                                                                         |
-|      v                                                                         |
-|  Knowledge Base                                                                |
-|      |                                                                         |
-|      +--> OpenSearch / vector index backend                                    |
-|      |       |                                                                 |
-|      |       `--> chunk, embedding, title, URL, and body schema                 |
-|      |                                                                         |
-|      v                                                                         |
-|  OCI GenAI Agent                                                               |
-|      |                                                                         |
-|      +--> model or endpoint selection                                          |
-|      +--> answer instruction                                                   |
-|      +--> citations and trace options                                          |
-|      |                                                                         |
-|      v                                                                         |
-|  Agent Endpoint                                                                |
-|      |                                                                         |
-|      `--> App, API Gateway, ODA, OIC, or internal caller                       |
-|                                                                                |
-|  Governance Lane                                                               |
-|      |                                                                         |
-|      +--> IAM policy statements for caller and ingestion groups                |
-|      +--> Audit bucket for session and document lineage hand-off               |
-|      `--> Tags for ownership, environment, and cost attribution                |
-+--------------------------------------------------------------------------------+
-```
+![Source-bounded architecture overview](architecture.png)
+
+[Edit the multi-page draw.io diagram](architecture.drawio). Resource-detail pages
+enumerate all source declarations, including disabled conditions and transitive
+pinned modules. The existing-resource page lists identifier inputs; it does not
+create their dependencies. See [source coverage](resource-inventory.json).
+
+Plain connectors show declared ID associations. Solid arrows show configured
+routes or action targets. Dashed lines explicitly mark external application
+steps or prerequisites. No connector proves working service traffic.
 
 ## Terraform Components
 
@@ -142,3 +109,17 @@ Declared resource addresses:
 Creates optional knowledge-base, ingestion, agent, endpoint, bucket, and IAM objects. OpenSearch indexes or existing references, document contents, model compatibility, permissions, and retrieval quality require separate validation. No RAG inference or ingestion was executed in this review.
 
 Validation in this round is isolated Terraform schema/lint validation and applicable mocked regressions, not a live AI deployment. All cost-bearing services, inference, ingestion, dedicated clusters, and external-cloud resources remained disabled. Providers ignore only the two OCI-managed provenance tags; customer-defined tags remain managed.
+
+## October 28, 2026 Diagram Source Review
+
+All cloud creation flags default false. Data sources bind namespace/bucket/prefix
+configuration to the selected knowledge base. The created source prefix is added
+only when both bucket and data-source flags are enabled. A separately enabled
+one-time ingestion job binds to the selected data source; job creation does not
+prove successful indexing. Index/schema descriptors reference existing search
+infrastructure. No private endpoint, private network, client application,
+processed-bucket writer or audit exporter is declared.
+
+This change reviews documentation and rendered diagrams only. Historical
+Terraform/provider validation metadata is unchanged. No cloud provisioning,
+application execution or runtime connectivity test was performed.

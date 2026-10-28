@@ -2,51 +2,35 @@
 
 ## Deployment Purpose
 
-Provide a controlled platform shape for agentic systems. The blueprint wires an
-orchestrator agent, specialist agents, knowledge base, task stream, tool
-registry buckets, session audit storage, and IAM so teams can build multi-agent
-workflows without inventing the foundation each time.
+Provide a controlled platform shape for agentic systems. The blueprint defines optional
+orchestrator/specialist agents, a knowledge base, task stream, tool/audit buckets
+and supplied IAM statements. External application code must implement the
+multi-agent workflow and its storage/stream integrations.
 
 ## Architecture At A Glance
 
 | Layer | Responsibility |
 | --- | --- |
-| Orchestrator agent | Plans and routes work to specialist agents or tools. |
+| Orchestrator agent | Agent/model definition; specialist dispatch requires external runtime code. |
 | Specialist agents | Handle focused tasks such as search, data, workflow, or code. |
-| Knowledge base | Shared RAG context backed by OpenSearch or database connection. |
-| Task stream | Durable task dispatch and hand-off between agents. |
-| Tool registry | Stores approved tool definitions and schema metadata. |
-| Audit bucket | Stores session traces and execution evidence. |
-| IAM | Enforces per-agent and per-tool permission boundaries. |
+| Knowledge base | Optional reference to an existing OpenSearch cluster. |
+| Task stream | Optional durable stream; producers/consumers are external. |
+| Tool registry | Optional bucket; no definition loader is configured. |
+| Audit bucket | Optional storage; no trace exporter is configured. |
+| IAM | Optional operator-supplied policy statements; tool authorization remains external. |
 
 ## Architecture
 
-```text
-User / App Caller
-      |
-      v
-Orchestrator Agent Endpoint
-      |
-      v
-Orchestrator Agent
- |-- routing model
- |-- knowledge base
- |-- tool registry
- |
- |-- Streaming task stream ------------------+
- |                                           |
- |-- Search Specialist Agent                 |
- |-- Data Specialist Agent                   |
- |-- Workflow Specialist Agent               |
- `-- Custom Specialist Agent                 |
-      |                                      |
-      | tools + bounded IAM                  |
-      v                                      v
-Functions / APIs / OpenSearch / Databases / SaaS
-      |
-      v
-Session Audit Bucket + Security Review
-```
+![Source-bounded architecture overview](architecture.png)
+
+[Edit the multi-page draw.io diagram](architecture.drawio). Resource-detail pages
+enumerate all source declarations, including disabled conditions and transitive
+pinned modules. The existing-resource page lists identifier inputs; it does not
+create their dependencies. See [source coverage](resource-inventory.json).
+
+Plain connectors show declared ID associations. Solid arrows show configured
+routes or action targets. Dashed lines explicitly mark external application
+steps or prerequisites. No connector proves working service traffic.
 
 ## Terraform Components
 
@@ -124,3 +108,16 @@ RAG before allowing external actions.
 Creates optional agent/tool definitions, knowledge-base references, Streaming, and audit storage. Tool definitions do not deploy function implementations. Task routing, tool authorization, document handling, queue consumers, and multi-agent execution require supplied runtime code and separate testing.
 
 Validation in this round is isolated Terraform schema/lint validation and applicable mocked regressions, not a live AI deployment. All cost-bearing services, inference, ingestion, dedicated clusters, and external-cloud resources remained disabled. Providers ignore only the two OCI-managed provenance tags; customer-defined tags remain managed.
+
+## October 28, 2026 Diagram Source Review
+
+All creation flags default false; specialist and tool maps default empty.
+Agent endpoints and knowledge-base/tool IDs are explicit associations. The
+knowledge base references an existing OpenSearch cluster. Tool function metadata
+does not deploy executable Functions. Delegation, Streaming producers/consumers,
+registry loading, audit writes and per-tool authorization require external code.
+Neither a data source nor an ingestion job is declared in this entry point.
+
+This change reviews documentation and rendered diagrams only. Historical
+Terraform/provider validation metadata is unchanged. No cloud provisioning,
+application execution or runtime connectivity test was performed.

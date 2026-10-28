@@ -1,0 +1,255 @@
+{
+  "schema_version": 2,
+  "blueprint": "ai/embedding-pipeline",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 5
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_bucket.this",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "this",
+      "source": "blueprints/ai/embedding-pipeline/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.create_buckets ? local.bucket_names : {}",
+      "creation_expression": {
+        "for_each": "var.create_buckets ? local.bucket_names : {}"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_streaming_stream_pool.this",
+      "type": "oci_streaming_stream_pool",
+      "symbol": "this",
+      "source": "blueprints/ai/embedding-pipeline/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_stream_pool ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_stream_pool ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n14",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "OCI Streaming"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_streaming_stream.this",
+      "type": "oci_streaming_stream",
+      "symbol": "this",
+      "source": "blueprints/ai/embedding-pipeline/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.create_streams ? var.streams : {}",
+      "creation_expression": {
+        "for_each": "var.create_streams ? var.streams : {}"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n45",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "OCI Streaming"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_events_rule.source",
+      "type": "oci_events_rule",
+      "symbol": "source",
+      "source": "blueprints/ai/embedding-pipeline/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_event_rule ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_event_rule ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n76",
+        "source_symbol": "source",
+        "provider_icon": null,
+        "oci_icon": "Events"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/ai/embedding-pipeline/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n82",
+        "source_symbol": "access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 5
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/ai/embedding-pipeline/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.kms_key_id",
+      "source": "blueprints/ai/embedding-pipeline/variables.tf",
+      "description": "Optional KMS key OCID for bucket and stream encryption.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.stream_pool_id",
+      "source": "blueprints/ai/embedding-pipeline/variables.tf",
+      "description": "Existing stream pool OCID when create_stream_pool is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.chunking_function_id",
+      "source": "blueprints/ai/embedding-pipeline/variables.tf",
+      "description": "Function OCID that chunks source documents.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.embedding_model_id",
+      "source": "blueprints/ai/embedding-pipeline/variables.tf",
+      "description": "OCI GenAI embedding model OCID used by the embedding function.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/ai/embedding-pipeline/variables.tf",
+      "description": "Compartment OCID where the IAM policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 6
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_objectstorage_namespace.this",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "this",
+      "source": "blueprints/ai/embedding-pipeline/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_buckets ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_buckets ? 1 : 0"
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/ai/embedding-pipeline/locals.tf",
+      "revision": "working-tree",
+      "sha256": "d90230c4154aeb8cacb7971f8e795c47cf782368c182eb56ef1bbfd64c4d5527"
+    },
+    {
+      "path": "blueprints/ai/embedding-pipeline/main.tf",
+      "revision": "working-tree",
+      "sha256": "73315858b915ab801f607998b5cac3af5fa559d9136b5edfcbe2e3916e4ae04d"
+    },
+    {
+      "path": "blueprints/ai/embedding-pipeline/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "a35c8cd1bacb8ad44ab80c047a063b09a61062e26adc190fa2058c1fc530673c"
+    },
+    {
+      "path": "blueprints/ai/embedding-pipeline/providers.tf",
+      "revision": "working-tree",
+      "sha256": "8f85e8539190ef04ab19c8d4c834aa1f74fa02d185b70ac6875df16eb1088de5"
+    },
+    {
+      "path": "blueprints/ai/embedding-pipeline/variables.tf",
+      "revision": "working-tree",
+      "sha256": "c6ab89297170c13b5ac34b622f87c2f7b2829e0297f9ae1c49a25b06b2b6bf77"
+    },
+    {
+      "path": "blueprints/ai/embedding-pipeline/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

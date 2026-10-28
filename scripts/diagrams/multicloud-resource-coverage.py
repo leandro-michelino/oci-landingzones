@@ -26,6 +26,12 @@ base=importlib.util.module_from_spec(spec); spec.loader.exec_module(base)
 icon_spec=importlib.util.spec_from_file_location('cloud_icons',Path(__file__).with_name('cloud-icons.py'))
 cloud_icons=importlib.util.module_from_spec(icon_spec); icon_spec.loader.exec_module(cloud_icons)
 DEFAULTS=[
+ 'ai/embedding-pipeline',
+ 'ai/multi-agent',
+ 'ai/agents',
+ 'devops/oci-devops-pipeline',
+ 'industry/telco-cloud-native',
+
  'industry/healthcare-fhir-integration',
  'industry/healthcare-platform',
  'ai/genai-gateway',
@@ -53,6 +59,7 @@ DEFAULTS=[
 ]
 DECL=re.compile(r'^(resource|data|module)\s+"([^"]+)"(?:\s+"([^"]+)")?\s*\{',re.M)
 ICONS={
+ 'oci_containerengine_cluster':'OCI Container Engine for Kubernetes',
  'oci_queue_queue':'OCI Queue',
  'oci_apigateway_gateway':'API Gateway',
  'oci_generative_ai_dedicated_ai_cluster':'OCI Generative AI',

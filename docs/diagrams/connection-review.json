@@ -10,11 +10,11 @@
     "Reviewed endpoints, labels, arrows, paths and source hashes match contract",
     "Subnet routing and DNS-view semantic regression checks"
   ],
-  "overview_count": 58,
+  "overview_count": 63,
   "conceptual_overviews": 1,
-  "native_documents": 219,
-  "main_document_pages": 219,
-  "connector_count": 511,
+  "native_documents": 235,
+  "main_document_pages": 235,
+  "connector_count": 555,
   "cross_cloud_overviews": 10,
   "blueprints": [
     {
@@ -482,6 +482,41 @@
       "connections": 5,
       "cross_cloud_bridges": [],
       "overview_png_sha256": "90587f0c3da439343db23605aa79dd06bdfcc6b3474e2ae669673557df72696d",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "ai/embedding-pipeline",
+      "connections": 7,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "12c4700d306900ec1c09801d7ea74199aaf954bff962e9e43e54eb320049b674",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "ai/multi-agent",
+      "connections": 7,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "9bdc264b20ac00a0501e7a6cb4a5a01f5b8463265c889d35059824632718b2e5",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "ai/agents",
+      "connections": 5,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "c67b325e4dc3790f6b76f4a9442075d790145851768b83b2cb95c9d2dfebc067",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "devops/oci-devops-pipeline",
+      "connections": 4,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "dae663501752a2453d806cb064f48115510c062e7585df6ce5cd2ce39c626ae0",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "industry/telco-cloud-native",
+      "connections": 21,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "a22d4cee70a1d5a34f75e74767350812be8c5bfe49e76a4d56322be49adfaf27",
       "layout_warnings": []
     },
     {

@@ -33,6 +33,8 @@ def diagrams():
   yield slug,{'search':lambda t,n:m.database(t,n,True),'mysql':m.database,'dr':m.dr,'genai':m.genai,'ai':m.ai}[kind](title,i)
  m=load('ai-batch-02')
  for i,(slug,title,kind) in enumerate(m.ITEMS,26):yield slug,getattr(m,kind)(title,i)
+ m=load('ai-industry-batch-03')
+ for i,(slug,title,kind) in enumerate(m.ITEMS,31):yield slug,getattr(m,kind)(title,i)
  m=load('interconnect-batch-01')
  for i,slug in enumerate(m.ITEMS):yield slug,m.build(bool(i))
  m=load('healthcare-platform')

@@ -1,0 +1,202 @@
+{
+  "schema_version": 2,
+  "blueprint": "devops/oci-devops-pipeline",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 5
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_ons_notification_topic.this",
+      "type": "oci_ons_notification_topic",
+      "symbol": "this",
+      "source": "blueprints/devops/oci-devops-pipeline/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_notification_topic ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_notification_topic ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Notifications"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_devops_project.this",
+      "type": "oci_devops_project",
+      "symbol": "this",
+      "source": "blueprints/devops/oci-devops-pipeline/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_devops_project ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_devops_project ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n36",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_devops_repository.this",
+      "type": "oci_devops_repository",
+      "symbol": "this",
+      "source": "blueprints/devops/oci-devops-pipeline/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_repository ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_repository ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n38",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_devops_build_pipeline.this",
+      "type": "oci_devops_build_pipeline",
+      "symbol": "this",
+      "source": "blueprints/devops/oci-devops-pipeline/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_build_pipeline ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_build_pipeline ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n40",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_devops_deploy_pipeline.this",
+      "type": "oci_devops_deploy_pipeline",
+      "symbol": "this",
+      "source": "blueprints/devops/oci-devops-pipeline/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_deploy_pipeline ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_deploy_pipeline ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n42",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 5
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/devops/oci-devops-pipeline/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.notification_topic_id",
+      "source": "blueprints/devops/oci-devops-pipeline/variables.tf",
+      "description": "Existing ONS topic OCID when not creating one.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.existing_project_id",
+      "source": "blueprints/devops/oci-devops-pipeline/variables.tf",
+      "description": "Existing DevOps project OCID used when enable_devops_project is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 3
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/devops/oci-devops-pipeline/locals.tf",
+      "revision": "working-tree",
+      "sha256": "aa931f7ba7c2c079946a0a42087d5dd235fb48c43df4a9e63626b90b0d470b99"
+    },
+    {
+      "path": "blueprints/devops/oci-devops-pipeline/main.tf",
+      "revision": "working-tree",
+      "sha256": "6044b32df49916ea7f34ae5fa8bbc752acffad154b77131b6c58d85bdb463114"
+    },
+    {
+      "path": "blueprints/devops/oci-devops-pipeline/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "976c81b3247a012dd4297dea713a8245330271080e55614a74c92c438da5abdf"
+    },
+    {
+      "path": "blueprints/devops/oci-devops-pipeline/providers.tf",
+      "revision": "working-tree",
+      "sha256": "b2c3b649c7e80c3f4e4f8df66663daef9fe857240e0c86137896c9305fb70d77"
+    },
+    {
+      "path": "blueprints/devops/oci-devops-pipeline/variables.tf",
+      "revision": "working-tree",
+      "sha256": "89010978e0a040c22d45789c38bdc907f659663d675b1ff54a49af4f6db3f4c9"
+    },
+    {
+      "path": "blueprints/devops/oci-devops-pipeline/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}
