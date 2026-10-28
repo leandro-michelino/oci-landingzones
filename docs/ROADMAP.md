@@ -37,6 +37,21 @@ compliance, or workload platform pattern.
 
 ---
 
+## Final Phase: GCP Counterparts
+
+The user requested GCP blueprints on October 28, 2026, after completing the
+current architecture-diagram work. Finish conversion and resource coverage for
+the original 80 entry points first (currently 44 converted, 36 pending); then
+implement the [GCP counterpart batch](multicloud/GCP-OCI-BLUEPRINTS.md).
+
+This is a commitment to new blueprint implementation, including the GCP-side
+infrastructure templates, not just diagrams. The planned first batch mirrors
+existing AWS/Azure outcomes: hybrid networking, cross-cloud DR, Kubernetes
+active/passive, MySQL DR and AI gateway. All remain planned until implemented
+and validated. This request does not authorize provisioning or billed services.
+
+---
+
 ## Current Blueprint Inventory
 
 The repository currently contains 76 available blueprint

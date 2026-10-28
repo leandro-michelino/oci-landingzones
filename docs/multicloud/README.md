@@ -1,4 +1,4 @@
-# Multicloud Notes (Azure + OCI, AWS + OCI)
+# Multicloud Notes (Azure + OCI, AWS + OCI, GCP Planning)
 
 This folder is the design notebook for multicloud work.
 Use it for architecture context, backlog ideas, and decision history.
@@ -39,6 +39,7 @@ backlog patterns.
 
 | Note | Focus | Target Path |
 | --- | --- | --- |
+| [GCP + OCI counterpart batch](GCP-OCI-BLUEPRINTS.md) | Final phase after the original 80 diagram conversions: five GCP counterparts to existing AWS/Azure networking, DR, Kubernetes, MySQL and AI patterns. All planned. | Target folders listed in the batch note; none implemented yet. |
 | [Identity Federation](AZURE-OCI-IDENTITY-FEDERATION.md) | Microsoft Entra ID federation into OCI IAM with mapped RBAC and conditional access alignment. | `blueprints/identity/azure-entra-federation/` |
 | [AWS Interconnect Multicloud with OCI Preview](AWS-INTERCONNECT-MULTICLOUD-OCI-PREVIEW.md) | Preview-only AWS Interconnect - multicloud with OCI design note and current Limited Availability region pair; OCI support is not treated as production-ready repo automation yet. | `blueprints/networking/aws-interconnect-multicloud-oci/` |
 

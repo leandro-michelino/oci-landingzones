@@ -258,3 +258,13 @@ python3 scripts/diagrams/review-first-39.py --write-report
 
 This retrospective review keeps overall progress at **44/80**, with **36** pending
 conversions. No cloud resource was provisioned or adopted.
+
+
+## Final Follow-On Phase: GCP Blueprints
+
+After completing the original 80 diagram conversions and resource-coverage work,
+implement the [GCP counterpart batch](../multicloud/GCP-OCI-BLUEPRINTS.md) following
+the existing AWS/Azure blueprint contracts. Include the full OCI and GCP resource
+sides, appropriate provider icons, editable draw.io, PNGs and source inventories.
+These are new infrastructure blueprints, not diagram-only examples. They remain
+planned and are excluded from the current 44/80 conversion progress.
