@@ -1,0 +1,488 @@
+{
+  "schema_version": 2,
+  "blueprint": "networking/standalone-three-tier-vcn-zpr",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 9
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.workload_vcn.oci_core_vcn.this",
+      "type": "oci_core_vcn",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.workload_vcn (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.workload_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/standalone-three-tier-vcn-zpr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.workload_vcn.oci_core_internet_gateway.this",
+      "type": "oci_core_internet_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_internet_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_internet_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.workload_vcn (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.workload_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/standalone-three-tier-vcn-zpr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n10",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Internet Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.workload_vcn.oci_core_nat_gateway.this",
+      "type": "oci_core_nat_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_nat_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_nat_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.workload_vcn (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.workload_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/standalone-three-tier-vcn-zpr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n22",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "NAT Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.workload_vcn.oci_core_service_gateway.this",
+      "type": "oci_core_service_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_service_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_service_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.workload_vcn (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.workload_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/standalone-three-tier-vcn-zpr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n31",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Service Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.workload_vcn.oci_core_security_list.this",
+      "type": "oci_core_security_list",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.security_lists",
+      "creation_expression": {
+        "for_each": "var.security_lists"
+      },
+      "module_inputs": [
+        "module.workload_vcn (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.workload_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/standalone-three-tier-vcn-zpr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n41",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.workload_vcn.oci_core_route_table.this",
+      "type": "oci_core_route_table",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.route_tables",
+      "creation_expression": {
+        "for_each": "var.route_tables"
+      },
+      "module_inputs": [
+        "module.workload_vcn (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.workload_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/standalone-three-tier-vcn-zpr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n53",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Route Table"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.workload_vcn.oci_core_subnet.this",
+      "type": "oci_core_subnet",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.subnets",
+      "creation_expression": {
+        "for_each": "var.subnets"
+      },
+      "module_inputs": [
+        "module.workload_vcn (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.workload_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/standalone-three-tier-vcn-zpr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n77",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.zpr.oci_zpr_configuration.this",
+      "type": "oci_zpr_configuration",
+      "symbol": "this",
+      "source": "modules/networking/zpr/main.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "condition": "count = var.enable_zpr_configuration ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_zpr_configuration ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.zpr (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.zpr",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/zpr?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/standalone-three-tier-vcn-zpr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_zpr_configuration": "var.enable_zpr_configuration",
+            "enable_zpr_policies": "var.enable_zpr_policies"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n79",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.zpr.oci_zpr_zpr_policy.this",
+      "type": "oci_zpr_zpr_policy",
+      "symbol": "this",
+      "source": "modules/networking/zpr/main.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "condition": "for_each = var.enable_zpr_policies ? var.zpr_policies : {}",
+      "creation_expression": {
+        "for_each": "var.enable_zpr_policies ? var.zpr_policies : {}"
+      },
+      "module_inputs": [
+        "module.zpr (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.zpr",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/zpr?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/standalone-three-tier-vcn-zpr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_zpr_configuration": "var.enable_zpr_configuration",
+            "enable_zpr_policies": "var.enable_zpr_policies"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n81",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 9
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/networking/standalone-three-tier-vcn-zpr/variables.tf",
+      "description": "Compartment OCID where the standalone VCN is provisioned. Defaults to tenancy_ocid for simple tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 1
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "module.workload_vcn.oci_core_services.all_services",
+      "type": "oci_core_services",
+      "symbol": "all_services",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.workload_vcn (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.workload_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/standalone-three-tier-vcn-zpr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        }
+      ]
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/networking/standalone-three-tier-vcn-zpr/locals.tf",
+      "revision": "working-tree",
+      "sha256": "ed3c7c6430107327c2301ea2d8575e54b3f53ea66e090bc5cf3967cb07e92c61"
+    },
+    {
+      "path": "blueprints/networking/standalone-three-tier-vcn-zpr/main.tf",
+      "revision": "working-tree",
+      "sha256": "357d5bdf55103cc8c93f20af4a49ac58212423904ef1b3d9011de523831483a3"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "54ff05acc9098b1d7183085d8bd789a2d0887245f3c422d5fadaaca35e7fa135"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "63999259916589058d5dc97da07c23ab64d243fd58286e00bb70fc31612133f1"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "25166a91b8e7a4b0cfbc753c7ad86b469b14442cb05279b4281ffbb7be960b39"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "0d8c6607271ec5c51ada52890fe5fb2790e7ded827b4b213d3d526f177487870"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/networking/zpr/locals.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "sha256": "9e59ea3580e6818660913aa4e1e4e43deb9ed29cfd6a80a29ad8f4d2f2424449"
+    },
+    {
+      "path": "modules/networking/zpr/main.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "sha256": "2eefcda4dee978b0101b706231c1e79860cae9a863d7ae2920af3d229f962efa"
+    },
+    {
+      "path": "modules/networking/zpr/outputs.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "sha256": "d3a385b9c836d1f55f0a044f0c350985ae4114a6f64bba999196103004125b01"
+    },
+    {
+      "path": "modules/networking/zpr/variables.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "sha256": "d3a073205696eb86960262b2d2e0fc1fc1d0cddd916bf8e196778b4b2f1837d2"
+    },
+    {
+      "path": "modules/networking/zpr/versions.tf",
+      "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "blueprints/networking/standalone-three-tier-vcn-zpr/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "4ab4bf1414343b417525053ec0d52b767e4e2e284a631d073c2211aceec5f222"
+    },
+    {
+      "path": "blueprints/networking/standalone-three-tier-vcn-zpr/providers.tf",
+      "revision": "working-tree",
+      "sha256": "ac00704a97385dddcd85a46ca9077c15bf6c2ce90a4ac52e5760d21892fa9c09"
+    },
+    {
+      "path": "blueprints/networking/standalone-three-tier-vcn-zpr/variables.tf",
+      "revision": "working-tree",
+      "sha256": "833bd59abc81156a0008cb3b0bbf401064bd8295f54e21550163f51c8013e54b"
+    },
+    {
+      "path": "blueprints/networking/standalone-three-tier-vcn-zpr/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

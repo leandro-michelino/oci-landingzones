@@ -1,0 +1,680 @@
+{
+  "review_date": "2026-10-28",
+  "baseline_commit": "8730634ae09376b0e4cd877226fd9f3b7da2e806",
+  "scope": "Static diagram/source review of the original 39 architecture overviews; no cloud, provider, runtime or compliance validation.",
+  "checks": [
+    "Overview matches authoring script",
+    "OCI skill layout checker",
+    "Transitive source declarations and pinned revisions",
+    "Cloud-specific icons and SVG embedding",
+    "Source-to-card labels and main-document pages",
+    "Existing-resource reference separation",
+    "PNG presence and hashes"
+  ],
+  "blueprints": [
+    {
+      "blueprint": "networking/standalone-three-tier-vcn-defaults",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 7
+      },
+      "resource_detail_pages": 1,
+      "existing_resource_inputs": 1,
+      "native_document_pages": 3,
+      "inventory_sha256": "3fb6923392f71950e597e790304e8e28a49f4e74adbc726692652f1c6b1eef9c",
+      "png_sha256": {
+        "blueprints/networking/standalone-three-tier-vcn-defaults/architecture/architecture.png": "d6d357c388238fa6fb89911ff0883bd1d0b24bc63a0698a929e8abb598793e87",
+        "blueprints/networking/standalone-three-tier-vcn-defaults/architecture/oci-resources.png": "0f722f92cc4bf6f48c51ed857890762a55ba4379aaac600a960413d7bd1a9f2e",
+        "blueprints/networking/standalone-three-tier-vcn-defaults/architecture/existing-resources.png": "44bf06219a9709ea86dbedd771d13a81ad80156a099f204f148a8e2c29096456"
+      }
+    },
+    {
+      "blueprint": "networking/standalone-three-tier-vcn-custom",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 7
+      },
+      "resource_detail_pages": 1,
+      "existing_resource_inputs": 1,
+      "native_document_pages": 3,
+      "inventory_sha256": "fbf9fa4da4c1f8d9b997586914e761483f9778b48d411e6708b5162ebba67672",
+      "png_sha256": {
+        "blueprints/networking/standalone-three-tier-vcn-custom/architecture/architecture.png": "fab325977eb38d2e96db33901971534bc5926fb22050884f2458161e1ef38dbe",
+        "blueprints/networking/standalone-three-tier-vcn-custom/architecture/oci-resources.png": "6b55a4f904634041afaa8ae60b8ae8d0dc4e58c092c2442a5cf52b1a1e2ac0f6",
+        "blueprints/networking/standalone-three-tier-vcn-custom/architecture/existing-resources.png": "b6c93c1f40e74e4d2ea8b696e3783396ee9c3716fd32f3099d1b43e90bcf06a9"
+      }
+    },
+    {
+      "blueprint": "networking/standalone-three-tier-vcn-zpr",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 9
+      },
+      "resource_detail_pages": 1,
+      "existing_resource_inputs": 1,
+      "native_document_pages": 3,
+      "inventory_sha256": "3a9e8f84840cf652ca4ad66dddd940296d876b2b346f5722f0a0cc56fee83d7b",
+      "png_sha256": {
+        "blueprints/networking/standalone-three-tier-vcn-zpr/architecture/architecture.png": "bfa4470e4ccf9c0cf1ce4e9f3e88cb4970a8cb46c7dc8dd3207aa635bb9eb442",
+        "blueprints/networking/standalone-three-tier-vcn-zpr/architecture/oci-resources.png": "be5010aba6b384602ee4d87455d27d782516bda644bdbcf2b0c1320afac78e26",
+        "blueprints/networking/standalone-three-tier-vcn-zpr/architecture/existing-resources.png": "723745dfef9881a1245dbe8d0647a669234a0c615211bb8f9ae47ad35cafef9e"
+      }
+    },
+    {
+      "blueprint": "networking/standalone-private-endpoint-only",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 7
+      },
+      "resource_detail_pages": 1,
+      "existing_resource_inputs": 1,
+      "native_document_pages": 3,
+      "inventory_sha256": "0be6849939502929eb2df04aecdf007f23454c35b0e7dc4eda31340a69280de9",
+      "png_sha256": {
+        "blueprints/networking/standalone-private-endpoint-only/architecture/architecture.png": "f71324c177ac03e309033a324a247406fe149d85fea4c3f43de71cbb814971d6",
+        "blueprints/networking/standalone-private-endpoint-only/architecture/oci-resources.png": "c6e6cee9f6645afafdc63cceedc041af61c133ac521a52500a8eab740f60a137",
+        "blueprints/networking/standalone-private-endpoint-only/architecture/existing-resources.png": "432029040bf58232db3110bb811b2a98009f19ca952ee72f3defc56d388b8920"
+      }
+    },
+    {
+      "blueprint": "networking/externally-managed-vcns",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {},
+      "resource_detail_pages": 0,
+      "existing_resource_inputs": 4,
+      "native_document_pages": 2,
+      "inventory_sha256": "71b307c33b5124b3245b71b580025660067552d09bb35ac5f51a292246ca25a2",
+      "png_sha256": {
+        "blueprints/networking/externally-managed-vcns/architecture/architecture.png": "50c6e5c7ec9986eff9e54440503c09c6a66f003e6f89de8a9cd3dc55a62258a6",
+        "blueprints/networking/externally-managed-vcns/architecture/existing-resources.png": "05e37829f9a1ed637f90b482095af702c8ad614266cd31757c48d4760101ae21"
+      }
+    },
+    {
+      "blueprint": "networking/hub-spoke-with-drg-and-three-tier-vcns",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 18
+      },
+      "resource_detail_pages": 1,
+      "existing_resource_inputs": 1,
+      "native_document_pages": 3,
+      "inventory_sha256": "86cc31514740b6f9c05b00864fd9afdc81952e11463f01dc2e4da9630956aa2e",
+      "png_sha256": {
+        "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/architecture/architecture.png": "3d7fc132207a1ec7d8b527ef95e0e241ab9d75cfc1d2bef74a59c66f45c33df1",
+        "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/architecture/oci-resources.png": "6a2721145918ab4ceb25103d051cc5dffaca957cfd609ac71841fa0f4d901a29",
+        "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/architecture/existing-resources.png": "2848b9efed12071b87089ba91ff47463b2e2d7bacda2ca8a4ba58da2545c067d"
+      }
+    },
+    {
+      "blueprint": "networking/hub-spoke-with-hub-vcn-ipsec-vpn",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 20
+      },
+      "resource_detail_pages": 2,
+      "existing_resource_inputs": 1,
+      "native_document_pages": 4,
+      "inventory_sha256": "1a4c435c49685a0bdb3ea058a76e9e1414e27b9498834ba053f5126e664ef560",
+      "png_sha256": {
+        "blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn/architecture/architecture.png": "603302e40b039b62b2526f9bc36275d732beb49e4f0996d41bb1dc7d55bf2a64",
+        "blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn/architecture/oci-resources.png": "f2dc040dacc85a80d74a441a7323c0390fe51965bfe1876849e14340deb0dcc6",
+        "blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn/architecture/oci-resources-02.png": "61320f9421de67d0916130454a35c5e4c824ddc1eb094663adf3063a4372223a",
+        "blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn/architecture/existing-resources.png": "7fafa765664e1a54d7d87bcd302d755dd94f9cf312b6eb7e4e8e0d6fb5b37928"
+      }
+    },
+    {
+      "blueprint": "networking/hub-spoke-with-hub-vcn-fastconnect-vc",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 19
+      },
+      "resource_detail_pages": 2,
+      "existing_resource_inputs": 2,
+      "native_document_pages": 4,
+      "inventory_sha256": "a2acbcc593c7e7c07bd5f955718ac7977c5e820de867d5c6b5f655fa9d95cd83",
+      "png_sha256": {
+        "blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc/architecture/architecture.png": "b7c8a2b1e83d3156d580a45d0ecc54a8411e80e61831166cd2cca21e742e3ed5",
+        "blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc/architecture/oci-resources.png": "9e2c06c7e593b4668945896874b430284af26cc0e4015300954d48ff4a25f0bf",
+        "blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc/architecture/oci-resources-02.png": "d5231be3e239a291344a0ac94f84a24bf368a41ba9580b504def0be8692396a3",
+        "blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc/architecture/existing-resources.png": "e65047af258ecfec6e93d45ae4da742f7ad918472fa8649cea870cfa0dc9f0b4"
+      }
+    },
+    {
+      "blueprint": "networking/hub-spoke-with-hub-vcn-net-firewall",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 20
+      },
+      "resource_detail_pages": 2,
+      "existing_resource_inputs": 2,
+      "native_document_pages": 4,
+      "inventory_sha256": "9164913ebc30c0a4256cbb63bc1e628c6819fc04c07ae0f0b269bd52ffaac517",
+      "png_sha256": {
+        "blueprints/networking/hub-spoke-with-hub-vcn-net-firewall/architecture/architecture.png": "9470dbe546b97060197e0e5e26fb2ddf02108a59862be2b417926d606fbf1e82",
+        "blueprints/networking/hub-spoke-with-hub-vcn-net-firewall/architecture/oci-resources.png": "cae49e8e5930d251362a2f17e559f9364e0c9a4bb912c4b8c897fbcd5ec7c169",
+        "blueprints/networking/hub-spoke-with-hub-vcn-net-firewall/architecture/oci-resources-02.png": "2abf94f17f9c54f6f6b31c62242d7ebc27384d13676d93a4662e9bb14e290939",
+        "blueprints/networking/hub-spoke-with-hub-vcn-net-firewall/architecture/existing-resources.png": "c285d914f56afd316e42acd2673582f39e0650a16597442c6a2e9272f08afd1a"
+      }
+    },
+    {
+      "blueprint": "networking/hub-spoke-with-hub-vcn-net-appliance",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 20
+      },
+      "resource_detail_pages": 2,
+      "existing_resource_inputs": 2,
+      "native_document_pages": 4,
+      "inventory_sha256": "1753f4eae5161637cca59ae35d50e6fae80e3715efe1a1d337c3e7640b74e237",
+      "png_sha256": {
+        "blueprints/networking/hub-spoke-with-hub-vcn-net-appliance/architecture/architecture.png": "e71a3ccff381f8d3cf9b27184b88abbd8f1c7c9d532222084bc92279757c60ee",
+        "blueprints/networking/hub-spoke-with-hub-vcn-net-appliance/architecture/oci-resources.png": "4ebf6f160d106c6ed8781a7913e9e0537721a3009077bb11febadf66995385bc",
+        "blueprints/networking/hub-spoke-with-hub-vcn-net-appliance/architecture/oci-resources-02.png": "c212fe627cd637cf6403d7afd8f82bbb732e8383a22fe8f7b30d85055b19b5c0",
+        "blueprints/networking/hub-spoke-with-hub-vcn-net-appliance/architecture/existing-resources.png": "e80dcb3696c23eecdc187aad14e5216670c1dd16a0d976070405b352f4f36ebc"
+      }
+    },
+    {
+      "blueprint": "networking/hub-spoke-with-fortigate-ha",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "Contracts": 1,
+        "OCI": 23
+      },
+      "resource_detail_pages": 3,
+      "existing_resource_inputs": 2,
+      "native_document_pages": 5,
+      "inventory_sha256": "03022b982b98880ae9f053d1a96adffcca11f56955885bee37b27952a499dfef",
+      "png_sha256": {
+        "blueprints/networking/hub-spoke-with-fortigate-ha/architecture/architecture.png": "57ce6704569aa928623dd5942c09104fb6bff8b56b5b7b0c6683463d198eef7b",
+        "blueprints/networking/hub-spoke-with-fortigate-ha/architecture/contracts-resources.png": "76ba3e90bb78a17d2ec25d8b2fd1d4d48f80fa85cc78fbccd3c911c28274064c",
+        "blueprints/networking/hub-spoke-with-fortigate-ha/architecture/oci-resources.png": "c77ebaa93b82ec07a8d3f8151a397a806c85416430c115bb3315401c568e8554",
+        "blueprints/networking/hub-spoke-with-fortigate-ha/architecture/oci-resources-02.png": "7e733854b273d8d38ddd36c68d51076a84fe3f1b37edb6de22199e32f4321745",
+        "blueprints/networking/hub-spoke-with-fortigate-ha/architecture/existing-resources.png": "d612a60e8b96b1cc31c7d1737ef6ab8d25bd95d96ad582b307b1149446252411"
+      }
+    },
+    {
+      "blueprint": "networking/hub-spoke-with-hub-vcn-bastion-jump-host",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 19
+      },
+      "resource_detail_pages": 2,
+      "existing_resource_inputs": 1,
+      "native_document_pages": 4,
+      "inventory_sha256": "936bcd0e1cfc39c48f90a3bb576878e8388bdf070fdc19f60d117a43c246a879",
+      "png_sha256": {
+        "blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/architecture/architecture.png": "9187d0afc3fedc7bc556b3e944c978f56e1d5e66e1c2aea48d77c571bbfe0158",
+        "blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/architecture/oci-resources.png": "caced0f5941add1682e8ef68e1cea190be590377f4eda7c098304c18c09fbd99",
+        "blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/architecture/oci-resources-02.png": "3ab62eceb40abdf2e9047e17b9a0f21e53e932f4ad06e3d9eb2f0f0d8385ca35",
+        "blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/architecture/existing-resources.png": "ba178c0beb23e362fdcd3fd900e6b1b8ccc835987b50f13ef9d6ed4321a7dd72"
+      }
+    },
+    {
+      "blueprint": "networking/hub-spoke-with-transit-routing-nva-ha",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 20
+      },
+      "resource_detail_pages": 2,
+      "existing_resource_inputs": 2,
+      "native_document_pages": 4,
+      "inventory_sha256": "e924da409cf396bb90fb9e20c83a5fac75fec49b5410a3f22388ba41c735afd2",
+      "png_sha256": {
+        "blueprints/networking/hub-spoke-with-transit-routing-nva-ha/architecture/architecture.png": "550c86b1dd0e2c19eff56cc6cb626889fbe4c4521214a97b4255cad48e429826",
+        "blueprints/networking/hub-spoke-with-transit-routing-nva-ha/architecture/oci-resources.png": "9ea859902ab789a87f1cc24d125b232041b516b6e4ae3958cc71509076093f02",
+        "blueprints/networking/hub-spoke-with-transit-routing-nva-ha/architecture/oci-resources-02.png": "8d0af162921a4aaf026ab0c973109fc407103979a4f4c3a795610dfaa2888aff",
+        "blueprints/networking/hub-spoke-with-transit-routing-nva-ha/architecture/existing-resources.png": "fdb1d36b68d9ab3ee1a2a4f01ac33c58d73a9b53c608c3cb7febef89b783fa09"
+      }
+    },
+    {
+      "blueprint": "networking/hub-spoke-with-private-dns-split-horizon",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 22
+      },
+      "resource_detail_pages": 2,
+      "existing_resource_inputs": 1,
+      "native_document_pages": 4,
+      "inventory_sha256": "cee488b2b879bdc192cab5144e618772684e52022cc88438a0a947e77f64a92e",
+      "png_sha256": {
+        "blueprints/networking/hub-spoke-with-private-dns-split-horizon/architecture/architecture.png": "e47271cc3f7e2ae2bc8c69cb253984c9ddbe208d4044e78b87e26808c706f4a9",
+        "blueprints/networking/hub-spoke-with-private-dns-split-horizon/architecture/oci-resources.png": "623576e53cef9f94a5e8cfbc90caba20aa720e37dabf3dc9ab1aff04e70e912c",
+        "blueprints/networking/hub-spoke-with-private-dns-split-horizon/architecture/oci-resources-02.png": "74b3eed9125430137534e90161e99fbff90ea1fbc8ea4073b71027e1b96f0eeb",
+        "blueprints/networking/hub-spoke-with-private-dns-split-horizon/architecture/existing-resources.png": "88e003d77a176c5367a96e15ea0a034734fce6505c186273a2c6deab26215e24"
+      }
+    },
+    {
+      "blueprint": "networking/hub-spoke-with-zpr-micro-segmentation",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 20
+      },
+      "resource_detail_pages": 2,
+      "existing_resource_inputs": 1,
+      "native_document_pages": 4,
+      "inventory_sha256": "40d34142d2e1a00338999140f1d2a33745c60584cb7211fa90ec6f8cc027023d",
+      "png_sha256": {
+        "blueprints/networking/hub-spoke-with-zpr-micro-segmentation/architecture/architecture.png": "00757ccd6c5b36c197545b82bfa503eba2a21a53ad9484868970a1e460ae9fda",
+        "blueprints/networking/hub-spoke-with-zpr-micro-segmentation/architecture/oci-resources.png": "b012b162ffd16507289c1e5bec6aea14324dafba34f8a2038b9b168bdbbf0406",
+        "blueprints/networking/hub-spoke-with-zpr-micro-segmentation/architecture/oci-resources-02.png": "1285afe9d8746b2b23856b3a04adf6dba704a01ef4096b4276de28caa4a03129",
+        "blueprints/networking/hub-spoke-with-zpr-micro-segmentation/architecture/existing-resources.png": "1e79bdb7f20cb75b77aab8a2f53a051bc0f268ccdcf6801c364addd4a9abdf87"
+      }
+    },
+    {
+      "blueprint": "networking/hub-spoke-with-dual-region-dr",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 36
+      },
+      "resource_detail_pages": 2,
+      "existing_resource_inputs": 2,
+      "native_document_pages": 4,
+      "inventory_sha256": "201b37ef0f0e28671eb04efcb82fe1a96e373ba3d8a0c613296f96cb6fe24ee4",
+      "png_sha256": {
+        "blueprints/networking/hub-spoke-with-dual-region-dr/architecture/architecture.png": "54bd1949618432cd0283e7e7467975592565a4a77a09e1e1f181120eeb3ed868",
+        "blueprints/networking/hub-spoke-with-dual-region-dr/architecture/oci-resources.png": "8fb7bb601fdd018da37619aa1e4756c52027c4c37079b92d296985c3f18085c9",
+        "blueprints/networking/hub-spoke-with-dual-region-dr/architecture/oci-resources-02.png": "779802fdfbee3901466cab0f8ab00dee5cb7977a0c894349991dca5fa5f97dd3",
+        "blueprints/networking/hub-spoke-with-dual-region-dr/architecture/existing-resources.png": "5de06a716b4e0a02352156305103aee61e2f9e3a14a35159e2a99d05341b71b2"
+      }
+    },
+    {
+      "blueprint": "networking/multi-tenancy-shared-services",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 22
+      },
+      "resource_detail_pages": 2,
+      "existing_resource_inputs": 1,
+      "native_document_pages": 4,
+      "inventory_sha256": "09378c2450894a2f639863bd835f202064e8f5e1a8b1c3cf277177ac23d5e3c5",
+      "png_sha256": {
+        "blueprints/networking/multi-tenancy-shared-services/architecture/architecture.png": "0088d34ef25df592b61edbcbe592701399a99184da716d86d7e82c3851fcc43f",
+        "blueprints/networking/multi-tenancy-shared-services/architecture/oci-resources.png": "850feeed666ed7328b176994bae7028392f4886eb60acbc03d723d272f924c48",
+        "blueprints/networking/multi-tenancy-shared-services/architecture/oci-resources-02.png": "fff74d2611cdccc538aff1eeabb636037d32eb1d50d93b73a722be3af6bd197a",
+        "blueprints/networking/multi-tenancy-shared-services/architecture/existing-resources.png": "92921ba2a06f943824a8e33d4da86318efc95bfe3b16552847cb8979e730e9bf"
+      }
+    },
+    {
+      "blueprint": "networking/hub-spoke-with-multicloud-interconnect",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 21
+      },
+      "resource_detail_pages": 2,
+      "existing_resource_inputs": 2,
+      "native_document_pages": 4,
+      "inventory_sha256": "73818ec214bf602daa3cb7508e4c048d0dc432e404c145f2463088aeff5dfb1c",
+      "png_sha256": {
+        "blueprints/networking/hub-spoke-with-multicloud-interconnect/architecture/architecture.png": "a3277a90bea832a9e329948407f2aa94257c985d3224043379ca98b42673aaba",
+        "blueprints/networking/hub-spoke-with-multicloud-interconnect/architecture/oci-resources.png": "1d54342825c7f62ab6082d79b2bf489b1affd8940a58808fdb883201f27fe09a",
+        "blueprints/networking/hub-spoke-with-multicloud-interconnect/architecture/oci-resources-02.png": "4be2d268bfac33c68bb9d8485758ad7bc22079156e9129e77786b7f617cb65a2",
+        "blueprints/networking/hub-spoke-with-multicloud-interconnect/architecture/existing-resources.png": "ac93b2472c9c39e9e78058e127a09628c88226df4b6c74eb57bd30f2324d3cfb"
+      }
+    },
+    {
+      "blueprint": "networking/aws-oci-hybrid-network-backbone",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "AWS": 17,
+        "Contracts": 3,
+        "OCI": 10
+      },
+      "resource_detail_pages": 3,
+      "existing_resource_inputs": 5,
+      "native_document_pages": 5,
+      "inventory_sha256": "87265eafd22afc8608f7c8ae7e90a1d32d1bc050a8d68289cd61f19ff483fef1",
+      "png_sha256": {
+        "blueprints/networking/aws-oci-hybrid-network-backbone/architecture/architecture.png": "cc681a7a9e049debeef8dcdf583b74bc00a924086cca4d5b29edbc6053c1ff87",
+        "blueprints/networking/aws-oci-hybrid-network-backbone/architecture/aws-resources.png": "7f969b515f16797a4495cf6dacbade35e5dbf28cd56d734950d9d5e4846fceda",
+        "blueprints/networking/aws-oci-hybrid-network-backbone/architecture/contracts-resources.png": "e2e631251d209298ff791fb3bb86ae72ea279183225992d550a1155d556c5f6f",
+        "blueprints/networking/aws-oci-hybrid-network-backbone/architecture/oci-resources.png": "cd4f1466682e62da127c02d19733de8fdfb0f406edeeb18a0342750d2e0107c2",
+        "blueprints/networking/aws-oci-hybrid-network-backbone/architecture/existing-resources.png": "371da6e03bda72bd39920f2b61136249e1da3d5f953e035f901b11d30f16937e"
+      }
+    },
+    {
+      "blueprint": "networking/azure-oci-dual-connectivity",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "Azure": 9,
+        "Contracts": 6,
+        "OCI": 10
+      },
+      "resource_detail_pages": 3,
+      "existing_resource_inputs": 5,
+      "native_document_pages": 5,
+      "inventory_sha256": "4af22cf198177127762f92237ccb6f879d86bad7fd361e4d1e5a871076bfab2d",
+      "png_sha256": {
+        "blueprints/networking/azure-oci-dual-connectivity/architecture/architecture.png": "647c0c21349ad8b033bb1f21dc56cf468ade0cdce608e5be67cd2fe9c7dfb1da",
+        "blueprints/networking/azure-oci-dual-connectivity/architecture/azure-resources.png": "206760e3d5a22b9e6cebf8bc75f704759fe81096ff510e8cd4063e43ec617fea",
+        "blueprints/networking/azure-oci-dual-connectivity/architecture/contracts-resources.png": "fbff499a9cea9176655ac13bb3dbe3f4d4e5644d843fb5238a60db320b768838",
+        "blueprints/networking/azure-oci-dual-connectivity/architecture/oci-resources.png": "dff3aae0720b4c7ab1c16539a31c4e09a946141e22ec65e1c821c64909734a6b",
+        "blueprints/networking/azure-oci-dual-connectivity/architecture/existing-resources.png": "a3a15b3ed38f12d08f1e48200f5d2f9f4f66149ff18814b892930d670e98aacb"
+      }
+    },
+    {
+      "blueprint": "networking/azure-vwan-oci-drg-transit",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "Azure": 13,
+        "Contracts": 6,
+        "OCI": 10
+      },
+      "resource_detail_pages": 3,
+      "existing_resource_inputs": 6,
+      "native_document_pages": 5,
+      "inventory_sha256": "aab7fb31d1fe8c14105911fa93a209c963a7d170f177814ecaa8512a13136f91",
+      "png_sha256": {
+        "blueprints/networking/azure-vwan-oci-drg-transit/architecture/architecture.png": "6ae5abb142bf8ebe62e2149c5e761e9d05f42dae1167454d3a946ce2593162e1",
+        "blueprints/networking/azure-vwan-oci-drg-transit/architecture/azure-resources.png": "5a9f21e1aa6b37f713ed2ed32f5bd15e7b570ac30d4aef02d697fb1f2aa1809e",
+        "blueprints/networking/azure-vwan-oci-drg-transit/architecture/contracts-resources.png": "a4d62433fe3ff624f160cd8c105ed55816e3fa7f89acc669639e9d4e71f831ab",
+        "blueprints/networking/azure-vwan-oci-drg-transit/architecture/oci-resources.png": "35c1aa83bca55d5ef754b61229dcdc5873967016a94ab4cf3aa743c1e9919160",
+        "blueprints/networking/azure-vwan-oci-drg-transit/architecture/existing-resources.png": "ee2e00ba28b59b610f7af90291875182f854e81773d99705cbbd05c80e24638a"
+      }
+    },
+    {
+      "blueprint": "networking/regional-prod-nonprod-hubs",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 36
+      },
+      "resource_detail_pages": 2,
+      "existing_resource_inputs": 1,
+      "native_document_pages": 4,
+      "inventory_sha256": "bcfd3f3f18f52911b1ce2a7279823b01b7d4086d74361f7dc9b9e853d811cd4e",
+      "png_sha256": {
+        "blueprints/networking/regional-prod-nonprod-hubs/architecture/architecture.png": "46344532e29c67b7a3c0d96f9dd64b29e69bd2ab0860a7bf77cc5ab87fd2078e",
+        "blueprints/networking/regional-prod-nonprod-hubs/architecture/oci-resources.png": "32a9d1ae77e27e286299900fb40fa23796803ce8c058b4eb4bf919f4082f5e1c",
+        "blueprints/networking/regional-prod-nonprod-hubs/architecture/oci-resources-02.png": "73901f2328420065787377eccf2259295abb94a7d4881ce49b5eccc80e575742",
+        "blueprints/networking/regional-prod-nonprod-hubs/architecture/existing-resources.png": "002327ead3ca9541f020db1d63622ad4e7741e4316e309707d652fc7b1122c75"
+      }
+    },
+    {
+      "blueprint": "networking/network-load-balancer",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 5
+      },
+      "resource_detail_pages": 1,
+      "existing_resource_inputs": 5,
+      "native_document_pages": 3,
+      "inventory_sha256": "5d95ad0cf42c78635ffade6af75d4557ddbba8d70e075c64d559d0de28201184",
+      "png_sha256": {
+        "blueprints/networking/network-load-balancer/architecture/architecture.png": "5ebd74b2255381edebeac795008759f599a3cbb89b01549db6662781e2356dce",
+        "blueprints/networking/network-load-balancer/architecture/oci-resources.png": "f9dc9f5608ef23924d4a61127f4b83980c055ce0e25ea7967e2d002cb746df8d",
+        "blueprints/networking/network-load-balancer/architecture/existing-resources.png": "ba1e111592f2b125cf3941d03ce73dbacebf3d1a549e899192e6ba2227724c14"
+      }
+    },
+    {
+      "blueprint": "networking/hub-spoke-with-azure-vwan-expressroute",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "Azure": 9,
+        "Contracts": 1,
+        "OCI": 21
+      },
+      "resource_detail_pages": 4,
+      "existing_resource_inputs": 7,
+      "native_document_pages": 6,
+      "inventory_sha256": "08a0430644104a95ee5c8aeb81c47fce6f8d749c6770844b7d0a1e9eca327b59",
+      "png_sha256": {
+        "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/architecture/architecture.png": "7e981b095327dd4e8734f4f810b36295254f9ab1f72705501f0d2b3ac31b097b",
+        "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/architecture/azure-resources.png": "425da2be5ff815cb7dc457423e50e24a1155aafc795ae94ee6be6da3d484ad80",
+        "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/architecture/contracts-resources.png": "4de95709d479b671e5b01a089b13ba8fe6c0e5d0fceacd5e09571279929e89d7",
+        "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/architecture/oci-resources.png": "a373bde01ea625fcf977ce3128cfd373bd121e6c32490c2d3d6628d6388b5fb4",
+        "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/architecture/oci-resources-02.png": "8d1a599e62c18beb1a7d07e90c19a9fd215ece3c41966b4c367c8baa7ad1ccaa",
+        "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/architecture/existing-resources.png": "54512df09e39323cfd641f2612ab47fdd27d940b45184a02ada4552dc9786635"
+      }
+    },
+    {
+      "blueprint": "core",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 29
+      },
+      "resource_detail_pages": 2,
+      "existing_resource_inputs": 6,
+      "native_document_pages": 4,
+      "inventory_sha256": "797d30627a8d3e7b49e7f0ecdef0832034de231c9600fab56678c9b87cbca246",
+      "png_sha256": {
+        "blueprints/core/architecture/architecture.png": "020bc78475dd730f69fb5509b58ff5fcb4fec181cbc09cbfde26c8ce3e10f50e",
+        "blueprints/core/architecture/oci-resources.png": "faf071c91293b8417bb5a749e5ab287e0897478d43604ed5dac139314b1f246c",
+        "blueprints/core/architecture/oci-resources-02.png": "c878a1872dc8cc9433e3181191f294996ab055acc845687093df9ff06feda2e6",
+        "blueprints/core/architecture/existing-resources.png": "9fb0cdd4dd3d2ffc8f002236f59e99e8ecd795aed7641d2ce882dce875b1c8ba"
+      }
+    },
+    {
+      "blueprint": "cis/level1",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 29
+      },
+      "resource_detail_pages": 2,
+      "existing_resource_inputs": 4,
+      "native_document_pages": 4,
+      "inventory_sha256": "b071796ae283b2c37a9355382394c021b787763c3bdf155655e75e329c8407c5",
+      "png_sha256": {
+        "blueprints/cis/level1/architecture/architecture.png": "1c52e5a204950042383c7d7a8dee652232a9e034d78d366e45184fff0676a057",
+        "blueprints/cis/level1/architecture/oci-resources.png": "bcdbf9be38e893af8c046a289aa64cdc43856fce9414e2df8b046c966622a2c4",
+        "blueprints/cis/level1/architecture/oci-resources-02.png": "f6419e1fa621e9d5cfcda08b410389cf1f59a93ee312dc7d9d74e6f92af4c941",
+        "blueprints/cis/level1/architecture/existing-resources.png": "72103d8a728069942d23ac635bd58a823200cdf300ef1324a718daadaa7ec82f"
+      }
+    },
+    {
+      "blueprint": "cis/level2",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 29
+      },
+      "resource_detail_pages": 2,
+      "existing_resource_inputs": 4,
+      "native_document_pages": 4,
+      "inventory_sha256": "9a3676118c581d79f8e91808ceeccd62fbfc33c8368e4cbeb4144ed7ea1c399b",
+      "png_sha256": {
+        "blueprints/cis/level2/architecture/architecture.png": "01900359d9bf5bcb2f2e7534ad7eb362c37282e2132909ecce56196a5efa931e",
+        "blueprints/cis/level2/architecture/oci-resources.png": "4e1baf7217374b62436c762ad3c9258fe2f3922cf8f10c05c1c0388bdbf95b13",
+        "blueprints/cis/level2/architecture/oci-resources-02.png": "d68ce22891111bb1b19825bc131e2a7c37b51996e6f98a85026d6e8911578438",
+        "blueprints/cis/level2/architecture/existing-resources.png": "a65df37151245ff6b5c4463de048af39634b1c9f68ac53cb5f8ddf4567104701"
+      }
+    },
+    {
+      "blueprint": "identity/cis-basic",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 3
+      },
+      "resource_detail_pages": 1,
+      "existing_resource_inputs": 1,
+      "native_document_pages": 3,
+      "inventory_sha256": "316a3f0241f1ccf3e63fb119452dd9443516c39966431c5ab41a4b6418ac238d",
+      "png_sha256": {
+        "blueprints/identity/cis-basic/architecture/architecture.png": "199a4737483f05ffb7a36afb1f7d6219a39146f088daf27d971d75bf07ebb2bf",
+        "blueprints/identity/cis-basic/architecture/oci-resources.png": "851b1c2aff6bd892b0c428844badcf9ab9404056659effe550ee7d3a5a78e60d",
+        "blueprints/identity/cis-basic/architecture/existing-resources.png": "a224a4af514a6860709f5ed41b83e062efc2c2c12e851c58b57b247da71889c1"
+      }
+    },
+    {
+      "blueprint": "identity/new-identity-domain",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 2
+      },
+      "resource_detail_pages": 1,
+      "existing_resource_inputs": 1,
+      "native_document_pages": 3,
+      "inventory_sha256": "1e5131312dd18e724746c3950dcc8d4656cb0d7b764142a0a5be1b1bcb932542",
+      "png_sha256": {
+        "blueprints/identity/new-identity-domain/architecture/architecture.png": "a43a0c8efd058a369dc30f1dfef7638e3ec4731a9c8716a14a725bc96429c85f",
+        "blueprints/identity/new-identity-domain/architecture/oci-resources.png": "f62e35568bd895d567c5d1ee340868261a001e962c2e2ec3c2ad320421497d11",
+        "blueprints/identity/new-identity-domain/architecture/existing-resources.png": "8156f9ac08bb1fc580ff28c27acb22550f9f7b766ca37be5b2f09c6cd6c5bf71"
+      }
+    },
+    {
+      "blueprint": "identity/custom-identity-domain",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 2
+      },
+      "resource_detail_pages": 1,
+      "existing_resource_inputs": 1,
+      "native_document_pages": 3,
+      "inventory_sha256": "97e64d10840821a4f8cee96c9319763829d8bc22af346fde2b7ee4ca66cbdfd3",
+      "png_sha256": {
+        "blueprints/identity/custom-identity-domain/architecture/architecture.png": "171011c967a51c407ce2fc1741c884926a9a352eb8518321b63e61cd6f2e14a6",
+        "blueprints/identity/custom-identity-domain/architecture/oci-resources.png": "f2997e4116d8eee1c8dac9e36aa37077c9e62b08dbd88a4354a73bb3ab39dcc1",
+        "blueprints/identity/custom-identity-domain/architecture/existing-resources.png": "0bb6574a7fab505e24f4b583af06a4625e2818682826a7c3596b72bf461b5f85"
+      }
+    },
+    {
+      "blueprint": "operating-entity",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 4
+      },
+      "resource_detail_pages": 1,
+      "existing_resource_inputs": 2,
+      "native_document_pages": 3,
+      "inventory_sha256": "25c4e008ad78a04250e605c65a4c936142af8b4449871a9851064fcf47582535",
+      "png_sha256": {
+        "blueprints/operating-entity/architecture/architecture.png": "9dfe370c320c9ec802b4dd5bf98b332bb0b9b5839d13757872baf4ecf7f15756",
+        "blueprints/operating-entity/architecture/oci-resources.png": "74c7c12a441de1ce9792eed2cf4d9c6468c6ecc0c70437117dda58e22f1ee2e9",
+        "blueprints/operating-entity/architecture/existing-resources.png": "f95748f07a3f4a8c1dafe7fc7e6bb3855a672f26834e2c9269702e119c91a305"
+      }
+    },
+    {
+      "blueprint": "operating-entity/multi-operating-entities",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 4
+      },
+      "resource_detail_pages": 1,
+      "existing_resource_inputs": 1,
+      "native_document_pages": 3,
+      "inventory_sha256": "1b5087878d89e39d51ba97ca49077a7e85f5d1d82ea3111d1b17652156255665",
+      "png_sha256": {
+        "blueprints/operating-entity/multi-operating-entities/architecture/architecture.png": "f0016ecdd902575703acdb78a72017fc15f7ff3e5c235f4c641c2275e8c93bcf",
+        "blueprints/operating-entity/multi-operating-entities/architecture/oci-resources.png": "9c82a82d7094141de3208cdfb3951b4e2d99420b319cc4321098fe493e441ad5",
+        "blueprints/operating-entity/multi-operating-entities/architecture/existing-resources.png": "9b82ebe59ec8bb9a11b0f9cb8f94027918644c37702dfafda005838e4a7f170b"
+      }
+    },
+    {
+      "blueprint": "operating-entity/workload-vending",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 4
+      },
+      "resource_detail_pages": 1,
+      "existing_resource_inputs": 2,
+      "native_document_pages": 3,
+      "inventory_sha256": "79b967a34cde9387e3c909a4014fb39b7357cf139f87b8274a4c3274a3006895",
+      "png_sha256": {
+        "blueprints/operating-entity/workload-vending/architecture/architecture.png": "c8734720713931aba1236982fd3d1fe532bd756a3b712b5b658ad4d7d0ad0e25",
+        "blueprints/operating-entity/workload-vending/architecture/oci-resources.png": "5dd708f3bf088ae82e844379728eb60326eefd37c383e240941e9fe8a40870ef",
+        "blueprints/operating-entity/workload-vending/architecture/existing-resources.png": "86f2f48547c457a047fe6ba00fe6e298d0824962c00cb6810e097148723da841"
+      }
+    },
+    {
+      "blueprint": "compliance/scca-cloud-native",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 51
+      },
+      "resource_detail_pages": 3,
+      "existing_resource_inputs": 3,
+      "native_document_pages": 5,
+      "inventory_sha256": "dfe086ca8c5257b47e61720d6e19b0b150b7737ace1777976452eeea586ccd4f",
+      "png_sha256": {
+        "blueprints/compliance/scca-cloud-native/architecture/architecture.png": "ebebdabdbf738927c9e61593fe8833adf16bce04b7f7911e1474243b4bce7b43",
+        "blueprints/compliance/scca-cloud-native/architecture/oci-resources.png": "21f59ad87b8fa664b7d6a628e4574f6b519ebcbd969b2d91da24d3ace1cdd258",
+        "blueprints/compliance/scca-cloud-native/architecture/oci-resources-02.png": "fd578ecfcc5c08badc8402d65961819ed04fa2bc4646beeaa4e98e152e62e61e",
+        "blueprints/compliance/scca-cloud-native/architecture/oci-resources-03.png": "ce2b9833f31a89363ede7519a8287d2135d2cebc0d2e0d9a3d2337daffbd7d43",
+        "blueprints/compliance/scca-cloud-native/architecture/existing-resources.png": "98c164fc3d93fd27943120370d8427a6aa949fa348f52b708a92d99d13ebe53a"
+      }
+    },
+    {
+      "blueprint": "compliance/zero-trust",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 38
+      },
+      "resource_detail_pages": 3,
+      "existing_resource_inputs": 3,
+      "native_document_pages": 5,
+      "inventory_sha256": "986c3474ae9434da35c7f9e3cee8a50ecb4445ab1ad539f81304e0fdfafc3e51",
+      "png_sha256": {
+        "blueprints/compliance/zero-trust/architecture/architecture.png": "e99f66d1369a788e681a2d72081d5e67f880ec7ba74723943928cfdd38d8598e",
+        "blueprints/compliance/zero-trust/architecture/oci-resources.png": "b7d245126985b424775915287af93b99d006a51a00d316e97811bb29738687ae",
+        "blueprints/compliance/zero-trust/architecture/oci-resources-02.png": "80b8e4a21ff24089dc26fc688dfae0a58a33612872a2430677c9fc6034fa56e5",
+        "blueprints/compliance/zero-trust/architecture/oci-resources-03.png": "091ec3a0b72f0945fc3281ca2c9e8ffe5651d3f9b14bf9df82f9bd98ae71868d",
+        "blueprints/compliance/zero-trust/architecture/existing-resources.png": "ee2e46d3874b3bf69e03364f4f26a9f8c487a43de23b94310e81478c4c39c89d"
+      }
+    },
+    {
+      "blueprint": "compliance/healthcare-pci",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 4
+      },
+      "resource_detail_pages": 1,
+      "existing_resource_inputs": 3,
+      "native_document_pages": 3,
+      "inventory_sha256": "42e109aa3653163c053367684cbf91525807f91b15d5b2e4ed8dff4a6828aa92",
+      "png_sha256": {
+        "blueprints/compliance/healthcare-pci/architecture/architecture.png": "eb9623c61fa3126cfcbe48fa509e923aa47c3c343c8be894b8c45cc86a2c50be",
+        "blueprints/compliance/healthcare-pci/architecture/oci-resources.png": "fe6e7c46fe03d78f403b00fa100e2aaa77ab97dfde6deca0c850d70b7d354d92",
+        "blueprints/compliance/healthcare-pci/architecture/existing-resources.png": "006aee897232ef227d84b6fdf789ccd72cbe0d2950e5c7e55c9bb7cb8bc7942b"
+      }
+    },
+    {
+      "blueprint": "compliance/security-posture",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 8
+      },
+      "resource_detail_pages": 1,
+      "existing_resource_inputs": 12,
+      "native_document_pages": 3,
+      "inventory_sha256": "27832c4050a1270ae77df578dde27026534c4c3e9bcbc427b1fdb8733f0bc4ec",
+      "png_sha256": {
+        "blueprints/compliance/security-posture/architecture/architecture.png": "1e3a8697c6fd405cbfe4af32c12cf07db025e4bbe4cedf2edef995fe065fbe80",
+        "blueprints/compliance/security-posture/architecture/oci-resources.png": "a6d1522bbcdc3b363d1120fb178674331df6ab5ef9c0c8776ba6ec45d82ae79e",
+        "blueprints/compliance/security-posture/architecture/existing-resources.png": "5919538f6300073517494c1f1d56fb11c939dfcaab6b3b96b01a0ee0c33774b9"
+      }
+    },
+    {
+      "blueprint": "disaster-recovery/fsdr",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "OCI": 5
+      },
+      "resource_detail_pages": 1,
+      "existing_resource_inputs": 3,
+      "native_document_pages": 3,
+      "inventory_sha256": "ef61aae14089e05b52c6d00addb13f081b51534de2be78794e236659943972f2",
+      "png_sha256": {
+        "blueprints/disaster-recovery/fsdr/architecture/architecture.png": "896c1e3b16cd0e9ba867ba47055dd452a952d96e43291a08802a62de1a7b11da",
+        "blueprints/disaster-recovery/fsdr/architecture/oci-resources.png": "355aa420db2c860b829f76f29644c03d9f3d06a3ca385fa11df45e1c29260cf1",
+        "blueprints/disaster-recovery/fsdr/architecture/existing-resources.png": "b13f2ca7b3ceae49df90e57fcf53f227675a22d165aedcc84611e9ebd244d7da"
+      }
+    },
+    {
+      "blueprint": "disaster-recovery/azure-oci-cross-cloud-dr",
+      "overview_layout_warnings": [],
+      "counts_by_cloud": {
+        "Azure": 7,
+        "Contracts": 4,
+        "OCI": 7
+      },
+      "resource_detail_pages": 3,
+      "existing_resource_inputs": 3,
+      "native_document_pages": 5,
+      "inventory_sha256": "4dde3c9ea85a16e12c9b2987c7038b5d569d4965c99918f15686fc1aabb19fdb",
+      "png_sha256": {
+        "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/architecture.png": "2bfc555daa7687f2365497dae817c801300b9817592b4574be1ce40031081b3f",
+        "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/azure-resources.png": "1f5fdcb875e4e24be0807ac462164e112ede51d1bd3b826b53a999d86acada8d",
+        "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/contracts-resources.png": "4365c08310041c8b435c6eda4e7566dd26f4580da1fd1a2f3b5738acc7256708",
+        "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/oci-resources.png": "321391440b3e473947ac2a946c43b70597e462c6144fd5860916662f4a7e965a",
+        "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/existing-resources.png": "2d09d3bf7ab3c62ef990a5eafed8f6a34c311eef8bd0a7495302f45f507fc9c2"
+      }
+    }
+  ]
+}

@@ -44,28 +44,41 @@ of routing, backend health, traffic isolation, BGP or failover.
 
 ## Resource Detail And Coverage
 
-The main draw.io document includes the overview and a resource-detail page for
-each cloud below. Every root/transitive OCI declaration and companion-template
-declaration is mapped to a named resource card, including conditional resources.
-Collection cards represent source declarations, not resolved deployment counts.
+Reviewed against the updated diagram standard on October 28, 2026. The main
+draw.io document contains the topology overview plus every resource-detail and
+existing-resource-reference page below. Source declarations include disabled and
+collection-based resources from root Terraform, recursively pinned modules and
+companion cloud templates. Counts are declarations, not resolved instance counts.
 
-| Scope | Source declarations | PNG detail | Editable detail |
+OCI uses Oracle Toolkit icons; Azure and AWS use their respective draw.io icons.
+Types without a specific mapped icon retain their exact name and type in a box.
+No GCP declarations were found in this fixed 39-blueprint scope.
+
+| Detail page | Declarations | PNG | Editable source |
 | --- | --- | --- | --- |
-| Azure | 13 | [PNG](azure-resources.png) | [draw.io](azure-resources.drawio) |
-| Contracts | 6 | [PNG](contracts-resources.png) | [draw.io](contracts-resources.drawio) |
-| OCI | 10 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
+| Azure resources | 13 | [PNG](azure-resources.png) | [draw.io](azure-resources.drawio) |
+| Contracts resources | 6 | [PNG](contracts-resources.png) | [draw.io](contracts-resources.drawio) |
+| OCI resources | 10 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
 
-[Resource inventory and source-to-node coverage](resource-inventory.json).
-Contracts are local Terraform metadata resources, not deployed cloud services.
-Data lookups are recorded separately. Pinned module sources and source hashes
-are retained in the inventory; the overview describes default enablement.
+[Existing resources and override inputs](existing-resources.png) | [Editable reference page](existing-resources.drawio)
 
-After regenerating the overview, rebuild all resource pages and verify coverage:
+[Source inventory](resource-inventory.json) records exact declarations, full
+creation expressions, module call-site gates/enablement inputs, pinned revisions,
+source hashes and diagram node mappings. Identifier-input references are listed
+separately from managed resources. Null/empty inputs do not prove an external
+resource exists; collection schemas may contain additional resource identifiers.
+
+The overview explains default enablement. Resource cards enumerate all declaration
+branches and do not imply deployment, ownership adoption, packet flow, security
+enforcement or recovery success. No historical Terraform validation date changed.
 
 ```bash
 python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint networking/azure-vwan-oci-drg-transit --render
 python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint networking/azure-vwan-oci-drg-transit --check
 ```
+
+If regenerating the overview first, rebuild these detail pages afterward.
+See [the fixed first-39 review](../../../../docs/diagrams/FIRST-39-REVIEW.md) and [provider icon sources](../../../../scripts/diagrams/assets/README.md).
 
 ## Terraform Components
 

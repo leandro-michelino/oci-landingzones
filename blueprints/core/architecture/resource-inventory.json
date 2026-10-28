@@ -1,0 +1,1565 @@
+{
+  "schema_version": 2,
+  "blueprint": "core",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 29
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.compartments.oci_identity_compartment.root",
+      "type": "oci_identity_compartment",
+      "symbol": "root",
+      "source": "modules/iam/compartments/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.compartments (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.compartments",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/compartments?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_delete": "var.enable_delete"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "root",
+        "provider_icon": null,
+        "oci_icon": "Compartments"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.compartments.oci_identity_compartment.children",
+      "type": "oci_identity_compartment",
+      "symbol": "children",
+      "source": "modules/iam/compartments/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.child_compartments",
+      "creation_expression": {
+        "for_each": "local.child_compartments"
+      },
+      "module_inputs": [
+        "module.compartments (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.compartments",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/compartments?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_delete": "var.enable_delete"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n14",
+        "source_symbol": "children",
+        "provider_icon": null,
+        "oci_icon": "Compartments"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.tagging.oci_identity_tag_namespace.this",
+      "type": "oci_identity_tag_namespace",
+      "symbol": "this",
+      "source": "modules/governance/tagging/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_tagging ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_tagging ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.tagging (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.tagging",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/tagging?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_tagging": "var.enable_tagging",
+            "enable_tag_defaults": "var.enable_tag_defaults"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n24",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Tagging"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.tagging.oci_identity_tag.this",
+      "type": "oci_identity_tag",
+      "symbol": "this",
+      "source": "modules/governance/tagging/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.enable_tagging ? var.tag_definitions : {}",
+      "creation_expression": {
+        "for_each": "var.enable_tagging ? var.tag_definitions : {}"
+      },
+      "module_inputs": [
+        "module.tagging (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.tagging",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/tagging?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_tagging": "var.enable_tagging",
+            "enable_tag_defaults": "var.enable_tag_defaults"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n33",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Tagging"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.tagging.oci_identity_tag_default.this",
+      "type": "oci_identity_tag_default",
+      "symbol": "this",
+      "source": "modules/governance/tagging/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.enable_tagging && var.enable_tag_defaults ? local.tag_defaults : {}",
+      "creation_expression": {
+        "for_each": "var.enable_tagging && var.enable_tag_defaults ? local.tag_defaults : {}"
+      },
+      "module_inputs": [
+        "module.tagging (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.tagging",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/tagging?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_tagging": "var.enable_tagging",
+            "enable_tag_defaults": "var.enable_tag_defaults"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n42",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Tagging"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.logging.oci_logging_log_group.this",
+      "type": "oci_logging_log_group",
+      "symbol": "this",
+      "source": "modules/governance/logging/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.log_groups",
+      "creation_expression": {
+        "for_each": "local.log_groups"
+      },
+      "module_inputs": [
+        "module.logging (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.logging",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/logging?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_logging": "var.enable_logging",
+            "enable_audit_retention": "var.enable_audit_retention"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n51",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Logging"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.logging.oci_logging_log.service",
+      "type": "oci_logging_log",
+      "symbol": "service",
+      "source": "modules/governance/logging/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.service_logs",
+      "creation_expression": {
+        "for_each": "local.service_logs"
+      },
+      "module_inputs": [
+        "module.logging (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.logging",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/logging?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_logging": "var.enable_logging",
+            "enable_audit_retention": "var.enable_audit_retention"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n73",
+        "source_symbol": "service",
+        "provider_icon": null,
+        "oci_icon": "Logging"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.logging.oci_logging_log_saved_search.this",
+      "type": "oci_logging_log_saved_search",
+      "symbol": "this",
+      "source": "modules/governance/logging/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.enable_logging ? var.saved_searches : {}",
+      "creation_expression": {
+        "for_each": "var.enable_logging ? var.saved_searches : {}"
+      },
+      "module_inputs": [
+        "module.logging (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.logging",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/logging?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_logging": "var.enable_logging",
+            "enable_audit_retention": "var.enable_audit_retention"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n95",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Logging"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.logging.oci_audit_configuration.this",
+      "type": "oci_audit_configuration",
+      "symbol": "this",
+      "source": "modules/governance/logging/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_audit_retention ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_audit_retention ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.logging (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.logging",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/logging?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_logging": "var.enable_logging",
+            "enable_audit_retention": "var.enable_audit_retention"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n117",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Auditing"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.cloud_guard.oci_cloud_guard_cloud_guard_configuration.this",
+      "type": "oci_cloud_guard_cloud_guard_configuration",
+      "symbol": "this",
+      "source": "modules/security/cloud-guard/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_cloud_guard ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_cloud_guard ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.cloud_guard (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.cloud_guard",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/cloud-guard?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_cloud_guard": "var.cloud_guard_enabled",
+            "enable_default_target": "var.cloud_guard_enable_default_target"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n127",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Cloud Guard"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.cloud_guard.oci_cloud_guard_target.this",
+      "type": "oci_cloud_guard_target",
+      "symbol": "this",
+      "source": "modules/security/cloud-guard/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.targets",
+      "creation_expression": {
+        "for_each": "local.targets"
+      },
+      "module_inputs": [
+        "module.cloud_guard (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.cloud_guard",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/cloud-guard?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_cloud_guard": "var.cloud_guard_enabled",
+            "enable_default_target": "var.cloud_guard_enable_default_target"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n134",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Cloud Guard"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.vault.oci_kms_vault.this",
+      "type": "oci_kms_vault",
+      "symbol": "this",
+      "source": "modules/security/vault/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.vaults",
+      "creation_expression": {
+        "for_each": "local.vaults"
+      },
+      "module_inputs": [
+        "module.vault (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.vault",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vault?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_vault": "var.vault_enabled",
+            "enable_default_vault": "var.enable_default_vault",
+            "enable_default_key": "var.enable_default_vault_key"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n141",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Vault"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.vault.oci_kms_key.this",
+      "type": "oci_kms_key",
+      "symbol": "this",
+      "source": "modules/security/vault/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.keys",
+      "creation_expression": {
+        "for_each": "local.keys"
+      },
+      "module_inputs": [
+        "module.vault (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.vault",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vault?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_vault": "var.vault_enabled",
+            "enable_default_vault": "var.enable_default_vault",
+            "enable_default_key": "var.enable_default_vault_key"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n155",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Key Management"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.security_zones.oci_cloud_guard_security_zone.this",
+      "type": "oci_cloud_guard_security_zone",
+      "symbol": "this",
+      "source": "modules/security/security-zones/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.security_zones",
+      "creation_expression": {
+        "for_each": "local.security_zones"
+      },
+      "module_inputs": [
+        "module.security_zones (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.security_zones",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/security-zones?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_security_zones": "var.security_zones_enabled",
+            "enable_default_security_zone": "var.enable_default_security_zone"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n162",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Maximum Security Zone"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.vss.oci_vulnerability_scanning_host_scan_recipe.this",
+      "type": "oci_vulnerability_scanning_host_scan_recipe",
+      "symbol": "this",
+      "source": "modules/security/vss/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.host_scan_recipes",
+      "creation_expression": {
+        "for_each": "local.host_scan_recipes"
+      },
+      "module_inputs": [
+        "module.vss (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.vss",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vss?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_vss": "var.vss_enabled",
+            "enable_default_host_scan": "var.enable_default_host_scan"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n189",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Vulnerability Scanning"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.vss.oci_vulnerability_scanning_host_scan_target.this",
+      "type": "oci_vulnerability_scanning_host_scan_target",
+      "symbol": "this",
+      "source": "modules/security/vss/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.host_scan_targets",
+      "creation_expression": {
+        "for_each": "local.host_scan_targets"
+      },
+      "module_inputs": [
+        "module.vss (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.vss",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vss?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_vss": "var.vss_enabled",
+            "enable_default_host_scan": "var.enable_default_host_scan"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n199",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Vulnerability Scanning"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.vss.oci_vulnerability_scanning_container_scan_recipe.this",
+      "type": "oci_vulnerability_scanning_container_scan_recipe",
+      "symbol": "this",
+      "source": "modules/security/vss/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.container_scan_recipes",
+      "creation_expression": {
+        "for_each": "local.container_scan_recipes"
+      },
+      "module_inputs": [
+        "module.vss (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.vss",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vss?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_vss": "var.vss_enabled",
+            "enable_default_host_scan": "var.enable_default_host_scan"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n209",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Vulnerability Scanning"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.vss.oci_vulnerability_scanning_container_scan_target.this",
+      "type": "oci_vulnerability_scanning_container_scan_target",
+      "symbol": "this",
+      "source": "modules/security/vss/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.container_scan_targets",
+      "creation_expression": {
+        "for_each": "local.container_scan_targets"
+      },
+      "module_inputs": [
+        "module.vss (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.vss",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vss?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_vss": "var.vss_enabled",
+            "enable_default_host_scan": "var.enable_default_host_scan"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n219",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Vulnerability Scanning"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.budgets.oci_budget_budget.this",
+      "type": "oci_budget_budget",
+      "symbol": "this",
+      "source": "modules/governance/budgets/main.tf",
+      "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+      "condition": "for_each = local.budgets",
+      "creation_expression": {
+        "for_each": "local.budgets"
+      },
+      "module_inputs": [
+        "module.budgets (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.budgets",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/budgets?ref=80e439cd48a4b6dce4f63e54f53a45a621236601",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_budgets": "var.enable_budgets",
+            "enable_default_budget": "var.enable_default_budget"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.budgets.oci_budget_alert_rule.this",
+      "type": "oci_budget_alert_rule",
+      "symbol": "this",
+      "source": "modules/governance/budgets/main.tf",
+      "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+      "condition": "for_each = local.alert_rules",
+      "creation_expression": {
+        "for_each": "local.alert_rules"
+      },
+      "module_inputs": [
+        "module.budgets (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.budgets",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/budgets?ref=80e439cd48a4b6dce4f63e54f53a45a621236601",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_budgets": "var.enable_budgets",
+            "enable_default_budget": "var.enable_default_budget"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n6",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.events.oci_ons_notification_topic.this",
+      "type": "oci_ons_notification_topic",
+      "symbol": "this",
+      "source": "modules/governance/events/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.notification_topics",
+      "creation_expression": {
+        "for_each": "local.notification_topics"
+      },
+      "module_inputs": [
+        "module.events (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.events",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/events?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_events": "var.enable_events",
+            "enable_default_topic": "var.enable_default_event_topic",
+            "enable_default_event_rules": "var.enable_default_event_rules"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n8",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Notifications"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.events.oci_ons_subscription.this",
+      "type": "oci_ons_subscription",
+      "symbol": "this",
+      "source": "modules/governance/events/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.subscriptions",
+      "creation_expression": {
+        "for_each": "local.subscriptions"
+      },
+      "module_inputs": [
+        "module.events (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.events",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/events?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_events": "var.enable_events",
+            "enable_default_topic": "var.enable_default_event_topic",
+            "enable_default_event_rules": "var.enable_default_event_rules"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n40",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Notifications"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.events.oci_events_rule.this",
+      "type": "oci_events_rule",
+      "symbol": "this",
+      "source": "modules/governance/events/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.event_rules",
+      "creation_expression": {
+        "for_each": "local.event_rules"
+      },
+      "module_inputs": [
+        "module.events (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.events",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/events?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_events": "var.enable_events",
+            "enable_default_topic": "var.enable_default_event_topic",
+            "enable_default_event_rules": "var.enable_default_event_rules"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n72",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Events"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.monitoring.oci_ons_notification_topic.this",
+      "type": "oci_ons_notification_topic",
+      "symbol": "this",
+      "source": "modules/operations/monitoring/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.notification_topics",
+      "creation_expression": {
+        "for_each": "local.notification_topics"
+      },
+      "module_inputs": [
+        "module.monitoring (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.monitoring",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/monitoring?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_monitoring": "var.monitoring_enabled",
+            "enable_default_topic": "var.enable_default_monitoring_topic"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n78",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Notifications"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.monitoring.oci_ons_subscription.this",
+      "type": "oci_ons_subscription",
+      "symbol": "this",
+      "source": "modules/operations/monitoring/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.subscriptions",
+      "creation_expression": {
+        "for_each": "local.subscriptions"
+      },
+      "module_inputs": [
+        "module.monitoring (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.monitoring",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/monitoring?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_monitoring": "var.monitoring_enabled",
+            "enable_default_topic": "var.enable_default_monitoring_topic"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n110",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Notifications"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.monitoring.oci_monitoring_alarm.this",
+      "type": "oci_monitoring_alarm",
+      "symbol": "this",
+      "source": "modules/operations/monitoring/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.alarms",
+      "creation_expression": {
+        "for_each": "local.alarms"
+      },
+      "module_inputs": [
+        "module.monitoring (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.monitoring",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/monitoring?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_monitoring": "var.monitoring_enabled",
+            "enable_default_topic": "var.enable_default_monitoring_topic"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n142",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Alarms"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.groups.oci_identity_group.this",
+      "type": "oci_identity_group",
+      "symbol": "this",
+      "source": "modules/iam/groups/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.groups",
+      "creation_expression": {
+        "for_each": "local.groups"
+      },
+      "module_inputs": [
+        "module.groups (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.groups",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/groups?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_default_groups": "var.enable_default_iam_groups"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n162",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "User Group"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.dynamic_groups.oci_identity_dynamic_group.this",
+      "type": "oci_identity_dynamic_group",
+      "symbol": "this",
+      "source": "modules/iam/dynamic-groups/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.dynamic_groups",
+      "creation_expression": {
+        "for_each": "local.dynamic_groups"
+      },
+      "module_inputs": [
+        "module.dynamic_groups (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.dynamic_groups",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/dynamic-groups?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n175",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "IAM"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.policies.oci_identity_policy.this",
+      "type": "oci_identity_policy",
+      "symbol": "this",
+      "source": "modules/iam/policies/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.policies",
+      "creation_expression": {
+        "for_each": "local.policies"
+      },
+      "module_inputs": [
+        "module.policies (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.policies",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/policies?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_default_policies": "var.enable_default_iam_policies"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n186",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 18
+    },
+    {
+      "file": "oci-resources-02.drawio",
+      "page_name": "OCI resources 2",
+      "declarations": 11
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.parent_compartment_ocid",
+      "source": "blueprints/core/variables.tf",
+      "description": "Parent compartment OCID for the landing zone root compartment. Defaults to tenancy_ocid when omitted.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.cloud_guard_detector_recipe_ids",
+      "source": "blueprints/core/variables.tf",
+      "description": "Detector recipe OCIDs attached to the default Cloud Guard target.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.cloud_guard_responder_recipe_ids",
+      "source": "blueprints/core/variables.tf",
+      "description": "Responder recipe OCIDs attached to the default Cloud Guard target.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.default_security_zone_recipe_id",
+      "source": "blueprints/core/variables.tf",
+      "description": "Security recipe OCID used by the default landing zone Security Zone.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.default_security_zone_recipe_compartment_ocid",
+      "source": "blueprints/core/variables.tf",
+      "description": "Compartment OCID used when looking up default_security_zone_recipe_display_name. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.default_budget_target_ocids",
+      "source": "blueprints/core/variables.tf",
+      "description": "Optional set of compartment OCIDs tracked by the default landing zone budget. Defaults to the landing zone root compartment.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 6
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "module.security_zones.oci_cloud_guard_security_recipes.this",
+      "type": "oci_cloud_guard_security_recipes",
+      "symbol": "this",
+      "source": "modules/security/security-zones/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.recipe_lookups",
+      "creation_expression": {
+        "for_each": "local.recipe_lookups"
+      },
+      "module_inputs": [
+        "module.security_zones (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.security_zones",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/security-zones?ref=v0.2.0",
+          "call_site": "blueprints/core/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_security_zones": "var.security_zones_enabled",
+            "enable_default_security_zone": "var.enable_default_security_zone"
+          }
+        }
+      ]
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/core/locals.tf",
+      "revision": "working-tree",
+      "sha256": "2af38aa1176c4a78a1e93c0c9d32527ee65c43c791fc0e22bde15e44b653810a"
+    },
+    {
+      "path": "blueprints/core/main.tf",
+      "revision": "working-tree",
+      "sha256": "18aadaa315b042ba9faa3c61a95f44cb7572dc98a6a3f005573d3996dafb42ca"
+    },
+    {
+      "path": "modules/iam/compartments/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "55247c97a573ceaee760654a9583a833f448631d21039fec7f75a63d051bfbb4"
+    },
+    {
+      "path": "modules/iam/compartments/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "2d4a06640964de82a452e4b48c6f6fb632c9a6d9f02dddcd75f6db91b23fd36b"
+    },
+    {
+      "path": "modules/iam/compartments/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "454a8d8e92a22609c64508f26eaa9855e60713ea85025917e30f24d586cad3f1"
+    },
+    {
+      "path": "modules/iam/compartments/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "5675ec82b9d51edff0281f00dbb188d078cb134c04255edec58ff987839a8da3"
+    },
+    {
+      "path": "modules/iam/compartments/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/governance/tagging/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "6d8998ed70522850b03b00442ab399b84ddac6d16dca9d594e8d2df9ecab84ed"
+    },
+    {
+      "path": "modules/governance/tagging/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "1e0911af8ff73b9a70d2857868e91be473b9d5e4d15ad2a67829cdbb7f447780"
+    },
+    {
+      "path": "modules/governance/tagging/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "01dd21b533e6716a294f210f064da64d655bf29644eeb44438a180d4cc2b26b6"
+    },
+    {
+      "path": "modules/governance/tagging/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "d73ef32561fcd21fb6c608dd682823b593f00ddba97164cde9b43f1f979a7453"
+    },
+    {
+      "path": "modules/governance/tagging/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/governance/logging/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "b2a307c781b53f086d24e5100c3c86340a26574e7a9a6c30d1cc169c63427fa1"
+    },
+    {
+      "path": "modules/governance/logging/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "39b5932592e58a30b0a47b8e1d493f08a524e1f92d560acf3827923eb529811f"
+    },
+    {
+      "path": "modules/governance/logging/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "befbbef82b623b5651632f426dc6a239006c21ee5cde932cc1af6532766eaf95"
+    },
+    {
+      "path": "modules/governance/logging/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "1569473d413739eb2474897adc74e9d8710333a7fdef38897af8cf2def9a01e5"
+    },
+    {
+      "path": "modules/governance/logging/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/security/cloud-guard/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "54377973d1b67edc88e78609b3209605fc68f2e702a395cc542fe4005c96fcb2"
+    },
+    {
+      "path": "modules/security/cloud-guard/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "a27fe4e9b0392dd46e4a0c7291ada4930f25708963a675b6136f569ac35aae2e"
+    },
+    {
+      "path": "modules/security/cloud-guard/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "47f6cacf4c263232c79f706742c7f29899ecd3c983506f5e5e970928aa93ee76"
+    },
+    {
+      "path": "modules/security/cloud-guard/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "c2ebec67f1b2c0aeeae44a4168fa797e87ba268d62c697bf46f559fd95dff6bc"
+    },
+    {
+      "path": "modules/security/cloud-guard/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/security/vault/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "931f0d0978ebb473109e0487a01e355fde11a30f6281fd1c5bf77cef04a9c76c"
+    },
+    {
+      "path": "modules/security/vault/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "60e1a9c07f49e54da2c589b81510b46d6e8889d71c54c9cd8945a06c37041f8f"
+    },
+    {
+      "path": "modules/security/vault/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "37b35277067ecbca0438abf45516d0b2bd151c7f63feb0e980c00f7b35363c26"
+    },
+    {
+      "path": "modules/security/vault/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "5d116b16c4ef42a77297258aee95bc7da06b260dee9273da775cbffe49566e4c"
+    },
+    {
+      "path": "modules/security/vault/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/security/security-zones/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "9e13a0bf7a6952f06b7dc347ba7f15e1ff085b5f545e1761558d622a25639df5"
+    },
+    {
+      "path": "modules/security/security-zones/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "b5a63574092205d638da6f113d491813e200303394dee4c88dfc489ef2cb859a"
+    },
+    {
+      "path": "modules/security/security-zones/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "38c9498b85dca69416010c4674c562d30b8e0ffc3ea10708ef39af4983fcec3b"
+    },
+    {
+      "path": "modules/security/security-zones/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "658099151aad3546a38735f62ab8e018751f00588f8d3f50bf3d7910886f3792"
+    },
+    {
+      "path": "modules/security/security-zones/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/security/vss/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "2c3490c040e7b0774f3da38c1521c64e7db698374c0a58f2ed0f38686a5e0577"
+    },
+    {
+      "path": "modules/security/vss/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "7787959cf9d289a3885b796324a6e2f0570155a51ef194d807bd0cd2464b3895"
+    },
+    {
+      "path": "modules/security/vss/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "d7ee4a92fc2d6f6b3a269f4123986e25e1ea977ec80af5891c27bbcc35b108ea"
+    },
+    {
+      "path": "modules/security/vss/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "a343d60963a69a77e3f28c6da78e0e9d409e1e1f2e422154c3857f79bc9a8d76"
+    },
+    {
+      "path": "modules/security/vss/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/governance/budgets/locals.tf",
+      "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+      "sha256": "b3eadeefed304a8ed1d725e275d4a61003c755618222c88c8806913b35656907"
+    },
+    {
+      "path": "modules/governance/budgets/main.tf",
+      "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+      "sha256": "5e86b5f385441f7986611c39b8f0b8786eab5e9f24ba0202011eed4908e9848a"
+    },
+    {
+      "path": "modules/governance/budgets/outputs.tf",
+      "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+      "sha256": "18e036fc1994f06d7832fb18c4f9f534680523baa3362b1ec510618f26ae18a0"
+    },
+    {
+      "path": "modules/governance/budgets/variables.tf",
+      "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+      "sha256": "904a1faf7b6152f8b9b20fb6f630f5902cdd5abffca315a71e7dc3e142491fe9"
+    },
+    {
+      "path": "modules/governance/budgets/versions.tf",
+      "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "modules/governance/events/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "c3ad78154df0dc426ba7d42a5d785388ae440ea0b828a59bbb2ed0db5b213c62"
+    },
+    {
+      "path": "modules/governance/events/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "ce6fde4383ee3dd8af75d46bb3c7d3f81323c0f75af7acbaeb60efa81c3c93f9"
+    },
+    {
+      "path": "modules/governance/events/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "0013d9c16d9d7e68cadc42fc95fc1a2b161d34f4854cbd18fcd332ee4fc02995"
+    },
+    {
+      "path": "modules/governance/events/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "cf38f17bbadc1836692a6d7da7c790d8b19cdca932214db75703c8c058364912"
+    },
+    {
+      "path": "modules/governance/events/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/operations/monitoring/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "57e30dccd6eaf1ba3b7fc2e0b92095a385a2864ccc652bc967e4ba69481cc3f5"
+    },
+    {
+      "path": "modules/operations/monitoring/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "f09f3b0becfaf1fea49e363c780ad9c3f68d7654f18dbac758e9ccd23031b389"
+    },
+    {
+      "path": "modules/operations/monitoring/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "03d63afd289e3c1a3f71e44ba064534a8ceb0d1965b1b575ed8c44ea04334b19"
+    },
+    {
+      "path": "modules/operations/monitoring/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "264c9f9d7f1ed15e375f7d82dd4c26d8f9f04c670dd75e6680699a825981876b"
+    },
+    {
+      "path": "modules/operations/monitoring/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/iam/groups/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "135498a6c52fb9940a1aafc66603e6b17d2b8d161f0184f311dd797e9648040d"
+    },
+    {
+      "path": "modules/iam/groups/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "fbf39baf735b9c7f88e0c59f45d267ad509401067d6bc636dea7d38dc87f37e4"
+    },
+    {
+      "path": "modules/iam/groups/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "d79f3fc48b9a4f5d768a43be98e82d2694d7aa5c362a13d3ee9d90e20d791ae7"
+    },
+    {
+      "path": "modules/iam/groups/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "b9f2661af6433dcbeee27a5e51d214d601a9e9c165bcd9125024f2ee48d8e829"
+    },
+    {
+      "path": "modules/iam/groups/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/iam/dynamic-groups/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "d841f1833c848c4c932b0c88afd001e1f1b8ea91839e475ee5ae0f79e883b202"
+    },
+    {
+      "path": "modules/iam/dynamic-groups/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "4c0700904e169a0e9073da7884f6fb2e587596f8c5f28ec17038afe6230cf36f"
+    },
+    {
+      "path": "modules/iam/dynamic-groups/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "8b58fc1b72ca93241e736b80a0ce5c21994436750f28d5f7c0e3ed16345f955b"
+    },
+    {
+      "path": "modules/iam/dynamic-groups/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "d5321d3b6e865d10750519e537633cbd89e7aeda766c5d60238114a3becbcade"
+    },
+    {
+      "path": "modules/iam/dynamic-groups/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/iam/policies/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "531d7a1ee6c6e2e0a68d7dd7f5b25ee4b6b2f94c666f96b5fdd3f1db404e8bd2"
+    },
+    {
+      "path": "modules/iam/policies/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "87e04d282676a4d85046f62ee1967a57adf306c30a673b67b88ec75e9f619562"
+    },
+    {
+      "path": "modules/iam/policies/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "f662d8f33203f39570f9991b9a92d92453f198c889ee89c9914ae12a8c7aa9ed"
+    },
+    {
+      "path": "modules/iam/policies/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "b05df4e1a67e9b1443da4aceca75161464b0784335d04a7ef2a76b4b8c33b7a2"
+    },
+    {
+      "path": "modules/iam/policies/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "blueprints/core/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "f37acfb580f823879e417a2d29a900b5ce735ca233e1ff93d06e550f7ebf2823"
+    },
+    {
+      "path": "blueprints/core/providers.tf",
+      "revision": "working-tree",
+      "sha256": "a640978bd754a2fda76b25486ba694e55679e13b47cf682253fb0a93fc516e21"
+    },
+    {
+      "path": "blueprints/core/variables.tf",
+      "revision": "working-tree",
+      "sha256": "af1d3f5108b5697ed9a97f6d3ad7da1ac339270282c0c93e24068ba7b11ce83f"
+    },
+    {
+      "path": "blueprints/core/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

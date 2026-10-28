@@ -1,0 +1,396 @@
+{
+  "schema_version": 2,
+  "blueprint": "compliance/security-posture",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 8
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_bucket.reports",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "reports",
+      "source": "blueprints/compliance/security-posture/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_report_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_report_bucket ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "reports",
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_ons_notification_topic.this",
+      "type": "oci_ons_notification_topic",
+      "symbol": "this",
+      "source": "blueprints/compliance/security-posture/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_topic ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_topic ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n14",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Notifications"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_cloud_guard_target.this",
+      "type": "oci_cloud_guard_target",
+      "symbol": "this",
+      "source": "blueprints/compliance/security-posture/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_cloud_guard_target ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_cloud_guard_target ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n46",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Cloud Guard"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_vulnerability_scanning_host_scan_recipe.this",
+      "type": "oci_vulnerability_scanning_host_scan_recipe",
+      "symbol": "this",
+      "source": "blueprints/compliance/security-posture/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_host_scan_recipe ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_host_scan_recipe ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n53",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Vulnerability Scanning"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_vulnerability_scanning_host_scan_target.this",
+      "type": "oci_vulnerability_scanning_host_scan_target",
+      "symbol": "this",
+      "source": "blueprints/compliance/security-posture/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_host_scan_target ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_host_scan_target ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n63",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Vulnerability Scanning"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_events_rule.this",
+      "type": "oci_events_rule",
+      "symbol": "this",
+      "source": "blueprints/compliance/security-posture/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.event_rules",
+      "creation_expression": {
+        "for_each": "var.event_rules"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n73",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Events"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_monitoring_alarm.this",
+      "type": "oci_monitoring_alarm",
+      "symbol": "this",
+      "source": "blueprints/compliance/security-posture/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.alarms",
+      "creation_expression": {
+        "for_each": "var.alarms"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n79",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Alarms"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/compliance/security-posture/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n99",
+        "source_symbol": "access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 8
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/compliance/security-posture/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.kms_key_id",
+      "source": "blueprints/compliance/security-posture/variables.tf",
+      "description": "Optional KMS key OCID for report bucket encryption.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.topic_id",
+      "source": "blueprints/compliance/security-posture/variables.tf",
+      "description": "Existing ONS topic OCID when create_topic is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.cloud_guard_target_id",
+      "source": "blueprints/compliance/security-posture/variables.tf",
+      "description": "Existing Cloud Guard target OCID when create_cloud_guard_target is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.cloud_guard_target_resource_id",
+      "source": "blueprints/compliance/security-posture/variables.tf",
+      "description": "Resource OCID protected by the Cloud Guard target. Defaults to compartment_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.detector_recipe_ids",
+      "source": "blueprints/compliance/security-posture/variables.tf",
+      "description": "Detector recipe OCIDs attached to the Cloud Guard target.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.responder_recipe_ids",
+      "source": "blueprints/compliance/security-posture/variables.tf",
+      "description": "Responder recipe OCIDs attached to the Cloud Guard target.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    },
+    {
+      "address": "var.host_scan_recipe_id",
+      "source": "blueprints/compliance/security-posture/variables.tf",
+      "description": "Existing host scan recipe OCID when create_host_scan_recipe is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n17"
+      }
+    },
+    {
+      "address": "var.host_agent_vault_secret_id",
+      "source": "blueprints/compliance/security-posture/variables.tf",
+      "description": "Optional Vault secret OCID for host agent configuration.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n19"
+      }
+    },
+    {
+      "address": "var.host_scan_target_compartment_id",
+      "source": "blueprints/compliance/security-posture/variables.tf",
+      "description": "Target compartment scanned by the host scan target. Defaults to compartment_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n21"
+      }
+    },
+    {
+      "address": "var.host_scan_instance_ids",
+      "source": "blueprints/compliance/security-posture/variables.tf",
+      "description": "Optional compute instance OCIDs for host scanning.",
+      "default_expression": "[]",
+      "type_expression": "list(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n23"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/compliance/security-posture/variables.tf",
+      "description": "Compartment OCID where the optional IAM policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n25"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 12
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_objectstorage_namespace.this",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "this",
+      "source": "blueprints/compliance/security-posture/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_report_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_report_bucket ? 1 : 0"
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/compliance/security-posture/locals.tf",
+      "revision": "working-tree",
+      "sha256": "6e26e288605ec154b0fc34c7e77b04f4ec09c5d2119af866e4f8366b2eecd070"
+    },
+    {
+      "path": "blueprints/compliance/security-posture/main.tf",
+      "revision": "working-tree",
+      "sha256": "5fe8d8818cf0f00ce33d37011957998055b54a237234a82ce89d9350af90beab"
+    },
+    {
+      "path": "blueprints/compliance/security-posture/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "f126b0023b19be07ee0eb2c0946e55e717eeaedda9faf721395f46b9b04c0c70"
+    },
+    {
+      "path": "blueprints/compliance/security-posture/providers.tf",
+      "revision": "working-tree",
+      "sha256": "8f85e8539190ef04ab19c8d4c834aa1f74fa02d185b70ac6875df16eb1088de5"
+    },
+    {
+      "path": "blueprints/compliance/security-posture/variables.tf",
+      "revision": "working-tree",
+      "sha256": "c07d9949bf200af08bd9aca0a0354299d0b27695bb5fc0d44af1c9d93be25ea9"
+    },
+    {
+      "path": "blueprints/compliance/security-posture/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

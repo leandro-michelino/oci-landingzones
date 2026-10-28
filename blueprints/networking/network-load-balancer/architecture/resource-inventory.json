@@ -1,0 +1,228 @@
+{
+  "schema_version": 2,
+  "blueprint": "networking/network-load-balancer",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 5
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_network_load_balancer_network_load_balancer.this",
+      "type": "oci_network_load_balancer_network_load_balancer",
+      "symbol": "this",
+      "source": "blueprints/networking/network-load-balancer/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_network_load_balancer ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_network_load_balancer ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_network_load_balancer_backend_set.this",
+      "type": "oci_network_load_balancer_backend_set",
+      "symbol": "this",
+      "source": "blueprints/networking/network-load-balancer/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.backend_sets",
+      "creation_expression": {
+        "for_each": "var.backend_sets"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n6",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_network_load_balancer_backend.this",
+      "type": "oci_network_load_balancer_backend",
+      "symbol": "this",
+      "source": "blueprints/networking/network-load-balancer/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = local.backend_matrix",
+      "creation_expression": {
+        "for_each": "local.backend_matrix"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n8",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_network_load_balancer_listener.this",
+      "type": "oci_network_load_balancer_listener",
+      "symbol": "this",
+      "source": "blueprints/networking/network-load-balancer/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.listeners",
+      "creation_expression": {
+        "for_each": "var.listeners"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n10",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/networking/network-load-balancer/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n12",
+        "source_symbol": "access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 5
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/networking/network-load-balancer/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.network_load_balancer_id",
+      "source": "blueprints/networking/network-load-balancer/variables.tf",
+      "description": "Existing Network Load Balancer OCID when create_network_load_balancer is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.subnet_id",
+      "source": "blueprints/networking/network-load-balancer/variables.tf",
+      "description": "Subnet OCID for Network Load Balancer placement.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.network_security_group_ids",
+      "source": "blueprints/networking/network-load-balancer/variables.tf",
+      "description": "NSG OCIDs attached to the Network Load Balancer.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/networking/network-load-balancer/variables.tf",
+      "description": "Compartment OCID where the optional IAM policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 5
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/networking/network-load-balancer/locals.tf",
+      "revision": "working-tree",
+      "sha256": "ef861118e579c4ff5965e6ee604ee33d0ea0e7d01a78baa0a69d53d5f616e734"
+    },
+    {
+      "path": "blueprints/networking/network-load-balancer/main.tf",
+      "revision": "working-tree",
+      "sha256": "d449a1ec9876c965fee91b84fd709f56d91ad43198d4067aa94b2e26390df1ab"
+    },
+    {
+      "path": "blueprints/networking/network-load-balancer/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "a80aa1c995ef87eccbb7dac2ed80f5a3fd2e849edccc1266909d6ccf788b0087"
+    },
+    {
+      "path": "blueprints/networking/network-load-balancer/providers.tf",
+      "revision": "working-tree",
+      "sha256": "d6f658f512855249b47a376d5f220b1900d47672aaef043504fc376e66d0495a"
+    },
+    {
+      "path": "blueprints/networking/network-load-balancer/variables.tf",
+      "revision": "working-tree",
+      "sha256": "780d6d7f2baf203f83d4ac4f71040a8c4a7ddbde40cb3c4b6cb3c753256407c0"
+    },
+    {
+      "path": "blueprints/networking/network-load-balancer/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

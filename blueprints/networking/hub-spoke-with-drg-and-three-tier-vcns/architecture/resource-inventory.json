@@ -1,0 +1,853 @@
+{
+  "schema_version": 2,
+  "blueprint": "networking/hub-spoke-with-drg-and-three-tier-vcns",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 18
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.hub_vcn.oci_core_vcn.this",
+      "type": "oci_core_vcn",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.hub_vcn (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.hub_vcn.oci_core_internet_gateway.this",
+      "type": "oci_core_internet_gateway",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_internet_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_internet_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.hub_vcn (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n10",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Internet Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.hub_vcn.oci_core_nat_gateway.this",
+      "type": "oci_core_nat_gateway",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_nat_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_nat_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.hub_vcn (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n22",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "NAT Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.hub_vcn.oci_core_service_gateway.this",
+      "type": "oci_core_service_gateway",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_service_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_service_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.hub_vcn (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n31",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Service Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.hub_vcn.oci_core_security_list.this",
+      "type": "oci_core_security_list",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.security_lists",
+      "creation_expression": {
+        "for_each": "var.security_lists"
+      },
+      "module_inputs": [
+        "module.hub_vcn (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n41",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.hub_vcn.oci_core_route_table.this",
+      "type": "oci_core_route_table",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.route_tables",
+      "creation_expression": {
+        "for_each": "var.route_tables"
+      },
+      "module_inputs": [
+        "module.hub_vcn (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n53",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Route Table"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.hub_vcn.oci_core_subnet.this",
+      "type": "oci_core_subnet",
+      "symbol": "this",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.subnets",
+      "creation_expression": {
+        "for_each": "var.subnets"
+      },
+      "module_inputs": [
+        "module.hub_vcn (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n77",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.drg.oci_core_drg.this",
+      "type": "oci_core_drg",
+      "symbol": "this",
+      "source": "modules/networking/drg/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.drg (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.drg",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/drg?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n79",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "DRG"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.drg.oci_core_drg_attachment.vcn",
+      "type": "oci_core_drg_attachment",
+      "symbol": "vcn",
+      "source": "modules/networking/drg/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.vcn_attachments",
+      "creation_expression": {
+        "for_each": "var.vcn_attachments"
+      },
+      "module_inputs": [
+        "module.drg (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.drg",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/drg?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n88",
+        "source_symbol": "vcn",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.spoke_vcns.oci_core_vcn.this",
+      "type": "oci_core_vcn",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.spoke_vcns (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n90",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.spoke_vcns.oci_core_internet_gateway.this",
+      "type": "oci_core_internet_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_internet_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_internet_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.spoke_vcns (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n96",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Internet Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.spoke_vcns.oci_core_nat_gateway.this",
+      "type": "oci_core_nat_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_nat_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_nat_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.spoke_vcns (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n108",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "NAT Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.spoke_vcns.oci_core_service_gateway.this",
+      "type": "oci_core_service_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_service_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_service_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.spoke_vcns (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n117",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Service Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.spoke_vcns.oci_core_security_list.this",
+      "type": "oci_core_security_list",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.security_lists",
+      "creation_expression": {
+        "for_each": "var.security_lists"
+      },
+      "module_inputs": [
+        "module.spoke_vcns (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n127",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.spoke_vcns.oci_core_route_table.this",
+      "type": "oci_core_route_table",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.route_tables",
+      "creation_expression": {
+        "for_each": "var.route_tables"
+      },
+      "module_inputs": [
+        "module.spoke_vcns (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n139",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Route Table"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.spoke_vcns.oci_core_subnet.this",
+      "type": "oci_core_subnet",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.subnets",
+      "creation_expression": {
+        "for_each": "var.subnets"
+      },
+      "module_inputs": [
+        "module.spoke_vcns (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n163",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_drg_attachment.hub",
+      "type": "oci_core_drg_attachment",
+      "symbol": "hub",
+      "source": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n165",
+        "source_symbol": "hub",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_drg_attachment.spokes",
+      "type": "oci_core_drg_attachment",
+      "symbol": "spokes",
+      "source": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = module.spoke_vcns",
+      "creation_expression": {
+        "for_each": "module.spoke_vcns"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n167",
+        "source_symbol": "spokes",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 18
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/variables.tf",
+      "description": "Compartment OCID where networking resources are provisioned. Defaults to tenancy_ocid for simple tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 1
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "module.hub_vcn.oci_core_services.all_services",
+      "type": "oci_core_services",
+      "symbol": "all_services",
+      "source": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.hub_vcn (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        }
+      ]
+    },
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "module.spoke_vcns.oci_core_services.all_services",
+      "type": "oci_core_services",
+      "symbol": "all_services",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.spoke_vcns (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        }
+      ]
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/locals.tf",
+      "revision": "working-tree",
+      "sha256": "4f927f1ade9289a48cf638fb69810877e338596a53e0caac14e6f65aa77393e7"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+      "revision": "working-tree",
+      "sha256": "6bfc6881d8b768363bbb0614ae6631b1e0669af4a2dd4f70b1706fe5f1056df5"
+    },
+    {
+      "path": "modules/networking/hub-vcn/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "bcc200a519b143b445f578e4ce602348a273b09f45e474a706af5433f423d9b0"
+    },
+    {
+      "path": "modules/networking/hub-vcn/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "63999259916589058d5dc97da07c23ab64d243fd58286e00bb70fc31612133f1"
+    },
+    {
+      "path": "modules/networking/hub-vcn/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "25166a91b8e7a4b0cfbc753c7ad86b469b14442cb05279b4281ffbb7be960b39"
+    },
+    {
+      "path": "modules/networking/hub-vcn/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "d469a7f19b64b9276503bc722feaffa1bf65112215702eac0a1774cecfcbd2c0"
+    },
+    {
+      "path": "modules/networking/hub-vcn/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/networking/drg/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "f98b7462505ed6e0b65ee449ee7da38b9a9c49f134d0dbb950718df7f4effaad"
+    },
+    {
+      "path": "modules/networking/drg/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "209d980138a98db264a58dc7a042ea7b11224fee092763d8c309326c7a2b85ca"
+    },
+    {
+      "path": "modules/networking/drg/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "a41a27109dbcaeac61a9ae52dec335d2fea94fec3a4ecb4de9b5404103d027be"
+    },
+    {
+      "path": "modules/networking/drg/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "78207f9ff5fa4ad2eced9669fc9f044580f988e29101b5a85b376170899feacb"
+    },
+    {
+      "path": "modules/networking/drg/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "54ff05acc9098b1d7183085d8bd789a2d0887245f3c422d5fadaaca35e7fa135"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "63999259916589058d5dc97da07c23ab64d243fd58286e00bb70fc31612133f1"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "25166a91b8e7a4b0cfbc753c7ad86b469b14442cb05279b4281ffbb7be960b39"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "0d8c6607271ec5c51ada52890fe5fb2790e7ded827b4b213d3d526f177487870"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "c4f95640533b421098addf5eabb05af024ed1c68995fc7403f80a61f04100c87"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/providers.tf",
+      "revision": "working-tree",
+      "sha256": "61d51863680b66dcc2092245706bd8cae8d35d6e26b2d0a1135a94c3342d7668"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/variables.tf",
+      "revision": "working-tree",
+      "sha256": "69fe818f235ee81acf5c55eef06008437259308197fb73aff04547b5d13dd182"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

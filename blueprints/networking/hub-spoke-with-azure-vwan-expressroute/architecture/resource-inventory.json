@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "blueprint": "networking/hub-spoke-with-azure-vwan-expressroute",
   "review_date": "2026-10-28",
   "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
@@ -18,15 +18,40 @@
       "source": "modules/networking/hub-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
       "module_inputs": [
         "module.network.module.hub_vcn (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n4",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
       }
     },
     {
@@ -38,15 +63,42 @@
       "source": "modules/networking/hub-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "count = var.enable_internet_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_internet_gateway ? 1 : 0"
+      },
       "module_inputs": [
         "module.network.module.hub_vcn (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n10",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Internet Gateway"
       }
     },
     {
@@ -58,15 +110,42 @@
       "source": "modules/networking/hub-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "count = var.enable_nat_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_nat_gateway ? 1 : 0"
+      },
       "module_inputs": [
         "module.network.module.hub_vcn (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n22",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "NAT Gateway"
       }
     },
     {
@@ -78,15 +157,42 @@
       "source": "modules/networking/hub-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "count = var.enable_service_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_service_gateway ? 1 : 0"
+      },
       "module_inputs": [
         "module.network.module.hub_vcn (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n31",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Service Gateway"
       }
     },
     {
@@ -98,15 +204,42 @@
       "source": "modules/networking/hub-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "for_each = var.security_lists",
+      "creation_expression": {
+        "for_each": "var.security_lists"
+      },
       "module_inputs": [
         "module.network.module.hub_vcn (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n41",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
       }
     },
     {
@@ -118,15 +251,42 @@
       "source": "modules/networking/hub-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "for_each = var.route_tables",
+      "creation_expression": {
+        "for_each": "var.route_tables"
+      },
       "module_inputs": [
         "module.network.module.hub_vcn (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n53",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Route Table"
       }
     },
     {
@@ -138,15 +298,42 @@
       "source": "modules/networking/hub-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "for_each = var.subnets",
+      "creation_expression": {
+        "for_each": "var.subnets"
+      },
       "module_inputs": [
         "module.network.module.hub_vcn (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n77",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -158,15 +345,36 @@
       "source": "modules/networking/drg/main.tf",
       "revision": "v0.2.0",
       "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
       "module_inputs": [
         "module.network.module.drg (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.drg",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/drg?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n79",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "DRG"
       }
     },
     {
@@ -178,15 +386,38 @@
       "source": "modules/networking/drg/main.tf",
       "revision": "v0.2.0",
       "condition": "for_each = var.vcn_attachments",
+      "creation_expression": {
+        "for_each": "var.vcn_attachments"
+      },
       "module_inputs": [
         "module.network.module.drg (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.drg",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/drg?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n88",
         "source_symbol": "vcn",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -198,15 +429,42 @@
       "source": "modules/networking/spoke-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
       "module_inputs": [
         "module.network.module.spoke_vcns (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n90",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
       }
     },
     {
@@ -218,15 +476,44 @@
       "source": "modules/networking/spoke-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "count = var.enable_internet_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_internet_gateway ? 1 : 0"
+      },
       "module_inputs": [
         "module.network.module.spoke_vcns (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n96",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Internet Gateway"
       }
     },
     {
@@ -238,15 +525,44 @@
       "source": "modules/networking/spoke-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "count = var.enable_nat_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_nat_gateway ? 1 : 0"
+      },
       "module_inputs": [
         "module.network.module.spoke_vcns (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n108",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "NAT Gateway"
       }
     },
     {
@@ -258,15 +574,44 @@
       "source": "modules/networking/spoke-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "count = var.enable_service_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_service_gateway ? 1 : 0"
+      },
       "module_inputs": [
         "module.network.module.spoke_vcns (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n117",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Service Gateway"
       }
     },
     {
@@ -278,15 +623,44 @@
       "source": "modules/networking/spoke-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "for_each = var.security_lists",
+      "creation_expression": {
+        "for_each": "var.security_lists"
+      },
       "module_inputs": [
         "module.network.module.spoke_vcns (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n127",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
       }
     },
     {
@@ -298,15 +672,44 @@
       "source": "modules/networking/spoke-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "for_each = var.route_tables",
+      "creation_expression": {
+        "for_each": "var.route_tables"
+      },
       "module_inputs": [
         "module.network.module.spoke_vcns (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n139",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Route Table"
       }
     },
     {
@@ -318,15 +721,44 @@
       "source": "modules/networking/spoke-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "for_each = var.subnets",
+      "creation_expression": {
+        "for_each": "var.subnets"
+      },
       "module_inputs": [
         "module.network.module.spoke_vcns (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n163",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -338,14 +770,27 @@
       "source": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
       "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
       "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
       "module_inputs": [
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n165",
         "source_symbol": "hub",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -357,14 +802,29 @@
       "source": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
       "revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
       "condition": "for_each = module.spoke_vcns",
+      "creation_expression": {
+        "for_each": "module.spoke_vcns"
+      },
       "module_inputs": [
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n167",
         "source_symbol": "spokes",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -376,14 +836,31 @@
       "source": "modules/networking/fastconnect/main.tf",
       "revision": "4fcd80386471010d9a4a22200e47edb1956bda11",
       "condition": "count = var.enable_fastconnect ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_fastconnect ? 1 : 0"
+      },
       "module_inputs": [
         "module.fastconnect (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.fastconnect",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/fastconnect?ref=4fcd80386471010d9a4a22200e47edb1956bda11",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_fastconnect": "var.enable_fastconnect"
+          }
+        }
+      ],
       "diagram": {
-        "file": "oci-resources.drawio",
-        "node_id": "n169",
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n4",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -395,14 +872,31 @@
       "source": "modules/networking/ipsec-vpn/main.tf",
       "revision": "v0.2.0",
       "condition": "count = var.enable_ipsec ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_ipsec ? 1 : 0"
+      },
       "module_inputs": [
         "module.ipsec_vpn (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.ipsec_vpn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/ipsec-vpn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_ipsec": "var.enable_ipsec"
+          }
+        }
+      ],
       "diagram": {
-        "file": "oci-resources.drawio",
-        "node_id": "n171",
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n6",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Customer Premises Equipment"
       }
     },
     {
@@ -414,14 +908,31 @@
       "source": "modules/networking/ipsec-vpn/main.tf",
       "revision": "v0.2.0",
       "condition": "count = var.enable_ipsec ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_ipsec ? 1 : 0"
+      },
       "module_inputs": [
         "module.ipsec_vpn (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.ipsec_vpn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/ipsec-vpn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_ipsec": "var.enable_ipsec"
+          }
+        }
+      ],
       "diagram": {
-        "file": "oci-resources.drawio",
-        "node_id": "n181",
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n16",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -433,11 +944,14 @@
       "source": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
       "revision": "working-tree",
       "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
       "diagram": {
         "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
         "node_id": "n4",
         "source_symbol": "azure_vwan_contract",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -451,9 +965,11 @@
       "condition": "Unconditional declaration in separately deployed Bicep template.",
       "diagram": {
         "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
         "node_id": "n4",
         "source_symbol": "virtualWan",
-        "provider_icon": "Microsoft.Network/virtualWans"
+        "provider_icon": "Microsoft.Network/virtualWans",
+        "oci_icon": null
       }
     },
     {
@@ -467,9 +983,11 @@
       "condition": "Unconditional declaration in separately deployed Bicep template.",
       "diagram": {
         "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
         "node_id": "n8",
         "source_symbol": "virtualHub",
-        "provider_icon": "Microsoft.Network/virtualHubs"
+        "provider_icon": "Microsoft.Network/virtualHubs",
+        "oci_icon": null
       }
     },
     {
@@ -483,9 +1001,11 @@
       "condition": "Unconditional declaration in separately deployed Bicep template.",
       "diagram": {
         "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
         "node_id": "n12",
         "source_symbol": "vhubRouteTable",
-        "provider_icon": "Microsoft.Network/virtualHubs/hubRouteTables"
+        "provider_icon": "Microsoft.Network/virtualHubs/hubRouteTables",
+        "oci_icon": null
       }
     },
     {
@@ -499,9 +1019,11 @@
       "condition": "if (deployExpressRouteGateway) {",
       "diagram": {
         "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
         "node_id": "n16",
         "source_symbol": "expressRouteGateway",
-        "provider_icon": "Microsoft.Network/expressRouteGateways"
+        "provider_icon": "Microsoft.Network/expressRouteGateways",
+        "oci_icon": null
       }
     },
     {
@@ -515,9 +1037,11 @@
       "condition": "if (deployExpressRouteGateway && !empty(expressRouteCircuitPeeringId)) {",
       "diagram": {
         "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
         "node_id": "n20",
         "source_symbol": "expressRouteConnection",
-        "provider_icon": "Microsoft.Network/expressRouteGateways/expressRouteConnections"
+        "provider_icon": "Microsoft.Network/expressRouteGateways/expressRouteConnections",
+        "oci_icon": null
       }
     },
     {
@@ -531,9 +1055,11 @@
       "condition": "[for spokeVnet in spokeVnets: {",
       "diagram": {
         "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
         "node_id": "n24",
         "source_symbol": "networkSecurityGroups",
-        "provider_icon": "Microsoft.Network/networkSecurityGroups"
+        "provider_icon": "Microsoft.Network/networkSecurityGroups",
+        "oci_icon": null
       }
     },
     {
@@ -547,9 +1073,11 @@
       "condition": "[for spokeVnet in spokeVnets: {",
       "diagram": {
         "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
         "node_id": "n28",
         "source_symbol": "vnets",
-        "provider_icon": "Microsoft.Network/virtualNetworks"
+        "provider_icon": "Microsoft.Network/virtualNetworks",
+        "oci_icon": null
       }
     },
     {
@@ -563,9 +1091,11 @@
       "condition": "[for (spokeVnet, i) in spokeVnets: {",
       "diagram": {
         "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
         "node_id": "n32",
         "source_symbol": "workloadSubnets",
-        "provider_icon": "Microsoft.Network/virtualNetworks/subnets"
+        "provider_icon": "Microsoft.Network/virtualNetworks/subnets",
+        "oci_icon": null
       }
     },
     {
@@ -579,12 +1109,134 @@
       "condition": "[for (spokeVnet, i) in spokeVnets: {",
       "diagram": {
         "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
         "node_id": "n36",
         "source_symbol": "vhubConnections",
-        "provider_icon": "Microsoft.Network/virtualHubs/hubVirtualNetworkConnections"
+        "provider_icon": "Microsoft.Network/virtualHubs/hubVirtualNetworkConnections",
+        "oci_icon": null
       }
     }
   ],
+  "resource_pages": [
+    {
+      "file": "azure-resources.drawio",
+      "page_name": "Azure resources",
+      "declarations": 9
+    },
+    {
+      "file": "contracts-resources.drawio",
+      "page_name": "Contracts resources",
+      "declarations": 1
+    },
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 18
+    },
+    {
+      "file": "oci-resources-02.drawio",
+      "page_name": "OCI resources 2",
+      "declarations": 3
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/variables.tf",
+      "description": "Compartment OCID where networking resources are provisioned. Defaults to tenancy_ocid for simple tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.provider_service_id",
+      "source": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/variables.tf",
+      "description": "Provider service OCID for partner FastConnect circuits.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.expressroute_circuit_id",
+      "source": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/variables.tf",
+      "description": "Azure ExpressRoute circuit resource ID used for the OCI-Azure interconnect hand-off.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.expressroute_circuit_peering_id",
+      "source": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/variables.tf",
+      "description": "Azure ExpressRoute private peering resource ID used by the Azure vWAN ExpressRoute Gateway connection.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.azure_virtual_wan_id",
+      "source": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/variables.tf",
+      "description": "Azure Virtual WAN resource ID. Populate after the Azure session when Azure creates it, or set an existing vWAN ID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.azure_virtual_hub_id",
+      "source": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/variables.tf",
+      "description": "Azure Virtual Hub resource ID. Populate after the Azure session when Azure creates it, or set an existing vHub ID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.azure_expressroute_gateway_id",
+      "source": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/variables.tf",
+      "description": "Azure Virtual WAN ExpressRoute Gateway resource ID. Populate after the Azure session when Azure creates it.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 7
+  },
   "data_lookups": [
     {
       "cloud": "OCI",
@@ -595,9 +1247,32 @@
       "source": "modules/networking/hub-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
       "module_inputs": [
         "module.network.module.hub_vcn (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.hub_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/hub-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "true",
+            "enable_nat_gateway": "true",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
       ]
     },
     {
@@ -609,9 +1284,34 @@
       "source": "modules/networking/spoke-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
       "module_inputs": [
         "module.network.module.spoke_vcns (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.spoke_vcns",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns/main.tf",
+          "call_site_revision": "d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "creation_gate": {
+            "for_each": "var.spoke_vcns"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns?ref=d7938f4baef1aa512fc8dcee99a545ec17e0dab2",
+          "call_site": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
       ]
     }
   ],

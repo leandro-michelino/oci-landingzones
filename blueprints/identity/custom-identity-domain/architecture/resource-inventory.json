@@ -1,0 +1,113 @@
+{
+  "schema_version": 2,
+  "blueprint": "identity/custom-identity-domain",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 2
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_domain.this",
+      "type": "oci_identity_domain",
+      "symbol": "this",
+      "source": "blueprints/identity/custom-identity-domain/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = local.identity_domains",
+      "creation_expression": {
+        "for_each": "local.identity_domains"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "IAM"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_domain_replication_to_region.replicas",
+      "type": "oci_identity_domain_replication_to_region",
+      "symbol": "replicas",
+      "source": "blueprints/identity/custom-identity-domain/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = local.identity_domain_replicas",
+      "creation_expression": {
+        "for_each": "local.identity_domain_replicas"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n15",
+        "source_symbol": "replicas",
+        "provider_icon": null,
+        "oci_icon": "IAM"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 2
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/identity/custom-identity-domain/variables.tf",
+      "description": "Default compartment OCID where identity domains are created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 1
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/identity/custom-identity-domain/locals.tf",
+      "revision": "working-tree",
+      "sha256": "fb1f27353e7983c2ab93f882fe0da2e678a4345af575ce7d3c729a5b10be6169"
+    },
+    {
+      "path": "blueprints/identity/custom-identity-domain/main.tf",
+      "revision": "working-tree",
+      "sha256": "113176390bbbffe1eaccf1931784d912b1196817e62b54e6a12f95c3d640be1b"
+    },
+    {
+      "path": "blueprints/identity/custom-identity-domain/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "dfdf55fa4350161b26d8fc9e76f7db8093ab39f03c94601183326ba5b15d3e4b"
+    },
+    {
+      "path": "blueprints/identity/custom-identity-domain/providers.tf",
+      "revision": "working-tree",
+      "sha256": "76e5b43aaae2862d9d338a56cb07919f3b23b39067a85cf5933b68f1e2ae235c"
+    },
+    {
+      "path": "blueprints/identity/custom-identity-domain/variables.tf",
+      "revision": "working-tree",
+      "sha256": "1529d8706232e66d21c602fb6b73e8175803519d3f0c391773f39e9edf1ebad7"
+    },
+    {
+      "path": "blueprints/identity/custom-identity-domain/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

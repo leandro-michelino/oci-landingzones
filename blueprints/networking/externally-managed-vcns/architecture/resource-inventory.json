@@ -1,0 +1,101 @@
+{
+  "schema_version": 2,
+  "blueprint": "networking/externally-managed-vcns",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {},
+  "resources": [],
+  "resource_pages": [],
+  "input_references": [
+    {
+      "address": "var.vcn_ids",
+      "source": "blueprints/networking/externally-managed-vcns/variables.tf",
+      "description": "Externally managed VCN OCIDs keyed by logical name.",
+      "default_expression": "{}",
+      "type_expression": "map(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.subnet_ids",
+      "source": "blueprints/networking/externally-managed-vcns/variables.tf",
+      "description": "Externally managed subnet OCIDs keyed by logical name.",
+      "default_expression": "{}",
+      "type_expression": "map(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.drg_id",
+      "source": "blueprints/networking/externally-managed-vcns/variables.tf",
+      "description": "Externally managed DRG OCID, when this blueprint is documenting or consuming an existing hub.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.route_target_ids",
+      "source": "blueprints/networking/externally-managed-vcns/variables.tf",
+      "description": "Externally managed route target OCIDs keyed by logical name, for example firewall private IPs or DRG attachments.",
+      "default_expression": "{}",
+      "type_expression": "map(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 4
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/networking/externally-managed-vcns/locals.tf",
+      "revision": "working-tree",
+      "sha256": "4fa640b54b8bd82ed3f09f5d68e7bc5888c675d1ac27545281a7d1f09c4de3de"
+    },
+    {
+      "path": "blueprints/networking/externally-managed-vcns/main.tf",
+      "revision": "working-tree",
+      "sha256": "0d79db4139f42e7dc57cddf41a05368a0ea9261f96b12509f2e12c44cb71051d"
+    },
+    {
+      "path": "blueprints/networking/externally-managed-vcns/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "84c388b90e93b78b37cdf8ee6a51607be1526587cb4af327e0860678aec16b82"
+    },
+    {
+      "path": "blueprints/networking/externally-managed-vcns/providers.tf",
+      "revision": "working-tree",
+      "sha256": "61d51863680b66dcc2092245706bd8cae8d35d6e26b2d0a1135a94c3342d7668"
+    },
+    {
+      "path": "blueprints/networking/externally-managed-vcns/variables.tf",
+      "revision": "working-tree",
+      "sha256": "6c26a9d2c0504e1dae971850d3cba4c32c9696ec771ddb1dc2918896b010913c"
+    },
+    {
+      "path": "blueprints/networking/externally-managed-vcns/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "blueprint": "networking/aws-oci-hybrid-network-backbone",
   "review_date": "2026-10-28",
   "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
@@ -18,11 +18,16 @@
       "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_oci_backbone_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_backbone_network ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n4",
         "source_symbol": "backbone",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
       }
     },
     {
@@ -34,11 +39,16 @@
       "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_oci_backbone_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_backbone_network ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n10",
         "source_symbol": "backbone",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Internet Gateway"
       }
     },
     {
@@ -50,11 +60,16 @@
       "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_oci_backbone_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_backbone_network ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n22",
         "source_symbol": "backbone",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Route Table"
       }
     },
     {
@@ -66,11 +81,16 @@
       "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_oci_backbone_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_backbone_network ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n46",
         "source_symbol": "backbone",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
       }
     },
     {
@@ -82,11 +102,16 @@
       "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_oci_backbone_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_backbone_network ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n58",
         "source_symbol": "backbone",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -98,11 +123,16 @@
       "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
       "revision": "working-tree",
       "condition": "count = var.existing_oci_primary_drg_id == null ? 1 : 0",
+      "creation_expression": {
+        "count": "var.existing_oci_primary_drg_id == null ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n60",
         "source_symbol": "primary",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "DRG"
       }
     },
     {
@@ -114,11 +144,16 @@
       "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
       "revision": "working-tree",
       "condition": "count = var.attach_oci_backbone_vcn_to_drg ? 1 : 0",
+      "creation_expression": {
+        "count": "var.attach_oci_backbone_vcn_to_drg ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n69",
         "source_symbol": "backbone",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -130,11 +165,16 @@
       "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_site_to_site_vpn ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_site_to_site_vpn ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n71",
         "source_symbol": "aws",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Customer Premises Equipment"
       }
     },
     {
@@ -146,11 +186,16 @@
       "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_site_to_site_vpn ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_site_to_site_vpn ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n81",
         "source_symbol": "aws",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -162,11 +207,16 @@
       "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_backbone_alert_topic ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_backbone_alert_topic ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n83",
         "source_symbol": "backbone_alert",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Notifications"
       }
     },
     {
@@ -178,11 +228,14 @@
       "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
       "revision": "working-tree",
       "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
       "diagram": {
         "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
         "node_id": "n4",
         "source_symbol": "oci_network_contract",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -194,11 +247,14 @@
       "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
       "revision": "working-tree",
       "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
       "diagram": {
         "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
         "node_id": "n6",
         "source_symbol": "connectivity_contract",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -210,11 +266,14 @@
       "source": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
       "revision": "working-tree",
       "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
       "diagram": {
         "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
         "node_id": "n8",
         "source_symbol": "routing_contract",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -228,9 +287,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n4",
         "source_symbol": "BackboneVpc",
-        "provider_icon": "AWS::EC2::VPC"
+        "provider_icon": "AWS::EC2::VPC",
+        "oci_icon": null
       }
     },
     {
@@ -244,9 +305,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n8",
         "source_symbol": "BackboneLogKey",
-        "provider_icon": "AWS::KMS::Key"
+        "provider_icon": "AWS::KMS::Key",
+        "oci_icon": null
       }
     },
     {
@@ -260,9 +323,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n12",
         "source_symbol": "BackboneFlowLogGroup",
-        "provider_icon": "AWS::Logs::LogGroup"
+        "provider_icon": "AWS::Logs::LogGroup",
+        "oci_icon": null
       }
     },
     {
@@ -276,9 +341,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n16",
         "source_symbol": "BackboneFlowLogRole",
-        "provider_icon": "AWS::IAM::Role"
+        "provider_icon": "AWS::IAM::Role",
+        "oci_icon": null
       }
     },
     {
@@ -292,9 +359,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n20",
         "source_symbol": "BackboneVpcFlowLog",
-        "provider_icon": "AWS::EC2::FlowLog"
+        "provider_icon": "AWS::EC2::FlowLog",
+        "oci_icon": null
       }
     },
     {
@@ -308,9 +377,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n24",
         "source_symbol": "InternetGateway",
-        "provider_icon": "AWS::EC2::InternetGateway"
+        "provider_icon": "AWS::EC2::InternetGateway",
+        "oci_icon": null
       }
     },
     {
@@ -324,9 +395,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n28",
         "source_symbol": "VpcIgwAttachment",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -340,9 +413,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n30",
         "source_symbol": "BackboneRouteTable",
-        "provider_icon": "AWS::EC2::RouteTable"
+        "provider_icon": "AWS::EC2::RouteTable",
+        "oci_icon": null
       }
     },
     {
@@ -356,9 +431,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n34",
         "source_symbol": "DefaultRoute",
-        "provider_icon": "AWS::EC2::Route"
+        "provider_icon": "AWS::EC2::Route",
+        "oci_icon": null
       }
     },
     {
@@ -372,9 +449,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n38",
         "source_symbol": "BackboneSubnet",
-        "provider_icon": "AWS::EC2::Subnet"
+        "provider_icon": "AWS::EC2::Subnet",
+        "oci_icon": null
       }
     },
     {
@@ -388,9 +467,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n42",
         "source_symbol": "SubnetRouteAssociation",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -404,9 +485,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n44",
         "source_symbol": "BackboneSecurityGroup",
-        "provider_icon": "AWS::EC2::SecurityGroup"
+        "provider_icon": "AWS::EC2::SecurityGroup",
+        "oci_icon": null
       }
     },
     {
@@ -420,9 +503,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n48",
         "source_symbol": "TransitGateway",
-        "provider_icon": "AWS::EC2::TransitGateway"
+        "provider_icon": "AWS::EC2::TransitGateway",
+        "oci_icon": null
       }
     },
     {
@@ -436,9 +521,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n52",
         "source_symbol": "TransitGatewayAttachment",
-        "provider_icon": "AWS::EC2::TransitGatewayAttachment"
+        "provider_icon": "AWS::EC2::TransitGatewayAttachment",
+        "oci_icon": null
       }
     },
     {
@@ -452,9 +539,11 @@
       "condition": "Condition: EnableSiteToSiteVpnCondition",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n56",
         "source_symbol": "OciCustomerGateway",
-        "provider_icon": "AWS::EC2::CustomerGateway"
+        "provider_icon": "AWS::EC2::CustomerGateway",
+        "oci_icon": null
       }
     },
     {
@@ -468,9 +557,11 @@
       "condition": "Condition: EnableSiteToSiteVpnCondition",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n60",
         "source_symbol": "OciSiteToSiteVpnConnection",
-        "provider_icon": "AWS::EC2::VPNConnection"
+        "provider_icon": "AWS::EC2::VPNConnection",
+        "oci_icon": null
       }
     },
     {
@@ -484,12 +575,103 @@
       "condition": "Condition: EnableSiteToSiteVpnCondition",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n64",
         "source_symbol": "BackboneToOciTransitRoute",
-        "provider_icon": "AWS::EC2::Route"
+        "provider_icon": "AWS::EC2::Route",
+        "oci_icon": null
       }
     }
   ],
+  "resource_pages": [
+    {
+      "file": "aws-resources.drawio",
+      "page_name": "AWS resources",
+      "declarations": 17
+    },
+    {
+      "file": "contracts-resources.drawio",
+      "page_name": "Contracts resources",
+      "declarations": 3
+    },
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 10
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/variables.tf",
+      "description": "Compartment OCID where OCI hybrid backbone resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.existing_oci_backbone_vcn_id",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/variables.tf",
+      "description": "Existing OCI VCN OCID to reuse instead of creating a new backbone VCN.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.existing_oci_primary_drg_id",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/variables.tf",
+      "description": "Existing OCI DRG OCID to reuse instead of creating a new DRG.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.fastconnect_virtual_circuit_id",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/variables.tf",
+      "description": "OCI FastConnect virtual circuit OCID used when connectivity_mode is interconnect.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.direct_connect_connection_id",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/variables.tf",
+      "description": "AWS Direct Connect connection ID used when connectivity_mode is interconnect.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 5
+  },
   "data_lookups": [],
   "source_files": [
     {

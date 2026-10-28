@@ -240,3 +240,21 @@ failover drills were provisioned or tested; historical validation dates are unch
 
 Latest coverage: **44 of 80** existing blueprint entry points have editable draw.io
 and PNG architecture overviews; **36 remain** pending conversion.
+
+
+## Retrospective Review Of The Original 39
+
+The [first-39 review](FIRST-39-REVIEW.md) applies the current complete-resource and
+provider-icon standard to every original overview. It adds all conditional and
+collection declarations from pinned modules, paginated detail views and separate
+existing-resource/override references. The main native documents include every
+page; each page has a PNG companion. Source counts, mappings and exact scope are
+recorded in the review and inventories.
+
+```bash
+python3 scripts/diagrams/multicloud-resource-coverage.py --first-39 --render
+python3 scripts/diagrams/review-first-39.py --write-report
+```
+
+This retrospective review keeps overall progress at **44/80**, with **36** pending
+conversions. No cloud resource was provisioned or adopted.

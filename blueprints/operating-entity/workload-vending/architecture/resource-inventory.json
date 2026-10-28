@@ -1,0 +1,301 @@
+{
+  "schema_version": 2,
+  "blueprint": "operating-entity/workload-vending",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 4
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.compartments.oci_identity_compartment.root",
+      "type": "oci_identity_compartment",
+      "symbol": "root",
+      "source": "modules/iam/compartments/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.compartments (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.compartments",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/compartments?ref=v0.2.0",
+          "call_site": "blueprints/operating-entity/workload-vending/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_delete": "var.enable_delete"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "root",
+        "provider_icon": null,
+        "oci_icon": "Compartments"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.compartments.oci_identity_compartment.children",
+      "type": "oci_identity_compartment",
+      "symbol": "children",
+      "source": "modules/iam/compartments/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.child_compartments",
+      "creation_expression": {
+        "for_each": "local.child_compartments"
+      },
+      "module_inputs": [
+        "module.compartments (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.compartments",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/compartments?ref=v0.2.0",
+          "call_site": "blueprints/operating-entity/workload-vending/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_delete": "var.enable_delete"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n14",
+        "source_symbol": "children",
+        "provider_icon": null,
+        "oci_icon": "Compartments"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.groups.oci_identity_group.this",
+      "type": "oci_identity_group",
+      "symbol": "this",
+      "source": "modules/iam/groups/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.groups",
+      "creation_expression": {
+        "for_each": "local.groups"
+      },
+      "module_inputs": [
+        "module.groups (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.groups",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/groups?ref=v0.2.0",
+          "call_site": "blueprints/operating-entity/workload-vending/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_default_groups": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n24",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "User Group"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.policies.oci_identity_policy.this",
+      "type": "oci_identity_policy",
+      "symbol": "this",
+      "source": "modules/iam/policies/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.policies",
+      "creation_expression": {
+        "for_each": "local.policies"
+      },
+      "module_inputs": [
+        "module.policies (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.policies",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/iam/policies?ref=v0.2.0",
+          "call_site": "blueprints/operating-entity/workload-vending/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_default_policies": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n37",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 4
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.parent_compartment_ocid",
+      "source": "blueprints/operating-entity/workload-vending/variables.tf",
+      "description": "Parent operating entity or workload compartment OCID. Defaults to tenancy_ocid for simple tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/operating-entity/workload-vending/variables.tf",
+      "description": "Compartment OCID where workload policies are attached. Defaults to parent_compartment_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 2
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/operating-entity/workload-vending/locals.tf",
+      "revision": "working-tree",
+      "sha256": "87d77b901d7b81923e3a3856b93bd2bd0f708abb787719a120ac9b24699633bc"
+    },
+    {
+      "path": "blueprints/operating-entity/workload-vending/main.tf",
+      "revision": "working-tree",
+      "sha256": "1ce7c217dc5dc703636f787cffcb3fa3b2a299a4eb9fcfcc06a062b8ad49e326"
+    },
+    {
+      "path": "modules/iam/compartments/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "55247c97a573ceaee760654a9583a833f448631d21039fec7f75a63d051bfbb4"
+    },
+    {
+      "path": "modules/iam/compartments/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "2d4a06640964de82a452e4b48c6f6fb632c9a6d9f02dddcd75f6db91b23fd36b"
+    },
+    {
+      "path": "modules/iam/compartments/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "454a8d8e92a22609c64508f26eaa9855e60713ea85025917e30f24d586cad3f1"
+    },
+    {
+      "path": "modules/iam/compartments/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "5675ec82b9d51edff0281f00dbb188d078cb134c04255edec58ff987839a8da3"
+    },
+    {
+      "path": "modules/iam/compartments/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/iam/groups/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "135498a6c52fb9940a1aafc66603e6b17d2b8d161f0184f311dd797e9648040d"
+    },
+    {
+      "path": "modules/iam/groups/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "fbf39baf735b9c7f88e0c59f45d267ad509401067d6bc636dea7d38dc87f37e4"
+    },
+    {
+      "path": "modules/iam/groups/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "d79f3fc48b9a4f5d768a43be98e82d2694d7aa5c362a13d3ee9d90e20d791ae7"
+    },
+    {
+      "path": "modules/iam/groups/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "b9f2661af6433dcbeee27a5e51d214d601a9e9c165bcd9125024f2ee48d8e829"
+    },
+    {
+      "path": "modules/iam/groups/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/iam/policies/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "531d7a1ee6c6e2e0a68d7dd7f5b25ee4b6b2f94c666f96b5fdd3f1db404e8bd2"
+    },
+    {
+      "path": "modules/iam/policies/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "87e04d282676a4d85046f62ee1967a57adf306c30a673b67b88ec75e9f619562"
+    },
+    {
+      "path": "modules/iam/policies/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "f662d8f33203f39570f9991b9a92d92453f198c889ee89c9914ae12a8c7aa9ed"
+    },
+    {
+      "path": "modules/iam/policies/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "b05df4e1a67e9b1443da4aceca75161464b0784335d04a7ef2a76b4b8c33b7a2"
+    },
+    {
+      "path": "modules/iam/policies/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "blueprints/operating-entity/workload-vending/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "7054b7160c296d98f8153981e271c6a5fb1a68de007a63ce04218956b32798fa"
+    },
+    {
+      "path": "blueprints/operating-entity/workload-vending/providers.tf",
+      "revision": "working-tree",
+      "sha256": "4ff2aa3ff95888297c1bdd16504fde4b9a7c5f6808c008a6b2fd4a21e468c923"
+    },
+    {
+      "path": "blueprints/operating-entity/workload-vending/variables.tf",
+      "revision": "working-tree",
+      "sha256": "ad62231d73749bf8640c1b6201829cdebb199cd553bfff0206f098b5ab1306a5"
+    },
+    {
+      "path": "blueprints/operating-entity/workload-vending/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

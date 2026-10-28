@@ -37,6 +37,43 @@ modules, and any accompanying CloudFormation/Bicep template. No cloud resources
 were provisioned and no Terraform/provider validation date was changed.
 This diagram is not evidence of connectivity, BGP, failover or DR readiness.
 
+## Resource Detail And Coverage
+
+Reviewed against the updated diagram standard on October 28, 2026. The main
+draw.io document contains the topology overview plus every resource-detail and
+existing-resource-reference page below. Source declarations include disabled and
+collection-based resources from root Terraform, recursively pinned modules and
+companion cloud templates. Counts are declarations, not resolved instance counts.
+
+OCI uses Oracle Toolkit icons; Azure and AWS use their respective draw.io icons.
+Types without a specific mapped icon retain their exact name and type in a box.
+No GCP declarations were found in this fixed 39-blueprint scope.
+
+| Detail page | Declarations | PNG | Editable source |
+| --- | --- | --- | --- |
+| OCI resources | 18 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
+| OCI resources 2 | 4 | [PNG](oci-resources-02.png) | [draw.io](oci-resources-02.drawio) |
+
+[Existing resources and override inputs](existing-resources.png) | [Editable reference page](existing-resources.drawio)
+
+[Source inventory](resource-inventory.json) records exact declarations, full
+creation expressions, module call-site gates/enablement inputs, pinned revisions,
+source hashes and diagram node mappings. Identifier-input references are listed
+separately from managed resources. Null/empty inputs do not prove an external
+resource exists; collection schemas may contain additional resource identifiers.
+
+The overview explains default enablement. Resource cards enumerate all declaration
+branches and do not imply deployment, ownership adoption, packet flow, security
+enforcement or recovery success. No historical Terraform validation date changed.
+
+```bash
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint networking/multi-tenancy-shared-services --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint networking/multi-tenancy-shared-services --check
+```
+
+If regenerating the overview first, rebuild these detail pages afterward.
+See [the fixed first-39 review](../../../../docs/diagrams/FIRST-39-REVIEW.md) and [provider icon sources](../../../../scripts/diagrams/assets/README.md).
+
 ## Terraform Components
 
 | Kind | Name | Source Or Role |

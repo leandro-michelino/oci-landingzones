@@ -1,0 +1,229 @@
+{
+  "schema_version": 2,
+  "blueprint": "disaster-recovery/fsdr",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 5
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_bucket.primary_dr_logs",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "primary_dr_logs",
+      "source": "blueprints/disaster-recovery/fsdr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_dr_log_buckets ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_dr_log_buckets ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "primary_dr_logs",
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_bucket.standby_dr_logs",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "standby_dr_logs",
+      "source": "blueprints/disaster-recovery/fsdr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_dr_log_buckets ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_dr_log_buckets ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n14",
+        "source_symbol": "standby_dr_logs",
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_disaster_recovery_dr_protection_group.primary",
+      "type": "oci_disaster_recovery_dr_protection_group",
+      "symbol": "primary",
+      "source": "blueprints/disaster-recovery/fsdr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_dr_protection_groups ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_dr_protection_groups ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n24",
+        "source_symbol": "primary",
+        "provider_icon": null,
+        "oci_icon": "Fullstack Disaster Recovery"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_disaster_recovery_dr_protection_group.standby",
+      "type": "oci_disaster_recovery_dr_protection_group",
+      "symbol": "standby",
+      "source": "blueprints/disaster-recovery/fsdr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_dr_protection_groups ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_dr_protection_groups ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n38",
+        "source_symbol": "standby",
+        "provider_icon": null,
+        "oci_icon": "Fullstack Disaster Recovery"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_disaster_recovery_dr_plan.standby",
+      "type": "oci_disaster_recovery_dr_plan",
+      "symbol": "standby",
+      "source": "blueprints/disaster-recovery/fsdr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_dr_plan && var.enable_dr_protection_groups ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_dr_plan && var.enable_dr_protection_groups ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n52",
+        "source_symbol": "standby",
+        "provider_icon": null,
+        "oci_icon": "Fullstack Disaster Recovery"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 5
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/disaster-recovery/fsdr/variables.tf",
+      "description": "Default compartment OCID for FSDR resources. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.primary_compartment_ocid",
+      "source": "blueprints/disaster-recovery/fsdr/variables.tf",
+      "description": "Primary-region compartment OCID for FSDR resources.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.standby_compartment_ocid",
+      "source": "blueprints/disaster-recovery/fsdr/variables.tf",
+      "description": "Standby-region compartment OCID for FSDR resources.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 3
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_objectstorage_namespace.primary",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "primary",
+      "source": "blueprints/disaster-recovery/fsdr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_dr_log_buckets || var.enable_dr_protection_groups ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_dr_log_buckets || var.enable_dr_protection_groups ? 1 : 0"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_objectstorage_namespace.standby",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "standby",
+      "source": "blueprints/disaster-recovery/fsdr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_dr_log_buckets || var.enable_dr_protection_groups ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_dr_log_buckets || var.enable_dr_protection_groups ? 1 : 0"
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/disaster-recovery/fsdr/locals.tf",
+      "revision": "working-tree",
+      "sha256": "57466efc99024edd4a03ed0b31afcabab52078222cacb31f2c6e6b84d2fe2d94"
+    },
+    {
+      "path": "blueprints/disaster-recovery/fsdr/main.tf",
+      "revision": "working-tree",
+      "sha256": "74cb173c44ce8d5eedbdaf1bd149c5bb0728cb843fed2aa4c5dc6de10d291758"
+    },
+    {
+      "path": "blueprints/disaster-recovery/fsdr/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "47cb6cb74957743411ea7c490b3d742828a35865419d093da22c907dbfdfa8a7"
+    },
+    {
+      "path": "blueprints/disaster-recovery/fsdr/providers.tf",
+      "revision": "working-tree",
+      "sha256": "e60e4101a9da2d029be32789b2ecaa5ed3fb43137571136a2eb2a7f1c17fbb09"
+    },
+    {
+      "path": "blueprints/disaster-recovery/fsdr/variables.tf",
+      "revision": "working-tree",
+      "sha256": "93618619943af8d4b53763c2fd7b038cc67f7bef9c1e303840037cfe57d6a4d9"
+    },
+    {
+      "path": "blueprints/disaster-recovery/fsdr/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

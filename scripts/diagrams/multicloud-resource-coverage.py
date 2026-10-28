@@ -17,6 +17,7 @@ import re
 import subprocess
 import textwrap
 import copy
+from functools import lru_cache
 import xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -49,14 +50,66 @@ ICONS={
  'oci_psql_db_system':'OCI Database with PostgreSQL',
  'oci_kms_vault':'Vault','oci_streaming_stream_pool':'OCI Streaming',
  'oci_streaming_stream':'OCI Streaming','oci_load_balancer_load_balancer':'Load Balancer',
+ 'oci_identity_compartment':'Compartments',
+ 'oci_identity_tag_namespace':'Tagging','oci_identity_tag':'Tagging',
+ 'oci_identity_tag_default':'Tagging',
+ 'oci_logging_log_group':'Logging','oci_logging_log':'Logging',
+ 'oci_logging_log_saved_search':'Logging','oci_audit_configuration':'Auditing',
+ 'oci_cloud_guard_cloud_guard_configuration':'Cloud Guard',
+ 'oci_cloud_guard_target':'Cloud Guard','oci_cloud_guard_security_zone':'Maximum Security Zone',
+ 'oci_kms_key':'Key Management',
+ 'oci_vulnerability_scanning_host_scan_recipe':'Vulnerability Scanning',
+ 'oci_vulnerability_scanning_host_scan_target':'Vulnerability Scanning',
+ 'oci_vulnerability_scanning_container_scan_recipe':'Vulnerability Scanning',
+ 'oci_vulnerability_scanning_container_scan_target':'Vulnerability Scanning',
+ 'oci_ons_subscription':'Notifications','oci_events_rule':'Events',
+ 'oci_monitoring_alarm':'Alarms','oci_identity_group':'User Group',
+ 'oci_identity_dynamic_group':'IAM','oci_identity_policy':'Policies',
+ 'oci_data_safe_target_database':'Data Safe',
+ 'oci_network_firewall_network_firewall_policy':'Firewall',
+ 'oci_network_firewall_network_firewall':'Firewall',
+ 'oci_disaster_recovery_dr_protection_group':'Fullstack Disaster Recovery',
+ 'oci_disaster_recovery_dr_plan':'Fullstack Disaster Recovery',
+ 'oci_identity_domain':'IAM','oci_identity_domain_replication_to_region':'IAM',
+ 'oci_core_instance':'OCI Compute','oci_core_vnic_attachment':'VNIC',
+ 'oci_bastion_bastion':'Bastion','oci_dns_view':'DNS',
+ 'oci_dns_zone':'DNS','oci_dns_resolver':'DNS','oci_dns_resolver_endpoint':'DNS',
+ 'oci_core_network_security_group':'NSG',
+ 'oci_core_network_security_group_security_rule':'NSG',
 }
 
 
+@lru_cache(maxsize=None)
 def read_sources(folder,ref=None):
  if ref:
   names=subprocess.check_output(['git','ls-tree','--name-only',f'{ref}:{folder}'],cwd=ROOT,text=True).splitlines()
   return [(folder+'/'+name,subprocess.check_output(['git','show',f'{ref}:{folder}/{name}'],cwd=ROOT,text=True)) for name in names if name.endswith('.tf')]
  return [(str(p.relative_to(ROOT)),p.read_text()) for p in sorted((ROOT/folder).glob('*.tf'))]
+
+
+def root_attributes(body):
+ """Read attributes at the formatted block's first indentation level.
+
+ This repository stores terraform-fmt formatted HCL. Nested dynamic-block
+ for_each expressions must never be mistaken for a resource creation gate.
+ Values retain their complete multiline source expression in the inventory.
+ """
+ matches=list(re.finditer(r'^  ([A-Za-z_][A-Za-z0-9_]*)\s*=\s*',body,re.M))
+ attrs={}
+ for i,m in enumerate(matches):
+  end=matches[i+1].start() if i+1<len(matches) else len(body)
+  value=body[m.end():end]
+  block=re.search(r'^  [A-Za-z_][A-Za-z0-9_]*(?:\s+"[^"]+")?\s*\{',value,re.M)
+  if block:value=value[:block.start()]
+  attrs[m[1]]=value.strip()
+ return attrs
+
+
+def declaration_body(src,start):
+ # The first column-zero close is the end of a terraform-fmt root block.
+ end=re.search(r'^}',src[start:],re.M)
+ if end is None:raise RuntimeError('Unclosed formatted Terraform root block')
+ return src[start:start+end.start()]
 
 
 def terraform(folder,ref=None,prefix='',stack=()):
@@ -66,7 +119,8 @@ def terraform(folder,ref=None,prefix='',stack=()):
   sources.append({'path':path,'revision':ref or 'working-tree','sha256':hashlib.sha256(src.encode()).hexdigest()})
   matches=list(DECL.finditer(src))
   for i,m in enumerate(matches):
-   body=src[m.end():matches[i+1].start() if i+1<len(matches) else len(src)]
+   body=declaration_body(src,m.end())
+   attrs=root_attributes(body)
    if m[1]=='module':
     source=re.search(r'^\s*source\s*=\s*"([^"]+)"',body,re.M)
     if not source: raise RuntimeError(f'Module source missing: {path}:{m[2]}')
@@ -75,12 +129,19 @@ def terraform(folder,ref=None,prefix='',stack=()):
     child=terraform(pin[1],pin[2],prefix+'module.'+m[2]+'.',stack+((folder,ref),))
     for e in child[0]+child[1]:
      e.setdefault('module_inputs',[]).append(prefix+'module.'+m[2]+' (see pinned call-site inputs)')
+     e.setdefault('module_context',[]).append({
+      'address':prefix+'module.'+m[2], 'source':source[1],
+      'call_site':path,'call_site_revision':ref or 'working-tree',
+      'creation_gate':{key:attrs[key] for key in ('count','for_each') if key in attrs},
+      'enablement_inputs':{key:value for key,value in attrs.items() if key.startswith(('enable_','create_'))},
+     })
     entries+=child[0]; lookups+=child[1]; sources+=child[2]
     continue
    typ,name=m[2],m[3]
    cloud='OCI' if typ.startswith('oci_') else 'GCP' if typ.startswith('google_') else 'AWS' if typ.startswith('aws_') else 'Azure' if typ.startswith('azurerm_') else 'Contracts'
-   gate=re.search(r'^\s*(count|for_each)\s*=\s*([^\n]+)',body,re.M)
-   e={'cloud':cloud,'kind':m[1],'address':prefix+typ+'.'+name,'type':typ,'symbol':name,'source':path,'revision':ref or 'working-tree','condition':(gate[1]+' = '+gate[2].strip()) if gate else 'Unconditional declaration; module-level gates/inputs may still apply.'}
+   gate=next(((key,attrs[key]) for key in ('count','for_each') if key in attrs),None)
+   e={'cloud':cloud,'kind':m[1],'address':prefix+typ+'.'+name,'type':typ,'symbol':name,'source':path,'revision':ref or 'working-tree','condition':(gate[0]+' = '+gate[1].splitlines()[0]) if gate else 'Unconditional declaration; module-level gates/inputs may still apply.',
+      'creation_expression':{gate[0]:gate[1]} if gate else {}}
    (lookups if m[1]=='data' else entries).append(e)
  return entries,lookups,sources
 
@@ -108,11 +169,11 @@ def wrapped(value,width=74):
  return '\n'.join(textwrap.wrap(value,width,break_long_words=True,break_on_hyphens=False))
 
 
-def render_map(slug,cloud,entries,lookups,render):
+def render_map(slug,cloud,entries,lookups,render,page_number=1):
  columns=3; width=820; step=850; row_height=220
  rows=(len(entries)+columns-1)//columns
  d=base.Diagram(toolkit=base.TOOLKIT,title=cloud+' resource declarations')
- d.text(cloud+' resources | '+slug.split('/')[-1],20,10,2540,45,size=25,bold=True)
+ d.text(cloud+' resources | '+slug.split('/')[-1]+(f' | Page {page_number}' if page_number>1 else ''),20,10,2540,45,size=25,bold=True)
  d.text('Complete declaration map / paired with architecture.png for topology / Source review 2026-10-28',20,65,2540,30,size=13)
  group=d.group('thirdparty' if cloud in ('Azure','AWS','GCP') else 'other',cloud+' / source-declared resources; conditional declarations remain visible',20,135,2560,70+rows*row_height)
  for i,e in enumerate(entries):
@@ -125,7 +186,8 @@ def render_map(slug,cloud,entries,lookups,render):
   tx=100 if has_icon else 20; tw=width-tx-20
   text=wrapped(e['address'],68 if has_icon else 79)+'\n'+wrapped(e['type'],68 if has_icon else 79)+'\n'+wrapped(e['condition'],68 if has_icon else 79)
   d.text(text,tx,20,tw,155,parent=card,size=12)
-  e['diagram']={'file':cloud.lower()+'-resources.drawio','node_id':card.id,'source_symbol':e['symbol'],'provider_icon':e['type'] if vendor_icon else None}
+  suffix=f'-{page_number:02}' if page_number>1 else ''
+  e['diagram']={'file':cloud.lower()+'-resources'+suffix+'.drawio','page_name':cloud+' resources'+(f' {page_number}' if page_number>1 else ''),'node_id':card.id,'source_symbol':e['symbol'],'provider_icon':e['type'] if vendor_icon else None,'oci_icon':icon}
  y=group.y+group.h+35
  lookup_names=', '.join(e['address'] for e in lookups if e['cloud']==cloud)
  notes='Counts are declarations, not deployed instances. for_each and Bicep collections expand from inputs; gates retain their source expressions.\nPinned-module declarations use the module call-site inputs; the overview explains default enablement. Companion templates deploy separately.\nResource cards enumerate coverage only; card order does not imply dependency or traffic. IAM, DNS, circuits and workloads are not inferred beyond source.'
@@ -134,18 +196,57 @@ def render_map(slug,cloud,entries,lookups,render):
  d.box(notes,20,y,2560,note_height,kind='note')
  warnings=d.check()
  if warnings: raise RuntimeError(str(warnings))
- path=ROOT/'blueprints'/slug/'architecture'/ (cloud.lower()+'-resources.drawio')
+ suffix=f'-{page_number:02}' if page_number>1 else ''
+ path=ROOT/'blueprints'/slug/'architecture'/ (cloud.lower()+'-resources'+suffix+'.drawio')
  d.save(str(path))
  if render and not d.render(str(path.with_suffix('.png')),scale=1.5): raise RuntimeError('PNG export failed')
  with path.open('a') as stream: stream.write('\n')
- return len(entries)
+ return {'file':path.name,'page_name':entries[0]['diagram']['page_name'],'declarations':len(entries)}
+
+
+def input_references(folder):
+ """Document existing-resource ID inputs without reading private tfvars/state."""
+ refs=[]
+ for path,src in read_sources(folder):
+  for m in re.finditer(r'^variable "([^"]+)"\s*\{',src,re.M):
+   name=m[1]
+   if not re.search(r'(_ids?|_ocids?)$',name):continue
+   if name in ('tenancy_ocid','current_user_ocid'):continue
+   attrs=root_attributes(declaration_body(src,m.end()))
+   refs.append({'address':'var.'+name,'source':path,'description':attrs.get('description','').strip('"'),
+                'default_expression':attrs.get('default','REQUIRED'),'type_expression':attrs.get('type','unknown'),
+                'scope':'Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.'})
+ return refs
+
+
+def render_inputs(slug,refs,render):
+ d=base.Diagram(toolkit=base.TOOLKIT,title='Existing resource references')
+ d.text('Existing resources and overrides | '+slug.split('/')[-1],20,10,2540,45,size=25,bold=True)
+ d.text('Source-declared identifier inputs / not created resources / no live inventory or private tfvars read',20,65,2540,30,size=13)
+ rows=(len(refs)+2)//3
+ for i,e in enumerate(refs):
+  x=20+(i%3)*850;y=140+(i//3)*230
+  card=d.group('optional','',x,y,820,205)
+  label=e['address']+'\n'+wrapped(e['description'],85)+'\nDefault expression: '+wrapped(e['default_expression'],85)
+  d.text(label,20,15,780,175,parent=card,size=12)
+  e['diagram']={'file':'existing-resources.drawio','page_name':'Existing resources / inputs','node_id':card.id}
+ d.box('These inputs identify separately managed resources or override a default selection. The overview and module call-site decide their use.\nNull/empty defaults do not prove that an external resource exists. Input names and defaults are source contracts, not discovered cloud inventory.\nCollection inputs can contain further resource references; consult their source schemas and the overview prerequisites. No ownership adoption is implied.',20,165+rows*230,2540,130,kind='note')
+ if d.check():raise RuntimeError(str(d.check()))
+ path=ROOT/'blueprints'/slug/'architecture/existing-resources.drawio'
+ d.save(str(path))
+ if render and not d.render(str(path.with_suffix('.png')),scale=1.5):raise RuntimeError('Input-reference PNG export failed')
+ with path.open('a') as stream:stream.write('\n')
+ return {'file':path.name,'page_name':'Existing resources / inputs','references':len(refs)}
 
 
 def main():
  parser=argparse.ArgumentParser(description=__doc__)
  parser.add_argument('--render',action='store_true'); parser.add_argument('--blueprint',action='append'); parser.add_argument('--check',action='store_true')
+ parser.add_argument('--first-39',action='store_true',help='Review the fixed 39-overview baseline from first-39-review.json')
  args=parser.parse_args()
- for slug in args.blueprint or DEFAULTS:
+ if args.first_39 and args.blueprint:parser.error('Choose --first-39 or --blueprint')
+ selected=json.loads(Path(__file__).with_name('first-39-review.json').read_text())['blueprints'] if args.first_39 else args.blueprint or DEFAULTS
+ for slug in selected:
   folder='blueprints/'+slug
   resources,lookups,sources=terraform(folder)
   remote,remote_sources=external(folder); resources+=remote; sources+=remote_sources
@@ -156,12 +257,17 @@ def main():
   addresses=[(e['cloud'],e['address']) for e in resources]
   if len(addresses)!=len(set(addresses)): raise RuntimeError('Duplicate resource address')
   inventory_path=ROOT/folder/'architecture/resource-inventory.json'
+  refs=input_references(folder)
   if args.check:
    saved=json.loads(inventory_path.read_text())
    current={(e['cloud'],e['address'],e['type'],e['condition'],e['revision']) for e in resources}
    recorded={(e['cloud'],e['address'],e['type'],e['condition'],e['revision']) for e in saved['resources']}
    if current!=recorded or sources!=saved['source_files']:
     raise RuntimeError('Inventory is stale or incomplete: '+slug)
+   if saved.get('schema_version',1)>=2:
+    actual=[{k:v for k,v in entry.items() if k!='diagram'} for entry in saved['resources']]
+    if actual!=resources:raise RuntimeError('Creation expression or module context is stale: '+slug)
+    if saved['data_lookups']!=lookups:raise RuntimeError('Read-only lookup inventory is stale: '+slug)
    pages={p.get('name'):p for p in ET.parse(inventory_path.parent/'architecture.drawio').getroot().findall('diagram')}
    for e in saved['resources']:
     mapping=e['diagram']; path=inventory_path.parent/mapping['file']
@@ -170,13 +276,16 @@ def main():
     labels=''.join(n.get('value','') for n in nodes.values() if n.get('parent')==mapping['node_id'])
     normalized=re.sub(r'\s+','',re.sub(r'<[^>]+>','',html.unescape(labels)))
     if e['address'] not in normalized: raise RuntimeError('Resource label missing: '+e['address'])
-    page=pages.get(e['cloud']+' resources')
+    page=pages.get(mapping.get('page_name',e['cloud']+' resources'))
     if page is None: raise RuntimeError('Main document resource page missing')
     page_nodes={c.get('id'):c for c in page.findall('.//mxCell')}
     if mapping['node_id'] not in page_nodes: raise RuntimeError('Main document resource node missing')
+    main_labels=''.join(n.get('value','') for n in page_nodes.values() if n.get('parent')==mapping['node_id'])
+    if re.sub(r'\s+','',re.sub(r'<[^>]+>','',html.unescape(main_labels)))!=normalized:raise RuntimeError('Main resource card differs from companion')
     descendants=[n for n in nodes.values() if n.get('parent')==mapping['node_id']]
     expected_icon=e['type'] if cloud_icons.available(e['type']) else None
     if mapping.get('provider_icon')!=expected_icon: raise RuntimeError('Provider icon mapping stale')
+    if 'oci_icon' in mapping and mapping['oci_icon']!=ICONS.get(e['type']):raise RuntimeError('OCI icon mapping stale')
     if expected_icon:
      glyphs=[n for n in nodes.values() if n.get('parent') in {child.get('id') for child in descendants}]
      if not glyphs: raise RuntimeError('Provider glyph missing')
@@ -190,13 +299,28 @@ def main():
        raise RuntimeError('Wrong provider stencil')
     png=path.with_suffix('.png').read_bytes()
     if png[:8]!=b'\x89PNG\r\n\x1a\n': raise RuntimeError('PNG missing or invalid')
+   if 'input_references' in saved:
+    actual=[{k:v for k,v in entry.items() if k!='diagram'} for entry in saved['input_references']]
+    if actual!=refs:raise RuntimeError('Input-reference inventory is stale')
+    for e in saved['input_references']:
+     mapping=e['diagram'];page=pages.get(mapping['page_name'])
+     if page is None:raise RuntimeError('Existing resource references page missing')
+     cells={c.get('id'):c for c in page.findall('.//mxCell')}
+     if mapping['node_id'] not in cells:raise RuntimeError('Input reference card missing')
+     labels=''.join(n.get('value','') for n in cells.values() if n.get('parent')==mapping['node_id'])
+     if e['address'] not in html.unescape(labels):raise RuntimeError('Input reference label missing')
+     if not (inventory_path.parent/'existing-resources.png').read_bytes().startswith(b'\x89PNG\r\n\x1a\n'):raise RuntimeError('Existing resources PNG missing')
+   if args.first_39 and ('input_references' not in saved or 'resource_pages' not in saved):raise RuntimeError('First-39 review metadata missing')
    print(slug, str(len(resources))+' declarations checked against source and diagram nodes',flush=True)
    continue
-  counts={}
+  counts={};resource_pages=[]
   for cloud in sorted({e['cloud'] for e in resources}):
-   counts[cloud]=render_map(slug,cloud,[e for e in resources if e['cloud']==cloud],lookups,args.render)
+   entries=[e for e in resources if e['cloud']==cloud];counts[cloud]=len(entries)
+   for start in range(0,len(entries),18):
+    resource_pages.append(render_map(slug,cloud,entries[start:start+18],lookups,args.render,start//18+1))
+  input_page=render_inputs(slug,refs,args.render) if refs else None
   if not all('diagram' in e for e in resources): raise RuntimeError('Resource missing diagram mapping')
-  inventory={'schema_version':1,'blueprint':slug,'review_date':'2026-10-28','scope':'Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.','counts_by_cloud':counts,'resources':resources,'data_lookups':lookups,'source_files':sources}
+  inventory={'schema_version':2,'blueprint':slug,'review_date':'2026-10-28','scope':'Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.','counts_by_cloud':counts,'resources':resources,'resource_pages':resource_pages,'input_references':refs,'input_page':input_page,'data_lookups':lookups,'source_files':sources}
   inventory_path.write_text(json.dumps(inventory,indent=2)+'\n')
   # Rebuild the native document as overview + generated resource-detail pages.
   # Layouts and all shapes are authored through the skill API, not hand-edited XML.
@@ -204,9 +328,9 @@ def main():
   existing=ET.parse(main_path).getroot()
   combined=ET.Element('mxfile',host='ocidraw',type='device')
   combined.append(copy.deepcopy(existing.find('diagram')))
-  for cloud in sorted(counts):
-   page=copy.deepcopy(ET.parse(inventory_path.parent/(cloud.lower()+'-resources.drawio')).getroot().find('diagram'))
-   page.set('id','resources-'+cloud.lower()); page.set('name',cloud+' resources')
+  for idx,meta in enumerate(resource_pages+([input_page] if input_page else [])):
+   page=copy.deepcopy(ET.parse(inventory_path.parent/meta['file']).getroot().find('diagram'))
+   page.set('id','resource-detail-'+str(idx)); page.set('name',meta['page_name'])
    combined.append(page)
   ET.ElementTree(combined).write(main_path,encoding='unicode')
   with main_path.open('a') as stream: stream.write('\n')

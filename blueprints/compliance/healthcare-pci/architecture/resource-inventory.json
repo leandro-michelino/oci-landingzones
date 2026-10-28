@@ -1,0 +1,181 @@
+{
+  "schema_version": 2,
+  "blueprint": "compliance/healthcare-pci",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 4
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.guardrails",
+      "type": "oci_identity_policy",
+      "symbol": "guardrails",
+      "source": "blueprints/compliance/healthcare-pci/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.guardrail_policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.guardrail_policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "guardrails",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_budget_budget.this",
+      "type": "oci_budget_budget",
+      "symbol": "this",
+      "source": "blueprints/compliance/healthcare-pci/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_budget ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_budget ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n15",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_budget_alert_rule.this",
+      "type": "oci_budget_alert_rule",
+      "symbol": "this",
+      "source": "blueprints/compliance/healthcare-pci/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_budget && var.budget_alert_recipients != null ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_budget && var.budget_alert_recipients != null ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n17",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_data_safe_target_database.this",
+      "type": "oci_data_safe_target_database",
+      "symbol": "this",
+      "source": "blueprints/compliance/healthcare-pci/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_data_safe_target_database ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_data_safe_target_database ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n19",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Data Safe"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 4
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/compliance/healthcare-pci/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/compliance/healthcare-pci/variables.tf",
+      "description": "Compartment OCID where guardrail policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.data_safe_autonomous_database_id",
+      "source": "blueprints/compliance/healthcare-pci/variables.tf",
+      "description": "Autonomous Database OCID for Data Safe target registration.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 3
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/compliance/healthcare-pci/locals.tf",
+      "revision": "working-tree",
+      "sha256": "5a501b15615e0f022b803468f6aa1cff127a1f3e1eb7e2358b5a76d6daabc8a2"
+    },
+    {
+      "path": "blueprints/compliance/healthcare-pci/main.tf",
+      "revision": "working-tree",
+      "sha256": "b778cb70d5a976a7284cd4e208b828bc7689e12f84ff3c1fcb938c2826e2605a"
+    },
+    {
+      "path": "blueprints/compliance/healthcare-pci/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "db4030a70ff6abe371d166c43c4b251ea2a9248b42817ca15782646a786e3967"
+    },
+    {
+      "path": "blueprints/compliance/healthcare-pci/providers.tf",
+      "revision": "working-tree",
+      "sha256": "8f85e8539190ef04ab19c8d4c834aa1f74fa02d185b70ac6875df16eb1088de5"
+    },
+    {
+      "path": "blueprints/compliance/healthcare-pci/variables.tf",
+      "revision": "working-tree",
+      "sha256": "42cd14373e237f5e4abe87d7da09448aa442efef1a5963e294b69a49fa8790d3"
+    },
+    {
+      "path": "blueprints/compliance/healthcare-pci/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}
