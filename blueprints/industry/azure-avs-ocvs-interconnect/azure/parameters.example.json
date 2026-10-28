@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "costsApproved": {
+      "value": false
+    },
+    "regionPairVerified": {
+      "value": false
+    },
+    "addressPlanVerified": {
+      "value": false
+    },
+    "avsTransitVerified": {
+      "value": false
+    },
+    "createPrivateCloud": {
+      "value": false
+    },
+    "createInterconnectCircuit": {
+      "value": false
+    },
+    "connectAvsToOci": {
+      "value": false
+    },
+    "enableHcxAddon": {
+      "value": false
+    }
+  }
+}

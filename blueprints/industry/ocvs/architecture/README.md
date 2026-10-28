@@ -95,3 +95,13 @@ overlap and actual traffic require separate review and acceptance testing.
 - Review HCX and Replication-Net requirements without assuming a working migration path.
 - Review replacement/destruction and protect all deployment credentials.
 - Keep enablement flags false during local schema/mock validation.
+
+## Generic Workload Proposals
+
+The proposed NGINX web, Spring Boot API and PostgreSQL guest VM stack appears
+below the infrastructure overview, with dashed HTTPS/TLS application flows.
+Exact bundled VMware icons identify vCenter, NSX Manager and guest VMs; the
+OCVS SDDC retains a named component box. These proposals create no guest VMs,
+packages, database, network rules, replication or backup jobs. See the
+[generic placement and acceptance guide](../../../../docs/multicloud/VMWARE-WORKLOADS.md).
+Historical infrastructure validation metadata remains unchanged.

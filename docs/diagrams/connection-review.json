@@ -10,12 +10,12 @@
     "Reviewed endpoints, labels, arrows, paths and source hashes match contract",
     "Subnet routing and DNS-view semantic regression checks"
   ],
-  "overview_count": 74,
+  "overview_count": 77,
   "conceptual_overviews": 1,
-  "native_documents": 273,
-  "main_document_pages": 273,
-  "connector_count": 622,
-  "cross_cloud_overviews": 12,
+  "native_documents": 287,
+  "main_document_pages": 287,
+  "connector_count": 662,
+  "cross_cloud_overviews": 14,
   "blueprints": [
     {
       "blueprint": "networking/standalone-three-tier-vcn-defaults",
@@ -644,10 +644,69 @@
       "layout_warnings": []
     },
     {
-      "blueprint": "industry/ocvs",
-      "connections": 7,
+      "blueprint": "industry/ocvs-onprem-hcx",
+      "connections": 9,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "a11cffa4667a2e9f3bc697516a0b8984837ac595aa490950cbc2ec9bc3b745e6",
+      "overview_png_sha256": "f1c948f2b7af0f72e8b8cd00123cf6f3678173be0208aa611f836d398f1b3fbc",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "industry/azure-avs-ocvs-interconnect",
+      "connections": 11,
+      "cross_cloud_bridges": [
+        {
+          "source": "n6",
+          "target": "n24",
+          "label": "Optional HCX pair",
+          "clouds": [
+            "OCI",
+            "Azure"
+          ]
+        },
+        {
+          "source": "n13",
+          "target": "n30",
+          "label": "Optional PRIVATE VC / circuits.azure / ExpressRoute service key + 2 BGP pairs",
+          "clouds": [
+            "OCI",
+            "Azure"
+          ]
+        }
+      ],
+      "overview_png_sha256": "7e85cfb33e5a9f02db6e3148d79c62ee3edba6494414119025ed5d5a6c297b0b",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "industry/azure-avs-ocvs-onprem-triangle",
+      "connections": 17,
+      "cross_cloud_bridges": [
+        {
+          "source": "n16",
+          "target": "n34",
+          "label": "Optional HCX pair",
+          "clouds": [
+            "OCI",
+            "Azure"
+          ]
+        },
+        {
+          "source": "n23",
+          "target": "n40",
+          "label": "Optional PRIVATE VC / circuits.azure / ExpressRoute service key + 2 BGP pairs",
+          "clouds": [
+            "OCI",
+            "Azure"
+          ]
+        }
+      ],
+      "overview_png_sha256": "ca3909a0d93dc02fc051fea7c37d335fbd7e3c875b711bf6f34b7e828769caca",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "industry/ocvs",
+      "connections": 10,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "81ac2e7c58a8ae52af5d4632579e4fd5e477edbc8b29a344feeac1500046d177",
       "layout_warnings": []
     },
     {

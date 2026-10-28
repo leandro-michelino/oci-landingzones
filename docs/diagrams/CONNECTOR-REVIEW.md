@@ -158,3 +158,31 @@ connectors**, **273 native documents/PNGs**, and **12 explicit OCI/cloud
 bridges**. Original conversion progress is **69/80**, with **11 pending**;
 current coverage including five additional blueprints is **74/85**. All checks
 are static diagram/source checks, not provisioning or runtime validation.
+
+## VMware Hybrid And Generic Workload Review
+
+The onprem/OCVS, AVS/OCVS and triangle overviews add 9, 11 and 17 relationships.
+The existing OCVS overview adds three dashed proposed workload relationships.
+Plain associations cover supplied cluster-network/license IDs, DRG VCN attachment,
+AVS HCX parent, AVS-managed circuit and Global Reach peer/authorization bindings.
+Solid circuit-intent arrows describe optional partner FastConnect and the linked
+Oracle-facing Azure ExpressRoute circuit, not observed traffic.
+
+Dashed HCX pairings are external workflows requiring enabled cloud components,
+compatible versions/licensing, profiles, per-pair meshes and real path validation.
+The triangle's separate onprem carrier ExpressRoute leg terminates at its own
+AVS Global Reach attachment; it does not route onprem traffic across the Oracle
+Interconnect. AVS-to-Oracle attachment eligibility remains a vendor-confirmation
+gate, not an implication of a line. No implicit VNet gateway transit is drawn.
+The generic guest application arrows are explicitly proposed HTTPS/TLS flows;
+no guest VM, open rule, database connection or successful request is asserted.
+
+Source coverage includes the source-pinned OCVS module and both Azure companion
+files. PNGs were inspected for service glyphs and connection/label placement.
+The [contract](reviewed-connectors.json) records these reviewed endpoints, styles,
+labels, paths and source fingerprints. The [current audit](connection-review.json)
+now covers **77 blueprint plus one conceptual overviews**, **662 connectors**,
+**287 native documents and PNGs**, and **14 explicit OCI/cloud bridges**.
+Original conversion progress remains **69/80**, with **11 pending**; current
+coverage including eight additional projects is **77/88**. These are source,
+geometry and document checks, not runtime acceptance.

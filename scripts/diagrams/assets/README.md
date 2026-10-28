@@ -39,3 +39,14 @@ AKS diagrams use unmodified `Kubernetes_Services.svg` from the installed
 Managed node groups remain explicitly named boxes; cluster glyphs are not
 substituted for node-group resources. Both mappings identify declared clusters
 and do not assert version availability or cluster readiness.
+
+VMware hybrid diagrams use unmodified `AVS.svg` from `azure2/azure_vmware_solution/`
+and `ExpressRoute_Circuits.svg` from `azure2/networking/` in the same draw.io
+32.6.1 bundle. HCX, VMware components and Global Reach associations retain
+named boxes where there is no exact resource glyph.
+
+The installed draw.io `vvd.xml` library contains the exact `vcenter server`,
+`nsx manager` and `virtual machine` stencils, used as `mxgraph.vvd.vcenter_server`,
+`mxgraph.vvd.nsx_manager` and `mxgraph.vvd.virtual_machine`. These identify their
+VMware components; they are not substitutes for a dedicated OCVS service icon.
+No OCVS-specific stencil was found in the installed library or OCI Toolkit v24.2.

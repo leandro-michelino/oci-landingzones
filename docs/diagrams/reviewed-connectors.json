@@ -22053,6 +22053,984 @@
       }
     ]
   },
+  "industry/ocvs-onprem-hcx": {
+    "relationships": [
+      {
+        "source": "HCX Connector / external installation\nSite pair + compute/network profiles + service mesh per pair\nIX / optional NE and WAN optimization appliances\nNo three-site service mesh or automatic DR",
+        "target": "Existing vCenter + ESXi / vSAN or selected storage\nNSX / VM networks / guest VMs\nVersions, licensing, capacity and support require review",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "External registration / supported versions",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "HCX Connector / external installation\nSite pair + compute/network profiles + service mesh per pair\nIX / optional NE and WAN optimization appliances\nNo three-site service mesh or automatic DR",
+        "target": "Existing edge router / firewall / carrier handoff\nDNS + NTP / HCX activation and update egress\nIndependent partner FastConnect leg to OCI",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "External HCX routing / scoped rules",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "OCVS SDDC / enable_sddc=false\nMANAGEMENT + explicit WORKLOAD clusters / dense-vSAN\nESXi / vCenter / NSX / HCX when enable_hcx=true\nPinned implementation 94ad890 / no guest VMs created",
+        "target": "Existing per-cluster network IDs\nPrivate provisioning subnet + eight baseline VLANs\nOptional HCX / replication VLANs + applicable VCF BYOL\nDedicated IDs / compartment, VCN and AD metadata checks",
+        "source_kind": "group:component",
+        "target_kind": "group:optional",
+        "label": "Subnet / VLAN / license references",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional DRG + VCN attachment\nenable_transport=false",
+        "target": "Existing prepared OCVS VCN / CIDRs TBC",
+        "source_kind": "icon",
+        "target_kind": "group:vcn",
+        "label": "attachment.network_details.id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Existing edge router / firewall / carrier handoff\nDNS + NTP / HCX activation and update egress\nIndependent partner FastConnect leg to OCI",
+        "target": "Optional DRG + VCN attachment\nenable_transport=false",
+        "source_kind": "group:optional",
+        "target_kind": "icon",
+        "label": "Optional partner FastConnect / circuits.onprem / provider handoff external",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            970,
+            860
+          ],
+          [
+            970,
+            920
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "HCX Connector / external installation\nSite pair + compute/network profiles + service mesh per pair\nIX / optional NE and WAN optimization appliances\nNo three-site service mesh or automatic DR",
+        "target": "OCVS SDDC / enable_sddc=false\nMANAGEMENT + explicit WORKLOAD clusters / dense-vSAN\nESXi / vCenter / NSX / HCX when enable_hcx=true\nPinned implementation 94ad890 / no guest VMs created",
+        "source_kind": "group:optional",
+        "target_kind": "group:component",
+        "label": "Optional HCX pair",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.8
+        ],
+        "waypoints": [
+          [
+            970,
+            600
+          ],
+          [
+            970,
+            444
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Client / browser\nExisting private entry / HTTPS 443",
+        "target": "NGINX web VM\nLinux / TLS termination + proxy",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "HTTPS 443",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "NGINX web VM\nLinux / TLS termination + proxy",
+        "target": "Spring Boot API VM\nLinux / identity and secrets required",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "HTTPS 8443",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Spring Boot API VM\nLinux / identity and secrets required",
+        "target": "PostgreSQL VM\nTLS / backup + WAL archive / restore test",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "TLS 5432",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/industry/ocvs-onprem-hcx/locals.tf",
+        "revision": "working-tree",
+        "sha256": "ef069409dac23441468380a00982ea4bef7b3a19e2842cc0cf02fcbc5d936818"
+      },
+      {
+        "path": "blueprints/industry/ocvs-onprem-hcx/main.tf",
+        "revision": "working-tree",
+        "sha256": "4d101099df119905152b7c9bba84ce6c9afeef2a01b9471ffca423d25e27e45b"
+      },
+      {
+        "path": "blueprints/industry/ocvs/locals.tf",
+        "revision": "94ad89026bbf2ddbda531976a500e6d2ee084c7f",
+        "sha256": "f069d5b4fc01a85523190ad10b340f4aefbae057fc98fdc8cb99afa2ff0cb564"
+      },
+      {
+        "path": "blueprints/industry/ocvs/main.tf",
+        "revision": "94ad89026bbf2ddbda531976a500e6d2ee084c7f",
+        "sha256": "2385c1986b524976a389babd39364b6b8759f08844b7d48bf978d2c6e7614bdc"
+      },
+      {
+        "path": "blueprints/industry/ocvs/outputs.tf",
+        "revision": "94ad89026bbf2ddbda531976a500e6d2ee084c7f",
+        "sha256": "ae6911a78f4ce820eefd2be2beb2dc92b75560fd6080ec77a65d406841e48386"
+      },
+      {
+        "path": "blueprints/industry/ocvs/providers.tf",
+        "revision": "94ad89026bbf2ddbda531976a500e6d2ee084c7f",
+        "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
+      },
+      {
+        "path": "blueprints/industry/ocvs/variables.tf",
+        "revision": "94ad89026bbf2ddbda531976a500e6d2ee084c7f",
+        "sha256": "bc13e068ba4bcaa6c7ce6cf5132894f72661fc06eff76a0735f23ffef67a6b67"
+      },
+      {
+        "path": "blueprints/industry/ocvs/versions.tf",
+        "revision": "94ad89026bbf2ddbda531976a500e6d2ee084c7f",
+        "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
+      },
+      {
+        "path": "blueprints/industry/ocvs-onprem-hcx/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "72df2ac5449eea09a2d4cfdb3b5c4876156b52a20464ec1976bbf53bd2373d0a"
+      },
+      {
+        "path": "blueprints/industry/ocvs-onprem-hcx/providers.tf",
+        "revision": "working-tree",
+        "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
+      },
+      {
+        "path": "blueprints/industry/ocvs-onprem-hcx/variables.tf",
+        "revision": "working-tree",
+        "sha256": "32622a51ce0bee946f79a006b2c313ac5bdd55c58167a8392eafc05f3915d09c"
+      },
+      {
+        "path": "blueprints/industry/ocvs-onprem-hcx/versions.tf",
+        "revision": "working-tree",
+        "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
+      }
+    ]
+  },
+  "industry/azure-avs-ocvs-interconnect": {
+    "relationships": [
+      {
+        "source": "OCVS SDDC / enable_sddc=false\nMANAGEMENT + explicit WORKLOAD clusters / dense-vSAN\nESXi / vCenter / NSX / HCX when enable_hcx=true\nPinned implementation 94ad890 / no guest VMs created",
+        "target": "Existing per-cluster network IDs\nPrivate provisioning subnet + eight baseline VLANs\nOptional HCX / replication VLANs + applicable VCF BYOL\nDedicated IDs / compartment, VCN and AD metadata checks",
+        "source_kind": "group:component",
+        "target_kind": "group:optional",
+        "label": "Subnet / VLAN / license references",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional DRG + VCN attachment\nenable_transport=false",
+        "target": "Existing prepared OCVS VCN / CIDRs TBC",
+        "source_kind": "icon",
+        "target_kind": "group:vcn",
+        "label": "attachment.network_details.id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "HCX add-on / enableHcxAddon=false\nExplicit offer + management/uplink networks",
+        "target": "AVS private cloud / createPrivateCloud=false\nOr existing same-RG AVS / management + workload networks\nAV36 + 3 hosts + /22 are reviewable examples",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "Optional parent AVS",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "AVS-managed ExpressRoute circuit\nPart of AVS / no standalone customer circuit resource",
+        "target": "AVS private cloud / createPrivateCloud=false\nOr existing same-RG AVS / management + workload networks\nAV36 + 3 hosts + /22 are reviewable examples",
+        "source_kind": "group:optional",
+        "target_kind": "icon",
+        "label": "Part of AVS",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1060,
+            570
+          ],
+          [
+            1060,
+            330
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Optional AVS Global Reach attachment + ER authorization\nconnectAvsToOci / costs + region + address-plan gates\navsTransitVerified=false / exact pairing support pending",
+        "target": "AVS-managed ExpressRoute circuit\nPart of AVS / no standalone customer circuit resource",
+        "source_kind": "group:component",
+        "target_kind": "group:optional",
+        "label": "AVS parent / service-managed circuit",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional AVS Global Reach attachment + ER authorization\nconnectAvsToOci / costs + region + address-plan gates\navsTransitVerified=false / exact pairing support pending",
+        "target": "Customer Oracle-facing ExpressRoute\ncreateInterconnectCircuit=false / provider service key\nPrivate peering completed by partner provisioning",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "peerExpressRouteCircuit / authorizationKey",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "OCVS SDDC / enable_sddc=false\nMANAGEMENT + explicit WORKLOAD clusters / dense-vSAN\nESXi / vCenter / NSX / HCX when enable_hcx=true\nPinned implementation 94ad890 / no guest VMs created",
+        "target": "HCX add-on / enableHcxAddon=false\nExplicit offer + management/uplink networks",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "Optional HCX pair",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.9
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            960,
+            459.5
+          ],
+          [
+            960,
+            450
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Optional DRG + VCN attachment\nenable_transport=false",
+        "target": "Customer Oracle-facing ExpressRoute\ncreateInterconnectCircuit=false / provider service key\nPrivate peering completed by partner provisioning",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Optional PRIVATE VC / circuits.azure / ExpressRoute service key + 2 BGP pairs",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Client / browser\nExisting private entry / HTTPS 443",
+        "target": "NGINX web VM\nLinux / TLS termination + proxy",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "HTTPS 443",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "NGINX web VM\nLinux / TLS termination + proxy",
+        "target": "Spring Boot API VM\nLinux / identity and secrets required",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "HTTPS 8443",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Spring Boot API VM\nLinux / identity and secrets required",
+        "target": "PostgreSQL VM\nTLS / backup + WAL archive / restore test",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "TLS 5432",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/industry/azure-avs-ocvs-interconnect/locals.tf",
+        "revision": "working-tree",
+        "sha256": "efdbd834828d536b36b7450a78fa772b68f6a25e9a120fc03bbdb915fddb2fa6"
+      },
+      {
+        "path": "blueprints/industry/azure-avs-ocvs-interconnect/main.tf",
+        "revision": "working-tree",
+        "sha256": "7f842d6061424048cdb35e48e69f862264f46e2b692683142a718d57ede3f2d0"
+      },
+      {
+        "path": "blueprints/industry/ocvs/locals.tf",
+        "revision": "94ad89026bbf2ddbda531976a500e6d2ee084c7f",
+        "sha256": "f069d5b4fc01a85523190ad10b340f4aefbae057fc98fdc8cb99afa2ff0cb564"
+      },
+      {
+        "path": "blueprints/industry/ocvs/main.tf",
+        "revision": "94ad89026bbf2ddbda531976a500e6d2ee084c7f",
+        "sha256": "2385c1986b524976a389babd39364b6b8759f08844b7d48bf978d2c6e7614bdc"
+      },
+      {
+        "path": "blueprints/industry/ocvs/outputs.tf",
+        "revision": "94ad89026bbf2ddbda531976a500e6d2ee084c7f",
+        "sha256": "ae6911a78f4ce820eefd2be2beb2dc92b75560fd6080ec77a65d406841e48386"
+      },
+      {
+        "path": "blueprints/industry/ocvs/providers.tf",
+        "revision": "94ad89026bbf2ddbda531976a500e6d2ee084c7f",
+        "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
+      },
+      {
+        "path": "blueprints/industry/ocvs/variables.tf",
+        "revision": "94ad89026bbf2ddbda531976a500e6d2ee084c7f",
+        "sha256": "bc13e068ba4bcaa6c7ce6cf5132894f72661fc06eff76a0735f23ffef67a6b67"
+      },
+      {
+        "path": "blueprints/industry/ocvs/versions.tf",
+        "revision": "94ad89026bbf2ddbda531976a500e6d2ee084c7f",
+        "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
+      },
+      {
+        "path": "blueprints/industry/azure-avs-ocvs-interconnect/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "72df2ac5449eea09a2d4cfdb3b5c4876156b52a20464ec1976bbf53bd2373d0a"
+      },
+      {
+        "path": "blueprints/industry/azure-avs-ocvs-interconnect/providers.tf",
+        "revision": "working-tree",
+        "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
+      },
+      {
+        "path": "blueprints/industry/azure-avs-ocvs-interconnect/variables.tf",
+        "revision": "working-tree",
+        "sha256": "32622a51ce0bee946f79a006b2c313ac5bdd55c58167a8392eafc05f3915d09c"
+      },
+      {
+        "path": "blueprints/industry/azure-avs-ocvs-interconnect/versions.tf",
+        "revision": "working-tree",
+        "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
+      },
+      {
+        "path": "blueprints/industry/azure-avs-ocvs-interconnect/azure/main.bicep",
+        "sha256": "e94366ad313f4235f758533961e7d41a389459468bd780b6a06788a36efa8636"
+      }
+    ]
+  },
+  "industry/azure-avs-ocvs-onprem-triangle": {
+    "relationships": [
+      {
+        "source": "HCX Connector / external installation\nSite pair + compute/network profiles + service mesh per pair\nIX / optional NE and WAN optimization appliances\nNo three-site service mesh or automatic DR",
+        "target": "Existing vCenter + ESXi / vSAN or selected storage\nNSX / VM networks / guest VMs\nVersions, licensing, capacity and support require review",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "External registration / supported versions",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "HCX Connector / external installation\nSite pair + compute/network profiles + service mesh per pair\nIX / optional NE and WAN optimization appliances\nNo three-site service mesh or automatic DR",
+        "target": "Existing edge router / firewall / carrier handoff\nDNS + NTP / HCX activation and update egress\nSeparate on-premises FastConnect and ExpressRoute legs",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "External HCX routing / scoped rules",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "OCVS SDDC / enable_sddc=false\nMANAGEMENT + explicit WORKLOAD clusters / dense-vSAN\nESXi / vCenter / NSX / HCX when enable_hcx=true\nPinned implementation 94ad890 / no guest VMs created",
+        "target": "Existing per-cluster network IDs\nPrivate provisioning subnet + eight baseline VLANs\nOptional HCX / replication VLANs + applicable VCF BYOL\nDedicated IDs / compartment, VCN and AD metadata checks",
+        "source_kind": "group:component",
+        "target_kind": "group:optional",
+        "label": "Subnet / VLAN / license references",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional DRG + VCN attachment\nenable_transport=false",
+        "target": "Existing prepared OCVS VCN / CIDRs TBC",
+        "source_kind": "icon",
+        "target_kind": "group:vcn",
+        "label": "attachment.network_details.id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "HCX add-on / enableHcxAddon=false\nExplicit offer + management/uplink networks",
+        "target": "AVS private cloud / createPrivateCloud=false\nOr existing same-RG AVS / management + workload networks\nAV36 + 3 hosts + /22 are reviewable examples",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "Optional parent AVS",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "AVS-managed ExpressRoute circuit\nPart of AVS / no standalone customer circuit resource",
+        "target": "AVS private cloud / createPrivateCloud=false\nOr existing same-RG AVS / management + workload networks\nAV36 + 3 hosts + /22 are reviewable examples",
+        "source_kind": "group:optional",
+        "target_kind": "icon",
+        "label": "Part of AVS",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            2080,
+            570
+          ],
+          [
+            2080,
+            330
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Optional AVS Global Reach attachment + ER authorization\nconnectAvsToOci / costs + region + address-plan gates\navsTransitVerified=false / exact pairing support pending",
+        "target": "AVS-managed ExpressRoute circuit\nPart of AVS / no standalone customer circuit resource",
+        "source_kind": "group:component",
+        "target_kind": "group:optional",
+        "label": "AVS parent / service-managed circuit",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional AVS Global Reach attachment + ER authorization\nconnectAvsToOci / costs + region + address-plan gates\navsTransitVerified=false / exact pairing support pending",
+        "target": "Customer Oracle-facing ExpressRoute\ncreateInterconnectCircuit=false / provider service key\nPrivate peering completed by partner provisioning",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "peerExpressRouteCircuit / authorizationKey",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Existing edge router / firewall / carrier handoff\nDNS + NTP / HCX activation and update egress\nSeparate on-premises FastConnect and ExpressRoute legs",
+        "target": "Optional DRG + VCN attachment\nenable_transport=false",
+        "source_kind": "group:optional",
+        "target_kind": "icon",
+        "label": "Optional partner FastConnect / circuits.onprem / provider handoff external",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            970,
+            860
+          ],
+          [
+            970,
+            920
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "HCX Connector / external installation\nSite pair + compute/network profiles + service mesh per pair\nIX / optional NE and WAN optimization appliances\nNo three-site service mesh or automatic DR",
+        "target": "OCVS SDDC / enable_sddc=false\nMANAGEMENT + explicit WORKLOAD clusters / dense-vSAN\nESXi / vCenter / NSX / HCX when enable_hcx=true\nPinned implementation 94ad890 / no guest VMs created",
+        "source_kind": "group:optional",
+        "target_kind": "group:component",
+        "label": "Optional HCX pair",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.8
+        ],
+        "waypoints": [
+          [
+            970,
+            600
+          ],
+          [
+            970,
+            444
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "OCVS SDDC / enable_sddc=false\nMANAGEMENT + explicit WORKLOAD clusters / dense-vSAN\nESXi / vCenter / NSX / HCX when enable_hcx=true\nPinned implementation 94ad890 / no guest VMs created",
+        "target": "HCX add-on / enableHcxAddon=false\nExplicit offer + management/uplink networks",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "Optional HCX pair",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.9
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1980,
+            459.5
+          ],
+          [
+            1980,
+            450
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Optional DRG + VCN attachment\nenable_transport=false",
+        "target": "Customer Oracle-facing ExpressRoute\ncreateInterconnectCircuit=false / provider service key\nPrivate peering completed by partner provisioning",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Optional PRIVATE VC / circuits.azure / ExpressRoute service key + 2 BGP pairs",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "On-premises VMware / existing and externally operated",
+        "target": "Second AVS Global Reach attachment / onprem-direct\nconnectOnpremToAvs + approved + onpremGlobalReachVerified\nExisting separate onpremCircuitId + secure authorization key",
+        "source_kind": "group:onprem",
+        "target_kind": "group:component",
+        "label": "Independent existing carrier ExpressRoute / NOT via OCI or Oracle-facing ER",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.1,
+          1
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            110,
+            1205
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Second AVS Global Reach attachment / onprem-direct\nconnectOnpremToAvs + approved + onpremGlobalReachVerified\nExisting separate onpremCircuitId + secure authorization key",
+        "target": "AVS-managed ExpressRoute circuit\nPart of AVS / no standalone customer circuit resource",
+        "source_kind": "group:component",
+        "target_kind": "group:optional",
+        "label": "AVS parent",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            3040,
+            1205
+          ],
+          [
+            3040,
+            570
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Client / browser\nExisting private entry / HTTPS 443",
+        "target": "NGINX web VM\nLinux / TLS termination + proxy",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "HTTPS 443",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "NGINX web VM\nLinux / TLS termination + proxy",
+        "target": "Spring Boot API VM\nLinux / identity and secrets required",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "HTTPS 8443",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Spring Boot API VM\nLinux / identity and secrets required",
+        "target": "PostgreSQL VM\nTLS / backup + WAL archive / restore test",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "TLS 5432",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/locals.tf",
+        "revision": "working-tree",
+        "sha256": "7c542678be273bb049420205ec36f810ee22b7c1053e654874c9c73a897f1baf"
+      },
+      {
+        "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/main.tf",
+        "revision": "working-tree",
+        "sha256": "7f842d6061424048cdb35e48e69f862264f46e2b692683142a718d57ede3f2d0"
+      },
+      {
+        "path": "blueprints/industry/ocvs/locals.tf",
+        "revision": "94ad89026bbf2ddbda531976a500e6d2ee084c7f",
+        "sha256": "f069d5b4fc01a85523190ad10b340f4aefbae057fc98fdc8cb99afa2ff0cb564"
+      },
+      {
+        "path": "blueprints/industry/ocvs/main.tf",
+        "revision": "94ad89026bbf2ddbda531976a500e6d2ee084c7f",
+        "sha256": "2385c1986b524976a389babd39364b6b8759f08844b7d48bf978d2c6e7614bdc"
+      },
+      {
+        "path": "blueprints/industry/ocvs/outputs.tf",
+        "revision": "94ad89026bbf2ddbda531976a500e6d2ee084c7f",
+        "sha256": "ae6911a78f4ce820eefd2be2beb2dc92b75560fd6080ec77a65d406841e48386"
+      },
+      {
+        "path": "blueprints/industry/ocvs/providers.tf",
+        "revision": "94ad89026bbf2ddbda531976a500e6d2ee084c7f",
+        "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
+      },
+      {
+        "path": "blueprints/industry/ocvs/variables.tf",
+        "revision": "94ad89026bbf2ddbda531976a500e6d2ee084c7f",
+        "sha256": "bc13e068ba4bcaa6c7ce6cf5132894f72661fc06eff76a0735f23ffef67a6b67"
+      },
+      {
+        "path": "blueprints/industry/ocvs/versions.tf",
+        "revision": "94ad89026bbf2ddbda531976a500e6d2ee084c7f",
+        "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
+      },
+      {
+        "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "72df2ac5449eea09a2d4cfdb3b5c4876156b52a20464ec1976bbf53bd2373d0a"
+      },
+      {
+        "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/providers.tf",
+        "revision": "working-tree",
+        "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
+      },
+      {
+        "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+        "revision": "working-tree",
+        "sha256": "32622a51ce0bee946f79a006b2c313ac5bdd55c58167a8392eafc05f3915d09c"
+      },
+      {
+        "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/versions.tf",
+        "revision": "working-tree",
+        "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
+      },
+      {
+        "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/azure/main.bicep",
+        "sha256": "001a8b05c8887aa69a1b0f70e2decb9be347bf639254fbc7cdd6dbf85e9e4851"
+      }
+    ]
+  },
   "industry/ocvs": {
     "relationships": [
       {
@@ -22205,6 +23183,48 @@
           ]
         ],
         "straight": false
+      },
+      {
+        "source": "Client / browser\nExisting private entry / HTTPS 443",
+        "target": "NGINX web VM\nLinux / TLS termination + proxy",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "HTTPS 443",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "NGINX web VM\nLinux / TLS termination + proxy",
+        "target": "Spring Boot API VM\nLinux / identity and secrets required",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "HTTPS 8443",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Spring Boot API VM\nLinux / identity and secrets required",
+        "target": "PostgreSQL VM\nTLS / backup + WAL archive / restore test",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "TLS 5432",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
       }
     ],
     "source_files": [

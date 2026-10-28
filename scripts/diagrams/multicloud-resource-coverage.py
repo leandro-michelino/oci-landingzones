@@ -26,6 +26,9 @@ base=importlib.util.module_from_spec(spec); spec.loader.exec_module(base)
 icon_spec=importlib.util.spec_from_file_location('cloud_icons',Path(__file__).with_name('cloud-icons.py'))
 cloud_icons=importlib.util.module_from_spec(icon_spec); icon_spec.loader.exec_module(cloud_icons)
 DEFAULTS=[
+ 'industry/ocvs-onprem-hcx',
+ 'industry/azure-avs-ocvs-interconnect',
+ 'industry/azure-avs-ocvs-onprem-triangle',
  'extensions/exadata',
  'extensions/apigw',
  'extensions/oac',
@@ -262,7 +265,10 @@ def render_map(slug,cloud,entries,lookups,render,page_number=1):
 
 
 # Collections whose nested existing identifiers must be visible as input cards.
-COLLECTION_REFERENCE_INPUTS = {'blueprints/industry/ocvs': {'workload_clusters'}}
+COLLECTION_REFERENCE_INPUTS = {
+ 'blueprints/industry/ocvs': {'workload_clusters'},
+ **{'blueprints/industry/'+slug: {'workload_clusters', 'circuits'} for slug in ['ocvs-onprem-hcx','azure-avs-ocvs-interconnect','azure-avs-ocvs-onprem-triangle']}
+}
 
 
 def input_references(folder):

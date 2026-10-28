@@ -24,6 +24,8 @@ def build():
  sn=d.group('subnet','Existing ESXi provisioning subnets / per cluster\nCIDR TBC / public IPs prohibited',40,100,650,175,parent=vc)
  d.text('MANAGEMENT + each WORKLOAD use dedicated subnet IDs\nRead-only metadata checks when opted in\nNo subnet, NSG, route table or gateway creation',20,95,610,60,parent=sn,size=15)
  sddc=d.box('Optional OCVS SDDC / enable_sddc=false\nOne MANAGEMENT + explicit WORKLOAD clusters / 3-64 hosts each\nDense/vSAN only / explicit AD, shape, VMware bundle and commitment\nService-managed ESXi + vCenter + NSX control plane; no guest VMs',800,100,1110,175,parent=vc)
+ load('cloud-icons').icon(d,'VMware.vCenter',55,65,parent=sddc,size=40,label='vCenter',label_pos='bottom')
+ load('cloud-icons').icon(d,'VMware.NSXManager',1055,65,parent=sddc,size=40,label='NSX',label_pos='bottom')
  d.connect(sn,sddc,kind='plain',label='provisioning_subnet_id',straight=True)
  vlans=d.box('Existing VLAN identifier bindings / eight baseline roles per cluster\nvSphere / vMotion / vSAN / NSX host VTEP / NSX Edge VTEP\nNSX Edge uplink 1 / uplink 2 / Provisioning-Net\nAll clusters use distinct VLAN IDs; same VCN + compartment; compatible AD\nSelected optional HCX / Replication-Net IDs extend this map',40,355,1200,165,parent=vc)
  d.connect(vlans,sddc,kind='plain',label='VLAN role bindings',exit=(.6,0),entry=(0,.8),waypoints=[(1195,480)])
@@ -37,6 +39,7 @@ def build():
  d.text('Metadata lookups check only VCN/compartment, private provisioning subnet, distinct VLAN IDs and AD compatibility.\nNo complete security/routing/MTU/DNS audit, host capacity, licensing eligibility, migration, management login or application traffic is verified.',40,820,1980,60,parent=r,size=15)
  d.box('DEFAULT RESULT: No OCI resources or lookups. Only the local terraform_data guard exists; enable_sddc=false, inspect_existing_network=false and costs_approved=false.\nCreation requires explicit reviewed costs, network IDs, supported dense shape/bundle/commitment, AD and RSA public SSH key. Read-only inspection can be enabled separately.\nOne cloud resource declaration provisions the SDDC and its initial service-managed clusters/components; it does not duplicate ESXi hosts as individual Terraform resources.\nNo network or external-site resources are created. Optional workload CIDR is an initial NSX input, not guest provisioning. Password outputs are absent; protect deployment state and saved plans.',20,1150,2460,135,kind='note')
  d.text('Local validation: 2026-10-28 / Terraform validate + 19 mocked plans / oracle/oci 9.11.0. No cloud provisioning, VMware login, migration, packet-flow or live cleanup test.\nExisting CIDRs and regional shape/version/commitment eligibility are operator prerequisites; no live environment or commercial acceptance is implied.',20,1330,2460,60,size=13)
+ load('vmware-hybrid').workloads(d,2460,1450,'All three tiers on OCVS guest VMs / no industry dependency')
  return d
 def main():
  parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--render',action='store_true');args=parser.parse_args()

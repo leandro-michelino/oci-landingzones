@@ -8,6 +8,8 @@ from pathlib import Path
 from ocidraw import Node, ICON_WRAP, LABEL_POS, _htmltext
 ASSETS=Path(__file__).with_name('assets')
 AZURE={
+ 'Microsoft.AVS/privateClouds':'AVS',
+ 'Microsoft.Network/expressRouteCircuits':'ExpressRoute_Circuits',
  'Microsoft.ContainerService/managedClusters':'Kubernetes_Services',
  # Current CognitiveServices account declarations all use kind OpenAI.
  'Microsoft.CognitiveServices/accounts':'Azure_OpenAI',
@@ -71,8 +73,14 @@ GCP={
 }
 
 
+VMWARE = {
+ 'VMware.vCenter':'vcenter_server',
+ 'VMware.NSXManager':'nsx_manager',
+ 'VMware.VirtualMachine':'virtual_machine',
+}
+
 def available(typ):
- return typ in AZURE or typ in AWS or typ in GCP
+ return typ in AZURE or typ in AWS or typ in GCP or typ in VMWARE
 
 
 def icon(d,typ,cx,cy,parent=None,size=48,label='',label_pos='bottom'):
@@ -86,6 +94,8 @@ def icon(d,typ,cx,cy,parent=None,size=48,label='',label_pos='bottom'):
  elif typ in AWS:
   shape,color=AWS[typ]
   style=f'shape=mxgraph.aws4.{shape};fillColor={color};strokeColor=none;'
+ elif typ in VMWARE:
+  style=f'shape=mxgraph.vvd.{VMWARE[typ]};fillColor=#FFFFFF;strokeColor=#555555;strokeWidth=1.5;'
  else:
   style=f'shape=mxgraph.gcp2.{GCP[typ]};fillColor=#4285F4;strokeColor=none;'
  d._vertex(d._id(),'',style,0,0,size,size,ident,' connectable="0"')

@@ -1,0 +1,57 @@
+{
+  "status": "proposal_only_not_deployed_or_tested",
+  "pattern": "generic-three-tier-vms",
+  "placement": {
+    "web_api": "avs",
+    "database": "ocvs"
+  },
+  "components": [
+    {
+      "role": "web",
+      "software": "NGINX",
+      "guest": "Linux VM",
+      "sizing": "TBD by load test"
+    },
+    {
+      "role": "api",
+      "software": "Spring Boot",
+      "guest": "Linux VM",
+      "sizing": "TBD by load test"
+    },
+    {
+      "role": "database",
+      "software": "PostgreSQL",
+      "guest": "Linux VM",
+      "sizing": "TBD by transaction, storage and restore tests"
+    }
+  ],
+  "flows": [
+    {
+      "source": "client",
+      "target": "web",
+      "protocol": "HTTPS",
+      "port": 443
+    },
+    {
+      "source": "web",
+      "target": "api",
+      "protocol": "HTTPS",
+      "port": 8443
+    },
+    {
+      "source": "api",
+      "target": "database",
+      "protocol": "PostgreSQL with TLS",
+      "port": 5432
+    }
+  ],
+  "operational_dependencies": [
+    "Guest OS/version compatibility and licensing",
+    "NSX segments and scoped firewall rules",
+    "DNS/NTP and identity/OIDC configuration",
+    "TLS certificates and secret distribution",
+    "Backups, WAL archive and restore tests",
+    "HCX site pairs/service meshes and per-wave rollback"
+  ],
+  "availability": "No replica, load balancer, failover, RPO or RTO configured"
+}

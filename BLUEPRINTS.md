@@ -109,8 +109,11 @@ Run `make blueprints` after adding, moving, or removing a blueprint.
 
 | Blueprint | Summary | Architecture |
 |---|---|---|
+| [Azure AVS and OCVS Interconnect](blueprints/industry/azure-avs-ocvs-interconnect/) | VMware application tiers across AVS and OCVS using ExpressRoute and FastConnect. | [Architecture](blueprints/industry/azure-avs-ocvs-interconnect/architecture/README.md) |
+| [Azure AVS, OCVS and On-Premises Triangle](blueprints/industry/azure-avs-ocvs-onprem-triangle/) | Three independent private connectivity legs for staged VMware migration. | [Architecture](blueprints/industry/azure-avs-ocvs-onprem-triangle/architecture/README.md) |
 | [Hospital Integration And FHIR Landing Zone](blueprints/industry/healthcare-fhir-integration/) | Private hospital FHIR API mediation with explicit identity, backend and integration-worker handoffs. | [Architecture](blueprints/industry/healthcare-fhir-integration/architecture/README.md) |
 | [Healthcare Platform Landing Zone](blueprints/industry/healthcare-platform/) | Private hospital applications, patient-service backends and encrypted document/data foundations. | [Architecture](blueprints/industry/healthcare-platform/architecture/README.md) |
+| [OCVS and On-Premises VMware with HCX](blueprints/industry/ocvs-onprem-hcx/) | HCX migration from an existing vSphere site into OCVS. | [Architecture](blueprints/industry/ocvs-onprem-hcx/architecture/README.md) |
 | [Oracle Cloud VMware Solution (OCVS)](blueprints/industry/ocvs/) | Dense/vSAN OCVS management and workload clusters on prepared private networks. | [Architecture](blueprints/industry/ocvs/architecture/README.md) |
 | [Secure Desktops Landing Zone](blueprints/industry/secure-desktops/) | Managed VDI for contractors, regulated users, or private administrative workstations. | [Architecture](blueprints/industry/secure-desktops/architecture/README.md) |
 | [Telco Cloud Native Landing Zone](blueprints/industry/telco-cloud-native/) | Composes network, vault, OKE, monitoring, and OS Management foundations for telco-oriented cloud-native workloads. | [Architecture](blueprints/industry/telco-cloud-native/architecture/README.md) |

@@ -126,3 +126,13 @@ The implementation uses provider `oracle/oci = 9.11.0` and the nested
 model verified against its locally installed schema. The
 [Oracle SDDC resource reference](https://docs.oracle.com/en-us/iaas/tools/terraform-provider-oci/latest/docs/r/ocvp_sddc.html)
 is a current upstream reference; the pinned schema controls this implementation.
+
+## Generic Workload Proposals
+
+A three-tier application on Linux VMs can place NGINX, a Spring Boot API and
+PostgreSQL inside the OCVS WORKLOAD cluster. Other candidates include internal
+portals, document services and licensed legacy application VMs. See the
+[placement and acceptance guide](../../../docs/multicloud/VMWARE-WORKLOADS.md).
+No guest/application is created or claimed tested by this blueprint. Size and
+license each guest, separate NSX tiers, configure identity/TLS/secrets and prove
+transactions, backups and restore before production use.

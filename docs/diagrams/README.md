@@ -628,3 +628,57 @@ This is a diagram/documentation-only batch reviewed on 2026-10-28. No Terraform
 resource configuration, historical validation date or provider evidence changes.
 No cloud provisioning, service activation, ingestion, application request,
 private connectivity or runtime test was performed.
+
+## VMware Hybrid Additions / October 28, 2026
+
+Three additional blueprints now include editable native draw.io diagrams, PNGs,
+complete conditional resource maps and existing-network/circuit reference pages.
+The OCVS foundation overview also includes the same generic VM application proposal.
+
+| Blueprint | OCI declarations | Azure declarations | Local contracts | Existing-reference inputs | Overview connectors |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| [OCVS + onprem HCX](../../blueprints/industry/ocvs-onprem-hcx/architecture/README.md) | 4 | 0 | 3 | 16 | 9 |
+| [AVS + OCVS](../../blueprints/industry/azure-avs-ocvs-interconnect/architecture/README.md) | 4 | 5 | 3 | 16 | 11 |
+| [Three-site triangle](../../blueprints/industry/azure-avs-ocvs-onprem-triangle/architecture/README.md) | 4 | 6 | 3 | 16 | 17 |
+
+Counts describe declarations, not expanded deployed instances. The three roots
+include 32 declarations (12 OCI, 11 Azure, 9 local contracts) and 48 existing-
+reference inputs, including each nested workload-cluster and circuit collection.
+Their OCVS composition is pinned to commit `94ad89026bbf2ddbda531976a500e6d2ee084c7f`.
+There are 14 new native documents with paired PNGs. Component/resource maps
+intentionally do not invent topology or telemetry relationships.
+
+AVS and ExpressRoute use exact bundled Azure SVGs. vCenter, NSX Manager and guest
+VMs use their exact bundled VMware vvd stencils. The OCVS SDDC remains an explicit
+named component: no dedicated OCVS icon was found in the installed OCI Toolkit
+v24.2 or draw.io library. VMware component icons do not substitute for the OCVS
+service. Generic [NGINX/API/PostgreSQL workload proposals](../multicloud/VMWARE-WORKLOADS.md)
+are marked external and untested, with dashed application-flow connectors.
+
+The triangle has three independent connectivity legs; onprem transit through
+Oracle Interconnect is not assumed. AVS-to-Oracle Global Reach eligibility needs
+vendor confirmation, so `avsTransitVerified=false` by default. HCX pairing,
+profiles and per-pair service meshes remain external. No claim of cloud-to-cloud
+migration interoperability or running guest applications is made.
+
+```bash
+python3 scripts/diagrams/vmware-hybrid.py --render
+python3 scripts/diagrams/ocvs.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint industry/ocvs-onprem-hcx --blueprint industry/azure-avs-ocvs-interconnect --blueprint industry/azure-avs-ocvs-onprem-triangle --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint industry/ocvs
+python3 scripts/diagrams/multicloud-resource-coverage.py --check
+python3 scripts/diagrams/check-connections.py --write-report
+```
+
+Current coverage is **77/88** blueprint entry points, plus one conceptual view.
+Original conversion progress remains **69/80**, with **11 pending**; the new
+VMware entries are additions outside that original backlog. There are now eight
+additional Interconnect, healthcare and VMware blueprints. GCP counterparts
+remain in the final phase after the original conversion backlog.
+
+The [current audit](connection-review.json) contains **662 reviewed connectors**,
+**287 native documents/PNGs** and **14 explicit OCI/cloud bridges**. The changes
+add 37 new overview connectors and three proposed application connectors to the
+existing OCVS overview. Local evidence is recorded in
+[VMware validation](../VMWARE-HYBRID-20261028.md); no provisioning, HCX migration,
+application request, restore or runtime transport test was performed.
