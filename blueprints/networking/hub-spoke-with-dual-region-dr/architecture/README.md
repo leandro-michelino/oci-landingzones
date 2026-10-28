@@ -1,6 +1,6 @@
 # Dual Region Hub-Spoke DR Architecture
 
-This is the deployment architecture for `blueprints/networking/hub-spoke-with-dual-region-dr`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/networking/hub-spoke-with-dual-region-dr`. The PNG provides a GitHub-readable preview; the draw.io source preserves editable shapes, official OCI icons and connectors.
 
 ## Deployment Purpose
 
@@ -13,38 +13,29 @@ Creates matching hub-spoke network foundations in primary and secondary OCI regi
 | Boundary | `blueprints/networking/hub-spoke-with-dual-region-dr` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Creates matching hub-spoke network foundations in primary and secondary OCI regions for regional disaster recovery patterns. |
 | Terraform components | `primary_network`, `secondary_network` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram shows source-defined resources, explicit dependency/contract boundaries and conditional connectivity; it is not runtime evidence. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Dual Region Hub-Spoke DR                                                                                 |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Primary region}                                      {Secondary region}                                 |
-|         |                                                     |                                          |
-|         v                                                     v                                          |
-| [primary hub-spoke network]                         [secondary hub-spoke network]                        |
-|         |-- hub VCN / DRG / spoke VCNs                       |-- hub VCN / DRG / spoke VCNs              |
-|         |-- primary route tables and gateways                 |-- secondary route tables and gateways    |
-|         `-- primary hand-off IDs                              `-- secondary hand-off IDs                 |
-|                 |                                                     |                                  |
-|                 +---------------- paired design review ----------------+                                 |
-|                                                                                                          |
-| Traffic stance: regional traffic stays local until a DR, replication, or routing layer intentionally     |
-| links regions.                                                                                           |
-| Review focus: CIDR non-overlap, route symmetry, DNS strategy, failover runbooks, and region-specific     |
-| service limits.                                                                                          |
-| Hand-off: primary and secondary network IDs for DR, replication, and application deployment layers.      |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Dual Region Hub-Spoke DR Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep this source and the PNG preview
+aligned after every diagram change.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. Regenerate from the repository
+root with `python3 scripts/diagrams/networking-batch-04.py --render`, after
+installing the skill and its official toolkit. The toolkit is not redistributed here.
+
+The diagram uses source-default CIDRs, explicitly identifies incomplete inputs,
+and distinguishes network resources from external dependencies and metadata
+contracts. Placement labels are defaults or operator inputs, not live inventory.
+
+Diagram documentation reviewed on 2026-10-28 against root Terraform, referenced
+modules, and any accompanying CloudFormation/Bicep template. No cloud resources
+were provisioned and no Terraform/provider validation date was changed.
+This diagram is not evidence of connectivity, BGP, failover or DR readiness.
 
 ## Terraform Components
 

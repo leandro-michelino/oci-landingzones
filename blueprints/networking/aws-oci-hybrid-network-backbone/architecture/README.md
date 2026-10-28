@@ -22,34 +22,24 @@ Direct Connect + FastConnect interconnect contract metadata for final cutover.
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------------+
-| AWS + OCI Hybrid Network Backbone                                                                              |
-+----------------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow                    |
-|                                                                                                                |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                                |
-|         |                    |                         |                                                       |
-|         | validates docs      | init/validate/plan      | OCI API calls                                        |
-|         v                    v                         v                                                       |
-| {OCI primary boundary}                                                                                         |
-|   |                                                                                                            |
-|   |-- [Backbone VCN + route table + security list + subnet] (optional)                                        |
-|   |-- [Primary DRG]                                                                                             |
-|   |      `-- [DRG attachment to VCN] (optional)                                                                 |
-|   |-- [CPE + IPSec] (optional site-to-site VPN path)                                                            |
-|   `-- [terraform_data contracts + optional alerts topic]                                                        |
-|          |-- connectivity mode + interconnect IDs                                                              |
-|          `-- route governance: OCI DRG and AWS CIDR expectations                                               |
-|                                                                                                                |
-| {AWS secondary boundary}                                                                                        |
-|   |                                                                                                            |
-|   |-- (Transit Gateway and VPC attachment from aws/main.yaml session)                                          |
-|   `-- (Direct Connect connection ID when interconnect mode is selected)                                        |
-|                                                                                                                |
-| Route intent: OCI DRG primary hub <-> AWS CIDRs via IPSec first, with optional interconnect cutover           |
-+----------------------------------------------------------------------------------------------------------------+
-```
+![AWS + OCI Hybrid Network Backbone Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep this source and the PNG preview
+aligned after every diagram change.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. Regenerate from the repository
+root with `python3 scripts/diagrams/networking-batch-04.py --render`, after
+installing the skill and its official toolkit. The toolkit is not redistributed here.
+
+The diagram uses source-default CIDRs, explicitly identifies incomplete inputs,
+and distinguishes network resources from external dependencies and metadata
+contracts. Placement labels are defaults or operator inputs, not live inventory.
+
+Diagram documentation reviewed on 2026-10-28 against root Terraform, referenced
+modules, and any accompanying CloudFormation/Bicep template. No cloud resources
+were provisioned and no Terraform/provider validation date was changed.
+This diagram is not evidence of connectivity, BGP, failover or DR readiness.
 
 ## Terraform Components
 

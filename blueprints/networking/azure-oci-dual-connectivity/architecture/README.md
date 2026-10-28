@@ -22,37 +22,24 @@ final cutover.
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------------------+
-| Azure + OCI Dual Connectivity Hardening                                                                             |
-+----------------------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow                         |
-|                                                                                                                      |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                                     |
-|         |                    |                         |                                                             |
-|         | validates docs      | init/validate/plan      | OCI API calls                                              |
-|         v                    v                         v                                                             |
-| {OCI primary boundary}                                                                                               |
-|   |                                                                                                                  |
-|   |-- [Primary VCN + route table + security list + hub subnet] (optional)                                           |
-|   |-- [Primary DRG]                                                                                                  |
-|   |      `-- [DRG attachment to primary VCN] (optional)                                                              |
-|   |-- [CPE + IPSec fallback] (optional)                                                                              |
-|   `-- [terraform_data contracts + optional alerts topic]                                                             |
-|          |-- interconnect mode + ExpressRoute/FastConnect IDs                                                       |
-|          |-- IPSec/BGP fallback policy + approved Azure CIDRs                                                       |
-|          |-- routing preference: ipsec-first rollout, interconnect-ready cutover                                     |
-|          `-- DNS + runbook hand-off metadata                                                                         |
-|                                                                                                                      |
-| {Azure secondary boundary}                                                                                            |
-|   |                                                                                                                  |
-|   |-- (ExpressRoute circuit ID and private path)                                                                     |
-|   |-- (VPN gateway public endpoint for fallback)                                                                     |
-|   `-- (fallback network edge from azure/main.bicep session)                                                          |
-|                                                                                                                      |
-| Path intent: OCI DRG primary hub <-> Azure CIDRs via IPSec first, with optional Interconnect cutover and failback  |
-+----------------------------------------------------------------------------------------------------------------------+
-```
+![Azure + OCI Dual Connectivity Hardening Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep this source and the PNG preview
+aligned after every diagram change.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. Regenerate from the repository
+root with `python3 scripts/diagrams/networking-batch-04.py --render`, after
+installing the skill and its official toolkit. The toolkit is not redistributed here.
+
+The diagram uses source-default CIDRs, explicitly identifies incomplete inputs,
+and distinguishes network resources from external dependencies and metadata
+contracts. Placement labels are defaults or operator inputs, not live inventory.
+
+Diagram documentation reviewed on 2026-10-28 against root Terraform, referenced
+modules, and any accompanying CloudFormation/Bicep template. No cloud resources
+were provisioned and no Terraform/provider validation date was changed.
+This diagram is not evidence of connectivity, BGP, failover or DR readiness.
 
 ## Terraform Components
 

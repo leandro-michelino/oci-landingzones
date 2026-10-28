@@ -5,9 +5,9 @@
 
 ## Networking Draw.io Diagrams
 
-The first fifteen Networking catalog entries have editable draw.io sources and PNG
+The first twenty Networking catalog entries have editable draw.io sources and PNG
 previews beside their architecture documentation. The PNGs replace the previous
-ASCII architecture blocks in those fifteen files. Later catalog entries retain their
+ASCII architecture blocks in those twenty files. Later catalog entries retain their
 existing diagrams until their batch is completed.
 
 Generated using the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
@@ -33,6 +33,11 @@ its `toolkit/` folder, or set `OCI_DIAGRAM_SKILL` and `OCI_TOOLKIT`.
 | 13 | `hub-spoke-with-transit-routing-nva-ha` | [PNG](../../blueprints/networking/hub-spoke-with-transit-routing-nva-ha/architecture/architecture.png) | [draw.io](../../blueprints/networking/hub-spoke-with-transit-routing-nva-ha/architecture/architecture.drawio) |
 | 14 | `hub-spoke-with-private-dns-split-horizon` | [PNG](../../blueprints/networking/hub-spoke-with-private-dns-split-horizon/architecture/architecture.png) | [draw.io](../../blueprints/networking/hub-spoke-with-private-dns-split-horizon/architecture/architecture.drawio) |
 | 15 | `hub-spoke-with-zpr-micro-segmentation` | [PNG](../../blueprints/networking/hub-spoke-with-zpr-micro-segmentation/architecture/architecture.png) | [draw.io](../../blueprints/networking/hub-spoke-with-zpr-micro-segmentation/architecture/architecture.drawio) |
+| 16 | `hub-spoke-with-dual-region-dr` | [PNG](../../blueprints/networking/hub-spoke-with-dual-region-dr/architecture/architecture.png) | [draw.io](../../blueprints/networking/hub-spoke-with-dual-region-dr/architecture/architecture.drawio) |
+| 17 | `multi-tenancy-shared-services` | [PNG](../../blueprints/networking/multi-tenancy-shared-services/architecture/architecture.png) | [draw.io](../../blueprints/networking/multi-tenancy-shared-services/architecture/architecture.drawio) |
+| 18 | `hub-spoke-with-multicloud-interconnect` | [PNG](../../blueprints/networking/hub-spoke-with-multicloud-interconnect/architecture/architecture.png) | [draw.io](../../blueprints/networking/hub-spoke-with-multicloud-interconnect/architecture/architecture.drawio) |
+| 19 | `aws-oci-hybrid-network-backbone` | [PNG](../../blueprints/networking/aws-oci-hybrid-network-backbone/architecture/architecture.png) | [draw.io](../../blueprints/networking/aws-oci-hybrid-network-backbone/architecture/architecture.drawio) |
+| 20 | `azure-oci-dual-connectivity` | [PNG](../../blueprints/networking/azure-oci-dual-connectivity/architecture/architecture.png) | [draw.io](../../blueprints/networking/azure-oci-dual-connectivity/architecture/architecture.drawio) |
 
 From the repository root, regenerate a batch and export its PNGs with:
 
@@ -40,6 +45,7 @@ From the repository root, regenerate a batch and export its PNGs with:
 python3 scripts/diagrams/networking-batch-01.py --render
 python3 scripts/diagrams/networking-batch-02.py --render
 python3 scripts/diagrams/networking-batch-03.py --render
+python3 scripts/diagrams/networking-batch-04.py --render
 ```
 
 Each generator runs the skill's layout checks and stops on warnings before
@@ -47,7 +53,7 @@ exporting. The output uses source-default CIDRs, marks unspecified deployment
 placement, and distinguishes optional disabled services from the network
 foundation. It does not discover live OCI resources.
 
-On October 28, 2026, all fifteen sources passed the skill's layout checks; all fifteen
+On October 28, 2026, all twenty sources passed the skill's layout checks; all twenty
 PNGs were exported through draw.io and visually reviewed. Repository contracts,
 Markdown links and diff whitespace checks passed. This documentation-only work
 performed no Terraform apply, provider revalidation, connectivity, failover or

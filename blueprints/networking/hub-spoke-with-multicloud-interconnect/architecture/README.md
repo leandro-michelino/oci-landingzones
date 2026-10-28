@@ -1,6 +1,6 @@
 # Hub-Spoke Multicloud Interconnect Architecture
 
-This is the deployment architecture for `blueprints/networking/hub-spoke-with-multicloud-interconnect`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/networking/hub-spoke-with-multicloud-interconnect`. The PNG provides a GitHub-readable preview; the draw.io source preserves editable shapes, official OCI icons and connectors.
 
 ## Deployment Purpose
 
@@ -13,45 +13,29 @@ Adds both FastConnect and IPSec connectivity to a hub-spoke DRG for private and 
 | Boundary | `blueprints/networking/hub-spoke-with-multicloud-interconnect` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Adds both FastConnect and IPSec connectivity to a hub-spoke DRG for private and backup multicloud routes. |
 | Terraform components | `network`, `fastconnect`, `ipsec_vpn` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram shows source-defined resources, explicit dependency/contract boundaries and conditional connectivity; it is not runtime evidence. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Hub-Spoke Multicloud Interconnect                                                                        |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Network compartment / selected region}                                                                  |
-|         |                                                                                                |
-|         v                                                                                                |
-| [Hub VCN]                                                                                                |
-|         |-- [dmz subnet]      -> public ingress/egress only when approved                                |
-|         |-- [firewall subnet] -> inspection or appliance insertion point                                 |
-|         |-- [shared subnet]   -> shared services, endpoints, DNS, or bastion                             |
-|         `-- [gateway set]     -> IGW / NAT / SGW according to route design                               |
-|                  |                                                                                       |
-|                  v                                                                                       |
-| [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
-|   |             |                    |                                                                   |
-|   |             |                    +--> [spoke app1: web/app/db subnets]                                 |
-|   |             |                    +--> (additional spokes require explicit network inputs)                                 |
-|   |             |                    `--> (future spokes: topology extension required)                        |
-|   |                                                                                                      |
-|   `--> (remote cloud / provider edge) -> FastConnect + IPSec backup -> DRG                               |
-|                                                                                                          |
-| Pattern extension: dual connectivity paths support private multicloud routing and failover review.       |
-| North-south: external or service traffic enters the hub, then routes through DRG attachments to spokes.  |
-| East-west: spoke-to-spoke traffic centralizes through the DRG and any hub inspection controls.           |
-| Hand-off: hub/spoke VCN IDs, DRG IDs, attachment IDs, subnet maps, route targets, and service edge IDs.  |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Hub-Spoke Multicloud Interconnect Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep this source and the PNG preview
+aligned after every diagram change.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. Regenerate from the repository
+root with `python3 scripts/diagrams/networking-batch-04.py --render`, after
+installing the skill and its official toolkit. The toolkit is not redistributed here.
+
+The diagram uses source-default CIDRs, explicitly identifies incomplete inputs,
+and distinguishes network resources from external dependencies and metadata
+contracts. Placement labels are defaults or operator inputs, not live inventory.
+
+Diagram documentation reviewed on 2026-10-28 against root Terraform, referenced
+modules, and any accompanying CloudFormation/Bicep template. No cloud resources
+were provisioned and no Terraform/provider validation date was changed.
+This diagram is not evidence of connectivity, BGP, failover or DR readiness.
 
 ## Terraform Components
 

@@ -1,6 +1,6 @@
 # Multi-Tenancy Shared Services Architecture
 
-This is the deployment architecture for `blueprints/networking/multi-tenancy-shared-services`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/networking/multi-tenancy-shared-services`. The PNG provides a GitHub-readable preview; the draw.io source preserves editable shapes, official OCI icons and connectors.
 
 ## Deployment Purpose
 
@@ -13,46 +13,29 @@ Creates a hub-spoke shared services network and private DNS view that can serve 
 | Boundary | `blueprints/networking/multi-tenancy-shared-services` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Creates a hub-spoke shared services network and private DNS view that can serve multiple tenants or workload groups. |
 | Terraform components | `network`, `shared_dns` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram shows source-defined resources, explicit dependency/contract boundaries and conditional connectivity; it is not runtime evidence. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Multi-Tenancy Shared Services                                                                            |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Network compartment / selected region}                                                                  |
-|         |                                                                                                |
-|         v                                                                                                |
-| [Hub VCN]                                                                                                |
-|         |-- [dmz subnet]      -> public ingress/egress only when approved                                |
-|         |-- [firewall subnet] -> inspection or appliance insertion point                                 |
-|         |-- [shared subnet]   -> shared services, endpoints, DNS, or bastion                             |
-|         `-- [gateway set]     -> IGW / NAT / SGW according to route design                               |
-|                  |                                                                                       |
-|                  v                                                                                       |
-| [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
-|   |             |                    |                                                                   |
-|   |             |                    +--> [spoke app1: web/app/db subnets]                                 |
-|   |             |                    +--> (additional spokes require explicit network inputs)                                 |
-|   |             |                    `--> (future spokes: topology extension required)                        |
-|   |                                                                                                      |
-|   `--> (workload services supplied separately) -> [optional private DNS] -> local spokes                                        |
-|                                                                                                          |
-| Pattern extension: shared services stay in the hub while tenant spokes keep independent workload         |
-| boundaries.                                                                                              |
-| North-south: external or service traffic enters the hub, then routes through DRG attachments to spokes.  |
-| East-west: spoke-to-spoke traffic centralizes through the DRG and any hub inspection controls.           |
-| Hand-off: hub/spoke VCN IDs, DRG IDs, attachment IDs, subnet maps, route targets, and service edge IDs.  |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Multi-Tenancy Shared Services Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep this source and the PNG preview
+aligned after every diagram change.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. Regenerate from the repository
+root with `python3 scripts/diagrams/networking-batch-04.py --render`, after
+installing the skill and its official toolkit. The toolkit is not redistributed here.
+
+The diagram uses source-default CIDRs, explicitly identifies incomplete inputs,
+and distinguishes network resources from external dependencies and metadata
+contracts. Placement labels are defaults or operator inputs, not live inventory.
+
+Diagram documentation reviewed on 2026-10-28 against root Terraform, referenced
+modules, and any accompanying CloudFormation/Bicep template. No cloud resources
+were provisioned and no Terraform/provider validation date was changed.
+This diagram is not evidence of connectivity, BGP, failover or DR readiness.
 
 ## Terraform Components
 
