@@ -1,6 +1,6 @@
 # Custom Identity Domain Architecture
 
-This is the deployment architecture for `blueprints/identity/custom-identity-domain`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/identity/custom-identity-domain`. The PNG provides a GitHub-readable preview; the draw.io source preserves editable shapes and official OCI icons.
 
 ## Deployment Purpose
 
@@ -13,39 +13,29 @@ Creates one or more OCI IAM identity domains with optional replica regions from 
 | Boundary | `blueprints/identity/custom-identity-domain` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Creates one or more OCI IAM identity domains with optional replica regions from a structured identity domain map. |
 | Terraform components | `oci_identity_domain.this`, `oci_identity_domain_replication_to_region.replicas` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram shows default enablement, compartment/IAM scope and configuration dependencies; it is not runtime evidence. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Custom Identity Domain                                                                                   |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {OCI IAM home region / identity domain boundary}                                                         |
-|         |                                                                                                |
-|         v                                                                                                |
-| [identity domains for_each map]                                                                          |
-|         |-- display name, description, license type, admin contact                                       |
-|         |-- login visibility, primary email, notification behavior                                       |
-|         `-- compartment placement and lifecycle controls                                                 |
-|                  |                                                                                       |
-|                  v                                                                                       |
-| [domain replication to regions]                                                                          |
-|         |-- one replica resource per requested region                                                    |
-|         `-- depends on the domain ID created above                                                       |
-|                                                                                                          |
-| Control flow: create domain first, then regional replicas.                                               |
-| Trust boundary: authentication, federation, and application onboarding begin at the domain edge.         |
-| Hand-off: domain IDs, URLs, names, and replica region IDs for identity operations.                       |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Custom Identity Domain Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep the source and PNG aligned
+after diagram changes.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. From the repository root, run
+`python3 scripts/diagrams/foundation-batch-02.py --render` after installing the
+skill and official toolkit. The toolkit is not redistributed in this repository.
+
+The view distinguishes default resources, conditional enablement, home-region
+IAM, compartment hierarchy and delegated policy paths. It does not assert
+workload provisioning, successful authorization or security certification.
+
+Diagram documentation reviewed on 2026-10-28 against Terraform, variables, locals,
+providers and referenced module definitions. No cloud resources were created
+and no Terraform/provider validation date was updated. Arrows describe
+configuration dependencies or IAM bindings, not verified packet paths.
 
 ## Terraform Components
 

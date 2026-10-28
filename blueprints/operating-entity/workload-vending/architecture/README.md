@@ -1,6 +1,6 @@
 # Workload Vending Architecture
 
-This is the deployment architecture for `blueprints/operating-entity/workload-vending`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/operating-entity/workload-vending`. The PNG provides a GitHub-readable preview; the draw.io source preserves editable shapes and official OCI icons.
 
 ## Deployment Purpose
 
@@ -13,38 +13,29 @@ Creates a workload compartment tree, workload IAM groups, and scoped policies fo
 | Boundary | `blueprints/operating-entity/workload-vending` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Creates a workload compartment tree, workload IAM groups, and scoped policies for repeatable application onboarding. |
 | Terraform components | `compartments`, `groups`, `policies` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram shows default enablement, compartment/IAM scope and configuration dependencies; it is not runtime evidence. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Workload Vending                                                                                         |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Operating model compartment boundary}                                                                   |
-|         |                                                                                                |
-|         v                                                                                                |
-| [repeatable workload vending compartment structure]                                                      |
-|         |-- parent or entity compartment                                                                 |
-|         |-- workload compartments and optional child boundaries                                          |
-|         `-- naming and tag alignment for ownership reporting                                             |
-|                  |                                                                                       |
-|                  +--> [groups] workload administrators, operators, and auditors                          |
-|                  `--> [policies] scoped permissions for the owned compartment tree                       |
-|                                                                                                          |
-| Control flow: compartment tree -> groups -> policies.                                                    |
-| Ownership flow: platform creates the boundary, then hands the approved scope to the operating entity or  |
-| workload team.                                                                                           |
-| Hand-off: compartment IDs/names, group IDs/names, policy IDs, and policy statement review material.      |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Workload Vending Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep the source and PNG aligned
+after diagram changes.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. From the repository root, run
+`python3 scripts/diagrams/foundation-batch-02.py --render` after installing the
+skill and official toolkit. The toolkit is not redistributed in this repository.
+
+The view distinguishes default resources, conditional enablement, home-region
+IAM, compartment hierarchy and delegated policy paths. It does not assert
+workload provisioning, successful authorization or security certification.
+
+Diagram documentation reviewed on 2026-10-28 against Terraform, variables, locals,
+providers and referenced module definitions. No cloud resources were created
+and no Terraform/provider validation date was updated. Arrows describe
+configuration dependencies or IAM bindings, not verified packet paths.
 
 ## Terraform Components
 

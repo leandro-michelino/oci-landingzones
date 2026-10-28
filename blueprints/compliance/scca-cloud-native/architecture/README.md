@@ -1,6 +1,6 @@
 # SCCA Cloud Native Compliance Architecture
 
-This is the deployment architecture for `blueprints/compliance/scca-cloud-native`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/compliance/scca-cloud-native`. The PNG provides a GitHub-readable preview; the draw.io source preserves editable shapes and official OCI icons.
 
 ## Deployment Purpose
 
@@ -13,35 +13,29 @@ Composes the core landing-zone foundation, a firewall-centered hub-spoke network
 | Boundary | `blueprints/compliance/scca-cloud-native` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Composes the core landing-zone foundation, a firewall-centered hub-spoke network, and OS management controls for SCCA-style cloud-native workloads. |
 | Terraform components | `core`, `network`, `os_management` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram shows default enablement, compartment/IAM scope and configuration dependencies; it is not runtime evidence. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| SCCA Cloud Native Compliance                                                                             |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {SCCA-style cloud-native boundary}                                                                       |
-|         |                                                                                                |
-|         +--> [core Level 2 foundation] compartments, IAM, logging, Cloud Guard, Vault, VSS, monitoring   |
-|         |                                                                                                |
-|         +--> [firewall-centered hub-spoke network]                                                       |
-|         |      ingress/egress -> hub -> OCI Network Firewall -> DRG -> spoke web/app/db tiers            |
-|         |                                                                                                |
-|         `--> [OS Management Hub] managed instance groups -> scheduled patch jobs -> operator evidence    |
-|                                                                                                          |
-| Traffic flow: internet/on-prem -> DRG or hub edge -> firewall policy -> spoke workloads.                 |
-| Operations flow: patch jobs, findings, logs, and alarms return to governance operators.                  |
-| Hand-off: foundation IDs, network/firewall IDs, and OS management resource IDs.                          |
-+----------------------------------------------------------------------------------------------------------+
-```
+![SCCA Cloud Native Compliance Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep the source and PNG aligned
+after diagram changes.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. From the repository root, run
+`python3 scripts/diagrams/foundation-batch-02.py --render` after installing the
+skill and official toolkit. The toolkit is not redistributed in this repository.
+
+The view distinguishes default resources, conditional enablement, home-region
+IAM, compartment hierarchy and delegated policy paths. It does not assert
+workload provisioning, successful authorization or security certification.
+
+Diagram documentation reviewed on 2026-10-28 against Terraform, variables, locals,
+providers and referenced module definitions. No cloud resources were created
+and no Terraform/provider validation date was updated. Arrows describe
+configuration dependencies or IAM bindings, not verified packet paths.
 
 ## Terraform Components
 

@@ -94,7 +94,35 @@ Core creates default IAM and compartment resources; the two Identity wrappers
 create nothing under their default inputs. CIS Level 1 and Level 2 currently
 share service-enable defaults; their labels are not evidence of certification.
 
-Coverage after this batch: 29 of the 80 existing deployable blueprint entry
-points have draw.io/PNG architecture diagrams. The remaining 51 retain their
-previous diagrams until their batches are processed. Planned patterns without
-blueprint folders remain outside this conversion inventory.
+Coverage after the first foundation batch was 29 of 80. The latest coverage
+is recorded below. Planned patterns without blueprint folders remain outside
+this conversion inventory.
+
+
+## Custom Identity, Operating Entity And SCCA Diagrams
+
+The next five available catalog patterns now use editable draw.io sources and
+PNG previews in place of ASCII. These views distinguish map-driven domain
+creation, per-entity compartment/IAM delegation, and the SCCA pattern's actual
+enabled/disabled security services. They are not security or compliance attestations.
+
+| Batch order | Blueprint | PNG preview | Editable source |
+| --- | --- | --- | --- |
+| 6 | `identity/custom-identity-domain` | [PNG](../../blueprints/identity/custom-identity-domain/architecture/architecture.png) | [draw.io](../../blueprints/identity/custom-identity-domain/architecture/architecture.drawio) |
+| 7 | `operating-entity` | [PNG](../../blueprints/operating-entity/architecture/architecture.png) | [draw.io](../../blueprints/operating-entity/architecture/architecture.drawio) |
+| 8 | `operating-entity/multi-operating-entities` | [PNG](../../blueprints/operating-entity/multi-operating-entities/architecture/architecture.png) | [draw.io](../../blueprints/operating-entity/multi-operating-entities/architecture/architecture.drawio) |
+| 9 | `operating-entity/workload-vending` | [PNG](../../blueprints/operating-entity/workload-vending/architecture/architecture.png) | [draw.io](../../blueprints/operating-entity/workload-vending/architecture/architecture.drawio) |
+| 10 | `compliance/scca-cloud-native` | [PNG](../../blueprints/compliance/scca-cloud-native/architecture/architecture.png) | [draw.io](../../blueprints/compliance/scca-cloud-native/architecture/architecture.drawio) |
+
+Regenerate with the same installed skill and official toolkit:
+
+```bash
+python3 scripts/diagrams/foundation-batch-02.py --render
+```
+
+On October 28, 2026, all five passed layout checks, PNG export and visual review;
+repository contracts and Markdown links passed. No cloud resource was created
+and no historical Terraform/provider validation date was changed.
+
+Latest coverage: 34 of 80 existing blueprint entry points have editable draw.io
+and PNG architecture diagrams; 46 remain pending conversion.
