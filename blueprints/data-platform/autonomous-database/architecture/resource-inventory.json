@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "blueprint": "data-platform/autonomous-database",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 7
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_vcn.adb",
+      "type": "oci_core_vcn",
+      "symbol": "adb",
+      "source": "blueprints/data-platform/autonomous-database/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "adb",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_subnet.adb",
+      "type": "oci_core_subnet",
+      "symbol": "adb",
+      "source": "blueprints/data-platform/autonomous-database/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n10",
+        "source_symbol": "adb",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group.adb",
+      "type": "oci_core_network_security_group",
+      "symbol": "adb",
+      "source": "blueprints/data-platform/autonomous-database/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n12",
+        "source_symbol": "adb",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_database_autonomous_database.this",
+      "type": "oci_database_autonomous_database",
+      "symbol": "this",
+      "source": "blueprints/data-platform/autonomous-database/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_autonomous_database ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n14",
+        "source_symbol": "this",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_database_autonomous_database_backup.manual",
+      "type": "oci_database_autonomous_database_backup",
+      "symbol": "manual",
+      "source": "blueprints/data-platform/autonomous-database/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_autonomous_database && var.create_manual_backup ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n20",
+        "source_symbol": "manual",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group_security_rule.database_ingress",
+      "type": "oci_core_network_security_group_security_rule",
+      "symbol": "database_ingress",
+      "source": "blueprints/data-platform/autonomous-database/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.create_private_network ? var.allowed_client_cidrs : toset([])",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n22",
+        "source_symbol": "database_ingress",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_security_list.adb",
+      "type": "oci_core_security_list",
+      "symbol": "adb",
+      "source": "blueprints/data-platform/autonomous-database/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n24",
+        "source_symbol": "adb",
+        "provider_icon": null
+      }
+    }
+  ],
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/data-platform/autonomous-database/locals.tf",
+      "revision": "working-tree",
+      "sha256": "a688eafa597e2818a2c2b6e2b13fa2e6af04821ce712e398e2a230ceb250f91f"
+    },
+    {
+      "path": "blueprints/data-platform/autonomous-database/main.tf",
+      "revision": "working-tree",
+      "sha256": "cb99870903cfd439bcdbf013ec970b796edcea60948cc7896c54df20006ef845"
+    },
+    {
+      "path": "blueprints/data-platform/autonomous-database/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "e5265244df630665f0931dc7b6179a23a8a5f3ca175221b08d164db412fe715c"
+    },
+    {
+      "path": "blueprints/data-platform/autonomous-database/providers.tf",
+      "revision": "working-tree",
+      "sha256": "8f85e8539190ef04ab19c8d4c834aa1f74fa02d185b70ac6875df16eb1088de5"
+    },
+    {
+      "path": "blueprints/data-platform/autonomous-database/variables.tf",
+      "revision": "working-tree",
+      "sha256": "bed149cecf8ef3400c1aeb49e1bcd2a5633a600d85e5480dc05528f75f2f8bca"
+    },
+    {
+      "path": "blueprints/data-platform/autonomous-database/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

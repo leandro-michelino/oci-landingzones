@@ -1,0 +1,504 @@
+{
+  "schema_version": 1,
+  "blueprint": "data-platform/private-data-platform",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 17
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.private_vcn.oci_core_vcn.this",
+      "type": "oci_core_vcn",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "module_inputs": [
+        "module.network.module.private_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.private_vcn.oci_core_internet_gateway.this",
+      "type": "oci_core_internet_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_internet_gateway ? 1 : 0",
+      "module_inputs": [
+        "module.network.module.private_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n10",
+        "source_symbol": "this",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.private_vcn.oci_core_nat_gateway.this",
+      "type": "oci_core_nat_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_nat_gateway ? 1 : 0",
+      "module_inputs": [
+        "module.network.module.private_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n22",
+        "source_symbol": "this",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.private_vcn.oci_core_service_gateway.this",
+      "type": "oci_core_service_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_service_gateway ? 1 : 0",
+      "module_inputs": [
+        "module.network.module.private_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n31",
+        "source_symbol": "this",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.private_vcn.oci_core_security_list.this",
+      "type": "oci_core_security_list",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.security_lists",
+      "module_inputs": [
+        "module.network.module.private_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n41",
+        "source_symbol": "this",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.private_vcn.oci_core_route_table.this",
+      "type": "oci_core_route_table",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.route_tables",
+      "module_inputs": [
+        "module.network.module.private_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n53",
+        "source_symbol": "this",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.module.private_vcn.oci_core_subnet.this",
+      "type": "oci_core_subnet",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.subnets",
+      "module_inputs": [
+        "module.network.module.private_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n77",
+        "source_symbol": "this",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.vault.oci_kms_vault.this",
+      "type": "oci_kms_vault",
+      "symbol": "this",
+      "source": "modules/security/vault/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.vaults",
+      "module_inputs": [
+        "module.vault (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n79",
+        "source_symbol": "this",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.vault.oci_kms_key.this",
+      "type": "oci_kms_key",
+      "symbol": "this",
+      "source": "modules/security/vault/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.keys",
+      "module_inputs": [
+        "module.vault (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n93",
+        "source_symbol": "this",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_bucket.data",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "data",
+      "source": "blueprints/data-platform/private-data-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_data_bucket ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n95",
+        "source_symbol": "data",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group.object_storage_endpoint",
+      "type": "oci_core_network_security_group",
+      "symbol": "object_storage_endpoint",
+      "source": "blueprints/data-platform/private-data-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_object_storage_private_endpoint && var.private_endpoint_subnet_id == null && length(var.private_endpoint_nsg_ids) == 0 ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n105",
+        "source_symbol": "object_storage_endpoint",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group_security_rule.object_storage_https_ingress",
+      "type": "oci_core_network_security_group_security_rule",
+      "symbol": "object_storage_https_ingress",
+      "source": "blueprints/data-platform/private-data-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enable_object_storage_private_endpoint && var.private_endpoint_subnet_id == null && length(var.private_endpoint_nsg_ids) == 0 ? var.private_endpoint_allowed_client_cidrs : toset([])",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n107",
+        "source_symbol": "object_storage_https_ingress",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_private_endpoint.data",
+      "type": "oci_objectstorage_private_endpoint",
+      "symbol": "data",
+      "source": "blueprints/data-platform/private-data-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_object_storage_private_endpoint ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n109",
+        "source_symbol": "data",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group.streaming_endpoint",
+      "type": "oci_core_network_security_group",
+      "symbol": "streaming_endpoint",
+      "source": "blueprints/data-platform/private-data-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_streaming && var.create_stream_pool && var.streaming_private_endpoint_subnet_id == null && length(var.streaming_private_endpoint_nsg_ids) == 0 ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n111",
+        "source_symbol": "streaming_endpoint",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group_security_rule.streaming_client_ingress",
+      "type": "oci_core_network_security_group_security_rule",
+      "symbol": "streaming_client_ingress",
+      "source": "blueprints/data-platform/private-data-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enable_streaming && var.create_stream_pool && var.streaming_private_endpoint_subnet_id == null && length(var.streaming_private_endpoint_nsg_ids) == 0 ? {",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n113",
+        "source_symbol": "streaming_client_ingress",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.streaming.oci_streaming_stream_pool.this",
+      "type": "oci_streaming_stream_pool",
+      "symbol": "this",
+      "source": "blueprints/extensions/streaming/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_streaming && var.create_stream_pool ? 1 : 0",
+      "module_inputs": [
+        "module.streaming (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n115",
+        "source_symbol": "this",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.streaming.oci_streaming_stream.this",
+      "type": "oci_streaming_stream",
+      "symbol": "this",
+      "source": "blueprints/extensions/streaming/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.enable_streaming ? var.streams : {}",
+      "module_inputs": [
+        "module.streaming (see pinned call-site inputs)"
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n146",
+        "source_symbol": "this",
+        "provider_icon": null
+      }
+    }
+  ],
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_objectstorage_namespace.this",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "this",
+      "source": "blueprints/data-platform/private-data-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_data_bucket || var.enable_object_storage_private_endpoint ? 1 : 0"
+    },
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "module.network.module.private_vcn.oci_core_services.all_services",
+      "type": "oci_core_services",
+      "symbol": "all_services",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "module_inputs": [
+        "module.network.module.private_vcn (see pinned call-site inputs)",
+        "module.network (see pinned call-site inputs)"
+      ]
+    },
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "module.network.oci_core_services.all_services",
+      "type": "oci_core_services",
+      "symbol": "all_services",
+      "source": "blueprints/networking/standalone-private-endpoint-only/main.tf",
+      "revision": "c07231c91d146265a46836757f3c399861a59fff",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ]
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/data-platform/private-data-platform/locals.tf",
+      "revision": "working-tree",
+      "sha256": "69a7e0423aeee129b345636de4b4db68d7320b8e7a737e989d0dffd803670d44"
+    },
+    {
+      "path": "blueprints/data-platform/private-data-platform/main.tf",
+      "revision": "working-tree",
+      "sha256": "d29cb103d9e623182cafbfc0063a4e0dd9b87c28d99ca08ae913bdba9a163a77"
+    },
+    {
+      "path": "blueprints/networking/standalone-private-endpoint-only/locals.tf",
+      "revision": "c07231c91d146265a46836757f3c399861a59fff",
+      "sha256": "0c9dcb3ec3272f9d6bf11acb7fa2e6c24573088205ef2451e3889bf737aac1ac"
+    },
+    {
+      "path": "blueprints/networking/standalone-private-endpoint-only/main.tf",
+      "revision": "c07231c91d146265a46836757f3c399861a59fff",
+      "sha256": "140ba3b96c98015e83707a51328ecaed286b558150ad6da2816707effea46bc2"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "54ff05acc9098b1d7183085d8bd789a2d0887245f3c422d5fadaaca35e7fa135"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "63999259916589058d5dc97da07c23ab64d243fd58286e00bb70fc31612133f1"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "25166a91b8e7a4b0cfbc753c7ad86b469b14442cb05279b4281ffbb7be960b39"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "0d8c6607271ec5c51ada52890fe5fb2790e7ded827b4b213d3d526f177487870"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "blueprints/networking/standalone-private-endpoint-only/outputs.tf",
+      "revision": "c07231c91d146265a46836757f3c399861a59fff",
+      "sha256": "e743847ac8a6e2957082aeaaa411d44f433b7a057cf69f7d22b773b174a60e0a"
+    },
+    {
+      "path": "blueprints/networking/standalone-private-endpoint-only/providers.tf",
+      "revision": "c07231c91d146265a46836757f3c399861a59fff",
+      "sha256": "ac00704a97385dddcd85a46ca9077c15bf6c2ce90a4ac52e5760d21892fa9c09"
+    },
+    {
+      "path": "blueprints/networking/standalone-private-endpoint-only/variables.tf",
+      "revision": "c07231c91d146265a46836757f3c399861a59fff",
+      "sha256": "4f516c0a18d4b1a60a210a9bd65fbda155767542fdf1961c4528ae6067d00fcd"
+    },
+    {
+      "path": "blueprints/networking/standalone-private-endpoint-only/versions.tf",
+      "revision": "c07231c91d146265a46836757f3c399861a59fff",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "modules/security/vault/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "931f0d0978ebb473109e0487a01e355fde11a30f6281fd1c5bf77cef04a9c76c"
+    },
+    {
+      "path": "modules/security/vault/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "60e1a9c07f49e54da2c589b81510b46d6e8889d71c54c9cd8945a06c37041f8f"
+    },
+    {
+      "path": "modules/security/vault/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "37b35277067ecbca0438abf45516d0b2bd151c7f63feb0e980c00f7b35363c26"
+    },
+    {
+      "path": "modules/security/vault/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "5d116b16c4ef42a77297258aee95bc7da06b260dee9273da775cbffe49566e4c"
+    },
+    {
+      "path": "modules/security/vault/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "blueprints/extensions/streaming/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "edadc0093f498b0d5e45826374bb8812e11533e130da655474ae8f18a8a6b90a"
+    },
+    {
+      "path": "blueprints/extensions/streaming/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "0b79895a8ae677a90f8efd4f62198deb31665651be5b10a2fb61d41c614220a1"
+    },
+    {
+      "path": "blueprints/extensions/streaming/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "9fdf405e084734cf9749189425d6dd75385f4f5826457ff0392ffa85da6dadca"
+    },
+    {
+      "path": "blueprints/extensions/streaming/providers.tf",
+      "revision": "v0.2.0",
+      "sha256": "6b12039586767ec076751f6ef772e8b771137169d74854aee33b5fa93cb52be3"
+    },
+    {
+      "path": "blueprints/extensions/streaming/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "e34aeecef6b240938dec3e296633647836b6dc58f7b30c89bff895c4a8c0da97"
+    },
+    {
+      "path": "blueprints/extensions/streaming/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "blueprints/data-platform/private-data-platform/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "095ef0a871c5b293a75e71fa0dcb536e2740f490ccb9f1b1d93fca6863b52195"
+    },
+    {
+      "path": "blueprints/data-platform/private-data-platform/providers.tf",
+      "revision": "working-tree",
+      "sha256": "ac00704a97385dddcd85a46ca9077c15bf6c2ce90a4ac52e5760d21892fa9c09"
+    },
+    {
+      "path": "blueprints/data-platform/private-data-platform/variables.tf",
+      "revision": "working-tree",
+      "sha256": "8689320c0eb75dff8031cd5a813c35d22f1877af92f301d75dff475715f9e072"
+    },
+    {
+      "path": "blueprints/data-platform/private-data-platform/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

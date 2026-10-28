@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "blueprint": "data-platform/apex-adw",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 5
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_load_balancer_load_balancer.this",
+      "type": "oci_load_balancer_load_balancer",
+      "symbol": "this",
+      "source": "blueprints/data-platform/apex-adw/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_load_balancer && var.create_load_balancer ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_load_balancer_backend_set.ords",
+      "type": "oci_load_balancer_backend_set",
+      "symbol": "ords",
+      "source": "blueprints/data-platform/apex-adw/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_load_balancer && (var.create_load_balancer || var.load_balancer_id != null) ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n10",
+        "source_symbol": "ords",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_load_balancer_backend.ords",
+      "type": "oci_load_balancer_backend",
+      "symbol": "ords",
+      "source": "blueprints/data-platform/apex-adw/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enable_load_balancer && (var.create_load_balancer || var.load_balancer_id != null) ? {",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n12",
+        "source_symbol": "ords",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_load_balancer_listener.https",
+      "type": "oci_load_balancer_listener",
+      "symbol": "https",
+      "source": "blueprints/data-platform/apex-adw/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_load_balancer && var.enable_listener && (var.create_load_balancer || var.load_balancer_id != null) ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n14",
+        "source_symbol": "https",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_vault_secret.apex_admin",
+      "type": "oci_vault_secret",
+      "symbol": "apex_admin",
+      "source": "blueprints/data-platform/apex-adw/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_admin_secret ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n16",
+        "source_symbol": "apex_admin",
+        "provider_icon": null
+      }
+    }
+  ],
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_database_autonomous_database.this",
+      "type": "oci_database_autonomous_database",
+      "symbol": "this",
+      "source": "blueprints/data-platform/apex-adw/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.autonomous_database_id == null ? 0 : 1"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/data-platform/apex-adw/locals.tf",
+      "revision": "working-tree",
+      "sha256": "5a2798c9d465a0bc331647b47eac30b9204698ad893f85af0500cae5d8586bc8"
+    },
+    {
+      "path": "blueprints/data-platform/apex-adw/main.tf",
+      "revision": "working-tree",
+      "sha256": "c6b4307508a4d055dca357282cc8b6b94f786083f14a174dc96b38a1e917ff85"
+    },
+    {
+      "path": "blueprints/data-platform/apex-adw/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "7bab336bceb39877ffa8471145bdb01563d887d3924ad0f18d53d6a316d36a81"
+    },
+    {
+      "path": "blueprints/data-platform/apex-adw/providers.tf",
+      "revision": "working-tree",
+      "sha256": "8f85e8539190ef04ab19c8d4c834aa1f74fa02d185b70ac6875df16eb1088de5"
+    },
+    {
+      "path": "blueprints/data-platform/apex-adw/variables.tf",
+      "revision": "working-tree",
+      "sha256": "8c4fef50cd3cd163b5a04a63154226679ee030da9df597ce69cea0a7402e1091"
+    },
+    {
+      "path": "blueprints/data-platform/apex-adw/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

@@ -10,6 +10,8 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 spec=importlib.util.spec_from_file_location('networking_batch_02',Path(__file__).with_name('networking-batch-02.py'))
 base=importlib.util.module_from_spec(spec); spec.loader.exec_module(base)
+icon_spec=importlib.util.spec_from_file_location('cloud_icons',Path(__file__).with_name('cloud-icons.py'))
+cloud=importlib.util.module_from_spec(icon_spec); icon_spec.loader.exec_module(cloud)
 ITEMS=[
  ('compliance/zero-trust','Zero Trust pattern | Default network and explicit controls','zero'),
  ('compliance/healthcare-pci','Healthcare / PCI pattern | Optional guardrails','health'),
@@ -140,9 +142,9 @@ def azure(title,index):
  d.icon('OCI Object Storage',280,690,parent=comp,size=52,label='Evidence bucket / default enabled\nStandard / versioning + object events',label_pos='top')
  d.icon('Notifications',1000,690,parent=comp,size=52,label='DR alert topic / default enabled\nNo alarm or subscription declared',label_pos='top')
  az=d.group('thirdparty','Azure standby / separate Bicep deployment',1530,160,950,880)
- net=d.box('VNet 10.72.0.0/16\nContainer App subnet 10.72.10.0/23, delegated to App environments\nUDR default → Internet; NSG inbound TCP 80/443',30,80,890,160,parent=az,kind='thirdparty_component')
- app=d.box('Managed Environment + Container App\nExternal ingress / target port 80 / insecure=false\nHello-world image default; replicas 1–2, CPU 0.5 / memory 1Gi\nApplication/data recovery is not configured by this sample.',30,340,890,180,parent=az,kind='thirdparty_component')
- logs=d.box('Log Analytics workspace\n30-day retention; App environment sends logs to workspace',30,650,890,110,parent=az,kind='thirdparty_component')
+ net=cloud.box(d,'Microsoft.Network/virtualNetworks','VNet 10.72.0.0/16\nContainer App subnet 10.72.10.0/23, delegated to App environments\nUDR default → Internet; NSG inbound TCP 80/443',30,80,890,160,parent=az,kind='thirdparty_component')
+ app=cloud.box(d,'Microsoft.App/containerApps','Managed Environment + Container App\nExternal ingress / target port 80 / insecure=false\nHello-world image default; replicas 1–2, CPU 0.5 / memory 1Gi\nApplication/data recovery is not configured by this sample.',30,340,890,180,parent=az,kind='thirdparty_component')
+ logs=cloud.box(d,'Microsoft.OperationalInsights/workspaces','Log Analytics workspace\n30-day retention; App environment sends logs to workspace',30,650,890,110,parent=az,kind='thirdparty_component')
  d.connect(net,app,kind='plain',straight=True); d.connect(app,logs,kind='dashed',straight=True)
  footer(d,'CONTRACTS / DEFAULTS NEED REAL INPUTS\nDefault connectivity_mode=interconnect but FastConnect/ExpressRoute IDs are null. DNS contract enabled but endpoint inputs are null; ingress CIDR is null.\nThese contracts do not provision circuits, DRG, VPN, DNS records or a failover controller. RTO 30 min / RPO 15 min / TTL 30 sec are requested metadata.\nOCI and Azure are separate deployments; no workload/data replication, automatic DNS switch or tested DR outcome is created.',1120)
  return d

@@ -124,3 +124,7 @@ python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint networking/
 - Confirm VPN enablement and AWS endpoint public IP values are deliberate.
 - Confirm route CIDR expectations across OCI and AWS are accurate.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+
+Provider icons: Azure SVGs and AWS native stencils from draw.io identify mapped
+external-cloud resources. Unmapped associations and local contracts retain
+explicit named boxes. See [icon sources](../../../../scripts/diagrams/assets/README.md).

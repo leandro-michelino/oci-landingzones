@@ -21,7 +21,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n4",
-        "source_symbol": "primary"
+        "source_symbol": "primary",
+        "provider_icon": null
       }
     },
     {
@@ -36,7 +37,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n10",
-        "source_symbol": "primary"
+        "source_symbol": "primary",
+        "provider_icon": null
       }
     },
     {
@@ -51,7 +53,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n22",
-        "source_symbol": "primary"
+        "source_symbol": "primary",
+        "provider_icon": null
       }
     },
     {
@@ -66,7 +69,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n46",
-        "source_symbol": "primary_hub"
+        "source_symbol": "primary_hub",
+        "provider_icon": null
       }
     },
     {
@@ -81,7 +85,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n58",
-        "source_symbol": "primary_hub"
+        "source_symbol": "primary_hub",
+        "provider_icon": null
       }
     },
     {
@@ -96,7 +101,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n60",
-        "source_symbol": "primary"
+        "source_symbol": "primary",
+        "provider_icon": null
       }
     },
     {
@@ -111,7 +117,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n69",
-        "source_symbol": "primary"
+        "source_symbol": "primary",
+        "provider_icon": null
       }
     },
     {
@@ -126,7 +133,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n71",
-        "source_symbol": "azure"
+        "source_symbol": "azure",
+        "provider_icon": null
       }
     },
     {
@@ -141,7 +149,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n81",
-        "source_symbol": "azure"
+        "source_symbol": "azure",
+        "provider_icon": null
       }
     },
     {
@@ -156,7 +165,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n83",
-        "source_symbol": "connectivity_alert"
+        "source_symbol": "connectivity_alert",
+        "provider_icon": null
       }
     },
     {
@@ -171,7 +181,8 @@
       "diagram": {
         "file": "contracts-resources.drawio",
         "node_id": "n4",
-        "source_symbol": "oci_network_contract"
+        "source_symbol": "oci_network_contract",
+        "provider_icon": null
       }
     },
     {
@@ -186,7 +197,8 @@
       "diagram": {
         "file": "contracts-resources.drawio",
         "node_id": "n6",
-        "source_symbol": "connectivity_contract"
+        "source_symbol": "connectivity_contract",
+        "provider_icon": null
       }
     },
     {
@@ -201,7 +213,8 @@
       "diagram": {
         "file": "contracts-resources.drawio",
         "node_id": "n8",
-        "source_symbol": "ipsec_fallback_contract"
+        "source_symbol": "ipsec_fallback_contract",
+        "provider_icon": null
       }
     },
     {
@@ -216,7 +229,8 @@
       "diagram": {
         "file": "contracts-resources.drawio",
         "node_id": "n10",
-        "source_symbol": "routing_contract"
+        "source_symbol": "routing_contract",
+        "provider_icon": null
       }
     },
     {
@@ -231,7 +245,8 @@
       "diagram": {
         "file": "contracts-resources.drawio",
         "node_id": "n12",
-        "source_symbol": "dns_contract"
+        "source_symbol": "dns_contract",
+        "provider_icon": null
       }
     },
     {
@@ -246,7 +261,8 @@
       "diagram": {
         "file": "contracts-resources.drawio",
         "node_id": "n14",
-        "source_symbol": "runbook_contract"
+        "source_symbol": "runbook_contract",
+        "provider_icon": null
       }
     },
     {
@@ -261,7 +277,8 @@
       "diagram": {
         "file": "azure-resources.drawio",
         "node_id": "n4",
-        "source_symbol": "vnet"
+        "source_symbol": "vnet",
+        "provider_icon": "Microsoft.Network/virtualNetworks"
       }
     },
     {
@@ -275,8 +292,9 @@
       "condition": "Unconditional declaration in separately deployed Bicep template.",
       "diagram": {
         "file": "azure-resources.drawio",
-        "node_id": "n6",
-        "source_symbol": "routeTable"
+        "node_id": "n8",
+        "source_symbol": "routeTable",
+        "provider_icon": "Microsoft.Network/routeTables"
       }
     },
     {
@@ -290,8 +308,9 @@
       "condition": "Unconditional declaration in separately deployed Bicep template.",
       "diagram": {
         "file": "azure-resources.drawio",
-        "node_id": "n8",
-        "source_symbol": "networkSecurityGroup"
+        "node_id": "n12",
+        "source_symbol": "networkSecurityGroup",
+        "provider_icon": "Microsoft.Network/networkSecurityGroups"
       }
     },
     {
@@ -305,8 +324,9 @@
       "condition": "Unconditional declaration in separately deployed Bicep template.",
       "diagram": {
         "file": "azure-resources.drawio",
-        "node_id": "n10",
-        "source_symbol": "workloadSubnet"
+        "node_id": "n16",
+        "source_symbol": "workloadSubnet",
+        "provider_icon": "Microsoft.Network/virtualNetworks/subnets"
       }
     },
     {
@@ -320,8 +340,9 @@
       "condition": "if (deployVpnGateway) {",
       "diagram": {
         "file": "azure-resources.drawio",
-        "node_id": "n12",
-        "source_symbol": "gatewaySubnet"
+        "node_id": "n20",
+        "source_symbol": "gatewaySubnet",
+        "provider_icon": "Microsoft.Network/virtualNetworks/subnets"
       }
     },
     {
@@ -335,8 +356,9 @@
       "condition": "if (deployVpnGateway) {",
       "diagram": {
         "file": "azure-resources.drawio",
-        "node_id": "n14",
-        "source_symbol": "vpnGatewayPublicIp"
+        "node_id": "n24",
+        "source_symbol": "vpnGatewayPublicIp",
+        "provider_icon": "Microsoft.Network/publicIPAddresses"
       }
     },
     {
@@ -350,8 +372,9 @@
       "condition": "if (deployVpnGateway) {",
       "diagram": {
         "file": "azure-resources.drawio",
-        "node_id": "n16",
-        "source_symbol": "vpnGateway"
+        "node_id": "n28",
+        "source_symbol": "vpnGateway",
+        "provider_icon": "Microsoft.Network/virtualNetworkGateways"
       }
     },
     {
@@ -365,8 +388,9 @@
       "condition": "if (deployVpnGateway) {",
       "diagram": {
         "file": "azure-resources.drawio",
-        "node_id": "n18",
-        "source_symbol": "localNetworkGateway"
+        "node_id": "n32",
+        "source_symbol": "localNetworkGateway",
+        "provider_icon": "Microsoft.Network/localNetworkGateways"
       }
     },
     {
@@ -380,8 +404,9 @@
       "condition": "if (deployVpnGateway) {",
       "diagram": {
         "file": "azure-resources.drawio",
-        "node_id": "n20",
-        "source_symbol": "vpnConnection"
+        "node_id": "n36",
+        "source_symbol": "vpnConnection",
+        "provider_icon": "Microsoft.Network/connections"
       }
     }
   ],

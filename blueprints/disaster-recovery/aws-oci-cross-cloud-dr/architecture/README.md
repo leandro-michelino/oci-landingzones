@@ -1,6 +1,6 @@
 # AWS + OCI Cross-Cloud DR Architecture
 
-This is the deployment architecture for `blueprints/disaster-recovery/aws-oci-cross-cloud-dr`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/disaster-recovery/aws-oci-cross-cloud-dr`. The editable draw.io overview and PNG preview support source-based architecture review.
 
 ## Deployment Purpose
 
@@ -15,42 +15,45 @@ this Terraform folder does not provision or test those traffic paths.
 | Boundary | `blueprints/disaster-recovery/aws-oci-cross-cloud-dr` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Optional OCI network and evidence resources plus metadata for an externally built AWS standby, connectivity path, and DNS workflow. |
 | Terraform components | `oci_core_vcn.primary`, `oci_core_route_table.primary`, `oci_core_security_list.primary_app`, `oci_core_subnet.primary_app`, `oci_objectstorage_namespace.this`, `oci_objectstorage_bucket.dr_evidence`, `oci_ons_notification_topic.dr_alert`, `terraform_data.connectivity_contract`, `terraform_data.dns_failover_contract`, `terraform_data.runbook_contract` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The Architecture diagram below shows source-declared components and configuration relationships; it does not verify runtime traffic. |
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| AWS + OCI Cross-Cloud DR                                                                              |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {OCI primary cloud boundary}                                                                             |
-|         |                                                                                                |
-|         |-- [Primary VCN + route table + security list + app subnet]                                    |
-|         |-- [Object Storage namespace]                                                                   |
-|         |-- [DR evidence bucket]                                                                         |
-|         |-- [DR alert topic]                                                                             |
-|         `-- [terraform_data contracts]                                                                   |
-|               |-- connectivity mode: interconnect or without-interconnect                                |
-|               |-- DNS failover: app FQDN, primary endpoint, standby endpoint                            |
-|               `-- runbook: drill cadence, RTO/RPO, failover/failback steps                              |
-|                                                                                                          |
-| {AWS standby cloud boundary}                                                                            |
-|         |                                                                                                |
-|         v                                                                                                |
-| (Standby app endpoint)                                                                                   |
-|                                                                                                          |
-| (Clients) -> (external DNS steering layer) -> (OCI primary endpoint)                                     |
-|                               `-> AWS standby endpoint on failover                                    |
-|                                                                                                          |
-| Guardrail: OCI remains primary in this blueprint variant.                                                |
-+----------------------------------------------------------------------------------------------------------+
+![Architecture overview](architecture.png)
+
+[Editable draw.io diagram](architecture.drawio)
+
+## Diagram Sources And Scope
+
+Generated with the installed `oci-architecture-diagrams` skill, Oracle Toolkit
+v24.2 and provider-specific icons where available. Source review: October 28,
+2026. No cloud provisioning, provider revalidation, database connection, recovery
+drill or application login was performed. Historical validation metadata is unchanged.
+
+Regenerate the overview, then rebuild its resource-detail pages:
+
+```bash
+python3 scripts/diagrams/data-dr-batch-01.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint disaster-recovery/aws-oci-cross-cloud-dr --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint disaster-recovery/aws-oci-cross-cloud-dr --check
 ```
+
+## Resource Detail And Coverage
+
+The main draw.io document includes the overview and the following resource-detail
+pages. Each card names a source declaration, including conditional and collection
+resources; counts are declarations, not deployed instances. Contracts are local
+Terraform metadata. Supplied resources remain prerequisites, not created assets.
+
+| Scope | Declarations | Preview | Editable source |
+| --- | --- | --- | --- |
+| AWS | 18 | [PNG](aws-resources.png) | [draw.io](aws-resources.drawio) |
+| Contracts | 4 | [PNG](contracts-resources.png) | [draw.io](contracts-resources.drawio) |
+| OCI | 7 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
+
+[Resource inventory](resource-inventory.json) records source revisions, file hashes
+and resource-to-diagram node mappings. The coverage check verifies all declarations,
+provider-icon mappings, embedded SVG syntax and inclusion in the main draw.io pages.
 
 ## Terraform Components
 

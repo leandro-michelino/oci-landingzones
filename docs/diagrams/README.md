@@ -153,8 +153,7 @@ review; repository contracts and Markdown links passed. No provisioning,
 provider revalidation, compliance assessment or recovery drill was performed.
 Historical validation metadata remains unchanged.
 
-Latest coverage: 39 of 80 existing blueprint entry points have editable draw.io
-and PNG diagrams; 41 remain pending conversion.
+Coverage after that batch was 39 of 80. Latest coverage is recorded below.
 
 
 ## Cross-Cloud Resource Coverage
@@ -197,3 +196,47 @@ For subsequent cross-cloud conversions, include every cloud's source-declared
 resources, preserve conditional/collection status, and run the coverage generator
 after the overview export. External services only referenced by input IDs remain
 explicit prerequisites rather than resources purportedly created by the blueprint.
+
+
+## AWS Disaster Recovery And Data Platform Diagrams
+
+This batch replaces five ASCII overviews with editable draw.io documents and PNGs.
+Every new blueprint also has a resource-detail inventory following pinned modules.
+The database diagrams distinguish optional network/database creation from supplied
+resources; APEX adds ingress support to an existing database, not a new workspace.
+AWS DR includes the separately deployed CloudFormation stack and its supporting
+IAM, KMS, flow logs, launch template, EC2 and Elastic IP resources.
+
+| Batch order | Blueprint | Preview | Editable source | Source coverage |
+| --- | --- | --- | --- | --- |
+| 16 | `disaster-recovery/aws-oci-cross-cloud-dr` | [PNG](../../blueprints/disaster-recovery/aws-oci-cross-cloud-dr/architecture/architecture.png) | [draw.io](../../blueprints/disaster-recovery/aws-oci-cross-cloud-dr/architecture/architecture.drawio) | [Inventory](../../blueprints/disaster-recovery/aws-oci-cross-cloud-dr/architecture/resource-inventory.json) |
+| 17 | `data-platform/autonomous-database` | [PNG](../../blueprints/data-platform/autonomous-database/architecture/architecture.png) | [draw.io](../../blueprints/data-platform/autonomous-database/architecture/architecture.drawio) | [Inventory](../../blueprints/data-platform/autonomous-database/architecture/resource-inventory.json) |
+| 18 | `data-platform/private-data-platform` | [PNG](../../blueprints/data-platform/private-data-platform/architecture/architecture.png) | [draw.io](../../blueprints/data-platform/private-data-platform/architecture/architecture.drawio) | [Inventory](../../blueprints/data-platform/private-data-platform/architecture/resource-inventory.json) |
+| 19 | `data-platform/postgresql` | [PNG](../../blueprints/data-platform/postgresql/architecture/architecture.png) | [draw.io](../../blueprints/data-platform/postgresql/architecture/architecture.drawio) | [Inventory](../../blueprints/data-platform/postgresql/architecture/resource-inventory.json) |
+| 20 | `data-platform/apex-adw` | [PNG](../../blueprints/data-platform/apex-adw/architecture/architecture.png) | [draw.io](../../blueprints/data-platform/apex-adw/architecture/architecture.drawio) | [Inventory](../../blueprints/data-platform/apex-adw/architecture/resource-inventory.json) |
+
+Regenerate overviews before resource pages:
+
+```bash
+python3 scripts/diagrams/data-dr-batch-01.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --check
+```
+
+### Provider Icons
+
+Azure cards now use embedded Azure SVGs, and AWS cards use native AWS stencils.
+The five previously published cross-cloud overviews and resource maps were also
+updated. Exact names, source types and conditional status remain visible. Native
+GCP mappings are prepared and their stencil names verified, but the current source
+contains no GCP resource declarations. Unmapped association/metadata types retain
+named boxes. See [provider icon sources](../../scripts/diagrams/assets/README.md).
+
+On October 28, 2026, the five new overviews passed layout checks, PNG export and
+visual review. Source coverage checks include 198 declarations across ten detailed
+blueprints, with 38 Azure and 35 AWS declarations. Repository contracts and local
+Markdown links passed. No cloud resources, database sessions, replication paths or
+failover drills were provisioned or tested; historical validation dates are unchanged.
+
+Latest coverage: **44 of 80** existing blueprint entry points have editable draw.io
+and PNG architecture overviews; **36 remain** pending conversion.

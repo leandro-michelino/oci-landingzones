@@ -13,6 +13,8 @@ ROOT=Path(__file__).resolve().parents[2]
 spec=importlib.util.spec_from_file_location('networking_batch_02',Path(__file__).with_name('networking-batch-02.py'))
 base=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(base)
+icon_spec=importlib.util.spec_from_file_location('cloud_icons',Path(__file__).with_name('cloud-icons.py'))
+provider_icons=importlib.util.module_from_spec(icon_spec); icon_spec.loader.exec_module(provider_icons)
 ITEMS=[
     ('hub-spoke-with-dual-region-dr','Dual-region hub-and-spoke | Independent foundations','dr'),
     ('multi-tenancy-shared-services','Shared services | Single-tenancy network and DNS','tenancy'),
@@ -87,9 +89,9 @@ def crosscloud(title,index,cloud):
     remote_subnet='10.94.10.0/24' if aws else '10.88.10.0/24'
     d=header(title,index)
     remote=d.group('thirdparty',('AWS / separate CloudFormation deployment' if aws else 'Azure / separate Bicep deployment'),20,160,680,850)
-    d.box(('VPC' if aws else 'VNet')+f' {remote_cidr}\nWorkload subnet {remote_subnet}\n'+('No auto public IPs; RT default → Internet Gateway' if aws else 'Workload UDR default → Internet; NSG allows TCP 80/443 inbound'),30,70,620,190,parent=remote,kind='thirdparty_component')
-    d.box('VPC Flow Logs → CloudWatch Logs\nKMS key + IAM delivery role; 30-day log retention' if aws else 'GatewaySubnet 10.88.250.0/27 (when VPN enabled)\nStandard static Public IP; VPN gateway VpnGw1AZ',30,300,620,120,parent=remote,kind='thirdparty_component')
-    gateway=d.box('Transit Gateway + VPC attachment\nConditional Customer Gateway + static-route VPN' if aws else 'VPN Gateway + Local Network Gateway\nIPSec connection with BGP enabled (conditional)',30,480,620,120,parent=remote,kind='thirdparty_component')
+    provider_icons.box(d,'AWS::EC2::VPC' if aws else 'Microsoft.Network/virtualNetworks',('VPC' if aws else 'VNet')+f' {remote_cidr}\nWorkload subnet {remote_subnet}\n'+('No auto public IPs; RT default → Internet Gateway' if aws else 'Workload UDR default → Internet; NSG allows TCP 80/443 inbound'),30,70,620,190,parent=remote,kind='thirdparty_component')
+    provider_icons.box(d,'AWS::EC2::FlowLog' if aws else 'Microsoft.Network/virtualNetworkGateways','VPC Flow Logs → CloudWatch Logs\nKMS key + IAM delivery role; 30-day log retention' if aws else 'GatewaySubnet 10.88.250.0/27 (when VPN enabled)\nStandard static Public IP; VPN gateway VpnGw1AZ',30,300,620,120,parent=remote,kind='thirdparty_component')
+    gateway=provider_icons.box(d,'AWS::EC2::TransitGateway' if aws else 'Microsoft.Network/virtualNetworkGateways','Transit Gateway + VPC attachment\nConditional Customer Gateway + static-route VPN' if aws else 'VPN Gateway + Local Network Gateway\nIPSec connection with BGP enabled (conditional)',30,480,620,120,parent=remote,kind='thirdparty_component')
     d.box('No Direct Connect is created by this template.\nTGW/VPN routing still needs end-to-end agreement.' if aws else 'No ExpressRoute circuit is created by this template.\nGateway IP / peer IP / shared secret inputs need real values.',30,680,620,120,parent=remote,kind='note')
     region=d.group('region','OCI / operator-selected region, OCI-primary deployment',850,160,1200,850)
     comp=d.group('compartment','Target compartment / operator input',20,50,1160,780,parent=region)
@@ -114,7 +116,7 @@ def crosscloud(title,index,cloud):
         d.box('AZURE CONTRACTS / metadata, not deployed DNS or failover\nBGP ASN/timers, path weights, corp.internal DNS and the 120-second failover target are input/runbook data.\nThe OCI root declares static IPSec routes; it does not configure tunnel BGP settings or a failover controller.',20,1270,2340,130,kind='note')
     else:
         d.box('AWS / OCI ROUTING LIMIT\nThe two cloud templates are separate deployments, not an automatically paired VPN.\nPeer addressing, tunnel parameters, route exchange and cloud-specific routing must be reconciled before packet tests.',20,1270,2340,130,kind='note')
-    d.text('Defaults are source examples, not live inventory or approved costs. External-cloud resources use labelled third-party boxes, not OCI stand-in icons.\nSolid arrows are requested/configured route or VPN intent, not verified traffic. Detail scope: root Terraform + separate CloudFormation/Bicep template.\nReview: 2026-10-28. No provisioning, new provider validation, packet-flow, BGP or failover test.',20,1440,2340,75,size=12)
+    d.text('Defaults are source examples, not live inventory or approved costs. External-cloud cards use provider-native icons; unmapped associations retain explicit labels.\nSolid arrows are requested/configured route or VPN intent, not verified traffic. Detail scope: root Terraform + separate CloudFormation/Bicep template.\nReview: 2026-10-28. No provisioning, new provider validation, packet-flow, BGP or failover test.',20,1440,2340,75,size=12)
     return d
 
 

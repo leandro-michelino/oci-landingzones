@@ -127,3 +127,7 @@ python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint networking/
 - Confirm fallback enablement, Azure endpoint public IP, and CIDR exchange are deliberate.
 - Confirm DNS resolver and health-probe assumptions match operations ownership.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+
+Provider icons: Azure SVGs and AWS native stencils from draw.io identify mapped
+external-cloud resources. Unmapped associations and local contracts retain
+explicit named boxes. See [icon sources](../../../../scripts/diagrams/assets/README.md).

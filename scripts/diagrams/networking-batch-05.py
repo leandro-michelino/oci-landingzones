@@ -12,6 +12,8 @@ ROOT=Path(__file__).resolve().parents[2]
 spec=importlib.util.spec_from_file_location('networking_batch_02',Path(__file__).with_name('networking-batch-02.py'))
 base=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(base)
+icon_spec=importlib.util.spec_from_file_location('cloud_icons',Path(__file__).with_name('cloud-icons.py'))
+cloud=importlib.util.module_from_spec(icon_spec); icon_spec.loader.exec_module(cloud)
 ITEMS=[
     ('azure-vwan-oci-drg-transit','Azure vWAN + OCI DRG | Transit foundation','vwan'),
     ('regional-prod-nonprod-hubs','Regional production / nonproduction | Separate foundations','separation'),
@@ -35,10 +37,10 @@ def footer(d,text,y=1300):
 def vwan(title,index):
     d=header(title,index)
     az=d.group('thirdparty','Azure / separate Bicep deployment; location = resource group',20,160,800,1000)
-    wan=d.box('Standard Virtual WAN\nBranch-to-branch enabled',30,70,740,95,parent=az,kind='thirdparty_component')
-    hub=d.box('Virtual Hub 10.89.255.0/24\nHub route table: oci-transit label; explicit routes empty',30,220,740,110,parent=az,kind='thirdparty_component')
-    net=d.box('VNet 10.88.0.0/16 / workload subnet 10.88.10.0/24\nvHub VNet connection associated with hub route table\nWorkload UDR default → Internet; NSG TCP 80/443 inbound',30,400,740,140,parent=az,kind='thirdparty_component')
-    vpn=d.box('Conditional VNet VPN Gateway (not a vHub VPN Gateway)\nGatewaySubnet 10.88.250.0/27; Standard static public IP\nVpnGw1AZ + Local Network Gateway + IPSec/BGP connection',30,640,740,140,parent=az,kind='thirdparty_component')
+    wan=cloud.box(d,'Microsoft.Network/virtualWans','Standard Virtual WAN\nBranch-to-branch enabled',30,70,740,95,parent=az,kind='thirdparty_component')
+    hub=cloud.box(d,'Microsoft.Network/virtualHubs','Virtual Hub 10.89.255.0/24\nHub route table: oci-transit label; explicit routes empty',30,220,740,110,parent=az,kind='thirdparty_component')
+    net=cloud.box(d,'Microsoft.Network/virtualNetworks','VNet 10.88.0.0/16 / workload subnet 10.88.10.0/24\nvHub VNet connection associated with hub route table\nWorkload UDR default → Internet; NSG TCP 80/443 inbound',30,400,740,140,parent=az,kind='thirdparty_component')
+    vpn=cloud.box(d,'Microsoft.Network/virtualNetworkGateways','Conditional VNet VPN Gateway (not a vHub VPN Gateway)\nGatewaySubnet 10.88.250.0/27; Standard static public IP\nVpnGw1AZ + Local Network Gateway + IPSec/BGP connection',30,640,740,140,parent=az,kind='thirdparty_component')
     d.connect(wan,hub,kind='plain',straight=True)
     d.connect(hub,net,kind='plain',straight=True)
     d.text('No ExpressRoute gateway or circuit is declared by this Bicep file.\nPeer addresses and secret values must replace the template placeholders.',30,850,740,75,parent=az,size=13)
@@ -111,9 +113,9 @@ def expressroute(title,index):
     note='DEFAULT OCI FOUNDATION ONLY: FastConnect, IPSec and route-contract validation are disabled.\nThe separate Azure template creates one VNet by default; existing ExpressRoute private-peering identifiers are required to attach a circuit.'
     d=base.build(title,'base',index,scope_note=note,subtitle=f'NETWORKING {index:02} / Official OCI Toolkit v24.2 / Source foundation + separate Azure template')
     az=d.group('thirdparty','Azure / separate Bicep template, resource-group location',1760,160,740,1080)
-    wan=d.box('Standard Virtual WAN + Virtual Hub\nvHub prefix 10.88.255.0/24 (default)\nHub route table: oci-transit label; routes empty',25,80,690,130,parent=az,kind='thirdparty_component')
-    er=d.box('ExpressRoute Gateway / deploy flag=true\nConnection created only if private-peering ID is nonempty\nCircuit itself is not created',25,300,690,130,parent=az,kind='thirdparty_component')
-    net=d.box('Default Azure VNet app1 / 10.88.10.0/24\nWorkload subnet 10.88.10.0/24 + NSG\nvHub VNet connection associated with route table',25,530,690,130,parent=az,kind='thirdparty_component')
+    wan=cloud.box(d,'Microsoft.Network/virtualWans','Standard Virtual WAN + Virtual Hub\nvHub prefix 10.88.255.0/24 (default)\nHub route table: oci-transit label; routes empty',25,80,690,130,parent=az,kind='thirdparty_component')
+    er=cloud.box(d,'Microsoft.Network/expressRouteGateways','ExpressRoute Gateway / deploy flag=true\nConnection created only if private-peering ID is nonempty\nCircuit itself is not created',25,300,690,130,parent=az,kind='thirdparty_component')
+    net=cloud.box(d,'Microsoft.Network/virtualNetworks','Default Azure VNet app1 / 10.88.10.0/24\nWorkload subnet 10.88.10.0/24 + NSG\nvHub VNet connection associated with route table',25,530,690,130,parent=az,kind='thirdparty_component')
     d.connect(wan,er,kind='plain',straight=True)
     d.connect(wan,net,kind='plain',exit=(1,.5),entry=(1,.5),waypoints=[(2485,305),(2485,755)])
     d.text('NSG allows all protocols/ports from default OCI prefixes\n10.0.0.0/16 and 10.1.0.0/16. Review customer access intent.\nAdditional VNets / OCI spokes require additional map entries.',25,730,690,90,parent=az,size=13)

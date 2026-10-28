@@ -126,3 +126,7 @@ during review, plan, and hand-off.
 - Confirm DNS endpoint and TTL assumptions support the intended cutover model.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+
+Provider icons: Azure SVGs and AWS native stencils from draw.io identify mapped
+external-cloud resources. Unmapped associations and local contracts retain
+explicit named boxes. See [icon sources](../../../../scripts/diagrams/assets/README.md).

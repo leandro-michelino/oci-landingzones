@@ -1,6 +1,6 @@
 # Autonomous Database Architecture
 
-This is the deployment architecture for `blueprints/data-platform/autonomous-database`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/data-platform/autonomous-database`. The editable draw.io overview and PNG preview support source-based architecture review.
 
 ## Deployment Purpose
 
@@ -17,35 +17,39 @@ Deploys a private Autonomous Database pattern for ATP or ADW with optional manua
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Autonomous Database                                                                                      |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Existing compartment / VCN / subnet / service boundary as required}                                     |
-|         |                                                                                                |
-|         v                                                                                                |
-| [Autonomous Database]                                                                                    |
-|         |-- ATP/ADW database configuration, workload type, license model, sizing, backup retention       |
-|         |-- private endpoint, NSGs, subnet, and optional KMS key controls                                |
-|         |-- manual backup resource when enabled                                                          |
-|         `-- tags, compartment scope, and optional private access controls                                |
-|                  |                                                                                       |
-|                  v                                                                                       |
-| [private application subnet] -> [ADB private endpoint] -> [Autonomous Database]                          |
-| [backup operation]          -> [manual backup]       -> [Object Storage managed service]                 |
-|                                                                                                          |
-| Review focus: database workload type, private endpoint DNS, NSGs, KMS key, backup policy, and admin      |
-| password handling.                                                                                       |
-| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
-| teams.                                                                                                   |
-+----------------------------------------------------------------------------------------------------------+
+![Architecture overview](architecture.png)
+
+[Editable draw.io diagram](architecture.drawio)
+
+## Diagram Sources And Scope
+
+Generated with the installed `oci-architecture-diagrams` skill, Oracle Toolkit
+v24.2 and provider-specific icons where available. Source review: October 28,
+2026. No cloud provisioning, provider revalidation, database connection, recovery
+drill or application login was performed. Historical validation metadata is unchanged.
+
+Regenerate the overview, then rebuild its resource-detail pages:
+
+```bash
+python3 scripts/diagrams/data-dr-batch-01.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint data-platform/autonomous-database --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint data-platform/autonomous-database --check
 ```
+
+## Resource Detail And Coverage
+
+The main draw.io document includes the overview and the following resource-detail
+pages. Each card names a source declaration, including conditional and collection
+resources; counts are declarations, not deployed instances. Contracts are local
+Terraform metadata. Supplied resources remain prerequisites, not created assets.
+
+| Scope | Declarations | Preview | Editable source |
+| --- | --- | --- | --- |
+| OCI | 7 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
+
+[Resource inventory](resource-inventory.json) records source revisions, file hashes
+and resource-to-diagram node mappings. The coverage check verifies all declarations,
+provider-icon mappings, embedded SVG syntax and inclusion in the main draw.io pages.
 
 ## Terraform Components
 

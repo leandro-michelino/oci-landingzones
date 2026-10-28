@@ -1,6 +1,6 @@
 # PostgreSQL Landing Zone Architecture
 
-This is the deployment architecture for `blueprints/data-platform/postgresql`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/data-platform/postgresql`. The editable draw.io overview and PNG preview support source-based architecture review.
 
 ## Deployment Purpose
 
@@ -17,43 +17,39 @@ Deploys a private OCI PostgreSQL DB system with network controls, storage durabi
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| PostgreSQL Landing Zone                                                                                  |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Database compartment / private network boundary}                                                        |
-|         |                                                                                                |
-|         +--> [optional private VCN]                                                                      |
-|         |        |-- private PostgreSQL subnet                                                              |
-|         |        `-- NSG ingress from approved client CIDRs to port 5432                                  |
-|         |                                                                                                |
-|         +--> (private database subnet, created or supplied)                                              |
-|         |        |                                                                                       |
-|         |        v                                                                                       |
-|         |   [PostgreSQL DB system]                                                                       |
-|         |        |-- primary private endpoint                                                            |
-|         |        |-- optional reader endpoint                                                            |
-|         |        |-- NSGs allow app subnets or approved admin paths only                                |
-|         |        |-- regionally durable or AD-scoped storage                                           |
-|         |        `-- maintenance and backup policy                                                       |
-|         |                                                                                                |
-|         +--> (Vault secret or secure tfvars)                                                             |
-|         |        `-- admin credential source                                                             |
-|         |                                                                                                |
-|         `--> [IAM access policy]                                                                         |
-|                  optional DBA, operator, or application statements                                       |
-|                                                                                                          |
-| Data path: app subnet -> NSG-approved PostgreSQL private endpoint on port 5432.                          |
-| Operations path: DBA/operator -> approved private access path -> PostgreSQL service control plane.       |
-| Hand-off: DB system ID, state, instance details, admin username, and optional access policy ID.          |
-+----------------------------------------------------------------------------------------------------------+
+![Architecture overview](architecture.png)
+
+[Editable draw.io diagram](architecture.drawio)
+
+## Diagram Sources And Scope
+
+Generated with the installed `oci-architecture-diagrams` skill, Oracle Toolkit
+v24.2 and provider-specific icons where available. Source review: October 28,
+2026. No cloud provisioning, provider revalidation, database connection, recovery
+drill or application login was performed. Historical validation metadata is unchanged.
+
+Regenerate the overview, then rebuild its resource-detail pages:
+
+```bash
+python3 scripts/diagrams/data-dr-batch-01.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint data-platform/postgresql --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint data-platform/postgresql --check
 ```
+
+## Resource Detail And Coverage
+
+The main draw.io document includes the overview and the following resource-detail
+pages. Each card names a source declaration, including conditional and collection
+resources; counts are declarations, not deployed instances. Contracts are local
+Terraform metadata. Supplied resources remain prerequisites, not created assets.
+
+| Scope | Declarations | Preview | Editable source |
+| --- | --- | --- | --- |
+| OCI | 7 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
+
+[Resource inventory](resource-inventory.json) records source revisions, file hashes
+and resource-to-diagram node mappings. The coverage check verifies all declarations,
+provider-icon mappings, embedded SVG syntax and inclusion in the main draw.io pages.
 
 ## Terraform Components
 

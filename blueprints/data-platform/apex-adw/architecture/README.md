@@ -20,53 +20,39 @@ Autonomous Database.
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------------+
-| Oracle APEX On Autonomous Database                                                                              |
-+----------------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow                       |
-|                                                                                                                |
-| [Operator / CI]                                                                                                |
-|      |                                                                                                         |
-|      | terraform plan/apply or guarded Ansible runner                                                          |
-|      v                                                                                                         |
-| [Terraform OCI provider]                                                                                       |
-|      |                                                                                                         |
-|      +--> (existing Autonomous Database OCID)                                                                   |
-|      |        |                                                                                                |
-|      |        v                                                                                                |
-|      |   [ADB data source]                                                                                     |
-|      |        |-- APEX URL and ORDS URL                                                                        |
-|      |        |-- APEX / ORDS version details                                                                 |
-|      |        `-- private endpoint IP when available                                                           |
-|      |                                                                                                         |
-|      +--> [Vault secret, optional]                                                                              |
-|      |        |-- APEX workspace bootstrap payload                                                             |
-|      |        |-- admin hand-off material                                                                      |
-|      |        `-- encrypted with supplied Vault/KMS key                                                         |
-|      |                                                                                                         |
-|      `--> [Private flexible load balancer, optional]                                                            |
-|               |-- private subnet placement                                                                     |
-|               |-- NSGs allow app/admin source ranges only                                                      |
-|               |-- HTTPS listener with supplied certificate                                                     |
-|               |-- ORDS backend set                                                                             |
-|               `-- backend IPs: ADB private endpoint IP or supplied ORDS IPs                                    |
-|                       |                                                                                        |
-|                       | HTTPS / ORDS                                                                            |
-|                       v                                                                                        |
-|              (Autonomous Database private endpoint)                                                             |
-|                       |                                                                                        |
-|                       v                                                                                        |
-|              [ORDS on Autonomous Database]                                                                      |
-|                       |                                                                                        |
-|                       v                                                                                        |
-|              [APEX workspace, DBA/APEX bootstrap process]                                                       |
-|                                                                                                                |
-| Private user path: client -> private DNS -> private load balancer -> ORDS backend -> APEX workspace.           |
-| Control path: Terraform reads ADB metadata, creates optional LB/Vault resources, and emits hand-off outputs.   |
-| Hand-off: direct APEX/ORDS URLs, private APEX URL, backend set, listener, LB IDs, APEX details, secret ID.     |
-+----------------------------------------------------------------------------------------------------------------+
+![Architecture overview](architecture.png)
+
+[Editable draw.io diagram](architecture.drawio)
+
+## Diagram Sources And Scope
+
+Generated with the installed `oci-architecture-diagrams` skill, Oracle Toolkit
+v24.2 and provider-specific icons where available. Source review: October 28,
+2026. No cloud provisioning, provider revalidation, database connection, recovery
+drill or application login was performed. Historical validation metadata is unchanged.
+
+Regenerate the overview, then rebuild its resource-detail pages:
+
+```bash
+python3 scripts/diagrams/data-dr-batch-01.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint data-platform/apex-adw --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint data-platform/apex-adw --check
 ```
+
+## Resource Detail And Coverage
+
+The main draw.io document includes the overview and the following resource-detail
+pages. Each card names a source declaration, including conditional and collection
+resources; counts are declarations, not deployed instances. Contracts are local
+Terraform metadata. Supplied resources remain prerequisites, not created assets.
+
+| Scope | Declarations | Preview | Editable source |
+| --- | --- | --- | --- |
+| OCI | 5 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
+
+[Resource inventory](resource-inventory.json) records source revisions, file hashes
+and resource-to-diagram node mappings. The coverage check verifies all declarations,
+provider-icon mappings, embedded SVG syntax and inclusion in the main draw.io pages.
 
 ## Terraform Components
 

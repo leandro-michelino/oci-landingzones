@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "blueprint": "data-platform/postgresql",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 7
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_vcn.postgresql",
+      "type": "oci_core_vcn",
+      "symbol": "postgresql",
+      "source": "blueprints/data-platform/postgresql/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n4",
+        "source_symbol": "postgresql",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_subnet.postgresql",
+      "type": "oci_core_subnet",
+      "symbol": "postgresql",
+      "source": "blueprints/data-platform/postgresql/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n10",
+        "source_symbol": "postgresql",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_security_list.postgresql",
+      "type": "oci_core_security_list",
+      "symbol": "postgresql",
+      "source": "blueprints/data-platform/postgresql/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n12",
+        "source_symbol": "postgresql",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group.postgresql",
+      "type": "oci_core_network_security_group",
+      "symbol": "postgresql",
+      "source": "blueprints/data-platform/postgresql/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n24",
+        "source_symbol": "postgresql",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group_security_rule.postgresql_ingress",
+      "type": "oci_core_network_security_group_security_rule",
+      "symbol": "postgresql_ingress",
+      "source": "blueprints/data-platform/postgresql/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.create_private_network ? toset(var.allowed_client_cidrs) : []",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n26",
+        "source_symbol": "postgresql_ingress",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_psql_db_system.this",
+      "type": "oci_psql_db_system",
+      "symbol": "this",
+      "source": "blueprints/data-platform/postgresql/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_db_system ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n28",
+        "source_symbol": "this",
+        "provider_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/data-platform/postgresql/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "node_id": "n38",
+        "source_symbol": "access",
+        "provider_icon": null
+      }
+    }
+  ],
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_psql_db_system_connection_detail.this",
+      "type": "oci_psql_db_system_connection_detail",
+      "symbol": "this",
+      "source": "blueprints/data-platform/postgresql/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_db_system ? 1 : 0"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/data-platform/postgresql/locals.tf",
+      "revision": "working-tree",
+      "sha256": "eb25c76ae5161e6a06c2138809cfeec7bcb7a44aad72f36b14cdf1f4b231a0cc"
+    },
+    {
+      "path": "blueprints/data-platform/postgresql/main.tf",
+      "revision": "working-tree",
+      "sha256": "d5cc5690c37a91bbff80f3b34150233c7ecbc566765b6137525fc8a894faa703"
+    },
+    {
+      "path": "blueprints/data-platform/postgresql/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "2ed9c0221d38a1bcee5249da60fb0dc5dd9e20d423c8ad38d45685e4aba9805f"
+    },
+    {
+      "path": "blueprints/data-platform/postgresql/providers.tf",
+      "revision": "working-tree",
+      "sha256": "b2c3b649c7e80c3f4e4f8df66663daef9fe857240e0c86137896c9305fb70d77"
+    },
+    {
+      "path": "blueprints/data-platform/postgresql/variables.tf",
+      "revision": "working-tree",
+      "sha256": "02194e03ccf35c1ceb617aa81e4315146b60a4cdb1cffa678fa3a3186fc0f4e2"
+    },
+    {
+      "path": "blueprints/data-platform/postgresql/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

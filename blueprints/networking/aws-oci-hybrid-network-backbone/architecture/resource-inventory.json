@@ -21,7 +21,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n4",
-        "source_symbol": "backbone"
+        "source_symbol": "backbone",
+        "provider_icon": null
       }
     },
     {
@@ -36,7 +37,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n10",
-        "source_symbol": "backbone"
+        "source_symbol": "backbone",
+        "provider_icon": null
       }
     },
     {
@@ -51,7 +53,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n22",
-        "source_symbol": "backbone"
+        "source_symbol": "backbone",
+        "provider_icon": null
       }
     },
     {
@@ -66,7 +69,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n46",
-        "source_symbol": "backbone"
+        "source_symbol": "backbone",
+        "provider_icon": null
       }
     },
     {
@@ -81,7 +85,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n58",
-        "source_symbol": "backbone"
+        "source_symbol": "backbone",
+        "provider_icon": null
       }
     },
     {
@@ -96,7 +101,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n60",
-        "source_symbol": "primary"
+        "source_symbol": "primary",
+        "provider_icon": null
       }
     },
     {
@@ -111,7 +117,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n69",
-        "source_symbol": "backbone"
+        "source_symbol": "backbone",
+        "provider_icon": null
       }
     },
     {
@@ -126,7 +133,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n71",
-        "source_symbol": "aws"
+        "source_symbol": "aws",
+        "provider_icon": null
       }
     },
     {
@@ -141,7 +149,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n81",
-        "source_symbol": "aws"
+        "source_symbol": "aws",
+        "provider_icon": null
       }
     },
     {
@@ -156,7 +165,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n83",
-        "source_symbol": "backbone_alert"
+        "source_symbol": "backbone_alert",
+        "provider_icon": null
       }
     },
     {
@@ -171,7 +181,8 @@
       "diagram": {
         "file": "contracts-resources.drawio",
         "node_id": "n4",
-        "source_symbol": "oci_network_contract"
+        "source_symbol": "oci_network_contract",
+        "provider_icon": null
       }
     },
     {
@@ -186,7 +197,8 @@
       "diagram": {
         "file": "contracts-resources.drawio",
         "node_id": "n6",
-        "source_symbol": "connectivity_contract"
+        "source_symbol": "connectivity_contract",
+        "provider_icon": null
       }
     },
     {
@@ -201,7 +213,8 @@
       "diagram": {
         "file": "contracts-resources.drawio",
         "node_id": "n8",
-        "source_symbol": "routing_contract"
+        "source_symbol": "routing_contract",
+        "provider_icon": null
       }
     },
     {
@@ -216,7 +229,8 @@
       "diagram": {
         "file": "aws-resources.drawio",
         "node_id": "n4",
-        "source_symbol": "BackboneVpc"
+        "source_symbol": "BackboneVpc",
+        "provider_icon": "AWS::EC2::VPC"
       }
     },
     {
@@ -230,8 +244,9 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
-        "node_id": "n6",
-        "source_symbol": "BackboneLogKey"
+        "node_id": "n8",
+        "source_symbol": "BackboneLogKey",
+        "provider_icon": "AWS::KMS::Key"
       }
     },
     {
@@ -245,8 +260,9 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
-        "node_id": "n8",
-        "source_symbol": "BackboneFlowLogGroup"
+        "node_id": "n12",
+        "source_symbol": "BackboneFlowLogGroup",
+        "provider_icon": "AWS::Logs::LogGroup"
       }
     },
     {
@@ -260,8 +276,9 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
-        "node_id": "n10",
-        "source_symbol": "BackboneFlowLogRole"
+        "node_id": "n16",
+        "source_symbol": "BackboneFlowLogRole",
+        "provider_icon": "AWS::IAM::Role"
       }
     },
     {
@@ -275,8 +292,9 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
-        "node_id": "n12",
-        "source_symbol": "BackboneVpcFlowLog"
+        "node_id": "n20",
+        "source_symbol": "BackboneVpcFlowLog",
+        "provider_icon": "AWS::EC2::FlowLog"
       }
     },
     {
@@ -290,8 +308,9 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
-        "node_id": "n14",
-        "source_symbol": "InternetGateway"
+        "node_id": "n24",
+        "source_symbol": "InternetGateway",
+        "provider_icon": "AWS::EC2::InternetGateway"
       }
     },
     {
@@ -305,8 +324,9 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
-        "node_id": "n16",
-        "source_symbol": "VpcIgwAttachment"
+        "node_id": "n28",
+        "source_symbol": "VpcIgwAttachment",
+        "provider_icon": null
       }
     },
     {
@@ -320,8 +340,9 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
-        "node_id": "n18",
-        "source_symbol": "BackboneRouteTable"
+        "node_id": "n30",
+        "source_symbol": "BackboneRouteTable",
+        "provider_icon": "AWS::EC2::RouteTable"
       }
     },
     {
@@ -335,8 +356,9 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
-        "node_id": "n20",
-        "source_symbol": "DefaultRoute"
+        "node_id": "n34",
+        "source_symbol": "DefaultRoute",
+        "provider_icon": "AWS::EC2::Route"
       }
     },
     {
@@ -350,8 +372,9 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
-        "node_id": "n22",
-        "source_symbol": "BackboneSubnet"
+        "node_id": "n38",
+        "source_symbol": "BackboneSubnet",
+        "provider_icon": "AWS::EC2::Subnet"
       }
     },
     {
@@ -365,8 +388,9 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
-        "node_id": "n24",
-        "source_symbol": "SubnetRouteAssociation"
+        "node_id": "n42",
+        "source_symbol": "SubnetRouteAssociation",
+        "provider_icon": null
       }
     },
     {
@@ -380,8 +404,9 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
-        "node_id": "n26",
-        "source_symbol": "BackboneSecurityGroup"
+        "node_id": "n44",
+        "source_symbol": "BackboneSecurityGroup",
+        "provider_icon": "AWS::EC2::SecurityGroup"
       }
     },
     {
@@ -395,8 +420,9 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
-        "node_id": "n28",
-        "source_symbol": "TransitGateway"
+        "node_id": "n48",
+        "source_symbol": "TransitGateway",
+        "provider_icon": "AWS::EC2::TransitGateway"
       }
     },
     {
@@ -410,8 +436,9 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
-        "node_id": "n30",
-        "source_symbol": "TransitGatewayAttachment"
+        "node_id": "n52",
+        "source_symbol": "TransitGatewayAttachment",
+        "provider_icon": "AWS::EC2::TransitGatewayAttachment"
       }
     },
     {
@@ -425,8 +452,9 @@
       "condition": "Condition: EnableSiteToSiteVpnCondition",
       "diagram": {
         "file": "aws-resources.drawio",
-        "node_id": "n32",
-        "source_symbol": "OciCustomerGateway"
+        "node_id": "n56",
+        "source_symbol": "OciCustomerGateway",
+        "provider_icon": "AWS::EC2::CustomerGateway"
       }
     },
     {
@@ -440,8 +468,9 @@
       "condition": "Condition: EnableSiteToSiteVpnCondition",
       "diagram": {
         "file": "aws-resources.drawio",
-        "node_id": "n34",
-        "source_symbol": "OciSiteToSiteVpnConnection"
+        "node_id": "n60",
+        "source_symbol": "OciSiteToSiteVpnConnection",
+        "provider_icon": "AWS::EC2::VPNConnection"
       }
     },
     {
@@ -455,8 +484,9 @@
       "condition": "Condition: EnableSiteToSiteVpnCondition",
       "diagram": {
         "file": "aws-resources.drawio",
-        "node_id": "n36",
-        "source_symbol": "BackboneToOciTransitRoute"
+        "node_id": "n64",
+        "source_symbol": "BackboneToOciTransitRoute",
+        "provider_icon": "AWS::EC2::Route"
       }
     }
   ],

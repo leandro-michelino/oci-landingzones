@@ -1,6 +1,6 @@
 # Private Data Platform Architecture
 
-This is the deployment architecture for `blueprints/data-platform/private-data-platform`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/data-platform/private-data-platform`. The editable draw.io overview and PNG preview support source-based architecture review.
 
 ## Deployment Purpose
 
@@ -13,41 +13,44 @@ Creates a private data landing zone with a private VCN, Vault/KMS, Object Storag
 | Boundary | `blueprints/data-platform/private-data-platform` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Creates a private data landing zone with a private VCN, Vault/KMS, Object Storage bucket access through a private endpoint, and optional Streaming. |
 | Terraform components | `oci_objectstorage_namespace.this`, `network`, `vault`, optional Object Storage bucket and endpoint, managed endpoint NSGs and rules, `streaming` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The Architecture diagram below shows source-declared components and configuration relationships; it does not verify runtime traffic. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Private Data Platform                                                                                    |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Private data compartment / selected region}                                                             |
-|         |                                                                                                |
-|         +--> [private endpoint VCN]                                                                      |
-|         |      no Internet Gateway; private subnet, NSGs, route tables, SGW, optional NAT                |
-|         |                                                                                                |
-|         +--> [Vault/KMS]                                                                                 |
-|         |      key path for bucket and stream encryption when enabled                                    |
-|         |                                                                                                |
-|         +--> [Object Storage bucket]                                                                     |
-|         |      NoPublicAccess; client -> private endpoint IP (TCP/443) -> Object Storage                  |
-|         |                                                                                                |
-|         `--> [Streaming]                                                                                 |
-|                stream pool -> streams -> optional private endpoint -> optional KMS key                   |
-|                                                                                                          |
-| Data path: client -> approved endpoint NSG -> Object Storage or Streaming private endpoint.              |
-| Control flow: network first, Vault/KMS second, data services last.                                       |
-| Hand-off: private network IDs, bucket name, private endpoint ID, vault/key IDs, stream pool, and stream  |
-| IDs.                                                                                                     |
-+----------------------------------------------------------------------------------------------------------+
+![Architecture overview](architecture.png)
+
+[Editable draw.io diagram](architecture.drawio)
+
+## Diagram Sources And Scope
+
+Generated with the installed `oci-architecture-diagrams` skill, Oracle Toolkit
+v24.2 and provider-specific icons where available. Source review: October 28,
+2026. No cloud provisioning, provider revalidation, database connection, recovery
+drill or application login was performed. Historical validation metadata is unchanged.
+
+Regenerate the overview, then rebuild its resource-detail pages:
+
+```bash
+python3 scripts/diagrams/data-dr-batch-01.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint data-platform/private-data-platform --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint data-platform/private-data-platform --check
 ```
+
+## Resource Detail And Coverage
+
+The main draw.io document includes the overview and the following resource-detail
+pages. Each card names a source declaration, including conditional and collection
+resources; counts are declarations, not deployed instances. Contracts are local
+Terraform metadata. Supplied resources remain prerequisites, not created assets.
+
+| Scope | Declarations | Preview | Editable source |
+| --- | --- | --- | --- |
+| OCI | 17 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
+
+[Resource inventory](resource-inventory.json) records source revisions, file hashes
+and resource-to-diagram node mappings. The coverage check verifies all declarations,
+provider-icon mappings, embedded SVG syntax and inclusion in the main draw.io pages.
 
 ## Terraform Components
 

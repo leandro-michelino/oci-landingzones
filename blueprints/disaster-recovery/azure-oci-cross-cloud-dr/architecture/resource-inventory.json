@@ -21,7 +21,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n4",
-        "source_symbol": "primary"
+        "source_symbol": "primary",
+        "provider_icon": null
       }
     },
     {
@@ -36,7 +37,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n10",
-        "source_symbol": "primary"
+        "source_symbol": "primary",
+        "provider_icon": null
       }
     },
     {
@@ -51,7 +53,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n22",
-        "source_symbol": "primary"
+        "source_symbol": "primary",
+        "provider_icon": null
       }
     },
     {
@@ -66,7 +69,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n46",
-        "source_symbol": "primary_app"
+        "source_symbol": "primary_app",
+        "provider_icon": null
       }
     },
     {
@@ -81,7 +85,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n58",
-        "source_symbol": "primary_app"
+        "source_symbol": "primary_app",
+        "provider_icon": null
       }
     },
     {
@@ -96,7 +101,8 @@
       "diagram": {
         "file": "contracts-resources.drawio",
         "node_id": "n4",
-        "source_symbol": "oci_network_contract"
+        "source_symbol": "oci_network_contract",
+        "provider_icon": null
       }
     },
     {
@@ -111,7 +117,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n60",
-        "source_symbol": "dr_evidence"
+        "source_symbol": "dr_evidence",
+        "provider_icon": null
       }
     },
     {
@@ -126,7 +133,8 @@
       "diagram": {
         "file": "oci-resources.drawio",
         "node_id": "n70",
-        "source_symbol": "dr_alert"
+        "source_symbol": "dr_alert",
+        "provider_icon": null
       }
     },
     {
@@ -141,7 +149,8 @@
       "diagram": {
         "file": "contracts-resources.drawio",
         "node_id": "n6",
-        "source_symbol": "connectivity_contract"
+        "source_symbol": "connectivity_contract",
+        "provider_icon": null
       }
     },
     {
@@ -156,7 +165,8 @@
       "diagram": {
         "file": "contracts-resources.drawio",
         "node_id": "n8",
-        "source_symbol": "dns_failover_contract"
+        "source_symbol": "dns_failover_contract",
+        "provider_icon": null
       }
     },
     {
@@ -171,7 +181,8 @@
       "diagram": {
         "file": "contracts-resources.drawio",
         "node_id": "n10",
-        "source_symbol": "runbook_contract"
+        "source_symbol": "runbook_contract",
+        "provider_icon": null
       }
     },
     {
@@ -186,7 +197,8 @@
       "diagram": {
         "file": "azure-resources.drawio",
         "node_id": "n4",
-        "source_symbol": "vnet"
+        "source_symbol": "vnet",
+        "provider_icon": "Microsoft.Network/virtualNetworks"
       }
     },
     {
@@ -200,8 +212,9 @@
       "condition": "Unconditional declaration in separately deployed Bicep template.",
       "diagram": {
         "file": "azure-resources.drawio",
-        "node_id": "n6",
-        "source_symbol": "routeTable"
+        "node_id": "n8",
+        "source_symbol": "routeTable",
+        "provider_icon": "Microsoft.Network/routeTables"
       }
     },
     {
@@ -215,8 +228,9 @@
       "condition": "Unconditional declaration in separately deployed Bicep template.",
       "diagram": {
         "file": "azure-resources.drawio",
-        "node_id": "n8",
-        "source_symbol": "networkSecurityGroup"
+        "node_id": "n12",
+        "source_symbol": "networkSecurityGroup",
+        "provider_icon": "Microsoft.Network/networkSecurityGroups"
       }
     },
     {
@@ -230,8 +244,9 @@
       "condition": "Unconditional declaration in separately deployed Bicep template.",
       "diagram": {
         "file": "azure-resources.drawio",
-        "node_id": "n10",
-        "source_symbol": "containerAppSubnet"
+        "node_id": "n16",
+        "source_symbol": "containerAppSubnet",
+        "provider_icon": "Microsoft.Network/virtualNetworks/subnets"
       }
     },
     {
@@ -245,8 +260,9 @@
       "condition": "Unconditional declaration in separately deployed Bicep template.",
       "diagram": {
         "file": "azure-resources.drawio",
-        "node_id": "n12",
-        "source_symbol": "logAnalyticsWorkspace"
+        "node_id": "n20",
+        "source_symbol": "logAnalyticsWorkspace",
+        "provider_icon": "Microsoft.OperationalInsights/workspaces"
       }
     },
     {
@@ -260,8 +276,9 @@
       "condition": "Unconditional declaration in separately deployed Bicep template.",
       "diagram": {
         "file": "azure-resources.drawio",
-        "node_id": "n14",
-        "source_symbol": "managedEnvironment"
+        "node_id": "n24",
+        "source_symbol": "managedEnvironment",
+        "provider_icon": "Microsoft.App/managedEnvironments"
       }
     },
     {
@@ -275,8 +292,9 @@
       "condition": "Unconditional declaration in separately deployed Bicep template.",
       "diagram": {
         "file": "azure-resources.drawio",
-        "node_id": "n16",
-        "source_symbol": "containerApp"
+        "node_id": "n28",
+        "source_symbol": "containerApp",
+        "provider_icon": "Microsoft.App/containerApps"
       }
     }
   ],

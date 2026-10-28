@@ -7,6 +7,7 @@ Creates one editable/PNG resource map per cloud plus an auditable JSON inventory
 Overview diagrams remain the topology view. Run --render for PNG export.
 """
 import argparse
+import base64
 import hashlib
 import importlib.util
 import json
@@ -21,12 +22,19 @@ import xml.etree.ElementTree as ET
 ROOT=Path(__file__).resolve().parents[2]
 spec=importlib.util.spec_from_file_location('networking_batch_02',Path(__file__).with_name('networking-batch-02.py'))
 base=importlib.util.module_from_spec(spec); spec.loader.exec_module(base)
+icon_spec=importlib.util.spec_from_file_location('cloud_icons',Path(__file__).with_name('cloud-icons.py'))
+cloud_icons=importlib.util.module_from_spec(icon_spec); icon_spec.loader.exec_module(cloud_icons)
 DEFAULTS=[
  'networking/hub-spoke-with-azure-vwan-expressroute',
  'networking/azure-vwan-oci-drg-transit',
  'networking/azure-oci-dual-connectivity',
  'networking/aws-oci-hybrid-network-backbone',
  'disaster-recovery/azure-oci-cross-cloud-dr',
+ 'disaster-recovery/aws-oci-cross-cloud-dr',
+ 'data-platform/autonomous-database',
+ 'data-platform/private-data-platform',
+ 'data-platform/postgresql',
+ 'data-platform/apex-adw',
 ]
 DECL=re.compile(r'^(resource|data|module)\s+"([^"]+)"(?:\s+"([^"]+)")?\s*\{',re.M)
 ICONS={
@@ -37,6 +45,10 @@ ICONS={
  'oci_core_security_list':'Security Lists','oci_core_cpe':'Customer Premises Equipment',
  'oci_core_ipsec':None,'oci_core_virtual_circuit':None,
  'oci_objectstorage_bucket':'OCI Object Storage','oci_ons_notification_topic':'Notifications',
+ 'oci_database_autonomous_database':'Oracle Autonomous Database',
+ 'oci_psql_db_system':'OCI Database with PostgreSQL',
+ 'oci_kms_vault':'Vault','oci_streaming_stream_pool':'OCI Streaming',
+ 'oci_streaming_stream':'OCI Streaming','oci_load_balancer_load_balancer':'Load Balancer',
 }
 
 
@@ -108,10 +120,12 @@ def render_map(slug,cloud,entries,lookups,render):
   card=d.group('component','',x,y,width,195,parent=group)
   icon=ICONS.get(e['type']) if cloud=='OCI' else None
   if icon: d.icon(icon,55,90,parent=card,size=42,label='')
-  tx=100 if icon else 20; tw=width-tx-20
-  text=wrapped(e['address'],68 if icon else 79)+'\n'+wrapped(e['type'],68 if icon else 79)+'\n'+wrapped(e['condition'],68 if icon else 79)
+  vendor_icon=cloud_icons.icon(d,e['type'],55,90,parent=card,size=48)
+  has_icon=bool(icon or vendor_icon)
+  tx=100 if has_icon else 20; tw=width-tx-20
+  text=wrapped(e['address'],68 if has_icon else 79)+'\n'+wrapped(e['type'],68 if has_icon else 79)+'\n'+wrapped(e['condition'],68 if has_icon else 79)
   d.text(text,tx,20,tw,155,parent=card,size=12)
-  e['diagram']={'file':cloud.lower()+'-resources.drawio','node_id':card.id,'source_symbol':e['symbol']}
+  e['diagram']={'file':cloud.lower()+'-resources.drawio','node_id':card.id,'source_symbol':e['symbol'],'provider_icon':e['type'] if vendor_icon else None}
  y=group.y+group.h+35
  lookup_names=', '.join(e['address'] for e in lookups if e['cloud']==cloud)
  notes='Counts are declarations, not deployed instances. for_each and Bicep collections expand from inputs; gates retain their source expressions.\nPinned-module declarations use the module call-site inputs; the overview explains default enablement. Companion templates deploy separately.\nResource cards enumerate coverage only; card order does not imply dependency or traffic. IAM, DNS, circuits and workloads are not inferred beyond source.'
@@ -148,6 +162,7 @@ def main():
    recorded={(e['cloud'],e['address'],e['type'],e['condition'],e['revision']) for e in saved['resources']}
    if current!=recorded or sources!=saved['source_files']:
     raise RuntimeError('Inventory is stale or incomplete: '+slug)
+   pages={p.get('name'):p for p in ET.parse(inventory_path.parent/'architecture.drawio').getroot().findall('diagram')}
    for e in saved['resources']:
     mapping=e['diagram']; path=inventory_path.parent/mapping['file']
     nodes={c.get('id'):c for c in ET.parse(path).findall('.//mxCell')}
@@ -155,6 +170,24 @@ def main():
     labels=''.join(n.get('value','') for n in nodes.values() if n.get('parent')==mapping['node_id'])
     normalized=re.sub(r'\s+','',re.sub(r'<[^>]+>','',html.unescape(labels)))
     if e['address'] not in normalized: raise RuntimeError('Resource label missing: '+e['address'])
+    page=pages.get(e['cloud']+' resources')
+    if page is None: raise RuntimeError('Main document resource page missing')
+    page_nodes={c.get('id'):c for c in page.findall('.//mxCell')}
+    if mapping['node_id'] not in page_nodes: raise RuntimeError('Main document resource node missing')
+    descendants=[n for n in nodes.values() if n.get('parent')==mapping['node_id']]
+    expected_icon=e['type'] if cloud_icons.available(e['type']) else None
+    if mapping.get('provider_icon')!=expected_icon: raise RuntimeError('Provider icon mapping stale')
+    if expected_icon:
+     glyphs=[n for n in nodes.values() if n.get('parent') in {child.get('id') for child in descendants}]
+     if not glyphs: raise RuntimeError('Provider glyph missing')
+     for glyph in glyphs:
+      style=glyph.get('style','')
+      if e['cloud']=='Azure':
+       encoded=re.search(r'image=data:image/svg\+xml,([^;]+);',style)
+       if not encoded: raise RuntimeError('Azure SVG embedding invalid')
+       ET.fromstring(base64.b64decode(encoded[1]))
+      elif 'shape=mxgraph.'+('aws4.' if e['cloud']=='AWS' else 'gcp2.') not in style:
+       raise RuntimeError('Wrong provider stencil')
     png=path.with_suffix('.png').read_bytes()
     if png[:8]!=b'\x89PNG\r\n\x1a\n': raise RuntimeError('PNG missing or invalid')
    print(slug, str(len(resources))+' declarations checked against source and diagram nodes',flush=True)

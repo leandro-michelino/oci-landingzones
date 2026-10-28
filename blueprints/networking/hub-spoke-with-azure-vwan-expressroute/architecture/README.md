@@ -121,3 +121,7 @@ python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint networking/
 - Confirm ExpressRoute private peering and FastConnect provider details are paired correctly.
 - Confirm Azure vHub route table labels and propagated route settings match the intended route domain.
 - Confirm no local tfvars, plan files, provider service keys, or ExpressRoute authorization keys are committed.
+
+Provider icons: Azure SVGs and AWS native stencils from draw.io identify mapped
+external-cloud resources. Unmapped associations and local contracts retain
+explicit named boxes. See [icon sources](../../../../scripts/diagrams/assets/README.md).
