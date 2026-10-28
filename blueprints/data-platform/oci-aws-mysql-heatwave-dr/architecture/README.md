@@ -14,40 +14,53 @@ cutover are external implementation steps and must be verified separately.
 | Primary database cloud | OCI |
 | Secondary database cloud | AWS |
 | Primary database service | OCI MySQL HeatWave (DB System + HeatWave cluster) |
-| Secondary database endpoint | AWS standby endpoint from CloudFormation session outputs |
+| Secondary database endpoint | Optional MySQL 8.0 RDS instance from the separate CloudFormation stack; no replication channel configured |
 | Cross-cloud network | Optional OCI DRG + CPE + static-route IPSec; AWS VPN gateway, tunnel configuration, and routes are not created here |
 | Replication style | Asynchronous replication and TLS requirements documented in a contract; no channel is configured |
 | Failover control | DNS cutover and runbook contract outputs; no automated DNS change or failover |
 
 ## Architecture
 
-```text
-+--------------------------------------------------------------------------------------------------+
-| OCI + AWS MySQL HeatWave DR (OCI Primary)                                                       |
-+--------------------------------------------------------------------------------------------------+
-|                                                                                                  |
-| [Application Clients]                                                                            |
-|         |                                                                                        |
-|         v                                                                                        |
-| [mysql-primary.example.internal]                                                                 |
-|         |                                                                                        |
-|         +--> steady state --> [OCI MySQL DB System + HeatWave Cluster]                          |
-|         |                              |                                                         |
-|         |                              +--> backups / lakehouse bucket                           |
-|         |                              |                                                         |
-|         |                              +--> replication channel (manual setup required)          |
-|         |                                         |                                               |
-|         |                                         v                                               |
-|         |                              [OCI DRG] == IPSec == (AWS VPN edge, external prerequisite) |
-|         |                                                                      |                  |
-|         |                                                                      v                  |
-|         |                                                [AWS standby database endpoint]          |
-|         |                                                                                        |
-|         `--> DR failover --> DNS points to AWS standby endpoint                                  |
-|                                                                                                  |
-| Runbook contracts: connectivity_contract, replication_contract, dns_failover_contract, runbook_contract |
-+--------------------------------------------------------------------------------------------------+
+![Architecture overview](architecture.png)
+
+[Editable draw.io diagram](architecture.drawio)
+
+## Diagram Sources And Scope
+
+Generated with the installed `oci-architecture-diagrams` skill and Oracle Toolkit
+v24.2. AWS resources use native AWS icons; types without an exact mapped glyph
+remain named boxes. Source review: October 28, 2026. Configuration relationships
+and source defaults do not establish working traffic, inference, backups or DR.
+No cloud provisioning or provider revalidation was performed; historical
+validation metadata remains unchanged.
+
+Regenerate the overview before rebuilding the resource-detail pages:
+
+```bash
+python3 scripts/diagrams/data-ai-batch-01.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint data-platform/oci-aws-mysql-heatwave-dr --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint data-platform/oci-aws-mysql-heatwave-dr --check
 ```
+
+## Resource Detail And Coverage
+
+The main draw.io document contains the overview, every resource-detail page and
+the existing-resource input references below. Conditional and collection
+resources remain visible. Counts are source declarations, not resolved instance
+counts or deployed resources. `terraform_data` contracts are local metadata;
+companion CloudFormation templates deploy separately.
+
+| Scope | Declarations or references | Preview | Editable source |
+| --- | --- | --- | --- |
+| AWS resources | 13 | [PNG](aws-resources.png) | [draw.io](aws-resources.drawio) |
+| Contracts resources | 5 | [PNG](contracts-resources.png) | [draw.io](contracts-resources.drawio) |
+| OCI resources | 12 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
+| Existing resources / inputs | 4 references | [PNG](existing-resources.png) | [draw.io](existing-resources.drawio) |
+
+[Resource inventory](resource-inventory.json) records source hashes, revisions,
+creation expressions, data lookups and resource-to-diagram node mappings.
+Supplied subnet, key, compartment and service IDs are references or overrides,
+not evidence that this blueprint creates or adopts those external resources.
 
 ## Terraform Components
 
@@ -89,7 +102,7 @@ Declared resource addresses:
 ## Traffic And Trust Boundaries
 
 - OCI is the write-primary trust zone for application traffic.
-- AWS is the standby trust zone, reachable only through approved DR procedures.
+- AWS is the intended standby trust zone. Its template creates VPC, two AZ subnets, route table, associations, security group, flow logs, KMS, IAM and optional RDS resources. It creates no VPN edge or route to OCI.
 - The generated OCI database subnet is private and has no Internet Gateway or
   default route. Its attached security list limits MySQL ingress to the
   configured application and AWS replication CIDRs. The application CIDR

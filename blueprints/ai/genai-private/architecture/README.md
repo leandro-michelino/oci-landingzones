@@ -1,6 +1,6 @@
 # OCI Generative AI Private Landing Zone Architecture
 
-This is the deployment architecture for `blueprints/ai/genai-private`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/ai/genai-private`. The PNG provides a preview; draw.io retains the editable source and resource-detail pages.
 
 ## Deployment Purpose
 
@@ -13,36 +13,48 @@ Deploys a private OCI Generative AI endpoint pattern with optional archive bucke
 | Boundary | `blueprints/ai/genai-private` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Deploys a private OCI Generative AI endpoint pattern with optional archive bucket and scoped IAM policy. |
 | Terraform components | `oci_generative_ai_generative_ai_private_endpoint.this`, `oci_objectstorage_bucket.archive`, `oci_identity_policy.access` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic or control flow for this exact deployment. |
+| Primary architecture view | The Architecture diagram below shows the optional OCI resources and supplied network prerequisites for this deployment. |
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| OCI Generative AI Private Landing Zone                                                                   |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {AI workload compartment / private subnet}                                                               |
-|         |                                                                                                |
-|         +--> [Generative AI private endpoint]                                                            |
-|         |      private DNS prefix, subnet, NSGs, and service attachment controls                         |
-|         |                                                                                                |
-|         +--> [archive bucket]                                                                            |
-|         |      prompt, dataset, and response archive path when enabled                                   |
-|         |                                                                                                |
-|         `--> [IAM access policy]                                                                         |
-|                approved groups and service principals only                                               |
-|                                                                                                          |
-| Data path: notebook or app subnet -> private endpoint -> OCI Generative AI service.                      |
-| Governance path: archive bucket and IAM policy preserve approved storage and access boundaries.          |
-| Hand-off: private endpoint ID, archive bucket name, access policy ID, and resource map.                  |
-+----------------------------------------------------------------------------------------------------------+
+![Architecture overview](architecture.png)
+
+[Editable draw.io diagram](architecture.drawio)
+
+## Diagram Sources And Scope
+
+Generated with the installed `oci-architecture-diagrams` skill and Oracle Toolkit
+v24.2. AWS resources use native AWS icons; types without an exact mapped glyph
+remain named boxes. Source review: October 28, 2026. Configuration relationships
+and source defaults do not establish working traffic, inference, backups or DR.
+No cloud provisioning or provider revalidation was performed; historical
+validation metadata remains unchanged.
+
+Regenerate the overview before rebuilding the resource-detail pages:
+
+```bash
+python3 scripts/diagrams/data-ai-batch-01.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint ai/genai-private --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint ai/genai-private --check
 ```
+
+## Resource Detail And Coverage
+
+The main draw.io document contains the overview, every resource-detail page and
+the existing-resource input references below. Conditional and collection
+resources remain visible. Counts are source declarations, not resolved instance
+counts or deployed resources. `terraform_data` contracts are local metadata;
+companion CloudFormation templates deploy separately.
+
+| Scope | Declarations or references | Preview | Editable source |
+| --- | --- | --- | --- |
+| OCI resources | 3 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
+| Existing resources / inputs | 5 references | [PNG](existing-resources.png) | [draw.io](existing-resources.drawio) |
+
+[Resource inventory](resource-inventory.json) records source hashes, revisions,
+creation expressions, data lookups and resource-to-diagram node mappings.
+Supplied subnet, key, compartment and service IDs are references or overrides,
+not evidence that this blueprint creates or adopts those external resources.
 
 ## Terraform Components
 
@@ -61,7 +73,7 @@ Deploys a private OCI Generative AI endpoint pattern with optional archive bucke
 ## Traffic And Trust Boundaries
 
 - Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
-- Data plane traffic is the packet or service path shown in the Architecture diagram; if this deployment only creates identity or governance resources, the data plane is permission and signal flow.
+- The private endpoint requires a supplied compatible subnet and approved network access. No client, model deployment, inference call or archive writer is created.
 - Trust boundaries are the tenancy, compartment, VCN, subnet, private endpoint, identity domain, or managed service edges shown in the diagram.
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 

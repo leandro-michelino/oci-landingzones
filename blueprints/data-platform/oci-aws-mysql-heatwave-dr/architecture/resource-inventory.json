@@ -1,0 +1,721 @@
+{
+  "schema_version": 2,
+  "blueprint": "data-platform/oci-aws-mysql-heatwave-dr",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "AWS": 13,
+    "Contracts": 5,
+    "OCI": 12
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_vcn.primary",
+      "type": "oci_core_vcn",
+      "symbol": "primary",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_primary_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "primary",
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_drg.primary",
+      "type": "oci_core_drg",
+      "symbol": "primary",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_ipsec_connectivity ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_ipsec_connectivity ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n10",
+        "source_symbol": "primary",
+        "provider_icon": null,
+        "oci_icon": "DRG"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_route_table.primary_db",
+      "type": "oci_core_route_table",
+      "symbol": "primary_db",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_primary_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n19",
+        "source_symbol": "primary_db",
+        "provider_icon": null,
+        "oci_icon": "Route Table"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_security_list.primary_db",
+      "type": "oci_core_security_list",
+      "symbol": "primary_db",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_primary_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n43",
+        "source_symbol": "primary_db",
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_subnet.primary_db",
+      "type": "oci_core_subnet",
+      "symbol": "primary_db",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_primary_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n55",
+        "source_symbol": "primary_db",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_drg_attachment.primary_db",
+      "type": "oci_core_drg_attachment",
+      "symbol": "primary_db",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_primary_network && var.enable_ipsec_connectivity ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_primary_network && var.enable_ipsec_connectivity ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n57",
+        "source_symbol": "primary_db",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_cpe.aws",
+      "type": "oci_core_cpe",
+      "symbol": "aws",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_ipsec_connectivity ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_ipsec_connectivity ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n59",
+        "source_symbol": "aws",
+        "provider_icon": null,
+        "oci_icon": "Customer Premises Equipment"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_ipsec.aws",
+      "type": "oci_core_ipsec",
+      "symbol": "aws",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_ipsec_connectivity ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_ipsec_connectivity ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n69",
+        "source_symbol": "aws",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_bucket.lakehouse",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "lakehouse",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_lakehouse_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_lakehouse_bucket ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n71",
+        "source_symbol": "lakehouse",
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_mysql_mysql_db_system.primary",
+      "type": "oci_mysql_mysql_db_system",
+      "symbol": "primary",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_db_system ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_db_system ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n81",
+        "source_symbol": "primary",
+        "provider_icon": null,
+        "oci_icon": "MySQL Database System"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_mysql_heat_wave_cluster.primary",
+      "type": "oci_mysql_heat_wave_cluster",
+      "symbol": "primary",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_heatwave_cluster ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_heatwave_cluster ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n90",
+        "source_symbol": "primary",
+        "provider_icon": null,
+        "oci_icon": "MySQL HeatWave"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_ons_notification_topic.dr_alert",
+      "type": "oci_ons_notification_topic",
+      "symbol": "dr_alert",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_dr_alert_topic ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_dr_alert_topic ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n100",
+        "source_symbol": "dr_alert",
+        "provider_icon": null,
+        "oci_icon": "Notifications"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.oci_network_contract",
+      "type": "terraform_data",
+      "symbol": "oci_network_contract",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n4",
+        "source_symbol": "oci_network_contract",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.connectivity_contract",
+      "type": "terraform_data",
+      "symbol": "connectivity_contract",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n6",
+        "source_symbol": "connectivity_contract",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.replication_contract",
+      "type": "terraform_data",
+      "symbol": "replication_contract",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n8",
+        "source_symbol": "replication_contract",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.dns_failover_contract",
+      "type": "terraform_data",
+      "symbol": "dns_failover_contract",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n10",
+        "source_symbol": "dns_failover_contract",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.runbook_contract",
+      "type": "terraform_data",
+      "symbol": "runbook_contract",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n12",
+        "source_symbol": "runbook_contract",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "AwsDrVpc",
+      "symbol": "AwsDrVpc",
+      "type": "AWS::EC2::VPC",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n4",
+        "source_symbol": "AwsDrVpc",
+        "provider_icon": "AWS::EC2::VPC",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "AwsDrLogKey",
+      "symbol": "AwsDrLogKey",
+      "type": "AWS::KMS::Key",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n8",
+        "source_symbol": "AwsDrLogKey",
+        "provider_icon": "AWS::KMS::Key",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "AwsDrFlowLogGroup",
+      "symbol": "AwsDrFlowLogGroup",
+      "type": "AWS::Logs::LogGroup",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n12",
+        "source_symbol": "AwsDrFlowLogGroup",
+        "provider_icon": "AWS::Logs::LogGroup",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "AwsDrFlowLogRole",
+      "symbol": "AwsDrFlowLogRole",
+      "type": "AWS::IAM::Role",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n16",
+        "source_symbol": "AwsDrFlowLogRole",
+        "provider_icon": "AWS::IAM::Role",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "AwsDrVpcFlowLog",
+      "symbol": "AwsDrVpcFlowLog",
+      "type": "AWS::EC2::FlowLog",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n20",
+        "source_symbol": "AwsDrVpcFlowLog",
+        "provider_icon": "AWS::EC2::FlowLog",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "AwsDrRouteTable",
+      "symbol": "AwsDrRouteTable",
+      "type": "AWS::EC2::RouteTable",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n24",
+        "source_symbol": "AwsDrRouteTable",
+        "provider_icon": "AWS::EC2::RouteTable",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "AwsDrSubnetOne",
+      "symbol": "AwsDrSubnetOne",
+      "type": "AWS::EC2::Subnet",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n28",
+        "source_symbol": "AwsDrSubnetOne",
+        "provider_icon": "AWS::EC2::Subnet",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "AwsDrSubnetTwo",
+      "symbol": "AwsDrSubnetTwo",
+      "type": "AWS::EC2::Subnet",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n32",
+        "source_symbol": "AwsDrSubnetTwo",
+        "provider_icon": "AWS::EC2::Subnet",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "AwsDrSubnetOneRouteAssociation",
+      "symbol": "AwsDrSubnetOneRouteAssociation",
+      "type": "AWS::EC2::SubnetRouteTableAssociation",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n36",
+        "source_symbol": "AwsDrSubnetOneRouteAssociation",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "AwsDrSubnetTwoRouteAssociation",
+      "symbol": "AwsDrSubnetTwoRouteAssociation",
+      "type": "AWS::EC2::SubnetRouteTableAssociation",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n38",
+        "source_symbol": "AwsDrSubnetTwoRouteAssociation",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "AwsDrDatabaseSecurityGroup",
+      "symbol": "AwsDrDatabaseSecurityGroup",
+      "type": "AWS::EC2::SecurityGroup",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n40",
+        "source_symbol": "AwsDrDatabaseSecurityGroup",
+        "provider_icon": "AWS::EC2::SecurityGroup",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "AwsDrDbSubnetGroup",
+      "symbol": "AwsDrDbSubnetGroup",
+      "type": "AWS::RDS::DBSubnetGroup",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Condition: EnableRdsStandby",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n44",
+        "source_symbol": "AwsDrDbSubnetGroup",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "AwsDrMySqlStandby",
+      "symbol": "AwsDrMySqlStandby",
+      "type": "AWS::RDS::DBInstance",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Condition: EnableRdsStandby",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n46",
+        "source_symbol": "AwsDrMySqlStandby",
+        "provider_icon": "AWS::RDS::DBInstance",
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "aws-resources.drawio",
+      "page_name": "AWS resources",
+      "declarations": 13
+    },
+    {
+      "file": "contracts-resources.drawio",
+      "page_name": "Contracts resources",
+      "declarations": 5
+    },
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 12
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/variables.tf",
+      "description": "Compartment OCID where OCI resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.existing_db_system_id",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/variables.tf",
+      "description": "Existing OCI MySQL DB System OCID when create_db_system is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.existing_heatwave_cluster_id",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/variables.tf",
+      "description": "Existing HeatWave cluster identifier when create_heatwave_cluster is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.kms_key_id",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/variables.tf",
+      "description": "Optional OCI KMS key OCID for bucket and database encryption.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 4
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_objectstorage_namespace.this",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "this",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_lakehouse_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_lakehouse_bucket ? 1 : 0"
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/locals.tf",
+      "revision": "working-tree",
+      "sha256": "e76c31d503f402ef75153d5b8e6aefa588d3251bb0dc693a5641808f5b35578c"
+    },
+    {
+      "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "sha256": "710460154a5f20e480eeb7370a82e94b2093c9e617d0fd709612c5411564de6f"
+    },
+    {
+      "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "de89bcb4efb83999de1ef5401781ae14dffff95d7afd48bdaff37cf3e1dc071f"
+    },
+    {
+      "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/providers.tf",
+      "revision": "working-tree",
+      "sha256": "fa9e0a8ebd56368af097c75c3220815a254cc4e802385c701cfa5822b30e1f78"
+    },
+    {
+      "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/variables.tf",
+      "revision": "working-tree",
+      "sha256": "39a226cf256f73b072d159c472be3f0b058fc1613b94785c50e15f21115dfe7b"
+    },
+    {
+      "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/aws/main.yaml",
+      "sha256": "6f453269381d455ab8bdbe77d509d80cfcecd45d0b379106d25dce9ceb3b585b"
+    }
+  ]
+}

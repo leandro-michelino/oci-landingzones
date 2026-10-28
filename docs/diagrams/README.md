@@ -238,8 +238,8 @@ blueprints, with 38 Azure and 35 AWS declarations. Repository contracts and loca
 Markdown links passed. No cloud resources, database sessions, replication paths or
 failover drills were provisioned or tested; historical validation dates are unchanged.
 
-Latest coverage: **44 of 80** existing blueprint entry points have editable draw.io
-and PNG architecture overviews; **36 remain** pending conversion.
+Coverage after the AWS/data batch was **44 of 80** existing blueprint entry points
+with editable draw.io and PNG overviews; **36 remained** pending conversion.
 
 
 ## Retrospective Review Of The Original 39
@@ -267,4 +267,39 @@ implement the [GCP counterpart batch](../multicloud/GCP-OCI-BLUEPRINTS.md) follo
 the existing AWS/Azure blueprint contracts. Include the full OCI and GCP resource
 sides, appropriate provider icons, editable draw.io, PNGs and source inventories.
 These are new infrastructure blueprints, not diagram-only examples. They remain
-planned and are excluded from the current 44/80 conversion progress.
+planned and are excluded from the original 80-entry conversion denominator.
+
+
+## Data And AI Continuation
+
+Five further ASCII overviews now have editable draw.io documents and PNGs.
+Resource maps include every source declaration, optional AWS RDS and supporting
+resources, local DR contracts and existing-resource/override references.
+
+| Batch order | Blueprint | Preview | Editable source | Source coverage |
+| --- | --- | --- | --- | --- |
+| 21 | `data-platform/opensearch` | [PNG](../../blueprints/data-platform/opensearch/architecture/architecture.png) | [draw.io](../../blueprints/data-platform/opensearch/architecture/architecture.drawio) | [Inventory](../../blueprints/data-platform/opensearch/architecture/resource-inventory.json) |
+| 22 | `data-platform/mysql-heatwave` | [PNG](../../blueprints/data-platform/mysql-heatwave/architecture/architecture.png) | [draw.io](../../blueprints/data-platform/mysql-heatwave/architecture/architecture.drawio) | [Inventory](../../blueprints/data-platform/mysql-heatwave/architecture/resource-inventory.json) |
+| 23 | `data-platform/oci-aws-mysql-heatwave-dr` | [PNG](../../blueprints/data-platform/oci-aws-mysql-heatwave-dr/architecture/architecture.png) | [draw.io](../../blueprints/data-platform/oci-aws-mysql-heatwave-dr/architecture/architecture.drawio) | [Inventory](../../blueprints/data-platform/oci-aws-mysql-heatwave-dr/architecture/resource-inventory.json) |
+| 24 | `ai/genai-private` | [PNG](../../blueprints/ai/genai-private/architecture/architecture.png) | [draw.io](../../blueprints/ai/genai-private/architecture/architecture.drawio) | [Inventory](../../blueprints/ai/genai-private/architecture/resource-inventory.json) |
+| 25 | `ai/ai-services` | [PNG](../../blueprints/ai/ai-services/architecture/architecture.png) | [draw.io](../../blueprints/ai/ai-services/architecture/architecture.drawio) | [Inventory](../../blueprints/ai/ai-services/architecture/resource-inventory.json) |
+
+```bash
+python3 scripts/diagrams/data-ai-batch-01.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --check
+```
+
+On October 28, 2026, source coverage includes 57 declarations in this batch:
+39 OCI, 13 AWS and 5 local contracts. They are declaration counts, not deployed
+instance counts. Network and database flags, independently created buckets,
+external network prerequisites and unimplemented replication/failover steps are
+explicit. All 17 pages passed layout/export and visual review; 29 identifier
+references are documented separately. Source checks, XML structure, regression
+tests, repository contracts and local Markdown links passed.
+No cloud resources, inference calls, database connections or DR drills
+were created or tested. Historical validation dates remain unchanged.
+
+Latest coverage: **49 of 80** existing blueprint entry points have editable
+draw.io and PNG overviews; **31 remain**. The new deployable GCP counterparts
+remain the final follow-on phase, after completing the original 80.

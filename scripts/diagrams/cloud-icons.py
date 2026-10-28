@@ -27,6 +27,7 @@ AZURE={
  'Microsoft.OperationalInsights/workspaces':'Log_Analytics_Workspaces',
 }
 AWS={
+ 'AWS::RDS::DBInstance':('rds_mysql_instance','#C925D1'),
  'AWS::EC2::VPC':('vpc','#8C4FFF'),
  'AWS::EC2::Subnet':('group_subnet','#7AA116'),
  'AWS::EC2::RouteTable':('route_table','#8C4FFF'),

@@ -19,28 +19,44 @@ without adopting a full GenAI platform.
 
 ## Architecture
 
-```text
-Application / Integration
-      |
-      v
-Input Bucket
-      |
-      | service API calls
-      v
-OCI AI Services
- |-- Document Understanding project
- |-- Language project
- |-- Vision project
- |-- Vision private endpoint
-      |
-      v
-Output Bucket
-      |
-      v
-Application / ODA / OIC / Analytics
+![Architecture overview](architecture.png)
 
-IAM controls callers, service accounts, and bucket access.
+[Editable draw.io diagram](architecture.drawio)
+
+## Diagram Sources And Scope
+
+Generated with the installed `oci-architecture-diagrams` skill and Oracle Toolkit
+v24.2. AWS resources use native AWS icons; types without an exact mapped glyph
+remain named boxes. Source review: October 28, 2026. Configuration relationships
+and source defaults do not establish working traffic, inference, backups or DR.
+No cloud provisioning or provider revalidation was performed; historical
+validation metadata remains unchanged.
+
+Regenerate the overview before rebuilding the resource-detail pages:
+
+```bash
+python3 scripts/diagrams/data-ai-batch-01.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint ai/ai-services --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint ai/ai-services --check
 ```
+
+## Resource Detail And Coverage
+
+The main draw.io document contains the overview, every resource-detail page and
+the existing-resource input references below. Conditional and collection
+resources remain visible. Counts are source declarations, not resolved instance
+counts or deployed resources. `terraform_data` contracts are local metadata;
+companion CloudFormation templates deploy separately.
+
+| Scope | Declarations or references | Preview | Editable source |
+| --- | --- | --- | --- |
+| OCI resources | 6 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
+| Existing resources / inputs | 4 references | [PNG](existing-resources.png) | [draw.io](existing-resources.drawio) |
+
+[Resource inventory](resource-inventory.json) records source hashes, revisions,
+creation expressions, data lookups and resource-to-diagram node mappings.
+Supplied subnet, key, compartment and service IDs are references or overrides,
+not evidence that this blueprint creates or adopts those external resources.
 
 ## Terraform Components
 

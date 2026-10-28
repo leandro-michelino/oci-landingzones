@@ -20,25 +20,44 @@ data-platform deployment folder.
 
 ## Architecture
 
-```text
-Application / RAG Pipeline / Agent
-        |
-        | private network + NSG
-        v
-OCI Search with OpenSearch
- |-- master nodes
- |-- data/search nodes
- |-- OpenDashboard nodes
- |-- vector indexes
- |-- search indexes
-        |
-        | snapshots / exports
-        v
-Object Storage Snapshot Bucket
-        |
-        v
-Admins / Index Writers / Read-Only Consumers
+![Architecture overview](architecture.png)
+
+[Editable draw.io diagram](architecture.drawio)
+
+## Diagram Sources And Scope
+
+Generated with the installed `oci-architecture-diagrams` skill and Oracle Toolkit
+v24.2. AWS resources use native AWS icons; types without an exact mapped glyph
+remain named boxes. Source review: October 28, 2026. Configuration relationships
+and source defaults do not establish working traffic, inference, backups or DR.
+No cloud provisioning or provider revalidation was performed; historical
+validation metadata remains unchanged.
+
+Regenerate the overview before rebuilding the resource-detail pages:
+
+```bash
+python3 scripts/diagrams/data-ai-batch-01.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint data-platform/opensearch --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint data-platform/opensearch --check
 ```
+
+## Resource Detail And Coverage
+
+The main draw.io document contains the overview, every resource-detail page and
+the existing-resource input references below. Conditional and collection
+resources remain visible. Counts are source declarations, not resolved instance
+counts or deployed resources. `terraform_data` contracts are local metadata;
+companion CloudFormation templates deploy separately.
+
+| Scope | Declarations or references | Preview | Editable source |
+| --- | --- | --- | --- |
+| OCI resources | 9 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
+| Existing resources / inputs | 8 references | [PNG](existing-resources.png) | [draw.io](existing-resources.drawio) |
+
+[Resource inventory](resource-inventory.json) records source hashes, revisions,
+creation expressions, data lookups and resource-to-diagram node mappings.
+Supplied subnet, key, compartment and service IDs are references or overrides,
+not evidence that this blueprint creates or adopts those external resources.
 
 ## Terraform Components
 
@@ -58,6 +77,9 @@ Declared resource addresses:
 | --- | --- | --- |
 | Resource | `oci_core_vcn.opensearch` | Declared in this blueprint; creation depends on its count or for_each inputs. |
 | Resource | `oci_core_subnet.opensearch` | Declared in this blueprint; creation depends on its count or for_each inputs. |
+| Resource | `oci_core_security_list.opensearch` | Empty security list attached to the generated subnet. |
+| Resource | `oci_core_network_security_group_security_rule.search_ingress` | Conditional per-client TCP/9200 ingress. |
+| Resource | `oci_core_network_security_group_security_rule.dashboard_ingress` | Conditional per-client TCP/5601 ingress. |
 | Resource | `oci_core_network_security_group.opensearch` | Declared in this blueprint; creation depends on its count or for_each inputs. |
 | Resource | `oci_objectstorage_bucket.snapshots` | Declared in this blueprint; creation depends on its count or for_each inputs. |
 | Resource | `oci_opensearch_opensearch_cluster.this` | Declared in this blueprint; creation depends on its count or for_each inputs. |

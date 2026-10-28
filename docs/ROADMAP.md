@@ -41,7 +41,7 @@ compliance, or workload platform pattern.
 
 The user requested GCP blueprints on October 28, 2026, after completing the
 current architecture-diagram work. Finish conversion and resource coverage for
-the original 80 entry points first (currently 44 converted, 36 pending); then
+the original 80 entry points first (currently 49 converted, 31 pending); then
 implement the [GCP counterpart batch](multicloud/GCP-OCI-BLUEPRINTS.md).
 
 This is a commitment to new blueprint implementation, including the GCP-side

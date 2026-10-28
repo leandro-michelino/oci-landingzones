@@ -1,0 +1,365 @@
+{
+  "schema_version": 2,
+  "blueprint": "data-platform/opensearch",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 9
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_vcn.opensearch",
+      "type": "oci_core_vcn",
+      "symbol": "opensearch",
+      "source": "blueprints/data-platform/opensearch/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_private_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "opensearch",
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_subnet.opensearch",
+      "type": "oci_core_subnet",
+      "symbol": "opensearch",
+      "source": "blueprints/data-platform/opensearch/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_private_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n10",
+        "source_symbol": "opensearch",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_security_list.opensearch",
+      "type": "oci_core_security_list",
+      "symbol": "opensearch",
+      "source": "blueprints/data-platform/opensearch/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_private_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n12",
+        "source_symbol": "opensearch",
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group.opensearch",
+      "type": "oci_core_network_security_group",
+      "symbol": "opensearch",
+      "source": "blueprints/data-platform/opensearch/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_private_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n24",
+        "source_symbol": "opensearch",
+        "provider_icon": null,
+        "oci_icon": "NSG"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group_security_rule.search_ingress",
+      "type": "oci_core_network_security_group_security_rule",
+      "symbol": "search_ingress",
+      "source": "blueprints/data-platform/opensearch/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.create_private_network ? toset(var.allowed_search_client_cidrs) : toset([])",
+      "creation_expression": {
+        "for_each": "var.create_private_network ? toset(var.allowed_search_client_cidrs) : toset([])"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n30",
+        "source_symbol": "search_ingress",
+        "provider_icon": null,
+        "oci_icon": "NSG"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group_security_rule.dashboard_ingress",
+      "type": "oci_core_network_security_group_security_rule",
+      "symbol": "dashboard_ingress",
+      "source": "blueprints/data-platform/opensearch/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.create_private_network ? toset(var.allowed_dashboard_client_cidrs) : toset([])",
+      "creation_expression": {
+        "for_each": "var.create_private_network ? toset(var.allowed_dashboard_client_cidrs) : toset([])"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n36",
+        "source_symbol": "dashboard_ingress",
+        "provider_icon": null,
+        "oci_icon": "NSG"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_bucket.snapshots",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "snapshots",
+      "source": "blueprints/data-platform/opensearch/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_snapshot_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_snapshot_bucket ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n42",
+        "source_symbol": "snapshots",
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_opensearch_opensearch_cluster.this",
+      "type": "oci_opensearch_opensearch_cluster",
+      "symbol": "this",
+      "source": "blueprints/data-platform/opensearch/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_cluster ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_cluster ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n52",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "OpenSearch"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/data-platform/opensearch/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n69",
+        "source_symbol": "access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 9
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/data-platform/opensearch/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.vcn_id",
+      "source": "blueprints/data-platform/opensearch/variables.tf",
+      "description": "VCN OCID for the OpenSearch cluster.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.vcn_compartment_id",
+      "source": "blueprints/data-platform/opensearch/variables.tf",
+      "description": "VCN compartment OCID. Defaults to compartment_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.subnet_id",
+      "source": "blueprints/data-platform/opensearch/variables.tf",
+      "description": "Subnet OCID for the OpenSearch cluster.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.subnet_compartment_id",
+      "source": "blueprints/data-platform/opensearch/variables.tf",
+      "description": "Subnet compartment OCID. Defaults to compartment_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.nsg_id",
+      "source": "blueprints/data-platform/opensearch/variables.tf",
+      "description": "Optional NSG OCID for the OpenSearch cluster.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.kms_key_id",
+      "source": "blueprints/data-platform/opensearch/variables.tf",
+      "description": "Optional KMS key OCID for snapshot bucket encryption.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/data-platform/opensearch/variables.tf",
+      "description": "Compartment OCID where the IAM policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n17"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 8
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_objectstorage_namespace.this",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "this",
+      "source": "blueprints/data-platform/opensearch/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_snapshot_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_snapshot_bucket ? 1 : 0"
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/data-platform/opensearch/locals.tf",
+      "revision": "working-tree",
+      "sha256": "d708666cad54e33371e4a564a7145363a9615bf76e8a47dfe609dc247ebf8f45"
+    },
+    {
+      "path": "blueprints/data-platform/opensearch/main.tf",
+      "revision": "working-tree",
+      "sha256": "7fa3694a2e26f285d630f85efde020146a1390f6db87d58e8511676c8835cf66"
+    },
+    {
+      "path": "blueprints/data-platform/opensearch/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "15db1a7f75c250fec1db1fac33527a188980f2c88a88b86ed834ceb648d453fe"
+    },
+    {
+      "path": "blueprints/data-platform/opensearch/providers.tf",
+      "revision": "working-tree",
+      "sha256": "b2c3b649c7e80c3f4e4f8df66663daef9fe857240e0c86137896c9305fb70d77"
+    },
+    {
+      "path": "blueprints/data-platform/opensearch/variables.tf",
+      "revision": "working-tree",
+      "sha256": "899177843be338e74904143b9267afd5b8803d5cc9108d1a46a5cdf1ee3ecd4c"
+    },
+    {
+      "path": "blueprints/data-platform/opensearch/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

@@ -1,0 +1,365 @@
+{
+  "schema_version": 2,
+  "blueprint": "data-platform/mysql-heatwave",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 9
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_vcn.mysql",
+      "type": "oci_core_vcn",
+      "symbol": "mysql",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_private_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "mysql",
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_subnet.mysql",
+      "type": "oci_core_subnet",
+      "symbol": "mysql",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_private_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n10",
+        "source_symbol": "mysql",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_security_list.mysql",
+      "type": "oci_core_security_list",
+      "symbol": "mysql",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_private_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n12",
+        "source_symbol": "mysql",
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group.mysql",
+      "type": "oci_core_network_security_group",
+      "symbol": "mysql",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_private_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n24",
+        "source_symbol": "mysql",
+        "provider_icon": null,
+        "oci_icon": "NSG"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group_security_rule.mysql_ingress",
+      "type": "oci_core_network_security_group_security_rule",
+      "symbol": "mysql_ingress",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.create_private_network ? toset(var.allowed_client_cidrs) : []",
+      "creation_expression": {
+        "for_each": "var.create_private_network ? toset(var.allowed_client_cidrs) : []"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n30",
+        "source_symbol": "mysql_ingress",
+        "provider_icon": null,
+        "oci_icon": "NSG"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_bucket.lakehouse",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "lakehouse",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_lakehouse_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_lakehouse_bucket ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n36",
+        "source_symbol": "lakehouse",
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_mysql_mysql_db_system.this",
+      "type": "oci_mysql_mysql_db_system",
+      "symbol": "this",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_db_system ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_db_system ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n46",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "MySQL Database System"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_mysql_heat_wave_cluster.this",
+      "type": "oci_mysql_heat_wave_cluster",
+      "symbol": "this",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_heatwave_cluster ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_heatwave_cluster ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n55",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "MySQL HeatWave"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n65",
+        "source_symbol": "access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 9
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/data-platform/mysql-heatwave/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.db_system_id",
+      "source": "blueprints/data-platform/mysql-heatwave/variables.tf",
+      "description": "Existing MySQL DB System OCID when create_db_system is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.subnet_id",
+      "source": "blueprints/data-platform/mysql-heatwave/variables.tf",
+      "description": "Private subnet OCID for the MySQL endpoint.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.nsg_ids",
+      "source": "blueprints/data-platform/mysql-heatwave/variables.tf",
+      "description": "Network security group OCIDs for the MySQL endpoint.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.configuration_id",
+      "source": "blueprints/data-platform/mysql-heatwave/variables.tf",
+      "description": "Optional MySQL configuration OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.heatwave_cluster_id",
+      "source": "blueprints/data-platform/mysql-heatwave/variables.tf",
+      "description": "Existing HeatWave cluster identifier when create_heatwave_cluster is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.kms_key_id",
+      "source": "blueprints/data-platform/mysql-heatwave/variables.tf",
+      "description": "Optional KMS key OCID for bucket and DB encryption.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/data-platform/mysql-heatwave/variables.tf",
+      "description": "Compartment OCID where the optional IAM policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n17"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 8
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_objectstorage_namespace.this",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "this",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_lakehouse_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_lakehouse_bucket ? 1 : 0"
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/data-platform/mysql-heatwave/locals.tf",
+      "revision": "working-tree",
+      "sha256": "928edae21fa6dde07511d38e56878a4b8257786402d05e7f72c37ecd48f4c85b"
+    },
+    {
+      "path": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "working-tree",
+      "sha256": "6a6844f7e18753e03a2d72fa869c3b3cae2c29069e2ba7ce2fc84cb8f757bd55"
+    },
+    {
+      "path": "blueprints/data-platform/mysql-heatwave/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "1d3d4ff57f14dda901b5cf68300d7a4a0c53ca993e13f58a4dc23f1d04ec9434"
+    },
+    {
+      "path": "blueprints/data-platform/mysql-heatwave/providers.tf",
+      "revision": "working-tree",
+      "sha256": "fa9e0a8ebd56368af097c75c3220815a254cc4e802385c701cfa5822b30e1f78"
+    },
+    {
+      "path": "blueprints/data-platform/mysql-heatwave/variables.tf",
+      "revision": "working-tree",
+      "sha256": "12169d7acf2e3f7312e1e40cf36c9a785fc7db0e0c96b19e0d422844451488d7"
+    },
+    {
+      "path": "blueprints/data-platform/mysql-heatwave/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

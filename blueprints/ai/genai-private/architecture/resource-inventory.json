@@ -1,0 +1,200 @@
+{
+  "schema_version": 2,
+  "blueprint": "ai/genai-private",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 3
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_generative_ai_generative_ai_private_endpoint.this",
+      "type": "oci_generative_ai_generative_ai_private_endpoint",
+      "symbol": "this",
+      "source": "blueprints/ai/genai-private/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_private_endpoint ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_private_endpoint ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_bucket.archive",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "archive",
+      "source": "blueprints/ai/genai-private/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_archive_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_archive_bucket ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n6",
+        "source_symbol": "archive",
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/ai/genai-private/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n16",
+        "source_symbol": "access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 3
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/ai/genai-private/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.subnet_id",
+      "source": "blueprints/ai/genai-private/variables.tf",
+      "description": "Subnet OCID for the private endpoint.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.nsg_ids",
+      "source": "blueprints/ai/genai-private/variables.tf",
+      "description": "NSG OCIDs for the private endpoint.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.kms_key_id",
+      "source": "blueprints/ai/genai-private/variables.tf",
+      "description": "Optional KMS key OCID for archive bucket encryption.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/ai/genai-private/variables.tf",
+      "description": "Compartment OCID where the IAM policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 5
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_objectstorage_namespace.this",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "this",
+      "source": "blueprints/ai/genai-private/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_archive_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_archive_bucket ? 1 : 0"
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/ai/genai-private/locals.tf",
+      "revision": "working-tree",
+      "sha256": "dc44ac69a7ebe5749c3edd6d465008553b36d4ac13ce332fa068290cc14ba4d9"
+    },
+    {
+      "path": "blueprints/ai/genai-private/main.tf",
+      "revision": "working-tree",
+      "sha256": "c92449e8e680ef643518376dc6cc6a9a14a526a51422d3c9d60eaa7381f349cb"
+    },
+    {
+      "path": "blueprints/ai/genai-private/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "f70e51f88dbfbebcdc525cf4b2ec0a550b0e8b9ee2dfea13269e0c94e9f655b9"
+    },
+    {
+      "path": "blueprints/ai/genai-private/providers.tf",
+      "revision": "working-tree",
+      "sha256": "8f85e8539190ef04ab19c8d4c834aa1f74fa02d185b70ac6875df16eb1088de5"
+    },
+    {
+      "path": "blueprints/ai/genai-private/variables.tf",
+      "revision": "working-tree",
+      "sha256": "131025713890943a66ee166c9522c52d839774baac0a408c40a780d002b6d088"
+    },
+    {
+      "path": "blueprints/ai/genai-private/versions.tf",
+      "revision": "working-tree",
+      "sha256": "0a713dec841cd6f00b14672dd1a1011a5a7a8d26737f7e185ab2b869c9bba796"
+    }
+  ]
+}

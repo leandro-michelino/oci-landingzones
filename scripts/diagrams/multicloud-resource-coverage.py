@@ -36,9 +36,20 @@ DEFAULTS=[
  'data-platform/private-data-platform',
  'data-platform/postgresql',
  'data-platform/apex-adw',
+ 'data-platform/opensearch',
+ 'data-platform/mysql-heatwave',
+ 'data-platform/oci-aws-mysql-heatwave-dr',
+ 'ai/genai-private',
+ 'ai/ai-services',
 ]
 DECL=re.compile(r'^(resource|data|module)\s+"([^"]+)"(?:\s+"([^"]+)")?\s*\{',re.M)
 ICONS={
+ 'oci_opensearch_opensearch_cluster':'OpenSearch',
+ 'oci_mysql_mysql_db_system':'MySQL Database System',
+ 'oci_mysql_heat_wave_cluster':'MySQL HeatWave',
+ 'oci_ai_document_project':'Document Understanding',
+ 'oci_ai_language_project':'OCI Language',
+ 'oci_ai_vision_project':'OCI Vision',
  'oci_core_vcn':'VCN (Region Identifier)','oci_core_subnet':None,
  'oci_core_drg':'DRG','oci_core_drg_attachment':None,
  'oci_core_internet_gateway':'Internet Gateway','oci_core_nat_gateway':'NAT Gateway',

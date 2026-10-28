@@ -1,0 +1,250 @@
+{
+  "schema_version": 2,
+  "blueprint": "ai/ai-services",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 6
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_bucket.this",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "this",
+      "source": "blueprints/ai/ai-services/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.create_buckets ? local.bucket_names : {}",
+      "creation_expression": {
+        "for_each": "var.create_buckets ? local.bucket_names : {}"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_ai_document_project.document",
+      "type": "oci_ai_document_project",
+      "symbol": "document",
+      "source": "blueprints/ai/ai-services/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_document_project ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_document_project ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n14",
+        "source_symbol": "document",
+        "provider_icon": null,
+        "oci_icon": "Document Understanding"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_ai_language_project.language",
+      "type": "oci_ai_language_project",
+      "symbol": "language",
+      "source": "blueprints/ai/ai-services/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_language_project ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_language_project ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n32",
+        "source_symbol": "language",
+        "provider_icon": null,
+        "oci_icon": "OCI Language"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_ai_vision_project.vision",
+      "type": "oci_ai_vision_project",
+      "symbol": "vision",
+      "source": "blueprints/ai/ai-services/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_vision_project ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_vision_project ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n50",
+        "source_symbol": "vision",
+        "provider_icon": null,
+        "oci_icon": "OCI Vision"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_ai_vision_vision_private_endpoint.this",
+      "type": "oci_ai_vision_vision_private_endpoint",
+      "symbol": "this",
+      "source": "blueprints/ai/ai-services/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_vision_private_endpoint ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_vision_private_endpoint ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n63",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/ai/ai-services/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n65",
+        "source_symbol": "access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 6
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/ai/ai-services/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.kms_key_id",
+      "source": "blueprints/ai/ai-services/variables.tf",
+      "description": "Optional KMS key OCID for bucket encryption.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.vision_private_endpoint_subnet_id",
+      "source": "blueprints/ai/ai-services/variables.tf",
+      "description": "Subnet OCID for the Vision private endpoint.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/ai/ai-services/variables.tf",
+      "description": "Compartment OCID where the IAM policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 4
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_objectstorage_namespace.this",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "this",
+      "source": "blueprints/ai/ai-services/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_buckets ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_buckets ? 1 : 0"
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/ai/ai-services/locals.tf",
+      "revision": "working-tree",
+      "sha256": "8663287f4979a219d8f654dba8e90d2aa0bf75a9d1bf4815b52f2ebd6096b312"
+    },
+    {
+      "path": "blueprints/ai/ai-services/main.tf",
+      "revision": "working-tree",
+      "sha256": "b01d54ab12ed78a49bafada9ef3b53dd10873c012885e1977234db7557519c32"
+    },
+    {
+      "path": "blueprints/ai/ai-services/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "0fd9fb4b9642a93f64e91fb4317a48617d33fd950b94b9c0502ecfa845abd217"
+    },
+    {
+      "path": "blueprints/ai/ai-services/providers.tf",
+      "revision": "working-tree",
+      "sha256": "8f85e8539190ef04ab19c8d4c834aa1f74fa02d185b70ac6875df16eb1088de5"
+    },
+    {
+      "path": "blueprints/ai/ai-services/variables.tf",
+      "revision": "working-tree",
+      "sha256": "958289a00a62be4db14149bde87675cdae9651e08ff4a609fb5873788a4a3c95"
+    },
+    {
+      "path": "blueprints/ai/ai-services/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}
