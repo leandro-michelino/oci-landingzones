@@ -57,6 +57,8 @@ ready to test the baseline, start with [Core Landing Zone](blueprints/core/).
 | DR pattern | [Full Stack DR](blueprints/disaster-recovery/fsdr/) |
 | Data platform foundations | [Autonomous DB](blueprints/data-platform/autonomous-database/), [PostgreSQL](blueprints/data-platform/postgresql/), [MySQL HeatWave](blueprints/data-platform/mysql-heatwave/), [OCI NoSQL](blueprints/data-platform/nosql/), [OCI + AWS MySQL HeatWave DR](blueprints/data-platform/oci-aws-mysql-heatwave-dr/) |
 | AI workloads | [GenAI Private](blueprints/ai/genai-private/), [GenAI Gateway](blueprints/ai/genai-gateway/), [AI Agents](blueprints/ai/agents/) |
+| Patient data project | [Healthcare Platform](blueprints/industry/healthcare-platform/) |
+| Hospital/FHIR integration | [Hospital Integration and FHIR](blueprints/industry/healthcare-fhir-integration/) |
 | Industry patterns | [Secure Desktops](blueprints/industry/secure-desktops/) or [Telco Cloud Native](blueprints/industry/telco-cloud-native/) |
 | Conversational AI | [Oracle Digital Assistant](blueprints/extensions/digital-assistant/) |
 
@@ -141,7 +143,7 @@ usable when you only need one deployment pattern.
 | [compliance](blueprints/compliance/) | SCCA, Zero Trust, Healthcare/PCI, and security posture automation. |
 | [disaster-recovery](blueprints/disaster-recovery/) | OCI and multicloud DR patterns. |
 | [devops](blueprints/devops/) | OCI DevOps CI/CD foundation. |
-| [industry](BLUEPRINTS.md#industry) | Vertical patterns (telco, secure desktops). |
+| [industry](BLUEPRINTS.md#industry) | Vertical patterns (healthcare, telco, secure desktops). |
 
 ## Quality Checks
 

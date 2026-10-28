@@ -61,3 +61,17 @@ performed. Historical provider/live validation metadata is unchanged. Original
 catalog progress remains **54/80**, with **26** pending; the two additional
 Interconnect blueprints make current diagram coverage **56/82**. Remaining GCP
 counterpart blueprints are still a separate final phase.
+
+## Subsequent Healthcare Additions
+
+The baseline review above preceded the two healthcare projects. The current
+registry adds `industry/healthcare-platform` (19 connectors, five native/PNG
+documents) and `industry/healthcare-fhir-integration` (16 connectors, four
+native/PNG documents). Current totals are 58 blueprint plus one conceptual
+overviews, 511 connectors and 219 native documents. The two projects have no
+automatically provisioned connection or clinical data exchange between them.
+
+See [patient data](../../blueprints/industry/healthcare-platform/README.md),
+[hospital/FHIR integration](../../blueprints/industry/healthcare-fhir-integration/README.md)
+and the [current audit](connection-review.json). The original 80-entry conversion
+backlog remains unchanged; current diagram coverage is 58/84 entry points.

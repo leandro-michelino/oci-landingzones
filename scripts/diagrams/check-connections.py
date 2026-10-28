@@ -35,6 +35,10 @@ def diagrams():
  for i,(slug,title,kind) in enumerate(m.ITEMS,26):yield slug,getattr(m,kind)(title,i)
  m=load('interconnect-batch-01')
  for i,slug in enumerate(m.ITEMS):yield slug,m.build(bool(i))
+ m=load('healthcare-platform')
+ yield m.SLUG,m.build()
+ m=load('healthcare-fhir-integration')
+ yield m.SLUG,m.build()
 
 def cloud_boundary(node):
  while node.parent is not None:node=node.parent

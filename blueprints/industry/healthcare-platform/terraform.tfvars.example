@@ -1,0 +1,17 @@
+# Review-only example. Do not add secrets or patient data to this file.
+tenancy_ocid = "ocid1.tenancy.oc1..replace-me"
+compartment_ocid = "ocid1.compartment.oc1..replace-me"
+region = "sa-saopaulo-1"
+oci_config_profile = "DEFAULT"
+org = "hospital"
+environment = "dev"
+region_key = "gru"
+enable_foundation = false
+costs_approved = false
+enable_application = false
+enable_database = false
+enable_documents = false
+hospital_client_cidrs = []
+application_instances = {}
+# Supply real image/AD, DRG, KMS key, policy and TLS inputs only after project review.
+# Secrets should be injected via a protected mechanism; Terraform state remains sensitive.

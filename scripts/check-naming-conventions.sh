@@ -62,7 +62,7 @@ check_generated_name_resource_types() {
           ci cluster cmp cpe db deploy dgrp dns dr drg drga drpg ds dst ep evt
           exa fc fn grp idd igw inst ip job key kb lb lg lis log model nat nfw
           nfwpol nlb np nsg nva oac oic oke opt osmh pac pe pol pool proj redis
-          repo rt sch sec sgw sl sn stream streampool sz tns top tool up vcn vlt
+          queue repo rt sch sec sgw sl sn stream streampool sz tns top tool up vcn vlt
           vnic vpn vss waf wafpol wl zpr
         );
       }

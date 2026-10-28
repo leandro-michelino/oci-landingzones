@@ -1,0 +1,17 @@
+# Review-only. Existing endpoints/identity/DRG values must be supplied before enabling API creation.
+tenancy_ocid = "ocid1.tenancy.oc1..replace-me"
+compartment_ocid = "ocid1.compartment.oc1..replace-me"
+region = "sa-saopaulo-1"
+oci_config_profile = "DEFAULT"
+org = "hospital"
+environment = "dev"
+region_key = "gru"
+enable_foundation = false
+costs_approved = false
+enable_api = false
+enable_queue = false
+hospital_client_cidrs = []
+fhir_backend_cidrs = []
+jwks_cidrs = []
+# GET only. No transaction/batch/bulk/DELETE route is created.
+allowed_methods = ["GET"]

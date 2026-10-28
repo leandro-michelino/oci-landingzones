@@ -18855,6 +18855,1040 @@
       }
     ]
   },
+  "industry/healthcare-platform": {
+    "relationships": [
+      {
+        "source": "External identity / SSO / MFA\nApplication authorization\nNot deployed here",
+        "target": "Clinical users / approved clients\nhospital_client_cidrs=[]\nExisting remote network",
+        "source_kind": "group:optional",
+        "target_kind": "group:component",
+        "label": "External identity integration",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Internal HTTPS LB / optional",
+        "target": "Private app VMs / optional",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Configured HTTPS backends / 443",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Private app VMs / optional",
+        "target": "ADB private endpoint / optional",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "External DB client / mTLS 1522",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Ingress subnet\n10.120.10.0/24",
+        "target": "Shared private RT",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            715.0,
+            735
+          ],
+          [
+            640,
+            735
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Application subnet\n10.120.20.0/24",
+        "target": "Shared private RT",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            1440.0,
+            727
+          ],
+          [
+            640,
+            727
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Database subnet\n10.120.30.0/24",
+        "target": "Shared private RT",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            2200.0,
+            719
+          ],
+          [
+            640,
+            719
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Shared private RT",
+        "target": "Existing DRG\nNew VCN attachment if supplied",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Hospital prefixes / existing DRG",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Shared private RT",
+        "target": "SGW / regional OSN only",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Regional OSN service route",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Clinical users / approved clients\nhospital_client_cidrs=[]\nExisting remote network",
+        "target": "Existing DRG\nNew VCN attachment if supplied",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "Existing hospital transport + return routes",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            330,
+            370
+          ],
+          [
+            330,
+            780
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Existing DRG\nNew VCN attachment if supplied",
+        "target": "Internal HTTPS LB / optional",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "External client route / NSG permits 443",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            390,
+            520
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Ingress subnet\n10.120.10.0/24",
+        "target": "3 subnet flow logs + log group\n30 days / network metadata only",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.85
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            1080,
+            657.5
+          ],
+          [
+            1080,
+            945
+          ],
+          [
+            1360,
+            945
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Application subnet\n10.120.20.0/24",
+        "target": "3 subnet flow logs + log group\n30 days / network metadata only",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "Subnet OCISERVICE flowlogs",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.85
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            1800,
+            657.5
+          ],
+          [
+            1800,
+            955
+          ],
+          [
+            1360,
+            955
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Database subnet\n10.120.30.0/24",
+        "target": "3 subnet flow logs + log group\n30 days / network metadata only",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.85
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            2540,
+            657.5
+          ],
+          [
+            2540,
+            965
+          ],
+          [
+            1360,
+            965
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "SGW / regional OSN only",
+        "target": "Regional OSN / managed document storage",
+        "source_kind": "icon",
+        "target_kind": "group:osn",
+        "label": "Service gateway path",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            2585,
+            780
+          ],
+          [
+            2585,
+            1070
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Private app VMs / optional",
+        "target": "Documents / optional\nNoPublicAccess / versioned / customer KMS",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "External document SDK / IAM authorization",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1780,
+            520
+          ],
+          [
+            1780,
+            1060
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "EXISTING KMS key / kms_key_id\nBoot volumes + ADB + bucket reference this key\nNo Vault, key, IAM policy or dynamic group created\nkms_policies_ready=false / operator prerequisite",
+        "target": "Private app VMs / optional",
+        "source_kind": "group:optional",
+        "target_kind": "icon",
+        "label": "Boot kms_key_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          1,
+          0.8
+        ],
+        "waypoints": [
+          [
+            680,
+            1220
+          ],
+          [
+            1760,
+            1220
+          ],
+          [
+            1760,
+            541
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "EXISTING KMS key / kms_key_id\nBoot volumes + ADB + bucket reference this key\nNo Vault, key, IAM policy or dynamic group created\nkms_policies_ready=false / operator prerequisite",
+        "target": "ADB private endpoint / optional",
+        "source_kind": "group:optional",
+        "target_kind": "icon",
+        "label": "ADB kms_key_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.8,
+          1
+        ],
+        "entry": [
+          1,
+          0.8
+        ],
+        "waypoints": [
+          [
+            848,
+            1250
+          ],
+          [
+            2640,
+            1250
+          ],
+          [
+            2640,
+            541
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "EXISTING KMS key / kms_key_id\nBoot volumes + ADB + bucket reference this key\nNo Vault, key, IAM policy or dynamic group created\nkms_policies_ready=false / operator prerequisite",
+        "target": "Documents / optional\nNoPublicAccess / versioned / customer KMS",
+        "source_kind": "group:optional",
+        "target_kind": "icon",
+        "label": "Bucket kms_key_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.8
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": [
+          [
+            1000,
+            1124
+          ],
+          [
+            1000,
+            1190
+          ],
+          [
+            2170,
+            1190
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Private app VMs / optional",
+        "target": "Existing boot-volume backup policy\nAssignment per app VM / restore not tested",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "Boot-volume backup assignment",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.2
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1745,
+            499
+          ],
+          [
+            1745,
+            1355
+          ]
+        ],
+        "straight": false
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/industry/healthcare-platform/locals.tf",
+        "revision": "working-tree",
+        "sha256": "6a11ebbf57d61e12fc8d17991d1dc6d58e5caf49584cde6905160943b9e5ede0"
+      },
+      {
+        "path": "blueprints/industry/healthcare-platform/main.tf",
+        "revision": "working-tree",
+        "sha256": "07a3049f341fec9428db9bffa2ee14335c2e84dc4500716b7662628c655f55e1"
+      },
+      {
+        "path": "blueprints/industry/healthcare-platform/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "3308151a86f880ef4827cba15f3c91d628098f32b5f149e990cd3597c67c0e24"
+      },
+      {
+        "path": "blueprints/industry/healthcare-platform/providers.tf",
+        "revision": "working-tree",
+        "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
+      },
+      {
+        "path": "blueprints/industry/healthcare-platform/variables.tf",
+        "revision": "working-tree",
+        "sha256": "24489f7e80d53fccb017c5f488e14860e55de2d18aacf1ec852dbb99d9eb7a9d"
+      },
+      {
+        "path": "blueprints/industry/healthcare-platform/versions.tf",
+        "revision": "working-tree",
+        "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
+      }
+    ]
+  },
+  "industry/healthcare-fhir-integration": {
+    "relationships": [
+      {
+        "source": "PRIVATE gateway / optional",
+        "target": "API deployment / optional / path_prefix=/fhir\nMetadata + five resource collection/instance routes\nGET only by default / no DELETE\nTOKEN_AUTHENTICATION / issuer + audience / TLS verified",
+        "source_kind": "icon",
+        "target_kind": "group:component",
+        "label": "gateway_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional existing certificate / CA bundles\ncertificate_id + ca_bundle_ids / no CA created",
+        "target": "PRIVATE gateway / optional",
+        "source_kind": "group:optional",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.3
+        ],
+        "waypoints": [
+          [
+            850,
+            322.5
+          ],
+          [
+            850,
+            497
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Private API subnet\n10.121.10.0/24",
+        "target": "Shared private RT",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            1320.0,
+            705
+          ],
+          [
+            1100,
+            705
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Private integration subnet\n10.121.20.0/24",
+        "target": "Shared private RT",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            2265.0,
+            715
+          ],
+          [
+            1100,
+            715
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Shared private RT",
+        "target": "Existing DRG\nVCN attachment if supplied",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Client / backend / JWKS prefixes",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Shared private RT",
+        "target": "SGW / supported regional OSN",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Regional OSN route",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "EHR / HIS / LIS / PACS clients\nApproved hospital prefixes / TLS + Bearer token\nSystems and private transport are not created",
+        "target": "Existing DRG\nVCN attachment if supplied",
+        "source_kind": "group:thirdparty_component",
+        "target_kind": "icon",
+        "label": "External private transport + return routes",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            650,
+            320
+          ],
+          [
+            650,
+            760
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Existing DRG\nVCN attachment if supplied",
+        "target": "PRIVATE gateway / optional",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "External routed API access / 443",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            800,
+            510
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "API deployment / optional / path_prefix=/fhir\nMetadata + five resource collection/instance routes\nGET only by default / no DELETE\nTOKEN_AUTHENTICATION / issuer + audience / TLS verified",
+        "target": "Existing FHIR R4 server / HTTPS\nEXTERNAL / fhir_backend_url + approved prefixes\nPatient/resource authorization, consent, profiles and persistence\nNot an API Gateway feature; server software not deployed",
+        "source_kind": "group:component",
+        "target_kind": "group:thirdparty_component",
+        "label": "HTTP_BACKEND URL / verified TLS",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.3
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1760,
+            487
+          ],
+          [
+            1760,
+            695
+          ],
+          [
+            700,
+            695
+          ],
+          [
+            700,
+            755
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "API deployment / optional / path_prefix=/fhir\nMetadata + five resource collection/instance routes\nGET only by default / no DELETE\nTOKEN_AUTHENTICATION / issuer + audience / TLS verified",
+        "target": "Existing identity / JWKS endpoint\nHTTPS JWKS readable without authentication\nExact issuer + audience inputs / no identity system created",
+        "source_kind": "group:component",
+        "target_kind": "group:thirdparty_component",
+        "label": "REMOTE_JWKS / verified TLS",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.7
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1780,
+            543
+          ],
+          [
+            1780,
+            685
+          ],
+          [
+            720,
+            685
+          ],
+          [
+            720,
+            1015
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "HL7 v2 / other source adapters\nEXTERNAL / mapping, ACK/NACK, retries, reconciliation\nNo MLLP listener or conversion engine created",
+        "target": "External integration worker / not created\nHandoff: integration subnet + NSG IDs\nNo Compute, Function, producer or consumer deployed",
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "External mapping / worker deployment",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            680,
+            535
+          ],
+          [
+            680,
+            220
+          ],
+          [
+            2265,
+            220
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Existing KMS key / no key or Vault created\nkms_key_id + kms_policies_ready required\nIAM/KMS permissions remain external",
+        "target": "Optional Queue\n24-hour retention / DLQ after 5 deliveries",
+        "source_kind": "group:optional",
+        "target_kind": "icon",
+        "label": "custom_encryption_key_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "SGW / supported regional OSN",
+        "target": "Regional OSN / Queue API supported by SGW",
+        "source_kind": "icon",
+        "target_kind": "group:osn",
+        "label": "Regional service path",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            2700,
+            1050
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "External integration worker / not created\nHandoff: integration subnet + NSG IDs\nNo Compute, Function, producer or consumer deployed",
+        "target": "Optional Queue\n24-hour retention / DLQ after 5 deliveries",
+        "source_kind": "group:optional",
+        "target_kind": "icon",
+        "label": "External producer / consumer + IAM",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            2650,
+            520
+          ],
+          [
+            2650,
+            1050
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Private API subnet\n10.121.10.0/24",
+        "target": "2 subnet flow logs + log group\n30 days / not clinical access audit",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "Subnet OCISERVICE flowlogs",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.9
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            1785,
+            648.0
+          ],
+          [
+            1785,
+            900
+          ],
+          [
+            1280,
+            900
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Private integration subnet\n10.121.20.0/24",
+        "target": "2 subnet flow logs + log group\n30 days / not clinical access audit",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.9
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            2660,
+            648.0
+          ],
+          [
+            2660,
+            910
+          ],
+          [
+            1280,
+            910
+          ]
+        ],
+        "straight": false
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/industry/healthcare-fhir-integration/locals.tf",
+        "revision": "working-tree",
+        "sha256": "5fd22ed3a265181a5bfa8292c38b9a575e6d682475d73d798995ad59e2209ae9"
+      },
+      {
+        "path": "blueprints/industry/healthcare-fhir-integration/main.tf",
+        "revision": "working-tree",
+        "sha256": "5274db8fe65889443373904609e49f8158a51a3e396615ba369e789819b90d50"
+      },
+      {
+        "path": "blueprints/industry/healthcare-fhir-integration/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "bf40e1c673ffdc69055b11ce0921f5ce70464dc1c72fdeacda5a738c87b935e1"
+      },
+      {
+        "path": "blueprints/industry/healthcare-fhir-integration/providers.tf",
+        "revision": "working-tree",
+        "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
+      },
+      {
+        "path": "blueprints/industry/healthcare-fhir-integration/variables.tf",
+        "revision": "working-tree",
+        "sha256": "0829da71e9785a09b51fab4e0454c4b6aafeb01d5e7de66629bbb3914066135b"
+      },
+      {
+        "path": "blueprints/industry/healthcare-fhir-integration/versions.tf",
+        "revision": "working-tree",
+        "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
+      }
+    ]
+  },
   "docs/diagrams/oci-3tier-adb": {
     "relationships": [
       {

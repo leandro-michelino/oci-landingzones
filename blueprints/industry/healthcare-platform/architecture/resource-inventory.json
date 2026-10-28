@@ -1,0 +1,621 @@
+{
+  "schema_version": 2,
+  "blueprint": "industry/healthcare-platform",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "Contracts": 1,
+    "OCI": 21
+  },
+  "resources": [
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.guard",
+      "type": "terraform_data",
+      "symbol": "guard",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n4",
+        "source_symbol": "guard",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_vcn.this",
+      "type": "oci_core_vcn",
+      "symbol": "this",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = local.foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "local.foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_service_gateway.this",
+      "type": "oci_core_service_gateway",
+      "symbol": "this",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = local.foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "local.foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n10",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Service Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_drg_attachment.hospital",
+      "type": "oci_core_drg_attachment",
+      "symbol": "hospital",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = local.foundation && var.drg_id != null ? 1 : 0",
+      "creation_expression": {
+        "count": "local.foundation && var.drg_id != null ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n20",
+        "source_symbol": "hospital",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_route_table.private",
+      "type": "oci_core_route_table",
+      "symbol": "private",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = local.foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "local.foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n22",
+        "source_symbol": "private",
+        "provider_icon": null,
+        "oci_icon": "Route Table"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_security_list.empty",
+      "type": "oci_core_security_list",
+      "symbol": "empty",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = local.foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "local.foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n46",
+        "source_symbol": "empty",
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_subnet.private",
+      "type": "oci_core_subnet",
+      "symbol": "private",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = local.foundation ? var.subnet_cidrs : {}",
+      "creation_expression": {
+        "for_each": "local.foundation ? var.subnet_cidrs : {}"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n58",
+        "source_symbol": "private",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group.tier",
+      "type": "oci_core_network_security_group",
+      "symbol": "tier",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = local.foundation ? local.namespaces : toset([])",
+      "creation_expression": {
+        "for_each": "local.foundation ? local.namespaces : toset([])"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n60",
+        "source_symbol": "tier",
+        "provider_icon": null,
+        "oci_icon": "NSG"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group_security_rule.hospital_https",
+      "type": "oci_core_network_security_group_security_rule",
+      "symbol": "hospital_https",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = local.foundation ? var.hospital_client_cidrs : toset([])",
+      "creation_expression": {
+        "for_each": "local.foundation ? var.hospital_client_cidrs : toset([])"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n66",
+        "source_symbol": "hospital_https",
+        "provider_icon": null,
+        "oci_icon": "NSG"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group_security_rule.tier",
+      "type": "oci_core_network_security_group_security_rule",
+      "symbol": "tier",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = local.foundation ? {",
+      "creation_expression": {
+        "for_each": "local.foundation ? {\n    lb_app = { owner = \"ingress\", peer = \"application\", direction = \"EGRESS\", port = 443\n    }\n    app_lb = { owner = \"application\", peer = \"ingress\", direction = \"INGRESS\", port = 443\n    }\n    app_db = { owner = \"application\", peer = \"database\", direction = \"EGRESS\", port = 1522\n    }\n    db_app = { owner = \"database\", peer = \"application\", direction = \"INGRESS\", port = 1522\n    }\n\n  } : {}"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n72",
+        "source_symbol": "tier",
+        "provider_icon": null,
+        "oci_icon": "NSG"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group_security_rule.service_https",
+      "type": "oci_core_network_security_group_security_rule",
+      "symbol": "service_https",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = local.foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "local.foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n78",
+        "source_symbol": "service_https",
+        "provider_icon": null,
+        "oci_icon": "NSG"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_instance.application",
+      "type": "oci_core_instance",
+      "symbol": "application",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = local.app ? var.application_instances : {}",
+      "creation_expression": {
+        "for_each": "local.app ? var.application_instances : {}"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n84",
+        "source_symbol": "application",
+        "provider_icon": null,
+        "oci_icon": "OCI Compute"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_volume_backup_policy_assignment.application",
+      "type": "oci_core_volume_backup_policy_assignment",
+      "symbol": "application",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = oci_core_instance.application",
+      "creation_expression": {
+        "for_each": "oci_core_instance.application"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n96",
+        "source_symbol": "application",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_load_balancer_load_balancer.private",
+      "type": "oci_load_balancer_load_balancer",
+      "symbol": "private",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = local.app ? 1 : 0",
+      "creation_expression": {
+        "count": "local.app ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n98",
+        "source_symbol": "private",
+        "provider_icon": null,
+        "oci_icon": "Load Balancer"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_load_balancer_certificate.frontend",
+      "type": "oci_load_balancer_certificate",
+      "symbol": "frontend",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = local.app ? 1 : 0",
+      "creation_expression": {
+        "count": "local.app ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n104",
+        "source_symbol": "frontend",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_load_balancer_backend_set.application",
+      "type": "oci_load_balancer_backend_set",
+      "symbol": "application",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = local.app ? 1 : 0",
+      "creation_expression": {
+        "count": "local.app ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n106",
+        "source_symbol": "application",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_load_balancer_backend.application",
+      "type": "oci_load_balancer_backend",
+      "symbol": "application",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = oci_core_instance.application",
+      "creation_expression": {
+        "for_each": "oci_core_instance.application"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n108",
+        "source_symbol": "application",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_load_balancer_listener.https",
+      "type": "oci_load_balancer_listener",
+      "symbol": "https",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = local.app ? 1 : 0",
+      "creation_expression": {
+        "count": "local.app ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n110",
+        "source_symbol": "https",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_database_autonomous_database.clinical",
+      "type": "oci_database_autonomous_database",
+      "symbol": "clinical",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = local.database ? 1 : 0",
+      "creation_expression": {
+        "count": "local.database ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n112",
+        "source_symbol": "clinical",
+        "provider_icon": null,
+        "oci_icon": "Oracle Autonomous Database"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_bucket.documents",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "documents",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = local.documents ? 1 : 0",
+      "creation_expression": {
+        "count": "local.documents ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n4",
+        "source_symbol": "documents",
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_logging_log_group.network",
+      "type": "oci_logging_log_group",
+      "symbol": "network",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = local.foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "local.foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n14",
+        "source_symbol": "network",
+        "provider_icon": null,
+        "oci_icon": "Logging"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_logging_log.flow",
+      "type": "oci_logging_log",
+      "symbol": "flow",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = oci_core_subnet.private",
+      "creation_expression": {
+        "for_each": "oci_core_subnet.private"
+      },
+      "diagram": {
+        "file": "oci-resources-02.drawio",
+        "page_name": "OCI resources 2",
+        "node_id": "n36",
+        "source_symbol": "flow",
+        "provider_icon": null,
+        "oci_icon": "Logging"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "contracts-resources.drawio",
+      "page_name": "Contracts resources",
+      "declarations": 1
+    },
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 18
+    },
+    {
+      "file": "oci-resources-02.drawio",
+      "page_name": "OCI resources 2",
+      "declarations": 3
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/industry/healthcare-platform/variables.tf",
+      "description": "Explicit workload compartment OCID; no tenancy fallback.",
+      "default_expression": "REQUIRED",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.drg_id",
+      "source": "blueprints/industry/healthcare-platform/variables.tf",
+      "description": "Existing DRG with external hospital transport and route exchange already configured.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.kms_key_id",
+      "source": "blueprints/industry/healthcare-platform/variables.tf",
+      "description": "Existing approved KMS key for boot volumes, database and document storage.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.boot_volume_backup_policy_id",
+      "source": "blueprints/industry/healthcare-platform/variables.tf",
+      "description": "Existing reviewed backup policy assigned to every application boot volume.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.backend_trusted_ca_ids",
+      "source": "blueprints/industry/healthcare-platform/variables.tf",
+      "description": "Existing OCI certificate-authority OCIDs trusted for backend HTTPS peer validation.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 5
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_core_services.regional",
+      "type": "oci_core_services",
+      "symbol": "regional",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = local.foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "local.foundation ? 1 : 0"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_objectstorage_namespace.this",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "this",
+      "source": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "condition": "count = local.documents ? 1 : 0",
+      "creation_expression": {
+        "count": "local.documents ? 1 : 0"
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/industry/healthcare-platform/locals.tf",
+      "revision": "working-tree",
+      "sha256": "6a11ebbf57d61e12fc8d17991d1dc6d58e5caf49584cde6905160943b9e5ede0"
+    },
+    {
+      "path": "blueprints/industry/healthcare-platform/main.tf",
+      "revision": "working-tree",
+      "sha256": "07a3049f341fec9428db9bffa2ee14335c2e84dc4500716b7662628c655f55e1"
+    },
+    {
+      "path": "blueprints/industry/healthcare-platform/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "3308151a86f880ef4827cba15f3c91d628098f32b5f149e990cd3597c67c0e24"
+    },
+    {
+      "path": "blueprints/industry/healthcare-platform/providers.tf",
+      "revision": "working-tree",
+      "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
+    },
+    {
+      "path": "blueprints/industry/healthcare-platform/variables.tf",
+      "revision": "working-tree",
+      "sha256": "24489f7e80d53fccb017c5f488e14860e55de2d18aacf1ec852dbb99d9eb7a9d"
+    },
+    {
+      "path": "blueprints/industry/healthcare-platform/versions.tf",
+      "revision": "working-tree",
+      "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
+    }
+  ]
+}

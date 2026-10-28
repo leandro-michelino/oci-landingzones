@@ -415,3 +415,33 @@ checks reject changes to that contract until the diagram receives another source
 and visual review. Run `python3 scripts/diagrams/check-connections.py --write-report`
 after composing resource pages. Use `--record-reviewed-connectors` only after
 reviewing changed relationships and rendered PNGs, including new catalog entries.
+
+## Healthcare Platform Project / October 28, 2026
+
+[Healthcare Platform](../../blueprints/industry/healthcare-platform/README.md)
+adds a private industry application/data project with editable
+[draw.io](../../blueprints/industry/healthcare-platform/architecture/architecture.drawio)
+and a [PNG overview](../../blueprints/industry/healthcare-platform/architecture/architecture.png).
+Hospital transport, identity, application integration, KMS and backup-policy
+prerequisites are explicitly separated from created infrastructure. Conditional
+resources and existing identifier inputs have complete companion pages.
+
+The original backlog remains **54/80**. With the two Interconnect additions and
+this healthcare blueprint, **57/83** current entry points have diagram sets.
+The connector registry now also includes the healthcare overview; the separate
+conceptual drawing is excluded from the blueprint conversion denominator.
+No clinical application, hospital transport or real patient data was deployed.
+
+## Separate Hospital/FHIR Integration Project / October 28, 2026
+
+[Hospital Integration and FHIR](../../blueprints/industry/healthcare-fhir-integration/README.md)
+is delivered separately from the patient-data foundation, with a private
+[API/queue overview](../../blueprints/industry/healthcare-fhir-integration/architecture/architecture.png),
+editable draw.io, full source inventories and existing-resource reference pages.
+FHIR server software, source adapters, identity, clinical authorization and
+message workers are explicitly external. No API-to-Queue pipeline is invented.
+
+Latest diagram coverage is **58/84** current entry points. The original catalog
+backlog remains **54/80**; neither healthcare addition counts as an original
+conversion. Both projects include local schema and mocked-plan evidence, not
+live patient-data or interoperability validation.

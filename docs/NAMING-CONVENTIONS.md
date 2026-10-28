@@ -113,6 +113,7 @@ Blueprint or service scope belongs after the resource-type segment, not inside
 | Service Connector | `sch` |
 | Stream | `stream` |
 | Stream Pool | `streampool` |
+| Queue | `queue` |
 | DevOps Repository | `repo` |
 | DevOps Project | `proj` |
 | DevOps Build Pipeline | `build` |

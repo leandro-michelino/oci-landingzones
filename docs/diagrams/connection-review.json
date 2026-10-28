@@ -10,11 +10,11 @@
     "Reviewed endpoints, labels, arrows, paths and source hashes match contract",
     "Subnet routing and DNS-view semantic regression checks"
   ],
-  "overview_count": 56,
+  "overview_count": 58,
   "conceptual_overviews": 1,
-  "native_documents": 210,
-  "main_document_pages": 210,
-  "connector_count": 476,
+  "native_documents": 219,
+  "main_document_pages": 219,
+  "connector_count": 511,
   "cross_cloud_overviews": 10,
   "blueprints": [
     {
@@ -516,6 +516,20 @@
         }
       ],
       "overview_png_sha256": "680fae14a2f3d4b57a39b6889b8d1cd67efd8c3ba0b84425de5065975821f6d6",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "industry/healthcare-platform",
+      "connections": 19,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "8ed6c839db59837853f615125cb6b39be62292768a6490a78e62023a59bfd156",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "industry/healthcare-fhir-integration",
+      "connections": 16,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "7a28585a5e59f53f5b107b6fc850062082ea1eea46da7f74d46791e5ab184422",
       "layout_warnings": []
     }
   ]
