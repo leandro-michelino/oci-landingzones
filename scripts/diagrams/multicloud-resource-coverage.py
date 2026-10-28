@@ -26,6 +26,8 @@ base=importlib.util.module_from_spec(spec); spec.loader.exec_module(base)
 icon_spec=importlib.util.spec_from_file_location('cloud_icons',Path(__file__).with_name('cloud-icons.py'))
 cloud_icons=importlib.util.module_from_spec(icon_spec); icon_spec.loader.exec_module(cloud_icons)
 DEFAULTS=[
+ 'networking/aws-oci-managed-interconnect',
+ 'networking/gcp-oci-partner-interconnect',
  'networking/hub-spoke-with-azure-vwan-expressroute',
  'networking/azure-vwan-oci-drg-transit',
  'networking/azure-oci-dual-connectivity',

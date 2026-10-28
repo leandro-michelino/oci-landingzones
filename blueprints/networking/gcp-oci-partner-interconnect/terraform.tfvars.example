@@ -1,0 +1,18 @@
+# Documentation example only. All creation flags remain disabled.
+tenancy_ocid = "ocid1.tenancy.oc1..replace-me"
+compartment_ocid = "ocid1.compartment.oc1..replace-me"
+region = "sa-saopaulo-1"
+oci_config_profile = "DEFAULT"
+org = "example"
+environment = "dev"
+region_key = "gru"
+enable_foundation = false
+enable_interconnect = false
+costs_approved = false
+region_pair_verified = false
+allowed_tcp_ports = []
+gcp_project_id = "replace-with-existing-project"
+gcp_region = "southamerica-east1"
+enable_bgp = false
+activate_attachments = false
+bgp_sessions = {}

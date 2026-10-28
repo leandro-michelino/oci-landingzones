@@ -1,6 +1,6 @@
 # GCP + OCI Blueprint Counterparts: Final Phase
 
-Status: **Planned, not implemented.** Requested by the user on October 28, 2026.
+Status: **Networking base delivered on explicit Interconnect request; other counterparts remain planned.** Requested by the user on October 28, 2026.
 
 Implement this phase after the current diagram conversion and resource-coverage
 work for the original 80 blueprint entry points is complete. Continue that work
@@ -10,6 +10,8 @@ These GCP additions do not count toward completion of the original 80.
 
 The request includes deployable infrastructure blueprints and the complete GCP
 side of each architecture. It does not authorize cloud provisioning or charges.
+
+The later explicit request brought forward [GCP Partner Interconnect](../../blueprints/networking/gcp-oci-partner-interconnect/README.md), with both cloud foundations, optional circuits/BGP, diagrams and local schema/mock validation. It covers the dedicated-connectivity base of the planned hybrid backbone; the broader hybrid/VPN extension and remaining four counterparts are still pending.
 
 ## Planned First Batch
 

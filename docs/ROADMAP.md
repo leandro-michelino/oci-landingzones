@@ -2180,3 +2180,13 @@ New families introduced by this roadmap:
 | `blueprints/ai/` | `genai-private/` | Available |
 | `blueprints/devops/` | `oci-devops-pipeline/` | Available |
 | `blueprints/operations/` | `cost-optimization/` | Available |
+
+
+## Dedicated Interconnect Additions, October 28, 2026
+
+The explicit Interconnect request brings forward the GCP networking base and
+adds a specific AWS managed-service pattern. Existing Azure FastConnect /
+ExpressRoute blueprints remain available. [Coverage and evidence](multicloud/INTERCONNECT-COVERAGE.md)
+distinguishes source implementation, operator activation and local-only checks.
+The catalog now has 82 entry points; the original 80-diagram backlog is still
+49 converted / 31 pending. Other new GCP counterparts remain planned.

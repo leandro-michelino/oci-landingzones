@@ -49,6 +49,8 @@ folder.
 | Networking | Hub-spoke with dual-region DR | `blueprints/networking/hub-spoke-with-dual-region-dr/` | Available |
 | Networking | Multi-tenancy shared services | `blueprints/networking/multi-tenancy-shared-services/` | Available |
 | Networking | Hub-spoke with multicloud interconnect | `blueprints/networking/hub-spoke-with-multicloud-interconnect/` | Available |
+| Networking | OCI + AWS managed Interconnect (both cloud foundations; operator create/accept activation) | `blueprints/networking/aws-oci-managed-interconnect/` | Available, schema/mock validation only |
+| Networking | OCI + GCP Partner Interconnect (both cloud foundations; two VLAN attachments and optional BGP) | `blueprints/networking/gcp-oci-partner-interconnect/` | Available, schema/mock validation only |
 | Networking | AWS + OCI hybrid network backbone (OCI DRG primary, VPN and Direct Connect/FastConnect contracts) | `blueprints/networking/aws-oci-hybrid-network-backbone/` | Available |
 | Networking | Azure + OCI dual connectivity hardening (OCI DRG primary, Interconnect default when present, IPSec/BGP backup contract, `without-interconnect` test mode) | `blueprints/networking/azure-oci-dual-connectivity/` | Available |
 | Networking | Azure vWAN + OCI DRG transit backbone (OCI DRG primary, vWAN/vHub route domain, Interconnect default when present, IPSec/BGP backup and test mode) | `blueprints/networking/azure-vwan-oci-drg-transit/` | Available |

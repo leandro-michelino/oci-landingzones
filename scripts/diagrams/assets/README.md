@@ -23,5 +23,7 @@ Upstream library and provider guidance:
 - [AWS architecture icons](https://aws.amazon.com/architecture/icons/)
 - [Google Cloud icons](https://cloud.google.com/icons)
 
-No GCP resource definitions exist in the current blueprint sources. GCP mappings
-are available for future diagrams; no GCP deployment is implied.
+The GCP Partner Interconnect blueprint now declares Google Cloud resources.
+Its diagrams use the verified Cloud Network, Cloud Router, Partner Interconnect
+and Cloud Firewall Rules stencils. Named boxes retain unmapped subnet, router
+interface and peer types. No live GCP deployment is implied.

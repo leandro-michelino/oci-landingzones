@@ -27,6 +27,14 @@ AZURE={
  'Microsoft.OperationalInsights/workspaces':'Log_Analytics_Workspaces',
 }
 AWS={
+ 'aws_vpc':('vpc','#8C4FFF'),
+ 'aws_subnet':('group_subnet','#7AA116'),
+ 'aws_route_table':('route_table','#8C4FFF'),
+ 'aws_route':('router','#8C4FFF'),
+ 'aws_vpn_gateway':('virtual_gateway','#8C4FFF'),
+ 'aws_security_group':('security_group','#DD344C'),
+ 'aws_vpc_security_group_ingress_rule':('security_group','#DD344C'),
+ 'aws_vpc_security_group_egress_rule':('security_group','#DD344C'),
  'AWS::RDS::DBInstance':('rds_mysql_instance','#C925D1'),
  'AWS::EC2::VPC':('vpc','#8C4FFF'),
  'AWS::EC2::Subnet':('group_subnet','#7AA116'),
@@ -47,6 +55,8 @@ AWS={
  'AWS::EC2::EIP':('elastic_ip_address','#8C4FFF'),
 }
 GCP={
+ 'google_compute_interconnect_attachment':'partner_interconnect',
+ 'google_compute_firewall':'cloud_firewall_rules',
  'google_compute_instance':'compute_engine',
  'google_storage_bucket':'cloud_storage',
  'google_compute_network':'cloud_network',

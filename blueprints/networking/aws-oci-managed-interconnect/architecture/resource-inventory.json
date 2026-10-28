@@ -1,0 +1,506 @@
+{
+  "schema_version": 2,
+  "blueprint": "networking/aws-oci-managed-interconnect",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "AWS": 11,
+    "Contracts": 1,
+    "OCI": 7
+  },
+  "resources": [
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.guard",
+      "type": "terraform_data",
+      "symbol": "guard",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n4",
+        "source_symbol": "guard",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_vcn.this",
+      "type": "oci_core_vcn",
+      "symbol": "this",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_drg.this",
+      "type": "oci_core_drg",
+      "symbol": "this",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n10",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "DRG"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_drg_attachment.this",
+      "type": "oci_core_drg_attachment",
+      "symbol": "this",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n19",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_route_table.this",
+      "type": "oci_core_route_table",
+      "symbol": "this",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n21",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Route Table"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_security_list.this",
+      "type": "oci_core_security_list",
+      "symbol": "this",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n45",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_subnet.this",
+      "type": "oci_core_subnet",
+      "symbol": "this",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n57",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "aws_vpc.this",
+      "type": "aws_vpc",
+      "symbol": "this",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": "aws_vpc",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "aws_subnet.this",
+      "type": "aws_subnet",
+      "symbol": "this",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n8",
+        "source_symbol": "this",
+        "provider_icon": "aws_subnet",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "aws_route_table.this",
+      "type": "aws_route_table",
+      "symbol": "this",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n12",
+        "source_symbol": "this",
+        "provider_icon": "aws_route_table",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "aws_route_table_association.this",
+      "type": "aws_route_table_association",
+      "symbol": "this",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n16",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "aws_vpn_gateway.this",
+      "type": "aws_vpn_gateway",
+      "symbol": "this",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n18",
+        "source_symbol": "this",
+        "provider_icon": "aws_vpn_gateway",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "aws_dx_gateway.this",
+      "type": "aws_dx_gateway",
+      "symbol": "this",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n22",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "aws_dx_gateway_association.this",
+      "type": "aws_dx_gateway_association",
+      "symbol": "this",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n24",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "aws_route.oci",
+      "type": "aws_route",
+      "symbol": "oci",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n26",
+        "source_symbol": "oci",
+        "provider_icon": "aws_route",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "aws_security_group.this",
+      "type": "aws_security_group",
+      "symbol": "this",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n30",
+        "source_symbol": "this",
+        "provider_icon": "aws_security_group",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "aws_vpc_security_group_ingress_rule.this",
+      "type": "aws_vpc_security_group_ingress_rule",
+      "symbol": "this",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enable_foundation ? toset([for port in var.allowed_tcp_ports : tostring(port)]) : toset([])",
+      "creation_expression": {
+        "for_each": "var.enable_foundation ? toset([for port in var.allowed_tcp_ports : tostring(port)]) : toset([])"
+      },
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n34",
+        "source_symbol": "this",
+        "provider_icon": "aws_vpc_security_group_ingress_rule",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "aws_vpc_security_group_egress_rule.this",
+      "type": "aws_vpc_security_group_egress_rule",
+      "symbol": "this",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enable_foundation ? toset([for port in var.allowed_tcp_ports : tostring(port)]) : toset([])",
+      "creation_expression": {
+        "for_each": "var.enable_foundation ? toset([for port in var.allowed_tcp_ports : tostring(port)]) : toset([])"
+      },
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n38",
+        "source_symbol": "this",
+        "provider_icon": "aws_vpc_security_group_egress_rule",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_virtual_circuit.this",
+      "type": "oci_core_virtual_circuit",
+      "symbol": "this",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_interconnect ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_interconnect ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n59",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "aws-resources.drawio",
+      "page_name": "AWS resources",
+      "declarations": 11
+    },
+    {
+      "file": "contracts-resources.drawio",
+      "page_name": "Contracts resources",
+      "declarations": 1
+    },
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 7
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/variables.tf",
+      "description": "Explicit OCI compartment; no tenancy-root fallback.",
+      "default_expression": "REQUIRED",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.provider_service_id",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/variables.tf",
+      "description": "Region-specific FastConnect provider service OCID, verified for the selected offering.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.aws_account_id",
+      "source": "blueprints/networking/aws-oci-managed-interconnect/variables.tf",
+      "description": "AWS account that accepts the activation key.",
+      "default_expression": "REQUIRED",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 3
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/networking/aws-oci-managed-interconnect/locals.tf",
+      "revision": "working-tree",
+      "sha256": "22bbc2649ecf3192c630dbc0077b9779d5798d535138c8605adcfc9466fedaca"
+    },
+    {
+      "path": "blueprints/networking/aws-oci-managed-interconnect/main.tf",
+      "revision": "working-tree",
+      "sha256": "d00c3ec70566a4908efd26654364bd77fb163eb1826e786fd77a38cc351d1f87"
+    },
+    {
+      "path": "blueprints/networking/aws-oci-managed-interconnect/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "d0ab50fa980ac7c96d1b7a81a0a7051b9da47f603e0930ef0998ba2f080315e0"
+    },
+    {
+      "path": "blueprints/networking/aws-oci-managed-interconnect/providers.tf",
+      "revision": "working-tree",
+      "sha256": "94ddf49c8cad41f863482e8c7bcedcf943b2aeaee8a15cd49c0472c8f67e31ea"
+    },
+    {
+      "path": "blueprints/networking/aws-oci-managed-interconnect/variables.tf",
+      "revision": "working-tree",
+      "sha256": "383147fa577d9c42c68e34931d58e09d42c17dfe6f6879c9bf18fd4e96f4e552"
+    },
+    {
+      "path": "blueprints/networking/aws-oci-managed-interconnect/versions.tf",
+      "revision": "working-tree",
+      "sha256": "28ceee725470d14618bd81e8393404b947f09b2f25d3878952dd296f42657fc8"
+    }
+  ]
+}

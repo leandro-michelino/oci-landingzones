@@ -1,0 +1,464 @@
+{
+  "schema_version": 2,
+  "blueprint": "networking/gcp-oci-partner-interconnect",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "Contracts": 1,
+    "GCP": 9,
+    "OCI": 7
+  },
+  "resources": [
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.guard",
+      "type": "terraform_data",
+      "symbol": "guard",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n4",
+        "source_symbol": "guard",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_vcn.this",
+      "type": "oci_core_vcn",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_drg.this",
+      "type": "oci_core_drg",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n10",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "DRG"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_drg_attachment.this",
+      "type": "oci_core_drg_attachment",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n19",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_route_table.this",
+      "type": "oci_core_route_table",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n21",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Route Table"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_security_list.this",
+      "type": "oci_core_security_list",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n45",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_subnet.this",
+      "type": "oci_core_subnet",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n57",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "google_compute_network.this",
+      "type": "google_compute_network",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": "google_compute_network",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "google_compute_subnetwork.this",
+      "type": "google_compute_subnetwork",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n8",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "google_compute_router.this",
+      "type": "google_compute_router",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n10",
+        "source_symbol": "this",
+        "provider_icon": "google_compute_router",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "google_compute_interconnect_attachment.this",
+      "type": "google_compute_interconnect_attachment",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enable_foundation ? local.edges : {}",
+      "creation_expression": {
+        "for_each": "var.enable_foundation ? local.edges : {}"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n14",
+        "source_symbol": "this",
+        "provider_icon": "google_compute_interconnect_attachment",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "google_compute_firewall.ingress",
+      "type": "google_compute_firewall",
+      "symbol": "ingress",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation && length(var.allowed_tcp_ports) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation && length(var.allowed_tcp_ports) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n18",
+        "source_symbol": "ingress",
+        "provider_icon": "google_compute_firewall",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "google_compute_firewall.egress",
+      "type": "google_compute_firewall",
+      "symbol": "egress",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation && length(var.allowed_tcp_ports) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation && length(var.allowed_tcp_ports) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n22",
+        "source_symbol": "egress",
+        "provider_icon": "google_compute_firewall",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "google_compute_firewall.deny_egress",
+      "type": "google_compute_firewall",
+      "symbol": "deny_egress",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_foundation ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_foundation ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n26",
+        "source_symbol": "deny_egress",
+        "provider_icon": "google_compute_firewall",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_virtual_circuit.this",
+      "type": "oci_core_virtual_circuit",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enable_interconnect ? local.edges : {}",
+      "creation_expression": {
+        "for_each": "var.enable_interconnect ? local.edges : {}"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n59",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "google_compute_router_interface.this",
+      "type": "google_compute_router_interface",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enable_bgp ? local.edges : {}",
+      "creation_expression": {
+        "for_each": "var.enable_bgp ? local.edges : {}"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n30",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "google_compute_router_peer.this",
+      "type": "google_compute_router_peer",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enable_bgp ? local.edges : {}",
+      "creation_expression": {
+        "for_each": "var.enable_bgp ? local.edges : {}"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n32",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "contracts-resources.drawio",
+      "page_name": "Contracts resources",
+      "declarations": 1
+    },
+    {
+      "file": "gcp-resources.drawio",
+      "page_name": "GCP resources",
+      "declarations": 9
+    },
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 7
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/variables.tf",
+      "description": "Explicit OCI compartment; no tenancy-root fallback.",
+      "default_expression": "REQUIRED",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.provider_service_id",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/variables.tf",
+      "description": "Region-specific FastConnect provider service OCID, verified for the selected offering.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.gcp_project_id",
+      "source": "blueprints/networking/gcp-oci-partner-interconnect/variables.tf",
+      "description": "Existing Google Cloud project with billing and Compute API enabled.",
+      "default_expression": "REQUIRED",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 3
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/networking/gcp-oci-partner-interconnect/locals.tf",
+      "revision": "working-tree",
+      "sha256": "e61a5f0f7154246b4ad2f199ca76f1ccb87ea233a39c81f2e3ae73ed73751830"
+    },
+    {
+      "path": "blueprints/networking/gcp-oci-partner-interconnect/main.tf",
+      "revision": "working-tree",
+      "sha256": "4d8b0d756e8e467dfd15647ca565daec8f45898335dcb7d60ae8f3adeb9e0def"
+    },
+    {
+      "path": "blueprints/networking/gcp-oci-partner-interconnect/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "2e63fe90c465422b47fc7e42be774149775ec39a6e02e032051e8f20a541eda6"
+    },
+    {
+      "path": "blueprints/networking/gcp-oci-partner-interconnect/providers.tf",
+      "revision": "working-tree",
+      "sha256": "36bcde138d8801b73c3d4b900c0677b5ba8f758b5e09c70efa8e3e8ab9161919"
+    },
+    {
+      "path": "blueprints/networking/gcp-oci-partner-interconnect/variables.tf",
+      "revision": "working-tree",
+      "sha256": "35699ddc6222caeb89d405a174fa7d5371a11095d71f0f66e6eb381cdafdc7a6"
+    },
+    {
+      "path": "blueprints/networking/gcp-oci-partner-interconnect/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3026ff15dab8a612ed36d0c2caec79176f9d880fd6660fefcac7339f8783b295"
+    }
+  ]
+}

@@ -167,8 +167,8 @@ The separate contracts page enumerates local Terraform metadata, not cloud servi
 The coverage generator reads root Terraform, recursively follows pinned
 same-repository module sources, and enumerates companion Bicep, CloudFormation
 and Terraform templates. OCI, Azure, AWS and GCP Terraform resource prefixes
-are classified separately. No GCP resource definitions were found in the current
-repository; a GCP resource map is generated when GCP definitions are present.
+are classified separately. The GCP Partner Interconnect blueprint now includes Google resource definitions
+and a generated GCP resource map.
 
 The following completed cross-cloud overviews have full resource-detail companions:
 
@@ -228,8 +228,8 @@ python3 scripts/diagrams/multicloud-resource-coverage.py --check
 Azure cards now use embedded Azure SVGs, and AWS cards use native AWS stencils.
 The five previously published cross-cloud overviews and resource maps were also
 updated. Exact names, source types and conditional status remain visible. Native
-GCP mappings are prepared and their stencil names verified, but the current source
-contains no GCP resource declarations. Unmapped association/metadata types retain
+GCP mappings use verified stencil names; the subsequent Interconnect addition
+now includes GCP resource declarations. Unmapped association/metadata types retain
 named boxes. See [provider icon sources](../../scripts/diagrams/assets/README.md).
 
 On October 28, 2026, the five new overviews passed layout checks, PNG export and
@@ -303,3 +303,23 @@ were created or tested. Historical validation dates remain unchanged.
 Latest coverage: **49 of 80** existing blueprint entry points have editable
 draw.io and PNG overviews; **31 remain**. The new deployable GCP counterparts
 remain the final follow-on phase, after completing the original 80.
+
+
+## Dedicated Interconnect Additions
+
+The user's specific Interconnect request adds two entry points outside the
+original 80: [OCI/AWS](../../blueprints/networking/aws-oci-managed-interconnect/architecture/README.md)
+and [OCI/GCP](../../blueprints/networking/gcp-oci-partner-interconnect/architecture/README.md).
+Each includes both cloud resource sides, draw.io/PNG, paginated resource maps
+and an inventory. Provider-managed activation is explicitly distinguished from
+Terraform-owned resources. See the [coverage and evidence record](../multicloud/INTERCONNECT-COVERAGE.md).
+
+```bash
+python3 scripts/diagrams/interconnect-batch-01.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint networking/aws-oci-managed-interconnect --blueprint networking/gcp-oci-partner-interconnect --render
+```
+
+The original conversion backlog remains **49/80**, with **31** pending.
+Including these two new complete diagram sets, **51/82** current entry points
+have editable overviews and PNGs. The other planned GCP counterparts remain a
+follow-on phase; this explicit Interconnect request brings its networking base forward.
