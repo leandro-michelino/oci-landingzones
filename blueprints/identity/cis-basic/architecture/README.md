@@ -1,6 +1,6 @@
 # CIS Basic Identity Architecture
 
-This is the deployment architecture for `blueprints/identity/cis-basic`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/identity/cis-basic`. The PNG provides a GitHub-readable preview; the draw.io source preserves editable shapes and official OCI icons.
 
 ## Deployment Purpose
 
@@ -13,32 +13,29 @@ Creates baseline IAM groups, dynamic groups, and policies suitable for CIS-align
 | Boundary | `blueprints/identity/cis-basic` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Creates baseline IAM groups, dynamic groups, and policies suitable for CIS-aligned landing-zone administration. |
 | Terraform components | `groups`, `dynamic_groups`, `policies` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram shows default enablement, tenancy/compartment scope and configuration dependencies; it is not runtime evidence. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| CIS Basic Identity                                                                                       |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {OCI IAM home region / target tenancy}                                                                   |
-|         |                                                                                                |
-|         +--> [groups module]         platform, security, network, workload, and auditor roles            |
-|         +--> [dynamic groups module] resource principals and workload automation identities              |
-|         `--> [policies module]       least-privilege statements scoped to approved compartments          |
-|                                                                                                          |
-| Control flow: named groups first, dynamic matching rules second, policy statements last.                 |
-| Trust boundary: human and resource principals receive only the scope described by the policy layer.      |
-| Hand-off: group IDs/names, dynamic group IDs/names, policy IDs, and statements for review.               |
-+----------------------------------------------------------------------------------------------------------+
-```
+![CIS Basic Identity Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep this source aligned with the
+PNG documentation preview after diagram changes.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. Regenerate from the repository
+root with `python3 scripts/diagrams/foundation-batch-01.py --render`, after
+installing the skill and official toolkit. The toolkit is not redistributed here.
+
+The diagram identifies source-default enablement, conditional services,
+compartment/tenancy scope and provider-region selection. Arrows describe
+configuration dependencies or explicit notification actions, not workload traffic.
+
+Diagram documentation reviewed on 2026-10-28 against root Terraform, variables,
+locals, providers and the referenced module definitions. No cloud resources were
+created and no Terraform/provider validation date was updated. The diagram does
+not establish compliance certification, identity enforcement or runtime behavior.
 
 ## Terraform Components
 

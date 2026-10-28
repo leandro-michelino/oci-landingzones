@@ -65,3 +65,36 @@ PNGs were exported through draw.io and visually reviewed. Repository contracts,
 Markdown links and diff whitespace checks passed. This documentation-only work
 performed no Terraform apply, provider revalidation, connectivity, failover or
 cost test and does not change historical deployment validation dates.
+
+
+## Core, CIS And Identity Diagrams
+
+The next five available patterns in deployment-catalog order now have draw.io
+sources and PNGs in place of ASCII architecture blocks. These diagrams separate
+home-region IAM, tenancy-wide controls and regional services, mark optional
+services and preserve the historical Terraform validation metadata.
+
+| Batch order | Blueprint | PNG preview | Editable source |
+| --- | --- | --- | --- |
+| 1 | `core` | [PNG](../../blueprints/core/architecture/architecture.png) | [draw.io](../../blueprints/core/architecture/architecture.drawio) |
+| 2 | `cis/level1` | [PNG](../../blueprints/cis/level1/architecture/architecture.png) | [draw.io](../../blueprints/cis/level1/architecture/architecture.drawio) |
+| 3 | `cis/level2` | [PNG](../../blueprints/cis/level2/architecture/architecture.png) | [draw.io](../../blueprints/cis/level2/architecture/architecture.drawio) |
+| 4 | `identity/cis-basic` | [PNG](../../blueprints/identity/cis-basic/architecture/architecture.png) | [draw.io](../../blueprints/identity/cis-basic/architecture/architecture.drawio) |
+| 5 | `identity/new-identity-domain` | [PNG](../../blueprints/identity/new-identity-domain/architecture/architecture.png) | [draw.io](../../blueprints/identity/new-identity-domain/architecture/architecture.drawio) |
+
+Regenerate using the same installed skill and toolkit prerequisites:
+
+```bash
+python3 scripts/diagrams/foundation-batch-01.py --render
+```
+
+On October 28, 2026, all five passed the skill layout checks, draw.io PNG export
+and visual review; repository contracts and Markdown link checks passed.
+Core creates default IAM and compartment resources; the two Identity wrappers
+create nothing under their default inputs. CIS Level 1 and Level 2 currently
+share service-enable defaults; their labels are not evidence of certification.
+
+Coverage after this batch: 29 of the 80 existing deployable blueprint entry
+points have draw.io/PNG architecture diagrams. The remaining 51 retain their
+previous diagrams until their batches are processed. Planned patterns without
+blueprint folders remain outside this conversion inventory.

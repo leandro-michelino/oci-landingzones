@@ -1,6 +1,6 @@
 # Core Landing Zone Architecture
 
-This is the deployment architecture for `blueprints/core`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/core`. The PNG provides a GitHub-readable preview; the draw.io source preserves editable shapes and official OCI icons.
 
 ## Deployment Purpose
 
@@ -13,45 +13,29 @@ Creates the shared OCI foundation: compartments, tags, logging, Cloud Guard, Vau
 | Boundary | `blueprints/core` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Creates the shared OCI foundation: compartments, tags, logging, Cloud Guard, Vault, security zones, scanning, budgets, events, monitoring, groups, dynamic groups, and IAM policies. |
 | Terraform components | `compartments`, `tagging`, `logging`, `cloud_guard`, `vault`, `security_zones`, `vss`, `budgets`, `events`, `monitoring`, `groups`, `dynamic_groups`, `policies` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram shows default enablement, tenancy/compartment scope and configuration dependencies; it is not runtime evidence. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Core Landing Zone                                                                                        |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {OCI tenancy / home region IAM / target region services}                                                 |
-|         |                                                                                                |
-|         +--> [compartment tree]                                                                          |
-|         |      root or parent compartment                                                                |
-|         |      +-- governance                                                                            |
-|         |      +-- security                                                                              |
-|         |      +-- network                                                                               |
-|         |      `-- workloads                                                                             |
-|         |                                                                                                |
-|         +--> [identity layer]                                                                            |
-|         |      groups -> dynamic groups -> scoped IAM policies                                           |
-|         |                                                                                                |
-|         +--> [governance layer]                                                                          |
-|         |      tags -> log groups -> service logs -> events -> monitoring -> budgets                     |
-|         |                                                                                                |
-|         +--> [security layer]                                                                            |
-|                Cloud Guard -> Vault/KMS -> Security Zones -> Vulnerability Scanning                      |
-|                                                                                                          |
-| Control flow: compartments first, then tagging/governance/security, then IAM policy bindings.            |
-| Signal flow: logs, events, alarms, findings, and budget alerts return to governance operators.           |
-| Hand-off: foundation IDs are consumed by networking, operating-entity, compliance, data, and extension   |
-| blueprints.                                                                                              |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Core Landing Zone Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep this source aligned with the
+PNG documentation preview after diagram changes.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. Regenerate from the repository
+root with `python3 scripts/diagrams/foundation-batch-01.py --render`, after
+installing the skill and official toolkit. The toolkit is not redistributed here.
+
+The diagram identifies source-default enablement, conditional services,
+compartment/tenancy scope and provider-region selection. Arrows describe
+configuration dependencies or explicit notification actions, not workload traffic.
+
+Diagram documentation reviewed on 2026-10-28 against root Terraform, variables,
+locals, providers and the referenced module definitions. No cloud resources were
+created and no Terraform/provider validation date was updated. The diagram does
+not establish compliance certification, identity enforcement or runtime behavior.
 
 ## Terraform Components
 
