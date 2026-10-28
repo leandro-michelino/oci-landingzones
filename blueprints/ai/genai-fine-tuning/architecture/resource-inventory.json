@@ -1,0 +1,281 @@
+{
+  "schema_version": 2,
+  "blueprint": "ai/genai-fine-tuning",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 5
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_bucket.training",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "training",
+      "source": "blueprints/ai/genai-fine-tuning/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_training_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_training_bucket ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "training",
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_generative_ai_dedicated_ai_cluster.this",
+      "type": "oci_generative_ai_dedicated_ai_cluster",
+      "symbol": "this",
+      "source": "blueprints/ai/genai-fine-tuning/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_dedicated_ai_cluster ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_dedicated_ai_cluster ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n14",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "OCI Generative AI"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_generative_ai_model.this",
+      "type": "oci_generative_ai_model",
+      "symbol": "this",
+      "source": "blueprints/ai/genai-fine-tuning/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_fine_tuned_model ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_fine_tuned_model ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n24",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "OCI Generative AI"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_generative_ai_endpoint.this",
+      "type": "oci_generative_ai_endpoint",
+      "symbol": "this",
+      "source": "blueprints/ai/genai-fine-tuning/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_endpoint ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_endpoint ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n34",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "OCI Generative AI"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/ai/genai-fine-tuning/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n44",
+        "source_symbol": "access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 5
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/ai/genai-fine-tuning/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.kms_key_id",
+      "source": "blueprints/ai/genai-fine-tuning/variables.tf",
+      "description": "Optional KMS key OCID for bucket encryption.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.dedicated_ai_cluster_id",
+      "source": "blueprints/ai/genai-fine-tuning/variables.tf",
+      "description": "Existing dedicated AI cluster OCID when create_dedicated_ai_cluster is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.model_id",
+      "source": "blueprints/ai/genai-fine-tuning/variables.tf",
+      "description": "Existing model OCID when create_fine_tuned_model is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.base_model_id",
+      "source": "blueprints/ai/genai-fine-tuning/variables.tf",
+      "description": "Base model OCID used for fine-tuning.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.generative_ai_private_endpoint_id",
+      "source": "blueprints/ai/genai-fine-tuning/variables.tf",
+      "description": "Optional GenAI private endpoint OCID from the genai-private blueprint.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/ai/genai-fine-tuning/variables.tf",
+      "description": "Compartment OCID where the IAM policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    },
+    {
+      "address": "var.hosting_dedicated_ai_cluster_id",
+      "source": "blueprints/ai/genai-fine-tuning/variables.tf",
+      "description": "Existing HOSTING cluster compatible with the model. A FINE_TUNING cluster cannot host an inference endpoint. Alternatively create a HOSTING cluster with cluster_type.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n17"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 8
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_objectstorage_namespace.this",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "this",
+      "source": "blueprints/ai/genai-fine-tuning/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_training_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_training_bucket ? 1 : 0"
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/ai/genai-fine-tuning/locals.tf",
+      "revision": "working-tree",
+      "sha256": "7ade309d8158bb463d920cc5146eb5c5fe2430d379fec60745a4b1672cc5f7f1"
+    },
+    {
+      "path": "blueprints/ai/genai-fine-tuning/main.tf",
+      "revision": "working-tree",
+      "sha256": "15e2aea6ab6b1dc032620bbdcfe53330f8ecac1009bf4d4387ba35c30334dea2"
+    },
+    {
+      "path": "blueprints/ai/genai-fine-tuning/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "99dddfc3ff226c22b79f0df8a718694cca71d538ad6426646b1f8ad046746a3e"
+    },
+    {
+      "path": "blueprints/ai/genai-fine-tuning/providers.tf",
+      "revision": "working-tree",
+      "sha256": "8f85e8539190ef04ab19c8d4c834aa1f74fa02d185b70ac6875df16eb1088de5"
+    },
+    {
+      "path": "blueprints/ai/genai-fine-tuning/variables.tf",
+      "revision": "working-tree",
+      "sha256": "2086971552c34de9a57da46238010c5d684e52873824f4c4769e7a11ec0996af"
+    },
+    {
+      "path": "blueprints/ai/genai-fine-tuning/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

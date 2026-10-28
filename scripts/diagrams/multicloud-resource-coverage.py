@@ -26,6 +26,11 @@ base=importlib.util.module_from_spec(spec); spec.loader.exec_module(base)
 icon_spec=importlib.util.spec_from_file_location('cloud_icons',Path(__file__).with_name('cloud-icons.py'))
 cloud_icons=importlib.util.module_from_spec(icon_spec); icon_spec.loader.exec_module(cloud_icons)
 DEFAULTS=[
+ 'ai/genai-gateway',
+ 'ai/azure-oci-ai-gateway',
+ 'ai/genai-fine-tuning',
+ 'ai/genai-guardrails',
+ 'ai/document-intelligence',
  'networking/aws-oci-managed-interconnect',
  'networking/gcp-oci-partner-interconnect',
  'networking/hub-spoke-with-azure-vwan-expressroute',
@@ -46,6 +51,12 @@ DEFAULTS=[
 ]
 DECL=re.compile(r'^(resource|data|module)\s+"([^"]+)"(?:\s+"([^"]+)")?\s*\{',re.M)
 ICONS={
+ 'oci_apigateway_gateway':'API Gateway',
+ 'oci_generative_ai_dedicated_ai_cluster':'OCI Generative AI',
+ 'oci_generative_ai_model':'OCI Generative AI',
+ 'oci_generative_ai_endpoint':'OCI Generative AI',
+ 'oci_sch_service_connector':'Service Connector Hub',
+ 'oci_cloud_guard_detector_recipe':'Cloud Guard',
  'oci_opensearch_opensearch_cluster':'OpenSearch',
  'oci_mysql_mysql_db_system':'MySQL Database System',
  'oci_mysql_heat_wave_cluster':'MySQL HeatWave',

@@ -27,3 +27,9 @@ The GCP Partner Interconnect blueprint now declares Google Cloud resources.
 Its diagrams use the verified Cloud Network, Cloud Router, Partner Interconnect
 and Cloud Firewall Rules stencils. Named boxes retain unmapped subnet, router
 interface and peer types. No live GCP deployment is implied.
+
+The Azure AI gateway additionally uses unmodified `Azure_OpenAI.svg` from
+`azure2/ai_machine_learning/` and `API_Management_Services.svg` from
+`azure2/integration/`, extracted from the same installed draw.io 32.6.1 bundle.
+The current CognitiveServices account declaration has kind OpenAI; its optional
+model deployment remains an explicitly named child resource without a substitute icon.

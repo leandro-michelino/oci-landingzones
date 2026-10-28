@@ -41,7 +41,7 @@ compliance, or workload platform pattern.
 
 The user requested GCP blueprints on October 28, 2026, after completing the
 current architecture-diagram work. Finish conversion and resource coverage for
-the original 80 entry points first (currently 49 converted, 31 pending); then
+the original 80 entry points first (currently 54 converted, 26 pending); then
 implement the [GCP counterpart batch](multicloud/GCP-OCI-BLUEPRINTS.md).
 
 This is a commitment to new blueprint implementation, including the GCP-side
@@ -2189,4 +2189,4 @@ adds a specific AWS managed-service pattern. Existing Azure FastConnect /
 ExpressRoute blueprints remain available. [Coverage and evidence](multicloud/INTERCONNECT-COVERAGE.md)
 distinguishes source implementation, operator activation and local-only checks.
 The catalog now has 82 entry points; the original 80-diagram backlog is still
-49 converted / 31 pending. Other new GCP counterparts remain planned.
+54 converted / 26 pending. Other new GCP counterparts remain planned.

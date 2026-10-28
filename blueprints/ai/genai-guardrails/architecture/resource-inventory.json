@@ -1,0 +1,302 @@
+{
+  "schema_version": 2,
+  "blueprint": "ai/genai-guardrails",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 6
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_bucket.audit",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "audit",
+      "source": "blueprints/ai/genai-guardrails/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_audit_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_audit_bucket ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "audit",
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_logging_log_group.guardrails",
+      "type": "oci_logging_log_group",
+      "symbol": "guardrails",
+      "source": "blueprints/ai/genai-guardrails/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_log_group ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_log_group ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n14",
+        "source_symbol": "guardrails",
+        "provider_icon": null,
+        "oci_icon": "Logging"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_sch_service_connector.audit",
+      "type": "oci_sch_service_connector",
+      "symbol": "audit",
+      "source": "blueprints/ai/genai-guardrails/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_service_connector ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_service_connector ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n36",
+        "source_symbol": "audit",
+        "provider_icon": null,
+        "oci_icon": "Service Connector Hub"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_cloud_guard_detector_recipe.genai",
+      "type": "oci_cloud_guard_detector_recipe",
+      "symbol": "genai",
+      "source": "blueprints/ai/genai-guardrails/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_cloud_guard_recipe ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_cloud_guard_recipe ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n42",
+        "source_symbol": "genai",
+        "provider_icon": null,
+        "oci_icon": "Cloud Guard"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_monitoring_alarm.this",
+      "type": "oci_monitoring_alarm",
+      "symbol": "this",
+      "source": "blueprints/ai/genai-guardrails/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.alarms",
+      "creation_expression": {
+        "for_each": "var.alarms"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n49",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Alarms"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/ai/genai-guardrails/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n69",
+        "source_symbol": "access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 6
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/ai/genai-guardrails/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.kms_key_id",
+      "source": "blueprints/ai/genai-guardrails/variables.tf",
+      "description": "Optional KMS key OCID for bucket encryption.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.connector_source_log_group_id",
+      "source": "blueprints/ai/genai-guardrails/variables.tf",
+      "description": "Source log group OCID for guardrail logs.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.connector_source_log_id",
+      "source": "blueprints/ai/genai-guardrails/variables.tf",
+      "description": "Source log OCID for guardrail logs.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.connector_target_stream_id",
+      "source": "blueprints/ai/genai-guardrails/variables.tf",
+      "description": "Target stream OCID when the connector target is Streaming.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.source_detector_recipe_id",
+      "source": "blueprints/ai/genai-guardrails/variables.tf",
+      "description": "Optional source detector recipe OCID to clone.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.notification_topic_id",
+      "source": "blueprints/ai/genai-guardrails/variables.tf",
+      "description": "ONS topic OCID used by Monitoring alarms.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/ai/genai-guardrails/variables.tf",
+      "description": "Compartment OCID where the IAM policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n17"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 8
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_objectstorage_namespace.this",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "this",
+      "source": "blueprints/ai/genai-guardrails/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_audit_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_audit_bucket ? 1 : 0"
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/ai/genai-guardrails/locals.tf",
+      "revision": "working-tree",
+      "sha256": "3ace1841d3d2849f054651dba8cca27ef191ad1daca44685afcab30aa19eafbd"
+    },
+    {
+      "path": "blueprints/ai/genai-guardrails/main.tf",
+      "revision": "working-tree",
+      "sha256": "19c13c8c635349cfff4ae04dfefbb09fd18ffef6cde37f541b89b1840d4aa168"
+    },
+    {
+      "path": "blueprints/ai/genai-guardrails/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "43ab2c7d04c8ccdc8ddad01aa3f3cdd2e6f623a83544f5d08543894ed54323a1"
+    },
+    {
+      "path": "blueprints/ai/genai-guardrails/providers.tf",
+      "revision": "working-tree",
+      "sha256": "8f85e8539190ef04ab19c8d4c834aa1f74fa02d185b70ac6875df16eb1088de5"
+    },
+    {
+      "path": "blueprints/ai/genai-guardrails/variables.tf",
+      "revision": "working-tree",
+      "sha256": "0ca630006748a66dd8855d10f133a9a53e7daba61879fb35ca21915891ab0de4"
+    },
+    {
+      "path": "blueprints/ai/genai-guardrails/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

@@ -13,39 +13,53 @@ and IAM policy decisions in one deployment folder.
 | Training bucket | Stores reviewed JSONL or service-supported training data. |
 | Dedicated AI cluster | Provides reserved capacity for fine-tuning. |
 | Fine-tuned model | Customer-specific model derived from an approved base model. |
-| Model endpoint | Optional private endpoint for inference. |
+| Model endpoint | Optional inference endpoint; separate HOSTING cluster and optional existing private-endpoint ID. |
 | IAM policy | Separates ML engineers, deployers, and callers. |
 
 ## Architecture
 
-```text
-Dataset Owner
-    |
-    | approved training data
-    v
-Object Storage Training Bucket
-    |
-    | namespace / bucket / object
-    v
-OCI GenAI Fine-Tuning Job
-    |
-    | uses base_model_id
-    | uses dedicated_ai_cluster_id
-    v
-Fine-Tuned Model
-    |
-    | optional deploy
-    v
-GenAI Endpoint
-    |
-    | hand-off
-    v
-GenAI Gateway / App / Batch Caller
+![Architecture overview](architecture.png)
 
-IAM: ML engineer -> dataset + fine tuning
-IAM: platform ops -> cluster + endpoint
-IAM: app caller -> endpoint invoke
+[Editable draw.io diagram](architecture.drawio)
+
+## Diagram Sources And Scope
+
+Generated with the installed `oci-architecture-diagrams` skill and Oracle Toolkit
+v24.2. Azure resources use embedded native provider artwork where mapped;
+unmapped resource types remain named boxes. Source review: October 28, 2026.
+No cloud provisioning, provider revalidation, inference, model training or
+application traffic test was performed. Historical validation dates are unchanged.
+
+```bash
+python3 scripts/diagrams/ai-batch-02.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint ai/genai-fine-tuning --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint ai/genai-fine-tuning --check
+python3 scripts/diagrams/check-connections.py --write-report
 ```
+
+## Connection Lines
+
+Lines show dataset/base-model references, fine-tuning capacity and model/endpoint selection. Training capacity and hosting capacity are separate roles. The optional inference endpoint requires a compatible HOSTING cluster, and privacy requires a separately supplied Generative AI private endpoint.
+
+Lines represent source-defined configuration or explicitly labelled external
+workflows. They do not establish successful runtime traffic. Independent buckets,
+policies and log containers are not automatically wired together.
+
+## Resource Detail And Coverage
+
+The main native draw.io document includes the overview, all resource-detail
+pages and identifier references. Counts are declarations, not expanded instances
+or deployed assets. Disabled/conditional resources remain visible. Companion
+Bicep deploys separately; local contracts do not create cloud services.
+
+| Scope | Declarations / references | Preview | Editable source |
+| --- | --- | --- | --- |
+| OCI resources | 5 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
+| Existing identifier inputs | 8 references | [PNG](existing-resources.png) | [draw.io](existing-resources.drawio) |
+
+[Resource inventory](resource-inventory.json) records source hashes, creation
+expressions, data lookups and resource-to-diagram node IDs. Supplied identifiers
+and overrides remain references, not resources purportedly created or adopted.
 
 ## Terraform Components
 

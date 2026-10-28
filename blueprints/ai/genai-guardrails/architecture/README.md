@@ -4,44 +4,65 @@
 
 Add auditability and security review controls around GenAI workloads without
 forcing every model-serving blueprint to reimplement the same observability
-shape. The blueprint collects logs, archives reviewed records, creates alarm
-hooks, and provides a Cloud Guard recipe placeholder for customer-specific
-detection rules.
+shape. The blueprint optionally routes an explicitly supplied log source to storage
+or an existing stream, creates configured alarm hooks, and exposes a detector
+recipe placeholder. It does not implement redaction, moderation or log producers.
 
 ## Architecture At A Glance
 
 | Layer | Responsibility |
 | --- | --- |
 | Log source | Gateway, Functions router, application, or model endpoint telemetry. |
-| Service Connector | Moves selected records to archive, stream, function, or topic target. |
-| Audit bucket | Stores redacted prompt and response records. |
-| Monitoring alarms | Token budget, error rate, latency, and unusual activity alerts. |
+| Service Connector | Selects Object Storage or an existing Streaming target; this source does not expose Function/ONS targets. |
+| Audit bucket | Optional storage; records are not redacted by this blueprint. |
+| Monitoring alarms | Operator-supplied queries and existing destination IDs; no token metric emitter. |
 | Cloud Guard | Detector recipe shell for GenAI-specific signals. |
 | IAM | Security reviewer and service permissions. |
 
 ## Architecture
 
-```text
-GenAI Gateway / App / Endpoint
-      |
-      | logs, metrics, events
-      v
-Logging Log Group
-      |
-      | selected records
-      v
-Service Connector Hub
- |-- Object Storage audit bucket
- |-- Streaming topic for SIEM pipeline
- |-- Function for PII redaction
- `-- Notification topic for alerting
-      |
-      v
-Monitoring Alarms + Cloud Guard Detector Recipe
-      |
-      v
-Security Reviewer / Audit Reader Groups
+![Architecture overview](architecture.png)
+
+[Editable draw.io diagram](architecture.drawio)
+
+## Diagram Sources And Scope
+
+Generated with the installed `oci-architecture-diagrams` skill and Oracle Toolkit
+v24.2. Azure resources use embedded native provider artwork where mapped;
+unmapped resource types remain named boxes. Source review: October 28, 2026.
+No cloud provisioning, provider revalidation, inference, model training or
+application traffic test was performed. Historical validation dates are unchanged.
+
+```bash
+python3 scripts/diagrams/ai-batch-02.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint ai/genai-guardrails --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint ai/genai-guardrails --check
+python3 scripts/diagrams/check-connections.py --write-report
 ```
+
+## Connection Lines
+
+Lines show the explicitly selected Logging source and the connector's alternative Object Storage or existing Streaming target. A new log group is not automatically selected as that source. Alarm destinations are explicit IDs or the supplied topic fallback. No PII processor or active safety filter is deployed.
+
+Lines represent source-defined configuration or explicitly labelled external
+workflows. They do not establish successful runtime traffic. Independent buckets,
+policies and log containers are not automatically wired together.
+
+## Resource Detail And Coverage
+
+The main native draw.io document includes the overview, all resource-detail
+pages and identifier references. Counts are declarations, not expanded instances
+or deployed assets. Disabled/conditional resources remain visible. Companion
+Bicep deploys separately; local contracts do not create cloud services.
+
+| Scope | Declarations / references | Preview | Editable source |
+| --- | --- | --- | --- |
+| OCI resources | 6 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
+| Existing identifier inputs | 8 references | [PNG](existing-resources.png) | [draw.io](existing-resources.drawio) |
+
+[Resource inventory](resource-inventory.json) records source hashes, creation
+expressions, data lookups and resource-to-diagram node IDs. Supplied identifiers
+and overrides remain references, not resources purportedly created or adopted.
 
 ## Terraform Components
 
@@ -67,7 +88,7 @@ Declared resource addresses:
 ## Request And Deployment Flow
 
 1. Identify the GenAI log source and metrics namespace.
-2. Decide whether records are archived directly or processed by a redaction function.
+2. Choose Object Storage or an existing stream. Any redaction processor is an external prerequisite.
 3. Configure token, error, and unusual-volume alarms.
 4. Add Cloud Guard detector recipe wiring where the customer uses Cloud Guard.
 5. Publish audit bucket and alarm outputs to security runbooks.
@@ -86,9 +107,9 @@ The blueprint is intentionally an overlay. It can attach to the GenAI gateway,
 an application-owned Function router, or a workload that already logs GenAI
 calls. This keeps the serving path independent from the audit path.
 
-Service Connector Hub can target Object Storage, Streaming, Functions, or
-Notifications. The variables expose those target IDs rather than making one
-opinion mandatory.
+This blueprint restricts connector_target_kind to Object Storage or Streaming.
+It does not declare Function or Notifications connector targets, log producers,
+redaction code or automated Cloud Guard target attachment.
 
 Cloud Guard behavior is customer-specific, so this blueprint creates the recipe
 shell and leaves detector rule tuning to the security review.

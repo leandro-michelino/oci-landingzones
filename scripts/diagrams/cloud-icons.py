@@ -8,6 +8,9 @@ from pathlib import Path
 from ocidraw import Node, ICON_WRAP, LABEL_POS, _htmltext
 ASSETS=Path(__file__).with_name('assets')
 AZURE={
+ # Current CognitiveServices account declarations all use kind OpenAI.
+ 'Microsoft.CognitiveServices/accounts':'Azure_OpenAI',
+ 'Microsoft.ApiManagement/service':'API_Management_Services',
  'Microsoft.Network/virtualWans':'Virtual_WANs',
  'Microsoft.Network/virtualHubs':'Virtual_WAN_Hub',
  'Microsoft.Network/virtualHubs/hubRouteTables':'Route_Tables',

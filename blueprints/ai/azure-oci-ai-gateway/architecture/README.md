@@ -1,14 +1,14 @@
 # Azure + OCI AI Gateway Architecture
 
 This page is the deployment architecture for
-`blueprints/ai/azure-oci-ai-gateway`. It is intentionally Architecture-first so
-it is easy to review in GitHub, terminals, pull requests, runbooks, and
-customer-safe notes without a diagramming tool.
+`blueprints/ai/azure-oci-ai-gateway`. The PNG provides a preview and the native draw.io document retains editable
+resource pages.
 
 ## Deployment Purpose
 
-Implements a multi-provider AI gateway across OCI Generative AI and Azure
-OpenAI with explicit routing policies for region, cost, and data residency.
+Declares an OCI HTTP routing front door and separate Azure network/OpenAI/APIM
+resources. Region, cost and data-residency paths select statically configured
+backend URLs; adapters, authentication and policy enforcement remain external.
 
 ## Architecture At A Glance
 
@@ -17,50 +17,54 @@ OpenAI with explicit routing policies for region, cost, and data residency.
 | Boundary | `blueprints/ai/azure-oci-ai-gateway` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Build OCI gateway infrastructure and route contracts while supporting full Azure deployment sessions for OpenAI and API gateway endpoints. |
 | Terraform components | `oci_core_vcn.gateway`, `oci_core_route_table.gateway`, `oci_core_security_list.gateway`, `oci_core_subnet.gateway`, `oci_apigateway_gateway.this`, `oci_apigateway_deployment.this`, `oci_apigateway_usage_plan.this`, `oci_objectstorage_namespace.this`, `oci_objectstorage_bucket.audit`, `oci_logging_log_group.routing`, `terraform_data.connectivity_contract`, `terraform_data.routing_contract`, `terraform_data.azure_contract` |
-| Primary architecture view | The Architecture diagram below shows OCI and Azure boundaries, control flow, and policy route outcomes for this deployment. |
+| Primary architecture view | The Architecture diagram below shows OCI and Azure boundaries, configuration relationships and external adapter requirements for this deployment. |
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------------+
-| Azure + OCI AI Gateway                                                                                         |
-+----------------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow                     |
-|                                                                                                                |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                                |
-|         |                    |                         |                                                       |
-|         | validates docs      | init/validate/plan      | OCI API calls                                        |
-|         v                    v                         v                                                       |
-| {OCI cloud boundary}                                                                                           |
-|   |                                                                                                            |
-|   |-- [Gateway VCN + route table + security list + subnet]                                                    |
-|   |-- [OCI API Gateway]                                                                                        |
-|   |      |-- /ai/providers/oci            -> OCI Generative AI backend URL                                    |
-|   |      |-- /ai/providers/azure          -> Azure OpenAI backend URL                                         |
-|   |      |-- /ai/route/region             -> selected provider for region policy                              |
-|   |      |-- /ai/route/cost               -> selected provider for cost policy                                |
-|   |      `-- /ai/route/data-residency     -> selected provider for residency policy                           |
-|   |-- [Usage plans and quotas]                                                                                |
-|   |-- [Audit bucket]                                                                                           |
-|   `-- [Routing log group + IAM policy + terraform_data contracts]                                              |
-|          |-- connectivity contract: interconnect or without-interconnect                                       |
-|          |-- routing contract: region/cost/residency provider decisions                                        |
-|          `-- azure contract: OpenAI/APIM/hello endpoint metadata                                               |
-|                                                                                                                |
-| {Azure cloud boundary}                                                                                         |
-|   |                                                                                                            |
-|   |-- [VNet + subnet + route table + NSG]                                                                     |
-|   |-- [Azure OpenAI account (+ optional model deployment)]                                                     |
-|   |-- [API Management gateway endpoint]                                                                        |
-|   `-- [Container App hello-world endpoint]                                                                     |
-|                                                                                                                |
-| [Client app] -> [OCI API Gateway] -> [Selected provider backend by route policy]                               |
-|                                                                                                                |
-| Connectivity context:                                                                                          |
-|   interconnect mode     => FastConnect + ExpressRoute identifiers required                                     |
-|   without-interconnect  => identifiers intentionally unset                                                     |
-+----------------------------------------------------------------------------------------------------------------+
+![Architecture overview](architecture.png)
+
+[Editable draw.io diagram](architecture.drawio)
+
+## Diagram Sources And Scope
+
+Generated with the installed `oci-architecture-diagrams` skill and Oracle Toolkit
+v24.2. Azure resources use embedded native provider artwork where mapped;
+unmapped resource types remain named boxes. Source review: October 28, 2026.
+No cloud provisioning, provider revalidation, inference, model training or
+application traffic test was performed. Historical validation dates are unchanged.
+
+```bash
+python3 scripts/diagrams/ai-batch-02.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint ai/azure-oci-ai-gateway --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint ai/azure-oci-ai-gateway --check
+python3 scripts/diagrams/check-connections.py --write-report
 ```
+
+## Connection Lines
+
+Solid lines show gateway/network bindings, Azure environment log delivery and the optional model deployment under its account. Dashed lines show HTTP adapter/backend prerequisites, not a working private interconnect. APIM APIs/policies and the Azure/OCI inference adapters are not implemented. The Container App is a separate hello-world application.
+
+Lines represent source-defined configuration or explicitly labelled external
+workflows. They do not establish successful runtime traffic. Independent buckets,
+policies and log containers are not automatically wired together.
+
+## Resource Detail And Coverage
+
+The main native draw.io document includes the overview, all resource-detail
+pages and identifier references. Counts are declarations, not expanded instances
+or deployed assets. Disabled/conditional resources remain visible. Companion
+Bicep deploys separately; local contracts do not create cloud services.
+
+| Scope | Declarations / references | Preview | Editable source |
+| --- | --- | --- | --- |
+| Azure resources | 10 | [PNG](azure-resources.png) | [draw.io](azure-resources.drawio) |
+| Contracts resources | 4 | [PNG](contracts-resources.png) | [draw.io](contracts-resources.drawio) |
+| OCI resources | 11 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
+| Existing identifier inputs | 11 references | [PNG](existing-resources.png) | [draw.io](existing-resources.drawio) |
+
+[Resource inventory](resource-inventory.json) records source hashes, creation
+expressions, data lookups and resource-to-diagram node IDs. Supplied identifiers
+and overrides remain references, not resources purportedly created or adopted.
 
 ## Terraform Components
 
@@ -71,8 +75,8 @@ OpenAI with explicit routing policies for region, cost, and data residency.
 | Resource | `oci_apigateway_deployment.this` | Deploys provider and policy routes for region/cost/residency steering. |
 | Resource | `oci_apigateway_usage_plan.this` | Optional quota/rate controls for caller teams. |
 | Data source | `oci_objectstorage_namespace.this` | Reads namespace for audit bucket creation. |
-| Resource | `oci_objectstorage_bucket.audit` | Stores audit and runbook artifacts. |
-| Resource | `oci_logging_log_group.routing` | Stores routing logs and operational events. |
+| Resource | `oci_objectstorage_bucket.audit` | Optional private storage container; no automatic audit writer. |
+| Resource | `oci_logging_log_group.routing` | Optional log-group container; no log resource or producer binding. |
 | Resource | `oci_identity_policy.access` | Grants gateway and audit access by policy statements. |
 | Resource | `terraform_data.connectivity_contract` | Encodes interconnect versus no-interconnect operating mode. |
 | Resource | `terraform_data.routing_contract` | Encodes route decisions and residency metadata. |
@@ -91,7 +95,7 @@ OpenAI with explicit routing policies for region, cost, and data residency.
 ## Traffic And Trust Boundaries
 
 - Control plane traffic uses local or CI credentials for Azure CLI and OCI provider operations.
-- Data plane traffic enters OCI API Gateway and then exits to OCI Generative AI or Azure OpenAI based on selected route path.
+- HTTP routes select supplied OCI/Azure backend URLs. Request signing, provider authentication, payload translation and actual transport reachability require external implementation.
 - Trust boundaries include OCI tenancy, Azure subscription boundary, and optional partner interconnect boundary.
 - Secrets and private identifiers must remain in ignored local tfvars or approved secret stores.
 
@@ -110,10 +114,10 @@ These notes expand the diagram with design details usually needed in reviews.
   Query strings such as Azure OpenAI `api-version` belong on client requests,
   not in the backend URL, because OCI API Gateway rejects backend URLs with
   invalid query/path composition.
-- End-to-end route validation can use expected provider auth responses. An
-  Azure OpenAI `401` or OCI Generative AI `NotAuthorizedOrNotFound` response
-  through the OCI Gateway proves the route reached the intended provider when
-  provider credentials are intentionally not injected into the gateway.
+- Authentication-error responses alone are not successful inference evidence.
+  Correlate route and provider telemetry before attributing a response to the
+  intended backend; perform a separately authorized authenticated request for
+  end-to-end acceptance.
 
 ## Operational Boundaries
 
@@ -135,6 +139,6 @@ These notes expand the diagram with design details usually needed in reviews.
 
 ## October 2026 Configuration Review
 
-HTTP backend URLs must be HTTPS and contain no literal query parameters. Invalid URLs are rejected rather than silently losing Azure api-version. Supply query-free adapter URLs, or supported API Gateway request policies/client parameters. An adapter must handle OCI request signing, Azure authentication/API version, and provider-specific payloads. This blueprint does not implement those adapters, frontend authentication, dynamic cost optimization, automatic residency enforcement, or an Azure deployment. Selecting a route strategy chooses a static backend; region labels alone do not enforce data residency. Real deployments require both backend URLs even when placeholder contracts are permitted.
+HTTP backend URLs must be HTTPS and contain no literal query parameters. Invalid URLs are rejected rather than silently losing Azure api-version. Supply query-free adapter URLs, or supported API Gateway request policies/client parameters. An adapter must handle OCI request signing, Azure authentication/API version, and provider-specific payloads. This blueprint does not implement those adapters, frontend authentication, dynamic cost optimization, automatic residency enforcement, or an Azure deployment from the OCI Terraform root. The companion Bicep declares Azure resources and is deployed separately. Selecting a route strategy chooses a static backend; region labels alone do not enforce data residency. Real deployments require both backend URLs even when placeholder contracts are permitted.
 
 Validation in this round is isolated Terraform schema/lint validation and applicable mocked regressions, not a live AI deployment. All cost-bearing services, inference, ingestion, dedicated clusters, and external-cloud resources remained disabled. Providers ignore only the two OCI-managed provenance tags; customer-defined tags remain managed.

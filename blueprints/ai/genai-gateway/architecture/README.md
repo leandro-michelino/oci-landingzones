@@ -4,7 +4,7 @@
 
 Provide a governed API front door for one or more OCI GenAI models, private
 endpoints, or routing functions. The blueprint separates app-team consumption
-from platform-team model operations by putting routes, quotas, logging, and IAM
+from platform-team model operations by putting optional routes, request quotas, storage/log containers, and IAM
 in one reviewed deployment folder.
 
 ## Architecture At A Glance
@@ -14,33 +14,54 @@ in one reviewed deployment folder.
 | API Gateway | Stable HTTPS endpoint, path routing, and private/public exposure decision. |
 | Usage plans | Per-team rate limits and quota controls. |
 | GenAI backends | Existing GenAI endpoints, model APIs, or routing functions. |
-| Audit storage | Prompt and response archive bucket for reviewed workloads. |
-| Logging | Gateway and routing telemetry log group. |
+| Audit storage | Optional bucket; prompt/response writing is external. |
+| Logging | Optional log group; collection/binding is external. |
 | IAM | Caller, operator, and audit-reader policy hand-offs. |
 
 ## Architecture
 
-```text
-App Team A          App Team B          Batch Job
-    |                   |                  |
-    | HTTPS + IAM       | HTTPS + IAM      | HTTPS + IAM
-    v                   v                  v
-+--------------------------------------------------+
-| API Gateway: GenAI Multi-Model Gateway           |
-| |-- /chat        -> GenAI endpoint or router     |
-| |-- /embed       -> embedding model endpoint     |
-| |-- /classify    -> specialist model/function    |
-| `-- usage plans  -> quota + rate limit per team  |
-+--------------------------------------------------+
-        |                    |
-        | route by path      | emit telemetry
-        v                    v
-OCI GenAI Endpoints      Logging Log Group
-        |                    |
-        | prompt/response    | archived records
-        v                    v
-Object Storage Audit Bucket  Audit Reader Group
+![Architecture overview](architecture.png)
+
+[Editable draw.io diagram](architecture.drawio)
+
+## Diagram Sources And Scope
+
+Generated with the installed `oci-architecture-diagrams` skill and Oracle Toolkit
+v24.2. Azure resources use embedded native provider artwork where mapped;
+unmapped resource types remain named boxes. Source review: October 28, 2026.
+No cloud provisioning, provider revalidation, inference, model training or
+application traffic test was performed. Historical validation dates are unchanged.
+
+```bash
+python3 scripts/diagrams/ai-batch-02.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint ai/genai-gateway --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint ai/genai-gateway --check
+python3 scripts/diagrams/check-connections.py --write-report
 ```
+
+## Connection Lines
+
+Solid lines show gateway/deployment and usage-plan target associations. Dashed backend lines identify supplied HTTP inference adapters. No authentication adapter, subscriber bootstrap, automatic log source or audit writer is declared.
+
+Lines represent source-defined configuration or explicitly labelled external
+workflows. They do not establish successful runtime traffic. Independent buckets,
+policies and log containers are not automatically wired together.
+
+## Resource Detail And Coverage
+
+The main native draw.io document includes the overview, all resource-detail
+pages and identifier references. Counts are declarations, not expanded instances
+or deployed assets. Disabled/conditional resources remain visible. Companion
+Bicep deploys separately; local contracts do not create cloud services.
+
+| Scope | Declarations / references | Preview | Editable source |
+| --- | --- | --- | --- |
+| OCI resources | 6 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
+| Existing identifier inputs | 8 references | [PNG](existing-resources.png) | [draw.io](existing-resources.drawio) |
+
+[Resource inventory](resource-inventory.json) records source hashes, creation
+expressions, data lookups and resource-to-diagram node IDs. Supplied identifiers
+and overrides remain references, not resources purportedly created or adopted.
 
 ## Terraform Components
 

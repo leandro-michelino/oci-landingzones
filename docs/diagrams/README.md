@@ -357,3 +357,46 @@ All nine updated overview PNGs passed visual review after export. Repository
 contracts, local Markdown links, source coverage and native XML reference checks
 passed. The first-39 report was refreshed for the three changed original
 views. No Terraform resources or historical validation metadata changed.
+
+
+## AI Gateways, Fine-Tuning, Guardrails And Documents
+
+Five existing entry points now have draw.io/PNG overviews, service-connection
+lines, full source inventories and existing-resource reference pages. The Azure
+view includes every Bicep resource and clearly distinguishes public hello-world
+hosting, OpenAI model deployment, APIM and missing inference adapters. Training
+and hosting cluster roles remain separate. Document processing and guardrail
+redaction are not falsely represented as implemented application code.
+
+| Batch order | Blueprint | Preview | Editable source | Source inventory |
+| --- | --- | --- | --- | --- |
+| 26 | `ai/genai-gateway` | [PNG](../../blueprints/ai/genai-gateway/architecture/architecture.png) | [draw.io](../../blueprints/ai/genai-gateway/architecture/architecture.drawio) | [Inventory](../../blueprints/ai/genai-gateway/architecture/resource-inventory.json) |
+| 27 | `ai/azure-oci-ai-gateway` | [PNG](../../blueprints/ai/azure-oci-ai-gateway/architecture/architecture.png) | [draw.io](../../blueprints/ai/azure-oci-ai-gateway/architecture/architecture.drawio) | [Inventory](../../blueprints/ai/azure-oci-ai-gateway/architecture/resource-inventory.json) |
+| 28 | `ai/genai-fine-tuning` | [PNG](../../blueprints/ai/genai-fine-tuning/architecture/architecture.png) | [draw.io](../../blueprints/ai/genai-fine-tuning/architecture/architecture.drawio) | [Inventory](../../blueprints/ai/genai-fine-tuning/architecture/resource-inventory.json) |
+| 29 | `ai/genai-guardrails` | [PNG](../../blueprints/ai/genai-guardrails/architecture/architecture.png) | [draw.io](../../blueprints/ai/genai-guardrails/architecture/architecture.drawio) | [Inventory](../../blueprints/ai/genai-guardrails/architecture/resource-inventory.json) |
+| 30 | `ai/document-intelligence` | [PNG](../../blueprints/ai/document-intelligence/architecture/architecture.png) | [draw.io](../../blueprints/ai/document-intelligence/architecture/architecture.drawio) | [Inventory](../../blueprints/ai/document-intelligence/architecture/resource-inventory.json) |
+
+```bash
+python3 scripts/diagrams/ai-batch-02.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --check
+python3 scripts/diagrams/check-connections.py --write-report
+```
+
+Source review October 28, 2026: 46 declarations (OCI 32, Azure 10, local contracts
+4). Counts are declarations, not deployed instances. Source coverage includes
+conditional resources, optional endpoint/model configuration and ID overrides.
+No cloud provisioning, provider validation, inference, training, quota enforcement
+or document processing was executed; historical validation metadata is unchanged.
+
+Latest original backlog: **54/80** converted; **26** pending. Including the two
+new Interconnect entry points, **56/82** current entry points have editable
+architecture overviews and PNGs. The connection audit covers all 56 overviews
+and requires an explicit OCI bridge in all ten source-defined multicloud views.
+Other planned GCP counterparts remain pending after the original backlog.
+
+All 17 new overview/detail/reference PNGs passed export and visual review.
+The five documents include 39 identifier references. Layout checks, source
+coverage, native-page references, the three inventory-parser regressions,
+repository contracts and local Markdown links passed. No infrastructure source
+files changed in this diagram batch.

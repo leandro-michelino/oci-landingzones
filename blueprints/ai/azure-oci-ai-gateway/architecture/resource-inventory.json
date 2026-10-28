@@ -1,0 +1,718 @@
+{
+  "schema_version": 2,
+  "blueprint": "ai/azure-oci-ai-gateway",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "Azure": 10,
+    "Contracts": 4,
+    "OCI": 11
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_vcn.gateway",
+      "type": "oci_core_vcn",
+      "symbol": "gateway",
+      "source": "blueprints/ai/azure-oci-ai-gateway/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_gateway_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_gateway_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "gateway",
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_internet_gateway.gateway",
+      "type": "oci_core_internet_gateway",
+      "symbol": "gateway",
+      "source": "blueprints/ai/azure-oci-ai-gateway/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_gateway_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_gateway_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n10",
+        "source_symbol": "gateway",
+        "provider_icon": null,
+        "oci_icon": "Internet Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_route_table.gateway",
+      "type": "oci_core_route_table",
+      "symbol": "gateway",
+      "source": "blueprints/ai/azure-oci-ai-gateway/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_gateway_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_gateway_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n22",
+        "source_symbol": "gateway",
+        "provider_icon": null,
+        "oci_icon": "Route Table"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_security_list.gateway",
+      "type": "oci_core_security_list",
+      "symbol": "gateway",
+      "source": "blueprints/ai/azure-oci-ai-gateway/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_gateway_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_gateway_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n46",
+        "source_symbol": "gateway",
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_subnet.gateway",
+      "type": "oci_core_subnet",
+      "symbol": "gateway",
+      "source": "blueprints/ai/azure-oci-ai-gateway/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_gateway_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_gateway_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n58",
+        "source_symbol": "gateway",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.oci_network_contract",
+      "type": "terraform_data",
+      "symbol": "oci_network_contract",
+      "source": "blueprints/ai/azure-oci-ai-gateway/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n4",
+        "source_symbol": "oci_network_contract",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_apigateway_gateway.this",
+      "type": "oci_apigateway_gateway",
+      "symbol": "this",
+      "source": "blueprints/ai/azure-oci-ai-gateway/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_oci_api_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_oci_api_gateway ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n60",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "API Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_apigateway_deployment.this",
+      "type": "oci_apigateway_deployment",
+      "symbol": "this",
+      "source": "blueprints/ai/azure-oci-ai-gateway/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_oci_gateway_deployment ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_oci_gateway_deployment ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n75",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_apigateway_usage_plan.this",
+      "type": "oci_apigateway_usage_plan",
+      "symbol": "this",
+      "source": "blueprints/ai/azure-oci-ai-gateway/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.create_oci_usage_plans ? var.usage_plans : {}",
+      "creation_expression": {
+        "for_each": "var.create_oci_usage_plans ? var.usage_plans : {}"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n77",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_bucket.audit",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "audit",
+      "source": "blueprints/ai/azure-oci-ai-gateway/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_oci_audit_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_oci_audit_bucket ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n79",
+        "source_symbol": "audit",
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_logging_log_group.routing",
+      "type": "oci_logging_log_group",
+      "symbol": "routing",
+      "source": "blueprints/ai/azure-oci-ai-gateway/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_oci_routing_log_group ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_oci_routing_log_group ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n89",
+        "source_symbol": "routing",
+        "provider_icon": null,
+        "oci_icon": "Logging"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/ai/azure-oci-ai-gateway/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n111",
+        "source_symbol": "access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.connectivity_contract",
+      "type": "terraform_data",
+      "symbol": "connectivity_contract",
+      "source": "blueprints/ai/azure-oci-ai-gateway/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n6",
+        "source_symbol": "connectivity_contract",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.routing_contract",
+      "type": "terraform_data",
+      "symbol": "routing_contract",
+      "source": "blueprints/ai/azure-oci-ai-gateway/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n8",
+        "source_symbol": "routing_contract",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.azure_contract",
+      "type": "terraform_data",
+      "symbol": "azure_contract",
+      "source": "blueprints/ai/azure-oci-ai-gateway/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n10",
+        "source_symbol": "azure_contract",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "vnet",
+      "symbol": "vnet",
+      "type": "Microsoft.Network/virtualNetworks",
+      "source": "blueprints/ai/azure-oci-ai-gateway/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
+        "node_id": "n4",
+        "source_symbol": "vnet",
+        "provider_icon": "Microsoft.Network/virtualNetworks",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "routeTable",
+      "symbol": "routeTable",
+      "type": "Microsoft.Network/routeTables",
+      "source": "blueprints/ai/azure-oci-ai-gateway/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
+        "node_id": "n8",
+        "source_symbol": "routeTable",
+        "provider_icon": "Microsoft.Network/routeTables",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "networkSecurityGroup",
+      "symbol": "networkSecurityGroup",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "source": "blueprints/ai/azure-oci-ai-gateway/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
+        "node_id": "n12",
+        "source_symbol": "networkSecurityGroup",
+        "provider_icon": "Microsoft.Network/networkSecurityGroups",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "containerAppSubnet",
+      "symbol": "containerAppSubnet",
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "source": "blueprints/ai/azure-oci-ai-gateway/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
+        "node_id": "n16",
+        "source_symbol": "containerAppSubnet",
+        "provider_icon": "Microsoft.Network/virtualNetworks/subnets",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "logAnalyticsWorkspace",
+      "symbol": "logAnalyticsWorkspace",
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "source": "blueprints/ai/azure-oci-ai-gateway/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
+        "node_id": "n20",
+        "source_symbol": "logAnalyticsWorkspace",
+        "provider_icon": "Microsoft.OperationalInsights/workspaces",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "managedEnvironment",
+      "symbol": "managedEnvironment",
+      "type": "Microsoft.App/managedEnvironments",
+      "source": "blueprints/ai/azure-oci-ai-gateway/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
+        "node_id": "n24",
+        "source_symbol": "managedEnvironment",
+        "provider_icon": "Microsoft.App/managedEnvironments",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "containerApp",
+      "symbol": "containerApp",
+      "type": "Microsoft.App/containerApps",
+      "source": "blueprints/ai/azure-oci-ai-gateway/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
+        "node_id": "n28",
+        "source_symbol": "containerApp",
+        "provider_icon": "Microsoft.App/containerApps",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "openAiAccount",
+      "symbol": "openAiAccount",
+      "type": "Microsoft.CognitiveServices/accounts",
+      "source": "blueprints/ai/azure-oci-ai-gateway/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
+        "node_id": "n32",
+        "source_symbol": "openAiAccount",
+        "provider_icon": "Microsoft.CognitiveServices/accounts",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "openAiModelDeployment",
+      "symbol": "openAiModelDeployment",
+      "type": "Microsoft.CognitiveServices/accounts/deployments",
+      "source": "blueprints/ai/azure-oci-ai-gateway/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "if (deployOpenAiModel) {",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
+        "node_id": "n36",
+        "source_symbol": "openAiModelDeployment",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Azure",
+      "kind": "resource",
+      "address": "apiManagement",
+      "symbol": "apiManagement",
+      "type": "Microsoft.ApiManagement/service",
+      "source": "blueprints/ai/azure-oci-ai-gateway/azure/main.bicep",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "diagram": {
+        "file": "azure-resources.drawio",
+        "page_name": "Azure resources",
+        "node_id": "n38",
+        "source_symbol": "apiManagement",
+        "provider_icon": "Microsoft.ApiManagement/service",
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "azure-resources.drawio",
+      "page_name": "Azure resources",
+      "declarations": 10
+    },
+    {
+      "file": "contracts-resources.drawio",
+      "page_name": "Contracts resources",
+      "declarations": 4
+    },
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 11
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/ai/azure-oci-ai-gateway/variables.tf",
+      "description": "Compartment OCID where OCI AI gateway resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.fastconnect_virtual_circuit_id",
+      "source": "blueprints/ai/azure-oci-ai-gateway/variables.tf",
+      "description": "OCI FastConnect virtual circuit OCID used when connectivity_mode is interconnect.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.expressroute_circuit_id",
+      "source": "blueprints/ai/azure-oci-ai-gateway/variables.tf",
+      "description": "Azure ExpressRoute circuit resource ID used when connectivity_mode is interconnect.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.oci_gateway_id",
+      "source": "blueprints/ai/azure-oci-ai-gateway/variables.tf",
+      "description": "Existing OCI API Gateway OCID when create_oci_api_gateway is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.oci_gateway_subnet_id",
+      "source": "blueprints/ai/azure-oci-ai-gateway/variables.tf",
+      "description": "Existing subnet OCID for OCI API Gateway when create_oci_api_gateway is true and enable_oci_gateway_network is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.oci_gateway_network_security_group_ids",
+      "source": "blueprints/ai/azure-oci-ai-gateway/variables.tf",
+      "description": "NSG OCIDs attached to OCI API Gateway.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.oci_gateway_certificate_id",
+      "source": "blueprints/ai/azure-oci-ai-gateway/variables.tf",
+      "description": "Optional certificate OCID for OCI API Gateway.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    },
+    {
+      "address": "var.oci_gateway_deployment_id",
+      "source": "blueprints/ai/azure-oci-ai-gateway/variables.tf",
+      "description": "Existing OCI API Gateway deployment OCID when create_oci_gateway_deployment is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n17"
+      }
+    },
+    {
+      "address": "var.oci_kms_key_id",
+      "source": "blueprints/ai/azure-oci-ai-gateway/variables.tf",
+      "description": "Optional OCI KMS key OCID for audit bucket encryption.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n19"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/ai/azure-oci-ai-gateway/variables.tf",
+      "description": "Compartment OCID where OCI IAM policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n21"
+      }
+    },
+    {
+      "address": "var.azure_openai_account_id",
+      "source": "blueprints/ai/azure-oci-ai-gateway/variables.tf",
+      "description": "Azure OpenAI account resource ID from the Azure deployment session.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n23"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 11
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_objectstorage_namespace.this",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "this",
+      "source": "blueprints/ai/azure-oci-ai-gateway/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_oci_audit_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_oci_audit_bucket ? 1 : 0"
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/ai/azure-oci-ai-gateway/locals.tf",
+      "revision": "working-tree",
+      "sha256": "427a44faf6cc93d5f7faca3b8e11e96517020f0065dcb578cc6a828b003bb260"
+    },
+    {
+      "path": "blueprints/ai/azure-oci-ai-gateway/main.tf",
+      "revision": "working-tree",
+      "sha256": "0876a270c329385a803afa7ced6513017b431936198b95eea8fdbc64f5d2c807"
+    },
+    {
+      "path": "blueprints/ai/azure-oci-ai-gateway/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "2fa4057be19468f81fd41d42e539ca8fbcf7c4ac4b03c9bbf978250540c8aaf4"
+    },
+    {
+      "path": "blueprints/ai/azure-oci-ai-gateway/providers.tf",
+      "revision": "working-tree",
+      "sha256": "a640978bd754a2fda76b25486ba694e55679e13b47cf682253fb0a93fc516e21"
+    },
+    {
+      "path": "blueprints/ai/azure-oci-ai-gateway/variables.tf",
+      "revision": "working-tree",
+      "sha256": "fe9c575a8024c751594e07291b2887408b7ea1ef3eca7849797ca1058ad2a713"
+    },
+    {
+      "path": "blueprints/ai/azure-oci-ai-gateway/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "blueprints/ai/azure-oci-ai-gateway/azure/main.bicep",
+      "sha256": "c67f9d91c37c817715dde68501a9512604b32c279a3f265da68d9cff1b671dbc"
+    }
+  ]
+}

@@ -8,8 +8,8 @@
     "Overview matches authoring script",
     "Every native page has unique IDs and valid references"
   ],
-  "overview_count": 51,
-  "cross_cloud_overviews": 9,
+  "overview_count": 56,
+  "cross_cloud_overviews": 10,
   "blueprints": [
     {
       "blueprint": "networking/standalone-three-tier-vcn-defaults",
@@ -431,6 +431,51 @@
       "connections": 6,
       "cross_cloud_bridges": [],
       "overview_png_sha256": "1eb66d3f0b9256b3c55337fbd340119d9d0b09cd0b65bffa719f0137289cdd84",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "ai/genai-gateway",
+      "connections": 3,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "254992242c8a5b0e97a64f942ba573bf8034f1e1f135868f4a7ea08e0546b55d",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "ai/azure-oci-ai-gateway",
+      "connections": 9,
+      "cross_cloud_bridges": [
+        {
+          "source": "n23",
+          "target": "n103",
+          "label": "Azure backend URL / external adapter",
+          "clouds": [
+            "OCI",
+            "Azure"
+          ]
+        }
+      ],
+      "overview_png_sha256": "52e194d0f9079fd221960bd63ce2f2baee931ff6003715c98ae805794ce183cc",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "ai/genai-fine-tuning",
+      "connections": 5,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "c3c20d79efe7d40e1daab977f7668ad7f08786a6a3551bd59a06cf34925e6da1",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "ai/genai-guardrails",
+      "connections": 5,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "bdd8d5e3db160fad942977f5e838dd10ed419a5378036dab106b45b3be00be5f",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "ai/document-intelligence",
+      "connections": 5,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "90587f0c3da439343db23605aa79dd06bdfcc6b3474e2ae669673557df72696d",
       "layout_warnings": []
     },
     {
