@@ -54,6 +54,7 @@ folder.
 | Networking | Azure vWAN + OCI DRG transit backbone (OCI DRG primary, vWAN/vHub route domain, Interconnect default when present, IPSec/BGP backup and test mode) | `blueprints/networking/azure-vwan-oci-drg-transit/` | Available |
 | Networking | Regional prod/nonprod hub separation | `blueprints/networking/regional-prod-nonprod-hubs/` | Available |
 | Networking | OCI Network Load Balancer (Layer 4 TCP/UDP, private backend, health checks) | `blueprints/networking/network-load-balancer/` | Available |
+| Networking | OCI hub-spoke with Azure vWAN ExpressRoute Gateway and VNet mapping | `blueprints/networking/hub-spoke-with-azure-vwan-expressroute/` | Available |
 | Compliance | SCCA-style cloud-native landing zone | `blueprints/compliance/scca-cloud-native/` | Available |
 | Compliance | Zero Trust landing zone | `blueprints/compliance/zero-trust/` | Available |
 | Compliance | Healthcare / PCI compliance landing zone | `blueprints/compliance/healthcare-pci/` | Available |

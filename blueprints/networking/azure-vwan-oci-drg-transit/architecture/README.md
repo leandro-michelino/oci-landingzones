@@ -23,38 +23,24 @@ route domains.
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------------------+
-| Azure vWAN + OCI DRG Transit                                                                                         |
-+----------------------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic or control flow                       |
-|                                                                                                                      |
-| [Operator or CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                                    |
-|         |                    |                         |                                                             |
-|         | validates docs      | init/validate/plan      | OCI API calls                                              |
-|         v                    v                         v                                                             |
-| {OCI primary boundary}                                                                                               |
-|   |                                                                                                                  |
-|   |-- [Primary VCN + route table + security list + hub subnet] (optional)                                           |
-|   |-- [Primary DRG]                                                                                                  |
-|   |      `-- [DRG attachment to primary VCN] (optional)                                                              |
-|   |-- [CPE + IPSec fallback] (optional)                                                                              |
-|   `-- [terraform_data contracts + optional alert topic]                                                              |
-|          |-- interconnect mode + ExpressRoute/FastConnect IDs                                                       |
-|          |-- Azure vWAN/vHub IDs + route table metadata                                                             |
-|          |-- route segmentation by prod/nonprod/management                                                           |
-|          `-- DNS + runbook hand-off metadata                                                                         |
-|                                                                                                                      |
-| {Azure secondary boundary}                                                                                           |
-|   |                                                                                                                  |
-|   |-- [Virtual WAN]                                                                                                  |
-|   |-- [Virtual Hub + route table + VNet connection]                                                                  |
-|   |-- [VNet + subnet + NSG + route table]                                                                            |
-|   `-- [VPN gateway + local network gateway + connection] (optional fallback)                                        |
-|                                                                                                                      |
-| Path intent: OCI DRG primary hub <-> Azure vHub transit domains with IPSec-first rollout and optional interconnect cutover |
-+----------------------------------------------------------------------------------------------------------------------+
-```
+![Azure vWAN + OCI DRG Transit Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep the PNG aligned with this
+editable source after diagram changes.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. Regenerate from the repository
+root with `python3 scripts/diagrams/networking-batch-05.py --render`, after
+installing the skill and its official toolkit. The toolkit is not redistributed here.
+
+The diagram distinguishes source-defined resources, conditional enablement,
+supplied network references and metadata contracts. CIDRs are source defaults or
+explicitly marked TBC; deployment placement remains an operator input.
+
+Diagram documentation reviewed on 2026-10-28 against root Terraform, referenced
+modules and any accompanying Bicep template. No cloud resources were provisioned
+and no Terraform/provider validation date was changed. The picture is not proof
+of routing, backend health, traffic isolation, BGP or failover.
 
 ## Terraform Components
 

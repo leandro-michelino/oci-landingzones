@@ -18,59 +18,28 @@ mapped to OCI spoke VCNs for route governance.
 | Purpose | OCI hub DRG to Azure vWAN/vHub private transit with ExpressRoute Gateway and VNet connections. |
 | Terraform components | `network`, `fastconnect`, `ipsec_vpn`, `terraform_data.azure_vwan_contract` |
 | Azure components | `Microsoft.Network/virtualWans`, `virtualHubs`, `expressRouteGateways`, `hubVirtualNetworkConnections`, `virtualNetworks`, `networkSecurityGroups` |
-| Primary architecture view | The diagram below shows the OCI hub-spoke domain, Azure vWAN domain, and cross-cloud traffic path. |
+| Primary architecture view | The diagram shows the default OCI foundation and separate Azure template, with incomplete circuit inputs and conditional links identified. |
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Hub-Spoke With Azure vWAN ExpressRoute                                                                   |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI]                                                                                          |
-|     |                                                                                                    |
-|     |-- OCI Terraform runner -> [OCI provider]                                                           |
-|     |-- Azure Ansible runner -> [Azure CLI + Bicep deployment]                                           |
-|                                                                                                          |
-| {OCI network compartment / selected OCI region}                                                          |
-|     |                                                                                                    |
-|     v                                                                                                    |
-| [OCI Hub VCN]                                                                                            |
-|     |-- [dmz subnet]                                                                                     |
-|     |-- [firewall subnet]                                                                                |
-|     |-- [shared subnet]                                                                                  |
-|     `-- [gateway set]                                                                                    |
-|              |                                                                                           |
-|              v                                                                                           |
-| [OCI DRG] <-> [hub attachment] <-> [OCI spoke attachments]                                               |
-|     |                              |                                                                      |
-|     |                              +--> [OCI spoke VCN app1] web -> app -> db                            |
-|     |                              +--> [OCI spoke VCN app2] web -> app -> db                            |
-|     |                              `--> [future OCI spoke] same attachment contract                       |
-|     |                                                                                                    |
-|     `--> [OCI FastConnect virtual circuit] <-> (provider / cross-cloud private exchange)                 |
-|                                                   |                                                      |
-|                                                   v                                                      |
-| {Azure subscription / resource group / region}                                                           |
-|                                                   |                                                      |
-| [Azure ExpressRoute circuit private peering] <-> [Azure vWAN ExpressRoute Gateway]                       |
-|                                                   |                                                      |
-|                                                   v                                                      |
-|                                           [Azure Virtual Hub]                                             |
-|                                                   |                                                      |
-|                                  [vHub route table: oci-transit]                                         |
-|                                                   |                                                      |
-|              +------------------------------------+------------------------------------+                |
-|              |                                    |                                    |                |
-|       [Azure VNet app1]                    [Azure VNet app2]                   [future Azure VNet]       |
-|              |                                    |                                    |                |
-|       vHub VNet connection                 vHub VNet connection                same connection pattern   |
-|                                                                                                          |
-| Optional backup: [OCI IPSec] <-> [Azure VPN edge supplied outside or layered later]                      |
-| Hand-off: OCI hub/spoke IDs, DRG ID, FastConnect ID, Azure vWAN/vHub/ER Gateway IDs, VNet mappings.      |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Hub-Spoke With Azure vWAN ExpressRoute Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep the PNG aligned with this
+editable source after diagram changes.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. Regenerate from the repository
+root with `python3 scripts/diagrams/networking-batch-05.py --render`, after
+installing the skill and its official toolkit. The toolkit is not redistributed here.
+
+The diagram distinguishes source-defined resources, conditional enablement,
+supplied network references and metadata contracts. CIDRs are source defaults or
+explicitly marked TBC; deployment placement remains an operator input.
+
+Diagram documentation reviewed on 2026-10-28 against root Terraform, referenced
+modules and any accompanying Bicep template. No cloud resources were provisioned
+and no Terraform/provider validation date was changed. The picture is not proof
+of routing, backend health, traffic isolation, BGP or failover.
 
 ## Terraform Components
 

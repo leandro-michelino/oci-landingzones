@@ -18,43 +18,24 @@ registrations, health checks, listeners, source preservation options, and IAM.
 
 ## Architecture
 
-```text
-+--------------------------------------------------------------------------------+
-|                    Network Load Balancer Landing Zone                           |
-+--------------------------------------------------------------------------------+
-|                                                                                |
-|  Client / Producer                                                             |
-|      |                                                                         |
-|      | TCP, UDP, or other L4 protocol                                          |
-|      v                                                                         |
-|  OCI Network Load Balancer                                                     |
-|      |                                                                         |
-|      +--> Listener tcp_8080                                                    |
-|      +--> Listener udp_9000 optional                                           |
-|      +--> Private or public IP based on approved exposure                      |
-|      |                                                                         |
-|      v                                                                         |
-|  Backend Sets                                                                  |
-|      |                                                                         |
-|      +--> Policy: five tuple / two tuple / three tuple                         |
-|      +--> Health checker: TCP, HTTP, or HTTPS                                  |
-|      +--> Fail-open and source preservation options                            |
-|      |                                                                         |
-|      v                                                                         |
-|  Private Backend Targets                                                       |
-|      |                                                                         |
-|      +--> Compute private IPs                                                  |
-|      +--> Database or appliance endpoints                                      |
-|      +--> Container or app tier endpoints                                      |
-|      `--> Drain, offline, backup, and weight controls                          |
-|                                                                                |
-|  Governance Lane                                                               |
-|      |                                                                         |
-|      +--> NSGs and route table review                                          |
-|      +--> IAM for network operators                                            |
-|      `--> Tags and output hand-off to application teams                        |
-+--------------------------------------------------------------------------------+
-```
+![Network Load Balancer Landing Zone Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep the PNG aligned with this
+editable source after diagram changes.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. Regenerate from the repository
+root with `python3 scripts/diagrams/networking-batch-05.py --render`, after
+installing the skill and its official toolkit. The toolkit is not redistributed here.
+
+The diagram distinguishes source-defined resources, conditional enablement,
+supplied network references and metadata contracts. CIDRs are source defaults or
+explicitly marked TBC; deployment placement remains an operator input.
+
+Diagram documentation reviewed on 2026-10-28 against root Terraform, referenced
+modules and any accompanying Bicep template. No cloud resources were provisioned
+and no Terraform/provider validation date was changed. The picture is not proof
+of routing, backend health, traffic isolation, BGP or failover.
 
 ## Terraform Components
 

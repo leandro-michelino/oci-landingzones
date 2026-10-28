@@ -5,10 +5,12 @@
 
 ## Networking Draw.io Diagrams
 
-The first twenty Networking catalog entries have editable draw.io sources and PNG
+All 24 existing Networking blueprints have editable draw.io sources and PNG
 previews beside their architecture documentation. The PNGs replace the previous
-ASCII architecture blocks in those twenty files. Later catalog entries retain their
-existing diagrams until their batch is completed.
+ASCII architecture blocks in all 24 architecture files. Planned patterns without
+a deployable blueprint, such as public-edge-ingress, are outside this inventory.
+The catalog now also lists the existing Azure vWAN ExpressRoute blueprint,
+previously present only in the generated blueprint index.
 
 Generated using the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
 (source revision `d00360c5dc9942c49189416b9ad677b863db54a3`) and Oracle's official
@@ -38,6 +40,10 @@ its `toolkit/` folder, or set `OCI_DIAGRAM_SKILL` and `OCI_TOOLKIT`.
 | 18 | `hub-spoke-with-multicloud-interconnect` | [PNG](../../blueprints/networking/hub-spoke-with-multicloud-interconnect/architecture/architecture.png) | [draw.io](../../blueprints/networking/hub-spoke-with-multicloud-interconnect/architecture/architecture.drawio) |
 | 19 | `aws-oci-hybrid-network-backbone` | [PNG](../../blueprints/networking/aws-oci-hybrid-network-backbone/architecture/architecture.png) | [draw.io](../../blueprints/networking/aws-oci-hybrid-network-backbone/architecture/architecture.drawio) |
 | 20 | `azure-oci-dual-connectivity` | [PNG](../../blueprints/networking/azure-oci-dual-connectivity/architecture/architecture.png) | [draw.io](../../blueprints/networking/azure-oci-dual-connectivity/architecture/architecture.drawio) |
+| 21 | `azure-vwan-oci-drg-transit` | [PNG](../../blueprints/networking/azure-vwan-oci-drg-transit/architecture/architecture.png) | [draw.io](../../blueprints/networking/azure-vwan-oci-drg-transit/architecture/architecture.drawio) |
+| 22 | `regional-prod-nonprod-hubs` | [PNG](../../blueprints/networking/regional-prod-nonprod-hubs/architecture/architecture.png) | [draw.io](../../blueprints/networking/regional-prod-nonprod-hubs/architecture/architecture.drawio) |
+| 23 | `network-load-balancer` | [PNG](../../blueprints/networking/network-load-balancer/architecture/architecture.png) | [draw.io](../../blueprints/networking/network-load-balancer/architecture/architecture.drawio) |
+| 24 | `hub-spoke-with-azure-vwan-expressroute` | [PNG](../../blueprints/networking/hub-spoke-with-azure-vwan-expressroute/architecture/architecture.png) | [draw.io](../../blueprints/networking/hub-spoke-with-azure-vwan-expressroute/architecture/architecture.drawio) |
 
 From the repository root, regenerate a batch and export its PNGs with:
 
@@ -46,6 +52,7 @@ python3 scripts/diagrams/networking-batch-01.py --render
 python3 scripts/diagrams/networking-batch-02.py --render
 python3 scripts/diagrams/networking-batch-03.py --render
 python3 scripts/diagrams/networking-batch-04.py --render
+python3 scripts/diagrams/networking-batch-05.py --render
 ```
 
 Each generator runs the skill's layout checks and stops on warnings before
@@ -53,7 +60,7 @@ exporting. The output uses source-default CIDRs, marks unspecified deployment
 placement, and distinguishes optional disabled services from the network
 foundation. It does not discover live OCI resources.
 
-On October 28, 2026, all twenty sources passed the skill's layout checks; all twenty
+On October 28, 2026, all 24 sources passed the skill's layout checks; all 24
 PNGs were exported through draw.io and visually reviewed. Repository contracts,
 Markdown links and diff whitespace checks passed. This documentation-only work
 performed no Terraform apply, provider revalidation, connectivity, failover or

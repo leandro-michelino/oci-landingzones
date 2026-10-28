@@ -1,6 +1,6 @@
 # Regional Prod Nonprod Hubs Architecture
 
-This is the deployment architecture for `blueprints/networking/regional-prod-nonprod-hubs`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/networking/regional-prod-nonprod-hubs`. The PNG provides a GitHub-readable preview; the draw.io source preserves editable shapes, official OCI icons and connectors.
 
 ## Deployment Purpose
 
@@ -13,35 +13,29 @@ Creates separate prod and nonprod hub-spoke networks in the same region with dis
 | Boundary | `blueprints/networking/regional-prod-nonprod-hubs` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Creates separate prod and nonprod hub-spoke networks in the same region with distinct CIDR spaces and environment tags. |
 | Terraform components | `prod_network`, `nonprod_network` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram shows default resources, conditional components and dependency boundaries; it is not runtime evidence. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Regional Prod Nonprod Hubs                                                                               |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {One OCI region / separated operating environments}                                                      |
-|         |                                                                                                |
-|         +--> [prod hub-spoke network]                                                                    |
-|         |      hub VCN -> DRG -> prod spokes -> prod route/security controls                             |
-|         |                                                                                                |
-|         `--> [nonprod hub-spoke network]                                                                 |
-|                hub VCN -> DRG -> nonprod spokes -> nonprod route/security controls                       |
-|                                                                                                          |
-| Boundary: prod and nonprod keep separate hubs, DRGs, route tables, gateways, and attachment maps.        |
-| Review focus: CIDR non-overlap, policy separation, shared-service exceptions, and promotion path         |
-| controls.                                                                                                |
-| Hand-off: environment-specific hub, DRG, spoke, subnet, route, and gateway IDs.                          |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Regional Prod Nonprod Hubs Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep the PNG aligned with this
+editable source after diagram changes.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. Regenerate from the repository
+root with `python3 scripts/diagrams/networking-batch-05.py --render`, after
+installing the skill and its official toolkit. The toolkit is not redistributed here.
+
+The diagram distinguishes source-defined resources, conditional enablement,
+supplied network references and metadata contracts. CIDRs are source defaults or
+explicitly marked TBC; deployment placement remains an operator input.
+
+Diagram documentation reviewed on 2026-10-28 against root Terraform, referenced
+modules and any accompanying Bicep template. No cloud resources were provisioned
+and no Terraform/provider validation date was changed. The picture is not proof
+of routing, backend health, traffic isolation, BGP or failover.
 
 ## Terraform Components
 
