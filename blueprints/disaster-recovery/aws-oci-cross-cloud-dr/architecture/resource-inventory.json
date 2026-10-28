@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "blueprint": "disaster-recovery/aws-oci-cross-cloud-dr",
   "review_date": "2026-10-28",
   "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
@@ -18,11 +18,16 @@
       "source": "blueprints/disaster-recovery/aws-oci-cross-cloud-dr/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_primary_network ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n4",
         "source_symbol": "primary",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
       }
     },
     {
@@ -34,11 +39,16 @@
       "source": "blueprints/disaster-recovery/aws-oci-cross-cloud-dr/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_primary_network ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n10",
         "source_symbol": "primary",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Internet Gateway"
       }
     },
     {
@@ -50,11 +60,16 @@
       "source": "blueprints/disaster-recovery/aws-oci-cross-cloud-dr/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_primary_network ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n22",
         "source_symbol": "primary",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Route Table"
       }
     },
     {
@@ -66,11 +81,16 @@
       "source": "blueprints/disaster-recovery/aws-oci-cross-cloud-dr/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_primary_network ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n46",
         "source_symbol": "primary_app",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
       }
     },
     {
@@ -82,11 +102,16 @@
       "source": "blueprints/disaster-recovery/aws-oci-cross-cloud-dr/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_oci_primary_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_primary_network ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n58",
         "source_symbol": "primary_app",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -98,11 +123,14 @@
       "source": "blueprints/disaster-recovery/aws-oci-cross-cloud-dr/main.tf",
       "revision": "working-tree",
       "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
       "diagram": {
         "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
         "node_id": "n4",
         "source_symbol": "oci_network_contract",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -114,11 +142,16 @@
       "source": "blueprints/disaster-recovery/aws-oci-cross-cloud-dr/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_dr_evidence_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_dr_evidence_bucket ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n60",
         "source_symbol": "dr_evidence",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
       }
     },
     {
@@ -130,11 +163,16 @@
       "source": "blueprints/disaster-recovery/aws-oci-cross-cloud-dr/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_dr_alert_topic ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_dr_alert_topic ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n70",
         "source_symbol": "dr_alert",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Notifications"
       }
     },
     {
@@ -146,11 +184,14 @@
       "source": "blueprints/disaster-recovery/aws-oci-cross-cloud-dr/main.tf",
       "revision": "working-tree",
       "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
       "diagram": {
         "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
         "node_id": "n6",
         "source_symbol": "connectivity_contract",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -162,11 +203,16 @@
       "source": "blueprints/disaster-recovery/aws-oci-cross-cloud-dr/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_dns_failover_contract ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_dns_failover_contract ? 1 : 0"
+      },
       "diagram": {
         "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
         "node_id": "n8",
         "source_symbol": "dns_failover_contract",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -178,11 +224,16 @@
       "source": "blueprints/disaster-recovery/aws-oci-cross-cloud-dr/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_runbook_contract ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_runbook_contract ? 1 : 0"
+      },
       "diagram": {
         "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
         "node_id": "n10",
         "source_symbol": "runbook_contract",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -196,9 +247,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n4",
         "source_symbol": "StandbyVpc",
-        "provider_icon": "AWS::EC2::VPC"
+        "provider_icon": "AWS::EC2::VPC",
+        "oci_icon": null
       }
     },
     {
@@ -212,9 +265,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n8",
         "source_symbol": "StandbyLogKey",
-        "provider_icon": "AWS::KMS::Key"
+        "provider_icon": "AWS::KMS::Key",
+        "oci_icon": null
       }
     },
     {
@@ -228,9 +283,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n12",
         "source_symbol": "StandbyFlowLogGroup",
-        "provider_icon": "AWS::Logs::LogGroup"
+        "provider_icon": "AWS::Logs::LogGroup",
+        "oci_icon": null
       }
     },
     {
@@ -244,9 +301,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n16",
         "source_symbol": "StandbyFlowLogRole",
-        "provider_icon": "AWS::IAM::Role"
+        "provider_icon": "AWS::IAM::Role",
+        "oci_icon": null
       }
     },
     {
@@ -260,9 +319,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n20",
         "source_symbol": "StandbyVpcFlowLog",
-        "provider_icon": "AWS::EC2::FlowLog"
+        "provider_icon": "AWS::EC2::FlowLog",
+        "oci_icon": null
       }
     },
     {
@@ -276,9 +337,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n24",
         "source_symbol": "InternetGateway",
-        "provider_icon": "AWS::EC2::InternetGateway"
+        "provider_icon": "AWS::EC2::InternetGateway",
+        "oci_icon": null
       }
     },
     {
@@ -292,9 +355,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n28",
         "source_symbol": "VpcIgwAttachment",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -308,9 +373,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n30",
         "source_symbol": "StandbyRouteTable",
-        "provider_icon": "AWS::EC2::RouteTable"
+        "provider_icon": "AWS::EC2::RouteTable",
+        "oci_icon": null
       }
     },
     {
@@ -324,9 +391,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n34",
         "source_symbol": "DefaultRoute",
-        "provider_icon": "AWS::EC2::Route"
+        "provider_icon": "AWS::EC2::Route",
+        "oci_icon": null
       }
     },
     {
@@ -340,9 +409,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n38",
         "source_symbol": "StandbySubnet",
-        "provider_icon": "AWS::EC2::Subnet"
+        "provider_icon": "AWS::EC2::Subnet",
+        "oci_icon": null
       }
     },
     {
@@ -356,9 +427,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n42",
         "source_symbol": "SubnetRouteAssociation",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -372,9 +445,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n44",
         "source_symbol": "StandbySecurityGroup",
-        "provider_icon": "AWS::EC2::SecurityGroup"
+        "provider_icon": "AWS::EC2::SecurityGroup",
+        "oci_icon": null
       }
     },
     {
@@ -388,9 +463,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n48",
         "source_symbol": "StandbyInstanceRole",
-        "provider_icon": "AWS::IAM::Role"
+        "provider_icon": "AWS::IAM::Role",
+        "oci_icon": null
       }
     },
     {
@@ -404,9 +481,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n52",
         "source_symbol": "StandbyInstanceProfile",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -420,9 +499,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n54",
         "source_symbol": "StandbyLaunchTemplate",
-        "provider_icon": "AWS::EC2::LaunchTemplate"
+        "provider_icon": "AWS::EC2::LaunchTemplate",
+        "oci_icon": null
       }
     },
     {
@@ -436,9 +517,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n58",
         "source_symbol": "StandbyInstance",
-        "provider_icon": "AWS::EC2::Instance"
+        "provider_icon": "AWS::EC2::Instance",
+        "oci_icon": null
       }
     },
     {
@@ -452,9 +535,11 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n62",
         "source_symbol": "StandbyElasticIp",
-        "provider_icon": "AWS::EC2::EIP"
+        "provider_icon": "AWS::EC2::EIP",
+        "oci_icon": null
       }
     },
     {
@@ -468,12 +553,77 @@
       "condition": "Unconditional declaration in separately deployed CloudFormation template.",
       "diagram": {
         "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
         "node_id": "n66",
         "source_symbol": "StandbyElasticIpAssociation",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     }
   ],
+  "resource_pages": [
+    {
+      "file": "aws-resources.drawio",
+      "page_name": "AWS resources",
+      "declarations": 18
+    },
+    {
+      "file": "contracts-resources.drawio",
+      "page_name": "Contracts resources",
+      "declarations": 4
+    },
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 7
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/disaster-recovery/aws-oci-cross-cloud-dr/variables.tf",
+      "description": "Compartment OCID where OCI DR resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.fastconnect_virtual_circuit_id",
+      "source": "blueprints/disaster-recovery/aws-oci-cross-cloud-dr/variables.tf",
+      "description": "OCI FastConnect virtual circuit OCID used when connectivity_mode is interconnect.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.direct_connect_connection_id",
+      "source": "blueprints/disaster-recovery/aws-oci-cross-cloud-dr/variables.tf",
+      "description": "AWS Direct Connect connection resource ID used when connectivity_mode is interconnect.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 3
+  },
   "data_lookups": [
     {
       "cloud": "OCI",
@@ -483,7 +633,10 @@
       "symbol": "this",
       "source": "blueprints/disaster-recovery/aws-oci-cross-cloud-dr/main.tf",
       "revision": "working-tree",
-      "condition": "count = var.enable_dr_evidence_bucket ? 1 : 0"
+      "condition": "count = var.enable_dr_evidence_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_dr_evidence_bucket ? 1 : 0"
+      }
     }
   ],
   "source_files": [

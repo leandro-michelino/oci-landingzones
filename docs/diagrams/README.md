@@ -323,3 +323,37 @@ The original conversion backlog remains **49/80**, with **31** pending.
 Including these two new complete diagram sets, **51/82** current entry points
 have editable overviews and PNGs. The other planned GCP counterparts remain a
 follow-on phase; this explicit Interconnect request brings its networking base forward.
+
+
+## Connection-Line Standard And Review
+
+Every topology overview must visibly connect its related services. Every
+cross-cloud overview must include an explicit bridge between the OCI and remote
+cloud boundaries. Use solid lines for declared associations/routing and clearly
+labelled dashed lines for missing transport, operator workflows and external
+prerequisites. A line never establishes working traffic or successful failover.
+
+Do not invent a direct service link to make every icon connected. Independent
+buckets, alert topics and policy inputs can remain independent when the source
+contains no producer, subscription or binding. Resource-detail inventories are
+not traffic diagrams and need no artificial connections.
+
+The October 28 connection review corrected nine overviews, including OCI/AWS
+MySQL DR, service-level associations, logging and explicit Azure/AWS handoffs.
+The [machine-readable audit](connection-review.json) covers all 51 published
+overviews, checks layout/native references and requires a cross-cloud bridge
+where the source inventory contains external-cloud resources. It does not
+validate cloud traffic or expand the original conversion progress.
+
+```bash
+python3 scripts/diagrams/check-connections.py --write-report
+```
+
+The authoring scripts remain authoritative. Re-export an updated overview first,
+then rebuild its native resource-detail pages with the coverage generator.
+Extend the connection-check registry whenever a new overview batch is added.
+
+All nine updated overview PNGs passed visual review after export. Repository
+contracts, local Markdown links, source coverage and native XML reference checks
+passed. The first-39 report was refreshed for the three changed original
+views. No Terraform resources or historical validation metadata changed.

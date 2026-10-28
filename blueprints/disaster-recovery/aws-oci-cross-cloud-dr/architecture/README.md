@@ -51,9 +51,20 @@ Terraform metadata. Supplied resources remain prerequisites, not created assets.
 | Contracts | 4 | [PNG](contracts-resources.png) | [draw.io](contracts-resources.drawio) |
 | OCI | 7 | [PNG](oci-resources.png) | [draw.io](oci-resources.drawio) |
 
+[Existing-resource inputs: PNG](existing-resources.png) / [draw.io](existing-resources.drawio).
+These identifier references are not created resources.
+
 [Resource inventory](resource-inventory.json) records source revisions, file hashes
 and resource-to-diagram node mappings. The coverage check verifies all declarations,
 provider-icon mappings, embedded SVG syntax and inclusion in the main draw.io pages.
+
+## Connection Lines
+
+Solid service lines also identify the EC2 instance-profile attachment and flow-log delivery. The dashed cross-cloud connection shows external connectivity intent. The templates create no interconnect circuit, replication path or recovered application; operator-supplied circuit IDs and routing require separate implementation.
+
+Lines show configuration or intended relationships, never verified runtime
+traffic. Detail/reference maps enumerate resources and deliberately do not
+invent connections between independent declarations.
 
 ## Terraform Components
 

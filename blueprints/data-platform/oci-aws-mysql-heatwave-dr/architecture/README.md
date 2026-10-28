@@ -62,6 +62,14 @@ creation expressions, data lookups and resource-to-diagram node mappings.
 Supplied subnet, key, compartment and service IDs are references or overrides,
 not evidence that this blueprint creates or adopts those external resources.
 
+## Connection Lines
+
+Solid lines show DB/HeatWave attachment, configured subnet routing, flow-log delivery and log encryption. Dashed lines show replication intent and the missing AWS VPN edge/return route. Those external prerequisites and the MySQL replication channel are not created by the templates. The independently created bucket and alert topic have no automatic producer/subscription wiring.
+
+Lines show configuration or intended relationships, never verified runtime
+traffic. Detail/reference maps enumerate resources and deliberately do not
+invent connections between independent declarations.
+
 ## Terraform Components
 
 | Component | Purpose |

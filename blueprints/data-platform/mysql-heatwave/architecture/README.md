@@ -57,6 +57,14 @@ creation expressions, data lookups and resource-to-diagram node mappings.
 Supplied subnet, key, compartment and service IDs are references or overrides,
 not evidence that this blueprint creates or adopts those external resources.
 
+## Connection Lines
+
+Solid lines show the NSG selection and DB System/HeatWave attachment. The dashed Lakehouse line is an external loading workflow; this blueprint does not grant object-read access or execute a load. IAM statements and bucket creation do not establish that workflow.
+
+Lines show configuration or intended relationships, never verified runtime
+traffic. Detail/reference maps enumerate resources and deliberately do not
+invent connections between independent declarations.
+
 ## Terraform Components
 
 | File | Purpose |

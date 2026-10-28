@@ -117,6 +117,8 @@ def expressroute(title,index):
     er=cloud.box(d,'Microsoft.Network/expressRouteGateways','ExpressRoute Gateway / deploy flag=true\nConnection created only if private-peering ID is nonempty\nCircuit itself is not created',25,300,690,130,parent=az,kind='thirdparty_component')
     net=cloud.box(d,'Microsoft.Network/virtualNetworks','Default Azure VNet app1 / 10.88.10.0/24\nWorkload subnet 10.88.10.0/24 + NSG\nvHub VNet connection associated with route table',25,530,690,130,parent=az,kind='thirdparty_component')
     d.connect(wan,er,kind='plain',straight=True)
+    drg=next(n for n in d.nodes if n.kind=='icon' and n.name=='DRG')
+    d.connect(drg,er,kind='dashed',label='Optional FastConnect / ExpressRoute: external key + peering',exit=(1,.5),entry=(0,.5),waypoints=[(1725,300),(1725,525)])
     d.connect(wan,net,kind='plain',exit=(1,.5),entry=(1,.5),waypoints=[(2485,305),(2485,755)])
     d.text('NSG allows all protocols/ports from default OCI prefixes\n10.0.0.0/16 and 10.1.0.0/16. Review customer access intent.\nAdditional VNets / OCI spokes require additional map entries.',25,730,690,90,parent=az,size=13)
     d.box('Connectivity contract / metadata only\nAzure VNet-to-OCI-spoke mappings do not create peering.\nExpressRoute peering/circuit IDs default null; validation flag=false.\nThe Azure template declares no backup VPN gateway.',25,890,690,145,parent=az,kind='note')

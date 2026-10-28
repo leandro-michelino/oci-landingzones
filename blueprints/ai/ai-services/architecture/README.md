@@ -58,6 +58,14 @@ creation expressions, data lookups and resource-to-diagram node mappings.
 Supplied subnet, key, compartment and service IDs are references or overrides,
 not evidence that this blueprint creates or adopts those external resources.
 
+## Connection Lines
+
+Dashed lines show an external application reading input objects, calling selected service APIs, optionally using the Vision endpoint and writing results. The caller/jobs/writer are explicitly not created. Project creation alone does not execute this workflow or bind a project to the private endpoint.
+
+Lines show configuration or intended relationships, never verified runtime
+traffic. Detail/reference maps enumerate resources and deliberately do not
+invent connections between independent declarations.
+
 ## Terraform Components
 
 | File | Purpose |

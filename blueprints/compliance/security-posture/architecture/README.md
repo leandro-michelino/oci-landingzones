@@ -74,6 +74,14 @@ python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint compliance/
 If regenerating the overview first, rebuild these detail pages afterward.
 See [the fixed first-39 review](../../../../docs/diagrams/FIRST-39-REVIEW.md) and [provider icon sources](../../../../scripts/diagrams/assets/README.md).
 
+## Connection Lines
+
+The Events-to-Notifications line is conditional on an ONS action using the local topic fallback when no explicit topic ID is supplied. Alarm destinations, reports, scan results and remediation resources remain independently configured; no automatic pipeline is inferred.
+
+Lines show configuration or intended relationships, never verified runtime
+traffic. Detail/reference maps enumerate resources and deliberately do not
+invent connections between independent declarations.
+
 ## Terraform Components
 
 | File | Purpose |

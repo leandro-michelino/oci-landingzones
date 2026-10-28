@@ -101,10 +101,12 @@ def posture(title,index):
   ('Events','Event rules / map empty','ONS / FAAS / OSS actions are operator inputs.\nFunctions and Streams must exist separately.'),
   ('Monitoring','Alarms / map empty','Queries, metric scope and destination IDs supplied per alarm.\nNo automatic alarm-to-topic wiring is inferred.'),
  ]
+ services=[]
  for i,(icon,label,text) in enumerate(items):
   panel=d.group('optional',label,30+(i%3)*810,65+(i//3)*405,780,350,parent=reg,style_extra='verticalAlign=top;spacingTop=12;')
-  d.icon(icon,100,125,parent=panel,size=52,label='',label_pos='top')
+  services.append(d.icon(icon,100,125,parent=panel,size=52,label='',label_pos='top'))
   d.text(text,25,220,730,95,parent=panel,size=13)
+ d.connect(services[4],services[3],label='ONS action / local topic fallback when no topic ID supplied',straight=True)
  footer(d,'DEFAULT RESULT: No resources. All create flags are false; event_rules={}, alarms={}, policy_statements=[].\nOptional access policy uses the home-region provider and defaults to tenancy-root placement. No IAM policy is created with empty statements.\nNo remediation Function, scan result export, report upload, notification delivery or security outcome is implemented or verified by this diagram.',1150)
  return d
 
@@ -146,6 +148,7 @@ def azure(title,index):
  app=cloud.box(d,'Microsoft.App/containerApps','Managed Environment + Container App\nExternal ingress / target port 80 / insecure=false\nHello-world image default; replicas 1–2, CPU 0.5 / memory 1Gi\nApplication/data recovery is not configured by this sample.',30,340,890,180,parent=az,kind='thirdparty_component')
  logs=cloud.box(d,'Microsoft.OperationalInsights/workspaces','Log Analytics workspace\n30-day retention; App environment sends logs to workspace',30,650,890,110,parent=az,kind='thirdparty_component')
  d.connect(net,app,kind='plain',straight=True); d.connect(app,logs,kind='dashed',straight=True)
+ d.connect(sn,app,kind='dashed',label='Interconnect intent / external circuit prerequisites; IDs only',exit=(.5,1),entry=(0,.5),waypoints=[(540,810),(1470,810),(1470,590)])
  footer(d,'CONTRACTS / DEFAULTS NEED REAL INPUTS\nDefault connectivity_mode=interconnect but FastConnect/ExpressRoute IDs are null. DNS contract enabled but endpoint inputs are null; ingress CIDR is null.\nThese contracts do not provision circuits, DRG, VPN, DNS records or a failover controller. RTO 30 min / RPO 15 min / TTL 30 sec are requested metadata.\nOCI and Azure are separate deployments; no workload/data replication, automatic DNS switch or tested DR outcome is created.',1120)
  return d
 

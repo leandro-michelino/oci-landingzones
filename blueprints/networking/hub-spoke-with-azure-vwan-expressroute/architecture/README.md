@@ -80,6 +80,14 @@ python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint networking/
 If regenerating the overview first, rebuild these detail pages afterward.
 See [the fixed first-39 review](../../../../docs/diagrams/FIRST-39-REVIEW.md) and [provider icon sources](../../../../scripts/diagrams/assets/README.md).
 
+## Connection Lines
+
+The dashed OCI DRG-to-Azure ExpressRoute gateway connection makes the optional FastConnect/ExpressRoute handoff explicit. It still requires provider service/key, private peering and circuit provisioning. The separate Azure template creates no ExpressRoute circuit.
+
+Lines show configuration or intended relationships, never verified runtime
+traffic. Detail/reference maps enumerate resources and deliberately do not
+invent connections between independent declarations.
+
 ## Terraform Components
 
 | Kind | Name | Source Or Role |

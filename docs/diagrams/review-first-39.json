@@ -417,7 +417,7 @@
       "native_document_pages": 6,
       "inventory_sha256": "08a0430644104a95ee5c8aeb81c47fce6f8d749c6770844b7d0a1e9eca327b59",
       "png_sha256": {
-        "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/architecture/architecture.png": "7e981b095327dd4e8734f4f810b36295254f9ab1f72705501f0d2b3ac31b097b",
+        "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/architecture/architecture.png": "d998d587683b56b436876d7e78d65bf6fcf3f377fbb0d71b351758137d8c5147",
         "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/architecture/azure-resources.png": "425da2be5ff815cb7dc457423e50e24a1155aafc795ae94ee6be6da3d484ad80",
         "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/architecture/contracts-resources.png": "4de95709d479b671e5b01a089b13ba8fe6c0e5d0fceacd5e09571279929e89d7",
         "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/architecture/oci-resources.png": "a373bde01ea625fcf977ce3128cfd373bd121e6c32490c2d3d6628d6388b5fb4",
@@ -635,7 +635,7 @@
       "native_document_pages": 3,
       "inventory_sha256": "27832c4050a1270ae77df578dde27026534c4c3e9bcbc427b1fdb8733f0bc4ec",
       "png_sha256": {
-        "blueprints/compliance/security-posture/architecture/architecture.png": "1e3a8697c6fd405cbfe4af32c12cf07db025e4bbe4cedf2edef995fe065fbe80",
+        "blueprints/compliance/security-posture/architecture/architecture.png": "1b83bfc295178401d1ee11e3c453f28fe46465550bbf8d259fcc9cc156e9adc0",
         "blueprints/compliance/security-posture/architecture/oci-resources.png": "a6d1522bbcdc3b363d1120fb178674331df6ab5ef9c0c8776ba6ec45d82ae79e",
         "blueprints/compliance/security-posture/architecture/existing-resources.png": "5919538f6300073517494c1f1d56fb11c939dfcaab6b3b96b01a0ee0c33774b9"
       }
@@ -669,7 +669,7 @@
       "native_document_pages": 5,
       "inventory_sha256": "4dde3c9ea85a16e12c9b2987c7038b5d569d4965c99918f15686fc1aabb19fdb",
       "png_sha256": {
-        "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/architecture.png": "2bfc555daa7687f2365497dae817c801300b9817592b4574be1ce40031081b3f",
+        "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/architecture.png": "394008e2284f8da6957b38b921f48464c06e1c9d59b0f18ce03c3b28d1601e34",
         "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/azure-resources.png": "1f5fdcb875e4e24be0807ac462164e112ede51d1bd3b826b53a999d86acada8d",
         "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/contracts-resources.png": "4365c08310041c8b435c6eda4e7566dd26f4580da1fd1a2f3b5738acc7256708",
         "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/oci-resources.png": "321391440b3e473947ac2a946c43b70597e462c6144fd5860916662f4a7e965a",

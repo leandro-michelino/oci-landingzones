@@ -56,6 +56,14 @@ creation expressions, data lookups and resource-to-diagram node mappings.
 Supplied subnet, key, compartment and service IDs are references or overrides,
 not evidence that this blueprint creates or adopts those external resources.
 
+## Connection Lines
+
+The dashed lines identify an existing application and optional archive writer as external prerequisites. Neither caller nor archive workflow is created. The private endpoint is not wired directly to the archive bucket; the application would perform the separate API/storage operations.
+
+Lines show configuration or intended relationships, never verified runtime
+traffic. Detail/reference maps enumerate resources and deliberately do not
+invent connections between independent declarations.
+
 ## Terraform Components
 
 | Kind | Name | Source Or Role |
