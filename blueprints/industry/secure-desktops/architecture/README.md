@@ -13,7 +13,7 @@ alarms, and IAM.
 | --- | --- |
 | Access | End users connect through the approved Secure Desktops service path. |
 | Desktop pool | Shape, capacity, image, storage, standby, and schedules. |
-| Network | VCN, private subnet, NSGs, and optional private access endpoint. |
+| Network | Supplied VCN/subnet/NSGs and optional private-access configuration; no network creation. |
 | Control | Device policy and session lifecycle actions. |
 | Governance | IAM policy shell, alarms, tags, BYOL acknowledgement, and image ownership. |
 
@@ -29,46 +29,17 @@ For Terraform/API-created Windows BYOL pools, this blueprint adds the immutable 
 
 ## Architecture
 
-```text
-+--------------------------------------------------------------------------------+
-|                         Secure Desktops Landing Zone                            |
-+--------------------------------------------------------------------------------+
-|                                                                                |
-|  End User                                                                      |
-|      |                                                                         |
-|      | approved desktop access path                                            |
-|      v                                                                         |
-|  OCI Secure Desktops Pool                                                      |
-|      |                                                                         |
-|      +--> Approved image                                                       |
-|      +--> Windows 10/11 BYOL acknowledgement and pool tag when needed          |
-|      +--> Shape and flex shape config                                          |
-|      +--> Maximum and standby pool size                                        |
-|      +--> Desktop storage and backup policy                                    |
-|      |                                                                         |
-|      v                                                                         |
-|  Private VCN Placement                                                         |
-|      |                                                                         |
-|      +--> Desktop subnet                                                       |
-|      +--> NSGs for corporate/VPN access                                        |
-|      +--> Optional private access endpoint                                    |
-|      |                                                                         |
-|      v                                                                         |
-|  Workload / Admin Targets                                                      |
-|      |                                                                         |
-|      +--> Private apps                                                         |
-|      +--> Databases                                                            |
-|      +--> Admin tools                                                          |
-|      `--> Internal SaaS or integration endpoints                               |
-|                                                                                |
-|  Governance Lane                                                               |
-|      |                                                                         |
-|      +--> Device policy: clipboard, drives, audio, printing, video             |
-|      +--> Session lifecycle: disconnect and inactivity actions                 |
-|      +--> Monitoring alarms                                                    |
-|      `--> IAM: pool admin, desktop user, read-only auditor                     |
-+--------------------------------------------------------------------------------+
-```
+![Source-bounded architecture overview](architecture.png)
+
+[Edit the multi-page draw.io diagram](architecture.drawio). Companion pages
+enumerate every declared resource, creation condition and existing identifier
+input; see the [source inventory](resource-inventory.json). Provider-native
+icons identify mapped services; exact types without a matching glyph retain
+labelled boxes. No resources are inferred from those inputs.
+
+Plain lines show ID/configuration associations; solid arrows show declared
+route/action intent. Dashed lines mark external workflows or prerequisites.
+No connector proves successful deployment or runtime traffic.
 
 ## Terraform Components
 
@@ -138,3 +109,19 @@ Declared resource addresses:
 - Capacity and standby settings match expected usage.
 - IAM policy statements are group-based and least-privilege.
 - End-user support and image patching owners are known.
+
+## October 28, 2026 Diagram Source Review
+
+Only the desktop pool, alarms and optional IAM policy are declared. All creation
+flags/maps default off or empty. VCN, desktop subnet, NSGs, private-access subnet,
+approved image, availability domain and storage backup policy are existing inputs.
+Private-access details are nested pool configuration, not a separate endpoint
+resource. Existing desktop_pool_id is a reference/output fallback only. Session
+lifecycle actions default false; schedules are null. No user onboarding, access
+transport, backup-policy creation, application targets or tested sessions are
+delivered by this blueprint.
+
+This batch reviews source code, native pages and rendered diagrams only.
+Historical Terraform/provider and earlier runtime evidence is unchanged. No
+cloud provisioning, user session, Kubernetes execution, mesh traffic or failover
+test was performed.

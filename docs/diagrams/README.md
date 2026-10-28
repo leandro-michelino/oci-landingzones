@@ -492,3 +492,58 @@ original conversion backlog; see the [GCP plan](../multicloud/GCP-OCI-BLUEPRINTS
 This batch changes documentation, diagrams and their authoring/validation
 registry only. Historical provider validation metadata remains unchanged; no
 cloud deployment, inference, indexing, CI/CD execution or traffic test was run.
+
+## Secure Desktops and Kubernetes Extensions / October 28, 2026
+
+Five further original-catalog entry points now have editable multi-page draw.io
+documents and PNG previews. The two multicloud views include complete companion
+Azure/AWS declarations, exact native cluster glyphs and an explicit dashed
+Interconnect prerequisite. ASCII architecture drawings were replaced in the
+five local architecture READMEs.
+
+| Batch order | Blueprint | Preview | Editable source | Source inventory |
+| --- | --- | --- | --- | --- |
+| 36 | `industry/secure-desktops` | [PNG](../../blueprints/industry/secure-desktops/architecture/architecture.png) | [draw.io](../../blueprints/industry/secure-desktops/architecture/architecture.drawio) | [Inventory](../../blueprints/industry/secure-desktops/architecture/resource-inventory.json) |
+| 37 | `extensions/oke` | [PNG](../../blueprints/extensions/oke/architecture/architecture.png) | [draw.io](../../blueprints/extensions/oke/architecture/architecture.drawio) | [Inventory](../../blueprints/extensions/oke/architecture/resource-inventory.json) |
+| 38 | `extensions/aks-oke-active-passive` | [PNG](../../blueprints/extensions/aks-oke-active-passive/architecture/architecture.png) | [draw.io](../../blueprints/extensions/aks-oke-active-passive/architecture/architecture.drawio) | [Inventory](../../blueprints/extensions/aks-oke-active-passive/architecture/resource-inventory.json) |
+| 39 | `extensions/eks-oke-active-passive` | [PNG](../../blueprints/extensions/eks-oke-active-passive/architecture/architecture.png) | [draw.io](../../blueprints/extensions/eks-oke-active-passive/architecture/architecture.drawio) | [Inventory](../../blueprints/extensions/eks-oke-active-passive/architecture/resource-inventory.json) |
+| 40 | `extensions/oke-service-mesh` | [PNG](../../blueprints/extensions/oke-service-mesh/architecture/architecture.png) | [draw.io](../../blueprints/extensions/oke-service-mesh/architecture/architecture.drawio) | [Inventory](../../blueprints/extensions/oke-service-mesh/architecture/resource-inventory.json) |
+
+The source inventories contain **64 resource declarations**: OCI 33, Azure 5,
+AWS 18 and local metadata/validation contracts 8. These are declarations, not
+expanded or deployed instance counts. **47 existing identifier inputs** are
+recorded separately. Five overviews, nine resource-detail pages and five input
+reference pages add **19 native documents and 19 PNGs**.
+
+Secure Desktops reuses supplied networks/images/backup policy; private-access
+details are pool configuration. OKE creates no network or service Load Balancer.
+The Service Mesh entry point declares an optional add-on definition and an
+independent APM domain; no tracing integration or mTLS policy is invented.
+AKS/EKS templates create cloud foundations separately; GitOps and Interconnect
+contracts do not install controllers, circuits, gateways, routes or workloads.
+Optional DNS policy/monitor/zone associations describe DNS answers and probes,
+not a packet-forwarding tier. No recovery-time guarantee or supported Kubernetes
+version is inferred from source parameters.
+
+```bash
+python3 scripts/diagrams/compute-extensions-batch-01.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint industry/secure-desktops --blueprint extensions/oke --blueprint extensions/aks-oke-active-passive --blueprint extensions/eks-oke-active-passive --blueprint extensions/oke-service-mesh --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --check
+python3 scripts/diagrams/check-connections.py --write-report
+```
+
+Latest original catalog: **64/80 converted**, **16 pending**. Including four
+additional Interconnect/healthcare projects, current diagram coverage is
+**68/84** entry points, plus the separate conceptual drawing. Remaining GCP
+counterparts stay in the final phase after the original conversion backlog;
+see the [GCP plan](../multicloud/GCP-OCI-BLUEPRINTS.md).
+
+Only diagrams, documentation, provider-icon assets and authoring/validation
+registry files change in this batch. Historical infrastructure validation
+metadata remains unchanged. No cloud provisioning, desktop session, node
+registration, application request, mesh traffic or failover was tested.
+
+This batch also fixes multiline creation-gate labels in generated resource
+cards. Full conditions were already retained in the JSON inventory; cards now
+show every condition instead of just the first line. A render regression checks
+that all health-monitor enablement predicates survive into native draw.io XML.

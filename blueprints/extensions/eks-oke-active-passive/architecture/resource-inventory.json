@@ -1,0 +1,932 @@
+{
+  "schema_version": 2,
+  "blueprint": "extensions/eks-oke-active-passive",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "AWS": 18,
+    "Contracts": 4,
+    "OCI": 13
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_vcn.oke",
+      "type": "oci_core_vcn",
+      "symbol": "oke",
+      "source": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oke_networking ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oke_networking ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "oke",
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_internet_gateway.oke",
+      "type": "oci_core_internet_gateway",
+      "symbol": "oke",
+      "source": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oke_networking ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oke_networking ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n10",
+        "source_symbol": "oke",
+        "provider_icon": null,
+        "oci_icon": "Internet Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_route_table.oke",
+      "type": "oci_core_route_table",
+      "symbol": "oke",
+      "source": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oke_networking ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oke_networking ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n22",
+        "source_symbol": "oke",
+        "provider_icon": null,
+        "oci_icon": "Route Table"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_security_list.oke_endpoint",
+      "type": "oci_core_security_list",
+      "symbol": "oke_endpoint",
+      "source": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oke_networking ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oke_networking ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n46",
+        "source_symbol": "oke_endpoint",
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_security_list.oke_node",
+      "type": "oci_core_security_list",
+      "symbol": "oke_node",
+      "source": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oke_networking ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oke_networking ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n58",
+        "source_symbol": "oke_node",
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_subnet.oke_endpoint",
+      "type": "oci_core_subnet",
+      "symbol": "oke_endpoint",
+      "source": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oke_networking ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oke_networking ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n70",
+        "source_symbol": "oke_endpoint",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_subnet.oke_service_lb",
+      "type": "oci_core_subnet",
+      "symbol": "oke_service_lb",
+      "source": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oke_networking ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oke_networking ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n72",
+        "source_symbol": "oke_service_lb",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_subnet.oke_nodes",
+      "type": "oci_core_subnet",
+      "symbol": "oke_nodes",
+      "source": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oke_networking ? length(var.oke_node_subnet_cidrs) : 0",
+      "creation_expression": {
+        "count": "var.enable_oke_networking ? length(var.oke_node_subnet_cidrs) : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n74",
+        "source_symbol": "oke_nodes",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.oke_network_contract",
+      "type": "terraform_data",
+      "symbol": "oke_network_contract",
+      "source": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n4",
+        "source_symbol": "oke_network_contract",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_containerengine_cluster.oci_primary",
+      "type": "oci_containerengine_cluster",
+      "symbol": "oci_primary",
+      "source": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oke_cluster ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oke_cluster ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n76",
+        "source_symbol": "oci_primary",
+        "provider_icon": null,
+        "oci_icon": "OCI Container Engine for Kubernetes"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_containerengine_node_pool.oci_primary",
+      "type": "oci_containerengine_node_pool",
+      "symbol": "oci_primary",
+      "source": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oke_node_pool ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oke_node_pool ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n88",
+        "source_symbol": "oci_primary",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.interconnect_contract",
+      "type": "terraform_data",
+      "symbol": "interconnect_contract",
+      "source": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n6",
+        "source_symbol": "interconnect_contract",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.gitops_contract",
+      "type": "terraform_data",
+      "symbol": "gitops_contract",
+      "source": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_gitops_contract ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_gitops_contract ? 1 : 0"
+      },
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n8",
+        "source_symbol": "gitops_contract",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.traffic_steering_contract",
+      "type": "terraform_data",
+      "symbol": "traffic_steering_contract",
+      "source": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_traffic_steering_contract ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_traffic_steering_contract ? 1 : 0"
+      },
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n10",
+        "source_symbol": "traffic_steering_contract",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_health_checks_http_monitor.traffic_failover",
+      "type": "oci_health_checks_http_monitor",
+      "symbol": "traffic_failover",
+      "source": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "count = (",
+      "creation_expression": {
+        "count": "(\n    var.enable_oci_traffic_management &&\n    var.enable_oci_traffic_management_health_check &&\n    var.oci_traffic_management_health_check_monitor_id == null\n  ) ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n90",
+        "source_symbol": "traffic_failover",
+        "provider_icon": null,
+        "oci_icon": "Health Checks"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_dns_steering_policy.traffic_failover",
+      "type": "oci_dns_steering_policy",
+      "symbol": "traffic_failover",
+      "source": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_traffic_management ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_traffic_management ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n101",
+        "source_symbol": "traffic_failover",
+        "provider_icon": null,
+        "oci_icon": "DNS"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_dns_steering_policy_attachment.traffic_failover",
+      "type": "oci_dns_steering_policy_attachment",
+      "symbol": "traffic_failover",
+      "source": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci_traffic_management ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci_traffic_management ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n107",
+        "source_symbol": "traffic_failover",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "EksVpc",
+      "symbol": "EksVpc",
+      "type": "AWS::EC2::VPC",
+      "source": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n4",
+        "source_symbol": "EksVpc",
+        "provider_icon": "AWS::EC2::VPC",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "EksFlowLogGroup",
+      "symbol": "EksFlowLogGroup",
+      "type": "AWS::Logs::LogGroup",
+      "source": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n8",
+        "source_symbol": "EksFlowLogGroup",
+        "provider_icon": "AWS::Logs::LogGroup",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "EksFlowLogRole",
+      "symbol": "EksFlowLogRole",
+      "type": "AWS::IAM::Role",
+      "source": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n12",
+        "source_symbol": "EksFlowLogRole",
+        "provider_icon": "AWS::IAM::Role",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "EksVpcFlowLog",
+      "symbol": "EksVpcFlowLog",
+      "type": "AWS::EC2::FlowLog",
+      "source": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n16",
+        "source_symbol": "EksVpcFlowLog",
+        "provider_icon": "AWS::EC2::FlowLog",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "InternetGateway",
+      "symbol": "InternetGateway",
+      "type": "AWS::EC2::InternetGateway",
+      "source": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n20",
+        "source_symbol": "InternetGateway",
+        "provider_icon": "AWS::EC2::InternetGateway",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "VpcIgwAttachment",
+      "symbol": "VpcIgwAttachment",
+      "type": "AWS::EC2::VPCGatewayAttachment",
+      "source": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n24",
+        "source_symbol": "VpcIgwAttachment",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "EksRouteTable",
+      "symbol": "EksRouteTable",
+      "type": "AWS::EC2::RouteTable",
+      "source": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n26",
+        "source_symbol": "EksRouteTable",
+        "provider_icon": "AWS::EC2::RouteTable",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "DefaultRoute",
+      "symbol": "DefaultRoute",
+      "type": "AWS::EC2::Route",
+      "source": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n30",
+        "source_symbol": "DefaultRoute",
+        "provider_icon": "AWS::EC2::Route",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "EksSubnetOne",
+      "symbol": "EksSubnetOne",
+      "type": "AWS::EC2::Subnet",
+      "source": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n34",
+        "source_symbol": "EksSubnetOne",
+        "provider_icon": "AWS::EC2::Subnet",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "EksSubnetTwo",
+      "symbol": "EksSubnetTwo",
+      "type": "AWS::EC2::Subnet",
+      "source": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n38",
+        "source_symbol": "EksSubnetTwo",
+        "provider_icon": "AWS::EC2::Subnet",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "EksSubnetRouteAssociationOne",
+      "symbol": "EksSubnetRouteAssociationOne",
+      "type": "AWS::EC2::SubnetRouteTableAssociation",
+      "source": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n42",
+        "source_symbol": "EksSubnetRouteAssociationOne",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "EksSubnetRouteAssociationTwo",
+      "symbol": "EksSubnetRouteAssociationTwo",
+      "type": "AWS::EC2::SubnetRouteTableAssociation",
+      "source": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n44",
+        "source_symbol": "EksSubnetRouteAssociationTwo",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "EksSecurityGroup",
+      "symbol": "EksSecurityGroup",
+      "type": "AWS::EC2::SecurityGroup",
+      "source": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n46",
+        "source_symbol": "EksSecurityGroup",
+        "provider_icon": "AWS::EC2::SecurityGroup",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "EksSecretsKey",
+      "symbol": "EksSecretsKey",
+      "type": "AWS::KMS::Key",
+      "source": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n50",
+        "source_symbol": "EksSecretsKey",
+        "provider_icon": "AWS::KMS::Key",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "EksClusterRole",
+      "symbol": "EksClusterRole",
+      "type": "AWS::IAM::Role",
+      "source": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n54",
+        "source_symbol": "EksClusterRole",
+        "provider_icon": "AWS::IAM::Role",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "EksNodeRole",
+      "symbol": "EksNodeRole",
+      "type": "AWS::IAM::Role",
+      "source": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n58",
+        "source_symbol": "EksNodeRole",
+        "provider_icon": "AWS::IAM::Role",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "EksCluster",
+      "symbol": "EksCluster",
+      "type": "AWS::EKS::Cluster",
+      "source": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n62",
+        "source_symbol": "EksCluster",
+        "provider_icon": "AWS::EKS::Cluster",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "AWS",
+      "kind": "resource",
+      "address": "EksNodeGroup",
+      "symbol": "EksNodeGroup",
+      "type": "AWS::EKS::Nodegroup",
+      "source": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration in separately deployed CloudFormation template.",
+      "diagram": {
+        "file": "aws-resources.drawio",
+        "page_name": "AWS resources",
+        "node_id": "n66",
+        "source_symbol": "EksNodeGroup",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "aws-resources.drawio",
+      "page_name": "AWS resources",
+      "declarations": 18
+    },
+    {
+      "file": "contracts-resources.drawio",
+      "page_name": "Contracts resources",
+      "declarations": 4
+    },
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 13
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/extensions/eks-oke-active-passive/variables.tf",
+      "description": "Compartment OCID where OKE resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.fastconnect_virtual_circuit_id",
+      "source": "blueprints/extensions/eks-oke-active-passive/variables.tf",
+      "description": "OCI FastConnect virtual circuit OCID used by the AWS partner interconnect path.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.direct_connect_connection_id",
+      "source": "blueprints/extensions/eks-oke-active-passive/variables.tf",
+      "description": "AWS Direct Connect connection resource ID paired with FastConnect through the partner.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.oke_cluster_id",
+      "source": "blueprints/extensions/eks-oke-active-passive/variables.tf",
+      "description": "Existing OKE cluster OCID used when enable_oke_cluster is false and enable_oke_node_pool is true.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.oke_vcn_id",
+      "source": "blueprints/extensions/eks-oke-active-passive/variables.tf",
+      "description": "Existing VCN OCID used when enable_oke_networking is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.oke_endpoint_subnet_id",
+      "source": "blueprints/extensions/eks-oke-active-passive/variables.tf",
+      "description": "Existing subnet OCID for OKE Kubernetes API endpoint when enable_oke_networking is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.oke_endpoint_nsg_ids",
+      "source": "blueprints/extensions/eks-oke-active-passive/variables.tf",
+      "description": "Optional NSG OCIDs for the OKE Kubernetes API endpoint.",
+      "default_expression": "[]",
+      "type_expression": "list(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    },
+    {
+      "address": "var.oke_service_lb_subnet_ids",
+      "source": "blueprints/extensions/eks-oke-active-passive/variables.tf",
+      "description": "Existing subnet OCIDs used by OKE service load balancers when enable_oke_networking is false.",
+      "default_expression": "[]",
+      "type_expression": "list(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n17"
+      }
+    },
+    {
+      "address": "var.oke_node_subnet_ids",
+      "source": "blueprints/extensions/eks-oke-active-passive/variables.tf",
+      "description": "Existing subnet OCIDs used by the OKE node pool when enable_oke_networking is false.",
+      "default_expression": "[]",
+      "type_expression": "list(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n19"
+      }
+    },
+    {
+      "address": "var.oke_node_image_id",
+      "source": "blueprints/extensions/eks-oke-active-passive/variables.tf",
+      "description": "Optional custom worker node image OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n21"
+      }
+    },
+    {
+      "address": "var.eks_cluster_id",
+      "source": "blueprints/extensions/eks-oke-active-passive/variables.tf",
+      "description": "Existing EKS cluster resource ID used as the secondary standby target.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n23"
+      }
+    },
+    {
+      "address": "var.oci_traffic_management_zone_id",
+      "source": "blueprints/extensions/eks-oke-active-passive/variables.tf",
+      "description": "OCI DNS zone OCID where the failover steering policy is attached.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n25"
+      }
+    },
+    {
+      "address": "var.oci_traffic_management_health_check_monitor_id",
+      "source": "blueprints/extensions/eks-oke-active-passive/variables.tf",
+      "description": "Existing OCI Health Checks monitor OCID. When set, the blueprint uses it instead of creating a monitor.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n27"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 13
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_identity_availability_domains.target",
+      "type": "oci_identity_availability_domains",
+      "symbol": "target",
+      "source": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {}
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/extensions/eks-oke-active-passive/locals.tf",
+      "revision": "working-tree",
+      "sha256": "5cf4a244faafb40b8302f42d6de37036c817c44c8158cc1f463423399ae6fcbb"
+    },
+    {
+      "path": "blueprints/extensions/eks-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "sha256": "7aff3c57741c07bfeed969273aa65336628561603d5259c82c9448f47754f16f"
+    },
+    {
+      "path": "blueprints/extensions/eks-oke-active-passive/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "ae8436550bf4418d5ec9cd18a077ac759b779bce22040ceb4161cc3055b90c7c"
+    },
+    {
+      "path": "blueprints/extensions/eks-oke-active-passive/providers.tf",
+      "revision": "working-tree",
+      "sha256": "4ff2aa3ff95888297c1bdd16504fde4b9a7c5f6808c008a6b2fd4a21e468c923"
+    },
+    {
+      "path": "blueprints/extensions/eks-oke-active-passive/variables.tf",
+      "revision": "working-tree",
+      "sha256": "6e5cca5f7fdbc8998a5442963c15798a6d24926455a619796bdd556549467276"
+    },
+    {
+      "path": "blueprints/extensions/eks-oke-active-passive/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+      "sha256": "90f4d38110c43714987c40f6612a6c51dbf204c8f8ab256ca20caaa6649b67f3"
+    }
+  ]
+}

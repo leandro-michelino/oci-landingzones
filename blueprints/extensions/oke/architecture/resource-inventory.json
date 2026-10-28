@@ -1,0 +1,204 @@
+{
+  "schema_version": 2,
+  "blueprint": "extensions/oke",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 2
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_containerengine_cluster.this",
+      "type": "oci_containerengine_cluster",
+      "symbol": "this",
+      "source": "blueprints/extensions/oke/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_cluster ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_cluster ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "OCI Container Engine for Kubernetes"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_containerengine_node_pool.this",
+      "type": "oci_containerengine_node_pool",
+      "symbol": "this",
+      "source": "blueprints/extensions/oke/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_node_pool ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_node_pool ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n16",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 2
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/extensions/oke/variables.tf",
+      "description": "Compartment OCID where OKE resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.cluster_id",
+      "source": "blueprints/extensions/oke/variables.tf",
+      "description": "Existing OKE cluster OCID used when creating only a node pool.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.vcn_id",
+      "source": "blueprints/extensions/oke/variables.tf",
+      "description": "VCN OCID where the OKE cluster is created.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.endpoint_subnet_id",
+      "source": "blueprints/extensions/oke/variables.tf",
+      "description": "Optional subnet OCID for the OKE Kubernetes API endpoint.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.endpoint_nsg_ids",
+      "source": "blueprints/extensions/oke/variables.tf",
+      "description": "Optional NSG OCIDs for the OKE API endpoint.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.service_lb_subnet_ids",
+      "source": "blueprints/extensions/oke/variables.tf",
+      "description": "Optional subnet OCIDs used by OKE service load balancers.",
+      "default_expression": "[]",
+      "type_expression": "list(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.node_subnet_ids",
+      "source": "blueprints/extensions/oke/variables.tf",
+      "description": "Subnet OCIDs used by the OKE node pool.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    },
+    {
+      "address": "var.node_image_id",
+      "source": "blueprints/extensions/oke/variables.tf",
+      "description": "Optional custom worker node image OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n17"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 8
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/extensions/oke/locals.tf",
+      "revision": "working-tree",
+      "sha256": "e68fe12ce93b74df9f7d3c608acff21867ef1fa52f43f28d7a872997be52074e"
+    },
+    {
+      "path": "blueprints/extensions/oke/main.tf",
+      "revision": "working-tree",
+      "sha256": "8d6da11900f442485fe79e520f6e09c901249bb7ac2bacc1eab8de4fa1091f00"
+    },
+    {
+      "path": "blueprints/extensions/oke/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "bacea5d46966b801e7ec4de2a158c10467bef92947dd7daa8dc680d55fd06699"
+    },
+    {
+      "path": "blueprints/extensions/oke/providers.tf",
+      "revision": "working-tree",
+      "sha256": "2ee529fdf155bf2f2d0d63966264b97faa465ab7aac410b2a79a15001387d0ce"
+    },
+    {
+      "path": "blueprints/extensions/oke/variables.tf",
+      "revision": "working-tree",
+      "sha256": "6551af2bceee5b70144cd40f4c38654d2ccb2977ca556ab77eeabe8ebad80ac2"
+    },
+    {
+      "path": "blueprints/extensions/oke/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

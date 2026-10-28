@@ -95,3 +95,23 @@ The [current audit](connection-review.json) and [review contract](reviewed-conne
 include these entries. Original conversion progress is **59/80**, with **21**
 pending; current coverage including additional projects is **63/84**.
 No cloud resources or runtime tests were introduced by this diagram batch.
+
+## Subsequent Secure Desktops and Kubernetes Batch
+
+Five overviews add **45 connectors**: Secure Desktops 4, OKE 2, AKS/OKE 15,
+EKS/OKE 23 and OKE Service Mesh 1. Current totals are **68 blueprint plus one
+conceptual overviews**, **600 connectors** and **254 native documents/PNGs**.
+Both new source-defined multicloud views have an explicit OCI/cloud bridge,
+bringing that audit to **12**. The bridges are dashed external dependencies:
+no new circuit, edge gateway, peering or remote-prefix route is claimed.
+
+Review covers subnet/RT bindings and IGW routes, cluster/subnet/SG associations,
+managed-node placement, KMS secret/log encryption, VPC flow-log delivery and
+optional DNS policy/zone/monitor/answer relationships. DNS is not represented
+as a packet-forwarding hop. Independent APM and add-on resources have no
+invented telemetry connection. No runtime or failover result is inferred.
+
+The [audit](connection-review.json) and [review contract](reviewed-connectors.json)
+include the new relationships and source fingerprints. Original conversion
+progress is **64/80**, with **16** pending; current coverage is **68/84** including
+the four additional Interconnect/healthcare projects.

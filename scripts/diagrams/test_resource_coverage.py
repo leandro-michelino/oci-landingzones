@@ -2,6 +2,10 @@
 import importlib.util
 from pathlib import Path
 import unittest
+from unittest.mock import patch
+import tempfile
+import xml.etree.ElementTree as ET
+import html
 spec=importlib.util.spec_from_file_location('coverage',Path(__file__).with_name('multicloud-resource-coverage.py'))
 coverage=importlib.util.module_from_spec(spec);spec.loader.exec_module(coverage)
 
@@ -50,6 +54,22 @@ resource "oci_example" "second" {
 '''
   attrs=coverage.root_attributes(body)
   self.assertEqual(attrs['for_each'],'var.enabled ? {\n    for key, value in var.nodes : key => value\n    if value.enabled\n  } : {}')
+
+ def test_rendered_health_monitor_card_keeps_all_creation_conditions(self):
+  src='resource "oci_health_checks_http_monitor" "example" {\n  count = (\n    var.enable_dns &&\n    var.enable_monitor &&\n    var.existing_monitor_id == null\n  ) ? 1 : 0\n  display_name = "health"\n}\n'
+  with patch.object(coverage,'read_sources',return_value=[('main.tf',src)]):
+   entries,lookups,_=coverage.terraform('example')
+  with tempfile.TemporaryDirectory() as tmp:
+   root=Path(tmp)
+   folder=root/'blueprints/example/architecture'
+   folder.mkdir(parents=True)
+   with patch.object(coverage,'ROOT',root):
+    coverage.render_map('example','OCI',entries,lookups,False)
+   labels=' '.join(html.unescape(c.get('value','')) for c in ET.parse(folder/'oci-resources.drawio').findall('.//mxCell'))
+   self.assertIn('var.enable_dns',labels)
+   self.assertIn('var.enable_monitor',labels)
+   self.assertIn('var.existing_monitor_id',labels)
+   self.assertIn('? 1 : 0',labels)
 
 
 if __name__=='__main__':unittest.main()

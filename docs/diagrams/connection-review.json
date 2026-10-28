@@ -10,12 +10,12 @@
     "Reviewed endpoints, labels, arrows, paths and source hashes match contract",
     "Subnet routing and DNS-view semantic regression checks"
   ],
-  "overview_count": 63,
+  "overview_count": 68,
   "conceptual_overviews": 1,
-  "native_documents": 235,
-  "main_document_pages": 235,
-  "connector_count": 555,
-  "cross_cloud_overviews": 10,
+  "native_documents": 254,
+  "main_document_pages": 254,
+  "connector_count": 600,
+  "cross_cloud_overviews": 12,
   "blueprints": [
     {
       "blueprint": "networking/standalone-three-tier-vcn-defaults",
@@ -517,6 +517,61 @@
       "connections": 21,
       "cross_cloud_bridges": [],
       "overview_png_sha256": "a22d4cee70a1d5a34f75e74767350812be8c5bfe49e76a4d56322be49adfaf27",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "industry/secure-desktops",
+      "connections": 4,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "93cb81df00d6f5705dcab1a4f23d4f0a92313edb4f84cf7ede3c2d650189455e",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "extensions/oke",
+      "connections": 2,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "e336794096b3c731cec0e3232e7285a7e1c384e475f2ae72570c14b429eb5b86",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "extensions/aks-oke-active-passive",
+      "connections": 15,
+      "cross_cloud_bridges": [
+        {
+          "source": "n5",
+          "target": "n69",
+          "label": "EXTERNAL partner Interconnect / supplied circuit IDs only; edge gateways, peering and routes not created",
+          "clouds": [
+            "OCI",
+            "Azure"
+          ]
+        }
+      ],
+      "overview_png_sha256": "7d4c177c1195d0790d49e7bbc254788dc9fbbaf75689012e4d8ebda0bfe43639",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "extensions/eks-oke-active-passive",
+      "connections": 23,
+      "cross_cloud_bridges": [
+        {
+          "source": "n5",
+          "target": "n69",
+          "label": "EXTERNAL partner Interconnect / supplied circuit IDs only; edge gateways, peering and routes not created",
+          "clouds": [
+            "OCI",
+            "AWS"
+          ]
+        }
+      ],
+      "overview_png_sha256": "2314c243f204a9e0942f1542f9a0377d41c638f1e3125de042dadc7437aa7d61",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "extensions/oke-service-mesh",
+      "connections": 1,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "7faa9f14203178add67c61d5a17cc4e948b459cd165b30250201d9dc657a3d8a",
       "layout_warnings": []
     },
     {

@@ -1,0 +1,126 @@
+{
+  "schema_version": 2,
+  "blueprint": "extensions/oke-service-mesh",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 2
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_containerengine_addon.service_mesh",
+      "type": "oci_containerengine_addon",
+      "symbol": "service_mesh",
+      "source": "blueprints/extensions/oke-service-mesh/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_service_mesh_addon ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_service_mesh_addon ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "service_mesh",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_apm_apm_domain.tracing",
+      "type": "oci_apm_apm_domain",
+      "symbol": "tracing",
+      "source": "blueprints/extensions/oke-service-mesh/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_apm_domain ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_apm_domain ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n6",
+        "source_symbol": "tracing",
+        "provider_icon": null,
+        "oci_icon": "Application Performance Monitoring"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 2
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/extensions/oke-service-mesh/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.cluster_id",
+      "source": "blueprints/extensions/oke-service-mesh/variables.tf",
+      "description": "Existing OKE cluster OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 2
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/extensions/oke-service-mesh/locals.tf",
+      "revision": "working-tree",
+      "sha256": "499bb5242591889d4db16a17885aac8464a8a8614a20359d1b5d7d55ec3ae3d4"
+    },
+    {
+      "path": "blueprints/extensions/oke-service-mesh/main.tf",
+      "revision": "working-tree",
+      "sha256": "6e36810c4dfcd69fe0ecf727295bb838d586dea6a4fa8d8903cff080c632448f"
+    },
+    {
+      "path": "blueprints/extensions/oke-service-mesh/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "83627269211e75296390e0896355173e4006fd380c685f1cfe4789b59a89ee4e"
+    },
+    {
+      "path": "blueprints/extensions/oke-service-mesh/providers.tf",
+      "revision": "working-tree",
+      "sha256": "9ace0aeb9a214bbdff10c76453708d4fe6d9602bdbd3e38badbc4ac4eb6e0603"
+    },
+    {
+      "path": "blueprints/extensions/oke-service-mesh/variables.tf",
+      "revision": "working-tree",
+      "sha256": "0a0cbedb31b8924be4889e4f1bae5018e47c3eb2f746398e0630e42ff56e64f8"
+    },
+    {
+      "path": "blueprints/extensions/oke-service-mesh/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

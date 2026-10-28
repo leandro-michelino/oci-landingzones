@@ -26,6 +26,12 @@ base=importlib.util.module_from_spec(spec); spec.loader.exec_module(base)
 icon_spec=importlib.util.spec_from_file_location('cloud_icons',Path(__file__).with_name('cloud-icons.py'))
 cloud_icons=importlib.util.module_from_spec(icon_spec); icon_spec.loader.exec_module(cloud_icons)
 DEFAULTS=[
+ 'industry/secure-desktops',
+ 'extensions/oke',
+ 'extensions/aks-oke-active-passive',
+ 'extensions/eks-oke-active-passive',
+ 'extensions/oke-service-mesh',
+
  'ai/embedding-pipeline',
  'ai/multi-agent',
  'ai/agents',
@@ -59,6 +65,9 @@ DEFAULTS=[
 ]
 DECL=re.compile(r'^(resource|data|module)\s+"([^"]+)"(?:\s+"([^"]+)")?\s*\{',re.M)
 ICONS={
+ 'oci_health_checks_http_monitor':'Health Checks',
+ 'oci_dns_steering_policy':'DNS',
+ 'oci_apm_apm_domain':'Application Performance Monitoring',
  'oci_containerengine_cluster':'OCI Container Engine for Kubernetes',
  'oci_queue_queue':'OCI Queue',
  'oci_apigateway_gateway':'API Gateway',
@@ -218,7 +227,9 @@ def render_map(slug,cloud,entries,lookups,render,page_number=1):
   vendor_icon=cloud_icons.icon(d,e['type'],55,90,parent=card,size=48)
   has_icon=bool(icon or vendor_icon)
   tx=100 if has_icon else 20; tw=width-tx-20
-  text=wrapped(e['address'],68 if has_icon else 79)+'\n'+wrapped(e['type'],68 if has_icon else 79)+'\n'+wrapped(e['condition'],68 if has_icon else 79)
+  gates=e.get('creation_expression',{})
+  condition='; '.join(key+' = '+' '.join(value.split()) for key,value in gates.items()) if gates else e['condition']
+  text=wrapped(e['address'],68 if has_icon else 79)+'\n'+wrapped(e['type'],68 if has_icon else 79)+'\n'+wrapped(condition,68 if has_icon else 79)
   d.text(text,tx,20,tw,155,parent=card,size=12)
   suffix=f'-{page_number:02}' if page_number>1 else ''
   e['diagram']={'file':cloud.lower()+'-resources'+suffix+'.drawio','page_name':cloud+' resources'+(f' {page_number}' if page_number>1 else ''),'node_id':card.id,'source_symbol':e['symbol'],'provider_icon':e['type'] if vendor_icon else None,'oci_icon':icon}

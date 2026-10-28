@@ -33,3 +33,9 @@ The Azure AI gateway additionally uses unmodified `Azure_OpenAI.svg` from
 `azure2/integration/`, extracted from the same installed draw.io 32.6.1 bundle.
 The current CognitiveServices account declaration has kind OpenAI; its optional
 model deployment remains an explicitly named child resource without a substitute icon.
+
+AKS diagrams use unmodified `Kubernetes_Services.svg` from the installed
+`azure2/containers/` library. EKS uses the bundled `mxgraph.aws4.eks` stencil.
+Managed node groups remain explicitly named boxes; cluster glyphs are not
+substituted for node-group resources. Both mappings identify declared clusters
+and do not assert version availability or cluster readiness.

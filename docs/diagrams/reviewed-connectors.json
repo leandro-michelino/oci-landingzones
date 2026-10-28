@@ -19937,6 +19937,1311 @@
       }
     ]
   },
+  "industry/secure-desktops": {
+    "relationships": [
+      {
+        "source": "Secure Desktops pool / create_desktop_pool=false\nExisting subnet_id + vcn_id + nsg_ids\nMaximum 2 / standby 0 / VM.Standard.E4.Flex\nBoot 100 GB / storage enabled 50 GB / preserved volumes",
+        "target": "Existing approved desktop image\nImage ID / name / OS inputs null\nWindows 10/11 BYOL acknowledgement false",
+        "source_kind": "group:component",
+        "target_kind": "group:optional",
+        "label": "image configuration",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional private_access_details block\nAdded only with private_access_subnet_id\nExisting VCN/subnet/NSGs; IP/FQDN inputs\nNot a separate created endpoint resource",
+        "target": "Secure Desktops pool / create_desktop_pool=false\nExisting subnet_id + vcn_id + nsg_ids\nMaximum 2 / standby 0 / VM.Standard.E4.Flex\nBoot 100 GB / storage enabled 50 GB / preserved volumes",
+        "source_kind": "group:optional",
+        "target_kind": "group:component",
+        "label": "Pool private-access configuration",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Secure Desktops pool / create_desktop_pool=false\nExisting subnet_id + vcn_id + nsg_ids\nMaximum 2 / standby 0 / VM.Standard.E4.Flex\nBoot 100 GB / storage enabled 50 GB / preserved volumes",
+        "target": "Existing storage backup policy ID / null\nNo backup policy is created",
+        "source_kind": "group:component",
+        "target_kind": "group:optional",
+        "label": "storage_backup_policy_id / optional",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1640,
+            480
+          ],
+          [
+            1640,
+            387.5
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Alarms / alarms={}",
+        "target": "Existing per-alarm destination IDs\nNo notification topic or subscription created",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "destinations / explicit IDs",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.24285714,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/industry/secure-desktops/locals.tf",
+        "revision": "working-tree",
+        "sha256": "e5987ce7c9b3a3b5bb96171cdd203b2ed2640bf17537f09b2085de675551aff7"
+      },
+      {
+        "path": "blueprints/industry/secure-desktops/main.tf",
+        "revision": "working-tree",
+        "sha256": "2402131756ae525bfbdee7338153fd0c526b5926fe8f8d0a18b9035c640640ed"
+      },
+      {
+        "path": "blueprints/industry/secure-desktops/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "e3e577ba7ec690d59fbeb6b3ee264cd9c1530fd99544409ed70788c01714a94a"
+      },
+      {
+        "path": "blueprints/industry/secure-desktops/providers.tf",
+        "revision": "working-tree",
+        "sha256": "9ace0aeb9a214bbdff10c76453708d4fe6d9602bdbd3e38badbc4ac4eb6e0603"
+      },
+      {
+        "path": "blueprints/industry/secure-desktops/variables.tf",
+        "revision": "working-tree",
+        "sha256": "671af63e06b67fd9f176e14b6d550f37b6b5efb128f63ff588d15c4db9e081b2"
+      },
+      {
+        "path": "blueprints/industry/secure-desktops/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
+  "extensions/oke": {
+    "relationships": [
+      {
+        "source": "Node pool / enable_node_pool=false\nCreated cluster fallback or supplied cluster_id\n1 node per subnet / shape, version and image inputs null",
+        "target": "OKE cluster / enable_cluster=false\nendpoint_public_ip_enabled=false when endpoint block exists",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "cluster_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Existing service-LB subnet IDs / []\nOnly cluster options.service_lb_subnet_ids\nNo Load Balancer or Kubernetes Service created",
+        "target": "OKE cluster / enable_cluster=false\nendpoint_public_ip_enabled=false when endpoint block exists",
+        "source_kind": "group:optional",
+        "target_kind": "icon",
+        "label": "Optional service-LB subnet configuration",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/extensions/oke/locals.tf",
+        "revision": "working-tree",
+        "sha256": "e68fe12ce93b74df9f7d3c608acff21867ef1fa52f43f28d7a872997be52074e"
+      },
+      {
+        "path": "blueprints/extensions/oke/main.tf",
+        "revision": "working-tree",
+        "sha256": "8d6da11900f442485fe79e520f6e09c901249bb7ac2bacc1eab8de4fa1091f00"
+      },
+      {
+        "path": "blueprints/extensions/oke/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "bacea5d46966b801e7ec4de2a158c10467bef92947dd7daa8dc680d55fd06699"
+      },
+      {
+        "path": "blueprints/extensions/oke/providers.tf",
+        "revision": "working-tree",
+        "sha256": "2ee529fdf155bf2f2d0d63966264b97faa465ab7aac410b2a79a15001387d0ce"
+      },
+      {
+        "path": "blueprints/extensions/oke/variables.tf",
+        "revision": "working-tree",
+        "sha256": "6551af2bceee5b70144cd40f4c38654d2ccb2977ca556ab77eeabe8ebad80ac2"
+      },
+      {
+        "path": "blueprints/extensions/oke/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
+  "extensions/aks-oke-active-passive": {
+    "relationships": [
+      {
+        "source": "Optional node pool / flag=false\nE5 Flex / 1 per subnet / image + version null",
+        "target": "Optional OKE / cluster=false\nPrivate API flag / CNI input null",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "Selected cluster_id / optional",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Service-LB subnet / 10.42.30.0/24\nPublic IPs permitted / no LB created",
+        "target": "Optional OKE / cluster=false\nPrivate API flag / CNI input null",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "Service-LB subnet option",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": [
+          [
+            355,
+            540
+          ],
+          [
+            355,
+            540
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "API subnet / 10.42.10.0/24\nPublic IPs prohibited by default",
+        "target": "Shared RT / default \u2192 IGW",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "route_table_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            690,
+            420
+          ],
+          [
+            690,
+            535
+          ],
+          [
+            1100,
+            535
+          ],
+          [
+            1100,
+            670
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Worker subnet / 10.42.20.0/24\nPublic IPs prohibited",
+        "target": "Shared RT / default \u2192 IGW",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            1365,
+            420
+          ],
+          [
+            1365,
+            550
+          ],
+          [
+            1170,
+            550
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Service-LB subnet / 10.42.30.0/24\nPublic IPs permitted / no LB created",
+        "target": "Shared RT / default \u2192 IGW",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            690,
+            642.5
+          ],
+          [
+            690,
+            670
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Shared RT / default \u2192 IGW",
+        "target": "IGW",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "0.0.0.0/0",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "AKS subnet / 10.62.10.0/24",
+        "target": "UDR / BGP propagation enabled",
+        "source_kind": "group:thirdparty",
+        "target_kind": "icon",
+        "label": "routeTable.id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.2
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            2520,
+            396
+          ],
+          [
+            2520,
+            440
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "AKS subnet / 10.62.10.0/24",
+        "target": "NSG / inbound 80 + 443 from *\nVNet node-to-node / default rules apply",
+        "source_kind": "group:thirdparty",
+        "target_kind": "icon",
+        "label": "networkSecurityGroup.id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.8
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            2580,
+            594
+          ],
+          [
+            2690,
+            594
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "UDR / BGP propagation enabled",
+        "target": "Internet next hop\nConfigured UDR default",
+        "source_kind": "icon",
+        "target_kind": "group:component",
+        "label": "0.0.0.0/0 \u2192 Internet",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            2880,
+            440
+          ],
+          [
+            2880,
+            750
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "OKE VCN / enable_oke_networking=true\n10.42.0.0/16",
+        "target": "VNet / 10.62.0.0/16",
+        "source_kind": "group:vcn",
+        "target_kind": "group:thirdparty",
+        "label": "EXTERNAL partner Interconnect / supplied circuit IDs only; edge gateways, peering and routes not created",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.95
+        ],
+        "entry": [
+          0,
+          0.95
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional steering-policy attachment\nExisting zone ID / app.example.com default",
+        "target": "Optional FAILOVER policy / Traffic Management=false\nCNAME / TTL 30 / primary 0, standby 1 / limit 1",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "steering_policy_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional steering-policy attachment\nExisting zone ID / app.example.com default",
+        "target": "Existing DNS zone / ID null\nNo DNS zone is created",
+        "source_kind": "group:component",
+        "target_kind": "group:optional",
+        "label": "zone_id / domain_name",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional FAILOVER policy / Traffic Management=false\nCNAME / TTL 30 / primary 0, standby 1 / limit 1",
+        "target": "Optional HTTP monitor / TM + health flags\nHTTPS 443 / / / 30 s interval / 10 s timeout",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Optional health_check_monitor_id / existing override allowed",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional FAILOVER policy / Traffic Management=false\nCNAME / TTL 30 / primary 0, standby 1 / limit 1",
+        "target": "Existing application targets / both endpoint inputs null\nOCI primary + Azure standby; applications/ingress remain external\nThese are application answers, not Kubernetes API endpoints",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "answers.rdata / primary + standby",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0,
+          1
+        ],
+        "waypoints": [
+          [
+            890,
+            1610
+          ],
+          [
+            1840,
+            1610
+          ],
+          [
+            1840,
+            1635
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Optional HTTP monitor / TM + health flags\nHTTPS 443 / / / 30 s interval / 10 s timeout",
+        "target": "Existing application targets / both endpoint inputs null\nOCI primary + Azure standby; applications/ingress remain external\nThese are application answers, not Kubernetes API endpoints",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "Optional configured probe targets",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0
+        ],
+        "waypoints": [
+          [
+            1850,
+            1490
+          ],
+          [
+            1850,
+            1510
+          ],
+          [
+            1940,
+            1510
+          ]
+        ],
+        "straight": false
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/extensions/aks-oke-active-passive/locals.tf",
+        "revision": "working-tree",
+        "sha256": "09bca6abfa557fe19e01b00362e8bad455daa2441caebabdab1e2dfa1b62322f"
+      },
+      {
+        "path": "blueprints/extensions/aks-oke-active-passive/main.tf",
+        "revision": "working-tree",
+        "sha256": "5532d4b3ef76165812261350f8bfdf977549556dd64c0759784e12781c39ccc1"
+      },
+      {
+        "path": "blueprints/extensions/aks-oke-active-passive/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "8e5b9c2186e062c0bc189a225e560ca2afa96a32b498a642a47ac90c4f95290e"
+      },
+      {
+        "path": "blueprints/extensions/aks-oke-active-passive/providers.tf",
+        "revision": "working-tree",
+        "sha256": "4ff2aa3ff95888297c1bdd16504fde4b9a7c5f6808c008a6b2fd4a21e468c923"
+      },
+      {
+        "path": "blueprints/extensions/aks-oke-active-passive/variables.tf",
+        "revision": "working-tree",
+        "sha256": "5720d626aca8e86103cff1cc94d54c714b20f0f093e0fc0ae26b3cb0f333b2b9"
+      },
+      {
+        "path": "blueprints/extensions/aks-oke-active-passive/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      },
+      {
+        "path": "blueprints/extensions/aks-oke-active-passive/azure/main.bicep",
+        "sha256": "27dcc63b83500321ffcba4593306cc9bb147193ea9e1ab3a3daca70a1ff3b778"
+      }
+    ]
+  },
+  "extensions/eks-oke-active-passive": {
+    "relationships": [
+      {
+        "source": "Optional node pool / flag=false\nE5 Flex / 1 per subnet / image + version null",
+        "target": "Optional OKE / cluster=false\nPrivate API flag / CNI input null",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "Selected cluster_id / optional",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Service-LB subnet / 10.42.30.0/24\nPublic IPs permitted / no LB created",
+        "target": "Optional OKE / cluster=false\nPrivate API flag / CNI input null",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "Service-LB subnet option",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": [
+          [
+            355,
+            540
+          ],
+          [
+            355,
+            540
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "API subnet / 10.42.10.0/24\nPublic IPs prohibited by default",
+        "target": "Shared RT / default \u2192 IGW",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "route_table_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            690,
+            420
+          ],
+          [
+            690,
+            535
+          ],
+          [
+            1100,
+            535
+          ],
+          [
+            1100,
+            670
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Worker subnet / 10.42.20.0/24\nPublic IPs prohibited",
+        "target": "Shared RT / default \u2192 IGW",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            1365,
+            420
+          ],
+          [
+            1365,
+            550
+          ],
+          [
+            1170,
+            550
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Service-LB subnet / 10.42.30.0/24\nPublic IPs permitted / no LB created",
+        "target": "Shared RT / default \u2192 IGW",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            690,
+            642.5
+          ],
+          [
+            690,
+            670
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Shared RT / default \u2192 IGW",
+        "target": "IGW",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "0.0.0.0/0",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Managed node group / ON_DEMAND\nAL2023 x86_64 / 2 \u00d7 t3.medium\nDesired 2 / min 1 / max 4",
+        "target": "EKS / private API only\nKubernetes 1.36 input",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "ClusterName",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Both AZs / EKS + node-group placement",
+        "target": "EKS / private API only\nKubernetes 1.36 input",
+        "source_kind": "group:thirdparty",
+        "target_kind": "icon",
+        "label": "SubnetIds / both AZs",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.8285714
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1610,
+            450
+          ],
+          [
+            1610,
+            570
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Both AZs / EKS + node-group placement",
+        "target": "Managed node group / ON_DEMAND\nAL2023 x86_64 / 2 \u00d7 t3.medium\nDesired 2 / min 1 / max 4",
+        "source_kind": "group:thirdparty",
+        "target_kind": "group:component",
+        "label": "Subnets / both AZs",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5720339,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Subnet 1 / AZ 1 / 10.64.10.0/24\nMapPublicIpOnLaunch=false",
+        "target": "Shared RT / 2 subnet associations",
+        "source_kind": "group:thirdparty",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.95
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            2210,
+            454.25
+          ],
+          [
+            2210,
+            500
+          ],
+          [
+            2690,
+            500
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Subnet 2 / AZ 2 / 10.64.20.0/24\nMapPublicIpOnLaunch=false",
+        "target": "Shared RT / 2 subnet associations",
+        "source_kind": "group:thirdparty",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.95
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            2850,
+            454.25
+          ],
+          [
+            2850,
+            500
+          ],
+          [
+            2690,
+            500
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Shared RT / 2 subnet associations",
+        "target": "IGW + attachment",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Default route",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Cluster SG / TCP 443 from 10.0.0.0/8\n443 egress to VPC only",
+        "target": "EKS / private API only\nKubernetes 1.36 input",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "SecurityGroupIds",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": [
+          [
+            2550,
+            740
+          ],
+          [
+            2550,
+            700
+          ],
+          [
+            1840,
+            700
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "KMS key / rotation on",
+        "target": "VPC flow-log group / 30 days",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "KmsKeyId",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "VPC Flow Log / ALL",
+        "target": "VPC flow-log group / 30 days",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Log delivery / dedicated role",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "VPC / 10.64.0.0/16",
+        "target": "VPC Flow Log / ALL",
+        "source_kind": "group:thirdparty",
+        "target_kind": "icon",
+        "label": "ResourceId / VPC",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.9
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            2935,
+            780
+          ],
+          [
+            2935,
+            1010
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "KMS key / rotation on",
+        "target": "EKS / private API only\nKubernetes 1.36 input",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Secret EncryptionConfig",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1570,
+            1010
+          ],
+          [
+            1570,
+            570
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "OKE VCN / enable_oke_networking=true\n10.42.0.0/16",
+        "target": "VPC / 10.64.0.0/16",
+        "source_kind": "group:vcn",
+        "target_kind": "group:thirdparty",
+        "label": "EXTERNAL partner Interconnect / supplied circuit IDs only; edge gateways, peering and routes not created",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.95
+        ],
+        "entry": [
+          0,
+          0.95
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional steering-policy attachment\nExisting zone ID / app.example.com default",
+        "target": "Optional FAILOVER policy / Traffic Management=false\nCNAME / TTL 30 / primary 0, standby 1 / limit 1",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "steering_policy_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional steering-policy attachment\nExisting zone ID / app.example.com default",
+        "target": "Existing DNS zone / ID null\nNo DNS zone is created",
+        "source_kind": "group:component",
+        "target_kind": "group:optional",
+        "label": "zone_id / domain_name",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional FAILOVER policy / Traffic Management=false\nCNAME / TTL 30 / primary 0, standby 1 / limit 1",
+        "target": "Optional HTTP monitor / TM + health flags\nHTTPS 443 / / / 30 s interval / 10 s timeout",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Optional health_check_monitor_id / existing override allowed",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional FAILOVER policy / Traffic Management=false\nCNAME / TTL 30 / primary 0, standby 1 / limit 1",
+        "target": "Existing application targets / both endpoint inputs null\nOCI primary + AWS standby; applications/ingress remain external\nThese are application answers, not Kubernetes API endpoints",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "answers.rdata / primary + standby",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0,
+          1
+        ],
+        "waypoints": [
+          [
+            890,
+            1610
+          ],
+          [
+            1840,
+            1610
+          ],
+          [
+            1840,
+            1635
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Optional HTTP monitor / TM + health flags\nHTTPS 443 / / / 30 s interval / 10 s timeout",
+        "target": "Existing application targets / both endpoint inputs null\nOCI primary + AWS standby; applications/ingress remain external\nThese are application answers, not Kubernetes API endpoints",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "Optional configured probe targets",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0
+        ],
+        "waypoints": [
+          [
+            1850,
+            1490
+          ],
+          [
+            1850,
+            1510
+          ],
+          [
+            1940,
+            1510
+          ]
+        ],
+        "straight": false
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/extensions/eks-oke-active-passive/locals.tf",
+        "revision": "working-tree",
+        "sha256": "5cf4a244faafb40b8302f42d6de37036c817c44c8158cc1f463423399ae6fcbb"
+      },
+      {
+        "path": "blueprints/extensions/eks-oke-active-passive/main.tf",
+        "revision": "working-tree",
+        "sha256": "7aff3c57741c07bfeed969273aa65336628561603d5259c82c9448f47754f16f"
+      },
+      {
+        "path": "blueprints/extensions/eks-oke-active-passive/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "ae8436550bf4418d5ec9cd18a077ac759b779bce22040ceb4161cc3055b90c7c"
+      },
+      {
+        "path": "blueprints/extensions/eks-oke-active-passive/providers.tf",
+        "revision": "working-tree",
+        "sha256": "4ff2aa3ff95888297c1bdd16504fde4b9a7c5f6808c008a6b2fd4a21e468c923"
+      },
+      {
+        "path": "blueprints/extensions/eks-oke-active-passive/variables.tf",
+        "revision": "working-tree",
+        "sha256": "6e5cca5f7fdbc8998a5442963c15798a6d24926455a619796bdd556549467276"
+      },
+      {
+        "path": "blueprints/extensions/eks-oke-active-passive/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      },
+      {
+        "path": "blueprints/extensions/eks-oke-active-passive/aws/main.yaml",
+        "sha256": "90f4d38110c43714987c40f6612a6c51dbf204c8f8ab256ca20caaa6649b67f3"
+      }
+    ]
+  },
+  "extensions/oke-service-mesh": {
+    "relationships": [
+      {
+        "source": "OKE add-on definition / enable_service_mesh_addon=false\naddon_name=ServiceMesh / addon_version=null\noverride_existing=false / remove resources on delete=false\naddon_configurations=[] / operator supplied key/value entries",
+        "target": "Existing OKE cluster\ncluster_id=null / not created",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "cluster_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/extensions/oke-service-mesh/locals.tf",
+        "revision": "working-tree",
+        "sha256": "499bb5242591889d4db16a17885aac8464a8a8614a20359d1b5d7d55ec3ae3d4"
+      },
+      {
+        "path": "blueprints/extensions/oke-service-mesh/main.tf",
+        "revision": "working-tree",
+        "sha256": "6e36810c4dfcd69fe0ecf727295bb838d586dea6a4fa8d8903cff080c632448f"
+      },
+      {
+        "path": "blueprints/extensions/oke-service-mesh/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "83627269211e75296390e0896355173e4006fd380c685f1cfe4789b59a89ee4e"
+      },
+      {
+        "path": "blueprints/extensions/oke-service-mesh/providers.tf",
+        "revision": "working-tree",
+        "sha256": "9ace0aeb9a214bbdff10c76453708d4fe6d9602bdbd3e38badbc4ac4eb6e0603"
+      },
+      {
+        "path": "blueprints/extensions/oke-service-mesh/variables.tf",
+        "revision": "working-tree",
+        "sha256": "0a0cbedb31b8924be4889e4f1bae5018e47c3eb2f746398e0630e42ff56e64f8"
+      },
+      {
+        "path": "blueprints/extensions/oke-service-mesh/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
   "networking/aws-oci-managed-interconnect": {
     "relationships": [
       {

@@ -1,0 +1,264 @@
+{
+  "schema_version": 2,
+  "blueprint": "industry/secure-desktops",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 3
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_desktops_desktop_pool.this",
+      "type": "oci_desktops_desktop_pool",
+      "symbol": "this",
+      "source": "blueprints/industry/secure-desktops/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_desktop_pool ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_desktop_pool ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_monitoring_alarm.this",
+      "type": "oci_monitoring_alarm",
+      "symbol": "this",
+      "source": "blueprints/industry/secure-desktops/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.alarms",
+      "creation_expression": {
+        "for_each": "var.alarms"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n6",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Alarms"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/industry/secure-desktops/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n26",
+        "source_symbol": "access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 3
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/industry/secure-desktops/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.desktop_pool_id",
+      "source": "blueprints/industry/secure-desktops/variables.tf",
+      "description": "Existing Secure Desktops pool OCID when create_desktop_pool is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.nsg_ids",
+      "source": "blueprints/industry/secure-desktops/variables.tf",
+      "description": "NSG OCIDs attached to the desktop pool.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.storage_backup_policy_id",
+      "source": "blueprints/industry/secure-desktops/variables.tf",
+      "description": "Backup policy OCID for desktop storage.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.image_id",
+      "source": "blueprints/industry/secure-desktops/variables.tf",
+      "description": "Desktop image OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.subnet_id",
+      "source": "blueprints/industry/secure-desktops/variables.tf",
+      "description": "Desktop pool subnet OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.vcn_id",
+      "source": "blueprints/industry/secure-desktops/variables.tf",
+      "description": "Desktop pool VCN OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    },
+    {
+      "address": "var.private_access_subnet_id",
+      "source": "blueprints/industry/secure-desktops/variables.tf",
+      "description": "Optional private access subnet OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n17"
+      }
+    },
+    {
+      "address": "var.private_access_vcn_id",
+      "source": "blueprints/industry/secure-desktops/variables.tf",
+      "description": "Optional private access VCN OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n19"
+      }
+    },
+    {
+      "address": "var.private_access_nsg_ids",
+      "source": "blueprints/industry/secure-desktops/variables.tf",
+      "description": "Optional private access NSG OCIDs.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n21"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/industry/secure-desktops/variables.tf",
+      "description": "Compartment OCID where the optional IAM policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n23"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 11
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/industry/secure-desktops/locals.tf",
+      "revision": "working-tree",
+      "sha256": "e5987ce7c9b3a3b5bb96171cdd203b2ed2640bf17537f09b2085de675551aff7"
+    },
+    {
+      "path": "blueprints/industry/secure-desktops/main.tf",
+      "revision": "working-tree",
+      "sha256": "2402131756ae525bfbdee7338153fd0c526b5926fe8f8d0a18b9035c640640ed"
+    },
+    {
+      "path": "blueprints/industry/secure-desktops/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "e3e577ba7ec690d59fbeb6b3ee264cd9c1530fd99544409ed70788c01714a94a"
+    },
+    {
+      "path": "blueprints/industry/secure-desktops/providers.tf",
+      "revision": "working-tree",
+      "sha256": "9ace0aeb9a214bbdff10c76453708d4fe6d9602bdbd3e38badbc4ac4eb6e0603"
+    },
+    {
+      "path": "blueprints/industry/secure-desktops/variables.tf",
+      "revision": "working-tree",
+      "sha256": "671af63e06b67fd9f176e14b6d550f37b6b5efb128f63ff588d15c4db9e081b2"
+    },
+    {
+      "path": "blueprints/industry/secure-desktops/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

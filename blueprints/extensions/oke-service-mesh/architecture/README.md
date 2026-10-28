@@ -17,34 +17,17 @@ Deploys the OKE service mesh add-on shell with optional APM domain for distribut
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| OKE Service Mesh                                                                                         |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Existing compartment / VCN / subnet / service boundary as required}                                     |
-|         |                                                                                                |
-|         v                                                                                                |
-| [OKE Service Mesh]                                                                                       |
-|         |-- service mesh add-on attached to an existing OKE cluster                                      |
-|         |-- APM domain for tracing when enabled                                                          |
-|         |-- mesh policies and workload namespace choices handled by platform operations                  |
-|         `-- tags, compartment scope, and optional private access controls                                |
-|                  |                                                                                       |
-|                  v                                                                                       |
-| [services in OKE] -> [mesh sidecars/policies] -> [APM tracing] -> [operator review]                      |
-|                                                                                                          |
-| Review focus: cluster ID, add-on version, namespace selection, mTLS posture, tracing destination, and    |
-| rollout order.                                                                                           |
-| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
-| teams.                                                                                                   |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Source-bounded architecture overview](architecture.png)
+
+[Edit the multi-page draw.io diagram](architecture.drawio). Companion pages
+enumerate every declared resource, creation condition and existing identifier
+input; see the [source inventory](resource-inventory.json). Provider-native
+icons identify mapped services; exact types without a matching glyph retain
+labelled boxes. No resources are inferred from those inputs.
+
+Plain lines show ID/configuration associations; solid arrows show declared
+route/action intent. Dashed lines mark external workflows or prerequisites.
+No connector proves successful deployment or runtime traffic.
 
 ## Terraform Components
 
@@ -89,3 +72,18 @@ Deploys the OKE service mesh add-on shell with optional APM domain for distribut
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+
+## October 28, 2026 Diagram Source Review
+
+Only an optional cluster add-on definition and an independent APM domain are
+declared; both flags default false. ServiceMesh is the source add-on-name
+default, not evidence of a supported add-on/version for a particular cluster.
+No cluster, network, workload manifests, proxies, mTLS policy or mesh virtual
+services/deployments are created. APM domain creation does not configure agents,
+ingestion keys, instrumentation or telemetry export; no automatic add-on-to-APM
+connector is shown.
+
+This batch reviews source code, native pages and rendered diagrams only.
+Historical Terraform/provider and earlier runtime evidence is unchanged. No
+cloud provisioning, user session, Kubernetes execution, mesh traffic or failover
+test was performed.

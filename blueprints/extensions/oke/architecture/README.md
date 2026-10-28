@@ -18,35 +18,17 @@ Creates an OCI Container Engine for Kubernetes cluster and optional node pool at
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| OKE Extension                                                                                            |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Existing compartment / VCN / subnet / service boundary as required}                                     |
-|         |                                                                                                |
-|         v                                                                                                |
-| [OKE Cluster]                                                                                            |
-|         |-- cluster endpoint, CNI, Kubernetes version, and endpoint subnet/NSGs                          |
-|         |-- node pool with node subnets, image, shape, SSH key, and size                                 |
-|         |-- service load balancer subnet choices for Kubernetes Services                                 |
-|         `-- tags, compartment scope, and optional private access controls                                |
-|                  |                                                                                       |
-|                  v                                                                                       |
-| [operators] -> [Kubernetes API endpoint] -> [cluster control plane]                                      |
-| [clients]   -> [service load balancers]  -> [pods on worker nodes]                                       |
-|                                                                                                          |
-| Review focus: endpoint exposure, node subnet routing, NSGs, service LB subnets, CNI mode, image/shape,   |
-| and autoscaling assumptions.                                                                             |
-| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
-| teams.                                                                                                   |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Source-bounded architecture overview](architecture.png)
+
+[Edit the multi-page draw.io diagram](architecture.drawio). Companion pages
+enumerate every declared resource, creation condition and existing identifier
+input; see the [source inventory](resource-inventory.json). Provider-native
+icons identify mapped services; exact types without a matching glyph retain
+labelled boxes. No resources are inferred from those inputs.
+
+Plain lines show ID/configuration associations; solid arrows show declared
+route/action intent. Dashed lines mark external workflows or prerequisites.
+No connector proves successful deployment or runtime traffic.
 
 ## Terraform Components
 
@@ -75,7 +57,7 @@ These notes expand the diagram with the design details that usually matter durin
 - The cluster depends on an existing VCN ID and optional endpoint/service load balancer subnet IDs supplied by the caller.
 - Endpoint subnet, public endpoint flag, and endpoint NSGs define the operator access path to the Kubernetes API.
 - Node pools depend on the created or referenced cluster ID and use the supplied node subnet IDs, shape, image, SSH key, and sizing inputs.
-- Service load balancer subnet choices decide where Kubernetes Service traffic enters the VCN.
+- Service-LB subnet IDs configure eligible placement; no Load Balancer, Kubernetes Service or ingress traffic is created.
 
 ## Operational Boundaries
 
@@ -94,3 +76,18 @@ These notes expand the diagram with the design details that usually matter durin
 - Confirm public exposure, private endpoint access, DNS behavior, DRG routing, and inspection points are intentional where present.
 - Confirm IAM scopes, compartment boundaries, tags, and operational outputs match the deployment README.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared Terraform runner.
+
+## October 28, 2026 Diagram Source Review
+
+Only a cluster and node pool are declared, both disabled by default. The VCN,
+API/worker/service-LB subnets, NSGs and image are operator-supplied resources.
+The endpoint block is added only with a non-null endpoint_subnet_id; a false
+public-IP input alone does not create a private API access path. Service-LB
+subnet configuration does not create a Load Balancer or Kubernetes Service.
+No gateways, routes, NSG rules, IAM, autoscaling or application manifests are
+declared. CIDRs and actual existing network exposure remain unspecified.
+
+This batch reviews source code, native pages and rendered diagrams only.
+Historical Terraform/provider and earlier runtime evidence is unchanged. No
+cloud provisioning, user session, Kubernetes execution, mesh traffic or failover
+test was performed.

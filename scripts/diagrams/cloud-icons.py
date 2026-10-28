@@ -8,6 +8,7 @@ from pathlib import Path
 from ocidraw import Node, ICON_WRAP, LABEL_POS, _htmltext
 ASSETS=Path(__file__).with_name('assets')
 AZURE={
+ 'Microsoft.ContainerService/managedClusters':'Kubernetes_Services',
  # Current CognitiveServices account declarations all use kind OpenAI.
  'Microsoft.CognitiveServices/accounts':'Azure_OpenAI',
  'Microsoft.ApiManagement/service':'API_Management_Services',
@@ -30,6 +31,7 @@ AZURE={
  'Microsoft.OperationalInsights/workspaces':'Log_Analytics_Workspaces',
 }
 AWS={
+ 'AWS::EKS::Cluster':('eks','#ED7100'),
  'aws_vpc':('vpc','#8C4FFF'),
  'aws_subnet':('group_subnet','#7AA116'),
  'aws_route_table':('route_table','#8C4FFF'),
