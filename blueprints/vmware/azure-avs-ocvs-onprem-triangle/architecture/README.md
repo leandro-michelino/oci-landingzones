@@ -79,3 +79,15 @@ conditions in the companion declaration maps.
 - Verify all circuit sessions, route filters, MTU, DNS/NTP and HCX management/uplink paths.
 - Test application transactions and database consistency before and after migration.
 - Exercise backup/restore and rollback before an application cutover.
+
+## Independent FastConnect and ExpressRoute legs
+
+The overview explicitly separates three legs:
+
+1. **On-premises edge ↔ private FastConnect ↔ OCI DRG**, then the DRG attachment to the prepared OCVS VCN. OCI creates `oci_core_virtual_circuit.site["onprem"]` from `circuits.onprem` when transport/circuit creation is enabled and its guards pass.
+2. **OCI DRG ↔ private FastConnect ↔ Oracle-facing ExpressRoute**, with `oci_core_virtual_circuit.site["azure"]` from `circuits.azure` under the same flags/guards. The optional AVS attachment remains separately gated and requires support confirmation.
+3. **On-premises edge ↔ independent customer ExpressRoute ↔ AVS**, using the existing customer circuit and optional `onprem-direct` Global Reach attachment. This direct customer-to-Azure leg is retained; it does not traverse OCI.
+
+Both OCI circuits require `enable_transport=true`, `enable_circuits=true`, cost approval, verified prerequisites and exactly the required `onprem`/`azure` map keys. Carrier handoffs, BGP sessions, route propagation, NSX/firewall rules and DNS need independent acceptance. HCX pairing does not replace any of these physical/private transport legs.
+
+Diagram review: 2026-10-28, source/configuration and rendered PNG only. Bidirectional FastConnect badges describe private transport intent; they do not prove BGP establishment, route symmetry, HCX operation or working application traffic. No infrastructure settings or creation defaults changed.

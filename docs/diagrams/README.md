@@ -789,3 +789,11 @@ bash scripts/check-repo-contracts.sh
 Latest progress is **79/80 original entries**, **1 pending**: Cost Optimization. Including eight additional projects, **87/88** catalog entry points now have diagrams, plus one separate conceptual overview. The audit covers **709 reviewed connectors**, **320 native documents/PNGs** and **15 multicloud overviews with explicit OCI/cloud bridges**. Additional GCP implementation remains in the final phase after original conversion completion.
 
 Source/geometry checks and PNG review are local documentation evidence. Historical provider/live validation dates and scopes are unchanged. No cloud resources, request delivery, NoSQL read/write, Redis commands, MongoDB session, ODA conversation, private DNS, HCX migration or multicloud connectivity was tested in this batch.
+
+## Explicit FastConnect in All VMware Overviews - 2026-10-28
+
+All four overviews under `blueprints/vmware/` now identify the requested private OCI transport with the official FastConnect connector badge and bidirectional circuit intent. The HCX and triangle views explicitly connect the on-premises edge to the OCI DRG over FastConnect. Azure views identify FastConnect plus the Oracle-facing ExpressRoute, while the triangle retains its separate direct customer-to-Azure ExpressRoute. These are five FastConnect segments across four overviews, not five deployed circuits.
+
+The base OCVS view identifies its existing external DRG and VCN attachment separately; none is added to the base Terraform resource declarations. Hybrid circuits already existed in source and retain `enable_transport`/`enable_circuits`, cost and prerequisite gates. No Terraform infrastructure or defaults changed. HCX pairing remains an external overlay workflow.
+
+Four paired draw.io/PNG overviews were regenerated and visually inspected; their native resource/input pages were recomposed and source coverage checked. The global audit now covers **710 reviewed connectors**, **87 blueprint plus one conceptual overviews**, **320 native documents/PNGs** and **15 multicloud overviews with explicit OCI/cloud bridges**. Original conversion remains **79/80**, with Cost Optimization pending. These are documentation checks; historical schema/mock/live validation metadata is unchanged, and no BGP session, carrier activation, HCX session or cloud traffic was tested.

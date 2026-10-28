@@ -23562,9 +23562,9 @@
         "target": "Optional DRG + VCN attachment\nenable_transport=false",
         "source_kind": "group:optional",
         "target_kind": "icon",
-        "label": "Optional partner FastConnect / circuits.onprem / provider handoff external",
+        "label": "FastConnect PRIVATE / on-premises to OCI\ncircuits.onprem / enable_transport AND enable_circuits",
         "dashed": false,
-        "start_arrow": "none",
+        "start_arrow": "open",
         "end_arrow": "open",
         "exit": [
           1,
@@ -23584,7 +23584,7 @@
             920
           ]
         ],
-        "straight": false
+        "straight": true
       },
       {
         "source": "HCX Connector / external installation\nSite pair + compute/network profiles + service mesh per pair\nIX / optional NE and WAN optimization appliances\nNo three-site service mesh or automatic DR",
@@ -23886,9 +23886,9 @@
         "target": "Customer Oracle-facing ExpressRoute\ncreateInterconnectCircuit=false / provider service key\nPrivate peering completed by partner provisioning",
         "source_kind": "icon",
         "target_kind": "icon",
-        "label": "Optional PRIVATE VC / circuits.azure / ExpressRoute service key + 2 BGP pairs",
+        "label": "FastConnect PRIVATE + ExpressRoute / OCI to Azure\ncircuits.azure / enable_transport AND enable_circuits",
         "dashed": false,
-        "start_arrow": "none",
+        "start_arrow": "open",
         "end_arrow": "open",
         "exit": [
           1,
@@ -24187,9 +24187,9 @@
         "target": "Optional DRG + VCN attachment\nenable_transport=false",
         "source_kind": "group:optional",
         "target_kind": "icon",
-        "label": "Optional partner FastConnect / circuits.onprem / provider handoff external",
+        "label": "FastConnect PRIVATE / on-premises to OCI\ncircuits.onprem / enable_transport AND enable_circuits",
         "dashed": false,
-        "start_arrow": "none",
+        "start_arrow": "open",
         "end_arrow": "open",
         "exit": [
           1,
@@ -24209,7 +24209,7 @@
             920
           ]
         ],
-        "straight": false
+        "straight": true
       },
       {
         "source": "HCX Connector / external installation\nSite pair + compute/network profiles + service mesh per pair\nIX / optional NE and WAN optimization appliances\nNo three-site service mesh or automatic DR",
@@ -24274,9 +24274,9 @@
         "target": "Customer Oracle-facing ExpressRoute\ncreateInterconnectCircuit=false / provider service key\nPrivate peering completed by partner provisioning",
         "source_kind": "icon",
         "target_kind": "icon",
-        "label": "Optional PRIVATE VC / circuits.azure / ExpressRoute service key + 2 BGP pairs",
+        "label": "FastConnect PRIVATE + ExpressRoute / OCI to Azure\ncircuits.azure / enable_transport AND enable_circuits",
         "dashed": false,
-        "start_arrow": "none",
+        "start_arrow": "open",
         "end_arrow": "open",
         "exit": [
           1,
@@ -24477,7 +24477,7 @@
     "relationships": [
       {
         "source": "Existing corporate VMware environment / EXTERNAL",
-        "target": "Existing private transport + DNS\nFastConnect / VPN / edge gateways\nRoutes, peering and private name resolution\nEXTERNAL / not created",
+        "target": "Existing customer edge + carrier handoff\nPrivate FastConnect to OCI / EXTERNAL\nRoutes, BGP, DNS and security required\nNot created or activated by this blueprint",
         "source_kind": "group:onprem",
         "target_kind": "group:optional",
         "label": "External access / migration prerequisites",
@@ -24598,13 +24598,13 @@
         "straight": false
       },
       {
-        "source": "Existing private transport + DNS\nFastConnect / VPN / edge gateways\nRoutes, peering and private name resolution\nEXTERNAL / not created",
-        "target": "Existing prepared OCVS VCN\nCIDR TBC / not created",
+        "source": "Existing customer edge + carrier handoff\nPrivate FastConnect to OCI / EXTERNAL\nRoutes, BGP, DNS and security required\nNot created or activated by this blueprint",
+        "target": "Existing DRG / EXTERNAL",
         "source_kind": "group:optional",
-        "target_kind": "group:vcn",
-        "label": "External private path",
-        "dashed": true,
-        "start_arrow": "none",
+        "target_kind": "icon",
+        "label": "FastConnect PRIVATE\nEXTERNAL / required",
+        "dashed": false,
+        "start_arrow": "open",
         "end_arrow": "open",
         "exit": [
           1,
@@ -24621,7 +24621,36 @@
           ],
           [
             365,
-            600
+            1000
+          ]
+        ],
+        "straight": true
+      },
+      {
+        "source": "Existing DRG / EXTERNAL",
+        "target": "Existing prepared OCVS VCN\nCIDR TBC / not created",
+        "source_kind": "icon",
+        "target_kind": "group:vcn",
+        "label": "Existing VCN attachment / external",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0.15,
+          1
+        ],
+        "waypoints": [
+          [
+            733.5,
+            1000
+          ],
+          [
+            733.5,
+            960
           ]
         ],
         "straight": false

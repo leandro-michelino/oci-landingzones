@@ -146,3 +146,9 @@ historical module source path intentionally; those commits predate this move.
 Existing users must transfer their protected deployment state and private inputs
 to the new working directory or keep using the old pinned checkout. Do not
 apply from a fresh directory against an existing deployment without its state.
+
+## Required external FastConnect path
+
+The overview now shows the customer edge/carrier handoff connected through **private FastConnect** to an **existing external DRG**, then its existing VCN attachment to the prepared OCVS VCN. This base blueprint creates only the optional SDDC, not the circuit, DRG, attachment, carrier handoff, BGP sessions, routes or DNS. The FastConnect badge expresses the requested external topology; it does not indicate an active circuit. Use the HCX hybrid wrapper when optional DRG/attachment/partner-circuit creation is required.
+
+Diagram review: 2026-10-28, source/configuration and rendered PNG only. Bidirectional FastConnect badges describe private transport intent; they do not prove BGP establishment, route symmetry, HCX operation or working application traffic. No infrastructure settings or creation defaults changed.

@@ -102,3 +102,9 @@ historical module source path intentionally; those commits predate this move.
 Existing users must transfer their protected deployment state and private inputs
 to the new working directory or keep using the old pinned checkout. Do not
 apply from a fresh directory against an existing deployment without its state.
+
+## OCI to Azure FastConnect and ExpressRoute
+
+The overview explicitly marks the OCI-to-Azure leg as **OCI DRG ↔ private FastConnect ↔ Oracle-facing ExpressRoute**. The OCI circuit is `oci_core_virtual_circuit.site["azure"]`, configured by `circuits.azure`; it is created only when both `enable_transport` and `enable_circuits` are true and the cost/prerequisite guards pass. The ExpressRoute circuit/private peering, service key and two BGP address pairs require their own reviewed setup. AVS connectivity also requires the separately gated attachment and exact pairing support confirmation. This two-cloud pattern has no on-premises site or on-premises circuit.
+
+Diagram review: 2026-10-28, source/configuration and rendered PNG only. Bidirectional FastConnect badges describe private transport intent; they do not prove BGP establishment, route symmetry, HCX operation or working application traffic. No infrastructure settings or creation defaults changed.

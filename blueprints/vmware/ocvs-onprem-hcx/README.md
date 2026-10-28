@@ -86,3 +86,9 @@ historical module source path intentionally; those commits predate this move.
 Existing users must transfer their protected deployment state and private inputs
 to the new working directory or keep using the old pinned checkout. Do not
 apply from a fresh directory against an existing deployment without its state.
+
+## On-premises to OCI FastConnect
+
+The overview explicitly marks **on-premises edge ↔ private FastConnect ↔ OCI DRG ↔ prepared OCVS VCN**. The circuit is `oci_core_virtual_circuit.site["onprem"]`, configured by `circuits.onprem`; it is created only when both `enable_transport` and `enable_circuits` are true and the cost/prerequisite guards pass. Partner handoff, BGP, DRG/NSX routes, security and DNS remain external prerequisites. HCX pairing is an overlay workflow over the reviewed transport, not a second physical connection.
+
+Diagram review: 2026-10-28, source/configuration and rendered PNG only. Bidirectional FastConnect badges describe private transport intent; they do not prove BGP establishment, route symmetry, HCX operation or working application traffic. No infrastructure settings or creation defaults changed.

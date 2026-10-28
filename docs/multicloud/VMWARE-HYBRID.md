@@ -20,6 +20,19 @@ managed ExpressRoute circuit are not duplicated as customer-owned resources.
 Onprem vCenter/ESXi/NSX, HCX Connector, IX/NE/optional optimization appliances,
 edge/firewall, DNS/NTP, guest workloads and backup tooling are external.
 
+## Explicit FastConnect Legs
+
+All four VMware architecture overviews now use Oracle's FastConnect connector badge for the requested private OCI legs. FastConnect is drawn as a connection, with DRG as its OCI gateway, rather than as a substitute service icon.
+
+| Overview | Private OCI transport | Ownership and conditions |
+| --- | --- | --- |
+| OCVS base | Customer edge to existing DRG over FastConnect; existing attachment to VCN | Entire transport remains external; the base root creates no network resources. |
+| On-premises HCX | Customer edge to created DRG over FastConnect | Optional `circuits.onprem`, gated by transport/circuit flags and prerequisite/cost guards. |
+| AVS Interconnect | DRG to Oracle-facing ExpressRoute over FastConnect | Optional `circuits.azure`; two explicit BGP pairs and separately gated AVS attachment. No on-premises site is added to this pattern. |
+| Triangle | Separate customer-to-OCI and OCI-to-Azure FastConnect legs | Independent `circuits.onprem` and `circuits.azure`; direct customer-to-Azure ExpressRoute is preserved. |
+
+HCX pairing arrows remain external workflow overlays. They do not indicate an independent bypass path, a configured service mesh or successful traffic. These diagrams do not establish carrier activation, route propagation or exact AVS/Oracle pairing support.
+
 ## Connectivity Limits
 
 Microsoft documents that an ExpressRoute VNet gateway cannot transit traffic

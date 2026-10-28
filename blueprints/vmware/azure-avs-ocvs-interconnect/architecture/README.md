@@ -75,3 +75,9 @@ conditions in the companion declaration maps.
 - Verify all circuit sessions, route filters, MTU, DNS/NTP and HCX management/uplink paths.
 - Test application transactions and database consistency before and after migration.
 - Exercise backup/restore and rollback before an application cutover.
+
+## OCI to Azure FastConnect and ExpressRoute
+
+The overview explicitly marks the OCI-to-Azure leg as **OCI DRG ↔ private FastConnect ↔ Oracle-facing ExpressRoute**. The OCI circuit is `oci_core_virtual_circuit.site["azure"]`, configured by `circuits.azure`; it is created only when both `enable_transport` and `enable_circuits` are true and the cost/prerequisite guards pass. The ExpressRoute circuit/private peering, service key and two BGP address pairs require their own reviewed setup. AVS connectivity also requires the separately gated attachment and exact pairing support confirmation. This two-cloud pattern has no on-premises site or on-premises circuit.
+
+Diagram review: 2026-10-28, source/configuration and rendered PNG only. Bidirectional FastConnect badges describe private transport intent; they do not prove BGP establishment, route symmetry, HCX operation or working application traffic. No infrastructure settings or creation defaults changed.

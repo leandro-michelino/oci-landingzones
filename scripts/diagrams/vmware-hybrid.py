@@ -58,19 +58,19 @@ def build(index):
  title=['On-premises VMware + OCVS | HCX and partner FastConnect','Azure AVS + OCVS | ExpressRoute / FastConnect and proposed Global Reach','VMware triangle | On-premises, OCVS and AVS with three independent legs'][index]
  d=base.network.Diagram(toolkit=base.network.TOOLKIT,title=title)
  d.text(title,20,10,width,45,size=25,bold=True)
- d.text('Plain: declared ID/config associations. Solid: optional circuit intent. Dashed: external prerequisites or proposed apps. No runtime evidence.',20,85,width,45,size=14)
+ d.text('Plain: declared ID/config associations. FastConnect badges: optional private circuits (bidirectional intent). Dashed: external prerequisites or proposed apps. No runtime evidence.',20,85,width,45,size=14)
  if has_onprem:op,edge,connector=onprem(d,20,tri)
  oci_x=1040 if has_onprem else 20
  reg,drg,sddc=oci(d,oci_x)
  if has_azure:az,er,managed,cloud_hcx=azure(d,2060 if tri else 1040)
  if has_onprem:
-  d.connect(edge,drg,label='Optional partner FastConnect / circuits.onprem / provider handoff external',exit=(1,.5),entry=(0,.5),waypoints=[(970,860),(970,920)],label_offset=(0,25))
+  d.connect(edge,drg,kind='fastconnect',label='FastConnect PRIVATE / on-premises to OCI\ncircuits.onprem / enable_transport AND enable_circuits',exit=(1,.5),entry=(0,.5),waypoints=[(970,860),(970,920)],label_offset=(0,80))
  if has_onprem:
   d.connect(connector,sddc,kind='dashed',label='Optional HCX pair',exit=(1,.5),entry=(0,.8),waypoints=[(970,600),(970,444)])
  if has_azure:
   between=1980 if tri else 960
   d.connect(sddc,cloud_hcx,kind='dashed',label='Optional HCX pair',exit=(1,.9),entry=(0,.5),waypoints=[(between,459.5),(between,450)],label_offset=(0,-30))
-  d.connect(drg,er,label='Optional PRIVATE VC / circuits.azure / ExpressRoute service key + 2 BGP pairs',exit=(1,.5),entry=(0,.5),straight=True,label_offset=(0,-40))
+  d.connect(drg,er,kind='fastconnect',label='FastConnect PRIVATE + ExpressRoute / OCI to Azure\ncircuits.azure / enable_transport AND enable_circuits',exit=(1,.5),entry=(0,.5),straight=True,label_offset=(0,-40))
  if tri:
   remote=d.box('Second AVS Global Reach attachment / onprem-direct\nconnectOnpremToAvs + approved + onpremGlobalReachVerified\nExisting separate onpremCircuitId + secure authorization key',2060,1140,900,130)
   customer=d.group('onprem','Customer direct ExpressRoute / existing carrier circuit',20,1110,900,190)

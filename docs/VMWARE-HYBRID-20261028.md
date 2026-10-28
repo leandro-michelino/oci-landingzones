@@ -90,3 +90,9 @@ contracts, generated index, naming and Markdown-link checks passed.
 
 Original conversion coverage is still 69/80; current catalog coverage is 77/88
 including eight additions. These counts do not imply any new real deployment.
+
+## Explicit FastConnect Diagram Revision
+
+All four VMware overviews, including the base OCVS component, now use the official FastConnect connection badge. On-premises-to-OCI links end at the DRG, which associates with the prepared OCVS VCN. Azure-facing links identify both FastConnect and ExpressRoute. The triangle retains its independent customer-to-Azure ExpressRoute leg; HCX pairing arrows remain external overlays.
+
+The base component's DRG, attachment and circuit are marked existing/external, not created by its Terraform. Hybrid source already declared the optional private partner VCs per role; infrastructure, guards and disabled defaults are unchanged. Diagram/native-page/source checks passed, and all four PNGs were visually inspected. The global connection audit now has 710 reviewed connectors across 87 blueprint and one conceptual overview; native document count is 320. No cloud operation or runtime verification was performed for this diagram revision. Prior Terraform/mock/Bicep results retain their original scope and were not rerun for this documentation-only change.

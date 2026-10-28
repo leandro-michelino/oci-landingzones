@@ -14,7 +14,7 @@
   "conceptual_overviews": 1,
   "native_documents": 320,
   "main_document_pages": 320,
-  "connector_count": 709,
+  "connector_count": 710,
   "cross_cloud_overviews": 15,
   "blueprints": [
     {
@@ -727,7 +727,7 @@
       "blueprint": "vmware/ocvs-onprem-hcx",
       "connections": 9,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "f1c948f2b7af0f72e8b8cd00123cf6f3678173be0208aa611f836d398f1b3fbc",
+      "overview_png_sha256": "df866c79bbf343dbada6f53cb6b571092570bfe926da6dba23b27396fb45942f",
       "layout_warnings": []
     },
     {
@@ -746,14 +746,14 @@
         {
           "source": "n13",
           "target": "n30",
-          "label": "Optional PRIVATE VC / circuits.azure / ExpressRoute service key + 2 BGP pairs",
+          "label": "FastConnect PRIVATE + ExpressRoute / OCI to Azure\ncircuits.azure / enable_transport AND enable_circuits",
           "clouds": [
             "OCI",
             "Azure"
           ]
         }
       ],
-      "overview_png_sha256": "7e85cfb33e5a9f02db6e3148d79c62ee3edba6494414119025ed5d5a6c297b0b",
+      "overview_png_sha256": "1ee20658e2b5391199851d11c507a85e1d18fc368db5cd88a90cecf600aed160",
       "layout_warnings": []
     },
     {
@@ -772,21 +772,21 @@
         {
           "source": "n23",
           "target": "n40",
-          "label": "Optional PRIVATE VC / circuits.azure / ExpressRoute service key + 2 BGP pairs",
+          "label": "FastConnect PRIVATE + ExpressRoute / OCI to Azure\ncircuits.azure / enable_transport AND enable_circuits",
           "clouds": [
             "OCI",
             "Azure"
           ]
         }
       ],
-      "overview_png_sha256": "52329d5585bfcd44ac7713e32bf81ebda96e8b76c16059115cc49d77cd715fa7",
+      "overview_png_sha256": "4b4e56c5da02b6370afaf46bdcf10cb71c44829bff958e0d759bcdb57539f44e",
       "layout_warnings": []
     },
     {
       "blueprint": "vmware/ocvs",
-      "connections": 10,
+      "connections": 11,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "81ac2e7c58a8ae52af5d4632579e4fd5e477edbc8b29a344feeac1500046d177",
+      "overview_png_sha256": "d184c12c24d1c427a959b267abc062755e185104b38e9f2070b96f306667e7f8",
       "layout_warnings": []
     },
     {
