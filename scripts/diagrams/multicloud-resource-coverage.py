@@ -26,20 +26,25 @@ base=importlib.util.module_from_spec(spec); spec.loader.exec_module(base)
 icon_spec=importlib.util.spec_from_file_location('cloud_icons',Path(__file__).with_name('cloud-icons.py'))
 cloud_icons=importlib.util.module_from_spec(icon_spec); icon_spec.loader.exec_module(cloud_icons)
 DEFAULTS=[
+ 'extensions/cdn-static-assets',
+ 'extensions/redis-cache',
+ 'data-platform/nosql',
+ 'data-platform/mongodb-api',
+ 'extensions/digital-assistant',
  'extensions/streaming',
  'extensions/waf',
  'extensions/container-instances',
  'extensions/functions',
  'extensions/event-driven-platform',
- 'industry/ocvs-onprem-hcx',
- 'industry/azure-avs-ocvs-interconnect',
- 'industry/azure-avs-ocvs-onprem-triangle',
+ 'vmware/ocvs-onprem-hcx',
+ 'vmware/azure-avs-ocvs-interconnect',
+ 'vmware/azure-avs-ocvs-onprem-triangle',
  'extensions/exadata',
  'extensions/apigw',
  'extensions/oac',
  'extensions/oic',
  'extensions/observability',
- 'industry/ocvs',
+ 'vmware/ocvs',
  'industry/secure-desktops',
  'extensions/oke',
  'extensions/aks-oke-active-passive',
@@ -79,6 +84,8 @@ DEFAULTS=[
 ]
 DECL=re.compile(r'^(resource|data|module)\s+"([^"]+)"(?:\s+"([^"]+)")?\s*\{',re.M)
 ICONS={
+ 'oci_nosql_table':'NoSQL Database',
+ 'oci_oda_oda_instance':'Digital Assistant',
  'oci_container_instances_container_instance':'Container Instances',
  'oci_artifacts_container_repository':'OCI Container Registry',
  'oci_functions_application':'OCI Functions',
@@ -206,7 +213,7 @@ def terraform(folder,ref=None,prefix='',stack=()):
     entries+=child[0]; lookups+=child[1]; sources+=child[2]
     continue
    typ,name=m[2],m[3]
-   cloud='OCI' if typ.startswith('oci_') else 'GCP' if typ.startswith('google_') else 'AWS' if typ.startswith('aws_') else 'Azure' if typ.startswith('azurerm_') else 'Contracts'
+   cloud='OCI' if typ.startswith('oci_') else 'GCP' if typ.startswith('google_') else 'AWS' if typ.startswith('aws_') else 'Azure' if typ.startswith('azurerm_') else 'Cloudflare' if typ.startswith('cloudflare_') else 'Contracts'
    gate=next(((key,attrs[key]) for key in ('count','for_each') if key in attrs),None)
    e={'cloud':cloud,'kind':m[1],'address':prefix+typ+'.'+name,'type':typ,'symbol':name,'source':path,'revision':ref or 'working-tree','condition':(gate[0]+' = '+gate[1].splitlines()[0]) if gate else 'Unconditional declaration; module-level gates/inputs may still apply.',
       'creation_expression':{gate[0]:gate[1]} if gate else {}}
@@ -274,13 +281,15 @@ def render_map(slug,cloud,entries,lookups,render,page_number=1):
  return {'file':path.name,'page_name':entries[0]['diagram']['page_name'],'declarations':len(entries)}
 
 
-# Collections whose nested existing identifiers must be visible as input cards.
+# Additional references, including collections with nested IDs and name/URL selectors.
 COLLECTION_REFERENCE_INPUTS = {
+ 'blueprints/extensions/redis-cache': {'alarms'},
+ 'blueprints/extensions/cdn-static-assets': {'existing_asset_bucket_name', 'cloudflare_worker_upstream_url'},
  'blueprints/extensions/container-instances': {'image_pull_secrets'},
  'blueprints/extensions/functions': {'functions', 'api_routes', 'event_rules'},
  'blueprints/extensions/event-driven-platform': {'event_rules'},
- 'blueprints/industry/ocvs': {'workload_clusters'},
- **{'blueprints/industry/'+slug: {'workload_clusters', 'circuits'} for slug in ['ocvs-onprem-hcx','azure-avs-ocvs-interconnect','azure-avs-ocvs-onprem-triangle']}
+ 'blueprints/vmware/ocvs': {'workload_clusters'},
+ **{'blueprints/vmware/'+slug: {'workload_clusters', 'circuits'} for slug in ['ocvs-onprem-hcx','azure-avs-ocvs-interconnect','azure-avs-ocvs-onprem-triangle']}
 }
 
 

@@ -1,9 +1,9 @@
 # Generic VMware Workload Proposals
 
-These examples apply to the [OCVS foundation](../../blueprints/industry/ocvs/),
-[on-premises HCX migration](../../blueprints/industry/ocvs-onprem-hcx/),
-[AVS/OCVS interconnect](../../blueprints/industry/azure-avs-ocvs-interconnect/)
-and [three-site triangle](../../blueprints/industry/azure-avs-ocvs-onprem-triangle/).
+These examples apply to the [OCVS foundation](../../blueprints/vmware/ocvs/),
+[on-premises HCX migration](../../blueprints/vmware/ocvs-onprem-hcx/),
+[AVS/OCVS interconnect](../../blueprints/vmware/azure-avs-ocvs-interconnect/)
+and [three-site triangle](../../blueprints/vmware/azure-avs-ocvs-onprem-triangle/).
 They are industry-neutral proposals. No application, guest VM or database has
 been deployed, migrated, benchmarked or verified running by these blueprints.
 

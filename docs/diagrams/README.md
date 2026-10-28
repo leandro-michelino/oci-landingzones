@@ -550,10 +550,10 @@ that all health-monitor enablement predicates survive into native draw.io XML.
 
 ## OCVS Blueprint Addition / October 28, 2026
 
-[Oracle Cloud VMware Solution](../../blueprints/industry/ocvs/README.md) is now
+[Oracle Cloud VMware Solution](../../blueprints/vmware/ocvs/README.md) is now
 an implemented industry entry point rather than a planned catalog row. The
-[PNG](../../blueprints/industry/ocvs/architecture/architecture.png) and editable
-[draw.io](../../blueprints/industry/ocvs/architecture/architecture.drawio) describe
+[PNG](../../blueprints/vmware/ocvs/architecture/architecture.png) and editable
+[draw.io](../../blueprints/vmware/ocvs/architecture/architecture.drawio) describe
 an optional dense/vSAN SDDC with MANAGEMENT and explicit WORKLOAD clusters,
 using dedicated existing subnet/VLAN sets per cluster. Corporate VMware, HCX
 remote appliances and private transport/DNS are marked external prerequisites.
@@ -573,8 +573,8 @@ provisioning, licensing/capacity, network acceptance and migration testing.
 
 ```bash
 python3 scripts/diagrams/ocvs.py --render
-python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint industry/ocvs --render
-python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint industry/ocvs --check
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint vmware/ocvs --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint vmware/ocvs --check
 python3 scripts/diagrams/check-connections.py --write-report
 ```
 
@@ -637,9 +637,9 @@ The OCVS foundation overview also includes the same generic VM application propo
 
 | Blueprint | OCI declarations | Azure declarations | Local contracts | Existing-reference inputs | Overview connectors |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| [OCVS + onprem HCX](../../blueprints/industry/ocvs-onprem-hcx/architecture/README.md) | 4 | 0 | 3 | 16 | 9 |
-| [AVS + OCVS](../../blueprints/industry/azure-avs-ocvs-interconnect/architecture/README.md) | 4 | 5 | 3 | 16 | 11 |
-| [Three-site triangle](../../blueprints/industry/azure-avs-ocvs-onprem-triangle/architecture/README.md) | 4 | 6 | 3 | 16 | 17 |
+| [OCVS + onprem HCX](../../blueprints/vmware/ocvs-onprem-hcx/architecture/README.md) | 4 | 0 | 3 | 16 | 9 |
+| [AVS + OCVS](../../blueprints/vmware/azure-avs-ocvs-interconnect/architecture/README.md) | 4 | 5 | 3 | 16 | 11 |
+| [Three-site triangle](../../blueprints/vmware/azure-avs-ocvs-onprem-triangle/architecture/README.md) | 4 | 6 | 3 | 16 | 17 |
 
 Counts describe declarations, not expanded deployed instances. The three roots
 include 32 declarations (12 OCI, 11 Azure, 9 local contracts) and 48 existing-
@@ -664,8 +664,8 @@ migration interoperability or running guest applications is made.
 ```bash
 python3 scripts/diagrams/vmware-hybrid.py --render
 python3 scripts/diagrams/ocvs.py --render
-python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint industry/ocvs-onprem-hcx --blueprint industry/azure-avs-ocvs-interconnect --blueprint industry/azure-avs-ocvs-onprem-triangle --render
-python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint industry/ocvs
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint vmware/ocvs-onprem-hcx --blueprint vmware/azure-avs-ocvs-interconnect --blueprint vmware/azure-avs-ocvs-onprem-triangle --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint vmware/ocvs
 python3 scripts/diagrams/multicloud-resource-coverage.py --check
 python3 scripts/diagrams/check-connections.py --write-report
 ```
@@ -685,7 +685,7 @@ application request, restore or runtime transport test was performed.
 
 ## Triangle Direct Customer ExpressRoute Clarification
 
-The [triangle overview](../../blueprints/industry/azure-avs-ocvs-onprem-triangle/architecture/README.md)
+The [triangle overview](../../blueprints/vmware/azure-avs-ocvs-onprem-triangle/architecture/README.md)
 now explicitly shows customer edge → customer/carrier ExpressRoute → optional
 AVS Global Reach attachment → AVS-managed circuit. The existing carrier circuit
 uses its own Azure glyph and is distinct from the Oracle-facing ExpressRoute
@@ -751,8 +751,41 @@ audit totals are **687 reviewed connectors** and **302 native documents/PNGs**;
 The remaining original entries are CDN static assets, Redis Cache, NoSQL,
 MongoDB API, Digital Assistant and Cost Optimization. Further GCP counterparts
 remain in the final phase after the original conversion backlog, as recorded
-in the [GCP plan](../multicloud/GCP-OCI-BLUEPRINTS.md). VMware folder reorganization
-was discussed but is not part of this conversion batch; current paths remain.
+in the [GCP plan](../multicloud/GCP-OCI-BLUEPRINTS.md). The subsequent VMware relocation is recorded below.
 Historical Terraform/provider validation dates and evidence are unchanged.
 No image build/pull, runtime deployment, invocation, event delivery, WAF request,
 producer/consumer operation, notification or application traffic was tested.
+
+## CDN, Cache and Data-Service Continuation - 2026-10-28
+
+This batch converts five more original entries and replaces their ASCII views with paired editable draw.io and inspected PNG artifacts.
+
+| Blueprint | Resource declarations | Existing-reference inputs or collections | Reviewed connectors |
+| --- | --- | --- | --- |
+| [CDN static assets](../../blueprints/extensions/cdn-static-assets/architecture/README.md) | 11 (6 OCI, 5 Cloudflare) | 8 | 4 |
+| [Redis Cache](../../blueprints/extensions/redis-cache/architecture/README.md) | 3 OCI | 9 | 2 |
+| [NoSQL](../../blueprints/data-platform/nosql/architecture/README.md) | 12 (10 OCI, 2 metadata contracts) | 2 | 5 |
+| [MongoDB API](../../blueprints/data-platform/mongodb-api/architecture/README.md) | 8 OCI | 5 | 5 |
+| [Digital Assistant](../../blueprints/extensions/digital-assistant/architecture/README.md) | 13 (11 OCI, 2 metadata contracts) | 6 | 6 |
+
+The batch adds **47 declarations**, **30 existing-reference inputs/collections**, **22 reviewed connectors** and **18 native documents with paired PNGs**. Every main draw.io includes the overview, declaration maps and input-reference page. Cloudflare resources are classified explicitly as external-cloud resources, with a configured Worker-to-Object Storage bridge. Resources without an exact mapped native glyph use named boxes.
+
+The CDN Worker fetches a fixed upstream PAR URL on cache miss; PAR grants are configuration associations, not forwarding hops. Host/SNI origin rules do not authorize a private bucket. Redis alarm destinations are supplied independently of cluster creation, and its Vault secret ID is output metadata only. NoSQL tables are regional managed services outside the separate application VCN. Its defaults enable seven OCI resource instances plus two metadata contracts if applied with valid inputs; this documentation review did not apply them. MongoDB API is an optional Autonomous Database feature, with explicit network override precedence. Digital Assistant endpoint creation and attachment are independently gated; its empty route table and HTTPS rules do not establish a backend path.
+
+The four generic VMware blueprints moved to [blueprints/vmware](../../blueprints/vmware/), with catalogs, generators and review registries updated. Immutable module references retain their historical source paths. See [relocation checks and deployment compatibility](../VMWARE-RELOCATION-20261028.md).
+
+Validation commands:
+
+```bash
+python3 scripts/diagrams/extensions-data-batch-04.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint extensions/cdn-static-assets --blueprint extensions/redis-cache --blueprint data-platform/nosql --blueprint data-platform/mongodb-api --blueprint extensions/digital-assistant --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --check
+python3 scripts/diagrams/multicloud-resource-coverage.py --first-39 --check
+python3 scripts/diagrams/check-connections.py --write-report
+python3 -m unittest discover -s scripts/diagrams -p test_resource_coverage.py
+bash scripts/check-repo-contracts.sh
+```
+
+Latest progress is **79/80 original entries**, **1 pending**: Cost Optimization. Including eight additional projects, **87/88** catalog entry points now have diagrams, plus one separate conceptual overview. The audit covers **709 reviewed connectors**, **320 native documents/PNGs** and **15 multicloud overviews with explicit OCI/cloud bridges**. Additional GCP implementation remains in the final phase after original conversion completion.
+
+Source/geometry checks and PNG review are local documentation evidence. Historical provider/live validation dates and scopes are unchanged. No cloud resources, request delivery, NoSQL read/write, Redis commands, MongoDB session, ODA conversation, private DNS, HCX migration or multicloud connectivity was tested in this batch.

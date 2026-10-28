@@ -247,3 +247,9 @@ ansible-playbook ansible/plan.yml
 ```
 
 See `architecture/README.md` before customer review.
+
+## Architecture Diagram
+
+![Architecture](architecture/architecture.png)
+
+[Editable draw.io and resource detail pages](architecture/architecture.drawio) · [Architecture notes](architecture/README.md)

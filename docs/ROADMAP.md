@@ -41,7 +41,7 @@ compliance, or workload platform pattern.
 
 The user requested GCP blueprints on October 28, 2026, after completing the
 current architecture-diagram work. Finish conversion and resource coverage for
-the original 80 entry points first (currently 54 converted, 26 pending); then
+the original 80 entry points first (currently 79 converted, 1 pending); then
 implement the [GCP counterpart batch](multicloud/GCP-OCI-BLUEPRINTS.md).
 
 This is a commitment to new blueprint implementation, including the GCP-side
@@ -1316,7 +1316,7 @@ that can reuse existing Core, networking, and IAM contracts.
 | 5 | OCI Data Integration | `blueprints/data-platform/data-integration/` | Managed ELT/ETL workspace. Complements GoldenGate for non-CDC integration patterns and connects to Autonomous DB and Object Storage. |
 | 6 | OCI Certificates Service | `blueprints/extensions/certificates/` | Managed PKI and certificate authority. TLS lifecycle is always a gap in first-deployment reviews and works across LB, API Gateway, and OKE. |
 | 7 | OCI AI Services | `blueprints/ai/ai-services/` | Available. Pre-trained Vision, Language, Speech, Document Understanding, and Anomaly Detection. Distinct from GenAI; pairs well with ODA and OIC integration patterns. |
-| 8 | Oracle Cloud VMware Solution (OCVS) | `blueprints/industry/ocvs/` | Native VMware baremetal on OCI. Different from the hybrid migration zone; covers customers running VMware on OCI long-term rather than transitioning off it. |
+| 8 | Oracle Cloud VMware Solution (OCVS) | `blueprints/vmware/ocvs/` | Native VMware baremetal on OCI. Different from the hybrid migration zone; covers customers running VMware on OCI long-term rather than transitioning off it. |
 | 9 | OCI Process Automation | `blueprints/extensions/process-automation/` | Low-code workflow automation connecting Oracle SaaS, OCI services, and custom REST APIs. Common in ERP and CX integration projects. |
 | 10 | OCI Network Load Balancer | `blueprints/networking/network-load-balancer/` | Available. Layer 4 TCP/UDP load balancing with private backend sets, listeners, and health checks. |
 | 11 | OCI Email Delivery | `blueprints/extensions/email-delivery/` | SMTP relay and approved sender service. App teams always need it; requires IAM, NSG, and SPF/DKIM configuration. |
@@ -2150,7 +2150,7 @@ Core Landing Zone (available)
   |   |--- blueprints/data-platform/data-flow/
   |   |--- blueprints/data-platform/data-integration/
   |   |--- blueprints/extensions/certificates/
-  |   |--- blueprints/industry/ocvs/
+  |   |--- blueprints/vmware/ocvs/
   |   |--- blueprints/extensions/process-automation/
   |   |--- blueprints/networking/network-load-balancer/
   |   |--- blueprints/extensions/email-delivery/
@@ -2190,3 +2190,7 @@ ExpressRoute blueprints remain available. [Coverage and evidence](multicloud/INT
 distinguishes source implementation, operator activation and local-only checks.
 The catalog now has 82 entry points; the original 80-diagram backlog is still
 54 converted / 26 pending. Other new GCP counterparts remain planned.
+
+## Diagram Continuation and VMware Family, October 28, 2026
+
+The original diagram conversion is now **79/80**, with only Cost Optimization pending. Including eight additional projects, **87/88** catalog entry points have editable diagrams and rendered PNGs. The four generic VMware blueprints now belong to `blueprints/vmware/`; healthcare and other industry-specific patterns remain under `industry/`. See [relocation evidence](VMWARE-RELOCATION-20261028.md) and [diagram review](diagrams/README.md). GCP implementation remains the final phase after original conversion completion.

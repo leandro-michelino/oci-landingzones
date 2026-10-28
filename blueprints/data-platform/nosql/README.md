@@ -264,3 +264,9 @@ Reusable non-secret sample inputs live under `samples/`:
 
 Test fixtures for minimal and app-network scenarios live under
 `tests/fixtures/nosql/`.
+
+## Architecture Diagram
+
+![Architecture](architecture/architecture.png)
+
+[Editable draw.io and resource detail pages](architecture/architecture.drawio) · [Architecture notes](architecture/README.md)

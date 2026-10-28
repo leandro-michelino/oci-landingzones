@@ -6,7 +6,7 @@ ROOT=Path(__file__).resolve().parents[2]
 def load(name):
  s=importlib.util.spec_from_file_location(name,Path(__file__).with_name(name+'.py'));m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
 base=load('ai-industry-batch-03');cloud=load('cloud-icons')
-ITEMS=['industry/ocvs-onprem-hcx','industry/azure-avs-ocvs-interconnect','industry/azure-avs-ocvs-onprem-triangle']
+ITEMS=['vmware/ocvs-onprem-hcx','vmware/azure-avs-ocvs-interconnect','vmware/azure-avs-ocvs-onprem-triangle']
 def onprem(d,x,triangle=False):
  r=d.group('onprem','On-premises VMware / existing and externally operated',x,160,900,900)
  vc=d.box('Existing vCenter + ESXi / vSAN or selected storage\nNSX / VM networks / guest VMs\nVersions, licensing, capacity and support require review',40,100,820,140,parent=r,kind='optional')

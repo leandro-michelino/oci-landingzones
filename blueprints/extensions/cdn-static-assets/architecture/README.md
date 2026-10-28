@@ -19,41 +19,11 @@ contract for Cloudflare at OCI or an existing Cloudflare account.
 
 ## Architecture
 
-```text
-+--------------------------------------------------------------------------------+
-|                      CDN Static Asset Distribution                              |
-+--------------------------------------------------------------------------------+
-|                                                                                |
-|  Private Document Path                                                         |
-|      |                                                                         |
-|      v                                                                         |
-|  Client application -> backend PAR broker                                      |
-|      |                                                                         |
-|      | create short-lived ObjectRead PAR                                       |
-|      v                                                                         |
-|  Private Object Storage bucket (NoPublicAccess)                                |
-|      |                                                                         |
-|      `--> Direct PAR download with Cache-Control: private, no-store            |
-|                                                                                |
-|  Public-Safe Static Asset Path                                                 |
-|      |                                                                         |
-|      v                                                                         |
-|  Cloudflare at OCI or external Cloudflare                                      |
-|      |                                                                         |
-|      | optional DNS, cache rule, Worker smoke proxy, route                    |
-|      v                                                                         |
-|  OCI origin contract or Worker-held PAR                                       |
-|      |                                                                         |
-|      `--> Object Storage bucket or app-controlled origin                       |
-|                                                                                |
-|  Governance Lane                                                               |
-|      |                                                                         |
-|      +--> optional lifecycle policy                                            |
-|      +--> optional OCI DNS CNAME                                               |
-|      +--> optional IAM policy shell                                            |
-|      `--> real lifecycle runner: apply, OCI verify, PAR curl, destroy          |
-+--------------------------------------------------------------------------------+
-```
+![Source-backed architecture](architecture.png)
+
+[Editable draw.io overview and native detail pages](architecture.drawio) · [Resource inventory](resource-inventory.json)
+
+Native pages cover every conditional declaration and existing-reference input. Counts describe declarations, not deployed resource counts.
 
 ## Terraform Components
 
@@ -108,24 +78,11 @@ Declared resource addresses:
 
 ## Detailed Architecture Notes
 
-- The current OCI-aligned CDN direction is Cloudflare at OCI, not an `oci_cdn_*`
-  Terraform resource.
-- Terraform-managed PARs are intentionally documented as smoke-test artifacts.
-  Production PARs should be created at request time by an authenticated backend.
-- The committed real lifecycle sample disables Object Storage lifecycle policy
-  creation for broader tenancy compatibility.
-- Lifecycle policies remain supported by the blueprint and should be enabled
-  after the target compartment has the required Object Storage service-principal
-  IAM grant.
-- Optional OCI DNS CNAME creation requires an existing OCI DNS public zone and a
-  Cloudflare target hostname.
-- The Worker smoke-proxy path is the portable external Cloudflare test because
-  it keeps the upstream PAR URL in a Worker secret binding.
-- Cloudflare origin rules with Host Header override can be entitlement-dependent.
-  Keep `create_cloudflare_origin_ruleset = false` unless the account is approved
-  for that feature.
-- The blueprint can reference an existing private bucket for brownfield
-  PAR-only tests by setting `create_asset_bucket = false`.
+- All creation flags default false, maps and IAM statements empty; the namespace data lookup is unconditional. Six OCI and five Cloudflare resource declarations are enumerated.
+- The Worker accepts GET/HEAD and fetches a fixed OCI_PAR_URL on cache miss; it does not append the request path. The cache key ignores the query string. Review scope and cache eligibility before using personalized content.
+- The selected PAR URL is a secret binding. A PAR is authorization material bound to a bucket/object, not a packet-forwarding hop. Origin Host/SNI rewriting does not authorize private bucket access.
+- Cloudflare DNS/cache/origin rules and the optional OCI DNS CNAME have independent flags and supplied zone/hostname inputs. No automatic DNS cutover, path rewrite or production authentication is inferred.
+- The Python PAR broker is a sample, not a deployed application. Existing Cloudflare account/zone, DNS zone and KMS inputs do not create those resources.
 
 ## Operational Boundaries
 
@@ -160,3 +117,7 @@ Real lifecycle evidence from 2026-06-05:
 - Optional lifecycle policies have the required service-principal IAM policy.
 - Optional DNS CNAME values are provided by the edge team.
 - The real lifecycle test passed and destroyed its disposable resources.
+
+## Diagram Review - 2026-10-28
+
+Source, connector direction, creation conditions, native detail pages and PNGs were reviewed locally. Plain lines show ID/configuration associations; solid arrows show declared request/route intent; dashed lines show external prerequisites. No cloud resources were created and no runtime traffic was tested in this review. Historical provider and live-validation evidence remains limited to its original stated scope.

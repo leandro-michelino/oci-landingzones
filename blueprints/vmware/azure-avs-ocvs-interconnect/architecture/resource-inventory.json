@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "blueprint": "industry/azure-avs-ocvs-onprem-triangle",
+  "blueprint": "vmware/azure-avs-ocvs-interconnect",
   "review_date": "2026-10-28",
   "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
   "counts_by_cloud": {
-    "Azure": 6,
+    "Azure": 5,
     "Contracts": 3,
     "OCI": 4
   },
@@ -26,7 +26,7 @@
         {
           "address": "module.ocvs",
           "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/industry/ocvs?ref=94ad89026bbf2ddbda531976a500e6d2ee084c7f",
-          "call_site": "blueprints/industry/azure-avs-ocvs-onprem-triangle/main.tf",
+          "call_site": "blueprints/vmware/azure-avs-ocvs-interconnect/main.tf",
           "call_site_revision": "working-tree",
           "creation_gate": {},
           "enablement_inputs": {
@@ -63,7 +63,7 @@
         {
           "address": "module.ocvs",
           "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/industry/ocvs?ref=94ad89026bbf2ddbda531976a500e6d2ee084c7f",
-          "call_site": "blueprints/industry/azure-avs-ocvs-onprem-triangle/main.tf",
+          "call_site": "blueprints/vmware/azure-avs-ocvs-interconnect/main.tf",
           "call_site_revision": "working-tree",
           "creation_gate": {},
           "enablement_inputs": {
@@ -87,7 +87,7 @@
       "address": "terraform_data.connectivity_guard",
       "type": "terraform_data",
       "symbol": "connectivity_guard",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/main.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/main.tf",
       "revision": "working-tree",
       "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
       "creation_expression": {},
@@ -106,7 +106,7 @@
       "address": "terraform_data.migration_contract",
       "type": "terraform_data",
       "symbol": "migration_contract",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/main.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/main.tf",
       "revision": "working-tree",
       "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
       "creation_expression": {},
@@ -125,7 +125,7 @@
       "address": "oci_core_drg.this",
       "type": "oci_core_drg",
       "symbol": "this",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/main.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_transport ? 1 : 0",
       "creation_expression": {
@@ -146,7 +146,7 @@
       "address": "oci_core_drg_attachment.ocvs",
       "type": "oci_core_drg_attachment",
       "symbol": "ocvs",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/main.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_transport ? 1 : 0",
       "creation_expression": {
@@ -167,7 +167,7 @@
       "address": "oci_core_virtual_circuit.site",
       "type": "oci_core_virtual_circuit",
       "symbol": "site",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/main.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/main.tf",
       "revision": "working-tree",
       "condition": "for_each = var.enable_circuits && var.enable_transport ? var.circuits : {}",
       "creation_expression": {
@@ -188,7 +188,7 @@
       "address": "avs",
       "symbol": "avs",
       "type": "Microsoft.AVS/privateClouds",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/azure/main.bicep",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/azure/main.bicep",
       "revision": "working-tree",
       "condition": "if (createAvs) {",
       "diagram": {
@@ -206,7 +206,7 @@
       "address": "oracleCircuit",
       "symbol": "oracleCircuit",
       "type": "Microsoft.Network/expressRouteCircuits",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/azure/main.bicep",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/azure/main.bicep",
       "revision": "working-tree",
       "condition": "if (createCircuit) {",
       "diagram": {
@@ -224,7 +224,7 @@
       "address": "oracleAuthorization",
       "symbol": "oracleAuthorization",
       "type": "Microsoft.Network/expressRouteCircuits/authorizations",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/azure/main.bicep",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/azure/main.bicep",
       "revision": "working-tree",
       "condition": "if (connectOci) {",
       "diagram": {
@@ -242,7 +242,7 @@
       "address": "avsOciConnection",
       "symbol": "avsOciConnection",
       "type": "Microsoft.AVS/privateClouds/globalReachConnections",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/azure/main.bicep",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/azure/main.bicep",
       "revision": "working-tree",
       "condition": "if (connectOci) {",
       "diagram": {
@@ -260,7 +260,7 @@
       "address": "hcx",
       "symbol": "hcx",
       "type": "Microsoft.AVS/privateClouds/addons",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/azure/main.bicep",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/azure/main.bicep",
       "revision": "working-tree",
       "condition": "if (enableHcxAddon && approved) {",
       "diagram": {
@@ -271,31 +271,13 @@
         "provider_icon": null,
         "oci_icon": null
       }
-    },
-    {
-      "cloud": "Azure",
-      "kind": "resource",
-      "address": "onpremAvsConnection",
-      "symbol": "onpremAvsConnection",
-      "type": "Microsoft.AVS/privateClouds/globalReachConnections",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/azure/main.bicep",
-      "revision": "working-tree",
-      "condition": "if (connectOnpremToAvs && approved && onpremGlobalReachVerified) {",
-      "diagram": {
-        "file": "azure-resources.drawio",
-        "page_name": "Azure resources",
-        "node_id": "n18",
-        "source_symbol": "onpremAvsConnection",
-        "provider_icon": null,
-        "oci_icon": null
-      }
     }
   ],
   "resource_pages": [
     {
       "file": "azure-resources.drawio",
       "page_name": "Azure resources",
-      "declarations": 6
+      "declarations": 5
     },
     {
       "file": "contracts-resources.drawio",
@@ -311,7 +293,7 @@
   "input_references": [
     {
       "address": "var.compartment_ocid",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/variables.tf",
       "description": "Explicit workload compartment; no tenancy-root fallback.",
       "default_expression": "REQUIRED",
       "type_expression": "string",
@@ -324,7 +306,7 @@
     },
     {
       "address": "var.initial_vcf_byol_allocation_id",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/variables.tf",
       "description": "Existing VMware Cloud Foundation BYOL allocation if required by the chosen offering; not created here.",
       "default_expression": "null",
       "type_expression": "string",
@@ -337,7 +319,7 @@
     },
     {
       "address": "var.vcn_id",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/variables.tf",
       "description": "Existing prepared OCVS VCN.",
       "default_expression": "null",
       "type_expression": "string",
@@ -350,7 +332,7 @@
     },
     {
       "address": "var.provisioning_subnet_id",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/variables.tf",
       "description": "Existing private ESXi provisioning subnet.",
       "default_expression": "null",
       "type_expression": "string",
@@ -363,7 +345,7 @@
     },
     {
       "address": "var.vsphere_vlan_id",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/variables.tf",
       "description": "Existing vSphere management VLAN.",
       "default_expression": "null",
       "type_expression": "string",
@@ -376,7 +358,7 @@
     },
     {
       "address": "var.vmotion_vlan_id",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/variables.tf",
       "description": "Existing vMotion VLAN.",
       "default_expression": "null",
       "type_expression": "string",
@@ -389,7 +371,7 @@
     },
     {
       "address": "var.vsan_vlan_id",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/variables.tf",
       "description": "Existing vSAN VLAN.",
       "default_expression": "null",
       "type_expression": "string",
@@ -402,7 +384,7 @@
     },
     {
       "address": "var.nsx_vtep_vlan_id",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/variables.tf",
       "description": "Existing NSX host VTEP VLAN.",
       "default_expression": "null",
       "type_expression": "string",
@@ -415,7 +397,7 @@
     },
     {
       "address": "var.nsx_edge_vtep_vlan_id",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/variables.tf",
       "description": "Existing NSX Edge VTEP VLAN.",
       "default_expression": "null",
       "type_expression": "string",
@@ -428,7 +410,7 @@
     },
     {
       "address": "var.nsx_edge_uplink1vlan_id",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/variables.tf",
       "description": "Existing NSX Edge uplink 1 VLAN.",
       "default_expression": "null",
       "type_expression": "string",
@@ -441,7 +423,7 @@
     },
     {
       "address": "var.nsx_edge_uplink2vlan_id",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/variables.tf",
       "description": "Existing NSX Edge uplink 2 VLAN.",
       "default_expression": "null",
       "type_expression": "string",
@@ -454,7 +436,7 @@
     },
     {
       "address": "var.provisioning_vlan_id",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/variables.tf",
       "description": "Existing Provisioning-Net VLAN for cold migration/cloning.",
       "default_expression": "null",
       "type_expression": "string",
@@ -467,7 +449,7 @@
     },
     {
       "address": "var.replication_vlan_id",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/variables.tf",
       "description": "Optional existing Replication-Net VLAN; supply when the selected VMware bundle requires it.",
       "default_expression": "null",
       "type_expression": "string",
@@ -480,7 +462,7 @@
     },
     {
       "address": "var.hcx_vlan_id",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/variables.tf",
       "description": "Existing HCX VLAN, required only when HCX is enabled.",
       "default_expression": "null",
       "type_expression": "string",
@@ -493,7 +475,7 @@
     },
     {
       "address": "var.workload_clusters",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/variables.tf",
       "description": "Explicit initial WORKLOAD clusters; at least one is required for SDDC creation. Each reuses its own provisioning subnet and VLAN IDs inside the selected VCN. Shape, AD, bundle and commitment use the common inputs.",
       "default_expression": "{}",
       "type_expression": "map(object({\n    display_name                   = string\n    esxi_hosts_count               = optional(number, 3)\n    provisioning_subnet_id         = string\n    vlan_ids                       = map(string)\n    workload_network_cidr          = optional(string)\n    initial_vcf_byol_allocation_id = optional(string)\n  }))",
@@ -506,7 +488,7 @@
     },
     {
       "address": "var.circuits",
-      "source": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+      "source": "blueprints/vmware/azure-avs-ocvs-interconnect/variables.tf",
       "description": "One explicit partner circuit configuration per required site role; keys azure and/or onprem as documented. Service keys can be sensitive; use ignored inputs.",
       "default_expression": "{}",
       "type_expression": "map(object({\n    provider_service_id = string\n    service_key         = string\n    bandwidth           = string\n    customer_asn        = optional(number)\n    bgp_sessions        = optional(list(object({ customer_ip = string, oracle_ip = string })), [])\n  }))",
@@ -543,7 +525,7 @@
         {
           "address": "module.ocvs",
           "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/industry/ocvs?ref=94ad89026bbf2ddbda531976a500e6d2ee084c7f",
-          "call_site": "blueprints/industry/azure-avs-ocvs-onprem-triangle/main.tf",
+          "call_site": "blueprints/vmware/azure-avs-ocvs-interconnect/main.tf",
           "call_site_revision": "working-tree",
           "creation_gate": {},
           "enablement_inputs": {
@@ -572,7 +554,7 @@
         {
           "address": "module.ocvs",
           "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/industry/ocvs?ref=94ad89026bbf2ddbda531976a500e6d2ee084c7f",
-          "call_site": "blueprints/industry/azure-avs-ocvs-onprem-triangle/main.tf",
+          "call_site": "blueprints/vmware/azure-avs-ocvs-interconnect/main.tf",
           "call_site_revision": "working-tree",
           "creation_gate": {},
           "enablement_inputs": {
@@ -601,7 +583,7 @@
         {
           "address": "module.ocvs",
           "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/industry/ocvs?ref=94ad89026bbf2ddbda531976a500e6d2ee084c7f",
-          "call_site": "blueprints/industry/azure-avs-ocvs-onprem-triangle/main.tf",
+          "call_site": "blueprints/vmware/azure-avs-ocvs-interconnect/main.tf",
           "call_site_revision": "working-tree",
           "creation_gate": {},
           "enablement_inputs": {
@@ -614,12 +596,12 @@
   ],
   "source_files": [
     {
-      "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/locals.tf",
+      "path": "blueprints/vmware/azure-avs-ocvs-interconnect/locals.tf",
       "revision": "working-tree",
-      "sha256": "7c542678be273bb049420205ec36f810ee22b7c1053e654874c9c73a897f1baf"
+      "sha256": "efdbd834828d536b36b7450a78fa772b68f6a25e9a120fc03bbdb915fddb2fa6"
     },
     {
-      "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/main.tf",
+      "path": "blueprints/vmware/azure-avs-ocvs-interconnect/main.tf",
       "revision": "working-tree",
       "sha256": "7f842d6061424048cdb35e48e69f862264f46e2b692683142a718d57ede3f2d0"
     },
@@ -654,28 +636,28 @@
       "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
     },
     {
-      "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/outputs.tf",
+      "path": "blueprints/vmware/azure-avs-ocvs-interconnect/outputs.tf",
       "revision": "working-tree",
       "sha256": "72df2ac5449eea09a2d4cfdb3b5c4876156b52a20464ec1976bbf53bd2373d0a"
     },
     {
-      "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/providers.tf",
+      "path": "blueprints/vmware/azure-avs-ocvs-interconnect/providers.tf",
       "revision": "working-tree",
       "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
     },
     {
-      "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+      "path": "blueprints/vmware/azure-avs-ocvs-interconnect/variables.tf",
       "revision": "working-tree",
       "sha256": "32622a51ce0bee946f79a006b2c313ac5bdd55c58167a8392eafc05f3915d09c"
     },
     {
-      "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/versions.tf",
+      "path": "blueprints/vmware/azure-avs-ocvs-interconnect/versions.tf",
       "revision": "working-tree",
       "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
     },
     {
-      "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/azure/main.bicep",
-      "sha256": "001a8b05c8887aa69a1b0f70e2decb9be347bf639254fbc7cdd6dbf85e9e4851"
+      "path": "blueprints/vmware/azure-avs-ocvs-interconnect/azure/main.bicep",
+      "sha256": "e94366ad313f4235f758533961e7d41a389459468bd780b6a06788a36efa8636"
     }
   ]
 }

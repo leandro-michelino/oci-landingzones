@@ -21,33 +21,11 @@ optional endpoint attachment, and clear operational hand-off contracts.
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------------+
-| Oracle Digital Assistant Blueprint                                                                             |
-+----------------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow                    |
-|                                                                                                                |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                                |
-|         |                    |                         |                                                       |
-|         | validates docs      | init/validate/plan      | OCI API calls                                        |
-|         v                    v                         v                                                       |
-| {OCI tenancy boundary}                                                                                         |
-|   |                                                                                                            |
-|   |-- [VCN + private subnet + empty route table + security list + NSG] (optional)                              |
-|   |-- [ODA instance]                                                                                           |
-|   |      |-- role-based access                                                                                |
-|   |      `-- identity domain integration (optional)                                                           |
-|   |-- [ODA private endpoint] (optional)                                                                       |
-|   |      `-- subnet + NSG placement                                                                           |
-|   |-- [ODA private endpoint attachment] (optional)                                                            |
-|   |-- [Notifications topic] (optional)                                                                        |
-|   `-- [terraform_data contracts + optional IAM policy]                                                        |
-|          |-- network hand-off                                                                                 |
-|          `-- instance/endpoint operational contract                                                           |
-|                                                                                                                |
-| [ODA instance] -> [ODA private endpoint] -> HTTPS -> (approved private backend)                                |
-+----------------------------------------------------------------------------------------------------------------+
-```
+![Source-backed architecture](architecture.png)
+
+[Editable draw.io overview and native detail pages](architecture.drawio) · [Resource inventory](resource-inventory.json)
+
+Native pages cover every conditional declaration and existing-reference input. Counts describe declarations, not deployed resource counts.
 
 ## Terraform Components
 
@@ -81,15 +59,11 @@ optional endpoint attachment, and clear operational hand-off contracts.
 
 ## Detailed Architecture Notes
 
-These notes expand the diagram with design details usually needed in reviews.
-
-- ODA instance creation and private endpoint creation are decoupled so teams can stage rollout safely.
-- Attachment step is explicit and precondition-guarded to prevent partial misconfiguration.
-- Network creation is optional to support extension-only mode in existing customer estates.
-- The created subnet prohibits public IPs. Its route table has no internet route; local VCN destinations work, while on-premises or peered backends require separately reviewed DRG or peering routes.
-- Security rules allow stateful HTTPS egress only to an explicitly supplied backend CIDR. No inbound rule is created for the endpoint.
-- Optional IAM policies let platform teams codify role boundaries in the same deployment.
-- Alert topic creation is optional and intended for runbook and channel-monitoring hooks.
+- Eleven OCI declarations and two local metadata contracts are enumerated. Network, service, endpoint, attachment and topic flags default false; IAM statements are empty.
+- The optional private subnet binds an empty route table and a security list with TCP 443 egress to an explicit CIDR. The created NSG has matching egress intent. No NAT, IGW, service gateway or private DNS is created; an allowed rule alone is not a path.
+- ODA instance, private endpoint and attachment flags are independent. Attachment selects created instance/endpoint IDs when their flags are enabled, otherwise supplied IDs. Both IDs are required.
+- With network creation enabled, the created subnet takes precedence over a supplied endpoint subnet, and the created NSG is included alongside additional NSGs. Without it, supplied subnet and additional NSGs are used. Endpoint creation requires a subnet and at least one NSG.
+- The optional topic has no alarm or subscription. No skill, bot, channel, backend application or conversational workload is deployed.
 
 ## Operational Boundaries
 
@@ -107,3 +81,7 @@ These notes expand the diagram with design details usually needed in reviews.
 - Confirm attachment mode and sequencing are intentional for this environment.
 - Confirm policy statements align with intended ODA operator and caller groups.
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared runner.
+
+## Diagram Review - 2026-10-28
+
+Source, connector direction, creation conditions, native detail pages and PNGs were reviewed locally. Plain lines show ID/configuration associations; solid arrows show declared request/route intent; dashed lines show external prerequisites. No cloud resources were created and no runtime traffic was tested in this review. Historical provider and live-validation evidence remains limited to its original stated scope.

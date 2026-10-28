@@ -10,12 +10,12 @@
     "Reviewed endpoints, labels, arrows, paths and source hashes match contract",
     "Subnet routing and DNS-view semantic regression checks"
   ],
-  "overview_count": 82,
+  "overview_count": 87,
   "conceptual_overviews": 1,
-  "native_documents": 302,
-  "main_document_pages": 302,
-  "connector_count": 687,
-  "cross_cloud_overviews": 14,
+  "native_documents": 320,
+  "main_document_pages": 320,
+  "connector_count": 709,
+  "cross_cloud_overviews": 15,
   "blueprints": [
     {
       "blueprint": "networking/standalone-three-tier-vcn-defaults",
@@ -645,6 +645,51 @@
       "layout_warnings": []
     },
     {
+      "blueprint": "extensions/cdn-static-assets",
+      "connections": 4,
+      "cross_cloud_bridges": [
+        {
+          "source": "n7",
+          "target": "n10",
+          "label": "Cache miss: fetch fixed OCI_PAR_URL / only when configured",
+          "clouds": [
+            "Cloudflare",
+            "OCI"
+          ]
+        }
+      ],
+      "overview_png_sha256": "d655e0736fc0b926b7dad04287ee3ee61f18c71e60db50e227933b62881a9a65",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "extensions/redis-cache",
+      "connections": 2,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "200dd1f5f059f5c725ec0a085e96d74eb3fc5fd0b2e4ce8ebb227c9a3268a260",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "data-platform/nosql",
+      "connections": 5,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "89179beb628d239999403dc3cb3cf217d84886d896a9f2d9b0dfdb6d02724f33",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "data-platform/mongodb-api",
+      "connections": 5,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "9317f1fa01ffbe3421627309cab4828ea1fa501f58f756e7f5943b3aa1d7c98f",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "extensions/digital-assistant",
+      "connections": 6,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "531b33561d699346732e5f8ab6bedb1b159da62871ecbcc18e62c9c02e34caf7",
+      "layout_warnings": []
+    },
+    {
       "blueprint": "networking/aws-oci-managed-interconnect",
       "connections": 6,
       "cross_cloud_bridges": [
@@ -679,14 +724,14 @@
       "layout_warnings": []
     },
     {
-      "blueprint": "industry/ocvs-onprem-hcx",
+      "blueprint": "vmware/ocvs-onprem-hcx",
       "connections": 9,
       "cross_cloud_bridges": [],
       "overview_png_sha256": "f1c948f2b7af0f72e8b8cd00123cf6f3678173be0208aa611f836d398f1b3fbc",
       "layout_warnings": []
     },
     {
-      "blueprint": "industry/azure-avs-ocvs-interconnect",
+      "blueprint": "vmware/azure-avs-ocvs-interconnect",
       "connections": 11,
       "cross_cloud_bridges": [
         {
@@ -712,7 +757,7 @@
       "layout_warnings": []
     },
     {
-      "blueprint": "industry/azure-avs-ocvs-onprem-triangle",
+      "blueprint": "vmware/azure-avs-ocvs-onprem-triangle",
       "connections": 18,
       "cross_cloud_bridges": [
         {
@@ -738,7 +783,7 @@
       "layout_warnings": []
     },
     {
-      "blueprint": "industry/ocvs",
+      "blueprint": "vmware/ocvs",
       "connections": 10,
       "cross_cloud_bridges": [],
       "overview_png_sha256": "81ac2e7c58a8ae52af5d4632579e4fd5e477edbc8b29a344feeac1500046d177",

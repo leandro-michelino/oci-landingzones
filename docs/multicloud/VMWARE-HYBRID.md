@@ -1,6 +1,6 @@
 # VMware Hybrid Blueprint Runbook
 
-The three new patterns use the pinned [OCVS foundation](../../blueprints/industry/ocvs/)
+The three new patterns use the pinned [OCVS foundation](../../blueprints/vmware/ocvs/)
 and explicitly separate OCI creation, Azure creation and externally managed
 VMware components. See [generic workloads](VMWARE-WORKLOADS.md) for guest-level
 examples and acceptance. No live resources or credentials are needed for the
@@ -10,9 +10,9 @@ local schema/mock/compiler checks.
 
 | Pattern | OCI-created when enabled | Azure-created when enabled | Existing/external |
 | --- | --- | --- | --- |
-| [On-premises + OCVS](../../blueprints/industry/ocvs-onprem-hcx/) | Optional SDDC, DRG, VCN attachment and onprem partner VC | None | Prepared OCVS networks, onprem VMware/HCX/edge, carrier transport |
-| [AVS + OCVS](../../blueprints/industry/azure-avs-ocvs-interconnect/) | Optional SDDC, DRG, attachment and azure partner VC | Optional AVS private cloud, HCX add-on, Oracle-facing ER, authorization and AVS Global Reach attachment | Prepared OCI network, AVS managed circuit, confirmed AVS/Oracle transit eligibility |
-| [Triangle](../../blueprints/industry/azure-avs-ocvs-onprem-triangle/) | Optional SDDC, DRG, attachment and separate azure/onprem partner VCs | Same Azure resources plus a separate AVS Global Reach attachment for onprem | Onprem carrier ER circuit/authorization, independent OCI carrier link, prepared network and VMware/HCX components |
+| [On-premises + OCVS](../../blueprints/vmware/ocvs-onprem-hcx/) | Optional SDDC, DRG, VCN attachment and onprem partner VC | None | Prepared OCVS networks, onprem VMware/HCX/edge, carrier transport |
+| [AVS + OCVS](../../blueprints/vmware/azure-avs-ocvs-interconnect/) | Optional SDDC, DRG, attachment and azure partner VC | Optional AVS private cloud, HCX add-on, Oracle-facing ER, authorization and AVS Global Reach attachment | Prepared OCI network, AVS managed circuit, confirmed AVS/Oracle transit eligibility |
+| [Triangle](../../blueprints/vmware/azure-avs-ocvs-onprem-triangle/) | Optional SDDC, DRG, attachment and separate azure/onprem partner VCs | Same Azure resources plus a separate AVS Global Reach attachment for onprem | Onprem carrier ER circuit/authorization, independent OCI carrier link, prepared network and VMware/HCX components |
 
 All creation flags default false. Resource declaration pages retain conditional
 resources even when disabled. Service-managed VMware components and AVS's

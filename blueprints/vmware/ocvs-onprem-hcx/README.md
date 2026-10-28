@@ -76,3 +76,13 @@ database replication, application failover or consistent backups by itself.
 - [Oracle Interconnect for Azure, support boundaries and setup](https://docs.oracle.com/en-us/iaas/Content/multicloud/interconnect-azure.htm)
 - [AVS networking and circuit transit](https://learn.microsoft.com/en-us/azure/azure-vmware/architecture-networking)
 - [VMware hybrid setup and acceptance runbook](../../../docs/multicloud/VMWARE-HYBRID.md)
+
+## Repository Location
+
+This blueprint belongs to the VMware platform family under `blueprints/vmware/`.
+The folder move preserves resource addresses, naming/tag values, provider
+configuration and cost defaults. References pinned to older commits keep their
+historical module source path intentionally; those commits predate this move.
+Existing users must transfer their protected deployment state and private inputs
+to the new working directory or keep using the old pinned checkout. Do not
+apply from a fresh directory against an existing deployment without its state.

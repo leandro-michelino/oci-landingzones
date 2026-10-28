@@ -22458,6 +22458,680 @@
       }
     ]
   },
+  "extensions/cdn-static-assets": {
+    "relationships": [
+      {
+        "source": "Optional Worker route / create_cloudflare_worker_proxy=false\nZone + supplied pattern, or hostname + smoke path wildcard\nBinds the created script name",
+        "target": "Optional Workers script / same creation flag\nGET + HEAD only / fixed OCI_PAR_URL fetch on cache miss\nCache API key: origin + pathname; query is ignored\nSecret binding: explicit upstream URL or selected created PAR",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "script_name association / matched requests use script",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional objects + lifecycle policy\ncreate_sample_objects=false / sample map + four defaults\ncreate_lifecycle_policy=false AND nonempty rules\nSelected bucket: created bucket or supplied existing name",
+        "target": "Optional private Standard bucket / create_asset_bucket=false\nVersioning Enabled / object events enabled\nNamespace read is unconditional, even with creation disabled",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "namespace / selected bucket / explicit object names",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional preauthenticated requests / preauth_requests={}\nAccess type, scope, object and expiry are supplied\nA PAR is authorization material, not a forwarding service\nNo public bucket access is enabled",
+        "target": "Optional private Standard bucket / create_asset_bucket=false\nVersioning Enabled / object events enabled\nNamespace read is unconditional, even with creation disabled",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "PAR grant scope: bucket / optional object",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            2940,
+            1067.5
+          ],
+          [
+            2940,
+            660
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Optional Workers script / same creation flag\nGET + HEAD only / fixed OCI_PAR_URL fetch on cache miss\nCache API key: origin + pathname; query is ignored\nSecret binding: explicit upstream URL or selected created PAR",
+        "target": "Optional private Standard bucket / create_asset_bucket=false\nVersioning Enabled / object events enabled\nNamespace read is unconditional, even with creation disabled",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "Cache miss: fetch fixed OCI_PAR_URL / only when configured",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/extensions/cdn-static-assets/locals.tf",
+        "revision": "working-tree",
+        "sha256": "3f9422f9164d0fc29d88c0f4226ce2f3ab60474e2f5cc2775db994d8e6c6c818"
+      },
+      {
+        "path": "blueprints/extensions/cdn-static-assets/main.tf",
+        "revision": "working-tree",
+        "sha256": "6daf574e0a425ffaf3a60d6db014bf7c0eb0a1c5f239a3a3038e45aaad88d32f"
+      },
+      {
+        "path": "blueprints/extensions/cdn-static-assets/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "e0f075ddbb17c84f8279a471b9f3344508934f5ca07ddf3f6be0533b52b0e5be"
+      },
+      {
+        "path": "blueprints/extensions/cdn-static-assets/providers.tf",
+        "revision": "working-tree",
+        "sha256": "96dbce84f470260e142488dfb52e2bb27a4bdf7b6656a665e317fad8f5c2e4a0"
+      },
+      {
+        "path": "blueprints/extensions/cdn-static-assets/variables.tf",
+        "revision": "working-tree",
+        "sha256": "f7610891b2e4527de1e2566a82684bcb3a84dc9f662046c374ab97f1011ec21a"
+      },
+      {
+        "path": "blueprints/extensions/cdn-static-assets/versions.tf",
+        "revision": "working-tree",
+        "sha256": "fa3f9d66f0c7f5030a0a2d00eee979bc3f836ba6c4a849cdec0e13d61f88c8f3"
+      }
+    ]
+  },
+  "extensions/redis-cache": {
+    "relationships": [
+      {
+        "source": "Optional OCI Redis cluster / create_cluster=false\nSource defaults: software 7.0.5 / two nodes / 2 GB per node\nOptional shard_count, cluster_mode, configuration-set ID and backup ID\nVersion and capacity availability require service/region review",
+        "target": "Existing network inputs / subnet_id=null / nsg_ids=[]\nNo VCN, subnet, NSG, route, DNS or gateway created",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "subnet_id / nsg_ids when creating the cluster",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Independent optional alarms / alarms={}\nNamespace, query, severity and destinations supplied\nNot automatically bound to the created cluster",
+        "target": "Existing notification destination IDs per alarm\nNo destination topic or subscription is created\nMetric compartment: per-alarm override or target compartment",
+        "source_kind": "icon",
+        "target_kind": "group:component",
+        "label": "destinations[] / supplied identifiers",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/extensions/redis-cache/locals.tf",
+        "revision": "working-tree",
+        "sha256": "3d239765d45355aba8bd0de816ff1ade67b0e5af2bc2c8e01d574df62254f978"
+      },
+      {
+        "path": "blueprints/extensions/redis-cache/main.tf",
+        "revision": "working-tree",
+        "sha256": "2f862b08969162b96b13d57d7cd62da24911541de89c521b4a4ef7220419eb12"
+      },
+      {
+        "path": "blueprints/extensions/redis-cache/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "5a934c64aa513986e1a0a5bf552b0c1654e73fd9352f107fca14e6f8fafc00aa"
+      },
+      {
+        "path": "blueprints/extensions/redis-cache/providers.tf",
+        "revision": "working-tree",
+        "sha256": "9ace0aeb9a214bbdff10c76453708d4fe6d9602bdbd3e38badbc4ac4eb6e0603"
+      },
+      {
+        "path": "blueprints/extensions/redis-cache/variables.tf",
+        "revision": "working-tree",
+        "sha256": "d79c7a5aab58d524a1c4c5d8b4f97000ba3bf00c95d95ed1eca8046e970d4f28"
+      },
+      {
+        "path": "blueprints/extensions/redis-cache/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
+  "data-platform/nosql": {
+    "relationships": [
+      {
+        "source": "Application subnet / 10.84.10.0/24 / public IP assignment permitted",
+        "target": "Explicit app route table\n0.0.0.0/0 to created IGW",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "route_table_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.2338709677,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Application subnet / 10.84.10.0/24 / public IP assignment permitted",
+        "target": "Explicit app security list\nAll egress / HTTPS ingress only if CIDR supplied",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "security_list_ids",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.7419354839,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Explicit app route table\n0.0.0.0/0 to created IGW",
+        "target": "Enabled Internet Gateway",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Configured default route",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional secondary index / create_table AND create_secondary_index\nIndex flag=false / columns default to customerId",
+        "target": "Regional managed table / create_table=true\nPROVISIONED / read 100 / write 100 / storage 25 GB\nDefault DDL: orders / id primary key\nNot placed in the application subnet",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "table_name_or_id / index binding",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.464,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional replica in supplied second OCI region\ncreate_table AND enable_table_replica / replica flag=false\nregion=null / read 100 / write 100 / no runtime failover proof",
+        "target": "Regional managed table / create_table=true\nPROVISIONED / read 100 / write 100 / storage 25 GB\nDefault DDL: orders / id primary key\nNot placed in the application subnet",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "table_name_or_id / region / replication configuration",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            2940,
+            1050
+          ],
+          [
+            2940,
+            410
+          ]
+        ],
+        "straight": false
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/data-platform/nosql/locals.tf",
+        "revision": "working-tree",
+        "sha256": "5da26f5a7d7e18b63337cac377c92761198a0674b8fd63b20a4c2ff326f5816f"
+      },
+      {
+        "path": "blueprints/data-platform/nosql/main.tf",
+        "revision": "working-tree",
+        "sha256": "7c8404911c843123142f3e8e8ef653e6412a0f9bd565a1cbcea5beadac5c2586"
+      },
+      {
+        "path": "blueprints/data-platform/nosql/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "17dedbc6abce552a5c7f0d6c8899367627b497fa9c6cf2523476fe6685c25418"
+      },
+      {
+        "path": "blueprints/data-platform/nosql/providers.tf",
+        "revision": "working-tree",
+        "sha256": "df3a80e29e370743aafb493ba8ff598f2542640d1ed81cea80eee1ec71189ce5"
+      },
+      {
+        "path": "blueprints/data-platform/nosql/variables.tf",
+        "revision": "working-tree",
+        "sha256": "d65b3930561f9d2c522019053e667b7c79dd889034175af1460cfb67e18479bc"
+      },
+      {
+        "path": "blueprints/data-platform/nosql/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
+  "data-platform/mongodb-api": {
+    "relationships": [
+      {
+        "source": "Private subnet / 10.80.10.0/24 / no public IP assignment",
+        "target": "Explicit empty security list\nNo ingress or egress rules",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "security_list_ids",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.2338709677,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Autonomous Database / enable_mongodb_api_database=false\nAJD workload / ECPU 2 / storage 1 TB / License Included\nNested MONGODB_API tool enabled only on a created database\nThis is Oracle Database with MongoDB API",
+        "target": "Selected database network inputs\nExplicit subnet_id wins over new subnet fallback\nExplicit nonempty nsg_ids win over new NSG fallback\nEndpoint label defaults to mongoapi only when subnet is selected",
+        "source_kind": "icon",
+        "target_kind": "group:component",
+        "label": "subnet_id / nsg_ids / private_endpoint_label",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.464,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Selected database network inputs\nExplicit subnet_id wins over new subnet fallback\nExplicit nonempty nsg_ids win over new NSG fallback\nEndpoint label defaults to mongoapi only when subnet is selected",
+        "target": "Private subnet / 10.80.10.0/24 / no public IP assignment",
+        "source_kind": "group:component",
+        "target_kind": "group:subnet",
+        "label": "Created subnet fallback only when no explicit subnet ID",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1510,
+            700
+          ],
+          [
+            1510,
+            485
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Selected database network inputs\nExplicit subnet_id wins over new subnet fallback\nExplicit nonempty nsg_ids win over new NSG fallback\nEndpoint label defaults to mongoapi only when subnet is selected",
+        "target": "Created NSG + stateful ingress per allowed CIDR\nTCP 27017 / allowed CIDRs default to VCN range",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "Created NSG fallback only when explicit NSG list empty",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.75
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1510,
+            823.75
+          ],
+          [
+            1510,
+            790
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Optional manual Autonomous Database backup\nDatabase creation AND create_manual_backup (false)",
+        "target": "Autonomous Database / enable_mongodb_api_database=false\nAJD workload / ECPU 2 / storage 1 TB / License Included\nNested MONGODB_API tool enabled only on a created database\nThis is Oracle Database with MongoDB API",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "autonomous_database_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            2940,
+            1100
+          ],
+          [
+            2940,
+            410
+          ]
+        ],
+        "straight": false
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/data-platform/mongodb-api/locals.tf",
+        "revision": "working-tree",
+        "sha256": "8cbae3064bee95d30d8a8636556c6cf82537d3edbb714d27d0197778ae552861"
+      },
+      {
+        "path": "blueprints/data-platform/mongodb-api/main.tf",
+        "revision": "working-tree",
+        "sha256": "afa723eeb24d7fb3e8eb944a0c1b7caafffd284d619058d0a74e4c822cb8dcb9"
+      },
+      {
+        "path": "blueprints/data-platform/mongodb-api/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "b62da185495265414352fc54deb3ea09f1648c3e3c87bad8f580de1098e53260"
+      },
+      {
+        "path": "blueprints/data-platform/mongodb-api/providers.tf",
+        "revision": "working-tree",
+        "sha256": "8f85e8539190ef04ab19c8d4c834aa1f74fa02d185b70ac6875df16eb1088de5"
+      },
+      {
+        "path": "blueprints/data-platform/mongodb-api/variables.tf",
+        "revision": "working-tree",
+        "sha256": "33fb99d7f2f09bf87a9c3f4cf8c190629f566702e3000ac39dd9a4f86e1b4813"
+      },
+      {
+        "path": "blueprints/data-platform/mongodb-api/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
+  "extensions/digital-assistant": {
+    "relationships": [
+      {
+        "source": "Private subnet / 10.86.10.0/24 / no public IP assignment",
+        "target": "Explicit route table / EMPTY\nNo route rules declared",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "route_table_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.2338709677,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Private subnet / 10.86.10.0/24 / no public IP assignment",
+        "target": "Security list / egress TCP 443\nOnly supplied oda_egress_allowed_cidr",
+        "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "security_list_ids",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.7419354839,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional private endpoint attachment / attach_private_endpoint_to_instance=false\nUses created instance/endpoint when their flags true\nOtherwise oda_instance_id + oda_private_endpoint_id",
+        "target": "Optional ODA instance / create_oda_instance=false\nDEVELOPMENT shape / role-based access=true\nOptional supplied identity-domain ID",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "oda_instance_id / created or supplied selection",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.464,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional private endpoint attachment / attach_private_endpoint_to_instance=false\nUses created instance/endpoint when their flags true\nOtherwise oda_instance_id + oda_private_endpoint_id",
+        "target": "Optional ODA private endpoint / create_oda_private_endpoint=false\nWith network enabled: created subnet takes precedence over supplied ID\nCreated NSG + additional IDs; otherwise supplied subnet + additional NSGs",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "oda_private_endpoint_id / created or supplied selection",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional ODA private endpoint / create_oda_private_endpoint=false\nWith network enabled: created subnet takes precedence over supplied ID\nCreated NSG + additional IDs; otherwise supplied subnet + additional NSGs",
+        "target": "Private subnet / 10.86.10.0/24 / no public IP assignment",
+        "source_kind": "group:component",
+        "target_kind": "group:subnet",
+        "label": "Created subnet selection only when network enabled",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1510,
+            920
+          ],
+          [
+            1510,
+            485
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Optional ODA private endpoint / create_oda_private_endpoint=false\nWith network enabled: created subnet takes precedence over supplied ID\nCreated NSG + additional IDs; otherwise supplied subnet + additional NSGs",
+        "target": "Created NSG + egress TCP 443 rule\nSame required egress CIDR",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "Created NSG included only when network enabled",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.75
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1510,
+            1036.25
+          ],
+          [
+            1510,
+            1050
+          ]
+        ],
+        "straight": false
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/extensions/digital-assistant/locals.tf",
+        "revision": "working-tree",
+        "sha256": "92cfa5399683b0e997172c056ffe2fd69d3b384bf793523cd0b9182864ee9c55"
+      },
+      {
+        "path": "blueprints/extensions/digital-assistant/main.tf",
+        "revision": "working-tree",
+        "sha256": "f6d9733eb7f1402b14d33424a5cdc9f71aee19a490e0003aac31499251315784"
+      },
+      {
+        "path": "blueprints/extensions/digital-assistant/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "8bbd3a3a2cd393c630c365609ca5788f4de85e735b802564f59eaedf197e4a49"
+      },
+      {
+        "path": "blueprints/extensions/digital-assistant/providers.tf",
+        "revision": "working-tree",
+        "sha256": "4ff2aa3ff95888297c1bdd16504fde4b9a7c5f6808c008a6b2fd4a21e468c923"
+      },
+      {
+        "path": "blueprints/extensions/digital-assistant/variables.tf",
+        "revision": "working-tree",
+        "sha256": "812917e707b8d91de2c94773927a06b6c5b4fc4d7d0732c7c43bd49c02604cdd"
+      },
+      {
+        "path": "blueprints/extensions/digital-assistant/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
   "networking/aws-oci-managed-interconnect": {
     "relationships": [
       {
@@ -22801,7 +23475,7 @@
       }
     ]
   },
-  "industry/ocvs-onprem-hcx": {
+  "vmware/ocvs-onprem-hcx": {
     "relationships": [
       {
         "source": "HCX Connector / external installation\nSite pair + compute/network profiles + service mesh per pair\nIX / optional NE and WAN optimization appliances\nNo three-site service mesh or automatic DR",
@@ -22986,12 +23660,12 @@
     ],
     "source_files": [
       {
-        "path": "blueprints/industry/ocvs-onprem-hcx/locals.tf",
+        "path": "blueprints/vmware/ocvs-onprem-hcx/locals.tf",
         "revision": "working-tree",
         "sha256": "ef069409dac23441468380a00982ea4bef7b3a19e2842cc0cf02fcbc5d936818"
       },
       {
-        "path": "blueprints/industry/ocvs-onprem-hcx/main.tf",
+        "path": "blueprints/vmware/ocvs-onprem-hcx/main.tf",
         "revision": "working-tree",
         "sha256": "4d101099df119905152b7c9bba84ce6c9afeef2a01b9471ffca423d25e27e45b"
       },
@@ -23026,28 +23700,28 @@
         "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
       },
       {
-        "path": "blueprints/industry/ocvs-onprem-hcx/outputs.tf",
+        "path": "blueprints/vmware/ocvs-onprem-hcx/outputs.tf",
         "revision": "working-tree",
         "sha256": "72df2ac5449eea09a2d4cfdb3b5c4876156b52a20464ec1976bbf53bd2373d0a"
       },
       {
-        "path": "blueprints/industry/ocvs-onprem-hcx/providers.tf",
+        "path": "blueprints/vmware/ocvs-onprem-hcx/providers.tf",
         "revision": "working-tree",
         "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
       },
       {
-        "path": "blueprints/industry/ocvs-onprem-hcx/variables.tf",
+        "path": "blueprints/vmware/ocvs-onprem-hcx/variables.tf",
         "revision": "working-tree",
         "sha256": "32622a51ce0bee946f79a006b2c313ac5bdd55c58167a8392eafc05f3915d09c"
       },
       {
-        "path": "blueprints/industry/ocvs-onprem-hcx/versions.tf",
+        "path": "blueprints/vmware/ocvs-onprem-hcx/versions.tf",
         "revision": "working-tree",
         "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
       }
     ]
   },
-  "industry/azure-avs-ocvs-interconnect": {
+  "vmware/azure-avs-ocvs-interconnect": {
     "relationships": [
       {
         "source": "OCVS SDDC / enable_sddc=false\nMANAGEMENT + explicit WORKLOAD clusters / dense-vSAN\nESXi / vCenter / NSX / HCX when enable_hcx=true\nPinned implementation 94ad890 / no guest VMs created",
@@ -23272,12 +23946,12 @@
     ],
     "source_files": [
       {
-        "path": "blueprints/industry/azure-avs-ocvs-interconnect/locals.tf",
+        "path": "blueprints/vmware/azure-avs-ocvs-interconnect/locals.tf",
         "revision": "working-tree",
         "sha256": "efdbd834828d536b36b7450a78fa772b68f6a25e9a120fc03bbdb915fddb2fa6"
       },
       {
-        "path": "blueprints/industry/azure-avs-ocvs-interconnect/main.tf",
+        "path": "blueprints/vmware/azure-avs-ocvs-interconnect/main.tf",
         "revision": "working-tree",
         "sha256": "7f842d6061424048cdb35e48e69f862264f46e2b692683142a718d57ede3f2d0"
       },
@@ -23312,32 +23986,32 @@
         "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
       },
       {
-        "path": "blueprints/industry/azure-avs-ocvs-interconnect/outputs.tf",
+        "path": "blueprints/vmware/azure-avs-ocvs-interconnect/outputs.tf",
         "revision": "working-tree",
         "sha256": "72df2ac5449eea09a2d4cfdb3b5c4876156b52a20464ec1976bbf53bd2373d0a"
       },
       {
-        "path": "blueprints/industry/azure-avs-ocvs-interconnect/providers.tf",
+        "path": "blueprints/vmware/azure-avs-ocvs-interconnect/providers.tf",
         "revision": "working-tree",
         "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
       },
       {
-        "path": "blueprints/industry/azure-avs-ocvs-interconnect/variables.tf",
+        "path": "blueprints/vmware/azure-avs-ocvs-interconnect/variables.tf",
         "revision": "working-tree",
         "sha256": "32622a51ce0bee946f79a006b2c313ac5bdd55c58167a8392eafc05f3915d09c"
       },
       {
-        "path": "blueprints/industry/azure-avs-ocvs-interconnect/versions.tf",
+        "path": "blueprints/vmware/azure-avs-ocvs-interconnect/versions.tf",
         "revision": "working-tree",
         "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
       },
       {
-        "path": "blueprints/industry/azure-avs-ocvs-interconnect/azure/main.bicep",
+        "path": "blueprints/vmware/azure-avs-ocvs-interconnect/azure/main.bicep",
         "sha256": "e94366ad313f4235f758533961e7d41a389459468bd780b6a06788a36efa8636"
       }
     ]
   },
-  "industry/azure-avs-ocvs-onprem-triangle": {
+  "vmware/azure-avs-ocvs-onprem-triangle": {
     "relationships": [
       {
         "source": "HCX Connector / external installation\nSite pair + compute/network profiles + service mesh per pair\nIX / optional NE and WAN optimization appliances\nNo three-site service mesh or automatic DR",
@@ -23734,12 +24408,12 @@
     ],
     "source_files": [
       {
-        "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/locals.tf",
+        "path": "blueprints/vmware/azure-avs-ocvs-onprem-triangle/locals.tf",
         "revision": "working-tree",
         "sha256": "7c542678be273bb049420205ec36f810ee22b7c1053e654874c9c73a897f1baf"
       },
       {
-        "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/main.tf",
+        "path": "blueprints/vmware/azure-avs-ocvs-onprem-triangle/main.tf",
         "revision": "working-tree",
         "sha256": "7f842d6061424048cdb35e48e69f862264f46e2b692683142a718d57ede3f2d0"
       },
@@ -23774,32 +24448,32 @@
         "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
       },
       {
-        "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/outputs.tf",
+        "path": "blueprints/vmware/azure-avs-ocvs-onprem-triangle/outputs.tf",
         "revision": "working-tree",
         "sha256": "72df2ac5449eea09a2d4cfdb3b5c4876156b52a20464ec1976bbf53bd2373d0a"
       },
       {
-        "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/providers.tf",
+        "path": "blueprints/vmware/azure-avs-ocvs-onprem-triangle/providers.tf",
         "revision": "working-tree",
         "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
       },
       {
-        "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/variables.tf",
+        "path": "blueprints/vmware/azure-avs-ocvs-onprem-triangle/variables.tf",
         "revision": "working-tree",
         "sha256": "32622a51ce0bee946f79a006b2c313ac5bdd55c58167a8392eafc05f3915d09c"
       },
       {
-        "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/versions.tf",
+        "path": "blueprints/vmware/azure-avs-ocvs-onprem-triangle/versions.tf",
         "revision": "working-tree",
         "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
       },
       {
-        "path": "blueprints/industry/azure-avs-ocvs-onprem-triangle/azure/main.bicep",
+        "path": "blueprints/vmware/azure-avs-ocvs-onprem-triangle/azure/main.bicep",
         "sha256": "001a8b05c8887aa69a1b0f70e2decb9be347bf639254fbc7cdd6dbf85e9e4851"
       }
     ]
   },
-  "industry/ocvs": {
+  "vmware/ocvs": {
     "relationships": [
       {
         "source": "Existing corporate VMware environment / EXTERNAL",
@@ -23997,32 +24671,32 @@
     ],
     "source_files": [
       {
-        "path": "blueprints/industry/ocvs/locals.tf",
+        "path": "blueprints/vmware/ocvs/locals.tf",
         "revision": "working-tree",
         "sha256": "f069d5b4fc01a85523190ad10b340f4aefbae057fc98fdc8cb99afa2ff0cb564"
       },
       {
-        "path": "blueprints/industry/ocvs/main.tf",
+        "path": "blueprints/vmware/ocvs/main.tf",
         "revision": "working-tree",
         "sha256": "2385c1986b524976a389babd39364b6b8759f08844b7d48bf978d2c6e7614bdc"
       },
       {
-        "path": "blueprints/industry/ocvs/outputs.tf",
+        "path": "blueprints/vmware/ocvs/outputs.tf",
         "revision": "working-tree",
         "sha256": "ae6911a78f4ce820eefd2be2beb2dc92b75560fd6080ec77a65d406841e48386"
       },
       {
-        "path": "blueprints/industry/ocvs/providers.tf",
+        "path": "blueprints/vmware/ocvs/providers.tf",
         "revision": "working-tree",
         "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
       },
       {
-        "path": "blueprints/industry/ocvs/variables.tf",
+        "path": "blueprints/vmware/ocvs/variables.tf",
         "revision": "working-tree",
         "sha256": "bc13e068ba4bcaa6c7ce6cf5132894f72661fc06eff76a0735f23ffef67a6b67"
       },
       {
-        "path": "blueprints/industry/ocvs/versions.tf",
+        "path": "blueprints/vmware/ocvs/versions.tf",
         "revision": "working-tree",
         "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
       }

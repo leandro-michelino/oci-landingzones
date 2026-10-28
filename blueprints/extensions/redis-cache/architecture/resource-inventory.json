@@ -1,0 +1,238 @@
+{
+  "schema_version": 2,
+  "blueprint": "extensions/redis-cache",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 3
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_redis_redis_cluster.this",
+      "type": "oci_redis_redis_cluster",
+      "symbol": "this",
+      "source": "blueprints/extensions/redis-cache/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_cluster ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_cluster ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_monitoring_alarm.this",
+      "type": "oci_monitoring_alarm",
+      "symbol": "this",
+      "source": "blueprints/extensions/redis-cache/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.alarms",
+      "creation_expression": {
+        "for_each": "var.alarms"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n6",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Alarms"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/extensions/redis-cache/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n26",
+        "source_symbol": "access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 3
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/extensions/redis-cache/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.redis_cluster_id",
+      "source": "blueprints/extensions/redis-cache/variables.tf",
+      "description": "Existing Redis cluster OCID when create_cluster is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.subnet_id",
+      "source": "blueprints/extensions/redis-cache/variables.tf",
+      "description": "Private subnet OCID for Redis nodes.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.nsg_ids",
+      "source": "blueprints/extensions/redis-cache/variables.tf",
+      "description": "Network security group OCIDs allowed to reach Redis.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.oci_cache_config_set_id",
+      "source": "blueprints/extensions/redis-cache/variables.tf",
+      "description": "Optional OCI Cache config set OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.backup_id",
+      "source": "blueprints/extensions/redis-cache/variables.tf",
+      "description": "Optional backup OCID to restore from.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.vault_secret_id",
+      "source": "blueprints/extensions/redis-cache/variables.tf",
+      "description": "Optional Vault secret OCID that stores application Redis auth material.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    },
+    {
+      "address": "var.alarms",
+      "source": "blueprints/extensions/redis-cache/variables.tf",
+      "description": "Monitoring alarms keyed by logical name.",
+      "default_expression": "{}",
+      "type_expression": "map(object({\n    display_name          = optional(string)\n    namespace             = optional(string, \"oci_redis\")\n    query                 = string\n    severity              = optional(string, \"WARNING\")\n    destinations          = list(string)\n    metric_compartment_id = optional(string)\n    body                  = optional(string)\n    is_enabled            = optional(bool, true)\n  }))",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n17"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/extensions/redis-cache/variables.tf",
+      "description": "Compartment OCID where the optional IAM policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n19"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 9
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/extensions/redis-cache/locals.tf",
+      "revision": "working-tree",
+      "sha256": "3d239765d45355aba8bd0de816ff1ade67b0e5af2bc2c8e01d574df62254f978"
+    },
+    {
+      "path": "blueprints/extensions/redis-cache/main.tf",
+      "revision": "working-tree",
+      "sha256": "2f862b08969162b96b13d57d7cd62da24911541de89c521b4a4ef7220419eb12"
+    },
+    {
+      "path": "blueprints/extensions/redis-cache/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "5a934c64aa513986e1a0a5bf552b0c1654e73fd9352f107fca14e6f8fafc00aa"
+    },
+    {
+      "path": "blueprints/extensions/redis-cache/providers.tf",
+      "revision": "working-tree",
+      "sha256": "9ace0aeb9a214bbdff10c76453708d4fe6d9602bdbd3e38badbc4ac4eb6e0603"
+    },
+    {
+      "path": "blueprints/extensions/redis-cache/variables.tf",
+      "revision": "working-tree",
+      "sha256": "d79c7a5aab58d524a1c4c5d8b4f97000ba3bf00c95d95ed1eca8046e970d4f28"
+    },
+    {
+      "path": "blueprints/extensions/redis-cache/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

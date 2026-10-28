@@ -17,46 +17,11 @@ Deploys an OCI-managed MongoDB-compatible document API by creating an Autonomous
 
 ## Architecture
 
-```text
-+--------------------------------------------------------------------------------------------------------------+
-| Autonomous Database MongoDB API                                                                              |
-+--------------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow                   |
-|                                                                                                              |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                              |
-|         |                    |                         |                                                     |
-|         | validates docs      | init/validate/plan      | OCI API calls                                      |
-|         v                    v                         v                                                     |
-| {Existing tenancy / compartment / VCN boundary}                                                              |
-|         |                                                                                                    |
-|         | supplied IDs: compartment, optional existing subnet/NSGs, optional KMS key, optional policy scope   |
-|         v                                                                                                    |
-| [optional private VCN]                                                                                       |
-|         |-- private endpoint subnet                                                                              |
-|         |-- NSG ingress from approved client CIDRs to MongoDB API port                                           |
-|         v                                                                                                    |
-| [Autonomous Database]                                                                                        |
-|         |-- JSON/document workload setting and compute/storage sizing                                         |
-|         |-- db_tools_details: MongoDB API enabled                                                            |
-|         |-- private endpoint label, subnet, NSGs, and optional public allow-list                              |
-|         |-- optional KMS key, backup retention, manual backup, and tags                                       |
-|         |                                                                                                    |
-|         +--> [MongoDB API URL output]                                                                        |
-|         |          |                                                                                         |
-|         |          v                                                                                         |
-|         |   (application secret store / deployment pipeline)                                                  |
-|         |          |                                                                                         |
-|         |          v                                                                                         |
-| [private application subnet] -> [ADB private endpoint] -> [MongoDB API] -> [Autonomous Database storage]      |
-|                                                                                                              |
-| Optional control resources:                                                                                  |
-|   [manual backup] -> [Autonomous Database backup service]                                                     |
-|   [IAM policy]   -> [groups, dynamic groups, or operators named in policy_statements]                         |
-|                                                                                                              |
-| Review focus: MongoDB API compatibility, private endpoint routing, DNS, NSGs, password source, backup policy, |
-| KMS key, and IAM scope.                                                                                      |
-+--------------------------------------------------------------------------------------------------------------+
-```
+![Source-backed architecture](architecture.png)
+
+[Editable draw.io overview and native detail pages](architecture.drawio) · [Resource inventory](resource-inventory.json)
+
+Native pages cover every conditional declaration and existing-reference input. Counts describe declarations, not deployed resource counts.
 
 ## Terraform Components
 
@@ -90,14 +55,11 @@ Deploys an OCI-managed MongoDB-compatible document API by creating an Autonomous
 
 ## Detailed Architecture Notes
 
-- This blueprint delivers the OCI-managed MongoDB-compatible API rather than self-managed MongoDB server nodes on Compute or OKE.
-- Use `AJD` for the default JSON/document workload unless the DBA team explicitly chooses another supported workload.
-- `db_tools_details` enables the MongoDB API and optionally controls the tool compute count and idle timeout.
-- `mongodb_api_url` is an operational hand-off output and should be treated like an application endpoint.
-- The admin password is a sensitive Terraform input but still needs secure runtime injection because local runtime metadata can contain sensitive values.
-- Private endpoint DNS, route reachability, and NSG ingress from app tiers should be verified before handing the URL to developers.
-- The optional network path is intentionally small: one VCN, one private subnet, one NSG, and only the MongoDB API port from approved client CIDRs.
-- Optional IAM policy statements are intentionally caller-supplied so tenancy group names and delegated administration models remain local decisions.
+- Eight optional OCI declarations are enumerated. All creation flags default false; IAM statements are empty. The database is Oracle Autonomous Database with MongoDB API, not a native MongoDB replica set.
+- The optional AJD database defaults to two ECPUs, 1 TB, License Included, compute/storage autoscaling and required mTLS. The nested MONGODB_API feature exists only when database creation is enabled.
+- Explicit subnet and nonempty NSG inputs override the created network fallbacks; newly enabled network resources can remain unused. Private placement requires an actual selected subnet. Public ACL defaults off and does not alone establish private placement.
+- The created private subnet binds an explicit empty security list. The NSG permits stateful TCP 27017 from configured CIDRs. No gateway, explicit route or tested client connection is created.
+- Manual backup requires both database and backup flags. IAM statements, KMS key, credentials and existing network identifiers remain operator inputs. Driver compatibility requires runtime testing.
 
 ## Operational Boundaries
 
@@ -125,3 +87,7 @@ Disabled/public-mode plans now support absent private endpoint inputs. The live 
 The OCI provider ignores only Oracle-managed provenance tags. Validation comments remain in English and separate schema/mocked checks from live provisioning.
 
 The private subnet attaches an explicit ingress/egress-empty security list instead of inheriting the VCN default SSH/ICMP rules. Security lists and NSGs are additive, so the empty list leaves ingress controlled by the explicit NSG rules. Stateful return traffic is allowed by the corresponding NSG session; application-initiated flows require separately configured egress rules.
+
+## Diagram Review - 2026-10-28
+
+Source, connector direction, creation conditions, native detail pages and PNGs were reviewed locally. Plain lines show ID/configuration associations; solid arrows show declared request/route intent; dashed lines show external prerequisites. No cloud resources were created and no runtime traffic was tested in this review. Historical provider and live-validation evidence remains limited to its original stated scope.

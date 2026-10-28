@@ -1,0 +1,411 @@
+{
+  "schema_version": 2,
+  "blueprint": "extensions/cdn-static-assets",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "Cloudflare": 5,
+    "OCI": 6
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_bucket.asset",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "asset",
+      "source": "blueprints/extensions/cdn-static-assets/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_asset_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_asset_bucket ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "asset",
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_object.sample",
+      "type": "oci_objectstorage_object",
+      "symbol": "sample",
+      "source": "blueprints/extensions/cdn-static-assets/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.create_sample_objects ? local.sample_objects : {}",
+      "creation_expression": {
+        "for_each": "var.create_sample_objects ? local.sample_objects : {}"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n14",
+        "source_symbol": "sample",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_preauthrequest.this",
+      "type": "oci_objectstorage_preauthrequest",
+      "symbol": "this",
+      "source": "blueprints/extensions/cdn-static-assets/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.preauth_requests",
+      "creation_expression": {
+        "for_each": "var.preauth_requests"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n16",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_object_lifecycle_policy.this",
+      "type": "oci_objectstorage_object_lifecycle_policy",
+      "symbol": "this",
+      "source": "blueprints/extensions/cdn-static-assets/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_lifecycle_policy && length(var.lifecycle_rules) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_lifecycle_policy && length(var.lifecycle_rules) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n18",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_dns_rrset.cdn_cname",
+      "type": "oci_dns_rrset",
+      "symbol": "cdn_cname",
+      "source": "blueprints/extensions/cdn-static-assets/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_dns_cname ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_dns_cname ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n20",
+        "source_symbol": "cdn_cname",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Cloudflare",
+      "kind": "resource",
+      "address": "cloudflare_dns_record.cdn",
+      "type": "cloudflare_dns_record",
+      "symbol": "cdn",
+      "source": "blueprints/extensions/cdn-static-assets/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_cloudflare_dns_record ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_cloudflare_dns_record ? 1 : 0"
+      },
+      "diagram": {
+        "file": "cloudflare-resources.drawio",
+        "page_name": "Cloudflare resources",
+        "node_id": "n4",
+        "source_symbol": "cdn",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Cloudflare",
+      "kind": "resource",
+      "address": "cloudflare_ruleset.cache_static_assets",
+      "type": "cloudflare_ruleset",
+      "symbol": "cache_static_assets",
+      "source": "blueprints/extensions/cdn-static-assets/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_cloudflare_cache_ruleset ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_cloudflare_cache_ruleset ? 1 : 0"
+      },
+      "diagram": {
+        "file": "cloudflare-resources.drawio",
+        "page_name": "Cloudflare resources",
+        "node_id": "n6",
+        "source_symbol": "cache_static_assets",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Cloudflare",
+      "kind": "resource",
+      "address": "cloudflare_ruleset.origin_route",
+      "type": "cloudflare_ruleset",
+      "symbol": "origin_route",
+      "source": "blueprints/extensions/cdn-static-assets/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_cloudflare_origin_ruleset ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_cloudflare_origin_ruleset ? 1 : 0"
+      },
+      "diagram": {
+        "file": "cloudflare-resources.drawio",
+        "page_name": "Cloudflare resources",
+        "node_id": "n8",
+        "source_symbol": "origin_route",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Cloudflare",
+      "kind": "resource",
+      "address": "cloudflare_workers_script.oci_asset_proxy",
+      "type": "cloudflare_workers_script",
+      "symbol": "oci_asset_proxy",
+      "source": "blueprints/extensions/cdn-static-assets/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_cloudflare_worker_proxy ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_cloudflare_worker_proxy ? 1 : 0"
+      },
+      "diagram": {
+        "file": "cloudflare-resources.drawio",
+        "page_name": "Cloudflare resources",
+        "node_id": "n10",
+        "source_symbol": "oci_asset_proxy",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Cloudflare",
+      "kind": "resource",
+      "address": "cloudflare_workers_route.oci_asset_proxy",
+      "type": "cloudflare_workers_route",
+      "symbol": "oci_asset_proxy",
+      "source": "blueprints/extensions/cdn-static-assets/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_cloudflare_worker_proxy ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_cloudflare_worker_proxy ? 1 : 0"
+      },
+      "diagram": {
+        "file": "cloudflare-resources.drawio",
+        "page_name": "Cloudflare resources",
+        "node_id": "n12",
+        "source_symbol": "oci_asset_proxy",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/extensions/cdn-static-assets/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n22",
+        "source_symbol": "access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "cloudflare-resources.drawio",
+      "page_name": "Cloudflare resources",
+      "declarations": 5
+    },
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 6
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/extensions/cdn-static-assets/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.existing_asset_bucket_name",
+      "source": "blueprints/extensions/cdn-static-assets/variables.tf",
+      "description": "Existing Object Storage bucket name when create_asset_bucket is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.kms_key_id",
+      "source": "blueprints/extensions/cdn-static-assets/variables.tf",
+      "description": "Optional Vault KMS key OCID for bucket and object encryption.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.dns_zone_name_or_id",
+      "source": "blueprints/extensions/cdn-static-assets/variables.tf",
+      "description": "OCI DNS zone name or OCID used when create_dns_cname is true.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.cloudflare_zone_id",
+      "source": "blueprints/extensions/cdn-static-assets/variables.tf",
+      "description": "Cloudflare zone ID for DNS and cache rules.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.cloudflare_account_id",
+      "source": "blueprints/extensions/cdn-static-assets/variables.tf",
+      "description": "Cloudflare account ID for Worker script deployment.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.cloudflare_worker_upstream_url",
+      "source": "blueprints/extensions/cdn-static-assets/variables.tf",
+      "description": "Optional explicit upstream URL for the Cloudflare Worker. Prefer cloudflare_worker_upstream_preauth_key for smoke tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/extensions/cdn-static-assets/variables.tf",
+      "description": "Compartment OCID where the optional IAM policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n17"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 8
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_objectstorage_namespace.this",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "this",
+      "source": "blueprints/extensions/cdn-static-assets/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {}
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/extensions/cdn-static-assets/locals.tf",
+      "revision": "working-tree",
+      "sha256": "3f9422f9164d0fc29d88c0f4226ce2f3ab60474e2f5cc2775db994d8e6c6c818"
+    },
+    {
+      "path": "blueprints/extensions/cdn-static-assets/main.tf",
+      "revision": "working-tree",
+      "sha256": "6daf574e0a425ffaf3a60d6db014bf7c0eb0a1c5f239a3a3038e45aaad88d32f"
+    },
+    {
+      "path": "blueprints/extensions/cdn-static-assets/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "e0f075ddbb17c84f8279a471b9f3344508934f5ca07ddf3f6be0533b52b0e5be"
+    },
+    {
+      "path": "blueprints/extensions/cdn-static-assets/providers.tf",
+      "revision": "working-tree",
+      "sha256": "96dbce84f470260e142488dfb52e2bb27a4bdf7b6656a665e317fad8f5c2e4a0"
+    },
+    {
+      "path": "blueprints/extensions/cdn-static-assets/variables.tf",
+      "revision": "working-tree",
+      "sha256": "f7610891b2e4527de1e2566a82684bcb3a84dc9f662046c374ab97f1011ec21a"
+    },
+    {
+      "path": "blueprints/extensions/cdn-static-assets/versions.tf",
+      "revision": "working-tree",
+      "sha256": "fa3f9d66f0c7f5030a0a2d00eee979bc3f836ba6c4a849cdec0e13d61f88c8f3"
+    }
+  ]
+}

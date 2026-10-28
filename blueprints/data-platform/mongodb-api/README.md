@@ -227,3 +227,9 @@ Disabled/public-mode plans now support absent private endpoint inputs. The live 
 The OCI provider ignores only Oracle-managed provenance tags. Validation comments remain in English and separate schema/mocked checks from live provisioning.
 
 The private subnet attaches an explicit ingress/egress-empty security list instead of inheriting the VCN default SSH/ICMP rules. Security lists and NSGs are additive, so the empty list leaves ingress controlled by the explicit NSG rules. Stateful return traffic is allowed by the corresponding NSG session; application-initiated flows require separately configured egress rules.
+
+## Architecture Diagram
+
+![Architecture](architecture/architecture.png)
+
+[Editable draw.io and resource detail pages](architecture/architecture.drawio) · [Architecture notes](architecture/README.md)

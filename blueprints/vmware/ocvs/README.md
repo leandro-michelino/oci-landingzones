@@ -136,3 +136,13 @@ portals, document services and licensed legacy application VMs. See the
 No guest/application is created or claimed tested by this blueprint. Size and
 license each guest, separate NSX tiers, configure identity/TLS/secrets and prove
 transactions, backups and restore before production use.
+
+## Repository Location
+
+This blueprint belongs to the VMware platform family under `blueprints/vmware/`.
+The folder move preserves resource addresses, naming/tag values, provider
+configuration and cost defaults. References pinned to older commits keep their
+historical module source path intentionally; those commits predate this move.
+Existing users must transfer their protected deployment state and private inputs
+to the new working directory or keep using the old pinned checkout. Do not
+apply from a fresh directory against an existing deployment without its state.

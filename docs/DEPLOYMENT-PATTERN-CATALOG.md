@@ -120,10 +120,10 @@ folder.
 | Data platform | OCI Data Integration (ETL/ELT pipelines, workspace, private endpoint) | `blueprints/data-platform/data-integration/` | Planned |
 | Compliance | OCI Data Safe (database activity monitoring, auditing, data masking, assessment) | `blueprints/compliance/data-safe/` | Planned |
 | Extensions | OCI Certificates Service (managed PKI / CA, TLS lifecycle, Vault integration) | `blueprints/extensions/certificates/` | Planned |
-| Industry | Oracle Cloud VMware Solution (dense/vSAN SDDC on prepared private networking; external transport/DNS) | `blueprints/industry/ocvs/` | Available, schema/mock validation only |
-| Industry | OCVS and onprem HCX migration | `blueprints/industry/ocvs-onprem-hcx/` | Available foundation, schema/mock only; external dependencies pending |
-| Industry | AVS and OCVS interconnect; AVS transit eligibility pending | `blueprints/industry/azure-avs-ocvs-interconnect/` | Available foundation, schema/mock only; external dependencies pending |
-| Industry | AVS, OCVS and onprem triangle; independent private legs | `blueprints/industry/azure-avs-ocvs-onprem-triangle/` | Available foundation, schema/mock only; external dependencies pending |
+| VMware | Oracle Cloud VMware Solution (dense/vSAN SDDC on prepared private networking; external transport/DNS) | `blueprints/vmware/ocvs/` | Available, schema/mock validation only |
+| VMware | OCVS and onprem HCX migration | `blueprints/vmware/ocvs-onprem-hcx/` | Available foundation, schema/mock only; external dependencies pending |
+| VMware | AVS and OCVS interconnect; AVS transit eligibility pending | `blueprints/vmware/azure-avs-ocvs-interconnect/` | Available foundation, schema/mock only; external dependencies pending |
+| VMware | AVS, OCVS and onprem triangle; independent private legs | `blueprints/vmware/azure-avs-ocvs-onprem-triangle/` | Available foundation, schema/mock only; external dependencies pending |
 | Extensions | OCI Process Automation (low-code workflow, Oracle SaaS integration, IAM) | `blueprints/extensions/process-automation/` | Planned |
 | Extensions | OCI Email Delivery (SMTP relay, approved sender, IAM, NSG) | `blueprints/extensions/email-delivery/` | Planned |
 | Compliance | OCI Threat Intelligence (IoC feeds, Cloud Guard integration, event rules) | `blueprints/compliance/threat-intelligence/` | Planned |

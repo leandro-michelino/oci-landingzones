@@ -18,38 +18,11 @@ and secret hand-offs so Redis does not become an unmanaged side component.
 
 ## Architecture
 
-```text
-+--------------------------------------------------------------------------------+
-|                         Redis Cache Landing Zone                                |
-+--------------------------------------------------------------------------------+
-|                                                                                |
-|  Application Tier                                                              |
-|      |                                                                         |
-|      | Redis protocol through approved NSG rules                               |
-|      v                                                                         |
-|  OCI Cache with Redis Cluster                                                  |
-|      |                                                                         |
-|      +--> Primary endpoint                                                     |
-|      +--> Discovery endpoint                                                   |
-|      +--> Node count and memory sizing                                         |
-|      +--> Optional shard model                                                 |
-|      |                                                                         |
-|      v                                                                         |
-|  Runtime Consumers                                                             |
-|      |                                                                         |
-|      +--> Session storage                                                      |
-|      +--> Application cache                                                    |
-|      +--> Token or feature flag cache                                          |
-|      `--> Queue-adjacent transient state                                       |
-|                                                                                |
-|  Governance Lane                                                               |
-|      |                                                                         |
-|      +--> Vault secret reference for app auth material                         |
-|      +--> Monitoring alarms and notification topics                            |
-|      +--> IAM policy statements for cache operators                            |
-|      `--> Tags for owner, environment, and cost                                |
-+--------------------------------------------------------------------------------+
-```
+![Source-backed architecture](architecture.png)
+
+[Editable draw.io overview and native detail pages](architecture.drawio) · [Resource inventory](resource-inventory.json)
+
+Native pages cover every conditional declaration and existing-reference input. Counts describe declarations, not deployed resource counts.
 
 ## Terraform Components
 
@@ -88,12 +61,11 @@ Declared resource addresses:
 
 ## Detailed Architecture Notes
 
-- `create_cluster` defaults to false so validation and review do not create a cache.
-- Existing Redis clusters can be referenced with `redis_cluster_id`.
-- `alarms` is a generic map so teams can wire metrics available in their region.
-- `oci_cache_config_set_id` supports customer-managed Redis configuration sets.
-- `backup_id` supports restore-based deployments without baking restore logic into docs.
-- Endpoint outputs are populated only when Terraform creates the cluster.
+- Three OCI declarations: optional Redis cluster, independent per-entry alarms and optional IAM policy. Default cluster flag is false; alarms and policy statements are empty.
+- Cluster source defaults are Redis version 7.0.5, two nodes and 2 GB per node; service/region availability is a separate check. Existing subnet and NSG IDs are configuration inputs; no network is created.
+- Alarms use explicitly supplied namespace, query and destination IDs. They are independent of cluster creation and have no automatically installed cluster-specific metric filter or subscription.
+- An existing redis_cluster_id is an output fallback only. vault_secret_id is output metadata, not an authentication binding or an application secret retrieval workflow.
+- No exact Redis resource glyph is mapped in the installed toolkit; the diagram uses a named resource box rather than a substitute service icon.
 
 ## Operational Boundaries
 
@@ -112,3 +84,7 @@ Declared resource addresses:
 - Alarm queries and destinations are defined for production.
 - IAM policy statements are group-scoped.
 - Terraform plan shows no unintended public exposure.
+
+## Diagram Review - 2026-10-28
+
+Source, connector direction, creation conditions, native detail pages and PNGs were reviewed locally. Plain lines show ID/configuration associations; solid arrows show declared request/route intent; dashed lines show external prerequisites. No cloud resources were created and no runtime traffic was tested in this review. Historical provider and live-validation evidence remains limited to its original stated scope.

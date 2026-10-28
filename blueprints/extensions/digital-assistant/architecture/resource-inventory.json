@@ -1,0 +1,411 @@
+{
+  "schema_version": 2,
+  "blueprint": "extensions/digital-assistant",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "Contracts": 2,
+    "OCI": 11
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_vcn.oda",
+      "type": "oci_core_vcn",
+      "symbol": "oda",
+      "source": "blueprints/extensions/digital-assistant/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oda_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oda_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "oda",
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_route_table.oda",
+      "type": "oci_core_route_table",
+      "symbol": "oda",
+      "source": "blueprints/extensions/digital-assistant/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oda_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oda_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n10",
+        "source_symbol": "oda",
+        "provider_icon": null,
+        "oci_icon": "Route Table"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_security_list.oda",
+      "type": "oci_core_security_list",
+      "symbol": "oda",
+      "source": "blueprints/extensions/digital-assistant/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oda_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oda_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n34",
+        "source_symbol": "oda",
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_subnet.oda",
+      "type": "oci_core_subnet",
+      "symbol": "oda",
+      "source": "blueprints/extensions/digital-assistant/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oda_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oda_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n46",
+        "source_symbol": "oda",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group.oda",
+      "type": "oci_core_network_security_group",
+      "symbol": "oda",
+      "source": "blueprints/extensions/digital-assistant/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oda_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oda_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n48",
+        "source_symbol": "oda",
+        "provider_icon": null,
+        "oci_icon": "NSG"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_network_security_group_security_rule.oda_egress_all",
+      "type": "oci_core_network_security_group_security_rule",
+      "symbol": "oda_egress_all",
+      "source": "blueprints/extensions/digital-assistant/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oda_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oda_network ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n54",
+        "source_symbol": "oda_egress_all",
+        "provider_icon": null,
+        "oci_icon": "NSG"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.oda_network_contract",
+      "type": "terraform_data",
+      "symbol": "oda_network_contract",
+      "source": "blueprints/extensions/digital-assistant/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n4",
+        "source_symbol": "oda_network_contract",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_oda_oda_instance.this",
+      "type": "oci_oda_oda_instance",
+      "symbol": "this",
+      "source": "blueprints/extensions/digital-assistant/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_oda_instance ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_oda_instance ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n60",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Digital Assistant"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_oda_oda_private_endpoint.this",
+      "type": "oci_oda_oda_private_endpoint",
+      "symbol": "this",
+      "source": "blueprints/extensions/digital-assistant/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_oda_private_endpoint ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_oda_private_endpoint ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n73",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_oda_oda_private_endpoint_attachment.this",
+      "type": "oci_oda_oda_private_endpoint_attachment",
+      "symbol": "this",
+      "source": "blueprints/extensions/digital-assistant/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.attach_private_endpoint_to_instance ? 1 : 0",
+      "creation_expression": {
+        "count": "var.attach_private_endpoint_to_instance ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n75",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_ons_notification_topic.alert",
+      "type": "oci_ons_notification_topic",
+      "symbol": "alert",
+      "source": "blueprints/extensions/digital-assistant/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.create_alert_topic ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_alert_topic ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n77",
+        "source_symbol": "alert",
+        "provider_icon": null,
+        "oci_icon": "Notifications"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/extensions/digital-assistant/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n109",
+        "source_symbol": "access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.oda_contract",
+      "type": "terraform_data",
+      "symbol": "oda_contract",
+      "source": "blueprints/extensions/digital-assistant/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n6",
+        "source_symbol": "oda_contract",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "contracts-resources.drawio",
+      "page_name": "Contracts resources",
+      "declarations": 2
+    },
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 11
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/extensions/digital-assistant/variables.tf",
+      "description": "Compartment OCID where Digital Assistant resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.oda_instance_id",
+      "source": "blueprints/extensions/digital-assistant/variables.tf",
+      "description": "Existing ODA instance OCID when create_oda_instance is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.oda_private_endpoint_id",
+      "source": "blueprints/extensions/digital-assistant/variables.tf",
+      "description": "Existing ODA private endpoint OCID when create_oda_private_endpoint is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.oda_private_endpoint_subnet_id",
+      "source": "blueprints/extensions/digital-assistant/variables.tf",
+      "description": "Existing subnet OCID for ODA private endpoint when enable_oda_network is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.oda_private_endpoint_additional_nsg_ids",
+      "source": "blueprints/extensions/digital-assistant/variables.tf",
+      "description": "Additional NSG OCIDs to attach to ODA private endpoint.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/extensions/digital-assistant/variables.tf",
+      "description": "Compartment OCID where IAM policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 6
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/extensions/digital-assistant/locals.tf",
+      "revision": "working-tree",
+      "sha256": "92cfa5399683b0e997172c056ffe2fd69d3b384bf793523cd0b9182864ee9c55"
+    },
+    {
+      "path": "blueprints/extensions/digital-assistant/main.tf",
+      "revision": "working-tree",
+      "sha256": "f6d9733eb7f1402b14d33424a5cdc9f71aee19a490e0003aac31499251315784"
+    },
+    {
+      "path": "blueprints/extensions/digital-assistant/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "8bbd3a3a2cd393c630c365609ca5788f4de85e735b802564f59eaedf197e4a49"
+    },
+    {
+      "path": "blueprints/extensions/digital-assistant/providers.tf",
+      "revision": "working-tree",
+      "sha256": "4ff2aa3ff95888297c1bdd16504fde4b9a7c5f6808c008a6b2fd4a21e468c923"
+    },
+    {
+      "path": "blueprints/extensions/digital-assistant/variables.tf",
+      "revision": "working-tree",
+      "sha256": "812917e707b8d91de2c94773927a06b6c5b4fc4d7d0732c7c43bd49c02604cdd"
+    },
+    {
+      "path": "blueprints/extensions/digital-assistant/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

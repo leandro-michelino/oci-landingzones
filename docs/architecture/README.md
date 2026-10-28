@@ -107,7 +107,7 @@ terraform plan or ansible/plan.yml
 
 ## Blueprint Architecture Inventory
 
-The current catalog has 88 deployable blueprint entry points across 13
+The current catalog has 88 deployable blueprint entry points across 14
 families. Each entry point owns its local Architecture in
 `architecture/README.md`.
 
@@ -167,10 +167,10 @@ families. Each entry point owns its local Architecture in
 | identity | [New Identity Domain](../../blueprints/identity/new-identity-domain/) | [Architecture](../../blueprints/identity/new-identity-domain/architecture/) |
 | industry | [Healthcare Platform Landing Zone](../../blueprints/industry/healthcare-platform/) | [Architecture](../../blueprints/industry/healthcare-platform/architecture/) |
 | industry | [Hospital Integration And FHIR Landing Zone](../../blueprints/industry/healthcare-fhir-integration/) | [Architecture](../../blueprints/industry/healthcare-fhir-integration/architecture/) |
-| industry | [Oracle Cloud VMware Solution](../../blueprints/industry/ocvs/) | [Architecture](../../blueprints/industry/ocvs/architecture/) |
-| industry | [OCVS and On-Premises VMware with HCX](../../blueprints/industry/ocvs-onprem-hcx/) | [Architecture](../../blueprints/industry/ocvs-onprem-hcx/architecture/) |
-| industry | [Azure AVS and OCVS Interconnect](../../blueprints/industry/azure-avs-ocvs-interconnect/) | [Architecture](../../blueprints/industry/azure-avs-ocvs-interconnect/architecture/) |
-| industry | [Azure AVS, OCVS and On-Premises Triangle](../../blueprints/industry/azure-avs-ocvs-onprem-triangle/) | [Architecture](../../blueprints/industry/azure-avs-ocvs-onprem-triangle/architecture/) |
+| vmware | [Oracle Cloud VMware Solution](../../blueprints/vmware/ocvs/) | [Architecture](../../blueprints/vmware/ocvs/architecture/) |
+| vmware | [OCVS and On-Premises VMware with HCX](../../blueprints/vmware/ocvs-onprem-hcx/) | [Architecture](../../blueprints/vmware/ocvs-onprem-hcx/architecture/) |
+| vmware | [Azure AVS and OCVS Interconnect](../../blueprints/vmware/azure-avs-ocvs-interconnect/) | [Architecture](../../blueprints/vmware/azure-avs-ocvs-interconnect/architecture/) |
+| vmware | [Azure AVS, OCVS and On-Premises Triangle](../../blueprints/vmware/azure-avs-ocvs-onprem-triangle/) | [Architecture](../../blueprints/vmware/azure-avs-ocvs-onprem-triangle/architecture/) |
 | industry | [Secure Desktops Landing Zone](../../blueprints/industry/secure-desktops/) | [Architecture](../../blueprints/industry/secure-desktops/architecture/) |
 | industry | [Telco Cloud Native Landing Zone](../../blueprints/industry/telco-cloud-native/) | [Architecture](../../blueprints/industry/telco-cloud-native/architecture/) |
 | networking | [Externally Managed VCNs](../../blueprints/networking/externally-managed-vcns/) | [Architecture](../../blueprints/networking/externally-managed-vcns/architecture/) |

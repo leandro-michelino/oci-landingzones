@@ -41,6 +41,8 @@ def diagrams():
  for i,(slug,title,kind) in enumerate(m.ITEMS,41):yield slug,getattr(m,kind)(title,i)
  m=load('extensions-batch-03')
  for i,(slug,title,kind) in enumerate(m.ITEMS,46):yield slug,getattr(m,kind)(title,i)
+ m=load('extensions-data-batch-04')
+ for i,(slug,title,kind) in enumerate(m.ITEMS,51):yield slug,getattr(m,kind)(title,i)
  m=load('interconnect-batch-01')
  for i,slug in enumerate(m.ITEMS):yield slug,m.build(bool(i))
  m=load('vmware-hybrid')
@@ -56,7 +58,7 @@ def cloud_boundary(node):
  while node.parent is not None:node=node.parent
  if node.kind=='group:region' and node.label.startswith('OCI'):return 'OCI'
  if node.kind=='group:thirdparty':
-  for prefix,cloud in [('AWS','AWS'),('Azure','Azure'),('Google','GCP')]:
+  for prefix,cloud in [('AWS','AWS'),('Azure','Azure'),('Google','GCP'),('Cloudflare','Cloudflare')]:
    if node.label.startswith(prefix):return cloud
  return None
 
@@ -132,7 +134,7 @@ def main():
   native_files.update(folder/p['file'] for p in inv['resource_pages'])
   if inv['input_page']:native_files.add(folder/inv['input_page']['file'])
   native_pages+=len(root.findall('diagram'))
-  foreign=set(inv['counts_by_cloud']) & {'AWS','Azure','GCP'}
+  foreign=set(inv['counts_by_cloud']) & {'AWS','Azure','GCP','Cloudflare'}
   bridges=[]
   for edge in d.edge_meta:
    a,b=cloud_boundary(edge['a']),cloud_boundary(edge['b'])

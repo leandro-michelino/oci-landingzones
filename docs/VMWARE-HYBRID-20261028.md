@@ -5,9 +5,9 @@
 Three new industry entry points compose the OCVS foundation at immutable revision
 `94ad89026bbf2ddbda531976a500e6d2ee084c7f`:
 
-- `blueprints/industry/ocvs-onprem-hcx`
-- `blueprints/industry/azure-avs-ocvs-interconnect`
-- `blueprints/industry/azure-avs-ocvs-onprem-triangle`
+- `blueprints/vmware/ocvs-onprem-hcx`
+- `blueprints/vmware/azure-avs-ocvs-interconnect`
+- `blueprints/vmware/azure-avs-ocvs-onprem-triangle`
 
 OCI may create the inherited dense/vSAN SDDC, an isolated DRG, its VCN attachment
 and partner FastConnect virtual circuits. All creation flags default false.

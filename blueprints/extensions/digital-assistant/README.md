@@ -197,3 +197,9 @@ The validator checks Terraform formatting, required deployment README files,
 required architecture README sections, `terraform init -backend=false`,
 `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax,
 optional scanners when installed, and cleanup of generated Terraform artifacts.
+
+## Architecture Diagram
+
+![Architecture](architecture/architecture.png)
+
+[Editable draw.io and resource detail pages](architecture/architecture.drawio) · [Architecture notes](architecture/README.md)

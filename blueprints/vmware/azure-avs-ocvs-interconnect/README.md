@@ -1,10 +1,10 @@
-# Azure AVS, OCVS and On-Premises Triangle
+# Azure AVS and OCVS Interconnect
 
-Three independent private connectivity legs for staged VMware migration.
+VMware application tiers across AVS and OCVS using ExpressRoute and FastConnect.
 
 | Item | Details |
 | --- | --- |
-| Best fit | Three independent private connectivity legs for staged VMware migration. |
+| Best fit | VMware application tiers across AVS and OCVS using ExpressRoute and FastConnect. |
 | Default result | Local guards/contracts only; no cloud creation or network lookup. |
 | OCI creation | Optional OCVS SDDC, DRG, VCN attachment and partner FastConnect circuits. |
 | Existing OCI inputs | Prepared VCN, dedicated per-cluster private subnet/VLAN sets and applicable BYOL references. |
@@ -28,7 +28,7 @@ transport enables those metadata checks before its DRG/attachment is useful.
 false. Creating an SDDC in this HCX pattern requires HCX enabled, its existing
 VLAN and the inherited OCVS inputs. Existing SDDCs can be used as externally
 managed sites by keeping creation disabled and supplying their prepared networks.
-The map `circuits` requires exactly `azure` and `onprem` when circuits are enabled.
+The map `circuits` requires exactly `azure` when circuits are enabled.
 Each entry supplies a real partner service OCID, service key, bandwidth and
 applicable BGP inputs. Azure requires two distinct /30 BGP networks; no customer
 cross-connect or redundant physical hardware is invented. Partner provisioning
@@ -93,23 +93,12 @@ capabilities but do not certify this exact AVS/Oracle circuit pairing. Obtain
 vendor confirmation for the selected offering and region before enabling it.
 This is not an assertion of supported or working AVS-to-OCVS transit.
 
-The three legs are independent: on-premises–OCI partner FastConnect;
-OCI–Azure Oracle Interconnect (FastConnect/ExpressRoute plus approved AVS
-attachment); on-premises–AVS through its own carrier ExpressRoute and Global
-Reach. Oracle Interconnect does not permit using one cloud to transit an
-on-premises connection into the other cloud. Do not configure that shortcut.
-Pair HCX per supported site pair; a service mesh is not a three-site object.
+## Repository Location
 
-## Direct Customer ExpressRoute To Azure
-
-The overview explicitly includes a customer/carrier ExpressRoute circuit and
-its direct connection from the customer datacenter into Azure/AVS. Configure
-`onpremCircuitId` with that existing circuit ID and supply its authorization key
-securely through `onpremAuthorizationKey`. After confirming prerequisites,
-`connectOnpremToAvs` and `onpremGlobalReachVerified` select the optional AVS
-Global Reach attachment, subject to the shared approval gates.
-
-This customer circuit is separate from the Oracle-facing ExpressRoute circuit
-paired with OCI FastConnect. The customer-to-AVS path does not traverse OCI.
-Carrier provisioning, private peering, routes and firewall policy remain
-external. No circuit was ordered, activated or verified live by this revision.
+This blueprint belongs to the VMware platform family under `blueprints/vmware/`.
+The folder move preserves resource addresses, naming/tag values, provider
+configuration and cost defaults. References pinned to older commits keep their
+historical module source path intentionally; those commits predate this move.
+Existing users must transfer their protected deployment state and private inputs
+to the new working directory or keep using the old pinned checkout. Do not
+apply from a fresh directory against an existing deployment without its state.

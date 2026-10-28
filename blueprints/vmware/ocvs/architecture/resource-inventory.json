@@ -1,0 +1,339 @@
+{
+  "schema_version": 2,
+  "blueprint": "vmware/ocvs",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "Contracts": 1,
+    "OCI": 1
+  },
+  "resources": [
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.guard",
+      "type": "terraform_data",
+      "symbol": "guard",
+      "source": "blueprints/vmware/ocvs/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n4",
+        "source_symbol": "guard",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_ocvp_sddc.this",
+      "type": "oci_ocvp_sddc",
+      "symbol": "this",
+      "source": "blueprints/vmware/ocvs/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_sddc && local.network_ids_ready && local.cluster_inputs_ready && length(var.workload_clusters) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_sddc && local.network_ids_ready && local.cluster_inputs_ready && length(var.workload_clusters) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "contracts-resources.drawio",
+      "page_name": "Contracts resources",
+      "declarations": 1
+    },
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 1
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/vmware/ocvs/variables.tf",
+      "description": "Explicit workload compartment; no tenancy-root fallback.",
+      "default_expression": "REQUIRED",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.initial_vcf_byol_allocation_id",
+      "source": "blueprints/vmware/ocvs/variables.tf",
+      "description": "Existing VMware Cloud Foundation BYOL allocation if required by the chosen offering; not created here.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.vcn_id",
+      "source": "blueprints/vmware/ocvs/variables.tf",
+      "description": "Existing prepared OCVS VCN.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.provisioning_subnet_id",
+      "source": "blueprints/vmware/ocvs/variables.tf",
+      "description": "Existing private ESXi provisioning subnet.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.vsphere_vlan_id",
+      "source": "blueprints/vmware/ocvs/variables.tf",
+      "description": "Existing vSphere management VLAN.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.vmotion_vlan_id",
+      "source": "blueprints/vmware/ocvs/variables.tf",
+      "description": "Existing vMotion VLAN.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.vsan_vlan_id",
+      "source": "blueprints/vmware/ocvs/variables.tf",
+      "description": "Existing vSAN VLAN.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    },
+    {
+      "address": "var.nsx_vtep_vlan_id",
+      "source": "blueprints/vmware/ocvs/variables.tf",
+      "description": "Existing NSX host VTEP VLAN.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n17"
+      }
+    },
+    {
+      "address": "var.nsx_edge_vtep_vlan_id",
+      "source": "blueprints/vmware/ocvs/variables.tf",
+      "description": "Existing NSX Edge VTEP VLAN.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n19"
+      }
+    },
+    {
+      "address": "var.nsx_edge_uplink1vlan_id",
+      "source": "blueprints/vmware/ocvs/variables.tf",
+      "description": "Existing NSX Edge uplink 1 VLAN.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n21"
+      }
+    },
+    {
+      "address": "var.nsx_edge_uplink2vlan_id",
+      "source": "blueprints/vmware/ocvs/variables.tf",
+      "description": "Existing NSX Edge uplink 2 VLAN.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n23"
+      }
+    },
+    {
+      "address": "var.provisioning_vlan_id",
+      "source": "blueprints/vmware/ocvs/variables.tf",
+      "description": "Existing Provisioning-Net VLAN for cold migration/cloning.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n25"
+      }
+    },
+    {
+      "address": "var.replication_vlan_id",
+      "source": "blueprints/vmware/ocvs/variables.tf",
+      "description": "Optional existing Replication-Net VLAN; supply when the selected VMware bundle requires it.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n27"
+      }
+    },
+    {
+      "address": "var.hcx_vlan_id",
+      "source": "blueprints/vmware/ocvs/variables.tf",
+      "description": "Existing HCX VLAN, required only when HCX is enabled.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n29"
+      }
+    },
+    {
+      "address": "var.workload_clusters",
+      "source": "blueprints/vmware/ocvs/variables.tf",
+      "description": "Explicit initial WORKLOAD clusters; at least one is required for SDDC creation. Each reuses its own provisioning subnet and VLAN IDs inside the selected VCN. Shape, AD, bundle and commitment use the common inputs.",
+      "default_expression": "{}",
+      "type_expression": "map(object({\n    display_name                   = string\n    esxi_hosts_count               = optional(number, 3)\n    provisioning_subnet_id         = string\n    vlan_ids                       = map(string)\n    workload_network_cidr          = optional(string)\n    initial_vcf_byol_allocation_id = optional(string)\n  }))",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n31"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 15
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_core_vcn.existing",
+      "type": "oci_core_vcn",
+      "symbol": "existing",
+      "source": "blueprints/vmware/ocvs/main.tf",
+      "revision": "working-tree",
+      "condition": "count = local.inspect ? 1 : 0",
+      "creation_expression": {
+        "count": "local.inspect ? 1 : 0"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_core_subnet.provisioning",
+      "type": "oci_core_subnet",
+      "symbol": "provisioning",
+      "source": "blueprints/vmware/ocvs/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = local.inspect ? local.clusters : {}",
+      "creation_expression": {
+        "for_each": "local.inspect ? local.clusters : {}"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_core_vlan.existing",
+      "type": "oci_core_vlan",
+      "symbol": "existing",
+      "source": "blueprints/vmware/ocvs/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = local.inspect ? local.vlan_ids : {}",
+      "creation_expression": {
+        "for_each": "local.inspect ? local.vlan_ids : {}"
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/vmware/ocvs/locals.tf",
+      "revision": "working-tree",
+      "sha256": "f069d5b4fc01a85523190ad10b340f4aefbae057fc98fdc8cb99afa2ff0cb564"
+    },
+    {
+      "path": "blueprints/vmware/ocvs/main.tf",
+      "revision": "working-tree",
+      "sha256": "2385c1986b524976a389babd39364b6b8759f08844b7d48bf978d2c6e7614bdc"
+    },
+    {
+      "path": "blueprints/vmware/ocvs/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "ae6911a78f4ce820eefd2be2beb2dc92b75560fd6080ec77a65d406841e48386"
+    },
+    {
+      "path": "blueprints/vmware/ocvs/providers.tf",
+      "revision": "working-tree",
+      "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
+    },
+    {
+      "path": "blueprints/vmware/ocvs/variables.tf",
+      "revision": "working-tree",
+      "sha256": "bc13e068ba4bcaa6c7ce6cf5132894f72661fc06eff76a0735f23ffef67a6b67"
+    },
+    {
+      "path": "blueprints/vmware/ocvs/versions.tf",
+      "revision": "working-tree",
+      "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
+    }
+  ]
+}

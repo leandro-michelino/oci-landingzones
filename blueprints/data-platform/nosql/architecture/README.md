@@ -21,32 +21,11 @@ optional cross-region replica, and deploy-and-use app networking for consumers.
 
 ## Architecture
 
-```text
-+--------------------------------------------------------------------------------------------------------------+
-| OCI NoSQL Database Blueprint                                                                                 |
-+--------------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow                  |
-|                                                                                                              |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                              |
-|         |                    |                         |                                                     |
-|         | validates docs      | init/validate/plan      | OCI API calls                                      |
-|         v                    v                         v                                                     |
-| {OCI tenancy boundary}                                                                                       |
-|   |                                                                                                          |
-|   |-- [App VCN + route table + security list + subnet] (optional)                                           |
-|   |-- [NoSQL table]                                                                                          |
-|   |      |-- schema from DDL                                                                                 |
-|   |      `-- capacity limits (read/write/storage)                                                            |
-|   |-- [NoSQL secondary index] (optional)                                                                     |
-|   |-- [NoSQL table replica] (optional cross-region)                                                          |
-|   |-- [Notifications topic] (optional)                                                                       |
-|   `-- [terraform_data contracts + optional IAM policy]                                                       |
-|          |-- app network hand-off                                                                            |
-|          `-- table capacity and replication contract                                                         |
-|                                                                                                              |
-| [Consumer app tier] -> NoSQL SDK/API -> [NoSQL table]                                                       |
-+--------------------------------------------------------------------------------------------------------------+
-```
+![Source-backed architecture](architecture.png)
+
+[Editable draw.io overview and native detail pages](architecture.drawio) · [Resource inventory](resource-inventory.json)
+
+Native pages cover every conditional declaration and existing-reference input. Counts describe declarations, not deployed resource counts.
 
 ## Terraform Components
 
@@ -88,16 +67,11 @@ optional cross-region replica, and deploy-and-use app networking for consumers.
 
 ## Detailed Architecture Notes
 
-These notes expand the diagram with design details usually needed in reviews.
-
-- The DDL statement is the table schema contract and should be reviewed with the app team.
-- Capacity limits are explicit outputs so FinOps and operations can track agreed thresholds.
-- Secondary index creation is optional and intentionally requires explicit column input.
-- Replica creation is optional and enforces a target region when enabled.
-- App-network resources are optional because some consumers already run in existing VCN estates.
-- Optional IAM policy statements let teams codify access in the same blueprint when desired.
-- Set `create_table = false` and disable the alert topic for a network-only
-  lifecycle test; index and replica creation must remain disabled.
+- Ten OCI resource declarations and two local terraform_data metadata contracts are enumerated. Source defaults enable five application-network resources, one table and one topic: seven OCI resource instances if applied with valid inputs, with possible charges.
+- NoSQL is a regional managed service outside the application subnet. No application client, private NoSQL endpoint or SDK connection is created. The public-IP-eligible subnet has an explicit route table and security list; HTTPS ingress requires an explicit CIDR.
+- The default orders table uses PROVISIONED read/write limits of 100 and storage 25 GB. The optional index defaults to customerId; its column collection must be nonempty when enabled.
+- Index and replica creation also require create_table=true. A replica requires a supplied second region; configured replication is not evidence of tested consistency or failover.
+- The default alert topic has no alarm or subscription. Optional IAM statements do not automatically grant table access.
 
 ## Operational Boundaries
 
@@ -108,8 +82,11 @@ These notes expand the diagram with design details usually needed in reviews.
 - Use the output contracts in downstream runbooks and app onboarding checklists.
 - Use `--keep-resources` in the lifecycle runner only when manual table or
   index validation is required before a later cleanup run.
-- The 2026-10-15 checks were Terraform schema and mocked plans only. No table,
-  replica, app traffic, or public subnet was provisioned or tested in OCI.
+- The 2026-10-15 source metadata records schema checks, five mocked plans
+  and a reduced application-network lifecycle with cleanup. See
+  [historical evidence](../../../../docs/DATA-DEVOPS-DR-REVIEW-20261015.md).
+  No NoSQL table, replica or application traffic was covered; that lifecycle
+  was not repeated during this diagram review.
 
 OCI reference: [NoSQL table capacity modes](https://docs.oracle.com/en-us/iaas/tools/python/latest/api/nosql/models/oci.nosql.models.TableLimits.html).
 
@@ -124,3 +101,7 @@ OCI reference: [NoSQL table capacity modes](https://docs.oracle.com/en-us/iaas/t
 - Confirm `ansible/plan.yml`, `ansible/apply.yml`, and `ansible/destroy.yml` still point at the shared runner.
 - Confirm real lifecycle tests use ignored tfvars and either destroy
   immediately or document the planned cleanup window.
+
+## Diagram Review - 2026-10-28
+
+Source, connector direction, creation conditions, native detail pages and PNGs were reviewed locally. Plain lines show ID/configuration associations; solid arrows show declared request/route intent; dashed lines show external prerequisites. No cloud resources were created and no runtime traffic was tested in this review. Historical provider and live-validation evidence remains limited to its original stated scope.
