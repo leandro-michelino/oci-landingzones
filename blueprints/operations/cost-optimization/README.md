@@ -220,3 +220,9 @@ cleanup of generated Terraform artifacts.
 ## Budget Dependency Follow-Up
 
 The Budget dependency selects the published root-ownership fix and inherits the home-region provider. Budget ownership is tenancy root; spending targets remain separate. This administrative operation was tested with mocked providers, not created in the workload compartment. Budgets are soft limits, not an automatic spending cap.
+
+## Architecture Diagram
+
+![Cost Optimization](architecture/architecture.png)
+
+[Editable draw.io and resource detail pages](architecture/architecture.drawio) · [Architecture notes](architecture/README.md)

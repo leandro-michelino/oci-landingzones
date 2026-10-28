@@ -1,0 +1,826 @@
+{
+  "schema_version": 2,
+  "blueprint": "operations/cost-optimization",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 14
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.tagging.oci_identity_tag_namespace.this",
+      "type": "oci_identity_tag_namespace",
+      "symbol": "this",
+      "source": "modules/governance/tagging/main.tf",
+      "revision": "v0.2.0",
+      "condition": "count = var.enable_tagging ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_tagging ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.tagging (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.tagging",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/tagging?ref=v0.2.0",
+          "call_site": "blueprints/operations/cost-optimization/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_tagging": "var.enable_tagging",
+            "enable_tag_defaults": "var.enable_tag_defaults"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Tagging"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.tagging.oci_identity_tag.this",
+      "type": "oci_identity_tag",
+      "symbol": "this",
+      "source": "modules/governance/tagging/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.enable_tagging ? var.tag_definitions : {}",
+      "creation_expression": {
+        "for_each": "var.enable_tagging ? var.tag_definitions : {}"
+      },
+      "module_inputs": [
+        "module.tagging (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.tagging",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/tagging?ref=v0.2.0",
+          "call_site": "blueprints/operations/cost-optimization/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_tagging": "var.enable_tagging",
+            "enable_tag_defaults": "var.enable_tag_defaults"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n13",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Tagging"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.tagging.oci_identity_tag_default.this",
+      "type": "oci_identity_tag_default",
+      "symbol": "this",
+      "source": "modules/governance/tagging/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = var.enable_tagging && var.enable_tag_defaults ? local.tag_defaults : {}",
+      "creation_expression": {
+        "for_each": "var.enable_tagging && var.enable_tag_defaults ? local.tag_defaults : {}"
+      },
+      "module_inputs": [
+        "module.tagging (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.tagging",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/tagging?ref=v0.2.0",
+          "call_site": "blueprints/operations/cost-optimization/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_tagging": "var.enable_tagging",
+            "enable_tag_defaults": "var.enable_tag_defaults"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n22",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Tagging"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.budgets.oci_budget_budget.this",
+      "type": "oci_budget_budget",
+      "symbol": "this",
+      "source": "modules/governance/budgets/main.tf",
+      "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+      "condition": "for_each = local.budgets",
+      "creation_expression": {
+        "for_each": "local.budgets"
+      },
+      "module_inputs": [
+        "module.budgets (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.budgets",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/budgets?ref=80e439cd48a4b6dce4f63e54f53a45a621236601",
+          "call_site": "blueprints/operations/cost-optimization/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_budgets": "var.enable_budgets",
+            "enable_default_budget": "var.enable_default_budget"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n31",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.budgets.oci_budget_alert_rule.this",
+      "type": "oci_budget_alert_rule",
+      "symbol": "this",
+      "source": "modules/governance/budgets/main.tf",
+      "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+      "condition": "for_each = local.alert_rules",
+      "creation_expression": {
+        "for_each": "local.alert_rules"
+      },
+      "module_inputs": [
+        "module.budgets (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.budgets",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/budgets?ref=80e439cd48a4b6dce4f63e54f53a45a621236601",
+          "call_site": "blueprints/operations/cost-optimization/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_budgets": "var.enable_budgets",
+            "enable_default_budget": "var.enable_default_budget"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n33",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.notifications.oci_ons_notification_topic.this",
+      "type": "oci_ons_notification_topic",
+      "symbol": "this",
+      "source": "modules/governance/events/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.notification_topics",
+      "creation_expression": {
+        "for_each": "local.notification_topics"
+      },
+      "module_inputs": [
+        "module.notifications (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.notifications",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/events?ref=v0.2.0",
+          "call_site": "blueprints/operations/cost-optimization/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_events": "var.enable_notifications",
+            "enable_default_topic": "false",
+            "enable_default_event_rules": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n35",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Notifications"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.notifications.oci_ons_subscription.this",
+      "type": "oci_ons_subscription",
+      "symbol": "this",
+      "source": "modules/governance/events/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.subscriptions",
+      "creation_expression": {
+        "for_each": "local.subscriptions"
+      },
+      "module_inputs": [
+        "module.notifications (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.notifications",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/events?ref=v0.2.0",
+          "call_site": "blueprints/operations/cost-optimization/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_events": "var.enable_notifications",
+            "enable_default_topic": "false",
+            "enable_default_event_rules": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n67",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Notifications"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.notifications.oci_events_rule.this",
+      "type": "oci_events_rule",
+      "symbol": "this",
+      "source": "modules/governance/events/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.event_rules",
+      "creation_expression": {
+        "for_each": "local.event_rules"
+      },
+      "module_inputs": [
+        "module.notifications (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.notifications",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/governance/events?ref=v0.2.0",
+          "call_site": "blueprints/operations/cost-optimization/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_events": "var.enable_notifications",
+            "enable_default_topic": "false",
+            "enable_default_event_rules": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n99",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Events"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.monitoring.oci_ons_notification_topic.this",
+      "type": "oci_ons_notification_topic",
+      "symbol": "this",
+      "source": "modules/operations/monitoring/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.notification_topics",
+      "creation_expression": {
+        "for_each": "local.notification_topics"
+      },
+      "module_inputs": [
+        "module.monitoring (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.monitoring",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/monitoring?ref=v0.2.0",
+          "call_site": "blueprints/operations/cost-optimization/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_monitoring": "length(local.monitoring_alarms) > 0",
+            "enable_default_topic": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n105",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Notifications"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.monitoring.oci_ons_subscription.this",
+      "type": "oci_ons_subscription",
+      "symbol": "this",
+      "source": "modules/operations/monitoring/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.subscriptions",
+      "creation_expression": {
+        "for_each": "local.subscriptions"
+      },
+      "module_inputs": [
+        "module.monitoring (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.monitoring",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/monitoring?ref=v0.2.0",
+          "call_site": "blueprints/operations/cost-optimization/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_monitoring": "length(local.monitoring_alarms) > 0",
+            "enable_default_topic": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n137",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Notifications"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.monitoring.oci_monitoring_alarm.this",
+      "type": "oci_monitoring_alarm",
+      "symbol": "this",
+      "source": "modules/operations/monitoring/main.tf",
+      "revision": "v0.2.0",
+      "condition": "for_each = local.alarms",
+      "creation_expression": {
+        "for_each": "local.alarms"
+      },
+      "module_inputs": [
+        "module.monitoring (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.monitoring",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/operations/monitoring?ref=v0.2.0",
+          "call_site": "blueprints/operations/cost-optimization/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_monitoring": "length(local.monitoring_alarms) > 0",
+            "enable_default_topic": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n169",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Alarms"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_optimizer_enrollment_status.this",
+      "type": "oci_optimizer_enrollment_status",
+      "symbol": "this",
+      "source": "blueprints/operations/cost-optimization/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_optimizer_enrollment && var.optimizer_enrollment_status_id != null ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_optimizer_enrollment && var.optimizer_enrollment_status_id != null ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n189",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_optimizer_profile.this",
+      "type": "oci_optimizer_profile",
+      "symbol": "this",
+      "source": "blueprints/operations/cost-optimization/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = local.optimizer_profiles",
+      "creation_expression": {
+        "for_each": "local.optimizer_profiles"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n191",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_identity_policy.finops_access",
+      "type": "oci_identity_policy",
+      "symbol": "finops_access",
+      "source": "blueprints/operations/cost-optimization/main.tf",
+      "revision": "working-tree",
+      "condition": "count = length(var.finops_policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.finops_policy_statements) > 0 ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n193",
+        "source_symbol": "finops_access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 14
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/operations/cost-optimization/variables.tf",
+      "description": "Compartment OCID where cost-governance resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.tag_default_compartment_ids",
+      "source": "blueprints/operations/cost-optimization/variables.tf",
+      "description": "Map of compartment keys to OCIDs where tag defaults should be applied.",
+      "default_expression": "{}",
+      "type_expression": "map(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.default_budget_target_ocid",
+      "source": "blueprints/operations/cost-optimization/variables.tf",
+      "description": "Default compartment OCID tracked by the landing-zone budget. Defaults to compartment_ocid when omitted.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.default_budget_target_ocids",
+      "source": "blueprints/operations/cost-optimization/variables.tf",
+      "description": "Optional set of compartment OCIDs tracked by the default budget.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.budgets",
+      "source": "blueprints/operations/cost-optimization/variables.tf",
+      "description": "Additional OCI Budgets keyed by logical name.",
+      "default_expression": "{}",
+      "type_expression": "map(object({\n    display_name                          = optional(string)\n    description                           = optional(string)\n    compartment_ocid                      = optional(string)\n    amount                                = number\n    reset_period                          = optional(string, \"MONTHLY\")\n    target_type                           = optional(string, \"COMPARTMENT\")\n    targets                               = optional(set(string), [])\n    processing_period_type                = optional(string)\n    start_date                            = optional(string)\n    end_date                              = optional(string)\n    budget_processing_period_start_offset = optional(number)\n    alert_rules = optional(map(object({\n      display_name   = optional(string)\n      description    = optional(string)\n      message        = optional(string)\n      recipients     = optional(string)\n      threshold      = number\n      threshold_type = optional(string, \"PERCENTAGE\")\n      type           = optional(string, \"ACTUAL\")\n    })), {})\n  }))",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.notification_compartment_ocid",
+      "source": "blueprints/operations/cost-optimization/variables.tf",
+      "description": "Compartment OCID where FinOps notification resources are created. Defaults to compartment_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.notification_subscriptions",
+      "source": "blueprints/operations/cost-optimization/variables.tf",
+      "description": "ONS subscriptions keyed by logical name. Endpoints should be supplied from local ignored tfvars.",
+      "default_expression": "{}",
+      "type_expression": "map(object({\n    topic_key        = optional(string, \"finops\")\n    topic_id         = optional(string)\n    compartment_ocid = optional(string)\n    protocol         = string\n    endpoint         = string\n    delivery_policy  = optional(string)\n  }))",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    },
+    {
+      "address": "var.notification_event_rules",
+      "source": "blueprints/operations/cost-optimization/variables.tf",
+      "description": "Optional OCI Events rules for cost-governance signals keyed by logical name.",
+      "default_expression": "{}",
+      "type_expression": "map(object({\n    display_name     = optional(string)\n    description      = optional(string)\n    compartment_ocid = optional(string)\n    condition        = string\n    is_enabled       = optional(bool, true)\n    actions = list(object({\n      action_type = optional(string, \"ONS\")\n      description = optional(string)\n      function_id = optional(string)\n      is_enabled  = optional(bool, true)\n      stream_id   = optional(string)\n      topic_key   = optional(string, \"finops\")\n      topic_id    = optional(string)\n    }))\n  }))",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n17"
+      }
+    },
+    {
+      "address": "var.budget_alarm_destination_ids",
+      "source": "blueprints/operations/cost-optimization/variables.tf",
+      "description": "Additional ONS topic OCIDs used by the budget Monitoring alarm.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n19"
+      }
+    },
+    {
+      "address": "var.budget_alarm_metric_compartment_ocid",
+      "source": "blueprints/operations/cost-optimization/variables.tf",
+      "description": "Metric compartment OCID for the budget alarm. Defaults to compartment_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n21"
+      }
+    },
+    {
+      "address": "var.monitoring_alarms",
+      "source": "blueprints/operations/cost-optimization/variables.tf",
+      "description": "Additional OCI Monitoring alarms keyed by logical name.",
+      "default_expression": "{}",
+      "type_expression": "map(object({\n    display_name                                  = optional(string)\n    body                                          = optional(string)\n    compartment_ocid                              = optional(string)\n    metric_compartment_ocid                       = optional(string)\n    metric_compartment_id_in_subtree              = optional(bool, false)\n    namespace                                     = string\n    query                                         = string\n    severity                                      = optional(string, \"WARNING\")\n    is_enabled                                    = optional(bool, true)\n    destinations                                  = optional(set(string), [])\n    destination_topic_keys                        = optional(set(string), [])\n    pending_duration                              = optional(string)\n    resolution                                    = optional(string)\n    resource_group                                = optional(string)\n    message_format                                = optional(string)\n    repeat_notification_duration                  = optional(string)\n    evaluation_slack_duration                     = optional(string)\n    is_notifications_per_metric_dimension_enabled = optional(bool)\n    notification_title                            = optional(string)\n  }))",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n23"
+      }
+    },
+    {
+      "address": "var.optimizer_enrollment_status_id",
+      "source": "blueprints/operations/cost-optimization/variables.tf",
+      "description": "Optimizer enrollment status OCID or provider-specific enrollment status identifier.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n25"
+      }
+    },
+    {
+      "address": "var.optimizer_target_compartment_ids",
+      "source": "blueprints/operations/cost-optimization/variables.tf",
+      "description": "Compartment OCIDs targeted by the default Optimizer profile.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n27"
+      }
+    },
+    {
+      "address": "var.optimizer_profiles",
+      "source": "blueprints/operations/cost-optimization/variables.tf",
+      "description": "Additional OCI Optimizer profiles keyed by logical name.",
+      "default_expression": "{}",
+      "type_expression": "map(object({\n    name                         = optional(string)\n    description                  = optional(string)\n    compartment_ocid             = optional(string)\n    aggregation_interval_in_days = optional(number)\n    target_compartment_ids       = optional(set(string), [])\n    target_tags = optional(list(object({\n      tag_namespace_name  = string\n      tag_definition_name = string\n      tag_value_type      = string\n      tag_values          = optional(list(string), [])\n    })), [])\n    levels_configuration = optional(list(object({\n      recommendation_id = optional(string)\n      level             = optional(string)\n    })), [])\n  }))",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n29"
+      }
+    },
+    {
+      "address": "var.policy_compartment_ocid",
+      "source": "blueprints/operations/cost-optimization/variables.tf",
+      "description": "Compartment OCID where the optional FinOps IAM policy is created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n31"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 15
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/operations/cost-optimization/locals.tf",
+      "revision": "working-tree",
+      "sha256": "2696dcd6a558cd76dd3ce4245a4d2917d20eeff09d51711f4413fc3819817184"
+    },
+    {
+      "path": "blueprints/operations/cost-optimization/main.tf",
+      "revision": "working-tree",
+      "sha256": "d820ea5128ef99e0782257c44c14dd12dde47da84cda1ffe2a96563082864337"
+    },
+    {
+      "path": "modules/governance/tagging/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "6d8998ed70522850b03b00442ab399b84ddac6d16dca9d594e8d2df9ecab84ed"
+    },
+    {
+      "path": "modules/governance/tagging/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "1e0911af8ff73b9a70d2857868e91be473b9d5e4d15ad2a67829cdbb7f447780"
+    },
+    {
+      "path": "modules/governance/tagging/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "01dd21b533e6716a294f210f064da64d655bf29644eeb44438a180d4cc2b26b6"
+    },
+    {
+      "path": "modules/governance/tagging/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "d73ef32561fcd21fb6c608dd682823b593f00ddba97164cde9b43f1f979a7453"
+    },
+    {
+      "path": "modules/governance/tagging/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/governance/budgets/locals.tf",
+      "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+      "sha256": "b3eadeefed304a8ed1d725e275d4a61003c755618222c88c8806913b35656907"
+    },
+    {
+      "path": "modules/governance/budgets/main.tf",
+      "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+      "sha256": "5e86b5f385441f7986611c39b8f0b8786eab5e9f24ba0202011eed4908e9848a"
+    },
+    {
+      "path": "modules/governance/budgets/outputs.tf",
+      "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+      "sha256": "18e036fc1994f06d7832fb18c4f9f534680523baa3362b1ec510618f26ae18a0"
+    },
+    {
+      "path": "modules/governance/budgets/variables.tf",
+      "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+      "sha256": "904a1faf7b6152f8b9b20fb6f630f5902cdd5abffca315a71e7dc3e142491fe9"
+    },
+    {
+      "path": "modules/governance/budgets/versions.tf",
+      "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "modules/governance/events/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "c3ad78154df0dc426ba7d42a5d785388ae440ea0b828a59bbb2ed0db5b213c62"
+    },
+    {
+      "path": "modules/governance/events/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "ce6fde4383ee3dd8af75d46bb3c7d3f81323c0f75af7acbaeb60efa81c3c93f9"
+    },
+    {
+      "path": "modules/governance/events/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "0013d9c16d9d7e68cadc42fc95fc1a2b161d34f4854cbd18fcd332ee4fc02995"
+    },
+    {
+      "path": "modules/governance/events/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "cf38f17bbadc1836692a6d7da7c790d8b19cdca932214db75703c8c058364912"
+    },
+    {
+      "path": "modules/governance/events/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "modules/operations/monitoring/locals.tf",
+      "revision": "v0.2.0",
+      "sha256": "57e30dccd6eaf1ba3b7fc2e0b92095a385a2864ccc652bc967e4ba69481cc3f5"
+    },
+    {
+      "path": "modules/operations/monitoring/main.tf",
+      "revision": "v0.2.0",
+      "sha256": "f09f3b0becfaf1fea49e363c780ad9c3f68d7654f18dbac758e9ccd23031b389"
+    },
+    {
+      "path": "modules/operations/monitoring/outputs.tf",
+      "revision": "v0.2.0",
+      "sha256": "03d63afd289e3c1a3f71e44ba064534a8ceb0d1965b1b575ed8c44ea04334b19"
+    },
+    {
+      "path": "modules/operations/monitoring/variables.tf",
+      "revision": "v0.2.0",
+      "sha256": "264c9f9d7f1ed15e375f7d82dd4c26d8f9f04c670dd75e6680699a825981876b"
+    },
+    {
+      "path": "modules/operations/monitoring/versions.tf",
+      "revision": "v0.2.0",
+      "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+    },
+    {
+      "path": "blueprints/operations/cost-optimization/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "327b01324d2e9c6320d4d33ae2db3884f95f431c4b73072c8af8cdbf9f673112"
+    },
+    {
+      "path": "blueprints/operations/cost-optimization/providers.tf",
+      "revision": "working-tree",
+      "sha256": "8f85e8539190ef04ab19c8d4c834aa1f74fa02d185b70ac6875df16eb1088de5"
+    },
+    {
+      "path": "blueprints/operations/cost-optimization/variables.tf",
+      "revision": "working-tree",
+      "sha256": "c6ade45bc2b02c1e11c47699c1d5de4450d7c6a9a600b03aee312a63a3488bbe"
+    },
+    {
+      "path": "blueprints/operations/cost-optimization/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

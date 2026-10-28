@@ -4,8 +4,8 @@ Status: **Networking base delivered on explicit Interconnect request; other coun
 
 Implement this phase after the current diagram conversion and resource-coverage
 work for the original 80 blueprint entry points is complete. Continue that work
-in batches of five. At the time of this request, 44 diagrams are converted and
-36 remain; the retrospective review of the original 39 is already complete.
+in batches of five. The original diagram queue is now complete: 80/80. The retrospective review
+of the original 39 and the subsequent connector reviews are complete.
 These GCP additions do not count toward completion of the original 80.
 
 The request includes deployable infrastructure blueprints and the complete GCP

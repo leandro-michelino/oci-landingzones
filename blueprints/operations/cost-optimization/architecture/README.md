@@ -22,83 +22,9 @@ optional Optimizer profiles, and an optional FinOps access policy.
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------------+
-| Cost Optimization / FinOps Landing-Zone Layer                                                                   |
-+----------------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> control/signal flow                       |
-|                                                                                                                |
-| [Operator / CI]                                                                                                |
-|      |                                                                                                         |
-|      | terraform plan/apply or guarded Ansible runner                                                          |
-|      v                                                                                                         |
-| [Terraform OCI provider]                                                                                       |
-|      |                                                                                                         |
-|      +---------------------------------------------------------------------------------------------------+     |
-|      |                                                                                                   |     |
-|      v                                                                                                   v     |
-| {Home-region Identity / Tagging plane}                                                             {Regional OCI plane} |
-|      |                                                                                                   |     |
-|      |                                                                                                   |     |
-|      +--> [FinOps tag namespace]                                                                         |     |
-|      |        |-- CostCenter  (cost tracking enabled)                                                    |     |
-|      |        |-- Owner                                                                                  |     |
-|      |        |-- Environment                                                                            |     |
-|      |        |-- Project                                                                                |     |
-|      |        |-- ManagedBy                                                                              |     |
-|      |        `-- Blueprint                                                                              |     |
-|      |               |                                                                                    |     |
-|      |               v                                                                                    |     |
-|      |        [Tag defaults on approved compartments]                                                     |     |
-|      |               |                                                                                    |     |
-|      |               v                                                                                    |     |
-|      |        (Workload / governance / shared-service compartments carry owner and cost-center metadata)   |     |
-|      |                                                                                                   |     |
-|      +--> [FinOps IAM policy]                                                                            |     |
-|               |-- optional manage/read access for budgets, usage reports, Optimizer, and notifications    |     |
-|               `-- scoped to supplied policy compartment                                                   |     |
-|                                                                                                                |
-| {Cost governance compartment}                                                                                  |
-|      |                                                                                                         |
-|      +--> [Budgets]                                                                                            |
-|      |        |-- default landing-zone budget                                                               |
-|      |        |-- per-compartment or per-tag budgets                                                       |
-|      |        `-- budget alert rules                                                                           |
-|      |               |                                                                                          |
-|      |               v                                                                                          |
-|      |        (Email recipients from ignored local tfvars)                                                       |
-|      |                                                                                                         |
-|      +--> [FinOps ONS topic]                                                                                    |
-|      |        |-- EMAIL subscription                                                                         |
-|      |        |-- HTTPS webhook subscription                                                                 |
-|      |        `-- optional Events rule actions                                                                  |
-|      |               |                                                                                          |
-|      |               v                                                                                          |
-|      |        (Finance, platform, service owner, or incident channel)                                             |
-|      |                                                                                                         |
-|      +--> [Monitoring alarm, optional]                                                                          |
-|      |        |-- customer-supplied MQL query                                                                |
-|      |        |-- topic destination from FinOps ONS or supplied topic OCIDs                                  |
-|      |        `-- repeat notification window                                                                    |
-|      |               |                                                                                          |
-|      |               v                                                                                          |
-|      |        [FinOps ONS topic] -> (approved email / webhook target)                                             |
-|      |                                                                                                         |
-|      `--> [OCI Optimizer, optional]                                                                             |
-|               |-- enrollment status when explicitly supplied                                                   |
-|               |-- Optimizer profiles scoped to compartments                                                   |
-|               |-- optional target tag filters                                                                 |
-|               `-- optional recommendation-level configuration                                                  |
-|                       |                                                                                       |
-|                       v                                                                                       |
-|               (Rightsizing, idle-resource, and efficiency recommendations for FinOps review)                    |
-|                                                                                                                |
-| Review focus: tag taxonomy, budget target scope, recipients, webhook ownership, Optimizer scope, and IAM       |
-| statements.                                                                                                    |
-| Hand-off: tag namespace, budget IDs, alert rules, notification topics, alarm IDs, Optimizer profiles, and      |
-| optional access policy ID.                                                                                     |
-+----------------------------------------------------------------------------------------------------------------+
-```
+![Cost Optimization architecture](architecture.png)
+
+[Editable overview and native resource pages](architecture.drawio) · [Source inventory](resource-inventory.json)
 
 ## Terraform Components
 
@@ -132,8 +58,9 @@ optional Optimizer profiles, and an optional FinOps access policy.
   provider and the Ansible Terraform runner.
 - Tagging and IAM policy operations use the home-region provider because those
   APIs are tenancy and identity-plane sensitive.
-- Budgets, notifications, monitoring alarms, and Optimizer profiles are scoped
-  to the supplied compartment IDs and region.
+- Budgets use the home-region provider and tenancy-root ownership; spending
+  targets are separate. Notifications, monitoring and Optimizer use regional
+  configuration and their supplied target compartment references.
 - ONS subscriptions may point to email or webhook endpoints outside OCI; treat
   those endpoints as external trust boundaries.
 - Recipients, webhook URLs, OCIDs, and policy statements belong in ignored local
@@ -195,3 +122,7 @@ optional Optimizer profiles, and an optional FinOps access policy.
 ## Budget Dependency Follow-Up
 
 The Budget dependency selects the published root-ownership fix and inherits the home-region provider. Budget ownership is tenancy root; spending targets remain separate. This administrative operation was tested with mocked providers, not created in the workload compartment. Budgets are soft limits, not an automatic spending cap.
+
+## Diagram Review - 2026-10-28
+
+The source defaults create one tag namespace and six tag definitions if applied with valid inputs. This review generated documentation only. Tag defaults and all budget, notification, alarm, Optimizer and IAM branches remain conditional. Native Budget alerts send directly to configured recipients, independently of ONS. Alarm queries and event targets are supplied; no automatic budget metric, recommendation acceptance or resource resizing is installed. All transitive pinned-module declarations and existing reference inputs appear in the native detail pages. No cloud resources, alerts, budgets, savings or runtime delivery were tested. Historical validation dates and scopes are unchanged.

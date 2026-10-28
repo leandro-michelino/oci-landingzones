@@ -26,6 +26,7 @@ base=importlib.util.module_from_spec(spec); spec.loader.exec_module(base)
 icon_spec=importlib.util.spec_from_file_location('cloud_icons',Path(__file__).with_name('cloud-icons.py'))
 cloud_icons=importlib.util.module_from_spec(icon_spec); icon_spec.loader.exec_module(cloud_icons)
 DEFAULTS=[
+ 'operations/cost-optimization',
  'extensions/cdn-static-assets',
  'extensions/redis-cache',
  'data-platform/nosql',
@@ -283,6 +284,7 @@ def render_map(slug,cloud,entries,lookups,render,page_number=1):
 
 # Additional references, including collections with nested IDs and name/URL selectors.
 COLLECTION_REFERENCE_INPUTS = {
+ 'blueprints/operations/cost-optimization': {'notification_subscriptions', 'notification_event_rules', 'monitoring_alarms', 'budgets', 'optimizer_profiles'},
  'blueprints/extensions/redis-cache': {'alarms'},
  'blueprints/extensions/cdn-static-assets': {'existing_asset_bucket_name', 'cloudflare_worker_upstream_url'},
  'blueprints/extensions/container-instances': {'image_pull_secrets'},

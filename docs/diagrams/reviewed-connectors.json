@@ -24473,6 +24473,224 @@
       }
     ]
   },
+  "operations/cost-optimization": {
+    "relationships": [
+      {
+        "source": "Home provider: tagging enabled by default\nNamespace + six tag definitions / CostCenter tracks cost\nTag defaults disabled / explicit compartment map",
+        "target": "Existing approved target compartments\nTag-default values are metadata, not resource creation\nWorkload compartment falls back to tenancy if not supplied",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "Optional tag defaults / definition IDs and compartment map",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Native budget alert rules\nACTUAL / PERCENTAGE / threshold 80 by default\nRecipients supplied directly; no ONS dependency",
+        "target": "Optional native Budgets / enable_budgets=false\nHome provider / budget owner: tenancy root\nSpending targets: compartment or tag / default budget flag=true\nSoft limit; no spending stop or automatic remediation",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "budget_id / per-budget alert definitions",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Native budget alert rules\nACTUAL / PERCENTAGE / threshold 80 by default\nRecipients supplied directly; no ONS dependency",
+        "target": "Supplied budget email recipient strings\nNo email account or subscription created\nNo budget-to-ONS connection is declared",
+        "source_kind": "group:component",
+        "target_kind": "group:optional",
+        "label": "Native budget alert delivery intent / configured recipients",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional MQL alarm / enable_budget_alarm=false\nQuery must be supplied and destinations nonempty\nCustom monitoring_alarms are independent input entries",
+        "target": "Optional FinOps topic / enable_notifications=false\nOptional subscriptions + Events rules from maps\nSubscription protocol, endpoint and action targets supplied",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "Default alarm destinations include created FinOps topic if enabled",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional MQL alarm / enable_budget_alarm=false\nQuery must be supplied and destinations nonempty\nCustom monitoring_alarms are independent input entries",
+        "target": "Additional existing alarm destination IDs\nPer-alarm explicit destinations / no target resources created\nEvents can also select external Function / stream / topic IDs",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "Explicit destination IDs / optional overrides",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/operations/cost-optimization/locals.tf",
+        "revision": "working-tree",
+        "sha256": "2696dcd6a558cd76dd3ce4245a4d2917d20eeff09d51711f4413fc3819817184"
+      },
+      {
+        "path": "blueprints/operations/cost-optimization/main.tf",
+        "revision": "working-tree",
+        "sha256": "d820ea5128ef99e0782257c44c14dd12dde47da84cda1ffe2a96563082864337"
+      },
+      {
+        "path": "modules/governance/tagging/locals.tf",
+        "revision": "v0.2.0",
+        "sha256": "6d8998ed70522850b03b00442ab399b84ddac6d16dca9d594e8d2df9ecab84ed"
+      },
+      {
+        "path": "modules/governance/tagging/main.tf",
+        "revision": "v0.2.0",
+        "sha256": "1e0911af8ff73b9a70d2857868e91be473b9d5e4d15ad2a67829cdbb7f447780"
+      },
+      {
+        "path": "modules/governance/tagging/outputs.tf",
+        "revision": "v0.2.0",
+        "sha256": "01dd21b533e6716a294f210f064da64d655bf29644eeb44438a180d4cc2b26b6"
+      },
+      {
+        "path": "modules/governance/tagging/variables.tf",
+        "revision": "v0.2.0",
+        "sha256": "d73ef32561fcd21fb6c608dd682823b593f00ddba97164cde9b43f1f979a7453"
+      },
+      {
+        "path": "modules/governance/tagging/versions.tf",
+        "revision": "v0.2.0",
+        "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+      },
+      {
+        "path": "modules/governance/budgets/locals.tf",
+        "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+        "sha256": "b3eadeefed304a8ed1d725e275d4a61003c755618222c88c8806913b35656907"
+      },
+      {
+        "path": "modules/governance/budgets/main.tf",
+        "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+        "sha256": "5e86b5f385441f7986611c39b8f0b8786eab5e9f24ba0202011eed4908e9848a"
+      },
+      {
+        "path": "modules/governance/budgets/outputs.tf",
+        "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+        "sha256": "18e036fc1994f06d7832fb18c4f9f534680523baa3362b1ec510618f26ae18a0"
+      },
+      {
+        "path": "modules/governance/budgets/variables.tf",
+        "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+        "sha256": "904a1faf7b6152f8b9b20fb6f630f5902cdd5abffca315a71e7dc3e142491fe9"
+      },
+      {
+        "path": "modules/governance/budgets/versions.tf",
+        "revision": "80e439cd48a4b6dce4f63e54f53a45a621236601",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      },
+      {
+        "path": "modules/governance/events/locals.tf",
+        "revision": "v0.2.0",
+        "sha256": "c3ad78154df0dc426ba7d42a5d785388ae440ea0b828a59bbb2ed0db5b213c62"
+      },
+      {
+        "path": "modules/governance/events/main.tf",
+        "revision": "v0.2.0",
+        "sha256": "ce6fde4383ee3dd8af75d46bb3c7d3f81323c0f75af7acbaeb60efa81c3c93f9"
+      },
+      {
+        "path": "modules/governance/events/outputs.tf",
+        "revision": "v0.2.0",
+        "sha256": "0013d9c16d9d7e68cadc42fc95fc1a2b161d34f4854cbd18fcd332ee4fc02995"
+      },
+      {
+        "path": "modules/governance/events/variables.tf",
+        "revision": "v0.2.0",
+        "sha256": "cf38f17bbadc1836692a6d7da7c790d8b19cdca932214db75703c8c058364912"
+      },
+      {
+        "path": "modules/governance/events/versions.tf",
+        "revision": "v0.2.0",
+        "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+      },
+      {
+        "path": "modules/operations/monitoring/locals.tf",
+        "revision": "v0.2.0",
+        "sha256": "57e30dccd6eaf1ba3b7fc2e0b92095a385a2864ccc652bc967e4ba69481cc3f5"
+      },
+      {
+        "path": "modules/operations/monitoring/main.tf",
+        "revision": "v0.2.0",
+        "sha256": "f09f3b0becfaf1fea49e363c780ad9c3f68d7654f18dbac758e9ccd23031b389"
+      },
+      {
+        "path": "modules/operations/monitoring/outputs.tf",
+        "revision": "v0.2.0",
+        "sha256": "03d63afd289e3c1a3f71e44ba064534a8ceb0d1965b1b575ed8c44ea04334b19"
+      },
+      {
+        "path": "modules/operations/monitoring/variables.tf",
+        "revision": "v0.2.0",
+        "sha256": "264c9f9d7f1ed15e375f7d82dd4c26d8f9f04c670dd75e6680699a825981876b"
+      },
+      {
+        "path": "modules/operations/monitoring/versions.tf",
+        "revision": "v0.2.0",
+        "sha256": "d0375d96f90edda905e53aad4e95a4a2b834f8a5910ac26d1c50cc476e0bd933"
+      },
+      {
+        "path": "blueprints/operations/cost-optimization/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "327b01324d2e9c6320d4d33ae2db3884f95f431c4b73072c8af8cdbf9f673112"
+      },
+      {
+        "path": "blueprints/operations/cost-optimization/providers.tf",
+        "revision": "working-tree",
+        "sha256": "8f85e8539190ef04ab19c8d4c834aa1f74fa02d185b70ac6875df16eb1088de5"
+      },
+      {
+        "path": "blueprints/operations/cost-optimization/variables.tf",
+        "revision": "working-tree",
+        "sha256": "c6ade45bc2b02c1e11c47699c1d5de4450d7c6a9a600b03aee312a63a3488bbe"
+      },
+      {
+        "path": "blueprints/operations/cost-optimization/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
   "vmware/ocvs": {
     "relationships": [
       {
