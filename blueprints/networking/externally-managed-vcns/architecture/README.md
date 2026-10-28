@@ -1,6 +1,6 @@
 # Externally Managed VCNs Architecture
 
-This is the deployment architecture for `blueprints/networking/externally-managed-vcns`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/networking/externally-managed-vcns`. The PNG provides a GitHub-readable preview; the accompanying draw.io file preserves editable shapes and connectors.
 
 ## Deployment Purpose
 
@@ -13,35 +13,28 @@ Documents and exports existing VCN, subnet, DRG, and route target OCIDs so brown
 | Boundary | `blueprints/networking/externally-managed-vcns` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Documents and exports existing VCN, subnet, DRG, and route target OCIDs so brownfield networks can participate in the landing-zone output contract. |
 | Terraform components | `locals.external_resource_ids` only |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram below shows the default configuration, ownership boundaries, and configured routes or identifier hand-offs. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Externally Managed VCNs                                                                                  |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| (Brownfield VCNs, subnets, DRGs, route targets, DNS, and gateway IDs)                                    |
-|         |                                                                                                |
-|         v                                                                                                |
-| [locals.external_resource_ids]                                                                           |
-|         |-- normalizes supplied network IDs                                                              |
-|         |-- preserves ownership outside Terraform management                                             |
-|         `-- publishes stable hand-off maps for downstream modules                                        |
-|                                                                                                          |
-| No OCI network resources are created here; this blueprint documents and packages external references.    |
-| Review focus: ownership, lifecycle boundaries, ID accuracy, naming, route intent, and downstream         |
-| assumptions.                                                                                             |
-| Hand-off: normalized brownfield network maps without adopting resource lifecycle.                        |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Externally Managed VCNs Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Open the source in draw.io and export
+the PNG after edits so the GitHub preview stays aligned with the editable diagram.
+
+The diagram shows the default input configuration and distinguishes managed,
+external, and optional components. Arrows describe configured routes, associations,
+or identifier hand-offs; they do not establish verified packet flows.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. Regenerate with
+`python3 scripts/diagrams/networking-batch-01.py --render` from the repository root
+after installing the skill and its official toolkit. The toolkit itself is not stored in this repository.
+
+Diagram documentation reviewed on 2026-10-28 against `main.tf`, `variables.tf`,
+and the referenced module or output contract. No OCI resources were provisioned
+and no Terraform/provider validation date was changed for this documentation update.
 
 ## Terraform Components
 
@@ -57,8 +50,8 @@ Documents and exports existing VCN, subnet, DRG, and route target OCIDs so brown
 
 ## Traffic And Trust Boundaries
 
-- Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
-- Data plane traffic is the packet or service path shown in the Architecture diagram; if this deployment only creates identity or governance resources, the data plane is intentionally permission and signal flow instead of network packets.
+- The diagram shows local identifier processing only. This blueprint declares no OCI resources or network data-source lookups.
+- No packet path is established here. External network owners remain responsible for routes, security, connectivity and lifecycle.
 - Trust boundaries are the tenancy, compartment, VCN, subnet, DRG, private endpoint, identity domain, or managed service edges shown in the diagram.
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 

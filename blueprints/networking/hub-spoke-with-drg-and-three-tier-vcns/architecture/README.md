@@ -1,6 +1,6 @@
 # Hub-Spoke DRG And Three-Tier VCN Architecture
 
-This is the deployment architecture for `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns`. The PNG provides a GitHub-readable preview; the accompanying draw.io file preserves editable shapes, official OCI icons and connectors.
 
 ## Deployment Purpose
 
@@ -13,44 +13,28 @@ Creates a hub VCN, DRG, spoke VCNs, hub and spoke DRG attachments, and tiered su
 | Boundary | `blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Creates a hub VCN, DRG, spoke VCNs, hub and spoke DRG attachments, and tiered subnets for centralized connectivity. |
 | Terraform components | `hub_vcn`, `drg`, `spoke_vcns`, `oci_core_drg_attachment.hub`, `oci_core_drg_attachment.spokes` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram shows the default network foundation, attachments, routes and explicitly optional extensions; it is not runtime evidence. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Hub-Spoke DRG And Three-Tier VCN                                                                         |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Network compartment / selected region}                                                                  |
-|         |                                                                                                |
-|         v                                                                                                |
-| [Hub VCN]                                                                                                |
-|         |-- [dmz subnet]      -> public ingress/egress only when approved                                |
-|         |-- [firewall subnet] -> inspection or appliance insertion point                                 |
-|         |-- [shared subnet]   -> shared services, endpoints, DNS, or bastion                             |
-|         `-- [gateway set]     -> IGW / NAT / SGW according to route design                               |
-|                  |                                                                                       |
-|                  v                                                                                       |
-| [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
-|   |             |                    |                                                                   |
-|   |             |                    +--> [spoke VCN A] web -> app -> db                                 |
-|   |             |                    +--> [spoke VCN B] web -> app -> db                                 |
-|   |             |                    `--> [future spoke] same attachment contract                        |
-|   |                                                                                                      |
-|   `--> [central route exchange] hub, spokes, and future external attachments meet at the DRG             |
-|                                                                                                          |
-| North-south: external or service traffic enters the hub, then routes through DRG attachments to spokes.  |
-| East-west: spoke-to-spoke traffic centralizes through the DRG and any hub inspection controls.           |
-| Hand-off: hub/spoke VCN IDs, DRG IDs, attachment IDs, subnet maps, route targets, and service edge IDs.  |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Hub-Spoke DRG And Three-Tier VCN Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). The PNG is the documentation preview.
+Keep it aligned with the editable source after every diagram change.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. Regenerate from the repository
+root with `python3 scripts/diagrams/networking-batch-02.py --render` after installing
+the skill and its official toolkit. The toolkit itself is not stored in this repository.
+
+This view shows the default network foundation. Optional services are explicitly
+marked as disabled; their illustrated links are conditional. CIDRs are source
+defaults, and the deployment region and compartment remain operator inputs.
+
+Diagram documentation reviewed on 2026-10-28 against the blueprint, its pinned
+hub/spoke foundation and referenced modules. No OCI resources were provisioned,
+and no Terraform/provider validation date was changed for this documentation update.
 
 ## Terraform Components
 

@@ -1,6 +1,6 @@
 # Standalone Private Endpoint Only Architecture
 
-This is the deployment architecture for `blueprints/networking/standalone-private-endpoint-only`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/networking/standalone-private-endpoint-only`. The PNG provides a GitHub-readable preview; the accompanying draw.io file preserves editable shapes and connectors.
 
 ## Deployment Purpose
 
@@ -13,37 +13,28 @@ Creates a private-only VCN pattern with service gateway access and optional NAT,
 | Boundary | `blueprints/networking/standalone-private-endpoint-only` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Creates a private-only VCN pattern with service gateway access and optional NAT, designed for private endpoints and service access. |
 | Terraform components | `private_vcn` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram below shows the default configuration, ownership boundaries, and configured routes or identifier hand-offs. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Standalone Private Endpoint Only                                                                         |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Private workload compartment / selected region}                                                         |
-|         |                                                                                                |
-|         v                                                                                                |
-| [Private VCN - no Internet Gateway]                                                                      |
-|         |-- [private endpoint-ready subnet] -> (service endpoint supplied separately)                               |
-|         |-- [private workload subnet] -> route table -> Service Gateway                                  |
-|         `-- [optional NAT route]     -> controlled outbound only when explicitly enabled                 |
-|              |                                                                                           |
-|              v                                                                                           |
-| (OCI managed services: Object Storage, databases, APIs, analytics, or app endpoints)                     |
-|                                                                                                          |
-| Traffic stance: private-by-default; no public ingress path is created by this blueprint.                 |
-| Review focus: endpoint subnet, DNS, NSGs, service gateway route rules, and any optional NAT egress.      |
-| Hand-off: private VCN, subnet, route table, gateway, and endpoint-ready IDs.                             |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Standalone Private Endpoint Only Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Open the source in draw.io and export
+the PNG after edits so the GitHub preview stays aligned with the editable diagram.
+
+The diagram shows the default input configuration and distinguishes managed,
+external, and optional components. Arrows describe configured routes, associations,
+or identifier hand-offs; they do not establish verified packet flows.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. Regenerate with
+`python3 scripts/diagrams/networking-batch-01.py --render` from the repository root
+after installing the skill and its official toolkit. The toolkit itself is not stored in this repository.
+
+Diagram documentation reviewed on 2026-10-28 against `main.tf`, `variables.tf`,
+and the referenced module or output contract. No OCI resources were provisioned
+and no Terraform/provider validation date was changed for this documentation update.
 
 ## Terraform Components
 

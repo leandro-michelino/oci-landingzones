@@ -103,7 +103,13 @@ check_architecture_file() {
   check_contains "$path" "## Deployment Purpose" "Deployment Purpose section"
   check_contains "$path" "## Architecture At A Glance" "Architecture At A Glance section"
   check_contains "$path" "## Architecture" "Architecture section"
-  check_contains "$path" '```text' "a fenced Architecture diagram"
+  if [[ -f "$path" ]] && grep -Fq '](architecture.png)' "$path"; then
+    check_file "$(dirname "$path")/architecture.png"
+    check_file "$(dirname "$path")/architecture.drawio"
+    check_contains "$path" '](architecture.drawio)' "an editable draw.io source link"
+  else
+    check_contains "$path" '```text' "a fenced Architecture diagram or local PNG with draw.io source"
+  fi
   check_contains "$path" "## Terraform Components" "Terraform Components section"
   check_contains "$path" "## Request And Deployment Flow" "Request And Deployment Flow section"
   check_contains "$path" "## Traffic And Trust Boundaries" "Traffic And Trust Boundaries section"

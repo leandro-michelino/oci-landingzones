@@ -1,6 +1,6 @@
 # Standalone Three-Tier VCN Custom Architecture
 
-This is the deployment architecture for `blueprints/networking/standalone-three-tier-vcn-custom`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/networking/standalone-three-tier-vcn-custom`. The PNG provides a GitHub-readable preview; the accompanying draw.io file preserves editable shapes and connectors.
 
 ## Deployment Purpose
 
@@ -13,39 +13,28 @@ Creates a configurable standalone three-tier workload VCN with caller-controlled
 | Boundary | `blueprints/networking/standalone-three-tier-vcn-custom` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Creates a configurable standalone three-tier workload VCN with caller-controlled CIDRs, gateways, subnets, route tables, and security lists. |
 | Terraform components | `workload_vcn` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram below shows the default configuration, ownership boundaries, and configured routes or identifier hand-offs. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Standalone Three-Tier VCN Custom                                                                         |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Workload compartment / selected region}                                                                 |
-|         |                                                                                                |
-|         v                                                                                                |
-| [Workload VCN]                                                                                           |
-|         |-- [public web subnet]  -> route table -> Internet Gateway when enabled                         |
-|         |-- [private app subnet] -> route table -> NAT Gateway / Service Gateway                         |
-|         `-- [private db subnet]  -> route table -> NAT Gateway / Service Gateway                                |
-|              |                                                                                           |
-|              +--> [security lists] gate traffic; (workload NSGs supplied separately)                                      |
-|              +--> [gateway set] IGW / NAT / SGW according to blueprint variables                         |
-|                                                                                                          |
-| Custom stance: caller controls CIDRs, subnet maps, route tables, gateways, and security-list behavior.   |
-| North-south: client -> web tier -> app tier -> database tier.                                            |
-| Service path: private subnets -> service gateway for OCI services; outbound updates use NAT when         |
-| enabled.                                                                                                 |
-| Hand-off: VCN, subnet, route table, security, and gateway IDs for workloads or later extensions.         |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Standalone Three-Tier VCN Custom Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Open the source in draw.io and export
+the PNG after edits so the GitHub preview stays aligned with the editable diagram.
+
+The diagram shows the default input configuration and distinguishes managed,
+external, and optional components. Arrows describe configured routes, associations,
+or identifier hand-offs; they do not establish verified packet flows.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. Regenerate with
+`python3 scripts/diagrams/networking-batch-01.py --render` from the repository root
+after installing the skill and its official toolkit. The toolkit itself is not stored in this repository.
+
+Diagram documentation reviewed on 2026-10-28 against `main.tf`, `variables.tf`,
+and the referenced module or output contract. No OCI resources were provisioned
+and no Terraform/provider validation date was changed for this documentation update.
 
 ## Terraform Components
 
