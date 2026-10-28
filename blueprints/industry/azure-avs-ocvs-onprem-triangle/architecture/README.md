@@ -52,6 +52,10 @@ conditions in the companion declaration maps.
 
 ## Detailed Architecture Notes
 
+- The customer datacenter has a direct, independent ExpressRoute leg into Azure/AVS: edge router/firewall to the externally provisioned customer circuit, then the optional `onprem-direct` Global Reach attachment to the AVS-managed circuit.
+- The customer circuit uses `onpremCircuitId` and a securely supplied authorization key. It is distinct from the customer Oracle-facing ExpressRoute circuit used for FastConnect/OCI Interconnect.
+- The diagram explicitly shows the customer circuit with the Azure ExpressRoute glyph. The customer/carrier creates and operates it; this blueprint creates only the optional AVS attachment.
+
 - OCVS host/cluster controls are inherited from the pinned component, not reimplemented.
 - HCX activation/update egress and on-premises Connector installation are external.
 - HCX site pairing and service mesh must be configured separately for each supported pair.

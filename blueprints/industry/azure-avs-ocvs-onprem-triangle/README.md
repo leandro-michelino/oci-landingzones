@@ -99,3 +99,17 @@ attachment); on-premises–AVS through its own carrier ExpressRoute and Global
 Reach. Oracle Interconnect does not permit using one cloud to transit an
 on-premises connection into the other cloud. Do not configure that shortcut.
 Pair HCX per supported site pair; a service mesh is not a three-site object.
+
+## Direct Customer ExpressRoute To Azure
+
+The overview explicitly includes a customer/carrier ExpressRoute circuit and
+its direct connection from the customer datacenter into Azure/AVS. Configure
+`onpremCircuitId` with that existing circuit ID and supply its authorization key
+securely through `onpremAuthorizationKey`. After confirming prerequisites,
+`connectOnpremToAvs` and `onpremGlobalReachVerified` select the optional AVS
+Global Reach attachment, subject to the shared approval gates.
+
+This customer circuit is separate from the Oracle-facing ExpressRoute circuit
+paired with OCI FastConnect. The customer-to-AVS path does not traverse OCI.
+Carrier provisioning, private peering, routes and firewall policy remain
+external. No circuit was ordered, activated or verified live by this revision.

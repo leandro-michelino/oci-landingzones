@@ -186,3 +186,21 @@ now covers **77 blueprint plus one conceptual overviews**, **662 connectors**,
 Original conversion progress remains **69/80**, with **11 pending**; current
 coverage including eight additional projects is **77/88**. These are source,
 geometry and document checks, not runtime acceptance.
+
+## Triangle Customer ExpressRoute Clarification / October 28, 2026
+
+The triangle overview now gives the existing customer/carrier ExpressRoute
+circuit its own Azure glyph and boundary. The previous onprem-group-to-AVS
+attachment line is replaced with two explicit relationships: customer edge to
+carrier circuit (dashed external provisioning/path), and the optional AVS
+Global Reach attachment to that circuit (plain `onpremCircuitId`/authorization
+association). The attachment's AVS-managed-circuit association is unchanged.
+The customer path connects directly to Azure/AVS and does not pass through OCI
+or the separate Oracle-facing ExpressRoute circuit.
+
+The triangle now has 18 overview relationships; the global total is 663 across
+77 blueprint plus one conceptual overviews. There are still 287 native
+files/PNGs and 14 source-defined multicloud overviews with explicit OCI/cloud
+bridges. Resource declaration/input counts and cloud creation conditions are
+unchanged. Geometry, PNG and native-page/source checks passed. This is a
+source/diagram clarification, not provisioning or a connectivity test.

@@ -14,7 +14,7 @@
   "conceptual_overviews": 1,
   "native_documents": 287,
   "main_document_pages": 287,
-  "connector_count": 662,
+  "connector_count": 663,
   "cross_cloud_overviews": 14,
   "blueprints": [
     {
@@ -678,7 +678,7 @@
     },
     {
       "blueprint": "industry/azure-avs-ocvs-onprem-triangle",
-      "connections": 17,
+      "connections": 18,
       "cross_cloud_bridges": [
         {
           "source": "n16",
@@ -699,7 +699,7 @@
           ]
         }
       ],
-      "overview_png_sha256": "ca3909a0d93dc02fc051fea7c37d335fbd7e3c875b711bf6f34b7e828769caca",
+      "overview_png_sha256": "52329d5585bfcd44ac7713e32bf81ebda96e8b76c16059115cc49d77cd715fa7",
       "layout_warnings": []
     },
     {

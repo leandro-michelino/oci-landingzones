@@ -22868,11 +22868,11 @@
         "straight": true
       },
       {
-        "source": "On-premises VMware / existing and externally operated",
-        "target": "Second AVS Global Reach attachment / onprem-direct\nconnectOnpremToAvs + approved + onpremGlobalReachVerified\nExisting separate onpremCircuitId + secure authorization key",
-        "source_kind": "group:onprem",
-        "target_kind": "group:component",
-        "label": "Independent existing carrier ExpressRoute / NOT via OCI or Oracle-facing ER",
+        "source": "Existing edge router / firewall / carrier handoff\nDNS + NTP / HCX activation and update egress\nSeparate on-premises FastConnect and ExpressRoute legs",
+        "target": "Customer ExpressRoute / onpremCircuitId",
+        "source_kind": "group:optional",
+        "target_kind": "icon",
+        "label": "External customer edge / carrier handoff",
         "dashed": true,
         "start_arrow": "none",
         "end_arrow": "open",
@@ -22886,11 +22886,31 @@
         ],
         "waypoints": [
           [
-            110,
+            142,
             1205
           ]
         ],
         "straight": false
+      },
+      {
+        "source": "Second AVS Global Reach attachment / onprem-direct\nconnectOnpremToAvs + approved + onpremGlobalReachVerified\nExisting separate onpremCircuitId + secure authorization key",
+        "target": "Customer ExpressRoute / onpremCircuitId",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "Direct customer\u2013Azure ExpressRoute / onpremCircuitId + authorizationKey",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
       },
       {
         "source": "Second AVS Global Reach attachment / onprem-direct\nconnectOnpremToAvs + approved + onpremGlobalReachVerified\nExisting separate onpremCircuitId + secure authorization key",

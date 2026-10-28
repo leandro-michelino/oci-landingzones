@@ -47,3 +47,13 @@ external/global-reach dependencies first; do not run it against a shared group.
 Runtime what-if, provider permissions and cloud deployment have not been tested.
 
 [Architecture](../architecture/README.md) · [Runbook](../../../../docs/multicloud/VMWARE-HYBRID.md)
+
+## Explicit Customer Circuit In The Diagram
+
+The overview now gives the existing customer ExpressRoute circuit its own icon
+and connectors: customer edge to carrier circuit, circuit ID/authorization to
+the optional `onprem-direct` Global Reach resource, and that resource to the
+AVS-managed circuit. This is the direct customer–Azure/AVS leg, independent of
+both the onprem–OCI circuit and the Oracle-facing Azure circuit. Resource
+creation conditions and ownership are unchanged; no VNet gateway or new carrier
+circuit resource is inferred from this diagram clarification.

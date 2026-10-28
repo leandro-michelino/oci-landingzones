@@ -682,3 +682,20 @@ add 37 new overview connectors and three proposed application connectors to the
 existing OCVS overview. Local evidence is recorded in
 [VMware validation](../VMWARE-HYBRID-20261028.md); no provisioning, HCX migration,
 application request, restore or runtime transport test was performed.
+
+## Triangle Direct Customer ExpressRoute Clarification
+
+The [triangle overview](../../blueprints/industry/azure-avs-ocvs-onprem-triangle/architecture/README.md)
+now explicitly shows customer edge → customer/carrier ExpressRoute → optional
+AVS Global Reach attachment → AVS-managed circuit. The existing carrier circuit
+uses its own Azure glyph and is distinct from the Oracle-facing ExpressRoute
+circuit paired with OCI FastConnect. The Bicep already consumes `onpremCircuitId`
+and a secure authorization key; no additional cloud resource or creation flag
+was introduced by this diagram/documentation revision.
+
+The current triangle count is 18 connectors and the global count is 663.
+Coverage remains 77/88 current entry points and 69/80 original conversions,
+with 11 original entries pending. Native documents/PNGs remain 287. GCP
+counterparts remain in the planned final phase. Historical Terraform/provider
+validation metadata is unchanged; no circuit order, cloud operation or runtime
+connection test was performed.

@@ -73,7 +73,11 @@ def build(index):
   d.connect(drg,er,label='Optional PRIVATE VC / circuits.azure / ExpressRoute service key + 2 BGP pairs',exit=(1,.5),entry=(0,.5),straight=True,label_offset=(0,-40))
  if tri:
   remote=d.box('Second AVS Global Reach attachment / onprem-direct\nconnectOnpremToAvs + approved + onpremGlobalReachVerified\nExisting separate onpremCircuitId + secure authorization key',2060,1140,900,130)
-  d.connect(op,remote,kind='dashed',label='Independent existing carrier ExpressRoute / NOT via OCI or Oracle-facing ER',exit=(.1,1),entry=(0,.5),waypoints=[(110,1205)],label_offset=(0,20))
+  customer=d.group('onprem','Customer direct ExpressRoute / existing carrier circuit',20,1110,900,190)
+  customer_er=cloud.icon(d,'Microsoft.Network/expressRouteCircuits',450,95,parent=customer,size=60,label='Customer ExpressRoute / onpremCircuitId',label_pos='top')
+  d.text('Independent customer-to-Azure private peering / carrier provisioning external',35,145,830,30,parent=customer,size=14)
+  d.connect(edge,customer_er,kind='dashed',label='External customer edge / carrier handoff',exit=(.1,1),entry=(0,.5),waypoints=[(142,1205)],label_offset=(80,-30))
+  d.connect(remote,customer_er,kind='plain',label='Direct customer–Azure ExpressRoute / onpremCircuitId + authorizationKey',exit=(0,.5),entry=(1,.5),straight=True,label_offset=(0,25))
   d.connect(remote,managed,kind='plain',label='AVS parent',exit=(1,.5),entry=(1,.5),waypoints=[(3040,1205),(3040,570)],label_offset=(0,-30))
  else:
   d.text('HCX site pairing / profiles / service meshes and source-to-target VM migration remain external steps.\nPrivate circuits alone do not configure application access, database consistency, replication, backup or failover.',20,1130,width,105,size=18)
@@ -84,8 +88,9 @@ def build(index):
  return d
 
 def main():
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('--render',action='store_true');a=p.parse_args()
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--render',action='store_true');p.add_argument('--blueprint',action='append',choices=ITEMS);a=p.parse_args()
  for i,slug in enumerate(ITEMS):
+  if a.blueprint and slug not in a.blueprint:continue
   d=build(i);w=d.check()+d._crossings([n for n in d.nodes if n.kind=='text']);print(slug,w,flush=True)
   if w:raise RuntimeError('Fix geometry')
   path=ROOT/'blueprints'/slug/'architecture/architecture.drawio';d.save(str(path))
