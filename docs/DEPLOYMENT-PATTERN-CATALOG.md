@@ -180,3 +180,13 @@ The catalog should continue to evolve from:
   VPN, private DNS, OKE, Exadata, Zero Trust, and SCCA.
 - Customer-specific requirements seen during real OCI landing zone work.
 - Azure + OCI architecture notes and backlog under `docs/multicloud/`.
+
+## GCP Counterparts - 2026-10-28
+
+All five planned infrastructure counterparts are available with separate OCI/GCP execution roots, safe disabled examples, local checks and editable diagrams. Application-level workflows remain explicitly scoped.
+
+- [gcp-oci-hybrid-network-backbone](../blueprints/networking/gcp-oci-hybrid-network-backbone/README.md)
+- [gcp-oci-cross-cloud-dr](../blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/README.md)
+- [gke-oke-active-passive](../blueprints/extensions/gke-oke-active-passive/README.md)
+- [oci-gcp-mysql-heatwave-dr](../blueprints/data-platform/oci-gcp-mysql-heatwave-dr/README.md)
+- [gcp-oci-ai-gateway](../blueprints/ai/gcp-oci-ai-gateway/README.md)

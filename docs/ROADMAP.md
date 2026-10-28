@@ -47,8 +47,8 @@ implement the [GCP counterpart batch](multicloud/GCP-OCI-BLUEPRINTS.md).
 This is a commitment to new blueprint implementation, including the GCP-side
 infrastructure templates, not just diagrams. The planned first batch mirrors
 existing AWS/Azure outcomes: hybrid networking, cross-cloud DR, Kubernetes
-active/passive, MySQL DR and AI gateway. All remain planned until implemented
-and validated. This request does not authorize provisioning or billed services.
+active/passive, MySQL DR and AI gateway. All five infrastructure counterparts are now implemented and locally validated;
+runtime acceptance remains separately scoped. This request does not authorize provisioning or billed services.
 
 ---
 
@@ -2198,3 +2198,7 @@ The original diagram conversion is now **79/80**, with only Cost Optimization pe
 ## Original Diagram Catalog Complete, October 28, 2026
 
 Cost Optimization completes the original 80/80 diagram conversion. All 88 current entry points, including eight additions, have editable source, resource coverage and inspected PNGs. Local audit: 715 connectors and 323 native documents/PNGs. No runtime acceptance is inferred. The five GCP counterparts now form the next implementation phase.
+
+## GCP Counterpart Batch Delivered, October 28, 2026
+
+All five first-batch GCP counterparts are implemented and locally validated, with OCI and GCP resource coverage, independently scoped Terraform roots and editable draw.io/PNG diagrams. The catalog now has 93 entry points, all with diagrams. Original conversion remains 80/80. See [scope, checks and runtime gaps](multicloud/GCP-COUNTERPARTS-20261028.md). No live cloud provisioning, application recovery, replication or cutover was authorized or performed.

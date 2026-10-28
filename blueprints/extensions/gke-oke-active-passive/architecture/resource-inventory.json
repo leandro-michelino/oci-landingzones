@@ -1,0 +1,643 @@
+{
+  "schema_version": 2,
+  "blueprint": "extensions/gke-oke-active-passive",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "Contracts": 3,
+    "GCP": 9,
+    "OCI": 2
+  },
+  "resources": [
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.guard",
+      "type": "terraform_data",
+      "symbol": "guard",
+      "source": "blueprints/extensions/gke-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n4",
+        "source_symbol": "guard",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.oke.oci_containerengine_cluster.this",
+      "type": "oci_containerengine_cluster",
+      "symbol": "this",
+      "source": "blueprints/extensions/oke/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "count = var.enable_cluster ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_cluster ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.oke (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.oke",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/extensions/oke?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/extensions/gke-oke-active-passive/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_cluster": "var.enable_oci && var.costs_approved",
+            "enable_node_pool": "var.enable_oci && var.costs_approved && var.enable_nodes"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "OCI Container Engine for Kubernetes"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.oke.oci_containerengine_node_pool.this",
+      "type": "oci_containerengine_node_pool",
+      "symbol": "this",
+      "source": "blueprints/extensions/oke/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "count = var.enable_node_pool ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_node_pool ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.oke (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.oke",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/extensions/oke?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/extensions/gke-oke-active-passive/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_cluster": "var.enable_oci && var.costs_approved",
+            "enable_node_pool": "var.enable_oci && var.costs_approved && var.enable_nodes"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n16",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "gcp.module.network.terraform_data.guard",
+      "type": "terraform_data",
+      "symbol": "guard",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/extensions/gke-oke-active-passive/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n6",
+        "source_symbol": "guard",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_network.this",
+      "type": "google_compute_network",
+      "symbol": "this",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/extensions/gke-oke-active-passive/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": "google_compute_network",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_subnetwork.this",
+      "type": "google_compute_subnetwork",
+      "symbol": "this",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/extensions/gke-oke-active-passive/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n8",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_router.this",
+      "type": "google_compute_router",
+      "symbol": "this",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/extensions/gke-oke-active-passive/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n10",
+        "source_symbol": "this",
+        "provider_icon": "google_compute_router",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_firewall.peer",
+      "type": "google_compute_firewall",
+      "symbol": "peer",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled && length(var.allowed_tcp_ports) > 0 && length(var.peer_cidrs) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && length(var.allowed_tcp_ports) > 0 && length(var.peer_cidrs) > 0 ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/extensions/gke-oke-active-passive/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n14",
+        "source_symbol": "peer",
+        "provider_icon": "google_compute_firewall",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_route.egress",
+      "type": "google_compute_route",
+      "symbol": "egress",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled && var.enable_nat ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.enable_nat ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/extensions/gke-oke-active-passive/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n18",
+        "source_symbol": "egress",
+        "provider_icon": "google_compute_route",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_router_nat.this",
+      "type": "google_compute_router_nat",
+      "symbol": "this",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled && var.enable_nat ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.enable_nat ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/extensions/gke-oke-active-passive/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n22",
+        "source_symbol": "this",
+        "provider_icon": "google_compute_router_nat",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_service_account.nodes",
+      "type": "google_service_account",
+      "symbol": "nodes",
+      "source": "blueprints/extensions/gke-oke-active-passive/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enabled && var.costs_approved && var.enable_workload ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.costs_approved && var.enable_workload ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n26",
+        "source_symbol": "nodes",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_project_iam_member.nodes",
+      "type": "google_project_iam_member",
+      "symbol": "nodes",
+      "source": "blueprints/extensions/gke-oke-active-passive/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enabled && var.costs_approved && var.enable_workload ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.costs_approved && var.enable_workload ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n28",
+        "source_symbol": "nodes",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_container_cluster.standby",
+      "type": "google_container_cluster",
+      "symbol": "standby",
+      "source": "blueprints/extensions/gke-oke-active-passive/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enabled && var.costs_approved && var.enable_workload ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.costs_approved && var.enable_workload ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n30",
+        "source_symbol": "standby",
+        "provider_icon": "google_container_cluster",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "gcp.terraform_data.guard",
+      "type": "terraform_data",
+      "symbol": "guard",
+      "source": "blueprints/extensions/gke-oke-active-passive/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n8",
+        "source_symbol": "guard",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "contracts-resources.drawio",
+      "page_name": "Contracts resources",
+      "declarations": 3
+    },
+    {
+      "file": "gcp-resources.drawio",
+      "page_name": "GCP resources",
+      "declarations": 9
+    },
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 2
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/extensions/gke-oke-active-passive/variables.tf",
+      "description": "Explicit OCI workload compartment; no tenancy fallback.",
+      "default_expression": "REQUIRED",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.oci_vcn_id",
+      "source": "blueprints/extensions/gke-oke-active-passive/variables.tf",
+      "description": "Existing OCVS-independent OCI workload VCN where required.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.oci_subnet_id",
+      "source": "blueprints/extensions/gke-oke-active-passive/variables.tf",
+      "description": "Existing private OCI service or endpoint subnet where required.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.node_image_id",
+      "source": "blueprints/extensions/gke-oke-active-passive/variables.tf",
+      "description": "Compatible regional OKE worker image OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.node_subnet_ids",
+      "source": "blueprints/extensions/gke-oke-active-passive/variables.tf",
+      "description": "Existing prepared worker subnet OCIDs.",
+      "default_expression": "[]",
+      "type_expression": "list(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "gcp.var.project_id",
+      "source": "blueprints/extensions/gke-oke-active-passive/gcp/variables.tf",
+      "description": "Existing Google project with billing and required APIs pre-enabled.",
+      "default_expression": "REQUIRED",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 6
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/extensions/gke-oke-active-passive/main.tf",
+      "revision": "working-tree",
+      "sha256": "4930379fe3ddff6fa26adf9e9a98d2e39424fd0cb114fecbc261a33f272de5cf"
+    },
+    {
+      "path": "blueprints/extensions/oke/locals.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "e68fe12ce93b74df9f7d3c608acff21867ef1fa52f43f28d7a872997be52074e"
+    },
+    {
+      "path": "blueprints/extensions/oke/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "8d6da11900f442485fe79e520f6e09c901249bb7ac2bacc1eab8de4fa1091f00"
+    },
+    {
+      "path": "blueprints/extensions/oke/outputs.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "bacea5d46966b801e7ec4de2a158c10467bef92947dd7daa8dc680d55fd06699"
+    },
+    {
+      "path": "blueprints/extensions/oke/providers.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "2ee529fdf155bf2f2d0d63966264b97faa465ab7aac410b2a79a15001387d0ce"
+    },
+    {
+      "path": "blueprints/extensions/oke/variables.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "6551af2bceee5b70144cd40f4c38654d2ccb2977ca556ab77eeabe8ebad80ac2"
+    },
+    {
+      "path": "blueprints/extensions/oke/versions.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "blueprints/extensions/gke-oke-active-passive/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "1b3a1dad50992d1a046bb68e0dd8b949bd14b84099033ee31d51f75f503b6480"
+    },
+    {
+      "path": "blueprints/extensions/gke-oke-active-passive/providers.tf",
+      "revision": "working-tree",
+      "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
+    },
+    {
+      "path": "blueprints/extensions/gke-oke-active-passive/variables.tf",
+      "revision": "working-tree",
+      "sha256": "f81681a64e6bed035120d2b9d1481a232758a26fbdf32e46f003bb9b1cc52a8b"
+    },
+    {
+      "path": "blueprints/extensions/gke-oke-active-passive/versions.tf",
+      "revision": "working-tree",
+      "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
+    },
+    {
+      "path": "blueprints/extensions/gke-oke-active-passive/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "sha256": "3131465fde606bfeda043237b461cc4dd8be3a1d029cac2b057ced828c0d0d9a"
+    },
+    {
+      "path": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "sha256": "aec56130d0af0011a8867ed4feba66812700c9bebdc0949037f1419b6dbe56ab"
+    },
+    {
+      "path": "modules/networking/gcp-private-network/outputs.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "sha256": "28bce52d8d7b0afaa34f7477ec39effa7e750a7b5164d07520216424c9ef754f"
+    },
+    {
+      "path": "modules/networking/gcp-private-network/variables.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "sha256": "ab8c910c3384285664f5a206d15eb06ccd11e091e3d29c67533f3a440ba84297"
+    },
+    {
+      "path": "modules/networking/gcp-private-network/versions.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "sha256": "6ffd60a2f77055d741bd73a3964761a1cb4def74e67ff41663f5aef6cf5b5177"
+    },
+    {
+      "path": "blueprints/extensions/gke-oke-active-passive/gcp/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "08bbc47639839d546c07c4f0f4d6ae71babf495cba5b1692b270b3a722cb2722"
+    },
+    {
+      "path": "blueprints/extensions/gke-oke-active-passive/gcp/providers.tf",
+      "revision": "working-tree",
+      "sha256": "a60a038a12ff8ab17621dfdeb9672da47b12eff2a860d94eae560caba1ae27d5"
+    },
+    {
+      "path": "blueprints/extensions/gke-oke-active-passive/gcp/variables.tf",
+      "revision": "working-tree",
+      "sha256": "84b3bbc86371005d627c28852ff90e072a34f907aeef8e5ec6509250cd2e86ea"
+    },
+    {
+      "path": "blueprints/extensions/gke-oke-active-passive/gcp/versions.tf",
+      "revision": "working-tree",
+      "sha256": "6ffd60a2f77055d741bd73a3964761a1cb4def74e67ff41663f5aef6cf5b5177"
+    }
+  ]
+}

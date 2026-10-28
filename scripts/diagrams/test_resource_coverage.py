@@ -72,4 +72,24 @@ resource "oci_example" "second" {
    self.assertIn('? 1 : 0',labels)
 
 
+class CompanionRootTests(unittest.TestCase):
+ def test_infrastructure_entry_is_inventoried_and_scoped(self):
+  with tempfile.TemporaryDirectory() as tmp:
+   root=Path(tmp);gcp=root/'blueprints/example/gcp';gcp.mkdir(parents=True)
+   (gcp/'infrastructure.tf').write_text('resource "google_compute_network" "this" {\n  count = var.enabled ? 1 : 0\n  name = "example"\n}\nresource "terraform_data" "guard" {\n  input = true\n}\n')
+   with patch.object(coverage,'ROOT',root):
+    resources,_,sources=coverage.companion_resources('blueprints/example')
+   self.assertEqual({r['address'] for r in resources},{'gcp.google_compute_network.this','gcp.terraform_data.guard'})
+   self.assertEqual({r['cloud'] for r in resources},{'GCP','Contracts'})
+   self.assertTrue(any(s['path'].endswith('/gcp/infrastructure.tf') for s in sources))
+
+ def test_separate_gcp_input_ids_are_covered(self):
+  with tempfile.TemporaryDirectory() as tmp:
+   root=Path(tmp);gcp=root/'blueprints/example/gcp';gcp.mkdir(parents=True)
+   (gcp/'variables.tf').write_text('variable "project_id" {\n  type = string\n  description = "Existing project"\n}\n')
+   with patch.object(coverage,'ROOT',root):
+    refs=coverage.input_references('blueprints/example')
+   self.assertEqual(refs[0]['address'],'gcp.var.project_id')
+
+
 if __name__=='__main__':unittest.main()

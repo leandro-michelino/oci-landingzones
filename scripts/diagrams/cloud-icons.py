@@ -62,6 +62,11 @@ AWS={
  'AWS::EC2::EIP':('elastic_ip_address','#8C4FFF'),
 }
 GCP={
+ 'google_cloud_run_v2_service':'cloud_run',
+ 'google_sql_database_instance':'cloud_sql',
+ 'google_container_cluster':'container_engine',
+ 'google_compute_router_nat':'cloud_nat',
+ 'google_compute_ha_vpn_gateway':'cloud_vpn',
  'google_compute_interconnect_attachment':'partner_interconnect',
  'google_compute_firewall':'cloud_firewall_rules',
  'google_compute_instance':'compute_engine',

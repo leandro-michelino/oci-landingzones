@@ -26,6 +26,11 @@ base=importlib.util.module_from_spec(spec); spec.loader.exec_module(base)
 icon_spec=importlib.util.spec_from_file_location('cloud_icons',Path(__file__).with_name('cloud-icons.py'))
 cloud_icons=importlib.util.module_from_spec(icon_spec); icon_spec.loader.exec_module(cloud_icons)
 DEFAULTS=[
+ 'networking/gcp-oci-hybrid-network-backbone',
+ 'disaster-recovery/gcp-oci-cross-cloud-dr',
+ 'extensions/gke-oke-active-passive',
+ 'data-platform/oci-gcp-mysql-heatwave-dr',
+ 'ai/gcp-oci-ai-gateway',
  'operations/cost-optimization',
  'extensions/cdn-static-assets',
  'extensions/redis-cache',
@@ -284,6 +289,8 @@ def render_map(slug,cloud,entries,lookups,render,page_number=1):
 
 # Additional references, including collections with nested IDs and name/URL selectors.
 COLLECTION_REFERENCE_INPUTS = {
+ 'blueprints/networking/gcp-oci-hybrid-network-backbone': {'circuits', 'vpn_tunnels', 'vpn_psks', 'gcp_vpn_public_ips'},
+ 'blueprints/ai/gcp-oci-ai-gateway': {'invoker_members'},
  'blueprints/operations/cost-optimization': {'notification_subscriptions', 'notification_event_rules', 'monitoring_alarms', 'budgets', 'optimizer_profiles'},
  'blueprints/extensions/redis-cache': {'alarms'},
  'blueprints/extensions/cdn-static-assets': {'existing_asset_bucket_name', 'cloudflare_worker_upstream_url'},
@@ -298,13 +305,17 @@ COLLECTION_REFERENCE_INPUTS = {
 def input_references(folder):
  """Document existing-resource ID inputs without reading private tfvars/state."""
  refs=[]
- for path,src in read_sources(folder):
+ sources=read_sources(folder)
+ for cloud_name in ('gcp',):
+  child=ROOT/folder/cloud_name
+  if child.is_dir():sources+=read_sources(str(child.relative_to(ROOT)))
+ for path,src in sources:
   for m in re.finditer(r'^variable "([^"]+)"\s*\{',src,re.M):
    name=m[1]
    if not re.search(r'(_ids?|_ocids?)$',name) and name not in COLLECTION_REFERENCE_INPUTS.get(folder,set()):continue
    if name in ('tenancy_ocid','current_user_ocid'):continue
    attrs=root_attributes(declaration_body(src,m.end()))
-   refs.append({'address':'var.'+name,'source':path,'description':attrs.get('description','').strip('"'),
+   refs.append({'address':('gcp.var.' if '/gcp/' in path else 'var.')+name,'source':path,'description':attrs.get('description','').strip('"'),
                 'default_expression':attrs.get('default','REQUIRED'),'type_expression':attrs.get('type','unknown'),
                 'scope':'Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.'})
  return refs
@@ -330,6 +341,18 @@ def render_inputs(slug,refs,render):
  return {'file':path.name,'page_name':'Existing resources / inputs','references':len(refs)}
 
 
+
+def companion_resources(folder):
+ """Read separately executed cloud roots, including Terraform entries without main.tf."""
+ resources=[];lookups=[];sources=[]
+ for cloud_name in ('azure','aws','gcp'):
+  companion=ROOT/folder/cloud_name
+  if companion.is_dir() and any(companion.glob('*.tf')):
+   r,l,s=terraform(str(companion.relative_to(ROOT)),prefix=cloud_name+'.')
+   resources+=r;lookups+=l;sources+=s
+ return resources,lookups,sources
+
+
 def main():
  parser=argparse.ArgumentParser(description=__doc__)
  parser.add_argument('--render',action='store_true'); parser.add_argument('--blueprint',action='append'); parser.add_argument('--check',action='store_true')
@@ -341,10 +364,8 @@ def main():
   folder='blueprints/'+slug
   resources,lookups,sources=terraform(folder)
   remote,remote_sources=external(folder); resources+=remote; sources+=remote_sources
-  for template in sorted((ROOT/folder).glob('*/main.tf')):
-   if template.parent.name.lower() in ('azure','aws','gcp'):
-    r,l,s=terraform(str(template.parent.relative_to(ROOT)))
-    resources+=r; lookups+=l; sources+=s
+  r,l,s=companion_resources(folder)
+  resources+=r;lookups+=l;sources+=s
   addresses=[(e['cloud'],e['address']) for e in resources]
   if len(addresses)!=len(set(addresses)): raise RuntimeError('Duplicate resource address')
   inventory_path=ROOT/folder/'architecture/resource-inventory.json'

@@ -107,7 +107,7 @@ terraform plan or ansible/plan.yml
 
 ## Blueprint Architecture Inventory
 
-The current catalog has 88 deployable blueprint entry points across 14
+The current catalog has 93 deployable blueprint entry points across 14
 families. Each entry point owns its local Architecture in
 `architecture/README.md`.
 
@@ -201,6 +201,12 @@ families. Each entry point owns its local Architecture in
 | operating-entity | [Multi Operating Entities](../../blueprints/operating-entity/multi-operating-entities/) | [Architecture](../../blueprints/operating-entity/multi-operating-entities/architecture/) |
 | operating-entity | [Workload Vending](../../blueprints/operating-entity/workload-vending/) | [Architecture](../../blueprints/operating-entity/workload-vending/architecture/) |
 | operations | [Cost Optimization](../../blueprints/operations/cost-optimization/) | [Architecture](../../blueprints/operations/cost-optimization/architecture/) |
+| networking | [GCP and OCI Hybrid Network Backbone](../../blueprints/networking/gcp-oci-hybrid-network-backbone/) | [Architecture](../../blueprints/networking/gcp-oci-hybrid-network-backbone/architecture/) |
+| disaster-recovery | [GCP and OCI Cross-Cloud DR](../../blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/) | [Architecture](../../blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/architecture/) |
+| extensions | [GKE and OKE Active Passive](../../blueprints/extensions/gke-oke-active-passive/) | [Architecture](../../blueprints/extensions/gke-oke-active-passive/architecture/) |
+| data-platform | [OCI HeatWave and GCP MySQL DR](../../blueprints/data-platform/oci-gcp-mysql-heatwave-dr/) | [Architecture](../../blueprints/data-platform/oci-gcp-mysql-heatwave-dr/architecture/) |
+| ai | [GCP and OCI AI Gateway](../../blueprints/ai/gcp-oci-ai-gateway/) | [Architecture](../../blueprints/ai/gcp-oci-ai-gateway/architecture/) |
+
 
 ## Maintenance Notes
 

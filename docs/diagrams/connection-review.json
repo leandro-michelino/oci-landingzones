@@ -10,12 +10,12 @@
     "Reviewed endpoints, labels, arrows, paths and source hashes match contract",
     "Subnet routing and DNS-view semantic regression checks"
   ],
-  "overview_count": 88,
+  "overview_count": 93,
   "conceptual_overviews": 1,
-  "native_documents": 323,
-  "main_document_pages": 323,
-  "connector_count": 715,
-  "cross_cloud_overviews": 15,
+  "native_documents": 348,
+  "main_document_pages": 348,
+  "connector_count": 732,
+  "cross_cloud_overviews": 20,
   "blueprints": [
     {
       "blueprint": "networking/standalone-three-tier-vcn-defaults",
@@ -780,6 +780,100 @@
         }
       ],
       "overview_png_sha256": "4b4e56c5da02b6370afaf46bdcf10cb71c44829bff958e0d759bcdb57539f44e",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "networking/gcp-oci-hybrid-network-backbone",
+      "connections": 6,
+      "cross_cloud_bridges": [
+        {
+          "source": "n8",
+          "target": "n17",
+          "label": "Optional FastConnect + Partner Interconnect\nenable_interconnect / region-pair + cost approval / service pairing keys",
+          "clouds": [
+            "OCI",
+            "GCP"
+          ]
+        },
+        {
+          "source": "n22",
+          "target": "n23",
+          "label": "Optional independently routed VPN / matching staged endpoint and key maps",
+          "clouds": [
+            "OCI",
+            "GCP"
+          ]
+        }
+      ],
+      "overview_png_sha256": "98a4cd89a2ad1d589303bdd65fd59c5c1f5ad8b855231249e050bac60a069e5a",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "disaster-recovery/gcp-oci-cross-cloud-dr",
+      "connections": 2,
+      "cross_cloud_bridges": [
+        {
+          "source": "n6",
+          "target": "n14",
+          "label": "External export / authenticated TLS transfer / checksum / restore workflow",
+          "clouds": [
+            "OCI",
+            "GCP"
+          ]
+        }
+      ],
+      "overview_png_sha256": "70380c5a68d32004c2e18e23af04709afc840cf970403bacaae702b7463691fe",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "extensions/gke-oke-active-passive",
+      "connections": 3,
+      "cross_cloud_bridges": [
+        {
+          "source": "n6",
+          "target": "n16",
+          "label": "External image / manifest / state replication, recovery and DNS cutover",
+          "clouds": [
+            "OCI",
+            "GCP"
+          ]
+        }
+      ],
+      "overview_png_sha256": "f0d339d553c787569deb86cc8f1275c26807fc1ecdde750de39440edaf47e013",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "data-platform/oci-gcp-mysql-heatwave-dr",
+      "connections": 3,
+      "cross_cloud_bridges": [
+        {
+          "source": "n6",
+          "target": "n13",
+          "label": "External-source registration / TLS + GTID/binlog compatibility / replication job NOT configured",
+          "clouds": [
+            "OCI",
+            "GCP"
+          ]
+        }
+      ],
+      "overview_png_sha256": "30f102ee289f1f35507b692b0aa94cfe03dcfd661d7c93735a65aa8a3d5d3887",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "ai/gcp-oci-ai-gateway",
+      "connections": 3,
+      "cross_cloud_bridges": [
+        {
+          "source": "n6",
+          "target": "n19",
+          "label": "External secure adapter URL handoff / private route + Google caller token required",
+          "clouds": [
+            "OCI",
+            "GCP"
+          ]
+        }
+      ],
+      "overview_png_sha256": "c4c9f97b6deca7e50029631103b0288c2bcdbf066e455eb18b6a3207996b3e9e",
       "layout_warnings": []
     },
     {

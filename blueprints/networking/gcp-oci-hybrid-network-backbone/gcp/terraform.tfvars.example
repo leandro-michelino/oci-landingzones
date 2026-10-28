@@ -1,0 +1,6 @@
+project_id = "example-project"
+region = "southamerica-east1"
+name = "gcp-oci-net"
+enabled = false
+enable_workload = false
+costs_approved = false

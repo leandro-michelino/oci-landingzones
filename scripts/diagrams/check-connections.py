@@ -47,6 +47,8 @@ def diagrams():
  for i,slug in enumerate(m.ITEMS):yield slug,m.build(bool(i))
  m=load('vmware-hybrid')
  for i,slug in enumerate(m.ITEMS):yield slug,m.build(i)
+ m=load('gcp-counterparts')
+ for slug,title,kind in m.ITEMS:yield slug,m.build(kind,title)
  m=load('cost-optimization')
  yield m.SLUG,m.build()
  m=load('ocvs')

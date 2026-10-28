@@ -1,0 +1,881 @@
+{
+  "schema_version": 2,
+  "blueprint": "disaster-recovery/gcp-oci-cross-cloud-dr",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "Contracts": 3,
+    "GCP": 9,
+    "OCI": 8
+  },
+  "resources": [
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.guard",
+      "type": "terraform_data",
+      "symbol": "guard",
+      "source": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n4",
+        "source_symbol": "guard",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.oci_core_vcn.this",
+      "type": "oci_core_vcn",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.oci_core_internet_gateway.this",
+      "type": "oci_core_internet_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "count = var.enable_internet_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_internet_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n10",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Internet Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.oci_core_nat_gateway.this",
+      "type": "oci_core_nat_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "count = var.enable_nat_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_nat_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n22",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "NAT Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.oci_core_service_gateway.this",
+      "type": "oci_core_service_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "count = var.enable_service_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_service_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n31",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Service Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.oci_core_security_list.this",
+      "type": "oci_core_security_list",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "for_each = var.security_lists",
+      "creation_expression": {
+        "for_each": "var.security_lists"
+      },
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n41",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.oci_core_route_table.this",
+      "type": "oci_core_route_table",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "for_each = var.route_tables",
+      "creation_expression": {
+        "for_each": "var.route_tables"
+      },
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n53",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Route Table"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.oci_core_subnet.this",
+      "type": "oci_core_subnet",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "for_each = var.subnets",
+      "creation_expression": {
+        "for_each": "var.subnets"
+      },
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n77",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_objectstorage_bucket.backup",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "backup",
+      "source": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci && var.costs_approved ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n79",
+        "source_symbol": "backup",
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "gcp.module.network.terraform_data.guard",
+      "type": "terraform_data",
+      "symbol": "guard",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n6",
+        "source_symbol": "guard",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_network.this",
+      "type": "google_compute_network",
+      "symbol": "this",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": "google_compute_network",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_subnetwork.this",
+      "type": "google_compute_subnetwork",
+      "symbol": "this",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n8",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_router.this",
+      "type": "google_compute_router",
+      "symbol": "this",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n10",
+        "source_symbol": "this",
+        "provider_icon": "google_compute_router",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_firewall.peer",
+      "type": "google_compute_firewall",
+      "symbol": "peer",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled && length(var.allowed_tcp_ports) > 0 && length(var.peer_cidrs) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && length(var.allowed_tcp_ports) > 0 && length(var.peer_cidrs) > 0 ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n14",
+        "source_symbol": "peer",
+        "provider_icon": "google_compute_firewall",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_route.egress",
+      "type": "google_compute_route",
+      "symbol": "egress",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled && var.enable_nat ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.enable_nat ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n18",
+        "source_symbol": "egress",
+        "provider_icon": "google_compute_route",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_router_nat.this",
+      "type": "google_compute_router_nat",
+      "symbol": "this",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled && var.enable_nat ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.enable_nat ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n22",
+        "source_symbol": "this",
+        "provider_icon": "google_compute_router_nat",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_storage_bucket.backup",
+      "type": "google_storage_bucket",
+      "symbol": "backup",
+      "source": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enabled && var.costs_approved ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.costs_approved ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n26",
+        "source_symbol": "backup",
+        "provider_icon": "google_storage_bucket",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_service_account.standby",
+      "type": "google_service_account",
+      "symbol": "standby",
+      "source": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enabled && var.costs_approved && var.enable_workload ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.costs_approved && var.enable_workload ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n30",
+        "source_symbol": "standby",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_compute_instance.standby",
+      "type": "google_compute_instance",
+      "symbol": "standby",
+      "source": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enabled && var.costs_approved && var.enable_workload ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.costs_approved && var.enable_workload ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n32",
+        "source_symbol": "standby",
+        "provider_icon": "google_compute_instance",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "gcp.terraform_data.guard",
+      "type": "terraform_data",
+      "symbol": "guard",
+      "source": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n8",
+        "source_symbol": "guard",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "contracts-resources.drawio",
+      "page_name": "Contracts resources",
+      "declarations": 3
+    },
+    {
+      "file": "gcp-resources.drawio",
+      "page_name": "GCP resources",
+      "declarations": 9
+    },
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 8
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/variables.tf",
+      "description": "Explicit OCI workload compartment; no tenancy fallback.",
+      "default_expression": "REQUIRED",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.oci_vcn_id",
+      "source": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/variables.tf",
+      "description": "Existing OCVS-independent OCI workload VCN where required.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.oci_subnet_id",
+      "source": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/variables.tf",
+      "description": "Existing private OCI service or endpoint subnet where required.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "gcp.var.project_id",
+      "source": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/gcp/variables.tf",
+      "description": "Existing Google project with billing and required APIs pre-enabled.",
+      "default_expression": "REQUIRED",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 4
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "module.network.oci_core_services.all_services",
+      "type": "oci_core_services",
+      "symbol": "all_services",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "false"
+          }
+        }
+      ]
+    },
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "oci_objectstorage_namespace.this",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "this",
+      "source": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci && var.costs_approved ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/main.tf",
+      "revision": "working-tree",
+      "sha256": "5ca9ad76fe1093a8eb9fb792ed21b78325f34d8f8e0ca81f2b04b2624deee281"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/locals.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "58fe972006336ca6944306375bddd62fa71b9368657f2c5192a709d9bf9534ca"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "5c17244e7f9cfc7332d245af799149dfd4d4345b94f138c093512392bcab1118"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/outputs.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "3cbcf17a1db79acb2bd4f1f2c3f3259f9fbe0794849c295ac5ed4ba6228f82e9"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/variables.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "1b3fccd0750700b2ad1c31f349ee4fa640b150445e7f42c88fb45f83c35c84cf"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/versions.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "16975cd24edae9f75f0ec882312d90ec747ca6732023c14e476ecf953933ebc0"
+    },
+    {
+      "path": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/providers.tf",
+      "revision": "working-tree",
+      "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
+    },
+    {
+      "path": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/variables.tf",
+      "revision": "working-tree",
+      "sha256": "04aab6bfc74aa1c02768b58fe0d6a33dabc5cc94c02121de6d3bfb606cb4f3a9"
+    },
+    {
+      "path": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/versions.tf",
+      "revision": "working-tree",
+      "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
+    },
+    {
+      "path": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "sha256": "409316a47dd457ca40c2ecb6eab4a73bbf4b2228fdb102ecb3fb57966accf5db"
+    },
+    {
+      "path": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "sha256": "aec56130d0af0011a8867ed4feba66812700c9bebdc0949037f1419b6dbe56ab"
+    },
+    {
+      "path": "modules/networking/gcp-private-network/outputs.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "sha256": "28bce52d8d7b0afaa34f7477ec39effa7e750a7b5164d07520216424c9ef754f"
+    },
+    {
+      "path": "modules/networking/gcp-private-network/variables.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "sha256": "ab8c910c3384285664f5a206d15eb06ccd11e091e3d29c67533f3a440ba84297"
+    },
+    {
+      "path": "modules/networking/gcp-private-network/versions.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "sha256": "6ffd60a2f77055d741bd73a3964761a1cb4def74e67ff41663f5aef6cf5b5177"
+    },
+    {
+      "path": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/gcp/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "08bbc47639839d546c07c4f0f4d6ae71babf495cba5b1692b270b3a722cb2722"
+    },
+    {
+      "path": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/gcp/providers.tf",
+      "revision": "working-tree",
+      "sha256": "a60a038a12ff8ab17621dfdeb9672da47b12eff2a860d94eae560caba1ae27d5"
+    },
+    {
+      "path": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/gcp/variables.tf",
+      "revision": "working-tree",
+      "sha256": "5a41c851ea286b4902cd7ac051898558cbe8794829677957b050b3179c9231c1"
+    },
+    {
+      "path": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/gcp/versions.tf",
+      "revision": "working-tree",
+      "sha256": "6ffd60a2f77055d741bd73a3964761a1cb4def74e67ff41663f5aef6cf5b5177"
+    }
+  ]
+}

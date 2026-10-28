@@ -1,0 +1,937 @@
+{
+  "schema_version": 2,
+  "blueprint": "data-platform/oci-gcp-mysql-heatwave-dr",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "Contracts": 3,
+    "GCP": 10,
+    "OCI": 9
+  },
+  "resources": [
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.guard",
+      "type": "terraform_data",
+      "symbol": "guard",
+      "source": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n4",
+        "source_symbol": "guard",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.mysql.oci_core_vcn.mysql",
+      "type": "oci_core_vcn",
+      "symbol": "mysql",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_private_network ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.mysql (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.mysql",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/data-platform/mysql-heatwave?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "create_private_network": "var.enable_oci && var.costs_approved",
+            "create_db_system": "var.enable_oci && var.costs_approved && var.enable_database",
+            "create_heatwave_cluster": "var.enable_oci && var.costs_approved && var.enable_database && var.enable_heatwave"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "mysql",
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.mysql.oci_core_subnet.mysql",
+      "type": "oci_core_subnet",
+      "symbol": "mysql",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_private_network ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.mysql (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.mysql",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/data-platform/mysql-heatwave?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "create_private_network": "var.enable_oci && var.costs_approved",
+            "create_db_system": "var.enable_oci && var.costs_approved && var.enable_database",
+            "create_heatwave_cluster": "var.enable_oci && var.costs_approved && var.enable_database && var.enable_heatwave"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n10",
+        "source_symbol": "mysql",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.mysql.oci_core_security_list.mysql",
+      "type": "oci_core_security_list",
+      "symbol": "mysql",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_private_network ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.mysql (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.mysql",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/data-platform/mysql-heatwave?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "create_private_network": "var.enable_oci && var.costs_approved",
+            "create_db_system": "var.enable_oci && var.costs_approved && var.enable_database",
+            "create_heatwave_cluster": "var.enable_oci && var.costs_approved && var.enable_database && var.enable_heatwave"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n12",
+        "source_symbol": "mysql",
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.mysql.oci_core_network_security_group.mysql",
+      "type": "oci_core_network_security_group",
+      "symbol": "mysql",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "count = var.create_private_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_private_network ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.mysql (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.mysql",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/data-platform/mysql-heatwave?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "create_private_network": "var.enable_oci && var.costs_approved",
+            "create_db_system": "var.enable_oci && var.costs_approved && var.enable_database",
+            "create_heatwave_cluster": "var.enable_oci && var.costs_approved && var.enable_database && var.enable_heatwave"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n24",
+        "source_symbol": "mysql",
+        "provider_icon": null,
+        "oci_icon": "NSG"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.mysql.oci_core_network_security_group_security_rule.mysql_ingress",
+      "type": "oci_core_network_security_group_security_rule",
+      "symbol": "mysql_ingress",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "for_each = var.create_private_network ? toset(var.allowed_client_cidrs) : []",
+      "creation_expression": {
+        "for_each": "var.create_private_network ? toset(var.allowed_client_cidrs) : []"
+      },
+      "module_inputs": [
+        "module.mysql (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.mysql",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/data-platform/mysql-heatwave?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "create_private_network": "var.enable_oci && var.costs_approved",
+            "create_db_system": "var.enable_oci && var.costs_approved && var.enable_database",
+            "create_heatwave_cluster": "var.enable_oci && var.costs_approved && var.enable_database && var.enable_heatwave"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n30",
+        "source_symbol": "mysql_ingress",
+        "provider_icon": null,
+        "oci_icon": "NSG"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.mysql.oci_objectstorage_bucket.lakehouse",
+      "type": "oci_objectstorage_bucket",
+      "symbol": "lakehouse",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "count = var.create_lakehouse_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_lakehouse_bucket ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.mysql (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.mysql",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/data-platform/mysql-heatwave?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "create_private_network": "var.enable_oci && var.costs_approved",
+            "create_db_system": "var.enable_oci && var.costs_approved && var.enable_database",
+            "create_heatwave_cluster": "var.enable_oci && var.costs_approved && var.enable_database && var.enable_heatwave"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n36",
+        "source_symbol": "lakehouse",
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.mysql.oci_mysql_mysql_db_system.this",
+      "type": "oci_mysql_mysql_db_system",
+      "symbol": "this",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "count = var.create_db_system ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_db_system ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.mysql (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.mysql",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/data-platform/mysql-heatwave?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "create_private_network": "var.enable_oci && var.costs_approved",
+            "create_db_system": "var.enable_oci && var.costs_approved && var.enable_database",
+            "create_heatwave_cluster": "var.enable_oci && var.costs_approved && var.enable_database && var.enable_heatwave"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n46",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "MySQL Database System"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.mysql.oci_mysql_heat_wave_cluster.this",
+      "type": "oci_mysql_heat_wave_cluster",
+      "symbol": "this",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "count = var.create_heatwave_cluster ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_heatwave_cluster ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.mysql (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.mysql",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/data-platform/mysql-heatwave?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "create_private_network": "var.enable_oci && var.costs_approved",
+            "create_db_system": "var.enable_oci && var.costs_approved && var.enable_database",
+            "create_heatwave_cluster": "var.enable_oci && var.costs_approved && var.enable_database && var.enable_heatwave"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n55",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "MySQL HeatWave"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.mysql.oci_identity_policy.access",
+      "type": "oci_identity_policy",
+      "symbol": "access",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "count = length(var.policy_statements) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "length(var.policy_statements) > 0 ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.mysql (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.mysql",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/data-platform/mysql-heatwave?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "create_private_network": "var.enable_oci && var.costs_approved",
+            "create_db_system": "var.enable_oci && var.costs_approved && var.enable_database",
+            "create_heatwave_cluster": "var.enable_oci && var.costs_approved && var.enable_database && var.enable_heatwave"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n65",
+        "source_symbol": "access",
+        "provider_icon": null,
+        "oci_icon": "Policies"
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "gcp.module.network.terraform_data.guard",
+      "type": "terraform_data",
+      "symbol": "guard",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n6",
+        "source_symbol": "guard",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_network.this",
+      "type": "google_compute_network",
+      "symbol": "this",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": "google_compute_network",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_subnetwork.this",
+      "type": "google_compute_subnetwork",
+      "symbol": "this",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n8",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_router.this",
+      "type": "google_compute_router",
+      "symbol": "this",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n10",
+        "source_symbol": "this",
+        "provider_icon": "google_compute_router",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_firewall.peer",
+      "type": "google_compute_firewall",
+      "symbol": "peer",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled && length(var.allowed_tcp_ports) > 0 && length(var.peer_cidrs) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && length(var.allowed_tcp_ports) > 0 && length(var.peer_cidrs) > 0 ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n14",
+        "source_symbol": "peer",
+        "provider_icon": "google_compute_firewall",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_route.egress",
+      "type": "google_compute_route",
+      "symbol": "egress",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled && var.enable_nat ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.enable_nat ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n18",
+        "source_symbol": "egress",
+        "provider_icon": "google_compute_route",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_router_nat.this",
+      "type": "google_compute_router_nat",
+      "symbol": "this",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled && var.enable_nat ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.enable_nat ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n22",
+        "source_symbol": "this",
+        "provider_icon": "google_compute_router_nat",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_compute_global_address.sql",
+      "type": "google_compute_global_address",
+      "symbol": "sql",
+      "source": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enabled && var.costs_approved && var.enable_workload ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.costs_approved && var.enable_workload ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n26",
+        "source_symbol": "sql",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_service_networking_connection.sql",
+      "type": "google_service_networking_connection",
+      "symbol": "sql",
+      "source": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enabled && var.costs_approved && var.enable_workload ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.costs_approved && var.enable_workload ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n28",
+        "source_symbol": "sql",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_sql_database_instance.standby",
+      "type": "google_sql_database_instance",
+      "symbol": "standby",
+      "source": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enabled && var.costs_approved && var.enable_workload ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.costs_approved && var.enable_workload ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n30",
+        "source_symbol": "standby",
+        "provider_icon": "google_sql_database_instance",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_sql_user.admin",
+      "type": "google_sql_user",
+      "symbol": "admin",
+      "source": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enabled && var.costs_approved && var.enable_workload ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.costs_approved && var.enable_workload ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n34",
+        "source_symbol": "admin",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "gcp.terraform_data.guard",
+      "type": "terraform_data",
+      "symbol": "guard",
+      "source": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n8",
+        "source_symbol": "guard",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "contracts-resources.drawio",
+      "page_name": "Contracts resources",
+      "declarations": 3
+    },
+    {
+      "file": "gcp-resources.drawio",
+      "page_name": "GCP resources",
+      "declarations": 10
+    },
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 9
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/variables.tf",
+      "description": "Explicit OCI workload compartment; no tenancy fallback.",
+      "default_expression": "REQUIRED",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.oci_vcn_id",
+      "source": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/variables.tf",
+      "description": "Existing OCVS-independent OCI workload VCN where required.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.oci_subnet_id",
+      "source": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/variables.tf",
+      "description": "Existing private OCI service or endpoint subnet where required.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "gcp.var.project_id",
+      "source": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp/variables.tf",
+      "description": "Existing Google project with billing and required APIs pre-enabled.",
+      "default_expression": "REQUIRED",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 4
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "module.mysql.oci_objectstorage_namespace.this",
+      "type": "oci_objectstorage_namespace",
+      "symbol": "this",
+      "source": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "count = var.create_lakehouse_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_lakehouse_bucket ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.mysql (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.mysql",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/data-platform/mysql-heatwave?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "create_private_network": "var.enable_oci && var.costs_approved",
+            "create_db_system": "var.enable_oci && var.costs_approved && var.enable_database",
+            "create_heatwave_cluster": "var.enable_oci && var.costs_approved && var.enable_database && var.enable_heatwave"
+          }
+        }
+      ]
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/main.tf",
+      "revision": "working-tree",
+      "sha256": "fd847a201ffa12267219b3a1bb33cca41da1dc60f5593409f0307ac3b8c10091"
+    },
+    {
+      "path": "blueprints/data-platform/mysql-heatwave/locals.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "928edae21fa6dde07511d38e56878a4b8257786402d05e7f72c37ecd48f4c85b"
+    },
+    {
+      "path": "blueprints/data-platform/mysql-heatwave/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "6a6844f7e18753e03a2d72fa869c3b3cae2c29069e2ba7ce2fc84cb8f757bd55"
+    },
+    {
+      "path": "blueprints/data-platform/mysql-heatwave/outputs.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "1d3d4ff57f14dda901b5cf68300d7a4a0c53ca993e13f58a4dc23f1d04ec9434"
+    },
+    {
+      "path": "blueprints/data-platform/mysql-heatwave/providers.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "fa9e0a8ebd56368af097c75c3220815a254cc4e802385c701cfa5822b30e1f78"
+    },
+    {
+      "path": "blueprints/data-platform/mysql-heatwave/variables.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "12169d7acf2e3f7312e1e40cf36c9a785fc7db0e0c96b19e0d422844451488d7"
+    },
+    {
+      "path": "blueprints/data-platform/mysql-heatwave/versions.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "e411b298287945852d639eb7385743d44154b997bd60e86169356efbe9e82a82"
+    },
+    {
+      "path": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/providers.tf",
+      "revision": "working-tree",
+      "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
+    },
+    {
+      "path": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/variables.tf",
+      "revision": "working-tree",
+      "sha256": "a9fe6e38c30794860fbe5558a2a0304d383e788427194fbd804c0b68068e0659"
+    },
+    {
+      "path": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/versions.tf",
+      "revision": "working-tree",
+      "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
+    },
+    {
+      "path": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "sha256": "fb98cd19da49cc88e0ddb7ed5fc88c4e15c8e7e9e75dc490bf61ef686d778272"
+    },
+    {
+      "path": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "sha256": "aec56130d0af0011a8867ed4feba66812700c9bebdc0949037f1419b6dbe56ab"
+    },
+    {
+      "path": "modules/networking/gcp-private-network/outputs.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "sha256": "28bce52d8d7b0afaa34f7477ec39effa7e750a7b5164d07520216424c9ef754f"
+    },
+    {
+      "path": "modules/networking/gcp-private-network/variables.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "sha256": "ab8c910c3384285664f5a206d15eb06ccd11e091e3d29c67533f3a440ba84297"
+    },
+    {
+      "path": "modules/networking/gcp-private-network/versions.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "sha256": "6ffd60a2f77055d741bd73a3964761a1cb4def74e67ff41663f5aef6cf5b5177"
+    },
+    {
+      "path": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "fedd00b0bbf3d01c13929c3a5ccac9b251e27ef013feb114f3869dd840b098ca"
+    },
+    {
+      "path": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp/providers.tf",
+      "revision": "working-tree",
+      "sha256": "a60a038a12ff8ab17621dfdeb9672da47b12eff2a860d94eae560caba1ae27d5"
+    },
+    {
+      "path": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp/variables.tf",
+      "revision": "working-tree",
+      "sha256": "f83ade73161ba93a6ba561099eb97fad62d3abd133121f9016d03b12a00f6964"
+    },
+    {
+      "path": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp/versions.tf",
+      "revision": "working-tree",
+      "sha256": "6ffd60a2f77055d741bd73a3964761a1cb4def74e67ff41663f5aef6cf5b5177"
+    }
+  ]
+}

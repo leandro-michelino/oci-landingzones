@@ -805,3 +805,21 @@ Cost Optimization completes **80/80 original entries**, with **0 pending**. Incl
 The final entry covers 14 OCI declarations across root resources and four pinned modules, plus 15 existing-reference inputs or collections. Source defaults enable a tag namespace and six definitions. Budget ownership is tenancy root through the home provider; spend targets are separate. Budget alert delivery is direct to supplied email recipients and independent of ONS. No cloud resources were created or FinOps outcomes verified. Historical validation metadata is unchanged.
 
 The next implementation batch is the [five GCP counterparts](../multicloud/GCP-OCI-BLUEPRINTS.md). GCP additions remain separate from the completed original 80.
+
+## Five GCP Counterparts Delivered - 2026-10-28
+
+The original conversion remains complete at **80/80**. Five additional GCP counterparts now bring the catalog to **93/93** documented entry points:
+
+| Blueprint | OCI declarations | GCP declarations | Local contracts | Existing references | Connectors |
+| --- | --- | --- | --- | --- | --- |
+| [Hybrid network backbone](../../blueprints/networking/gcp-oci-hybrid-network-backbone/architecture/README.md) | 13 | 15 | 5 | 11 | 6 |
+| [Cross-cloud DR](../../blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/architecture/README.md) | 8 | 9 | 3 | 4 | 2 |
+| [GKE/OKE active/passive](../../blueprints/extensions/gke-oke-active-passive/architecture/README.md) | 2 | 9 | 3 | 6 | 3 |
+| [MySQL recovery foundation](../../blueprints/data-platform/oci-gcp-mysql-heatwave-dr/architecture/README.md) | 9 | 10 | 3 | 4 | 3 |
+| [AI gateway](../../blueprints/ai/gcp-oci-ai-gateway/architecture/README.md) | 2 | 10 | 3 | 5 | 3 |
+
+This adds **104 declarations**, **30 reference inputs/collections**, **17 reviewed connectors** and **25 native documents with paired PNGs**. The global audit now covers **732 reviewed connectors**, **348 native documents/PNGs**, **93 blueprint plus one conceptual overviews** and **20 multicloud overviews with explicit OCI/cloud relationships**. Dashed cross-cloud relationships identify external workflows, not active transport or service integration.
+
+Both cloud sides and the pinned module declarations are covered, including the separate GCP roots whose Terraform entry is `infrastructure.tf`. GCP resource/input namespaces prevent collisions with identically named OCI root contracts. Six inventory regression tests passed. All ten new roots passed schema validation and 30 mocked plans; the shared GCP network module passed four additional mocked plans. All 30 Ansible runners passed syntax checks. The five overviews and 20 companion PNGs were visually inspected.
+
+Partner Interconnect and HA VPN use distinct routers/ASNs, with staged four-tunnel endpoint and key handoff. DR data transfer, application recovery, MySQL replication, cutover and inference-adapter identity remain external where explicitly stated in source. Default cloud creation is disabled. See the [validation and operational limits](../multicloud/GCP-COUNTERPARTS-20261028.md). No live provisioning, traffic, replication, failover or workload acceptance is claimed.

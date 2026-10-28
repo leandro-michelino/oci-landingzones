@@ -59,6 +59,7 @@ ready to test the baseline, start with [Core Landing Zone](blueprints/core/).
 | AI workloads | [GenAI Private](blueprints/ai/genai-private/), [GenAI Gateway](blueprints/ai/genai-gateway/), [AI Agents](blueprints/ai/agents/) |
 | Patient data project | [Healthcare Platform](blueprints/industry/healthcare-platform/) |
 | Hospital/FHIR integration | [Hospital Integration and FHIR](blueprints/industry/healthcare-fhir-integration/) |
+| GCP and OCI counterparts | [Hybrid networking, DR, GKE, MySQL and AI](docs/multicloud/GCP-OCI-BLUEPRINTS.md) |
 | VMware SDDC | [Oracle Cloud VMware Solution](blueprints/vmware/ocvs/) |
 | Industry patterns | [Secure Desktops](blueprints/industry/secure-desktops/) or [Telco Cloud Native](blueprints/industry/telco-cloud-native/) |
 | Conversational AI | [Oracle Digital Assistant](blueprints/extensions/digital-assistant/) |

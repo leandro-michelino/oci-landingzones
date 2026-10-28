@@ -1,0 +1,1228 @@
+{
+  "schema_version": 2,
+  "blueprint": "networking/gcp-oci-hybrid-network-backbone",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "Contracts": 5,
+    "GCP": 15,
+    "OCI": 13
+  },
+  "resources": [
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.guard",
+      "type": "terraform_data",
+      "symbol": "guard",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n4",
+        "source_symbol": "guard",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.oci_core_vcn.this",
+      "type": "oci_core_vcn",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/networking/gcp-oci-hybrid-network-backbone/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.oci_core_internet_gateway.this",
+      "type": "oci_core_internet_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "count = var.enable_internet_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_internet_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/networking/gcp-oci-hybrid-network-backbone/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n10",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Internet Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.oci_core_nat_gateway.this",
+      "type": "oci_core_nat_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "count = var.enable_nat_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_nat_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/networking/gcp-oci-hybrid-network-backbone/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n22",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "NAT Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.oci_core_service_gateway.this",
+      "type": "oci_core_service_gateway",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "count = var.enable_service_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_service_gateway ? 1 : 0"
+      },
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/networking/gcp-oci-hybrid-network-backbone/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n31",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Service Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.oci_core_security_list.this",
+      "type": "oci_core_security_list",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "for_each = var.security_lists",
+      "creation_expression": {
+        "for_each": "var.security_lists"
+      },
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/networking/gcp-oci-hybrid-network-backbone/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n41",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.oci_core_route_table.this",
+      "type": "oci_core_route_table",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "for_each = var.route_tables",
+      "creation_expression": {
+        "for_each": "var.route_tables"
+      },
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/networking/gcp-oci-hybrid-network-backbone/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n53",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Route Table"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "module.network.oci_core_subnet.this",
+      "type": "oci_core_subnet",
+      "symbol": "this",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "for_each = var.subnets",
+      "creation_expression": {
+        "for_each": "var.subnets"
+      },
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/networking/gcp-oci-hybrid-network-backbone/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "false"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n77",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_drg.this",
+      "type": "oci_core_drg",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci && var.costs_approved ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n79",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "DRG"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_drg_attachment.this",
+      "type": "oci_core_drg_attachment",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_oci && var.costs_approved ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n88",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_virtual_circuit.this",
+      "type": "oci_core_virtual_circuit",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enable_oci && var.costs_approved && var.enable_interconnect ? var.circuits : {}",
+      "creation_expression": {
+        "for_each": "var.enable_oci && var.costs_approved && var.enable_interconnect ? var.circuits : {}"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n90",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_cpe.gcp",
+      "type": "oci_core_cpe",
+      "symbol": "gcp",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enable_oci && var.costs_approved && var.enable_vpn ? var.gcp_vpn_public_ips : {}",
+      "creation_expression": {
+        "for_each": "var.enable_oci && var.costs_approved && var.enable_vpn ? var.gcp_vpn_public_ips : {}"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n92",
+        "source_symbol": "gcp",
+        "provider_icon": null,
+        "oci_icon": "Customer Premises Equipment"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_ipsec.gcp",
+      "type": "oci_core_ipsec",
+      "symbol": "gcp",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = oci_core_cpe.gcp",
+      "creation_expression": {
+        "for_each": "oci_core_cpe.gcp"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n102",
+        "source_symbol": "gcp",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_core_ipsec_connection_tunnel_management.gcp",
+      "type": "oci_core_ipsec_connection_tunnel_management",
+      "symbol": "gcp",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enable_oci && var.costs_approved && var.enable_vpn ? var.vpn_tunnels : {}",
+      "creation_expression": {
+        "for_each": "var.enable_oci && var.costs_approved && var.enable_vpn ? var.vpn_tunnels : {}"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n104",
+        "source_symbol": "gcp",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "terraform_data.vpn_guard",
+      "type": "terraform_data",
+      "symbol": "vpn_guard",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n6",
+        "source_symbol": "vpn_guard",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "gcp.module.network.terraform_data.guard",
+      "type": "terraform_data",
+      "symbol": "guard",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n8",
+        "source_symbol": "guard",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_network.this",
+      "type": "google_compute_network",
+      "symbol": "this",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": "google_compute_network",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_subnetwork.this",
+      "type": "google_compute_subnetwork",
+      "symbol": "this",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n8",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_router.this",
+      "type": "google_compute_router",
+      "symbol": "this",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n10",
+        "source_symbol": "this",
+        "provider_icon": "google_compute_router",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_firewall.peer",
+      "type": "google_compute_firewall",
+      "symbol": "peer",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled && length(var.allowed_tcp_ports) > 0 && length(var.peer_cidrs) > 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && length(var.allowed_tcp_ports) > 0 && length(var.peer_cidrs) > 0 ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n14",
+        "source_symbol": "peer",
+        "provider_icon": "google_compute_firewall",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_route.egress",
+      "type": "google_compute_route",
+      "symbol": "egress",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled && var.enable_nat ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.enable_nat ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n18",
+        "source_symbol": "egress",
+        "provider_icon": "google_compute_route",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.module.network.google_compute_router_nat.this",
+      "type": "google_compute_router_nat",
+      "symbol": "this",
+      "source": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "condition": "count = var.enabled && var.enable_nat ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.enable_nat ? 1 : 0"
+      },
+      "module_inputs": [
+        "gcp.module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "gcp.module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/gcp-private-network?ref=e851f11166184cf9c3e66ba93091bcd0459a77b1",
+          "call_site": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_nat": "var.enable_nat && var.enabled && var.costs_approved"
+          }
+        }
+      ],
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n22",
+        "source_symbol": "this",
+        "provider_icon": "google_compute_router_nat",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_compute_interconnect_attachment.this",
+      "type": "google_compute_interconnect_attachment",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enabled && var.costs_approved ? { primary = \"AVAILABILITY_DOMAIN_1\", secondary = \"AVAILABILITY_DOMAIN_2\" } : {}",
+      "creation_expression": {
+        "for_each": "var.enabled && var.costs_approved ? { primary = \"AVAILABILITY_DOMAIN_1\", secondary = \"AVAILABILITY_DOMAIN_2\" } : {}"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n26",
+        "source_symbol": "this",
+        "provider_icon": "google_compute_interconnect_attachment",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_compute_router_interface.this",
+      "type": "google_compute_router_interface",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enabled && var.costs_approved && var.enable_bgp ? var.bgp_sessions : {}",
+      "creation_expression": {
+        "for_each": "var.enabled && var.costs_approved && var.enable_bgp ? var.bgp_sessions : {}"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n30",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_compute_router_peer.this",
+      "type": "google_compute_router_peer",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enabled && var.costs_approved && var.enable_bgp ? var.bgp_sessions : {}",
+      "creation_expression": {
+        "for_each": "var.enabled && var.costs_approved && var.enable_bgp ? var.bgp_sessions : {}"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n32",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "gcp.terraform_data.guard",
+      "type": "terraform_data",
+      "symbol": "guard",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n10",
+        "source_symbol": "guard",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_compute_ha_vpn_gateway.this",
+      "type": "google_compute_ha_vpn_gateway",
+      "symbol": "this",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enabled && var.costs_approved && var.enable_vpn ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.costs_approved && var.enable_vpn ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n34",
+        "source_symbol": "this",
+        "provider_icon": "google_compute_ha_vpn_gateway",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_compute_router.vpn",
+      "type": "google_compute_router",
+      "symbol": "vpn",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enabled && var.costs_approved && var.enable_vpn ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.costs_approved && var.enable_vpn ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n38",
+        "source_symbol": "vpn",
+        "provider_icon": "google_compute_router",
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_compute_external_vpn_gateway.oci",
+      "type": "google_compute_external_vpn_gateway",
+      "symbol": "oci",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enabled && var.costs_approved && var.enable_vpn_tunnels ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enabled && var.costs_approved && var.enable_vpn_tunnels ? 1 : 0"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n42",
+        "source_symbol": "oci",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_compute_vpn_tunnel.oci",
+      "type": "google_compute_vpn_tunnel",
+      "symbol": "oci",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "for_each = var.enabled && var.costs_approved && var.enable_vpn_tunnels ? var.vpn_tunnels : {}",
+      "creation_expression": {
+        "for_each": "var.enabled && var.costs_approved && var.enable_vpn_tunnels ? var.vpn_tunnels : {}"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n44",
+        "source_symbol": "oci",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_compute_router_interface.vpn",
+      "type": "google_compute_router_interface",
+      "symbol": "vpn",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "for_each = google_compute_vpn_tunnel.oci",
+      "creation_expression": {
+        "for_each": "google_compute_vpn_tunnel.oci"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n46",
+        "source_symbol": "vpn",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "GCP",
+      "kind": "resource",
+      "address": "gcp.google_compute_router_peer.vpn",
+      "type": "google_compute_router_peer",
+      "symbol": "vpn",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "for_each = google_compute_vpn_tunnel.oci",
+      "creation_expression": {
+        "for_each": "google_compute_vpn_tunnel.oci"
+      },
+      "diagram": {
+        "file": "gcp-resources.drawio",
+        "page_name": "GCP resources",
+        "node_id": "n48",
+        "source_symbol": "vpn",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    },
+    {
+      "cloud": "Contracts",
+      "kind": "resource",
+      "address": "gcp.terraform_data.vpn_guard",
+      "type": "terraform_data",
+      "symbol": "vpn_guard",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "diagram": {
+        "file": "contracts-resources.drawio",
+        "page_name": "Contracts resources",
+        "node_id": "n12",
+        "source_symbol": "vpn_guard",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "contracts-resources.drawio",
+      "page_name": "Contracts resources",
+      "declarations": 5
+    },
+    {
+      "file": "gcp-resources.drawio",
+      "page_name": "GCP resources",
+      "declarations": 15
+    },
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 13
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/variables.tf",
+      "description": "Explicit OCI workload compartment; no tenancy fallback.",
+      "default_expression": "REQUIRED",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.oci_vcn_id",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/variables.tf",
+      "description": "Existing OCVS-independent OCI workload VCN where required.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.oci_subnet_id",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/variables.tf",
+      "description": "Existing private OCI service or endpoint subnet where required.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.provider_service_id",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/variables.tf",
+      "description": "Approved OCI FastConnect provider service OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.circuits",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/variables.tf",
+      "description": "Partner circuits keyed by primary and secondary; populate only after assigned addressing is verified.",
+      "default_expression": "{}",
+      "type_expression": "map(object({ pairing_key = string, bandwidth = string, customer_asn = number, customer_ip = string, oracle_ip = string }))",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.gcp_vpn_public_ips",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/variables.tf",
+      "description": "Two Google HA VPN public addresses keyed primary and secondary.",
+      "default_expression": "{}",
+      "type_expression": "map(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.vpn_tunnels",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/variables.tf",
+      "description": "Four tunnel management bindings from discovered OCI tunnel IDs and reviewed inside addresses.",
+      "default_expression": "{}",
+      "type_expression": "map(object({ edge_key = string, tunnel_id = string, customer_ip = string, oracle_ip = string }))",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    },
+    {
+      "address": "var.vpn_psks",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/variables.tf",
+      "description": "Sensitive per-tunnel pre-shared keys kept in protected inputs.",
+      "default_expression": "{}",
+      "type_expression": "map(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n17"
+      }
+    },
+    {
+      "address": "gcp.var.project_id",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/variables.tf",
+      "description": "Existing Google project with billing and required APIs pre-enabled.",
+      "default_expression": "REQUIRED",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n19"
+      }
+    },
+    {
+      "address": "gcp.var.vpn_tunnels",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/variables.tf",
+      "description": "Four OCI endpoint mappings with explicit external and HA gateway interface indices.",
+      "default_expression": "{}",
+      "type_expression": "map(object({ peer_interface = number, gateway_interface = number, oracle_public_ip = string, customer_ip = string, oracle_ip = string }))",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n21"
+      }
+    },
+    {
+      "address": "gcp.var.vpn_psks",
+      "source": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/variables.tf",
+      "description": "Sensitive keys matching the OCI managed tunnels.",
+      "default_expression": "{}",
+      "type_expression": "map(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n23"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 11
+  },
+  "data_lookups": [
+    {
+      "cloud": "OCI",
+      "kind": "data",
+      "address": "module.network.oci_core_services.all_services",
+      "type": "oci_core_services",
+      "symbol": "all_services",
+      "source": "modules/networking/spoke-vcn/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
+      "module_inputs": [
+        "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=1d95764bd67c1629452af3b95acd51ae5b60b51d",
+          "call_site": "blueprints/networking/gcp-oci-hybrid-network-backbone/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {
+            "count": "var.enable_oci && var.costs_approved ? 1 : 0"
+          },
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "false",
+            "enable_service_gateway": "false"
+          }
+        }
+      ]
+    }
+  ],
+  "source_files": [
+    {
+      "path": "blueprints/networking/gcp-oci-hybrid-network-backbone/main.tf",
+      "revision": "working-tree",
+      "sha256": "69e5cb23a5c9b69d0f498f55c36ad3c19e3f4a5e11e20e472834d2901373779a"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/locals.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "58fe972006336ca6944306375bddd62fa71b9368657f2c5192a709d9bf9534ca"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/main.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "5c17244e7f9cfc7332d245af799149dfd4d4345b94f138c093512392bcab1118"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/outputs.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "3cbcf17a1db79acb2bd4f1f2c3f3259f9fbe0794849c295ac5ed4ba6228f82e9"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/variables.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "1b3fccd0750700b2ad1c31f349ee4fa640b150445e7f42c88fb45f83c35c84cf"
+    },
+    {
+      "path": "modules/networking/spoke-vcn/versions.tf",
+      "revision": "1d95764bd67c1629452af3b95acd51ae5b60b51d",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    },
+    {
+      "path": "blueprints/networking/gcp-oci-hybrid-network-backbone/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "28916c46039c57d6f9c9a62444f24512d7489f096837856089c9f5a3abca1dfa"
+    },
+    {
+      "path": "blueprints/networking/gcp-oci-hybrid-network-backbone/providers.tf",
+      "revision": "working-tree",
+      "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
+    },
+    {
+      "path": "blueprints/networking/gcp-oci-hybrid-network-backbone/variables.tf",
+      "revision": "working-tree",
+      "sha256": "5ce1e1c3cef54ddaf9fb1eafe92be76cb922211c2bed1d706746ce7dd990f757"
+    },
+    {
+      "path": "blueprints/networking/gcp-oci-hybrid-network-backbone/versions.tf",
+      "revision": "working-tree",
+      "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
+    },
+    {
+      "path": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
+      "revision": "working-tree",
+      "sha256": "0a07ce92905e4bb157774bc78094c80883630c734e4a284b773443e972d92789"
+    },
+    {
+      "path": "modules/networking/gcp-private-network/main.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "sha256": "aec56130d0af0011a8867ed4feba66812700c9bebdc0949037f1419b6dbe56ab"
+    },
+    {
+      "path": "modules/networking/gcp-private-network/outputs.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "sha256": "28bce52d8d7b0afaa34f7477ec39effa7e750a7b5164d07520216424c9ef754f"
+    },
+    {
+      "path": "modules/networking/gcp-private-network/variables.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "sha256": "ab8c910c3384285664f5a206d15eb06ccd11e091e3d29c67533f3a440ba84297"
+    },
+    {
+      "path": "modules/networking/gcp-private-network/versions.tf",
+      "revision": "e851f11166184cf9c3e66ba93091bcd0459a77b1",
+      "sha256": "6ffd60a2f77055d741bd73a3964761a1cb4def74e67ff41663f5aef6cf5b5177"
+    },
+    {
+      "path": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "5b0335cbe9c125324787a0ff52a7f36c3de95ac57cfedd46c5304648fa32a630"
+    },
+    {
+      "path": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/providers.tf",
+      "revision": "working-tree",
+      "sha256": "a60a038a12ff8ab17621dfdeb9672da47b12eff2a860d94eae560caba1ae27d5"
+    },
+    {
+      "path": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/variables.tf",
+      "revision": "working-tree",
+      "sha256": "ab8e70af76e1e95af06ee6e87b2a956cf078a8473ae1d32dabc81e96e1743896"
+    },
+    {
+      "path": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/versions.tf",
+      "revision": "working-tree",
+      "sha256": "6ffd60a2f77055d741bd73a3964761a1cb4def74e67ff41663f5aef6cf5b5177"
+    }
+  ]
+}
