@@ -10,11 +10,11 @@
     "Reviewed endpoints, labels, arrows, paths and source hashes match contract",
     "Subnet routing and DNS-view semantic regression checks"
   ],
-  "overview_count": 69,
+  "overview_count": 74,
   "conceptual_overviews": 1,
-  "native_documents": 258,
-  "main_document_pages": 258,
-  "connector_count": 607,
+  "native_documents": 273,
+  "main_document_pages": 273,
+  "connector_count": 622,
   "cross_cloud_overviews": 12,
   "blueprints": [
     {
@@ -572,6 +572,41 @@
       "connections": 1,
       "cross_cloud_bridges": [],
       "overview_png_sha256": "7faa9f14203178add67c61d5a17cc4e948b459cd165b30250201d9dc657a3d8a",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "extensions/exadata",
+      "connections": 2,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "1a00bcf2f11577ec7a8aead4f520fef6918a18a1fd03fb21d483ef28c61195c7",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "extensions/apigw",
+      "connections": 5,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "e40314eaf71b14b267c0c31b01d0ba426ae5dac2d913cc0957cf2dc581d1f25b",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "extensions/oac",
+      "connections": 3,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "2e65d5909607ba4a5e8c551b64a137ba227ced6debebf7b07e75ae1faf24c2a3",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "extensions/oic",
+      "connections": 3,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "7068a794e4a1cbac8d105ea8b2ab4c8178f7906868c1ca3e3efee843f5be146f",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "extensions/observability",
+      "connections": 2,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "93959416e40033e7655d5f3c5ac417aaee006629ac2158e247bb75b638629a30",
       "layout_warnings": []
     },
     {

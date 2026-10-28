@@ -1,0 +1,191 @@
+{
+  "schema_version": 2,
+  "blueprint": "extensions/oac",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 2
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_analytics_analytics_instance.this",
+      "type": "oci_analytics_analytics_instance",
+      "symbol": "this",
+      "source": "blueprints/extensions/oac/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_analytics_instance ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_analytics_instance ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Oracle Analytics Cloud"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_analytics_analytics_instance_private_access_channel.this",
+      "type": "oci_analytics_analytics_instance_private_access_channel",
+      "symbol": "this",
+      "source": "blueprints/extensions/oac/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_private_access_channel ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_private_access_channel ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n15",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 2
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/extensions/oac/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.kms_key_id",
+      "source": "blueprints/extensions/oac/variables.tf",
+      "description": "Optional KMS key OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.domain_id",
+      "source": "blueprints/extensions/oac/variables.tf",
+      "description": "Optional identity domain OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.existing_analytics_instance_id",
+      "source": "blueprints/extensions/oac/variables.tf",
+      "description": "Existing OAC instance OCID for private access channel only.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.vcn_id",
+      "source": "blueprints/extensions/oac/variables.tf",
+      "description": "VCN OCID for private access channel.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.subnet_id",
+      "source": "blueprints/extensions/oac/variables.tf",
+      "description": "Subnet OCID for private access channel.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.network_security_group_ids",
+      "source": "blueprints/extensions/oac/variables.tf",
+      "description": "NSG OCIDs for private access channel.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 7
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/extensions/oac/locals.tf",
+      "revision": "working-tree",
+      "sha256": "4e2457cc0b4d1128a7e516c9cf4184368d059923eaa899d9b674fce0bd2145d8"
+    },
+    {
+      "path": "blueprints/extensions/oac/main.tf",
+      "revision": "working-tree",
+      "sha256": "402df95feeefe62a3aa26dc4477c56e4b14715efe809f1aa4084a100784eb64d"
+    },
+    {
+      "path": "blueprints/extensions/oac/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "49abb825d76d587de0e187cd1087f781f6b0ec06ab57c1a20130cd6f5e7e4ad5"
+    },
+    {
+      "path": "blueprints/extensions/oac/providers.tf",
+      "revision": "working-tree",
+      "sha256": "9ace0aeb9a214bbdff10c76453708d4fe6d9602bdbd3e38badbc4ac4eb6e0603"
+    },
+    {
+      "path": "blueprints/extensions/oac/variables.tf",
+      "revision": "working-tree",
+      "sha256": "e91fa0e3fc1536f5243491e1f187bc4c11c3838b2fe1a06690a5ab8a1a9b5c92"
+    },
+    {
+      "path": "blueprints/extensions/oac/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

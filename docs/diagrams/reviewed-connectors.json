@@ -21242,6 +21242,474 @@
       }
     ]
   },
+  "extensions/exadata": {
+    "relationships": [
+      {
+        "source": "Cloud Exadata Infrastructure\nenable_exadata_infrastructure=false",
+        "target": "Operator-selected availability domain\navailability_domain=null\nNo AD lookup or network resources created",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "availability_domain",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Cloud Exadata Infrastructure\nenable_exadata_infrastructure=false",
+        "target": "Customer contact configuration\ncustomer_contacts=[] / email entries\nNested blocks; no notification topic created",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "customer_contacts",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/extensions/exadata/locals.tf",
+        "revision": "working-tree",
+        "sha256": "046ef85d1e84e510bdb081d7c9830d4a80237deb131b3853d11ab94c42ec5687"
+      },
+      {
+        "path": "blueprints/extensions/exadata/main.tf",
+        "revision": "working-tree",
+        "sha256": "3d1457ed946972512d83764e2fcafe12bd1afea14bf53a65dc2c2bca3984310d"
+      },
+      {
+        "path": "blueprints/extensions/exadata/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "4343187794cc46f8d85c96ea6b177b6bbcce092f40bbc58e9cf4956ced95d21a"
+      },
+      {
+        "path": "blueprints/extensions/exadata/providers.tf",
+        "revision": "working-tree",
+        "sha256": "2ee529fdf155bf2f2d0d63966264b97faa465ab7aac410b2a79a15001387d0ce"
+      },
+      {
+        "path": "blueprints/extensions/exadata/variables.tf",
+        "revision": "working-tree",
+        "sha256": "ad500b7ce470f26c8b3d4cb2dd02de235a68f96b4e10f0a3710cb19b90203d08"
+      },
+      {
+        "path": "blueprints/extensions/exadata/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
+  "extensions/apigw": {
+    "relationships": [
+      {
+        "source": "Optional API Gateway\nenable_gateway=false AND create_gateway=true\nendpoint_type=PUBLIC / review before enabling",
+        "target": "Existing subnet + NSGs\nsubnet_id=null / network_security_group_ids=[]\nNo VCN, subnet, NSG, route or gateway created",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "subnet_id / network_security_group_ids",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.5
+        ],
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional API Gateway\nenable_gateway=false AND create_gateway=true\nendpoint_type=PUBLIC / review before enabling",
+        "target": "Existing certificate / certificate_id=null\nNo certificate lifecycle resource created",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "Optional certificate_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.8
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1160,
+            356
+          ],
+          [
+            1160,
+            552.5
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "API deployment / enable_deployment=false\npath_prefix=/ / routes=[]\nExisting gateway_id takes precedence; otherwise created gateway ID",
+        "target": "Optional API Gateway\nenable_gateway=false AND create_gateway=true\nendpoint_type=PUBLIC / review before enabling",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "Created gateway fallback / only when gateway_id=null",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.4,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "API deployment / enable_deployment=false\npath_prefix=/ / routes=[]\nExisting gateway_id takes precedence; otherwise created gateway ID",
+        "target": "Existing gateway_id / null by default\nExplicit ID overrides the created gateway for deployment",
+        "source_kind": "group:component",
+        "target_kind": "group:optional",
+        "label": "Explicit gateway_id / if non-null",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0,
+          0.8
+        ],
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": [
+          [
+            1220,
+            633
+          ],
+          [
+            1220,
+            680
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "API deployment / enable_deployment=false\npath_prefix=/ / routes=[]\nExisting gateway_id takes precedence; otherwise created gateway ID",
+        "target": "Supplied per-route backend configuration / EXTERNAL TARGETS\nbackend_type + optional URL or status / methods + timeouts\nNo backend resource, client, authentication policy or application created",
+        "source_kind": "group:component",
+        "target_kind": "group:optional",
+        "label": "Configured route intent / only populated routes",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/extensions/apigw/locals.tf",
+        "revision": "working-tree",
+        "sha256": "f48dd6ab3c6a78f0ad6a6b465898e17c132183cd87a22aa5d92f933fa504c285"
+      },
+      {
+        "path": "blueprints/extensions/apigw/main.tf",
+        "revision": "working-tree",
+        "sha256": "cba6826b581aa635b9e6d597e358eddf668dcaa6651f325db7639644961c123a"
+      },
+      {
+        "path": "blueprints/extensions/apigw/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "102f885ee3b0de7be7b0093cdb348ece93427300b99631ed94e833b651b5fe32"
+      },
+      {
+        "path": "blueprints/extensions/apigw/providers.tf",
+        "revision": "working-tree",
+        "sha256": "2ee529fdf155bf2f2d0d63966264b97faa465ab7aac410b2a79a15001387d0ce"
+      },
+      {
+        "path": "blueprints/extensions/apigw/variables.tf",
+        "revision": "working-tree",
+        "sha256": "2115fcb2f037e48c86473e99e30c481d11f32ca905dce90195a3886bfac065e7"
+      },
+      {
+        "path": "blueprints/extensions/apigw/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
+  "extensions/oac": {
+    "relationships": [
+      {
+        "source": "OAC instance / enable_analytics_instance=false\nENTERPRISE_ANALYTICS / LICENSE_INCLUDED\nCapacity: OLPU_COUNT / 1",
+        "target": "Existing optional service identifiers\nkms_key_id=null / domain_id=null\nNo key or identity domain created",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "kms_key_id / domain_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Private access channel / enable_private_access_channel=false\nCreated instance if enabled; else existing_analytics_instance_id\nprivate_source_dns_zones=[] / DNS zone descriptors only",
+        "target": "OAC instance / enable_analytics_instance=false\nENTERPRISE_ANALYTICS / LICENSE_INCLUDED\nCapacity: OLPU_COUNT / 1",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "analytics_instance_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.40366972,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Private access channel / enable_private_access_channel=false\nCreated instance if enabled; else existing_analytics_instance_id\nprivate_source_dns_zones=[] / DNS zone descriptors only",
+        "target": "Existing VCN + subnet + NSGs\nvcn_id=null / subnet_id=null / NSGs=[]\nNo network or DNS zone is created",
+        "source_kind": "group:component",
+        "target_kind": "group:optional",
+        "label": "vcn_id / subnet_id / network_security_group_ids",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/extensions/oac/locals.tf",
+        "revision": "working-tree",
+        "sha256": "4e2457cc0b4d1128a7e516c9cf4184368d059923eaa899d9b674fce0bd2145d8"
+      },
+      {
+        "path": "blueprints/extensions/oac/main.tf",
+        "revision": "working-tree",
+        "sha256": "402df95feeefe62a3aa26dc4477c56e4b14715efe809f1aa4084a100784eb64d"
+      },
+      {
+        "path": "blueprints/extensions/oac/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "49abb825d76d587de0e187cd1087f781f6b0ec06ab57c1a20130cd6f5e7e4ad5"
+      },
+      {
+        "path": "blueprints/extensions/oac/providers.tf",
+        "revision": "working-tree",
+        "sha256": "9ace0aeb9a214bbdff10c76453708d4fe6d9602bdbd3e38badbc4ac4eb6e0603"
+      },
+      {
+        "path": "blueprints/extensions/oac/variables.tf",
+        "revision": "working-tree",
+        "sha256": "e91fa0e3fc1536f5243491e1f187bc4c11c3838b2fe1a06690a5ab8a1a9b5c92"
+      },
+      {
+        "path": "blueprints/extensions/oac/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
+  "extensions/oic": {
+    "relationships": [
+      {
+        "source": "OIC instance / enable_integration_instance=false\nSTANDARDX / is_byol=false / message_packs=1",
+        "target": "Existing identity / domain_id=null or IDCS token\nSTANDARDX / ENTERPRISEX / HEALTHCARE require one\nNo identity domain, credentials or IAM policy created",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "domain_id or idcs_at / precondition",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Private outbound connection / enable_private_outbound_connection=false\nCreated instance if enabled; else existing_integration_instance_id\nPreconditions require selected instance ID and outbound subnet ID",
+        "target": "OIC instance / enable_integration_instance=false\nSTANDARDX / is_byol=false / message_packs=1",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "integration_instance_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.40366972,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Private outbound connection / enable_private_outbound_connection=false\nCreated instance if enabled; else existing_integration_instance_id\nPreconditions require selected instance ID and outbound subnet ID",
+        "target": "Existing outbound subnet + NSGs\noutbound_subnet_id=null / outbound_nsg_ids=[]\nNo network, NSG rules, routes or DNS created",
+        "source_kind": "group:component",
+        "target_kind": "group:optional",
+        "label": "subnet_id / nsg_ids",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/extensions/oic/locals.tf",
+        "revision": "working-tree",
+        "sha256": "6d41094cfb37f8f48d0cfdc69852d623cd3fa0a9ae0f2473a6cfedecf6474ca6"
+      },
+      {
+        "path": "blueprints/extensions/oic/main.tf",
+        "revision": "working-tree",
+        "sha256": "c08f3e8b3f88292288f317bbb7d8b4cb6177b8cafdb219308c998b385659f859"
+      },
+      {
+        "path": "blueprints/extensions/oic/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "9e69bfbdcb0a8fe7e68b87100c797992a09f945f5dd779a40242bf9922177683"
+      },
+      {
+        "path": "blueprints/extensions/oic/providers.tf",
+        "revision": "working-tree",
+        "sha256": "9ace0aeb9a214bbdff10c76453708d4fe6d9602bdbd3e38badbc4ac4eb6e0603"
+      },
+      {
+        "path": "blueprints/extensions/oic/variables.tf",
+        "revision": "working-tree",
+        "sha256": "0c70f3c01e702bcedabc571279743239d882e36c5f6d56c1558c379a8510923e"
+      },
+      {
+        "path": "blueprints/extensions/oic/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
+  "extensions/observability": {
+    "relationships": [
+      {
+        "source": "Optional Log Analytics log group / flag=false\nWorkload compartment / selected namespace\nNo collector, ingestion source or log payload declared",
+        "target": "Optional namespace onboarding / flag=false\nnamespace=default / is_onboarded=true\ncompartment_id=tenancy_ocid / TENANCY ROOT",
+        "source_kind": "group:component",
+        "target_kind": "icon",
+        "label": "namespace / created or supplied value",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": [
+          1,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional OPSI private endpoint / flag=false\nis_used_for_rac_dbs=false",
+        "target": "Existing VCN + subnet + NSGs\nvcn_id=null / subnet_id=null / nsg_ids=[]\nNo network or database onboarding created",
+        "source_kind": "icon",
+        "target_kind": "group:optional",
+        "label": "vcn_id / subnet_id / nsg_ids",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.4,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/extensions/observability/locals.tf",
+        "revision": "working-tree",
+        "sha256": "3fbd39fcde89731320f4a556b34c42fe565b672458ad1b4ee4ed765a53de9fe2"
+      },
+      {
+        "path": "blueprints/extensions/observability/main.tf",
+        "revision": "working-tree",
+        "sha256": "0f8c7d1625ea8bd71620012eac25b7c8b3d904a900c71a93f2bcdedfb8e991ea"
+      },
+      {
+        "path": "blueprints/extensions/observability/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "d92d1a346abfd22a40965dd9704190b51fe28e3ffab3032c805eba3ebf33fb36"
+      },
+      {
+        "path": "blueprints/extensions/observability/providers.tf",
+        "revision": "working-tree",
+        "sha256": "9ace0aeb9a214bbdff10c76453708d4fe6d9602bdbd3e38badbc4ac4eb6e0603"
+      },
+      {
+        "path": "blueprints/extensions/observability/variables.tf",
+        "revision": "working-tree",
+        "sha256": "f3eba8d5cd085dddcc79a04ce3ecd9dc47b0705c55b64a8f09a9ccc183b71aeb"
+      },
+      {
+        "path": "blueprints/extensions/observability/versions.tf",
+        "revision": "working-tree",
+        "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+      }
+    ]
+  },
   "networking/aws-oci-managed-interconnect": {
     "relationships": [
       {

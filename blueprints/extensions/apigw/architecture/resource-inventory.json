@@ -1,0 +1,165 @@
+{
+  "schema_version": 2,
+  "blueprint": "extensions/apigw",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 2
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_apigateway_gateway.this",
+      "type": "oci_apigateway_gateway",
+      "symbol": "this",
+      "source": "blueprints/extensions/apigw/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_gateway && var.create_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_gateway && var.create_gateway ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "API Gateway"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_apigateway_deployment.this",
+      "type": "oci_apigateway_deployment",
+      "symbol": "this",
+      "source": "blueprints/extensions/apigw/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_deployment ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_deployment ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n19",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 2
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/extensions/apigw/variables.tf",
+      "description": "Compartment OCID where API Gateway resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.gateway_id",
+      "source": "blueprints/extensions/apigw/variables.tf",
+      "description": "Existing API Gateway OCID used when create_gateway is false or for deployments on an existing gateway.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.subnet_id",
+      "source": "blueprints/extensions/apigw/variables.tf",
+      "description": "Subnet OCID for the API Gateway.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.network_security_group_ids",
+      "source": "blueprints/extensions/apigw/variables.tf",
+      "description": "Optional NSG OCIDs for the API Gateway.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.certificate_id",
+      "source": "blueprints/extensions/apigw/variables.tf",
+      "description": "Optional certificate OCID for the API Gateway.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 5
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/extensions/apigw/locals.tf",
+      "revision": "working-tree",
+      "sha256": "f48dd6ab3c6a78f0ad6a6b465898e17c132183cd87a22aa5d92f933fa504c285"
+    },
+    {
+      "path": "blueprints/extensions/apigw/main.tf",
+      "revision": "working-tree",
+      "sha256": "cba6826b581aa635b9e6d597e358eddf668dcaa6651f325db7639644961c123a"
+    },
+    {
+      "path": "blueprints/extensions/apigw/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "102f885ee3b0de7be7b0093cdb348ece93427300b99631ed94e833b651b5fe32"
+    },
+    {
+      "path": "blueprints/extensions/apigw/providers.tf",
+      "revision": "working-tree",
+      "sha256": "2ee529fdf155bf2f2d0d63966264b97faa465ab7aac410b2a79a15001387d0ce"
+    },
+    {
+      "path": "blueprints/extensions/apigw/variables.tf",
+      "revision": "working-tree",
+      "sha256": "2115fcb2f037e48c86473e99e30c481d11f32ca905dce90195a3886bfac065e7"
+    },
+    {
+      "path": "blueprints/extensions/apigw/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

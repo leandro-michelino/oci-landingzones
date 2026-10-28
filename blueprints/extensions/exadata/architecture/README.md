@@ -13,39 +13,17 @@ Creates OCI Cloud Exadata Infrastructure in a selected availability domain for d
 | Boundary | `blueprints/extensions/exadata` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Creates OCI Cloud Exadata Infrastructure in a selected availability domain for database platform capacity. |
 | Terraform components | `oci_database_cloud_exadata_infrastructure.this` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram shows source-defined components and configuration associations; it is not runtime evidence. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Exadata Extension                                                                                        |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Existing compartment / VCN / subnet / service boundary as required}                                     |
-|         |                                                                                                |
-|         v                                                                                                |
-| [Cloud Exadata Infrastructure]                                                                           |
-|         |-- infrastructure shape, availability domain, and compute/storage capacity                      |
-|         |-- maintenance window and contacts                                                              |
-|         |-- network attachment decisions owned by database platform design                               |
-|         `-- tags, compartment scope, and optional private access controls                                |
-|                  |                                                                                       |
-|                  v                                                                                       |
-| [DB platform operators] -> [Exadata infrastructure] -> [VM clusters and databases added by later layers] |
-|                                                                                                          |
-| Review focus: capacity, AD placement, maintenance policy, support contacts, and downstream VM cluster    |
-| ownership.                                                                                               |
-| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
-| teams.                                                                                                   |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Source-bounded exadata architecture](architecture.png)
+
+[Edit the overview and native detail pages](architecture.drawio) · [Source resource inventory](resource-inventory.json)
+
+The main draw.io document includes declaration-detail and existing-resource input pages.
+These enumerate source declarations and references, not deployed instance counts.
 
 ## Terraform Components
 
@@ -55,25 +33,24 @@ Creates OCI Cloud Exadata Infrastructure in a selected availability domain for d
 
 ## Request And Deployment Flow
 
-- Operator supplies the existing network, compartment, service, or backend IDs required by the extension.
+- Operator supplies the target compartment, availability domain, shape and capacity; no existing network input is consumed.
 - Terraform creates the optional service resource graph declared in main.tf.
-- Outputs expose service IDs, endpoint names, or attachment IDs for applications and runbooks.
+- Outputs expose only the IDs, names or endpoints declared in `outputs.tf`; they do not establish downstream application connectivity.
 
 ## Traffic And Trust Boundaries
 
 - Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
-- Data plane traffic is the packet or service path shown in the Architecture diagram; if this deployment only creates identity or governance resources, the data plane is intentionally permission and signal flow instead of network packets.
-- Trust boundaries are the tenancy, compartment, VCN, subnet, DRG, private endpoint, identity domain, or managed service edges shown in the diagram.
+- Plain lines show declared ID/configuration associations; no application data flow is configured by this entry point.
+- Resources use the selected compartment, with a tenancy fallback that requires review. Existing networks and service identities are operator inputs only where declared.
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
 ## Detailed Architecture Notes
 
-These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
+- No resources are created by default: `enable_exadata_infrastructure=false`.
+- The two plain connectors show availability-domain selection and nested customer contact configuration. Contacts are not a messaging resource.
+- There is no `maintenance_window` block, VM cluster, database, backup policy, network or database traffic configuration. Capacity and placement inputs default to null.
 
-- This deployment creates the Exadata infrastructure capacity only; VM clusters, databases, backup policy, and application connectivity are follow-on work.
-- Availability domain, shape, compute count, storage count, and server types should be reviewed for quota, cost, and regional availability before apply.
-- Customer contacts are part of the operational support path and should be accurate before the infrastructure is created.
-- The main hand-off is the Cloud Exadata Infrastructure OCID for database platform teams.
+- Diagram/source review: 2026-10-28. Historical provider and infrastructure validation evidence remains unchanged. No cloud operation or runtime test was run for this conversion.
 
 ## Operational Boundaries
 

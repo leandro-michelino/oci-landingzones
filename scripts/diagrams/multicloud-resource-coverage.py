@@ -26,6 +26,11 @@ base=importlib.util.module_from_spec(spec); spec.loader.exec_module(base)
 icon_spec=importlib.util.spec_from_file_location('cloud_icons',Path(__file__).with_name('cloud-icons.py'))
 cloud_icons=importlib.util.module_from_spec(icon_spec); icon_spec.loader.exec_module(cloud_icons)
 DEFAULTS=[
+ 'extensions/exadata',
+ 'extensions/apigw',
+ 'extensions/oac',
+ 'extensions/oic',
+ 'extensions/observability',
  'industry/ocvs',
  'industry/secure-desktops',
  'extensions/oke',
@@ -66,6 +71,12 @@ DEFAULTS=[
 ]
 DECL=re.compile(r'^(resource|data|module)\s+"([^"]+)"(?:\s+"([^"]+)")?\s*\{',re.M)
 ICONS={
+ 'oci_database_cloud_exadata_infrastructure':'Oracle Exadata Database Service',
+ 'oci_analytics_analytics_instance':'Oracle Analytics Cloud',
+ 'oci_integration_integration_instance':'Integration',
+ 'oci_log_analytics_namespace':'Logging Analytics',
+ 'oci_log_analytics_log_analytics_log_group':'Logging Analytics',
+ 'oci_opsi_operations_insights_private_endpoint':'Operations Insights',
  'oci_health_checks_http_monitor':'Health Checks',
  'oci_dns_steering_policy':'DNS',
  'oci_apm_apm_domain':'Application Performance Monitoring',

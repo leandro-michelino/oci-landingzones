@@ -1,0 +1,92 @@
+{
+  "schema_version": 2,
+  "blueprint": "extensions/exadata",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 1
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_database_cloud_exadata_infrastructure.this",
+      "type": "oci_database_cloud_exadata_infrastructure",
+      "symbol": "this",
+      "source": "blueprints/extensions/exadata/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_exadata_infrastructure ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_exadata_infrastructure ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Oracle Exadata Database Service"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 1
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/extensions/exadata/variables.tf",
+      "description": "Compartment OCID where Exadata resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 1
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/extensions/exadata/locals.tf",
+      "revision": "working-tree",
+      "sha256": "046ef85d1e84e510bdb081d7c9830d4a80237deb131b3853d11ab94c42ec5687"
+    },
+    {
+      "path": "blueprints/extensions/exadata/main.tf",
+      "revision": "working-tree",
+      "sha256": "3d1457ed946972512d83764e2fcafe12bd1afea14bf53a65dc2c2bca3984310d"
+    },
+    {
+      "path": "blueprints/extensions/exadata/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "4343187794cc46f8d85c96ea6b177b6bbcce092f40bbc58e9cf4956ced95d21a"
+    },
+    {
+      "path": "blueprints/extensions/exadata/providers.tf",
+      "revision": "working-tree",
+      "sha256": "2ee529fdf155bf2f2d0d63966264b97faa465ab7aac410b2a79a15001387d0ce"
+    },
+    {
+      "path": "blueprints/extensions/exadata/variables.tf",
+      "revision": "working-tree",
+      "sha256": "ad500b7ce470f26c8b3d4cb2dd02de235a68f96b4e10f0a3710cb19b90203d08"
+    },
+    {
+      "path": "blueprints/extensions/exadata/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

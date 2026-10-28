@@ -13,38 +13,16 @@ Deploys an observability layer with optional Log Analytics namespace and group, 
 | Boundary | `blueprints/extensions/observability` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Deploys an observability layer with optional Log Analytics namespace and group, APM domain, and Operations Insights private endpoint. |
 | Terraform components | `oci_log_analytics_namespace.this`, `oci_log_analytics_log_analytics_log_group.this`, `oci_apm_apm_domain.this`, `oci_opsi_operations_insights_private_endpoint.this` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic or control flow for this exact deployment. |
+| Primary architecture view | The diagram shows source-defined components and configuration associations; it is not runtime evidence. |
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Observability Platform                                                                                   |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Existing compartment / VCN / subnet / service boundary as required}                                     |
-|         |                                                                                                |
-|         v                                                                                                |
-| [Observability Platform]                                                                                 |
-|         |-- Log Analytics namespace and log group                                                        |
-|         |-- APM domain for tracing                                                                       |
-|         |-- Operations Insights private endpoint for private telemetry paths                             |
-|         `-- tags, compartment scope, and optional private access controls                                |
-|                  |                                                                                       |
-|                  v                                                                                       |
-| [logs/metrics/traces] -> [Log Analytics / APM / Ops Insights] -> [operator dashboards and alarms]        |
-|                                                                                                          |
-| Review focus: namespace ownership, log-group naming, APM data keys, private endpoint subnet, NSGs, and   |
-| telemetry tenancy boundaries.                                                                            |
-| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
-| teams.                                                                                                   |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Source-bounded observability architecture](architecture.png)
+
+[Edit the overview and native detail pages](architecture.drawio) · [Source resource inventory](resource-inventory.json)
+
+The main draw.io document includes declaration-detail and existing-resource input pages.
+These enumerate source declarations and references, not deployed instance counts.
 
 ## Terraform Components
 
@@ -59,20 +37,24 @@ Deploys an observability layer with optional Log Analytics namespace and group, 
 
 - Operator supplies the existing network, compartment, service, or backend IDs required by the deployment.
 - Terraform creates the optional service resource graph declared in `main.tf`.
-- Outputs expose service IDs, endpoint names, or attachment IDs for applications and runbooks.
+- Outputs expose only the IDs, names or endpoints declared in `outputs.tf`; they do not establish downstream application connectivity.
 
 ## Traffic And Trust Boundaries
 
 - Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
-- Data plane traffic is the packet or service path shown in the Architecture diagram; if this deployment only creates identity or governance resources, the data plane is permission and signal flow.
-- Trust boundaries are the tenancy, compartment, VCN, subnet, private endpoint, identity domain, or managed service edges shown in the diagram.
+- Plain lines show declared ID/configuration associations; no application data flow is configured by this entry point.
+- Existing network boundaries and service identities are operator inputs where declared. Namespace onboarding in Observability uses tenancy-root scope.
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
 ## Detailed Architecture Notes
 
-- Confirm Log Analytics namespace ownership and onboarding.
-- Confirm APM free tier versus paid domain.
-- Confirm Operations Insights subnet, VCN, and NSGs.
+- No resources are created by default: all four enablement flags are false.
+- Optional Log Analytics namespace onboarding uses `compartment_id=var.tenancy_ocid`, a tenancy-root operation. Its default namespace is `default`; `is_onboarded=true` only applies when namespace creation is enabled.
+- The Log Analytics group remains in the selected workload compartment and selects the optional created namespace string or supplied namespace. Its plain connector does not represent ingestion.
+- The APM domain is independent and defaults to the free-tier setting. No agent, exporter, trace ingestion, alarm, dashboard or notification resource is declared.
+- Operations Insights private endpoint uses existing VCN/subnet/NSG IDs and defaults to `is_used_for_rac_dbs=false`. There is no database onboarding or automatic link to APM or Log Analytics.
+
+- Diagram/source review: 2026-10-28. Historical provider and infrastructure validation evidence remains unchanged. No cloud operation or runtime test was run for this conversion.
 
 ## Operational Boundaries
 

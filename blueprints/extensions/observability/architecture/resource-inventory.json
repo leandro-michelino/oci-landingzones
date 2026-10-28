@@ -1,0 +1,194 @@
+{
+  "schema_version": 2,
+  "blueprint": "extensions/observability",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 4
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_log_analytics_namespace.this",
+      "type": "oci_log_analytics_namespace",
+      "symbol": "this",
+      "source": "blueprints/extensions/observability/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_log_analytics_namespace ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_log_analytics_namespace ? 1 : 0\n\n  # The namespace API requires the tenancy OCID, not the workload compartment OCID."
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Logging Analytics"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_log_analytics_log_analytics_log_group.this",
+      "type": "oci_log_analytics_log_analytics_log_group",
+      "symbol": "this",
+      "source": "blueprints/extensions/observability/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_log_group ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_log_group ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n17",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Logging Analytics"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_apm_apm_domain.this",
+      "type": "oci_apm_apm_domain",
+      "symbol": "this",
+      "source": "blueprints/extensions/observability/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_apm_domain ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_apm_domain ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n30",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Application Performance Monitoring"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_opsi_operations_insights_private_endpoint.this",
+      "type": "oci_opsi_operations_insights_private_endpoint",
+      "symbol": "this",
+      "source": "blueprints/extensions/observability/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_opsi_private_endpoint ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_opsi_private_endpoint ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n39",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Operations Insights"
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 4
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/extensions/observability/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.vcn_id",
+      "source": "blueprints/extensions/observability/variables.tf",
+      "description": "VCN OCID for Operations Insights private endpoint.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.subnet_id",
+      "source": "blueprints/extensions/observability/variables.tf",
+      "description": "Subnet OCID for Operations Insights private endpoint.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.nsg_ids",
+      "source": "blueprints/extensions/observability/variables.tf",
+      "description": "NSG OCIDs for Operations Insights private endpoint.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 4
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/extensions/observability/locals.tf",
+      "revision": "working-tree",
+      "sha256": "3fbd39fcde89731320f4a556b34c42fe565b672458ad1b4ee4ed765a53de9fe2"
+    },
+    {
+      "path": "blueprints/extensions/observability/main.tf",
+      "revision": "working-tree",
+      "sha256": "0f8c7d1625ea8bd71620012eac25b7c8b3d904a900c71a93f2bcdedfb8e991ea"
+    },
+    {
+      "path": "blueprints/extensions/observability/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "d92d1a346abfd22a40965dd9704190b51fe28e3ffab3032c805eba3ebf33fb36"
+    },
+    {
+      "path": "blueprints/extensions/observability/providers.tf",
+      "revision": "working-tree",
+      "sha256": "9ace0aeb9a214bbdff10c76453708d4fe6d9602bdbd3e38badbc4ac4eb6e0603"
+    },
+    {
+      "path": "blueprints/extensions/observability/variables.tf",
+      "revision": "working-tree",
+      "sha256": "f3eba8d5cd085dddcc79a04ce3ecd9dc47b0705c55b64a8f09a9ccc183b71aeb"
+    },
+    {
+      "path": "blueprints/extensions/observability/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}

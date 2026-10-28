@@ -577,3 +577,54 @@ python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint industry/oc
 python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint industry/ocvs --check
 python3 scripts/diagrams/check-connections.py --write-report
 ```
+
+## Optional Platform Extensions / October 28, 2026
+
+Five additional original catalog entries now have native draw.io overviews,
+PNGs, complete declaration pages and existing-resource input pages. Source
+conditions and default-disabled service flags remain visible.
+
+| Blueprint | OCI declarations | Existing-resource references | Overview connectors |
+| --- | ---: | ---: | ---: |
+| [Exadata](../../blueprints/extensions/exadata/architecture/README.md) | 1 | 1 | 2 |
+| [API Gateway](../../blueprints/extensions/apigw/architecture/README.md) | 2 | 5 | 5 |
+| [Analytics Cloud](../../blueprints/extensions/oac/architecture/README.md) | 2 | 7 | 3 |
+| [Integration](../../blueprints/extensions/oic/architecture/README.md) | 2 | 5 | 3 |
+| [Observability](../../blueprints/extensions/observability/architecture/README.md) | 4 | 4 | 2 |
+
+The batch covers **11 OCI declarations**, **22 existing-resource references**,
+and **15 reviewed connectors** in **15 native documents with paired PNGs**.
+The main documents each contain the overview, declaration map and input map.
+Official service glyphs are used for Exadata, API Gateway, Analytics,
+Integration, Logging Analytics, APM and Operations Insights. Attachments and
+other resources without an exact matching glyph use named boxes.
+
+Exadata declares infrastructure capacity only; no maintenance-window block,
+VM cluster, database or network is added. API Gateway distinguishes an explicit
+existing gateway ID from a created fallback, and shows only declared backend
+route intent. OAC/OIC channel lines represent instance and existing-network
+associations; no data connection or integration flow is invented. Observability
+marks Log Analytics namespace onboarding as tenancy-root scope and leaves its
+independent APM domain unconnected to other telemetry services.
+
+```bash
+python3 scripts/diagrams/extensions-batch-02.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint extensions/exadata --blueprint extensions/apigw --blueprint extensions/oac --blueprint extensions/oic --blueprint extensions/observability --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --check
+python3 scripts/diagrams/check-connections.py --write-report
+python3 -m unittest discover -s scripts/diagrams -p test_resource_coverage.py
+bash scripts/check-repo-contracts.sh
+```
+
+Current original conversion progress is **69/80**, with **11 pending**.
+Including the five additional Interconnect, healthcare and OCVS blueprints,
+current coverage is **74/85**, plus the separate conceptual drawing. Current
+audit totals are **622 reviewed connectors**, **273 native documents and PNGs**,
+and **12 source-defined OCI/cloud bridges**. GCP counterparts remain in the
+final phase after the original conversion backlog; see the
+[GCP plan](../multicloud/GCP-OCI-BLUEPRINTS.md).
+
+This is a diagram/documentation-only batch reviewed on 2026-10-28. No Terraform
+resource configuration, historical validation date or provider evidence changes.
+No cloud provisioning, service activation, ingestion, application request,
+private connectivity or runtime test was performed.

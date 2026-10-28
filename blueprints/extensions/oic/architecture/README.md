@@ -13,38 +13,16 @@ Deploys an Oracle Integration Cloud instance with optional private outbound conn
 | Boundary | `blueprints/extensions/oic` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Deploys an Oracle Integration Cloud instance with optional private outbound connection. |
 | Terraform components | `oci_integration_integration_instance.this`, `oci_integration_private_endpoint_outbound_connection.this` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic or control flow for this exact deployment. |
+| Primary architecture view | The diagram shows source-defined components and configuration associations; it is not runtime evidence. |
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Oracle Integration Cloud                                                                                 |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Existing compartment / VCN / subnet / service boundary as required}                                     |
-|         |                                                                                                |
-|         v                                                                                                |
-| [Oracle Integration Cloud]                                                                               |
-|         |-- integration instance with edition, message packs, BYOL flag, and access type                 |
-|         |-- private outbound connection when enabled                                                     |
-|         |-- network path toward private SaaS, app, database, or API endpoints                            |
-|         `-- tags, compartment scope, and optional private access controls                                |
-|                  |                                                                                       |
-|                  v                                                                                       |
-| [integration designers] -> [OIC instance] -> [private outbound connection] -> [private endpoints/APIs]   |
-|                                                                                                          |
-| Review focus: edition, endpoint access type, outbound subnet/NSGs, route tables, DNS, and integration    |
-| IAM scope.                                                                                               |
-| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
-| teams.                                                                                                   |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Source-bounded oic architecture](architecture.png)
+
+[Edit the overview and native detail pages](architecture.drawio) · [Source resource inventory](resource-inventory.json)
+
+The main draw.io document includes declaration-detail and existing-resource input pages.
+These enumerate source declarations and references, not deployed instance counts.
 
 ## Terraform Components
 
@@ -60,20 +38,24 @@ Deploys an Oracle Integration Cloud instance with optional private outbound conn
 
 - Operator supplies the existing network, compartment, service, or backend IDs required by the deployment.
 - Terraform creates the optional service resource graph declared in `main.tf`.
-- Outputs expose service IDs, endpoint names, or attachment IDs for applications and runbooks.
+- Outputs expose only the IDs, names or endpoints declared in `outputs.tf`; they do not establish downstream application connectivity.
 
 ## Traffic And Trust Boundaries
 
 - Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
-- Data plane traffic is the packet or service path shown in the Architecture diagram; if this deployment only creates identity or governance resources, the data plane is permission and signal flow.
-- Trust boundaries are the tenancy, compartment, VCN, subnet, private endpoint, identity domain, or managed service edges shown in the diagram.
+- Plain lines show declared ID/configuration associations; no application data flow is configured by this entry point.
+- Resources use the selected compartment, with a tenancy fallback that requires review. Existing networks and service identities are operator inputs only where declared.
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
 ## Detailed Architecture Notes
 
-- Confirm edition, message packs, `is_byol`, and file server decisions.
-- Confirm private outbound subnet and NSGs.
-- Confirm IDCS/domain authentication inputs when required by tenancy policy.
+- No resources are created by default: both instance and private-outbound flags are false.
+- The outbound connection selects the created instance when enabled, otherwise `existing_integration_instance_id`. Preconditions require a selected instance ID and `outbound_subnet_id`.
+- Plain connectors show instance, identity and existing outbound subnet/NSG bindings. No adapter connection, integration flow, application endpoint or working network path is created.
+- The default type is `STANDARDX` with one message pack and BYOL disabled. STANDARDX, ENTERPRISEX and HEALTHCARE require `domain_id` or `idcs_access_token` when creating the instance.
+- File server, Visual Builder and disaster-recovery feature flags default to false; no DR topology, replication or workload is inferred.
+
+- Diagram/source review: 2026-10-28. Historical provider and infrastructure validation evidence remains unchanged. No cloud operation or runtime test was run for this conversion.
 
 ## Operational Boundaries
 

@@ -13,38 +13,17 @@ Adds OCI API Gateway and deployment routes so application APIs can be exposed th
 | Boundary | `blueprints/extensions/apigw` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Adds OCI API Gateway and deployment routes so application APIs can be exposed through a managed gateway endpoint. |
 | Terraform components | `oci_apigateway_gateway.this`, `oci_apigateway_deployment.this` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram shows source-defined components and configuration associations; it is not runtime evidence. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| API Gateway Extension                                                                                    |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Existing compartment / VCN / subnet / service boundary as required}                                     |
-|         |                                                                                                |
-|         v                                                                                                |
-| [API Gateway]                                                                                            |
-|         |-- gateway endpoint in supplied subnet/network context                                          |
-|         |-- deployment with path prefix and route definitions                                            |
-|         |-- backend targets owned by application teams                                                   |
-|         `-- tags, compartment scope, and optional private access controls                                |
-|                  |                                                                                       |
-|                  v                                                                                       |
-| [clients] -> [gateway endpoint] -> [deployment routes] -> [private or public backends]                   |
-|                                                                                                          |
-| Review focus: gateway endpoint type, route auth, backend URLs, subnet/NSG posture, and IAM policy scope. |
-| Hand-off: service IDs, endpoint names, private access IDs, and operational references for application    |
-| teams.                                                                                                   |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Source-bounded apigw architecture](architecture.png)
+
+[Edit the overview and native detail pages](architecture.drawio) · [Source resource inventory](resource-inventory.json)
+
+The main draw.io document includes declaration-detail and existing-resource input pages.
+These enumerate source declarations and references, not deployed instance counts.
 
 ## Terraform Components
 
@@ -57,23 +36,23 @@ Adds OCI API Gateway and deployment routes so application APIs can be exposed th
 
 - Operator supplies the existing network, compartment, service, or backend IDs required by the extension.
 - Terraform creates the optional service resource graph declared in main.tf.
-- Outputs expose service IDs, endpoint names, or attachment IDs for applications and runbooks.
+- Outputs expose only the IDs, names or endpoints declared in `outputs.tf`; they do not establish downstream application connectivity.
 
 ## Traffic And Trust Boundaries
 
 - Control plane traffic is local operator or CI authentication into the OCI provider and the Ansible Terraform runner.
-- Data plane traffic is the packet or service path shown in the Architecture diagram; if this deployment only creates identity or governance resources, the data plane is intentionally permission and signal flow instead of network packets.
-- Trust boundaries are the tenancy, compartment, VCN, subnet, DRG, private endpoint, identity domain, or managed service edges shown in the diagram.
+- Plain lines show declared ID/configuration associations. Only the API Gateway route arrow represents configured route intent; no line proves working traffic.
+- Resources use the selected compartment, with a tenancy fallback that requires review. Existing networks and service identities are operator inputs only where declared.
 - Secrets, OCIDs, customer CIDRs, endpoint URLs, and contact data belong in ignored local tfvars or a secure pipeline variable store, not in committed files.
 
 ## Detailed Architecture Notes
 
-These notes expand the diagram with the design details that usually matter during review, plan, and hand-off.
+- No resources are created by default: `enable_gateway=false` and `enable_deployment=false`; gateway creation additionally requires `create_gateway=true`.
+- An explicit `gateway_id` takes precedence over a newly created gateway when selecting the deployment target. The gateway creation and deployment flags are independent.
+- `endpoint_type=PUBLIC` is the source default. Existing subnet, NSGs and certificate IDs are supplied; no associated network, certificate, authentication or backend resource is created.
+- The solid route arrow describes configured handling only when routes are supplied. A URL backend and a status-based response do not imply the same network traffic; default `routes=[]`.
 
-- The gateway can be created here or an existing gateway_id can be supplied, which changes whether this folder owns the gateway lifecycle.
-- Private gateways depend on the supplied subnet_id and NSG IDs; public gateways depend on endpoint_type and certificate choices.
-- Each route maps a path/method pair to the configured backend type, backend URL or status, and timeout behavior.
-- The deployment endpoint is the main consumer hand-off for clients, app teams, DNS records, and monitoring.
+- Diagram/source review: 2026-10-28. Historical provider and infrastructure validation evidence remains unchanged. No cloud operation or runtime test was run for this conversion.
 
 ## Operational Boundaries
 

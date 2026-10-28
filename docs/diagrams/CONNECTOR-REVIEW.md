@@ -130,3 +130,31 @@ connectors** and **258 native documents/PNGs**. There remain 12 explicitly
 bridged source-defined multicloud overviews; the OCVS external corporate
 prerequisites do not create another cloud deployment. Current catalog coverage
 is **69/85**, while the original conversion backlog remains **64/80**.
+
+## Subsequent Optional Platform Extensions Batch
+
+Five overviews add **15 reviewed relationships**: Exadata 2, API Gateway 5,
+Analytics Cloud 3, Integration 3 and Observability 2. Exadata lines identify
+availability-domain and contact configuration rather than database traffic.
+API Gateway has distinct conditional bindings for a supplied gateway ID and
+the newly created fallback, supplied subnet/NSGs/certificate associations,
+and configured backend-route intent. URL and status-based backends do not
+imply identical packet flows.
+
+OAC and OIC associations bind optional channels to selected instances and
+existing network inputs. OAC KMS/domain and OIC domain/token properties do not
+create identity services. Log Analytics group-to-namespace is a namespace
+configuration association, not log ingestion. Operations Insights selects
+existing VCN/subnet/NSGs. No invented connector links independent APM,
+Log Analytics or OPSI services. Namespace onboarding is marked tenancy-root.
+
+The source hashes, endpoints, labels, directions and paths are recorded in the
+[review contract](reviewed-connectors.json); the [audit](connection-review.json)
+checks native-page IDs, reference integrity, source coverage and empty icon/text
+crossing warnings. PNG overviews and declaration/input pages were inspected.
+
+Current totals are **74 blueprint plus one conceptual overviews**, **622
+connectors**, **273 native documents/PNGs**, and **12 explicit OCI/cloud
+bridges**. Original conversion progress is **69/80**, with **11 pending**;
+current coverage including five additional blueprints is **74/85**. All checks
+are static diagram/source checks, not provisioning or runtime validation.

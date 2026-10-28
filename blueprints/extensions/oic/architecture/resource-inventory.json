@@ -1,0 +1,165 @@
+{
+  "schema_version": 2,
+  "blueprint": "extensions/oic",
+  "review_date": "2026-10-28",
+  "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
+  "counts_by_cloud": {
+    "OCI": 2
+  },
+  "resources": [
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_integration_integration_instance.this",
+      "type": "oci_integration_integration_instance",
+      "symbol": "this",
+      "source": "blueprints/extensions/oic/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_integration_instance ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_integration_instance ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n4",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": "Integration"
+      }
+    },
+    {
+      "cloud": "OCI",
+      "kind": "resource",
+      "address": "oci_integration_private_endpoint_outbound_connection.this",
+      "type": "oci_integration_private_endpoint_outbound_connection",
+      "symbol": "this",
+      "source": "blueprints/extensions/oic/main.tf",
+      "revision": "working-tree",
+      "condition": "count = var.enable_private_outbound_connection ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_private_outbound_connection ? 1 : 0"
+      },
+      "diagram": {
+        "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
+        "node_id": "n13",
+        "source_symbol": "this",
+        "provider_icon": null,
+        "oci_icon": null
+      }
+    }
+  ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 2
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/extensions/oic/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.domain_id",
+      "source": "blueprints/extensions/oic/variables.tf",
+      "description": "Optional identity domain OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.existing_integration_instance_id",
+      "source": "blueprints/extensions/oic/variables.tf",
+      "description": "Existing OIC instance OCID used for outbound connection only.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.outbound_subnet_id",
+      "source": "blueprints/extensions/oic/variables.tf",
+      "description": "Subnet OCID for private outbound connection.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.outbound_nsg_ids",
+      "source": "blueprints/extensions/oic/variables.tf",
+      "description": "NSG OCIDs for private outbound connection.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 5
+  },
+  "data_lookups": [],
+  "source_files": [
+    {
+      "path": "blueprints/extensions/oic/locals.tf",
+      "revision": "working-tree",
+      "sha256": "6d41094cfb37f8f48d0cfdc69852d623cd3fa0a9ae0f2473a6cfedecf6474ca6"
+    },
+    {
+      "path": "blueprints/extensions/oic/main.tf",
+      "revision": "working-tree",
+      "sha256": "c08f3e8b3f88292288f317bbb7d8b4cb6177b8cafdb219308c998b385659f859"
+    },
+    {
+      "path": "blueprints/extensions/oic/outputs.tf",
+      "revision": "working-tree",
+      "sha256": "9e69bfbdcb0a8fe7e68b87100c797992a09f945f5dd779a40242bf9922177683"
+    },
+    {
+      "path": "blueprints/extensions/oic/providers.tf",
+      "revision": "working-tree",
+      "sha256": "9ace0aeb9a214bbdff10c76453708d4fe6d9602bdbd3e38badbc4ac4eb6e0603"
+    },
+    {
+      "path": "blueprints/extensions/oic/variables.tf",
+      "revision": "working-tree",
+      "sha256": "0c70f3c01e702bcedabc571279743239d882e36c5f6d56c1558c379a8510923e"
+    },
+    {
+      "path": "blueprints/extensions/oic/versions.tf",
+      "revision": "working-tree",
+      "sha256": "3a165fff64555c18b7b5ac026453a24f10e59a79ca01607a76a265776f6b380b"
+    }
+  ]
+}
