@@ -10,11 +10,11 @@
     "Reviewed endpoints, labels, arrows, paths and source hashes match contract",
     "Subnet routing and DNS-view semantic regression checks"
   ],
-  "overview_count": 68,
+  "overview_count": 69,
   "conceptual_overviews": 1,
-  "native_documents": 254,
-  "main_document_pages": 254,
-  "connector_count": 600,
+  "native_documents": 258,
+  "main_document_pages": 258,
+  "connector_count": 607,
   "cross_cloud_overviews": 12,
   "blueprints": [
     {
@@ -606,6 +606,13 @@
         }
       ],
       "overview_png_sha256": "680fae14a2f3d4b57a39b6889b8d1cd67efd8c3ba0b84425de5065975821f6d6",
+      "layout_warnings": []
+    },
+    {
+      "blueprint": "industry/ocvs",
+      "connections": 7,
+      "cross_cloud_bridges": [],
+      "overview_png_sha256": "a11cffa4667a2e9f3bc697516a0b8984837ac595aa490950cbc2ec9bc3b745e6",
       "layout_warnings": []
     },
     {

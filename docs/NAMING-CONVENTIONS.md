@@ -61,6 +61,7 @@ Blueprint or service scope belongs after the resource-type segment, not inside
 |---|---|
 | Compartment | `cmp` |
 | VCN | `vcn` |
+| OCVS software-defined data center | `sddc` |
 | Subnet | `sn` |
 | Network Security Group | `nsg` |
 | Security List | `sl` |

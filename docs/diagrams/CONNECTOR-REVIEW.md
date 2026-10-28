@@ -115,3 +115,18 @@ The [audit](connection-review.json) and [review contract](reviewed-connectors.js
 include the new relationships and source fingerprints. Original conversion
 progress is **64/80**, with **16** pending; current coverage is **68/84** including
 the four additional Interconnect/healthcare projects.
+
+## OCVS Addition
+
+The OCVS overview adds seven reviewed relationships: external corporate-to-
+transport and transport-to-VCN prerequisites; per-cluster provisioning-subnet
+IDs; the VLAN role map; optional HCX and Replication-Net map entries; and the
+VCF BYOL allocation reference. All ID bindings are plain lines. External
+transport/migration prerequisites remain dashed; no private path or migration
+is asserted. The BYOL line is routed separately from the HCX map association.
+
+Current totals are **69 blueprint plus one conceptual overviews**, **607
+connectors** and **258 native documents/PNGs**. There remain 12 explicitly
+bridged source-defined multicloud overviews; the OCVS external corporate
+prerequisites do not create another cloud deployment. Current catalog coverage
+is **69/85**, while the original conversion backlog remains **64/80**.

@@ -1,0 +1,37 @@
+# Disabled review-only configuration. Never commit real identifiers or credentials.
+tenancy_ocid = "ocid1.tenancy.oc1..replace-me"
+compartment_ocid = "ocid1.compartment.oc1..replace-me"
+region = "sa-saopaulo-1"
+oci_config_profile = "DEFAULT"
+org = "abc"
+environment = "dev"
+region_key = "gru"
+enable_sddc = false
+inspect_existing_network = false
+costs_approved = false
+# Before opting in, supply all VCN/subnet/VLAN IDs, AD, VMware bundle, dense
+# host shape, RSA public SSH key and a commercially reviewed initial_commitment.
+# Add a VCF BYOL allocation ID when required by the chosen offering.
+esxi_hosts_count = 3
+enable_hcx = false
+
+# At least one explicit WORKLOAD entry is required before enable_sddc=true.
+# Every cluster requires a separate existing private subnet and VLAN set.
+workload_clusters = {}
+# workload_clusters = {
+#   apps = {
+#     display_name = "abc-dev-gru-apps"
+#     esxi_hosts_count = 3
+#     provisioning_subnet_id = "ocid1.subnet.oc1..replace-apps"
+#     vlan_ids = {
+#       vsphere = "ocid1.vlan.oc1..replace-apps-vsphere"
+#       vmotion = "ocid1.vlan.oc1..replace-apps-vmotion"
+#       vsan = "ocid1.vlan.oc1..replace-apps-vsan"
+#       nsx_vtep = "ocid1.vlan.oc1..replace-apps-nsx-vtep"
+#       nsx_edge_vtep = "ocid1.vlan.oc1..replace-apps-edge-vtep"
+#       nsx_edge_uplink1 = "ocid1.vlan.oc1..replace-apps-uplink1"
+#       nsx_edge_uplink2 = "ocid1.vlan.oc1..replace-apps-uplink2"
+#       provisioning = "ocid1.vlan.oc1..replace-apps-provisioning"
+#     }
+#   }
+# }

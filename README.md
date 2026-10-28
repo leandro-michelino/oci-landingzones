@@ -59,6 +59,7 @@ ready to test the baseline, start with [Core Landing Zone](blueprints/core/).
 | AI workloads | [GenAI Private](blueprints/ai/genai-private/), [GenAI Gateway](blueprints/ai/genai-gateway/), [AI Agents](blueprints/ai/agents/) |
 | Patient data project | [Healthcare Platform](blueprints/industry/healthcare-platform/) |
 | Hospital/FHIR integration | [Hospital Integration and FHIR](blueprints/industry/healthcare-fhir-integration/) |
+| VMware SDDC | [Oracle Cloud VMware Solution](blueprints/industry/ocvs/) |
 | Industry patterns | [Secure Desktops](blueprints/industry/secure-desktops/) or [Telco Cloud Native](blueprints/industry/telco-cloud-native/) |
 | Conversational AI | [Oracle Digital Assistant](blueprints/extensions/digital-assistant/) |
 
@@ -143,7 +144,7 @@ usable when you only need one deployment pattern.
 | [compliance](blueprints/compliance/) | SCCA, Zero Trust, Healthcare/PCI, and security posture automation. |
 | [disaster-recovery](blueprints/disaster-recovery/) | OCI and multicloud DR patterns. |
 | [devops](blueprints/devops/) | OCI DevOps CI/CD foundation. |
-| [industry](BLUEPRINTS.md#industry) | Vertical patterns (healthcare, telco, secure desktops). |
+| [industry](BLUEPRINTS.md#industry) | Vertical patterns (healthcare, telco, secure desktops, OCVS). |
 
 ## Quality Checks
 

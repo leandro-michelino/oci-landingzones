@@ -39,6 +39,8 @@ def diagrams():
  for i,(slug,title,kind) in enumerate(m.ITEMS,36):yield slug,getattr(m,kind)(title,i)
  m=load('interconnect-batch-01')
  for i,slug in enumerate(m.ITEMS):yield slug,m.build(bool(i))
+ m=load('ocvs')
+ yield m.SLUG,m.build()
  m=load('healthcare-platform')
  yield m.SLUG,m.build()
  m=load('healthcare-fhir-integration')

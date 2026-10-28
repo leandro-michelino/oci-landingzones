@@ -26,6 +26,7 @@ base=importlib.util.module_from_spec(spec); spec.loader.exec_module(base)
 icon_spec=importlib.util.spec_from_file_location('cloud_icons',Path(__file__).with_name('cloud-icons.py'))
 cloud_icons=importlib.util.module_from_spec(icon_spec); icon_spec.loader.exec_module(cloud_icons)
 DEFAULTS=[
+ 'industry/ocvs',
  'industry/secure-desktops',
  'extensions/oke',
  'extensions/aks-oke-active-passive',
@@ -249,13 +250,17 @@ def render_map(slug,cloud,entries,lookups,render,page_number=1):
  return {'file':path.name,'page_name':entries[0]['diagram']['page_name'],'declarations':len(entries)}
 
 
+# Collections whose nested existing identifiers must be visible as input cards.
+COLLECTION_REFERENCE_INPUTS = {'blueprints/industry/ocvs': {'workload_clusters'}}
+
+
 def input_references(folder):
  """Document existing-resource ID inputs without reading private tfvars/state."""
  refs=[]
  for path,src in read_sources(folder):
   for m in re.finditer(r'^variable "([^"]+)"\s*\{',src,re.M):
    name=m[1]
-   if not re.search(r'(_ids?|_ocids?)$',name):continue
+   if not re.search(r'(_ids?|_ocids?)$',name) and name not in COLLECTION_REFERENCE_INPUTS.get(folder,set()):continue
    if name in ('tenancy_ocid','current_user_ocid'):continue
    attrs=root_attributes(declaration_body(src,m.end()))
    refs.append({'address':'var.'+name,'source':path,'description':attrs.get('description','').strip('"'),

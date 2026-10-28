@@ -21585,6 +21585,193 @@
       }
     ]
   },
+  "industry/ocvs": {
+    "relationships": [
+      {
+        "source": "Existing corporate VMware environment / EXTERNAL",
+        "target": "Existing private transport + DNS\nFastConnect / VPN / edge gateways\nRoutes, peering and private name resolution\nEXTERNAL / not created",
+        "source_kind": "group:onprem",
+        "target_kind": "group:optional",
+        "label": "External access / migration prerequisites",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Existing ESXi provisioning subnets / per cluster\nCIDR TBC / public IPs prohibited",
+        "target": "Optional OCVS SDDC / enable_sddc=false\nOne MANAGEMENT + explicit WORKLOAD clusters / 3-64 hosts each\nDense/vSAN only / explicit AD, shape, VMware bundle and commitment\nService-managed ESXi + vCenter + NSX control plane; no guest VMs",
+        "source_kind": "group:subnet",
+        "target_kind": "group:component",
+        "label": "provisioning_subnet_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Existing VLAN identifier bindings / eight baseline roles per cluster\nvSphere / vMotion / vSAN / NSX host VTEP / NSX Edge VTEP\nNSX Edge uplink 1 / uplink 2 / Provisioning-Net\nAll clusters use distinct VLAN IDs; same VCN + compartment; compatible AD\nSelected optional HCX / Replication-Net IDs extend this map",
+        "target": "Optional OCVS SDDC / enable_sddc=false\nOne MANAGEMENT + explicit WORKLOAD clusters / 3-64 hosts each\nDense/vSAN only / explicit AD, shape, VMware bundle and commitment\nService-managed ESXi + vCenter + NSX control plane; no guest VMs",
+        "source_kind": "group:component",
+        "target_kind": "group:component",
+        "label": "VLAN role bindings",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.6,
+          0
+        ],
+        "entry": [
+          0,
+          0.8
+        ],
+        "waypoints": [
+          [
+            1195,
+            480
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Optional existing HCX VLAN\nMANAGEMENT only / enable_hcx=true\nRemote HCX / licensing / vSphere NAT routing\nEXTERNAL prerequisites; no pairing executed",
+        "target": "Existing VLAN identifier bindings / eight baseline roles per cluster\nvSphere / vMotion / vSAN / NSX host VTEP / NSX Edge VTEP\nNSX Edge uplink 1 / uplink 2 / Provisioning-Net\nAll clusters use distinct VLAN IDs; same VCN + compartment; compatible AD\nSelected optional HCX / Replication-Net IDs extend this map",
+        "source_kind": "group:optional",
+        "target_kind": "group:component",
+        "label": "Optional HCX ID",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional existing Replication-Net VLAN\nPassed when supplied; required for applicable bundles, including VMware 7.x\nNo replication job, channel, schedule or tested DR is created",
+        "target": "Existing VLAN identifier bindings / eight baseline roles per cluster\nvSphere / vMotion / vSAN / NSX host VTEP / NSX Edge VTEP\nNSX Edge uplink 1 / uplink 2 / Provisioning-Net\nAll clusters use distinct VLAN IDs; same VCN + compartment; compatible AD\nSelected optional HCX / Replication-Net IDs extend this map",
+        "source_kind": "group:optional",
+        "target_kind": "group:component",
+        "label": "Optional replication_vlan_id",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Optional existing per-cluster VCF BYOL IDs\nGlobal default / per-WORKLOAD override\nNo license purchase or allocation created",
+        "target": "Optional OCVS SDDC / enable_sddc=false\nOne MANAGEMENT + explicit WORKLOAD clusters / 3-64 hosts each\nDense/vSAN only / explicit AD, shape, VMware bundle and commitment\nService-managed ESXi + vCenter + NSX control plane; no guest VMs",
+        "source_kind": "group:optional",
+        "target_kind": "group:component",
+        "label": "BYOL ID / optional",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          1,
+          0.8
+        ],
+        "waypoints": [
+          [
+            2390,
+            857.5
+          ],
+          [
+            2390,
+            480
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Existing private transport + DNS\nFastConnect / VPN / edge gateways\nRoutes, peering and private name resolution\nEXTERNAL / not created",
+        "target": "Existing prepared OCVS VCN\nCIDR TBC / not created",
+        "source_kind": "group:optional",
+        "target_kind": "group:vcn",
+        "label": "External private path",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": [
+          [
+            365,
+            830
+          ],
+          [
+            365,
+            600
+          ]
+        ],
+        "straight": false
+      }
+    ],
+    "source_files": [
+      {
+        "path": "blueprints/industry/ocvs/locals.tf",
+        "revision": "working-tree",
+        "sha256": "f069d5b4fc01a85523190ad10b340f4aefbae057fc98fdc8cb99afa2ff0cb564"
+      },
+      {
+        "path": "blueprints/industry/ocvs/main.tf",
+        "revision": "working-tree",
+        "sha256": "2385c1986b524976a389babd39364b6b8759f08844b7d48bf978d2c6e7614bdc"
+      },
+      {
+        "path": "blueprints/industry/ocvs/outputs.tf",
+        "revision": "working-tree",
+        "sha256": "ae6911a78f4ce820eefd2be2beb2dc92b75560fd6080ec77a65d406841e48386"
+      },
+      {
+        "path": "blueprints/industry/ocvs/providers.tf",
+        "revision": "working-tree",
+        "sha256": "7f285c45f1de39beb43f9fa4814e76420a657de3fa87523521e4243bf455df16"
+      },
+      {
+        "path": "blueprints/industry/ocvs/variables.tf",
+        "revision": "working-tree",
+        "sha256": "bc13e068ba4bcaa6c7ce6cf5132894f72661fc06eff76a0735f23ffef67a6b67"
+      },
+      {
+        "path": "blueprints/industry/ocvs/versions.tf",
+        "revision": "working-tree",
+        "sha256": "9eb0bfb84cf813408acd6cd39852da402e6233433bce4e5db314c0dc64c23223"
+      }
+    ]
+  },
   "industry/healthcare-platform": {
     "relationships": [
       {

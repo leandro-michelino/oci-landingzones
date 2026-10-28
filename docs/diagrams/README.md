@@ -547,3 +547,33 @@ This batch also fixes multiline creation-gate labels in generated resource
 cards. Full conditions were already retained in the JSON inventory; cards now
 show every condition instead of just the first line. A render regression checks
 that all health-monitor enablement predicates survive into native draw.io XML.
+
+## OCVS Blueprint Addition / October 28, 2026
+
+[Oracle Cloud VMware Solution](../../blueprints/industry/ocvs/README.md) is now
+an implemented industry entry point rather than a planned catalog row. The
+[PNG](../../blueprints/industry/ocvs/architecture/architecture.png) and editable
+[draw.io](../../blueprints/industry/ocvs/architecture/architecture.drawio) describe
+an optional dense/vSAN SDDC with MANAGEMENT and explicit WORKLOAD clusters,
+using dedicated existing subnet/VLAN sets per cluster. Corporate VMware, HCX
+remote appliances and private transport/DNS are marked external prerequisites.
+
+There is no matching OCVS/VMware glyph in the installed OCI toolkit, so named
+component boxes retain exact service meaning. The native document contains the
+overview, one OCI declaration page, one local-contract page and an existing
+resource-input page with 15 entries, including the nested workload-cluster
+network/BYOL collection. These are declarations/references, not deployed counts.
+
+Current diagram coverage becomes **69/85** entry points plus one conceptual
+drawing; the original backlog remains **64/80**, with **16** pending. This new
+OCVS addition is separate from that original conversion backlog and from the
+remaining final-phase GCP counterparts. Local schema validation and 19 mocked
+plans passed; [evidence](../OCVS-20261028.md) distinguishes these checks from
+provisioning, licensing/capacity, network acceptance and migration testing.
+
+```bash
+python3 scripts/diagrams/ocvs.py --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint industry/ocvs --render
+python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint industry/ocvs --check
+python3 scripts/diagrams/check-connections.py --write-report
+```

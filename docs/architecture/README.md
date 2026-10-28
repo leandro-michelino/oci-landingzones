@@ -107,7 +107,7 @@ terraform plan or ansible/plan.yml
 
 ## Blueprint Architecture Inventory
 
-The current catalog has 84 deployable blueprint entry points across 13
+The current catalog has 85 deployable blueprint entry points across 13
 families. Each entry point owns its local Architecture in
 `architecture/README.md`.
 
@@ -167,6 +167,7 @@ families. Each entry point owns its local Architecture in
 | identity | [New Identity Domain](../../blueprints/identity/new-identity-domain/) | [Architecture](../../blueprints/identity/new-identity-domain/architecture/) |
 | industry | [Healthcare Platform Landing Zone](../../blueprints/industry/healthcare-platform/) | [Architecture](../../blueprints/industry/healthcare-platform/architecture/) |
 | industry | [Hospital Integration And FHIR Landing Zone](../../blueprints/industry/healthcare-fhir-integration/) | [Architecture](../../blueprints/industry/healthcare-fhir-integration/architecture/) |
+| industry | [Oracle Cloud VMware Solution](../../blueprints/industry/ocvs/) | [Architecture](../../blueprints/industry/ocvs/architecture/) |
 | industry | [Secure Desktops Landing Zone](../../blueprints/industry/secure-desktops/) | [Architecture](../../blueprints/industry/secure-desktops/architecture/) |
 | industry | [Telco Cloud Native Landing Zone](../../blueprints/industry/telco-cloud-native/) | [Architecture](../../blueprints/industry/telco-cloud-native/architecture/) |
 | networking | [Externally Managed VCNs](../../blueprints/networking/externally-managed-vcns/) | [Architecture](../../blueprints/networking/externally-managed-vcns/architecture/) |

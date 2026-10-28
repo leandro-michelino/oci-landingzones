@@ -111,6 +111,7 @@ Run `make blueprints` after adding, moving, or removing a blueprint.
 |---|---|---|
 | [Hospital Integration And FHIR Landing Zone](blueprints/industry/healthcare-fhir-integration/) | Private hospital FHIR API mediation with explicit identity, backend and integration-worker handoffs. | [Architecture](blueprints/industry/healthcare-fhir-integration/architecture/README.md) |
 | [Healthcare Platform Landing Zone](blueprints/industry/healthcare-platform/) | Private hospital applications, patient-service backends and encrypted document/data foundations. | [Architecture](blueprints/industry/healthcare-platform/architecture/README.md) |
+| [Oracle Cloud VMware Solution (OCVS)](blueprints/industry/ocvs/) | Dense/vSAN OCVS management and workload clusters on prepared private networks. | [Architecture](blueprints/industry/ocvs/architecture/README.md) |
 | [Secure Desktops Landing Zone](blueprints/industry/secure-desktops/) | Managed VDI for contractors, regulated users, or private administrative workstations. | [Architecture](blueprints/industry/secure-desktops/architecture/README.md) |
 | [Telco Cloud Native Landing Zone](blueprints/industry/telco-cloud-native/) | Composes network, vault, OKE, monitoring, and OS Management foundations for telco-oriented cloud-native workloads. | [Architecture](blueprints/industry/telco-cloud-native/architecture/README.md) |
 
