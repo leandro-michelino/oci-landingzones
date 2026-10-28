@@ -1,6 +1,6 @@
 # Hub-Spoke FortiGate HA Architecture
 
-This is the deployment architecture for `blueprints/networking/hub-spoke-with-fortigate-ha`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/networking/hub-spoke-with-fortigate-ha`. The PNG provides a GitHub-readable preview; the draw.io source preserves editable shapes, official OCI icons and connectors.
 
 ## Deployment Purpose
 
@@ -13,50 +13,29 @@ Deploys a Fortinet FortiGate active-passive HA pair into a hub-spoke network for
 | Boundary | `blueprints/networking/hub-spoke-with-fortigate-ha` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Deploys a Fortinet FortiGate active-passive HA pair into a hub-spoke network for customer-managed inspection. |
 | Terraform components | `network`, `oci_core_instance.fortigate`, `oci_core_vnic_attachment.fortigate_interface`, optional floating private IPs and IAM failover policy |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram shows the default foundation and an explicit extension detail panel, with conditional resources and scope limits marked. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Hub-Spoke With FortiGate HA                                                                              |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Network compartment / selected region}                                                                  |
-|         |                                                                                                |
-|         v                                                                                                |
-| [Hub VCN]                                                                                                |
-|         |-- [dmz subnet]   -> FortiGate untrust VNICs, optional public edge, route target candidates     |
-|         |-- [mgmt subnet]  -> FortiGate management VNICs and administrative access path                  |
-|         |-- [trust subnet] -> FortiGate trust VNICs, spoke or DRG transit inspection path                |
-|         |-- [ha subnet]    -> FortiGate HA sync VNICs                                                    |
-|         `-- [gateway set]  -> IGW / NAT / SGW according to route design                                  |
-|                  |                                                                                       |
-|                  v                                                                                       |
-| [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
-|   |             |                    |                                                                   |
-|   |             |                    +--> [spoke VCN A] web -> app -> db                                 |
-|   |             |                    +--> [spoke VCN B] web -> app -> db                                 |
-|   |             |                    `--> [future spoke] same attachment contract                        |
-|   |                                                                                                      |
-|   `--> [FortiGate active node] <---- HA sync ----> [FortiGate standby node]                              |
-|             |                                  |                                                         |
-|             | optional instance-principal IAM | optional floating private IPs                            |
-|             v                                  v                                                         |
-|      [OCI private IP failover permissions] -> [stable route-table next-hop private IPs]                  |
-|                                                                                                          |
-| Pattern extension: route tables decide which north-south or east-west paths use FortiGate inspection.    |
-| North-south: internet, FastConnect, VPN, or service traffic can enter the hub and pass through FortiGate.|
-| East-west: spoke-to-spoke traffic can centralize through the DRG and trust-side FortiGate route targets. |
-| Hand-off: VCN IDs, DRG IDs, subnet maps, FortiGate instance IDs, secondary VNICs, and floating IP IDs.   |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Hub-Spoke FortiGate HA Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep the PNG preview aligned with
+the editable source after every diagram change.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. From the repository root,
+regenerate with `python3 scripts/diagrams/networking-batch-03.py --render`.
+Install the skill and its official toolkit first; the toolkit is not redistributed here.
+
+The foundation view uses source-default CIDRs and leaves deployment region and
+compartment as operator inputs. The extension detail panel distinguishes default
+resources, disabled conditional resources, associations and missing prerequisites.
+It does not assert verified packet flow, HA, failover or policy enforcement.
+
+Diagram documentation reviewed on 2026-10-28 against the blueprint and referenced
+modules. No OCI resources were provisioned and no Terraform/provider validation
+date was changed for this documentation update.
 
 ## Terraform Components
 

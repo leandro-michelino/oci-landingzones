@@ -5,9 +5,9 @@
 
 ## Networking Draw.io Diagrams
 
-The first ten Networking catalog entries have editable draw.io sources and PNG
+The first fifteen Networking catalog entries have editable draw.io sources and PNG
 previews beside their architecture documentation. The PNGs replace the previous
-ASCII architecture blocks in those ten files. Later catalog entries retain their
+ASCII architecture blocks in those fifteen files. Later catalog entries retain their
 existing diagrams until their batch is completed.
 
 Generated using the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
@@ -28,12 +28,18 @@ its `toolkit/` folder, or set `OCI_DIAGRAM_SKILL` and `OCI_TOOLKIT`.
 | 8 | `hub-spoke-with-hub-vcn-fastconnect-vc` | [PNG](../../blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc/architecture/architecture.png) | [draw.io](../../blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc/architecture/architecture.drawio) |
 | 9 | `hub-spoke-with-hub-vcn-net-firewall` | [PNG](../../blueprints/networking/hub-spoke-with-hub-vcn-net-firewall/architecture/architecture.png) | [draw.io](../../blueprints/networking/hub-spoke-with-hub-vcn-net-firewall/architecture/architecture.drawio) |
 | 10 | `hub-spoke-with-hub-vcn-net-appliance` | [PNG](../../blueprints/networking/hub-spoke-with-hub-vcn-net-appliance/architecture/architecture.png) | [draw.io](../../blueprints/networking/hub-spoke-with-hub-vcn-net-appliance/architecture/architecture.drawio) |
+| 11 | `hub-spoke-with-fortigate-ha` | [PNG](../../blueprints/networking/hub-spoke-with-fortigate-ha/architecture/architecture.png) | [draw.io](../../blueprints/networking/hub-spoke-with-fortigate-ha/architecture/architecture.drawio) |
+| 12 | `hub-spoke-with-hub-vcn-bastion-jump-host` | [PNG](../../blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/architecture/architecture.png) | [draw.io](../../blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host/architecture/architecture.drawio) |
+| 13 | `hub-spoke-with-transit-routing-nva-ha` | [PNG](../../blueprints/networking/hub-spoke-with-transit-routing-nva-ha/architecture/architecture.png) | [draw.io](../../blueprints/networking/hub-spoke-with-transit-routing-nva-ha/architecture/architecture.drawio) |
+| 14 | `hub-spoke-with-private-dns-split-horizon` | [PNG](../../blueprints/networking/hub-spoke-with-private-dns-split-horizon/architecture/architecture.png) | [draw.io](../../blueprints/networking/hub-spoke-with-private-dns-split-horizon/architecture/architecture.drawio) |
+| 15 | `hub-spoke-with-zpr-micro-segmentation` | [PNG](../../blueprints/networking/hub-spoke-with-zpr-micro-segmentation/architecture/architecture.png) | [draw.io](../../blueprints/networking/hub-spoke-with-zpr-micro-segmentation/architecture/architecture.drawio) |
 
 From the repository root, regenerate a batch and export its PNGs with:
 
 ```bash
 python3 scripts/diagrams/networking-batch-01.py --render
 python3 scripts/diagrams/networking-batch-02.py --render
+python3 scripts/diagrams/networking-batch-03.py --render
 ```
 
 Each generator runs the skill's layout checks and stops on warnings before
@@ -41,7 +47,7 @@ exporting. The output uses source-default CIDRs, marks unspecified deployment
 placement, and distinguishes optional disabled services from the network
 foundation. It does not discover live OCI resources.
 
-On October 28, 2026, all ten sources passed the skill's layout checks; all ten
+On October 28, 2026, all fifteen sources passed the skill's layout checks; all fifteen
 PNGs were exported through draw.io and visually reviewed. Repository contracts,
 Markdown links and diff whitespace checks passed. This documentation-only work
 performed no Terraform apply, provider revalidation, connectivity, failover or

@@ -24,10 +24,10 @@ ITEMS = [
 ]
 
 
-def build(title, variant, index):
+def build(title, variant, index, fortigate=False, scope_note=None, subtitle=None):
     d = Diagram(toolkit=TOOLKIT, title=title)
     d.text(title, 20, 10, 1960, 45, size=25, bold=True)
-    d.text(f'NETWORKING {index:02} / Official OCI Toolkit v24.2 / Default network foundation + explicitly marked optional extension', 20, 65, 1960, 25, size=13)
+    d.text(subtitle or f'NETWORKING {index:02} / Official OCI Toolkit v24.2 / Default network foundation + explicitly marked optional extension', 20, 65, 1960, 25, size=13)
     region = d.group('region', 'OCI Region (operator-selected; deployment value not specified)', 300, 160, 1400, 880)
     comp = d.group('compartment', 'Target compartment (operator input)', 20, 50, 1360, 810, parent=region)
     drg = d.icon('DRG', 680, 90, parent=comp, size=58, label='DRG / VCN attachments', label_pos='top')
@@ -36,23 +36,31 @@ def build(title, variant, index):
     d.connect(drg, hub, kind='plain', label='Hub attachment', exit=(.35,1), entry=(.5,0), waypoints=[(990,345),(635,345)])
     d.connect(drg, spoke, kind='plain', label='Spoke attachment', exit=(.65,1), entry=(.5,0), waypoints=[(1010,330),(1355,330)])
     hub_subnets = []
-    for i, (name, suffix, y, h) in enumerate([('DMZ','0',60,115),('FIREWALL','1',210,170),('SHARED','2',405,110)]):
+    layout = [('DMZ','0',60,115),('FIREWALL','1',210,170),('SHARED','2',405,110)]
+    if fortigate:
+        layout = [('DMZ','0',60,100),('MGMT','1',180,100),('TRUST','2',300,100),('HA','3',420,100)]
+    for i, (name, suffix, y, h) in enumerate(layout):
         sn = d.group('subnet', f'{name} subnet\n10.0.{suffix}.0/24', 160, y, 350, h, parent=hub)
         hub_subnets.append(sn)
         if name == 'FIREWALL' and variant == 'fw':
             opt = d.group('optional', 'Optional extension / disabled', 15, 55, 320, 100, parent=sn, style_extra='verticalAlign=top;spacingTop=8;')
             d.icon('Firewall', 40, 60, parent=opt, size=36, label='Network Firewall\nenable_network_firewall=false', label_pos='right')
         else:
-            d.text('Public IPs allowed; no ingress rules' if name=='DMZ' else 'Private; no ingress rules', 15, 65, 320, 35, parent=sn, size=12)
+            d.text('Public IPs allowed; no ingress rules' if name=='DMZ' or (fortigate and name=='MGMT') else 'Private; no ingress rules', 15, 55 if fortigate else 65, 320, 35, parent=sn, size=12)
     hub_public_rt = d.icon('Route Table', 65, 117.5, parent=hub, size=44, label='Public RT\n0.0.0.0/0 → IGW', label_pos='top')
     hub_private_rt = d.icon('Route Table', 65, 365, parent=hub, size=44, label='Private RT\n0.0.0.0/0 → NAT\nOSN label → SGW', label_pos='top')
     igw = d.icon('Internet Gateway', 0, 117.5, parent=hub, size=48, label='IGW', label_pos='top', border=True)
     nat = d.icon('NAT Gateway', 0, 290, parent=hub, size=48, label='NAT', label_pos='top', border=True)
     hub_sgw = d.icon('Service Gateway', 100, 540, parent=hub, size=48, label='Hub SGW', label_pos='right', border=True)
     d.connect(hub_public_rt, igw, straight=True)
-    d.connect(hub_subnets[0], hub_public_rt, kind='plain', straight=True)
-    d.connect(hub_subnets[1], hub_private_rt, kind='plain', exit=(0,.65), entry=(1,.5), waypoints=[(470,720),(470,765)])
-    d.connect(hub_subnets[2], hub_private_rt, kind='plain', exit=(0,.5), entry=(1,.5), waypoints=[(470,860),(470,765)])
+    if fortigate:
+        for i, sn in enumerate(hub_subnets):
+            rt = hub_public_rt if i < 2 else hub_private_rt
+            d.connect(sn, rt, kind='plain', exit=(0,.5), entry=(1,.5), waypoints=[(480,sn.center()[1]),(480,rt.center()[1])])
+    else:
+        d.connect(hub_subnets[0], hub_public_rt, kind='plain', straight=True)
+        d.connect(hub_subnets[1], hub_private_rt, kind='plain', exit=(0,.65), entry=(1,.5), waypoints=[(470,720),(470,765)])
+        d.connect(hub_subnets[2], hub_private_rt, kind='plain', exit=(0,.5), entry=(1,.5), waypoints=[(470,860),(470,765)])
     d.connect(hub_private_rt, nat, exit=(0,.5), entry=(1,.5), waypoints=[(390,765),(390,690)])
     d.connect(hub_private_rt, hub_sgw, exit=(.5,1), entry=(.5,0), waypoints=[(415,915),(450,915)])
     internet = d.group('internet', 'Internet / hub DMZ route', 20, 405, 200, 185)
@@ -90,7 +98,7 @@ def build(title, variant, index):
         'fw': 'OPTIONAL FIREWALL: enable_network_firewall=false. When enabled, targets the hub firewall subnet.\nAn existing policy may be supplied or a policy created. Traffic insertion, rules and symmetric routing require separate configuration and testing.',
         'nva': 'OPTIONAL APPLIANCES: enable_net_appliance=false; enable_reserved_route_ips=false; appliance/route-IP maps are empty.\nImage, availability domain, subnet and route-target inputs are required. The blueprint does not force hub placement or establish HA / guest forwarding.',
     }
-    d.box(notes[variant], 20, 1300, 1680, 95, kind='note' if variant=='base' else 'optional')
+    d.box(scope_note or notes[variant], 20, 1300, 1680, 95, kind='note' if variant=='base' else 'optional')
     d.text('All CIDRs shown are blueprint defaults, not discovered live networks. Subnet badges denote route-table / security-list associations.\nSolid arrows show configured routes or an explicitly optional link; plain lines show associations / attachments. Baseline ingress is empty; egress allows all.\nReview: 2026-10-28 against blueprint/module sources. No new OCI provisioning, provider validation, packet-flow or failover test.', 20, 1420, 1680, 70, size=12)
     return d
 

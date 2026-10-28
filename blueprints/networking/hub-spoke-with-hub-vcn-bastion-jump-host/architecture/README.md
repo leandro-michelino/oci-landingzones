@@ -1,6 +1,6 @@
 # Hub-Spoke Bastion Jump Host Architecture
 
-This is the deployment architecture for `blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host`. It keeps the design reviewable in GitHub, terminals, pull requests, runbooks, and customer-safe notes without a diagramming tool.
+This is the deployment architecture for `blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host`. The PNG provides a GitHub-readable preview; the draw.io source preserves editable shapes, official OCI icons and connectors.
 
 ## Deployment Purpose
 
@@ -13,46 +13,29 @@ Adds OCI Bastion access to the hub-spoke landing-zone network so administrators 
 | Boundary | `blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host` owns this deployment folder and its Terraform + Ansible runners. |
 | Purpose | Adds OCI Bastion access to the hub-spoke landing-zone network so administrators can reach private targets without public host exposure. |
 | Terraform components | `network`, `bastion` |
-| Primary architecture view | The Architecture diagram below shows the OCI components, dependency order, and traffic flow for this exact deployment. |
+| Primary architecture view | The diagram shows the default foundation and an explicit extension detail panel, with conditional resources and scope limits marked. |
 
 
 ## Architecture
 
-```text
-+----------------------------------------------------------------------------------------------------------+
-| Hub-Spoke Bastion Jump Host                                                                              |
-+----------------------------------------------------------------------------------------------------------+
-| Legend: [managed resource]  (supplied/external)  {trust boundary}  -> traffic/control flow               |
-|                                                                                                          |
-| [Operator / CI] -> [blueprint-local Ansible runner] -> [Terraform OCI provider]                          |
-|         |                    |                         |                                                 |
-|         | validates docs      | init/validate/plan      | OCI API calls                                  |
-|         v                    v                         v                                                 |
-| {Network compartment / selected region}                                                                  |
-|         |                                                                                                |
-|         v                                                                                                |
-| [Hub VCN]                                                                                                |
-|         |-- [dmz subnet]      -> public ingress/egress only when approved                                |
-|         |-- [firewall subnet] -> inspection or appliance insertion point                                 |
-|         |-- [shared subnet]   -> shared services, endpoints, DNS, or bastion                             |
-|         `-- [gateway set]     -> IGW / NAT / SGW according to route design                               |
-|                  |                                                                                       |
-|                  v                                                                                       |
-| [DRG] <-> [hub attachment] <-> [spoke attachments]                                                       |
-|   |             |                    |                                                                   |
-|   |             |                    +--> [spoke VCN A] web -> app -> db                                 |
-|   |             |                    +--> [spoke VCN B] web -> app -> db                                 |
-|   |             |                    `--> [future spoke] same attachment contract                        |
-|   |                                                                                                      |
-|   `--> [Bastion service] -> private endpoint sessions -> target private hosts                            |
-|                                                                                                          |
-| Pattern extension: administrative access terminates in the hub and reaches private targets without       |
-| public host exposure.                                                                                    |
-| North-south: external or service traffic enters the hub, then routes through DRG attachments to spokes.  |
-| East-west: spoke-to-spoke traffic centralizes through the DRG and any hub inspection controls.           |
-| Hand-off: hub/spoke VCN IDs, DRG IDs, attachment IDs, subnet maps, route targets, and service edge IDs.  |
-+----------------------------------------------------------------------------------------------------------+
-```
+![Hub-Spoke Bastion Jump Host Architecture](architecture.png)
+
+[Editable draw.io source](architecture.drawio). Keep the PNG preview aligned with
+the editable source after every diagram change.
+
+Generated with the [oci-architecture-diagrams skill](https://github.com/leandro-michelino/oci-architecture-diagrams)
+and Oracle OCI Architecture Diagram Toolkit v24.2. From the repository root,
+regenerate with `python3 scripts/diagrams/networking-batch-03.py --render`.
+Install the skill and its official toolkit first; the toolkit is not redistributed here.
+
+The foundation view uses source-default CIDRs and leaves deployment region and
+compartment as operator inputs. The extension detail panel distinguishes default
+resources, disabled conditional resources, associations and missing prerequisites.
+It does not assert verified packet flow, HA, failover or policy enforcement.
+
+Diagram documentation reviewed on 2026-10-28 against the blueprint and referenced
+modules. No OCI resources were provisioned and no Terraform/provider validation
+date was changed for this documentation update.
 
 ## Terraform Components
 
