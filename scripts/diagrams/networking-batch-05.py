@@ -77,13 +77,16 @@ def separation(title,index):
         ax,ay=area.abs
         d.connect(drg,hub,kind='plain',exit=(0,.5),entry=(.5,0),waypoints=[(ax+265,ay+80)])
         d.connect(drg,spoke,kind='plain',exit=(1,.5),entry=(.5,0),waypoints=[(ax+855,ay+80)])
+        subnets=[];gateways=[]
         for group,prefix,names in [(hub,hp,['DMZ','FIREWALL','SHARED']),(spoke,sp,['WEB','APP','DB'])]:
             for j,n in enumerate(names):
                 subnet=d.group('subnet',f'{n}\n{prefix}.{j}.0/24',100,65+j*120,320,100,parent=group)
+                subnets.append(subnet)
                 d.text('Public IPs allowed' if group is hub and j==0 else 'Private',15,55,290,30,parent=subnet,size=12)
         for icon,y,label in [('Internet Gateway',120,'IGW'),('NAT Gateway',250,'NAT'),('Service Gateway',380,'SGW')]:
-            d.icon(icon,0,y,parent=hub,size=42,label=label,label_pos='left',border=True)
-        d.icon('Service Gateway',0,380,parent=spoke,size=42,label='SGW',label_pos='left',border=True)
+            gateways.append(d.icon(icon,0,y,parent=hub,size=42,label=label,label_pos='left',border=True))
+        gateways.append(d.icon('Service Gateway',0,380,parent=spoke,size=42,label='SGW',label_pos='left',border=True))
+        base.compact_routes(d,drg,hub,spoke,subnets,gateways)
         d.text('Hub: public RT → IGW; private RT → NAT / SGW. Spoke: default → own DRG; OSN → SGW.\nBaseline lists: empty ingress, all egress. No connection between these foundations is declared.',20,655,1080,45,parent=area,size=11)
     footer(d,'ISOLATION SCOPE\nDistinct hub/spoke CIDRs, names, tags, DRGs and attachments in the same region and compartment. Two NAT gateways in total.\nNo cross-foundation peering, firewall insertion, workload policy or isolation packet test is provided by this documentation.\nThe diagram shows network separation, not a confirmed security outcome.',1140)
     return d

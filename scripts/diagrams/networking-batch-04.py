@@ -39,13 +39,16 @@ def regional(d,x,label):
     spoke=d.group('vcn','Spoke app1 VCN\n10.1.0.0/16',600,170,420,470,parent=comp)
     d.connect(drg,hub,kind='plain',exit=(0,.5),entry=(.5,0),waypoints=[(x+270,300)])
     d.connect(drg,spoke,kind='plain',exit=(1,.5),entry=(.5,0),waypoints=[(x+830,300)])
+    subnets=[];gateways=[]
     for vcn,prefix,names in [(hub,'10.0',['DMZ','FIREWALL','SHARED']),(spoke,'10.1',['WEB','APP','DB'])]:
         for i,name in enumerate(names):
             sn=d.group('subnet',f'{name}\n{prefix}.{i}.0/24',100,65+i*120,290,100,parent=vcn)
+            subnets.append(sn)
             d.text('Public IPs allowed' if vcn is hub and i==0 else 'Private',15,55,260,30,parent=sn,size=12)
     for name,y in [('Internet Gateway',120),('NAT Gateway',250),('Service Gateway',380)]:
-        d.icon(name,0,y,parent=hub,size=42,label={'Internet Gateway':'IGW','NAT Gateway':'NAT','Service Gateway':'SGW'}[name],label_pos='left',border=True)
-    d.icon('Service Gateway',0,380,parent=spoke,size=42,label='SGW',label_pos='left',border=True)
+        gateways.append(d.icon(name,0,y,parent=hub,size=42,label={'Internet Gateway':'IGW','NAT Gateway':'NAT','Service Gateway':'SGW'}[name],label_pos='left',border=True))
+    gateways.append(d.icon('Service Gateway',0,380,parent=spoke,size=42,label='SGW',label_pos='left',border=True))
+    base.compact_routes(d,drg,hub,spoke,subnets,gateways)
     d.text('Hub: public RT → IGW; private RT → NAT / SGW. Spoke: default route → DRG; OSN route → SGW.\nShared baseline lists: no ingress; all egress. Gateways shown on VCN edges; no workload resources.',20,660,1020,45,parent=comp,size=11)
 
 
@@ -69,7 +72,7 @@ def shared(title,index,kind):
         zone=d.box('shared.internal\nPRIMARY / PRIVATE zone (default)',25,350,690,110,parent=panel)
         resolver=d.box('Hub + app1 VCN resolvers\nPrivate view attached by this wrapper',25,570,690,110,parent=panel)
         d.connect(view,zone,kind='plain',straight=True)
-        d.connect(zone,resolver,kind='dashed',straight=True)
+        d.connect(view,resolver,kind='plain',label='attached_views / view_id',exit=(1,.5),entry=(1,.3),waypoints=[(2485,360),(2485,763)])
         d.box('Other tenancies / separately designed\nNo resources, authorization policy or network link for a second tenancy\nare declared by main.tf. The title describes an intended pattern.',25,780,690,150,parent=panel,kind='thirdparty_component')
     else:
         drg=d.icon('DRG',570,200,parent=panel,size=54,label='Same foundation DRG\n(detail reference)',label_pos='top')

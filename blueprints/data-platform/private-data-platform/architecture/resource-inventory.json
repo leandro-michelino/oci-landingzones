@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "blueprint": "data-platform/private-data-platform",
   "review_date": "2026-10-28",
   "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
@@ -16,15 +16,40 @@
       "source": "modules/networking/spoke-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
       "module_inputs": [
         "module.network.module.private_vcn (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.private_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/standalone-private-endpoint-only/main.tf",
+          "call_site_revision": "c07231c91d146265a46836757f3c399861a59fff",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "var.enable_nat_gateway",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/standalone-private-endpoint-only?ref=c07231c91d146265a46836757f3c399861a59fff",
+          "call_site": "blueprints/data-platform/private-data-platform/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n4",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
       }
     },
     {
@@ -36,15 +61,42 @@
       "source": "modules/networking/spoke-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "count = var.enable_internet_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_internet_gateway ? 1 : 0"
+      },
       "module_inputs": [
         "module.network.module.private_vcn (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.private_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/standalone-private-endpoint-only/main.tf",
+          "call_site_revision": "c07231c91d146265a46836757f3c399861a59fff",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "var.enable_nat_gateway",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/standalone-private-endpoint-only?ref=c07231c91d146265a46836757f3c399861a59fff",
+          "call_site": "blueprints/data-platform/private-data-platform/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n10",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Internet Gateway"
       }
     },
     {
@@ -56,15 +108,42 @@
       "source": "modules/networking/spoke-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "count = var.enable_nat_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_nat_gateway ? 1 : 0"
+      },
       "module_inputs": [
         "module.network.module.private_vcn (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.private_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/standalone-private-endpoint-only/main.tf",
+          "call_site_revision": "c07231c91d146265a46836757f3c399861a59fff",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "var.enable_nat_gateway",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/standalone-private-endpoint-only?ref=c07231c91d146265a46836757f3c399861a59fff",
+          "call_site": "blueprints/data-platform/private-data-platform/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n22",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "NAT Gateway"
       }
     },
     {
@@ -76,15 +155,42 @@
       "source": "modules/networking/spoke-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "count = var.enable_service_gateway ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_service_gateway ? 1 : 0"
+      },
       "module_inputs": [
         "module.network.module.private_vcn (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.private_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/standalone-private-endpoint-only/main.tf",
+          "call_site_revision": "c07231c91d146265a46836757f3c399861a59fff",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "var.enable_nat_gateway",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/standalone-private-endpoint-only?ref=c07231c91d146265a46836757f3c399861a59fff",
+          "call_site": "blueprints/data-platform/private-data-platform/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n31",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Service Gateway"
       }
     },
     {
@@ -96,15 +202,42 @@
       "source": "modules/networking/spoke-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "for_each = var.security_lists",
+      "creation_expression": {
+        "for_each": "var.security_lists"
+      },
       "module_inputs": [
         "module.network.module.private_vcn (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.private_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/standalone-private-endpoint-only/main.tf",
+          "call_site_revision": "c07231c91d146265a46836757f3c399861a59fff",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "var.enable_nat_gateway",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/standalone-private-endpoint-only?ref=c07231c91d146265a46836757f3c399861a59fff",
+          "call_site": "blueprints/data-platform/private-data-platform/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n41",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
       }
     },
     {
@@ -116,15 +249,42 @@
       "source": "modules/networking/spoke-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "for_each = var.route_tables",
+      "creation_expression": {
+        "for_each": "var.route_tables"
+      },
       "module_inputs": [
         "module.network.module.private_vcn (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.private_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/standalone-private-endpoint-only/main.tf",
+          "call_site_revision": "c07231c91d146265a46836757f3c399861a59fff",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "var.enable_nat_gateway",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/standalone-private-endpoint-only?ref=c07231c91d146265a46836757f3c399861a59fff",
+          "call_site": "blueprints/data-platform/private-data-platform/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n53",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Route Table"
       }
     },
     {
@@ -136,15 +296,42 @@
       "source": "modules/networking/spoke-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "for_each = var.subnets",
+      "creation_expression": {
+        "for_each": "var.subnets"
+      },
       "module_inputs": [
         "module.network.module.private_vcn (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.network.module.private_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/standalone-private-endpoint-only/main.tf",
+          "call_site_revision": "c07231c91d146265a46836757f3c399861a59fff",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "var.enable_nat_gateway",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/standalone-private-endpoint-only?ref=c07231c91d146265a46836757f3c399861a59fff",
+          "call_site": "blueprints/data-platform/private-data-platform/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n77",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -156,14 +343,33 @@
       "source": "modules/security/vault/main.tf",
       "revision": "v0.2.0",
       "condition": "for_each = local.vaults",
+      "creation_expression": {
+        "for_each": "local.vaults"
+      },
       "module_inputs": [
         "module.vault (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.vault",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vault?ref=v0.2.0",
+          "call_site": "blueprints/data-platform/private-data-platform/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_vault": "var.enable_vault",
+            "enable_default_vault": "var.enable_default_vault",
+            "enable_default_key": "var.enable_default_key"
+          }
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n79",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Vault"
       }
     },
     {
@@ -175,14 +381,33 @@
       "source": "modules/security/vault/main.tf",
       "revision": "v0.2.0",
       "condition": "for_each = local.keys",
+      "creation_expression": {
+        "for_each": "local.keys"
+      },
       "module_inputs": [
         "module.vault (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.vault",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/security/vault?ref=v0.2.0",
+          "call_site": "blueprints/data-platform/private-data-platform/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_vault": "var.enable_vault",
+            "enable_default_vault": "var.enable_default_vault",
+            "enable_default_key": "var.enable_default_key"
+          }
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n93",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Key Management"
       }
     },
     {
@@ -194,11 +419,16 @@
       "source": "blueprints/data-platform/private-data-platform/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_data_bucket ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_data_bucket ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
-        "node_id": "n95",
+        "page_name": "OCI resources",
+        "node_id": "n100",
         "source_symbol": "data",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "OCI Object Storage"
       }
     },
     {
@@ -210,11 +440,16 @@
       "source": "blueprints/data-platform/private-data-platform/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_object_storage_private_endpoint && var.private_endpoint_subnet_id == null && length(var.private_endpoint_nsg_ids) == 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_object_storage_private_endpoint && var.private_endpoint_subnet_id == null && length(var.private_endpoint_nsg_ids) == 0 ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
-        "node_id": "n105",
+        "page_name": "OCI resources",
+        "node_id": "n110",
         "source_symbol": "object_storage_endpoint",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "NSG"
       }
     },
     {
@@ -226,11 +461,16 @@
       "source": "blueprints/data-platform/private-data-platform/main.tf",
       "revision": "working-tree",
       "condition": "for_each = var.enable_object_storage_private_endpoint && var.private_endpoint_subnet_id == null && length(var.private_endpoint_nsg_ids) == 0 ? var.private_endpoint_allowed_client_cidrs : toset([])",
+      "creation_expression": {
+        "for_each": "var.enable_object_storage_private_endpoint && var.private_endpoint_subnet_id == null && length(var.private_endpoint_nsg_ids) == 0 ? var.private_endpoint_allowed_client_cidrs : toset([])"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
-        "node_id": "n107",
+        "page_name": "OCI resources",
+        "node_id": "n116",
         "source_symbol": "object_storage_https_ingress",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "NSG"
       }
     },
     {
@@ -242,11 +482,16 @@
       "source": "blueprints/data-platform/private-data-platform/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_object_storage_private_endpoint ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_object_storage_private_endpoint ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
-        "node_id": "n109",
+        "page_name": "OCI resources",
+        "node_id": "n122",
         "source_symbol": "data",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -258,11 +503,16 @@
       "source": "blueprints/data-platform/private-data-platform/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_streaming && var.create_stream_pool && var.streaming_private_endpoint_subnet_id == null && length(var.streaming_private_endpoint_nsg_ids) == 0 ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_streaming && var.create_stream_pool && var.streaming_private_endpoint_subnet_id == null && length(var.streaming_private_endpoint_nsg_ids) == 0 ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
-        "node_id": "n111",
+        "page_name": "OCI resources",
+        "node_id": "n124",
         "source_symbol": "streaming_endpoint",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "NSG"
       }
     },
     {
@@ -274,11 +524,16 @@
       "source": "blueprints/data-platform/private-data-platform/main.tf",
       "revision": "working-tree",
       "condition": "for_each = var.enable_streaming && var.create_stream_pool && var.streaming_private_endpoint_subnet_id == null && length(var.streaming_private_endpoint_nsg_ids) == 0 ? {",
+      "creation_expression": {
+        "for_each": "var.enable_streaming && var.create_stream_pool && var.streaming_private_endpoint_subnet_id == null && length(var.streaming_private_endpoint_nsg_ids) == 0 ? {\n    for pair in setproduct(var.streaming_allowed_client_cidrs, toset([443, 9092])) : \"${pair[0]}:${pair[1]}\" => {\n      cidr = pair[0]\n      port = pair[1]\n    }\n  } : {}"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
-        "node_id": "n113",
+        "page_name": "OCI resources",
+        "node_id": "n130",
         "source_symbol": "streaming_client_ingress",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "NSG"
       }
     },
     {
@@ -290,14 +545,32 @@
       "source": "blueprints/extensions/streaming/main.tf",
       "revision": "v0.2.0",
       "condition": "count = var.enable_streaming && var.create_stream_pool ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_streaming && var.create_stream_pool ? 1 : 0"
+      },
       "module_inputs": [
         "module.streaming (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.streaming",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/extensions/streaming?ref=v0.2.0",
+          "call_site": "blueprints/data-platform/private-data-platform/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_streaming": "var.enable_streaming",
+            "create_stream_pool": "var.create_stream_pool"
+          }
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
-        "node_id": "n115",
+        "page_name": "OCI resources",
+        "node_id": "n136",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "OCI Streaming"
       }
     },
     {
@@ -309,17 +582,153 @@
       "source": "blueprints/extensions/streaming/main.tf",
       "revision": "v0.2.0",
       "condition": "for_each = var.enable_streaming ? var.streams : {}",
+      "creation_expression": {
+        "for_each": "var.enable_streaming ? var.streams : {}"
+      },
       "module_inputs": [
         "module.streaming (see pinned call-site inputs)"
       ],
+      "module_context": [
+        {
+          "address": "module.streaming",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/extensions/streaming?ref=v0.2.0",
+          "call_site": "blueprints/data-platform/private-data-platform/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_streaming": "var.enable_streaming",
+            "create_stream_pool": "var.create_stream_pool"
+          }
+        }
+      ],
       "diagram": {
         "file": "oci-resources.drawio",
-        "node_id": "n146",
+        "page_name": "OCI resources",
+        "node_id": "n167",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "OCI Streaming"
       }
     }
   ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 17
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/data-platform/private-data-platform/variables.tf",
+      "description": "Compartment OCID where private data platform resources are created. Defaults to tenancy_ocid.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.bucket_kms_key_id",
+      "source": "blueprints/data-platform/private-data-platform/variables.tf",
+      "description": "Optional KMS key OCID for Object Storage bucket encryption.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.private_endpoint_subnet_id",
+      "source": "blueprints/data-platform/private-data-platform/variables.tf",
+      "description": "Optional subnet OCID for the Object Storage private endpoint.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.private_endpoint_nsg_ids",
+      "source": "blueprints/data-platform/private-data-platform/variables.tf",
+      "description": "Optional NSG OCIDs for the Object Storage private endpoint.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.stream_pool_id",
+      "source": "blueprints/data-platform/private-data-platform/variables.tf",
+      "description": "Existing stream pool OCID used when create_stream_pool is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.streaming_kms_key_id",
+      "source": "blueprints/data-platform/private-data-platform/variables.tf",
+      "description": "Optional KMS key OCID for stream pool encryption.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.streaming_private_endpoint_subnet_id",
+      "source": "blueprints/data-platform/private-data-platform/variables.tf",
+      "description": "Optional subnet OCID for Streaming private endpoint access.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    },
+    {
+      "address": "var.streaming_private_endpoint_nsg_ids",
+      "source": "blueprints/data-platform/private-data-platform/variables.tf",
+      "description": "Optional NSG OCIDs for the Streaming private endpoint.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n17"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 8
+  },
   "data_lookups": [
     {
       "cloud": "OCI",
@@ -329,7 +738,10 @@
       "symbol": "this",
       "source": "blueprints/data-platform/private-data-platform/main.tf",
       "revision": "working-tree",
-      "condition": "count = var.enable_data_bucket || var.enable_object_storage_private_endpoint ? 1 : 0"
+      "condition": "count = var.enable_data_bucket || var.enable_object_storage_private_endpoint ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_data_bucket || var.enable_object_storage_private_endpoint ? 1 : 0"
+      }
     },
     {
       "cloud": "OCI",
@@ -340,9 +752,32 @@
       "source": "modules/networking/spoke-vcn/main.tf",
       "revision": "v0.2.0",
       "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
       "module_inputs": [
         "module.network.module.private_vcn (see pinned call-site inputs)",
         "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network.module.private_vcn",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//modules/networking/spoke-vcn?ref=v0.2.0",
+          "call_site": "blueprints/networking/standalone-private-endpoint-only/main.tf",
+          "call_site_revision": "c07231c91d146265a46836757f3c399861a59fff",
+          "creation_gate": {},
+          "enablement_inputs": {
+            "enable_internet_gateway": "false",
+            "enable_nat_gateway": "var.enable_nat_gateway",
+            "enable_service_gateway": "true"
+          }
+        },
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/standalone-private-endpoint-only?ref=c07231c91d146265a46836757f3c399861a59fff",
+          "call_site": "blueprints/data-platform/private-data-platform/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
       ]
     },
     {
@@ -354,8 +789,19 @@
       "source": "blueprints/networking/standalone-private-endpoint-only/main.tf",
       "revision": "c07231c91d146265a46836757f3c399861a59fff",
       "condition": "Unconditional declaration; module-level gates/inputs may still apply.",
+      "creation_expression": {},
       "module_inputs": [
         "module.network (see pinned call-site inputs)"
+      ],
+      "module_context": [
+        {
+          "address": "module.network",
+          "source": "git::https://github.com/leandro-michelino/oci-landingzones.git//blueprints/networking/standalone-private-endpoint-only?ref=c07231c91d146265a46836757f3c399861a59fff",
+          "call_site": "blueprints/data-platform/private-data-platform/main.tf",
+          "call_site_revision": "working-tree",
+          "creation_gate": {},
+          "enablement_inputs": {}
+        }
       ]
     }
   ],

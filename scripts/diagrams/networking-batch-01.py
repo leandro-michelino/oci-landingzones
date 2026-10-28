@@ -63,7 +63,7 @@ def network(slug, title, prefix, ports, index):
     if not private:
         public_rt = d.icon('Route Table', 130, 127.5, parent=vcn, size=48, label='Public route table\n0.0.0.0/0 → IGW', label_pos='top')
         igw = d.icon('Internet Gateway', 0, 127.5, parent=vcn, size=52, label='Internet Gateway', label_pos='top', border=True)
-        d.connect(igw, public_rt, kind='plain', straight=True)
+        d.connect(public_rt, igw, straight=True)
         d.connect(public_rt, subnets[0], kind='plain', exit=(1,.5), entry=(0,.5), straight=True)
         internet = d.group('internet', 'Internet / public edge', 20, 290, 180, 200)
         inet_icon = d.icon('Internet', 90, 90, parent=internet, size=54, label='Web access', label_pos='bottom')

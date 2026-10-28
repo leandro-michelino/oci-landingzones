@@ -23,7 +23,7 @@
       "native_document_pages": 3,
       "inventory_sha256": "3fb6923392f71950e597e790304e8e28a49f4e74adbc726692652f1c6b1eef9c",
       "png_sha256": {
-        "blueprints/networking/standalone-three-tier-vcn-defaults/architecture/architecture.png": "d6d357c388238fa6fb89911ff0883bd1d0b24bc63a0698a929e8abb598793e87",
+        "blueprints/networking/standalone-three-tier-vcn-defaults/architecture/architecture.png": "6d91e9b62f71fbff2148b89b1540299ed989bd4c279ba42c2e7cc83b73d5149d",
         "blueprints/networking/standalone-three-tier-vcn-defaults/architecture/oci-resources.png": "0f722f92cc4bf6f48c51ed857890762a55ba4379aaac600a960413d7bd1a9f2e",
         "blueprints/networking/standalone-three-tier-vcn-defaults/architecture/existing-resources.png": "44bf06219a9709ea86dbedd771d13a81ad80156a099f204f148a8e2c29096456"
       }
@@ -39,7 +39,7 @@
       "native_document_pages": 3,
       "inventory_sha256": "fbf9fa4da4c1f8d9b997586914e761483f9778b48d411e6708b5162ebba67672",
       "png_sha256": {
-        "blueprints/networking/standalone-three-tier-vcn-custom/architecture/architecture.png": "fab325977eb38d2e96db33901971534bc5926fb22050884f2458161e1ef38dbe",
+        "blueprints/networking/standalone-three-tier-vcn-custom/architecture/architecture.png": "fc4c4f6b54bc685eb5a4364112af41b019242ed0ec730ac43a136b811ef47d85",
         "blueprints/networking/standalone-three-tier-vcn-custom/architecture/oci-resources.png": "6b55a4f904634041afaa8ae60b8ae8d0dc4e58c092c2442a5cf52b1a1e2ac0f6",
         "blueprints/networking/standalone-three-tier-vcn-custom/architecture/existing-resources.png": "b6c93c1f40e74e4d2ea8b696e3783396ee9c3716fd32f3099d1b43e90bcf06a9"
       }
@@ -55,7 +55,7 @@
       "native_document_pages": 3,
       "inventory_sha256": "3a9e8f84840cf652ca4ad66dddd940296d876b2b346f5722f0a0cc56fee83d7b",
       "png_sha256": {
-        "blueprints/networking/standalone-three-tier-vcn-zpr/architecture/architecture.png": "bfa4470e4ccf9c0cf1ce4e9f3e88cb4970a8cb46c7dc8dd3207aa635bb9eb442",
+        "blueprints/networking/standalone-three-tier-vcn-zpr/architecture/architecture.png": "3fc352341fce75ed1d03b8fd74e407fba3dfc1dc1f6be70cec5aa4c5c1c2b4fa",
         "blueprints/networking/standalone-three-tier-vcn-zpr/architecture/oci-resources.png": "be5010aba6b384602ee4d87455d27d782516bda644bdbcf2b0c1320afac78e26",
         "blueprints/networking/standalone-three-tier-vcn-zpr/architecture/existing-resources.png": "723745dfef9881a1245dbe8d0647a669234a0c615211bb8f9ae47ad35cafef9e"
       }
@@ -237,7 +237,7 @@
       "native_document_pages": 4,
       "inventory_sha256": "cee488b2b879bdc192cab5144e618772684e52022cc88438a0a947e77f64a92e",
       "png_sha256": {
-        "blueprints/networking/hub-spoke-with-private-dns-split-horizon/architecture/architecture.png": "e47271cc3f7e2ae2bc8c69cb253984c9ddbe208d4044e78b87e26808c706f4a9",
+        "blueprints/networking/hub-spoke-with-private-dns-split-horizon/architecture/architecture.png": "5b7e4f5983ab33cefcdc7bb2cfdd833b4faeeee0e2b15b2788ccf707cf04f349",
         "blueprints/networking/hub-spoke-with-private-dns-split-horizon/architecture/oci-resources.png": "623576e53cef9f94a5e8cfbc90caba20aa720e37dabf3dc9ab1aff04e70e912c",
         "blueprints/networking/hub-spoke-with-private-dns-split-horizon/architecture/oci-resources-02.png": "74b3eed9125430137534e90161e99fbff90ea1fbc8ea4073b71027e1b96f0eeb",
         "blueprints/networking/hub-spoke-with-private-dns-split-horizon/architecture/existing-resources.png": "88e003d77a176c5367a96e15ea0a034734fce6505c186273a2c6deab26215e24"
@@ -271,7 +271,7 @@
       "native_document_pages": 4,
       "inventory_sha256": "201b37ef0f0e28671eb04efcb82fe1a96e373ba3d8a0c613296f96cb6fe24ee4",
       "png_sha256": {
-        "blueprints/networking/hub-spoke-with-dual-region-dr/architecture/architecture.png": "54bd1949618432cd0283e7e7467975592565a4a77a09e1e1f181120eeb3ed868",
+        "blueprints/networking/hub-spoke-with-dual-region-dr/architecture/architecture.png": "d672939dc6776af11e122606339ebbee999d4689edd926e8b69b5720c3cd1eca",
         "blueprints/networking/hub-spoke-with-dual-region-dr/architecture/oci-resources.png": "8fb7bb601fdd018da37619aa1e4756c52027c4c37079b92d296985c3f18085c9",
         "blueprints/networking/hub-spoke-with-dual-region-dr/architecture/oci-resources-02.png": "779802fdfbee3901466cab0f8ab00dee5cb7977a0c894349991dca5fa5f97dd3",
         "blueprints/networking/hub-spoke-with-dual-region-dr/architecture/existing-resources.png": "5de06a716b4e0a02352156305103aee61e2f9e3a14a35159e2a99d05341b71b2"
@@ -288,7 +288,7 @@
       "native_document_pages": 4,
       "inventory_sha256": "09378c2450894a2f639863bd835f202064e8f5e1a8b1c3cf277177ac23d5e3c5",
       "png_sha256": {
-        "blueprints/networking/multi-tenancy-shared-services/architecture/architecture.png": "0088d34ef25df592b61edbcbe592701399a99184da716d86d7e82c3851fcc43f",
+        "blueprints/networking/multi-tenancy-shared-services/architecture/architecture.png": "b297588443197dedc8f5417a61b8dbd11cde234f833a5833f4e8ef233c186cd1",
         "blueprints/networking/multi-tenancy-shared-services/architecture/oci-resources.png": "850feeed666ed7328b176994bae7028392f4886eb60acbc03d723d272f924c48",
         "blueprints/networking/multi-tenancy-shared-services/architecture/oci-resources-02.png": "fff74d2611cdccc538aff1eeabb636037d32eb1d50d93b73a722be3af6bd197a",
         "blueprints/networking/multi-tenancy-shared-services/architecture/existing-resources.png": "92921ba2a06f943824a8e33d4da86318efc95bfe3b16552847cb8979e730e9bf"
@@ -382,7 +382,7 @@
       "native_document_pages": 4,
       "inventory_sha256": "bcfd3f3f18f52911b1ce2a7279823b01b7d4086d74361f7dc9b9e853d811cd4e",
       "png_sha256": {
-        "blueprints/networking/regional-prod-nonprod-hubs/architecture/architecture.png": "46344532e29c67b7a3c0d96f9dd64b29e69bd2ab0860a7bf77cc5ab87fd2078e",
+        "blueprints/networking/regional-prod-nonprod-hubs/architecture/architecture.png": "f6cc3352f63c251da6e7d2c3ad09146ddf46b89d7ea058141477c6119a1fdb3d",
         "blueprints/networking/regional-prod-nonprod-hubs/architecture/oci-resources.png": "32a9d1ae77e27e286299900fb40fa23796803ce8c058b4eb4bf919f4082f5e1c",
         "blueprints/networking/regional-prod-nonprod-hubs/architecture/oci-resources-02.png": "73901f2328420065787377eccf2259295abb94a7d4881ce49b5eccc80e575742",
         "blueprints/networking/regional-prod-nonprod-hubs/architecture/existing-resources.png": "002327ead3ca9541f020db1d63622ad4e7741e4316e309707d652fc7b1122c75"
@@ -535,7 +535,7 @@
       "native_document_pages": 3,
       "inventory_sha256": "25c4e008ad78a04250e605c65a4c936142af8b4449871a9851064fcf47582535",
       "png_sha256": {
-        "blueprints/operating-entity/architecture/architecture.png": "9dfe370c320c9ec802b4dd5bf98b332bb0b9b5839d13757872baf4ecf7f15756",
+        "blueprints/operating-entity/architecture/architecture.png": "f3bb863a61504a1775fa114f3a3bf41c4e528ed71b0cbaae7ff5a024facd3ddf",
         "blueprints/operating-entity/architecture/oci-resources.png": "74c7c12a441de1ce9792eed2cf4d9c6468c6ecc0c70437117dda58e22f1ee2e9",
         "blueprints/operating-entity/architecture/existing-resources.png": "f95748f07a3f4a8c1dafe7fc7e6bb3855a672f26834e2c9269702e119c91a305"
       }
@@ -551,7 +551,7 @@
       "native_document_pages": 3,
       "inventory_sha256": "1b5087878d89e39d51ba97ca49077a7e85f5d1d82ea3111d1b17652156255665",
       "png_sha256": {
-        "blueprints/operating-entity/multi-operating-entities/architecture/architecture.png": "f0016ecdd902575703acdb78a72017fc15f7ff3e5c235f4c641c2275e8c93bcf",
+        "blueprints/operating-entity/multi-operating-entities/architecture/architecture.png": "88b0c69e97120286f9fdeef53aabe5340ecf30fa651eaa88db6cfda6b2a67a71",
         "blueprints/operating-entity/multi-operating-entities/architecture/oci-resources.png": "9c82a82d7094141de3208cdfb3951b4e2d99420b319cc4321098fe493e441ad5",
         "blueprints/operating-entity/multi-operating-entities/architecture/existing-resources.png": "9b82ebe59ec8bb9a11b0f9cb8f94027918644c37702dfafda005838e4a7f170b"
       }
@@ -567,7 +567,7 @@
       "native_document_pages": 3,
       "inventory_sha256": "79b967a34cde9387e3c909a4014fb39b7357cf139f87b8274a4c3274a3006895",
       "png_sha256": {
-        "blueprints/operating-entity/workload-vending/architecture/architecture.png": "c8734720713931aba1236982fd3d1fe532bd756a3b712b5b658ad4d7d0ad0e25",
+        "blueprints/operating-entity/workload-vending/architecture/architecture.png": "f91d2628771b930ea2094aedc8ca295e0d7782e156131141b9caeb6a5aef07f0",
         "blueprints/operating-entity/workload-vending/architecture/oci-resources.png": "5dd708f3bf088ae82e844379728eb60326eefd37c383e240941e9fe8a40870ef",
         "blueprints/operating-entity/workload-vending/architecture/existing-resources.png": "86f2f48547c457a047fe6ba00fe6e298d0824962c00cb6810e097148723da841"
       }
@@ -601,7 +601,7 @@
       "native_document_pages": 5,
       "inventory_sha256": "986c3474ae9434da35c7f9e3cee8a50ecb4445ab1ad539f81304e0fdfafc3e51",
       "png_sha256": {
-        "blueprints/compliance/zero-trust/architecture/architecture.png": "e99f66d1369a788e681a2d72081d5e67f880ec7ba74723943928cfdd38d8598e",
+        "blueprints/compliance/zero-trust/architecture/architecture.png": "d964b12b039a38ef306fe7ba74707763128bc9cf6a46f99d8d888b6b6a122391",
         "blueprints/compliance/zero-trust/architecture/oci-resources.png": "b7d245126985b424775915287af93b99d006a51a00d316e97811bb29738687ae",
         "blueprints/compliance/zero-trust/architecture/oci-resources-02.png": "80b8e4a21ff24089dc26fc688dfae0a58a33612872a2430677c9fc6034fa56e5",
         "blueprints/compliance/zero-trust/architecture/oci-resources-03.png": "091ec3a0b72f0945fc3281ca2c9e8ffe5651d3f9b14bf9df82f9bd98ae71868d",
@@ -669,7 +669,7 @@
       "native_document_pages": 5,
       "inventory_sha256": "4dde3c9ea85a16e12c9b2987c7038b5d569d4965c99918f15686fc1aabb19fdb",
       "png_sha256": {
-        "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/architecture.png": "394008e2284f8da6957b38b921f48464c06e1c9d59b0f18ce03c3b28d1601e34",
+        "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/architecture.png": "417c6df00ddde87dd2447143a1817c4d494b6cbf1c4fa047e1a0b524ce3ae1cf",
         "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/azure-resources.png": "1f5fdcb875e4e24be0807ac462164e112ede51d1bd3b826b53a999d86acada8d",
         "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/contracts-resources.png": "4365c08310041c8b435c6eda4e7566dd26f4580da1fd1a2f3b5738acc7256708",
         "blueprints/disaster-recovery/azure-oci-cross-cloud-dr/architecture/oci-resources.png": "321391440b3e473947ac2a946c43b70597e462c6144fd5860916662f4a7e965a",

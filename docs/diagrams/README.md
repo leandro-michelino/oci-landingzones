@@ -1,6 +1,6 @@
 # Architecture Diagram Sources
 
-`oci-3tier-adb.drawio` is an editable conceptual three-tier architecture with web and app VMs, a public load balancer, and an Autonomous Database private endpoint. It is not a deployment-evidence diagram for a specific Terraform blueprint. The application reaches regional Oracle services through the Service Gateway; database sessions use the separate private endpoint path. Customer-specific NSGs, routes, ports, DNS, availability placement, and workload resources require separate configuration and validation. The XML was parsed successfully during the October 14, 2026 repository review; rendered layout and packet flows were not tested.
+[oci-3tier-adb.drawio](oci-3tier-adb.drawio) and its [PNG preview](oci-3tier-adb.png) show an illustrative three-tier architecture with web/app VMs, a public load balancer and an Autonomous Database private endpoint. The diagram was regenerated with the official OCI toolkit and visually reviewed on October 28, 2026. Oracle services use the Service Gateway path; database sessions use the separate private endpoint path. This is a conceptual design, not deployment evidence for a Terraform blueprint. Routes, security, DNS, certificates and availability placement require separate configuration and validation.
 
 
 ## Networking Draw.io Diagrams
@@ -400,3 +400,18 @@ The five documents include 39 identifier references. Layout checks, source
 coverage, native-page references, the three inventory-parser regressions,
 repository contracts and local Markdown links passed. No infrastructure source
 files changed in this diagram batch.
+
+## Full Connector Re-review / October 28, 2026
+
+The [full review](CONNECTOR-REVIEW.md) covers all 56 published blueprint overviews
+and the separate conceptual drawing. It corrects 17 blueprint overviews and
+regenerates the conceptual drawing. Every native draw.io document is included in
+the structural registry; inventory/reference cards deliberately have no inferred
+traffic paths. This review does not advance the original conversion backlog.
+
+The [reviewed connector contract](reviewed-connectors.json) retains endpoints,
+directions, labels, line types, paths and source-file revisions/hashes. Ordinary
+checks reject changes to that contract until the diagram receives another source
+and visual review. Run `python3 scripts/diagrams/check-connections.py --write-report`
+after composing resource pages. Use `--record-reviewed-connectors` only after
+reviewing changed relationships and rendered PNGs, including new catalog entries.

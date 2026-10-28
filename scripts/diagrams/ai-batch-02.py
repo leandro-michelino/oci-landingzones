@@ -75,7 +75,7 @@ def tuning(title,index):
  cluster=d.icon('OCI Generative AI',800,260,parent=reg,size=70,label='Dedicated AI cluster / create=false\nFINE_TUNING / 1 × LARGE_COHERE',label_pos='top')
  model=d.icon('OCI Generative AI',1400,260,parent=reg,size=70,label='Fine-tuned model / create=false',label_pos='top')
  endpoint=d.icon('OCI Generative AI',2100,260,parent=reg,size=70,label='Inference endpoint / create=false',label_pos='top')
- d.connect(cluster,model,kind='plain',label='fine_tune_details.cluster_id',straight=True)
+ d.connect(cluster,model,kind='plain',label='fine_tune_details.dedicated_ai_cluster_id',straight=True)
  d.connect(model,endpoint,kind='plain',label='model_id',straight=True)
  d.connect(bucket,model,kind='plain',label='Training dataset / selected bucket reference',exit=(1,.5),entry=(.5,1),waypoints=[(600,420),(600,680),(1280,680),(1280,480),(1420,480)])
  d.text('Private / Standard / versioned / events\nExisting KMS key optional\nNo dataset upload or preprocessing',40,365,520,100,parent=reg,size=15)

@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "blueprint": "data-platform/autonomous-database",
   "review_date": "2026-10-28",
   "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
@@ -16,11 +16,16 @@
       "source": "blueprints/data-platform/autonomous-database/main.tf",
       "revision": "working-tree",
       "condition": "count = var.create_private_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_private_network ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n4",
         "source_symbol": "adb",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "VCN (Region Identifier)"
       }
     },
     {
@@ -32,11 +37,16 @@
       "source": "blueprints/data-platform/autonomous-database/main.tf",
       "revision": "working-tree",
       "condition": "count = var.create_private_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_private_network ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n10",
         "source_symbol": "adb",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -48,11 +58,16 @@
       "source": "blueprints/data-platform/autonomous-database/main.tf",
       "revision": "working-tree",
       "condition": "count = var.create_private_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_private_network ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n12",
         "source_symbol": "adb",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "NSG"
       }
     },
     {
@@ -64,11 +79,16 @@
       "source": "blueprints/data-platform/autonomous-database/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_autonomous_database ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_autonomous_database ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
-        "node_id": "n14",
+        "page_name": "OCI resources",
+        "node_id": "n18",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Oracle Autonomous Database"
       }
     },
     {
@@ -80,11 +100,16 @@
       "source": "blueprints/data-platform/autonomous-database/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_autonomous_database && var.create_manual_backup ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_autonomous_database && var.create_manual_backup ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
-        "node_id": "n20",
+        "page_name": "OCI resources",
+        "node_id": "n24",
         "source_symbol": "manual",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -96,11 +121,16 @@
       "source": "blueprints/data-platform/autonomous-database/main.tf",
       "revision": "working-tree",
       "condition": "for_each = var.create_private_network ? var.allowed_client_cidrs : toset([])",
+      "creation_expression": {
+        "for_each": "var.create_private_network ? var.allowed_client_cidrs : toset([])"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
-        "node_id": "n22",
+        "page_name": "OCI resources",
+        "node_id": "n26",
         "source_symbol": "database_ingress",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "NSG"
       }
     },
     {
@@ -112,14 +142,85 @@
       "source": "blueprints/data-platform/autonomous-database/main.tf",
       "revision": "working-tree",
       "condition": "count = var.create_private_network ? 1 : 0",
+      "creation_expression": {
+        "count": "var.create_private_network ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
-        "node_id": "n24",
+        "page_name": "OCI resources",
+        "node_id": "n32",
         "source_symbol": "adb",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Security Lists"
       }
     }
   ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 7
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/data-platform/autonomous-database/variables.tf",
+      "description": "Compartment OCID where resources are created. Defaults to tenancy_ocid for validation-only tests.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.subnet_id",
+      "source": "blueprints/data-platform/autonomous-database/variables.tf",
+      "description": "Private endpoint subnet OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.nsg_ids",
+      "source": "blueprints/data-platform/autonomous-database/variables.tf",
+      "description": "NSG OCIDs for the private endpoint.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.kms_key_id",
+      "source": "blueprints/data-platform/autonomous-database/variables.tf",
+      "description": "Optional KMS key OCID.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 4
+  },
   "data_lookups": [],
   "source_files": [
     {

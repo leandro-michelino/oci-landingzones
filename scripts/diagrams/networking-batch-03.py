@@ -62,7 +62,7 @@ def panel(d,kind):
             zones.append(zone)
             d.connect(view,zone,kind='plain',exit=(.25 if i==0 else .75,1),entry=(.5,0),waypoints=[(1950+355*i,465)])
         resolver=d.box('Existing VCN resolvers / attached_views\nHub + default app1 spoke\nattach_private_view_to_vcn_resolvers=true',25,580,690,130,parent=box)
-        d.connect(view,resolver,kind='dashed',exit=(1,.5),entry=(1,.3),waypoints=[(2485,360),(2485,779)])
+        d.connect(view,resolver,kind='plain',label='attached_views / view_id',exit=(1,.5),entry=(1,.3),waypoints=[(2485,360),(2485,779)])
         d.text('View association is control-plane configuration, not DNS packet flow.\nThe module discovers resolver IDs from VCN associations.\nRecords, public zones and resolver endpoints are absent here.',20,790,700,100,parent=box,size=13)
     else:
         d.text('TENANCY ROOT / outside the workload compartment boundary',20,140,700,45,parent=box,size=15,bold=True)

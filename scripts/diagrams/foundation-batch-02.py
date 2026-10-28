@@ -55,7 +55,7 @@ def entities(title,index,kind):
     roles=('Per entity: admins / auditors' if kind=='multi' else 'Workload admins / operators / auditors' if kind=='workload' else 'Entity admins / auditors')
     d.text(roles+'\nGroup names are generated or explicitly overridden.\nAn override changes the created group name; it is not an existing-group lookup.',410,75,1000,135,parent=home,size=14)
     policy=d.icon('Policies',1820,110,parent=home,size=58,label=f'{count} delegated IAM policies\nManage / '+('use / read' if kind=='workload' else 'read')+' all-resources within generated paths',label_pos='top')
-    d.text('Policy placement: '+('per-entity policy compartment → per-entity parent → wrapper parent.' if kind=='multi' else 'policy_compartment_ocid override, otherwise the selected parent.'),30,230,2300,35,parent=home,size=12)
+    d.text('Policy placement: '+('per-entity policy compartment → per-entity parent → wrapper parent.' if kind=='multi' else 'policy_compartment_ocid override, otherwise the selected parent.'),30,230,1450,35,parent=home,size=12)
     parent=d.group('compartment','Selected parent compartment / parent_compartment_ocid falls back to tenancy',20,500,2360,590)
     roots=[]
     names=['Finance / code fin','Engineering / code eng'] if kind=='multi' else ['Workload / default code app'] if kind=='workload' else ['Operating entity / default code entity']
@@ -69,7 +69,8 @@ def entities(title,index,kind):
         for j,child in enumerate(children):
             d.group('compartment',child+' / created child',25+j*(cw+20),100,cw,200,parent=root)
         d.text('Child map can be overridden. Root + child compartment paths feed delegated policies.',25,345,w-50,45,parent=root,size=12)
-    d.connect(policy,parent,kind='dashed',exit=(.5,1),entry=(.8,0),label='Scoped policy statements / no workload deployment')
+    for root in roots:
+        d.connect(policy,root,kind='plain',exit=(.5,1),entry=(.5,0),waypoints=[(1840,470),(root.center()[0],470)])
     details={
         'single':'DEFAULT SHAPE: 1 root + 3 children; 2 IAM groups and 2 policies.\nAdministrators manage all-resources; auditors read all-resources in the generated entity root and child paths.',
         'multi':'DEFAULT SHAPE: Finance + Engineering, each with 1 root + 3 children; total 8 compartments, 4 groups and 4 policies.\nEach entity may override its parent, child map, names and policy compartment. Separate roots are delegation boundaries, not verified tenant isolation.',

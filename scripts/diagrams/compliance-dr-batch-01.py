@@ -56,6 +56,7 @@ def zero(title,index):
  internet=d.group('internet','Internet',1480,280,300,250)
  inet=d.icon('Internet',150,90,parent=internet,size=52,label='Public web route / egress',label_pos='bottom')
  d.connect(igw,inet,straight=True)
+ d.connect(nat,inet,label='Outbound only',exit=(1,.5),entry=(0,.5),waypoints=[(1450,610),(1450,370)])
  d.text('NAT also provides private-tier\noutbound internet egress.',15,175,270,55,parent=internet,size=12)
  osn=d.group('osn','Oracle Services Network',1480,660,300,250)
  osni=d.icon('Oracle Services Network',150,90,parent=osn,size=52,label='Supported regional services',label_pos='bottom')
@@ -147,7 +148,8 @@ def azure(title,index):
  net=cloud.box(d,'Microsoft.Network/virtualNetworks','VNet 10.72.0.0/16\nContainer App subnet 10.72.10.0/23, delegated to App environments\nUDR default → Internet; NSG inbound TCP 80/443',30,80,890,160,parent=az,kind='thirdparty_component')
  app=cloud.box(d,'Microsoft.App/containerApps','Managed Environment + Container App\nExternal ingress / target port 80 / insecure=false\nHello-world image default; replicas 1–2, CPU 0.5 / memory 1Gi\nApplication/data recovery is not configured by this sample.',30,340,890,180,parent=az,kind='thirdparty_component')
  logs=cloud.box(d,'Microsoft.OperationalInsights/workspaces','Log Analytics workspace\n30-day retention; App environment sends logs to workspace',30,650,890,110,parent=az,kind='thirdparty_component')
- d.connect(net,app,kind='plain',straight=True); d.connect(app,logs,kind='dashed',straight=True)
+ d.connect(net,app,kind='plain',label='Environment infrastructureSubnetId',straight=True)
+ d.connect(app,logs,label='Environment appLogsConfiguration',straight=True)
  d.connect(sn,app,kind='dashed',label='Interconnect intent / external circuit prerequisites; IDs only',exit=(.5,1),entry=(0,.5),waypoints=[(540,810),(1470,810),(1470,590)])
  footer(d,'CONTRACTS / DEFAULTS NEED REAL INPUTS\nDefault connectivity_mode=interconnect but FastConnect/ExpressRoute IDs are null. DNS contract enabled but endpoint inputs are null; ingress CIDR is null.\nThese contracts do not provision circuits, DRG, VPN, DNS records or a failover controller. RTO 30 min / RPO 15 min / TTL 30 sec are requested metadata.\nOCI and Azure are separate deployments; no workload/data replication, automatic DNS switch or tested DR outcome is created.',1120)
  return d

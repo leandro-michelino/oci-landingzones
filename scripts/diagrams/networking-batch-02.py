@@ -24,6 +24,28 @@ ITEMS = [
 ]
 
 
+def compact_routes(d, drg, hub, spoke, subnets, gateways):
+    """Explicit subnet associations and route targets for compact two-VCN insets."""
+    public=d.icon('Route Table',60,115,parent=hub,size=30,label='Public RT',label_pos='top')
+    private=d.icon('Route Table',60,305,parent=hub,size=30,label='Private RT',label_pos='top')
+    spoke_rt=d.icon('Route Table',60,305,parent=spoke,size=30,label='Spoke RT',label_pos='top')
+    igw,nat,sgw,spoke_sgw=gateways
+    for i,sn in enumerate(subnets[:3]):
+        rt=public if i==0 else private
+        x=hub.abs[0]+85
+        d.connect(sn,rt,kind='plain',exit=(0,.5),entry=(1,.5),waypoints=[(x,sn.center()[1]),(x,rt.center()[1])])
+    for sn in subnets[3:]:
+        x=spoke.abs[0]+85
+        d.connect(sn,spoke_rt,kind='plain',exit=(0,.5),entry=(1,.5),waypoints=[(x,sn.center()[1]),(x,spoke_rt.center()[1])])
+    d.connect(public,igw,straight=True)
+    d.connect(private,nat,exit=(0,.5),entry=(1,.5),waypoints=[(hub.abs[0]+30,private.center()[1]),(hub.abs[0]+30,nat.center()[1])])
+    d.connect(private,sgw,exit=(.5,1),entry=(1,.5),waypoints=[(private.center()[0],sgw.center()[1])])
+    d.connect(spoke_rt,spoke_sgw,exit=(.5,1),entry=(1,.5),waypoints=[(spoke_rt.center()[0],spoke_sgw.center()[1])])
+    y=hub.abs[1]-25
+    x=spoke.abs[0]-35
+    d.connect(spoke_rt,drg,exit=(0,.5),entry=(1,.5),waypoints=[(x,spoke_rt.center()[1]),(x,y),(drg.center()[0]+65,y),(drg.center()[0]+65,drg.center()[1])])
+
+
 def build(title, variant, index, fortigate=False, scope_note=None, subtitle=None):
     d = Diagram(toolkit=TOOLKIT, title=title)
     d.text(title, 20, 10, 1960, 45, size=25, bold=True)

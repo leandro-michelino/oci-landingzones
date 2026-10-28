@@ -78,7 +78,7 @@ def dr(title,index):
   logging.append(cloud.icon(d,typ,145+370*i,750,parent=aws,size=48,label=label,label_pos='top'))
  d.text('IAM flow-log role and inline write policy; KMS also used for Performance Insights.',30,820,1120,45,parent=aws,size=13)
  d.connect(db,hw,label='DB attachment',straight=True)
- d.connect(db,rt,kind='plain',label='Subnet route table',exit=(.5,1),entry=(0,.5),waypoints=[(245,550),(950,550),(950,500)])
+ d.connect(sn,rt,kind='plain',label='route_table_id',exit=(1,.65),entry=(0,.5),waypoints=[(950,543),(950,500)])
  d.connect(rt,drg,label='AWS prefix / IPSec flag',exit=(1,.5),entry=(0,.5),waypoints=[(1125,500),(1125,690)])
  peer=d.box('AWS VPN edge + OCI return route\nEXTERNAL prerequisite / not created',40,620,440,70,parent=aws,kind='optional')
  d.connect(drg,peer,kind='dashed',label='Optional IPSec / peer required',exit=(1,.5),entry=(0,.5),waypoints=[(1240,690),(1240,815)])

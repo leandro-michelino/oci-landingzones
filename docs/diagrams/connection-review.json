@@ -4,32 +4,38 @@
   "checks": [
     "Every overview has relationship lines",
     "Cross-cloud source inventories have an explicit OCI bridge",
-    "Layout warnings empty",
+    "Icon and text crossing checks empty",
     "Overview matches authoring script",
-    "Every native page has unique IDs and valid references"
+    "Every native page has unique IDs and valid references",
+    "Reviewed endpoints, labels, arrows, paths and source hashes match contract",
+    "Subnet routing and DNS-view semantic regression checks"
   ],
   "overview_count": 56,
+  "conceptual_overviews": 1,
+  "native_documents": 210,
+  "main_document_pages": 210,
+  "connector_count": 476,
   "cross_cloud_overviews": 10,
   "blueprints": [
     {
       "blueprint": "networking/standalone-three-tier-vcn-defaults",
       "connections": 9,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "d6d357c388238fa6fb89911ff0883bd1d0b24bc63a0698a929e8abb598793e87",
+      "overview_png_sha256": "6d91e9b62f71fbff2148b89b1540299ed989bd4c279ba42c2e7cc83b73d5149d",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/standalone-three-tier-vcn-custom",
       "connections": 9,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "fab325977eb38d2e96db33901971534bc5926fb22050884f2458161e1ef38dbe",
+      "overview_png_sha256": "fc4c4f6b54bc685eb5a4364112af41b019242ed0ec730ac43a136b811ef47d85",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/standalone-three-tier-vcn-zpr",
       "connections": 9,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "bfa4470e4ccf9c0cf1ce4e9f3e88cb4970a8cb46c7dc8dd3207aa635bb9eb442",
+      "overview_png_sha256": "3fc352341fce75ed1d03b8fd74e407fba3dfc1dc1f6be70cec5aa4c5c1c2b4fa",
       "layout_warnings": []
     },
     {
@@ -106,7 +112,7 @@
       "blueprint": "networking/hub-spoke-with-private-dns-split-horizon",
       "connections": 20,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "e47271cc3f7e2ae2bc8c69cb253984c9ddbe208d4044e78b87e26808c706f4a9",
+      "overview_png_sha256": "5b7e4f5983ab33cefcdc7bb2cfdd833b4faeeee0e2b15b2788ccf707cf04f349",
       "layout_warnings": []
     },
     {
@@ -118,16 +124,16 @@
     },
     {
       "blueprint": "networking/hub-spoke-with-dual-region-dr",
-      "connections": 4,
+      "connections": 26,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "54bd1949618432cd0283e7e7467975592565a4a77a09e1e1f181120eeb3ed868",
+      "overview_png_sha256": "d672939dc6776af11e122606339ebbee999d4689edd926e8b69b5720c3cd1eca",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/multi-tenancy-shared-services",
       "connections": 19,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "0088d34ef25df592b61edbcbe592701399a99184da716d86d7e82c3851fcc43f",
+      "overview_png_sha256": "b297588443197dedc8f5417a61b8dbd11cde234f833a5833f4e8ef233c186cd1",
       "layout_warnings": []
     },
     {
@@ -190,9 +196,9 @@
     },
     {
       "blueprint": "networking/regional-prod-nonprod-hubs",
-      "connections": 4,
+      "connections": 26,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "46344532e29c67b7a3c0d96f9dd64b29e69bd2ab0860a7bf77cc5ab87fd2078e",
+      "overview_png_sha256": "f6cc3352f63c251da6e7d2c3ad09146ddf46b89d7ea058141477c6119a1fdb3d",
       "layout_warnings": []
     },
     {
@@ -265,21 +271,21 @@
       "blueprint": "operating-entity",
       "connections": 1,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "9dfe370c320c9ec802b4dd5bf98b332bb0b9b5839d13757872baf4ecf7f15756",
+      "overview_png_sha256": "f3bb863a61504a1775fa114f3a3bf41c4e528ed71b0cbaae7ff5a024facd3ddf",
       "layout_warnings": []
     },
     {
       "blueprint": "operating-entity/multi-operating-entities",
-      "connections": 1,
+      "connections": 2,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "f0016ecdd902575703acdb78a72017fc15f7ff3e5c235f4c641c2275e8c93bcf",
+      "overview_png_sha256": "88b0c69e97120286f9fdeef53aabe5340ecf30fa651eaa88db6cfda6b2a67a71",
       "layout_warnings": []
     },
     {
       "blueprint": "operating-entity/workload-vending",
       "connections": 1,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "c8734720713931aba1236982fd3d1fe532bd756a3b712b5b658ad4d7d0ad0e25",
+      "overview_png_sha256": "f91d2628771b930ea2094aedc8ca295e0d7782e156131141b9caeb6a5aef07f0",
       "layout_warnings": []
     },
     {
@@ -291,9 +297,9 @@
     },
     {
       "blueprint": "compliance/zero-trust",
-      "connections": 8,
+      "connections": 9,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "e99f66d1369a788e681a2d72081d5e67f880ec7ba74723943928cfdd38d8598e",
+      "overview_png_sha256": "d964b12b039a38ef306fe7ba74707763128bc9cf6a46f99d8d888b6b6a122391",
       "layout_warnings": []
     },
     {
@@ -331,7 +337,7 @@
           ]
         }
       ],
-      "overview_png_sha256": "394008e2284f8da6957b38b921f48464c06e1c9d59b0f18ce03c3b28d1601e34",
+      "overview_png_sha256": "417c6df00ddde87dd2447143a1817c4d494b6cbf1c4fa047e1a0b524ce3ae1cf",
       "layout_warnings": []
     },
     {
@@ -360,9 +366,9 @@
     },
     {
       "blueprint": "data-platform/private-data-platform",
-      "connections": 3,
+      "connections": 7,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "b463ac66eaa6186f29a2a1ba8ad395b090795e805cac0deceb70110d809314c4",
+      "overview_png_sha256": "ae4079eaf8d5b84421f434872e752372e9d2da9daab2ef873ce680f84ac54dc8",
       "layout_warnings": []
     },
     {
@@ -416,7 +422,7 @@
           ]
         }
       ],
-      "overview_png_sha256": "01215d11149e3a39d5b1c1942fda831f84f2303412aed66668d275aaae8d05c8",
+      "overview_png_sha256": "7bf3cb8f0a2a02256b3a32a5edc1c3a7b5c9c185eac65c92b460707cb178ce85",
       "layout_warnings": []
     },
     {
@@ -461,7 +467,7 @@
       "blueprint": "ai/genai-fine-tuning",
       "connections": 5,
       "cross_cloud_bridges": [],
-      "overview_png_sha256": "c3c20d79efe7d40e1daab977f7668ad7f08786a6a3551bd59a06cf34925e6da1",
+      "overview_png_sha256": "506d63a0facd4fbb190f9213afa898327109d45cc2f008fa0ba29c08d58d91c1",
       "layout_warnings": []
     },
     {
@@ -480,11 +486,11 @@
     },
     {
       "blueprint": "networking/aws-oci-managed-interconnect",
-      "connections": 3,
+      "connections": 6,
       "cross_cloud_bridges": [
         {
           "source": "n42",
-          "target": "n59",
+          "target": "n60",
           "label": "Managed Interconnect / create + accept",
           "clouds": [
             "OCI",
@@ -492,16 +498,16 @@
           ]
         }
       ],
-      "overview_png_sha256": "5de5810c564c96e49dd041ac3b26e52a284f9b0cd8b491ad5111c627ba46ff2c",
+      "overview_png_sha256": "99c82bcb87bddc2dbe91dc91db47d9d65fa436bc0fb864ad8c868e4fe83bd9bb",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/gcp-oci-partner-interconnect",
-      "connections": 3,
+      "connections": 5,
       "cross_cloud_bridges": [
         {
           "source": "n42",
-          "target": "n60",
+          "target": "n61",
           "label": "2 private VCs / Partner Interconnect",
           "clouds": [
             "OCI",
@@ -509,7 +515,7 @@
           ]
         }
       ],
-      "overview_png_sha256": "0b868470d09c34debad4f8a60088ff347b5068c3446fb4bd431fac5aa38e91c1",
+      "overview_png_sha256": "680fae14a2f3d4b57a39b6889b8d1cd67efd8c3ba0b84425de5065975821f6d6",
       "layout_warnings": []
     }
   ]

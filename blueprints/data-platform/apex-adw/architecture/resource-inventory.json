@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "blueprint": "data-platform/apex-adw",
   "review_date": "2026-10-28",
   "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
@@ -16,11 +16,16 @@
       "source": "blueprints/data-platform/apex-adw/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_load_balancer && var.create_load_balancer ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_load_balancer && var.create_load_balancer ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n4",
         "source_symbol": "this",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": "Load Balancer"
       }
     },
     {
@@ -32,11 +37,16 @@
       "source": "blueprints/data-platform/apex-adw/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_load_balancer && (var.create_load_balancer || var.load_balancer_id != null) ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_load_balancer && (var.create_load_balancer || var.load_balancer_id != null) ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n10",
         "source_symbol": "ords",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -48,11 +58,16 @@
       "source": "blueprints/data-platform/apex-adw/main.tf",
       "revision": "working-tree",
       "condition": "for_each = var.enable_load_balancer && (var.create_load_balancer || var.load_balancer_id != null) ? {",
+      "creation_expression": {
+        "for_each": "var.enable_load_balancer && (var.create_load_balancer || var.load_balancer_id != null) ? {\n    for ip_address in local.ords_backend_ip_addresses : ip_address => ip_address\n  } : {}"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n12",
         "source_symbol": "ords",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -64,11 +79,16 @@
       "source": "blueprints/data-platform/apex-adw/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_load_balancer && var.enable_listener && (var.create_load_balancer || var.load_balancer_id != null) ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_load_balancer && var.enable_listener && (var.create_load_balancer || var.load_balancer_id != null) ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n14",
         "source_symbol": "https",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     },
     {
@@ -80,14 +100,189 @@
       "source": "blueprints/data-platform/apex-adw/main.tf",
       "revision": "working-tree",
       "condition": "count = var.enable_admin_secret ? 1 : 0",
+      "creation_expression": {
+        "count": "var.enable_admin_secret ? 1 : 0"
+      },
       "diagram": {
         "file": "oci-resources.drawio",
+        "page_name": "OCI resources",
         "node_id": "n16",
         "source_symbol": "apex_admin",
-        "provider_icon": null
+        "provider_icon": null,
+        "oci_icon": null
       }
     }
   ],
+  "resource_pages": [
+    {
+      "file": "oci-resources.drawio",
+      "page_name": "OCI resources",
+      "declarations": 5
+    }
+  ],
+  "input_references": [
+    {
+      "address": "var.compartment_ocid",
+      "source": "blueprints/data-platform/apex-adw/variables.tf",
+      "description": "Compartment OCID where APEX support resources are created. Defaults to the Autonomous Database compartment when autonomous_database_id is supplied.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n3"
+      }
+    },
+    {
+      "address": "var.autonomous_database_id",
+      "source": "blueprints/data-platform/apex-adw/variables.tf",
+      "description": "Existing Autonomous Database OCID that hosts APEX and ORDS.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n5"
+      }
+    },
+    {
+      "address": "var.load_balancer_id",
+      "source": "blueprints/data-platform/apex-adw/variables.tf",
+      "description": "Existing OCI Load Balancer OCID used when create_load_balancer is false.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n7"
+      }
+    },
+    {
+      "address": "var.load_balancer_subnet_ids",
+      "source": "blueprints/data-platform/apex-adw/variables.tf",
+      "description": "Subnet OCIDs for the private load balancer.",
+      "default_expression": "[]",
+      "type_expression": "list(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n9"
+      }
+    },
+    {
+      "address": "var.load_balancer_network_security_group_ids",
+      "source": "blueprints/data-platform/apex-adw/variables.tf",
+      "description": "NSG OCIDs attached to the load balancer.",
+      "default_expression": "[]",
+      "type_expression": "set(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.backend_certificate_ids",
+      "source": "blueprints/data-platform/apex-adw/variables.tf",
+      "description": "Optional backend SSL certificate OCIDs.",
+      "default_expression": "[]",
+      "type_expression": "list(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
+    },
+    {
+      "address": "var.backend_trusted_certificate_authority_ids",
+      "source": "blueprints/data-platform/apex-adw/variables.tf",
+      "description": "Optional backend trusted CA OCIDs.",
+      "default_expression": "[]",
+      "type_expression": "list(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n15"
+      }
+    },
+    {
+      "address": "var.listener_certificate_ids",
+      "source": "blueprints/data-platform/apex-adw/variables.tf",
+      "description": "Certificate OCIDs for HTTPS listener.",
+      "default_expression": "[]",
+      "type_expression": "list(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n17"
+      }
+    },
+    {
+      "address": "var.listener_trusted_certificate_authority_ids",
+      "source": "blueprints/data-platform/apex-adw/variables.tf",
+      "description": "Trusted CA OCIDs for client certificate validation.",
+      "default_expression": "[]",
+      "type_expression": "list(string)",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n19"
+      }
+    },
+    {
+      "address": "var.admin_secret_id",
+      "source": "blueprints/data-platform/apex-adw/variables.tf",
+      "description": "Existing Vault secret OCID containing APEX admin or bootstrap material.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n21"
+      }
+    },
+    {
+      "address": "var.vault_id",
+      "source": "blueprints/data-platform/apex-adw/variables.tf",
+      "description": "Vault OCID used for created APEX admin secret.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n23"
+      }
+    },
+    {
+      "address": "var.key_id",
+      "source": "blueprints/data-platform/apex-adw/variables.tf",
+      "description": "KMS key OCID used for created APEX admin secret.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n25"
+      }
+    }
+  ],
+  "input_page": {
+    "file": "existing-resources.drawio",
+    "page_name": "Existing resources / inputs",
+    "references": 12
+  },
   "data_lookups": [
     {
       "cloud": "OCI",
@@ -97,7 +292,10 @@
       "symbol": "this",
       "source": "blueprints/data-platform/apex-adw/main.tf",
       "revision": "working-tree",
-      "condition": "count = var.autonomous_database_id == null ? 0 : 1"
+      "condition": "count = var.autonomous_database_id == null ? 0 : 1",
+      "creation_expression": {
+        "count": "var.autonomous_database_id == null ? 0 : 1"
+      }
     }
   ],
   "source_files": [
