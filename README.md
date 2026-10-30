@@ -1,4 +1,6 @@
-![OCI Landing Zones architecture banner](docs/assets/oci-landing-zones-banner-80-blueprints.png)
+![OCI Landing Zones portfolio overview](docs/assets/oci-landing-zones-banner.png)
+
+[Editable portfolio overview (draw.io)](docs/assets/oci-landing-zones-banner.drawio)
 
 # OCI Landing Zones
 
