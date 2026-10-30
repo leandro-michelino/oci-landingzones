@@ -24,6 +24,15 @@ backlog patterns.
 | AWS + OCI cross-cloud DR | `blueprints/disaster-recovery/aws-oci-cross-cloud-dr/` |
 | EKS + OKE active/passive | `blueprints/extensions/eks-oke-active-passive/` |
 | OCI + AWS MySQL HeatWave DR | `blueprints/data-platform/oci-aws-mysql-heatwave-dr/` |
+| GCP + OCI hybrid network backbone | `blueprints/networking/gcp-oci-hybrid-network-backbone/` |
+| GCP + OCI cross-cloud DR infrastructure | `blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/` |
+| GKE + OKE primary/standby infrastructure | `blueprints/extensions/gke-oke-active-passive/` |
+| OCI + GCP MySQL DR infrastructure | `blueprints/data-platform/oci-gcp-mysql-heatwave-dr/` |
+| GCP + OCI AI gateway infrastructure | `blueprints/ai/gcp-oci-ai-gateway/` |
+
+GCP infrastructure counterparts are implemented. External connectivity, replication,
+workload orchestration and runtime acceptance remain blueprint-specific prerequisites.
+See the [GCP delivery and limits record](GCP-COUNTERPARTS-20261028.md).
 
 ## Available Design Records
 
@@ -36,12 +45,12 @@ backlog patterns.
 | [AWS + OCI Cross-Cloud DR](AWS-OCI-CROSS-CLOUD-DR.md) | OCI-primary, AWS-standby DR design record with DNS failover, evidence, alerting, and runbook contracts. | `blueprints/disaster-recovery/aws-oci-cross-cloud-dr/` |
 | [EKS + OKE Active Passive](EKS-OKE-ACTIVE-PASSIVE.md) | OCI-primary OKE and AWS-standby EKS active/passive design record with GitOps and OCI Traffic Management failover contracts. | `blueprints/extensions/eks-oke-active-passive/` |
 | [OCI + AWS MySQL HeatWave DR](OCI-AWS-MYSQL-HEATWAVE-IPSEC-DR.md) | OCI-primary MySQL HeatWave DR over IPSec with AWS standby database, replication, and failover contracts. | `blueprints/data-platform/oci-aws-mysql-heatwave-dr/` |
+| [GCP + OCI counterpart batch](GCP-OCI-BLUEPRINTS.md) | Implemented infrastructure counterparts for networking, DR, Kubernetes, MySQL and AI; runtime limits are documented separately. | [Delivered scope](GCP-OCI-BLUEPRINTS.md) |
 
 ## Backlog Drafts
 
 | Note | Focus | Target Path |
 | --- | --- | --- |
-| [GCP + OCI counterpart batch](GCP-OCI-BLUEPRINTS.md) | Final phase after the original 80 diagram conversions: five GCP counterparts to existing AWS/Azure networking, DR, Kubernetes, MySQL and AI patterns. Networking base now delivered through the explicit Interconnect request; remaining counterparts planned. | [Current scope](INTERCONNECT-COVERAGE.md) and targets in the batch note. |
 | [Identity Federation](AZURE-OCI-IDENTITY-FEDERATION.md) | Microsoft Entra ID federation into OCI IAM with mapped RBAC and conditional access alignment. | `blueprints/identity/azure-entra-federation/` |
 | [AWS Interconnect Multicloud with OCI Preview](AWS-INTERCONNECT-MULTICLOUD-OCI-PREVIEW.md) | Preview-only AWS Interconnect - multicloud with OCI design note and current Limited Availability region pair; OCI support is not treated as production-ready repo automation yet. | `blueprints/networking/aws-interconnect-multicloud-oci/` |
 

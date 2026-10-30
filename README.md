@@ -9,14 +9,16 @@
 ![Validation: validate-all](https://img.shields.io/badge/validation-validate--all-brightgreen.svg)
 ![Security: TFLint Trivy Checkov](https://img.shields.io/badge/security-tflint%20%7C%20trivy%20%7C%20checkov-2f855a.svg)
 
-Build OCI-primary multicloud landing zones for OCI, Azure, and AWS with clear architecture and real deploy flows.
+Build OCI-first landing zones and multicloud patterns for Azure, AWS and GCP,
+with Terraform blueprints, Ansible workflows and editable draw.io architecture diagrams.
 
 This repo is a practical multicloud toolkit: Terraform blueprints, reusable
 modules, and local Ansible wrappers for plan/apply/destroy sessions.
 
 It is built for real platform work:
 - OCI stays primary by design.
-- Azure and AWS integrations are first-class.
+- Azure, AWS and GCP patterns document their cloud-specific prerequisites.
+- VMware blueprints cover Oracle Cloud VMware Solution and hybrid connectivity.
 - Every blueprint is organized to be easy to read, review, and operate.
 
 Simple approach:
@@ -87,7 +89,7 @@ The goal is not to hide complexity. The goal is to put it in predictable places.
 
 ## Multicloud (OCI Primary)
 
-### Azure + OCI (Available)
+### Azure + OCI
 
 | Pattern | Blueprint |
 |---|---|
@@ -98,7 +100,7 @@ The goal is not to hide complexity. The goal is to put it in predictable places.
 | vWAN transit backbone (OCI DRG primary, vWAN/vHub route domain, Interconnect default when present, IPSec-first test mode) | [Azure vWAN + OCI DRG Transit](blueprints/networking/azure-vwan-oci-drg-transit/) |
 | Hub-spoke via Azure vWAN ExpressRoute (OCI hub/spokes mapped to Azure VNets) | [Hub-Spoke With Azure vWAN ExpressRoute](blueprints/networking/hub-spoke-with-azure-vwan-expressroute/) |
 
-### AWS + OCI (Available)
+### AWS + OCI
 
 | Pattern | Blueprint |
 |---|---|
@@ -106,6 +108,28 @@ The goal is not to hide complexity. The goal is to put it in predictable places.
 | Cross-cloud DR (OCI primary, AWS standby) | [AWS + OCI Cross-Cloud DR](blueprints/disaster-recovery/aws-oci-cross-cloud-dr/) |
 | Active/passive Kubernetes failover (OCI-primary OKE, EKS standby) | [EKS + OKE Active Passive](blueprints/extensions/eks-oke-active-passive/) |
 | MySQL DR over IPSec (OCI primary) | [OCI + AWS MySQL HeatWave DR](blueprints/data-platform/oci-aws-mysql-heatwave-dr/) |
+
+### GCP + OCI
+
+| Pattern | Blueprint |
+|---|---|
+| Hybrid network foundations | [GCP + OCI Hybrid Network Backbone](blueprints/networking/gcp-oci-hybrid-network-backbone/) |
+| Cross-cloud DR infrastructure | [GCP + OCI Cross-Cloud DR](blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/) |
+| Kubernetes primary/standby infrastructure | [GKE + OKE Active Passive](blueprints/extensions/gke-oke-active-passive/) |
+| MySQL DR infrastructure | [OCI + GCP MySQL HeatWave DR](blueprints/data-platform/oci-gcp-mysql-heatwave-dr/) |
+| AI gateway infrastructure | [GCP + OCI AI Gateway](blueprints/ai/gcp-oci-ai-gateway/) |
+
+See the [GCP + OCI guide](docs/multicloud/GCP-OCI-BLUEPRINTS.md) for enablement
+conditions, external connectivity and workload orchestration prerequisites.
+
+### VMware / Oracle Cloud VMware Solution
+
+| Pattern | Blueprint |
+|---|---|
+| VMware SDDC in OCI | [Oracle Cloud VMware Solution](blueprints/vmware/ocvs/) |
+| Hybrid HCX connectivity prerequisites | [OCVS + On-Premises HCX](blueprints/vmware/ocvs-onprem-hcx/) |
+| Azure VMware and OCVS network foundations | [AVS + OCVS Interconnect](blueprints/vmware/azure-avs-ocvs-interconnect/) |
+| Azure, OCI and on-premises network foundations | [AVS + OCVS + On-Premises](blueprints/vmware/azure-avs-ocvs-onprem-triangle/) |
 
 Detailed multicloud deployment notes live in [Multicloud Notes](docs/multicloud/README.md)
 and in each blueprint README.
@@ -147,7 +171,8 @@ usable when you only need one deployment pattern.
 | [compliance](blueprints/compliance/) | SCCA, Zero Trust, Healthcare/PCI, and security posture automation. |
 | [disaster-recovery](blueprints/disaster-recovery/) | OCI and multicloud DR patterns. |
 | [devops](blueprints/devops/) | OCI DevOps CI/CD foundation. |
-| [industry](BLUEPRINTS.md#industry) | Vertical patterns (healthcare, telco, secure desktops, OCVS). |
+| [industry](BLUEPRINTS.md#industry) | Vertical patterns (healthcare, telco, secure desktops). |
+| [vmware](BLUEPRINTS.md#vmware) | OCVS, on-premises HCX and Azure VMware connectivity foundations. |
 
 ## Quality Checks
 
