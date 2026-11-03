@@ -45,7 +45,7 @@ def aws(title,index):
  d.text('Launch template / Amazon Linux 2023 / IMDSv2 required\nEncrypted gp3 root volume / 8 GiB\nInstance interface requests public IP; EIP + association\nUser data installs Python and serves a demo page on HTTP 80.\nSG ingress 80/443; only 443 egress; CIDR defaults 10.0.0.0/8.',200,75,470,200,parent=subnet,size=13)
  gw=cloud.icon(d,'AWS::EC2::InternetGateway',1010,235,parent=vpc,size=50,label='IGW + attachment\nRT + default route + association',label_pos='top')
  d.connect(subnet,gw,kind='plain',straight=True)
- d.connect(sn,subnet,kind='dashed',label='Cross-cloud connectivity intent / external interconnect; IDs only',exit=(.5,1),entry=(0,.5),waypoints=[(430,810),(1235,810),(1235,477.5)])
+ d.connect(sn,subnet,kind='fastconnect',label='PRIMARY / external FastConnect + AWS private connection / IDs only',exit=(.5,1),entry=(0,.5),waypoints=[(430,810),(1235,810),(1235,477.5)])
  d.text('Subnet auto public IP assignment is false; launch-template interface overrides it.\nDefault restricted egress may prevent package/SSM access. No TLS server is bootstrapped.',30,455,1060,55,parent=vpc,size=13)
  support=[]
  for i,(typ,label) in enumerate([('AWS::IAM::Role','EC2 SSM role + instance profile'),('AWS::EC2::FlowLog','VPC flow log / ALL traffic'),('AWS::Logs::LogGroup','30-day Log Group + KMS key + log role')]):

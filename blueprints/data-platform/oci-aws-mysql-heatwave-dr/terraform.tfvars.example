@@ -1,3 +1,4 @@
+# Prefer dedicated transport where available; see interconnect.tfvars.example for a staged external-circuit overlay.
 # Base OCI context
 tenancy_ocid      = "ocid1.tenancy.oc1..exampleuniqueID"
 current_user_ocid = "ocid1.user.oc1..exampleuniqueID"

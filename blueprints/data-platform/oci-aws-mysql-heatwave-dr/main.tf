@@ -14,7 +14,7 @@ resource "oci_core_vcn" "primary" {
 }
 
 resource "oci_core_drg" "primary" {
-  count = var.enable_ipsec_connectivity ? 1 : 0
+  count = local.enable_cross_cloud_transport ? 1 : 0
 
   compartment_id = local.target_compartment_ocid
   display_name   = local.drg_name
@@ -32,7 +32,7 @@ resource "oci_core_route_table" "primary_db" {
   freeform_tags  = local.common_freeform_tags
 
   dynamic "route_rules" {
-    for_each = var.enable_ipsec_connectivity ? [var.aws_replication_cidr] : []
+    for_each = local.enable_cross_cloud_transport ? [var.aws_replication_cidr] : []
     content {
       destination       = route_rules.value
       destination_type  = "CIDR_BLOCK"
@@ -66,7 +66,7 @@ resource "oci_core_security_list" "primary_db" {
   }
 
   dynamic "ingress_security_rules" {
-    for_each = var.enable_ipsec_connectivity ? [var.aws_replication_cidr] : []
+    for_each = local.enable_cross_cloud_transport ? [var.aws_replication_cidr] : []
     content {
       protocol = "6"
       source   = ingress_security_rules.value
@@ -93,7 +93,7 @@ resource "oci_core_subnet" "primary_db" {
 }
 
 resource "oci_core_drg_attachment" "primary_db" {
-  count = var.enable_oci_primary_network && var.enable_ipsec_connectivity ? 1 : 0
+  count = var.enable_oci_primary_network && local.enable_cross_cloud_transport ? 1 : 0
 
   drg_id        = oci_core_drg.primary[0].id
   vcn_id        = oci_core_vcn.primary[0].id

@@ -6,4 +6,4 @@
     terraform_action: plan
     terraform_backend_enabled: false
   roles:
-    - terraform_runner
+    - ../roles/terraform_runner

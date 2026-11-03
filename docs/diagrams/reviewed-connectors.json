@@ -9882,14 +9882,80 @@
   "networking/aws-oci-hybrid-network-backbone": {
     "relationships": [
       {
-        "source": "Backbone subnet\n10.54.10.0/24",
-        "target": "Default RT\n0.0.0.0/0 \u2192 IGW\nRemote CIDR \u2192 DRG if VPN enabled",
+        "source": "Backbone subnet / 10.54.10.0/24",
+        "target": "Remote prefixes \u2192 DRG\nDedicated OR VPN mode",
         "source_kind": "group:subnet",
         "target_kind": "icon",
         "label": "",
         "dashed": false,
         "start_arrow": "none",
         "end_arrow": "none",
+        "exit": null,
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Remote prefixes \u2192 DRG\nDedicated OR VPN mode",
+        "target": "DRG + VCN attachment\nCircuit must attach to this DRG",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            2300,
+            520
+          ],
+          [
+            1970,
+            520
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": null,
+        "target": null,
+        "source_kind": "group:optional",
+        "target_kind": "group:thirdparty_component",
+        "label": "External DXGW/TGW association + VPC routing",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": null,
+        "target": "DRG + VCN attachment\nCircuit must attach to this DRG",
+        "source_kind": "group:optional",
+        "target_kind": "icon",
+        "label": "PRIMARY / EXTERNAL REQUIRED / Managed Interconnect + FastConnect VC",
+        "dashed": false,
+        "start_arrow": "open",
+        "end_arrow": "open",
         "exit": [
           1,
           0.5
@@ -9902,132 +9968,50 @@
         "straight": true
       },
       {
-        "source": "Default RT\n0.0.0.0/0 \u2192 IGW\nRemote CIDR \u2192 DRG if VPN enabled",
-        "target": "IGW",
-        "source_kind": "icon",
-        "target_kind": "icon",
-        "label": "",
-        "dashed": false,
-        "start_arrow": "none",
-        "end_arrow": "open",
-        "exit": [
-          1,
-          0.5
-        ],
-        "entry": [
-          0,
-          0.5
-        ],
-        "waypoints": [
-          [
-            1840,
-            580
-          ],
-          [
-            1840,
-            690
-          ]
-        ],
-        "straight": false
-      },
-      {
-        "source": "Default RT\n0.0.0.0/0 \u2192 IGW\nRemote CIDR \u2192 DRG if VPN enabled",
-        "target": "DRG + VCN attachment\nCreated by default / existing ID supported",
-        "source_kind": "icon",
-        "target_kind": "icon",
-        "label": "Remote prefix / conditional on VPN flag",
-        "dashed": false,
-        "start_arrow": "none",
-        "end_arrow": "open",
-        "exit": [
-          0.5,
-          0
-        ],
-        "entry": [
-          0.5,
-          0
-        ],
-        "waypoints": [
-          [
-            1770,
-            405
-          ],
-          [
-            950,
-            405
-          ]
-        ],
-        "straight": false
-      },
-      {
         "source": null,
-        "target": "DRG + VCN attachment\nCreated by default / existing ID supported",
+        "target": null,
         "source_kind": "group:thirdparty_component",
-        "target_kind": "icon",
-        "label": "VPN requested by default / CPE IP TBC",
+        "target_kind": "group:optional",
+        "label": "OPTIONAL BACKUP / external tunnel pairing + tested route preference",
         "dashed": false,
         "start_arrow": "open",
         "end_arrow": "open",
-        "exit": [
-          1,
-          0.5
-        ],
-        "entry": [
-          0,
-          0.5
-        ],
-        "waypoints": [
-          [
-            780,
-            700
-          ],
-          [
-            780,
-            470
-          ]
-        ],
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
         "straight": true
       },
       {
-        "source": "IGW",
-        "target": "OCI subnet default route",
-        "source_kind": "icon",
+        "source": null,
+        "target": "DRG + VCN attachment\nCircuit must attach to this DRG",
+        "source_kind": "group:optional",
         "target_kind": "icon",
-        "label": "",
+        "label": "drg_id",
         "dashed": false,
         "start_arrow": "none",
-        "end_arrow": "open",
+        "end_arrow": "none",
         "exit": [
-          1,
-          0.5
+          0.5,
+          0
         ],
         "entry": [
-          0,
-          0.5
+          0.5,
+          1
         ],
-        "waypoints": [
-          [
-            2090,
-            690
-          ],
-          [
-            2090,
-            600
-          ]
-        ],
-        "straight": false
+        "waypoints": null,
+        "straight": true
       }
     ],
     "source_files": [
       {
         "path": "blueprints/networking/aws-oci-hybrid-network-backbone/locals.tf",
         "revision": "working-tree",
-        "sha256": "56ae47e6d9149fd455f44b992d57ff462f484534549927201323dc55584cc6da"
+        "sha256": "19ad333553cebe0e515c47eced95a9d1f293b5135f2a952fb03fe8a14b766baa"
       },
       {
         "path": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
         "revision": "working-tree",
-        "sha256": "fa2eaea8674025aad45496cac4bcb16f02f2fed6dd28bc63fb0f53082e5f828d"
+        "sha256": "08158accf6a01f8170b98d4f0a3f53d9d30e1470c640114d7bfbdab17367404a"
       },
       {
         "path": "blueprints/networking/aws-oci-hybrid-network-backbone/outputs.tf",
@@ -10042,7 +10026,7 @@
       {
         "path": "blueprints/networking/aws-oci-hybrid-network-backbone/variables.tf",
         "revision": "working-tree",
-        "sha256": "b9c5e1c67a6b9db881abddc656b21c4733f19c197e0f866665a0b8e52e4028a1"
+        "sha256": "a47d1a9c54c2cd26d68a5460e5605e4d44b06e8ab650018081d6511b975d03c1"
       },
       {
         "path": "blueprints/networking/aws-oci-hybrid-network-backbone/versions.tf",
@@ -10058,14 +10042,80 @@
   "networking/azure-oci-dual-connectivity": {
     "relationships": [
       {
-        "source": "Backbone subnet\n10.58.10.0/24",
-        "target": "Default RT\n0.0.0.0/0 \u2192 IGW\nRemote CIDR \u2192 DRG if VPN enabled",
+        "source": "Backbone subnet / 10.58.10.0/24",
+        "target": "Remote prefixes \u2192 DRG\nDedicated OR VPN mode",
         "source_kind": "group:subnet",
         "target_kind": "icon",
         "label": "",
         "dashed": false,
         "start_arrow": "none",
         "end_arrow": "none",
+        "exit": null,
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Remote prefixes \u2192 DRG\nDedicated OR VPN mode",
+        "target": "DRG + VCN attachment\nCircuit must attach to this DRG",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          1
+        ],
+        "entry": [
+          0.5,
+          0
+        ],
+        "waypoints": [
+          [
+            2300,
+            520
+          ],
+          [
+            1970,
+            520
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": null,
+        "target": null,
+        "source_kind": "group:optional",
+        "target_kind": "group:thirdparty_component",
+        "label": "External ExpressRoute gateway connection / return routes",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": null,
+        "target": "DRG + VCN attachment\nCircuit must attach to this DRG",
+        "source_kind": "group:optional",
+        "target_kind": "icon",
+        "label": "PRIMARY / EXTERNAL REQUIRED / ExpressRoute + FastConnect VC",
+        "dashed": false,
+        "start_arrow": "open",
+        "end_arrow": "open",
         "exit": [
           1,
           0.5
@@ -10078,120 +10128,38 @@
         "straight": true
       },
       {
-        "source": "Default RT\n0.0.0.0/0 \u2192 IGW\nRemote CIDR \u2192 DRG if VPN enabled",
-        "target": "IGW",
-        "source_kind": "icon",
-        "target_kind": "icon",
-        "label": "",
-        "dashed": false,
-        "start_arrow": "none",
-        "end_arrow": "open",
-        "exit": [
-          1,
-          0.5
-        ],
-        "entry": [
-          0,
-          0.5
-        ],
-        "waypoints": [
-          [
-            1840,
-            580
-          ],
-          [
-            1840,
-            690
-          ]
-        ],
-        "straight": false
-      },
-      {
-        "source": "Default RT\n0.0.0.0/0 \u2192 IGW\nRemote CIDR \u2192 DRG if VPN enabled",
-        "target": "DRG + VCN attachment\nCreated by default / existing ID supported",
-        "source_kind": "icon",
-        "target_kind": "icon",
-        "label": "Remote prefix / conditional on VPN flag",
-        "dashed": false,
-        "start_arrow": "none",
-        "end_arrow": "open",
-        "exit": [
-          0.5,
-          0
-        ],
-        "entry": [
-          0.5,
-          0
-        ],
-        "waypoints": [
-          [
-            1770,
-            405
-          ],
-          [
-            950,
-            405
-          ]
-        ],
-        "straight": false
-      },
-      {
         "source": null,
-        "target": "DRG + VCN attachment\nCreated by default / existing ID supported",
+        "target": null,
         "source_kind": "group:thirdparty_component",
-        "target_kind": "icon",
-        "label": "VPN requested by default / CPE IP TBC",
+        "target_kind": "group:optional",
+        "label": "OPTIONAL BACKUP / external tunnel pairing + tested route preference",
         "dashed": false,
         "start_arrow": "open",
         "end_arrow": "open",
-        "exit": [
-          1,
-          0.5
-        ],
-        "entry": [
-          0,
-          0.5
-        ],
-        "waypoints": [
-          [
-            780,
-            700
-          ],
-          [
-            780,
-            470
-          ]
-        ],
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
         "straight": true
       },
       {
-        "source": "IGW",
-        "target": "OCI subnet default route",
-        "source_kind": "icon",
+        "source": null,
+        "target": "DRG + VCN attachment\nCircuit must attach to this DRG",
+        "source_kind": "group:optional",
         "target_kind": "icon",
-        "label": "",
+        "label": "drg_id",
         "dashed": false,
         "start_arrow": "none",
-        "end_arrow": "open",
+        "end_arrow": "none",
         "exit": [
-          1,
-          0.5
+          0.5,
+          0
         ],
         "entry": [
-          0,
-          0.5
+          0.5,
+          1
         ],
-        "waypoints": [
-          [
-            2090,
-            690
-          ],
-          [
-            2090,
-            600
-          ]
-        ],
-        "straight": false
+        "waypoints": null,
+        "straight": true
       }
     ],
     "source_files": [
@@ -10203,7 +10171,7 @@
       {
         "path": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
         "revision": "working-tree",
-        "sha256": "5e21d65a4c77f31d979d31fd0e26aef11efee06fe6bf69f16b43cc345e38043f"
+        "sha256": "cdc5ef34d25c062a2452a5406e6470eea657ba9d6ed01523ebc4ba7912a7de81"
       },
       {
         "path": "blueprints/networking/azure-oci-dual-connectivity/outputs.tf",
@@ -10227,44 +10195,33 @@
       },
       {
         "path": "blueprints/networking/azure-oci-dual-connectivity/azure/main.bicep",
-        "sha256": "5eb06998be7dbe1e6115b967defef9910b7f28656cba43e49b6f0a9821129444"
+        "sha256": "88ddcdf0bbf2de2531f54fc0b8c069c222137890264a1ae3992e29286c1d125b"
       }
     ]
   },
   "networking/azure-vwan-oci-drg-transit": {
     "relationships": [
       {
-        "source": null,
-        "target": null,
-        "source_kind": "group:thirdparty_component",
-        "target_kind": "group:thirdparty_component",
-        "label": "",
-        "dashed": false,
-        "start_arrow": "none",
-        "end_arrow": "none",
-        "exit": null,
-        "entry": null,
-        "waypoints": null,
-        "straight": true
-      },
-      {
-        "source": null,
-        "target": null,
-        "source_kind": "group:thirdparty_component",
-        "target_kind": "group:thirdparty_component",
-        "label": "",
-        "dashed": false,
-        "start_arrow": "none",
-        "end_arrow": "none",
-        "exit": null,
-        "entry": null,
-        "waypoints": null,
-        "straight": true
-      },
-      {
-        "source": "Hub subnet\n10.58.10.0/24",
-        "target": "RT: default \u2192 IGW\nAzure CIDRs \u2192 DRG (always)",
+        "source": "Hub subnet / 10.58.10.0/24",
+        "target": "Remote prefixes \u2192 DRG\nSelected transport required",
         "source_kind": "group:subnet",
+        "target_kind": "icon",
+        "label": "",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": null,
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Standard Virtual WAN",
+        "target": "Virtual Hub / 10.89.255.0/24\nCustom hub route table",
+        "source_kind": "icon",
         "target_kind": "icon",
         "label": "",
         "dashed": false,
@@ -10282,8 +10239,57 @@
         "straight": true
       },
       {
-        "source": "RT: default \u2192 IGW\nAzure CIDRs \u2192 DRG (always)",
-        "target": "DRG / create or existing ID\nVCN attachment",
+        "source": "Virtual Hub / 10.89.255.0/24\nCustom hub route table",
+        "target": "External ExpressRoute\ncircuit + hub gateway",
+        "source_kind": "icon",
+        "target_kind": "icon",
+        "label": "External gateway binding",
+        "dashed": true,
+        "start_arrow": "none",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
+        ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": "Virtual Hub / 10.89.255.0/24\nCustom hub route table",
+        "target": null,
+        "source_kind": "icon",
+        "target_kind": "group:thirdparty_component",
+        "label": "Hub/VNet connection / deployVpnGateway=false",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": [
+          [
+            500,
+            550
+          ],
+          [
+            570,
+            550
+          ]
+        ],
+        "straight": false
+      },
+      {
+        "source": "Remote prefixes \u2192 DRG\nSelected transport required",
+        "target": "DRG + VCN attachment",
         "source_kind": "icon",
         "target_kind": "icon",
         "label": "",
@@ -10292,83 +10298,30 @@
         "end_arrow": "open",
         "exit": [
           0.5,
+          1
+        ],
+        "entry": [
+          0.5,
           0
         ],
-        "entry": [
-          1,
-          0.5
-        ],
         "waypoints": [
           [
-            1910,
-            430
+            2300,
+            560
           ],
           [
-            1110,
-            430
-          ],
-          [
-            1110,
-            450
+            1970,
+            560
           ]
         ],
         "straight": false
       },
       {
-        "source": "RT: default \u2192 IGW\nAzure CIDRs \u2192 DRG (always)",
-        "target": "IGW",
+        "source": "External ExpressRoute\ncircuit + hub gateway",
+        "target": "DRG + VCN attachment",
         "source_kind": "icon",
         "target_kind": "icon",
-        "label": "",
-        "dashed": false,
-        "start_arrow": "none",
-        "end_arrow": "open",
-        "exit": [
-          1,
-          0.5
-        ],
-        "entry": [
-          0,
-          0.5
-        ],
-        "waypoints": [
-          [
-            2020,
-            610
-          ],
-          [
-            2020,
-            780
-          ]
-        ],
-        "straight": false
-      },
-      {
-        "source": "IGW",
-        "target": "Default egress",
-        "source_kind": "icon",
-        "target_kind": "icon",
-        "label": "",
-        "dashed": false,
-        "start_arrow": "none",
-        "end_arrow": "open",
-        "exit": [
-          1,
-          0.5
-        ],
-        "entry": [
-          0,
-          0.5
-        ],
-        "waypoints": null,
-        "straight": true
-      },
-      {
-        "source": null,
-        "target": "DRG / create or existing ID\nVCN attachment",
-        "source_kind": "group:thirdparty_component",
-        "target_kind": "icon",
-        "label": "OCI CPE + IPSec / requested; IP TBC",
+        "label": "PRIMARY / FastConnect + ExpressRoute\nExternal circuits / activation / BGP / route policy",
         "dashed": false,
         "start_arrow": "open",
         "end_arrow": "open",
@@ -10380,16 +10333,47 @@
           0,
           0.5
         ],
-        "waypoints": [
-          [
-            900,
-            870
-          ],
-          [
-            900,
-            450
-          ]
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": null,
+        "target": null,
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "SEPARATE VPN ALTERNATIVE / disabled by default\nNot concurrent vWAN backup in this implementation",
+        "dashed": false,
+        "start_arrow": "open",
+        "end_arrow": "open",
+        "exit": [
+          1,
+          0.5
         ],
+        "entry": [
+          0,
+          0.5
+        ],
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": null,
+        "target": "DRG + VCN attachment",
+        "source_kind": "group:optional",
+        "target_kind": "icon",
+        "label": "IPSec drg_id / optional",
+        "dashed": false,
+        "start_arrow": "none",
+        "end_arrow": "none",
+        "exit": [
+          0.5,
+          0
+        ],
+        "entry": [
+          0.5,
+          1
+        ],
+        "waypoints": null,
         "straight": true
       }
     ],
@@ -10402,7 +10386,7 @@
       {
         "path": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
         "revision": "working-tree",
-        "sha256": "bd55ca15d52e35a1e74d9795ce1fa92c1bfa97c12c5d9274d5f30858b2a4fe87"
+        "sha256": "2f1d0f8116b6bb204951d121c817075fcf7704679397360c7c37351e42fb33b2"
       },
       {
         "path": "blueprints/networking/azure-vwan-oci-drg-transit/outputs.tf",
@@ -10417,7 +10401,7 @@
       {
         "path": "blueprints/networking/azure-vwan-oci-drg-transit/variables.tf",
         "revision": "working-tree",
-        "sha256": "f710829be41550f10e95ed6bb3b9c131ba219d15aaccffa149d76a53de97c3f9"
+        "sha256": "cc5d8c3acb0575582da5342394bc216c986069dd0f5f2638899aa05d0e113a35"
       },
       {
         "path": "blueprints/networking/azure-vwan-oci-drg-transit/versions.tf",
@@ -10426,7 +10410,7 @@
       },
       {
         "path": "blueprints/networking/azure-vwan-oci-drg-transit/azure/main.bicep",
-        "sha256": "64de7166e6425198608b7f90c78ef78c266e7ade0b3e13ba706d2445133b88d5"
+        "sha256": "544f4b8f5d0dbc9700264f8a3c88f1f6f7494b53a75aea490b8961cd64e02945"
       }
     ]
   },
@@ -11481,7 +11465,7 @@
       {
         "path": "blueprints/networking/network-load-balancer/variables.tf",
         "revision": "working-tree",
-        "sha256": "780d6d7f2baf203f83d4ac4f71040a8c4a7ddbde40cb3c4b6cb3c753256407c0"
+        "sha256": "93885aac30cde5505a9bd4d8cbfce41b4b529f2f5ac13086bc33e9dce842a594"
       },
       {
         "path": "blueprints/networking/network-load-balancer/versions.tf",
@@ -12211,7 +12195,7 @@
       },
       {
         "path": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/azure/main.bicep",
-        "sha256": "aafee31bb6b03a10a43c81fc25b4a94eea9b82822639c419fb53d4fa7990a5b5"
+        "sha256": "41bd9cf18c0d341cfc4bf06a71db6bc5d69552b0cfd1fbdbdfe33126325f6dc4"
       }
     ]
   },
@@ -16199,9 +16183,9 @@
         "target": null,
         "source_kind": "group:subnet",
         "target_kind": "group:thirdparty_component",
-        "label": "Interconnect intent / external circuit prerequisites; IDs only",
-        "dashed": true,
-        "start_arrow": "none",
+        "label": "PRIMARY / external FastConnect + ExpressRoute / circuit IDs only",
+        "dashed": false,
+        "start_arrow": "open",
         "end_arrow": "open",
         "exit": [
           0.5,
@@ -16225,7 +16209,7 @@
             590
           ]
         ],
-        "straight": false
+        "straight": true
       }
     ],
     "source_files": [
@@ -16326,9 +16310,9 @@
         "target": "Standby subnet / 10.82.10.0/24 / first AZ",
         "source_kind": "group:subnet",
         "target_kind": "group:thirdparty",
-        "label": "Cross-cloud connectivity intent / external interconnect; IDs only",
-        "dashed": true,
-        "start_arrow": "none",
+        "label": "PRIMARY / external FastConnect + AWS private connection / IDs only",
+        "dashed": false,
+        "start_arrow": "open",
         "end_arrow": "open",
         "exit": [
           0.5,
@@ -16352,7 +16336,7 @@
             477.5
           ]
         ],
-        "straight": false
+        "straight": true
       },
       {
         "source": "VPC flow log / ALL traffic",
@@ -17132,11 +17116,11 @@
   "data-platform/oci-aws-mysql-heatwave-dr": {
     "relationships": [
       {
-        "source": "DB System / disabled",
-        "target": "HeatWave / disabled",
+        "source": "Optional MySQL DB System",
+        "target": "Optional HeatWave",
         "source_kind": "icon",
         "target_kind": "icon",
-        "label": "DB attachment",
+        "label": "DB System attachment",
         "dashed": false,
         "start_arrow": "none",
         "end_arrow": "open",
@@ -17152,8 +17136,8 @@
         "straight": true
       },
       {
-        "source": "Private DB subnet\n10.74.10.0/24",
-        "target": "AWS CIDR \u2192 DRG\nonly with IPSec",
+        "source": "Private MySQL subnet / 10.74.10.0/24",
+        "target": "AWS prefix \u2192 DRG\nDedicated OR VPN flag",
         "source_kind": "group:subnet",
         "target_kind": "icon",
         "label": "route_table_id",
@@ -17162,61 +17146,52 @@
         "end_arrow": "none",
         "exit": [
           1,
-          0.65
+          0.5
         ],
         "entry": [
           0,
           0.5
         ],
-        "waypoints": [
-          [
-            950,
-            543
-          ],
-          [
-            950,
-            500
-          ]
-        ],
-        "straight": false
+        "waypoints": null,
+        "straight": true
       },
       {
-        "source": "AWS CIDR \u2192 DRG\nonly with IPSec",
-        "target": "Optional DRG + attachment",
+        "source": "AWS prefix \u2192 DRG\nDedicated OR VPN flag",
+        "target": "DRG + VCN attachment\nCreated when dedicated OR VPN enabled",
         "source_kind": "icon",
         "target_kind": "icon",
-        "label": "AWS prefix / IPSec flag",
+        "label": "",
         "dashed": false,
         "start_arrow": "none",
         "end_arrow": "open",
         "exit": [
-          1,
-          0.5
+          0.5,
+          1
         ],
         "entry": [
-          0,
-          0.5
+          0.5,
+          0
         ],
         "waypoints": [
           [
-            1125,
-            500
+            1030,
+            730
           ],
           [
-            1125,
-            690
+            620,
+            730
           ]
         ],
         "straight": false
       },
       {
-        "source": "Optional DRG + attachment",
-        "target": "AWS VPN edge + OCI return route\nEXTERNAL prerequisite / not created",
+        "source": "DRG + VCN attachment\nCreated when dedicated OR VPN enabled",
+        "target": "EXTERNAL AWS private connection\nManaged Interconnect or partner Direct Connect",
         "source_kind": "icon",
-        "target_kind": "group:optional",
-        "label": "Optional IPSec / peer required",
-        "dashed": true,
-        "start_arrow": "none",
+        "target_kind": "icon",
+        "label": "PRIMARY / FastConnect + AWS private connection\nExternal activation, gateway association and symmetric routes",
+        "dashed": false,
+        "start_arrow": "open",
         "end_arrow": "open",
         "exit": [
           1,
@@ -17226,90 +17201,49 @@
           0,
           0.5
         ],
-        "waypoints": [
-          [
-            1240,
-            690
-          ],
-          [
-            1240,
-            815
-          ]
-        ],
-        "straight": false
+        "waypoints": null,
+        "straight": true
       },
       {
-        "source": "AWS VPN edge + OCI return route\nEXTERNAL prerequisite / not created",
-        "target": "Optional MySQL RDS",
+        "source": null,
+        "target": null,
+        "source_kind": "group:optional",
+        "target_kind": "group:optional",
+        "label": "SEPARATE VPN / optional backup or alternative\nIndependent connector; not automatic failover",
+        "dashed": false,
+        "start_arrow": "open",
+        "end_arrow": "open",
+        "exit": null,
+        "entry": null,
+        "waypoints": null,
+        "straight": true
+      },
+      {
+        "source": null,
+        "target": "DRG + VCN attachment\nCreated when dedicated OR VPN enabled",
         "source_kind": "group:optional",
         "target_kind": "icon",
-        "label": "External AWS routing",
-        "dashed": true,
+        "label": "ipsec drg_id",
+        "dashed": false,
         "start_arrow": "none",
-        "end_arrow": "open",
+        "end_arrow": "none",
         "exit": [
-          0,
-          0.5
+          0.5,
+          0
         ],
         "entry": [
-          0,
-          0.5
+          0.5,
+          1
         ],
-        "waypoints": [
-          [
-            1320,
-            815
-          ],
-          [
-            1320,
-            595
-          ]
-        ],
-        "straight": false
-      },
-      {
-        "source": "DB System / disabled",
-        "target": "Optional MySQL RDS",
-        "source_kind": "icon",
-        "target_kind": "icon",
-        "label": "Replication intent / channel setup external",
-        "dashed": true,
-        "start_arrow": "none",
-        "end_arrow": "open",
-        "exit": [
-          1,
-          0.5
-        ],
-        "entry": [
-          0,
-          0.5
-        ],
-        "waypoints": [
-          [
-            335,
-            495
-          ],
-          [
-            335,
-            300
-          ],
-          [
-            1260,
-            300
-          ],
-          [
-            1260,
-            595
-          ]
-        ],
-        "straight": false
+        "waypoints": null,
+        "straight": true
       },
       {
         "source": "VPC flow log / ALL",
-        "target": "30-day encrypted Log Group",
+        "target": "Encrypted Log Group / 30 days",
         "source_kind": "icon",
         "target_kind": "icon",
-        "label": "Log delivery",
+        "label": "Delivery",
         "dashed": false,
         "start_arrow": "none",
         "end_arrow": "open",
@@ -17325,11 +17259,11 @@
         "straight": true
       },
       {
-        "source": "KMS key / rotation on",
-        "target": "30-day encrypted Log Group",
+        "source": "KMS key / rotation",
+        "target": "Encrypted Log Group / 30 days",
         "source_kind": "icon",
         "target_kind": "icon",
-        "label": "KMS encryption",
+        "label": "Encryption",
         "dashed": false,
         "start_arrow": "none",
         "end_arrow": "open",
@@ -17349,17 +17283,17 @@
       {
         "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/locals.tf",
         "revision": "working-tree",
-        "sha256": "e76c31d503f402ef75153d5b8e6aefa588d3251bb0dc693a5641808f5b35578c"
+        "sha256": "d155581b952cec5de8083b3b68961efc4331932f5b602ae94b428c371923ec64"
       },
       {
         "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
         "revision": "working-tree",
-        "sha256": "710460154a5f20e480eeb7370a82e94b2093c9e617d0fd709612c5411564de6f"
+        "sha256": "6c8073af56ed1aedb54ccbfc1f41aff6ab468f4f2a98c2569862e0f45e81ce4b"
       },
       {
         "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/outputs.tf",
         "revision": "working-tree",
-        "sha256": "de89bcb4efb83999de1ef5401781ae14dffff95d7afd48bdaff37cf3e1dc071f"
+        "sha256": "e7e43ae37973ec47ecb54b20e5ac6f4acb0323ff9271991122a28729281198e3"
       },
       {
         "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/providers.tf",
@@ -17369,7 +17303,7 @@
       {
         "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/variables.tf",
         "revision": "working-tree",
-        "sha256": "39a226cf256f73b072d159c472be3f0b058fc1613b94785c50e15f21115dfe7b"
+        "sha256": "84c7347ae1af1687195c8b7d522590c15cc98ebae76a13eb921edcc1a2a55c6f"
       },
       {
         "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/versions.tf",
@@ -20388,9 +20322,9 @@
         "target": "VNet / 10.62.0.0/16",
         "source_kind": "group:vcn",
         "target_kind": "group:thirdparty",
-        "label": "EXTERNAL partner Interconnect / supplied circuit IDs only; edge gateways, peering and routes not created",
-        "dashed": true,
-        "start_arrow": "none",
+        "label": "PRIMARY / EXTERNAL FastConnect + ExpressRoute / circuit IDs only; gateways and routes external",
+        "dashed": false,
+        "start_arrow": "open",
         "end_arrow": "open",
         "exit": [
           1,
@@ -21016,9 +20950,9 @@
         "target": "VPC / 10.64.0.0/16",
         "source_kind": "group:vcn",
         "target_kind": "group:thirdparty",
-        "label": "EXTERNAL partner Interconnect / supplied circuit IDs only; edge gateways, peering and routes not created",
-        "dashed": true,
-        "start_arrow": "none",
+        "label": "PRIMARY / EXTERNAL FastConnect + Direct Connect / circuit IDs only; gateways and routes external",
+        "dashed": false,
+        "start_arrow": "open",
         "end_arrow": "open",
         "exit": [
           1,
@@ -23180,9 +23114,9 @@
         "straight": true
       },
       {
-        "source": "Direct Connect gateway\nDXGW \u2194 VGW association",
+        "source": null,
         "target": "VGW / used by Direct Connect\nNo VPN tunnel created",
-        "source_kind": "group:component",
+        "source_kind": "group:thirdparty_component",
         "target_kind": "icon",
         "label": "",
         "dashed": false,
@@ -23243,10 +23177,10 @@
       },
       {
         "source": "DRG + VCN attachment",
-        "target": "Direct Connect gateway\nDXGW \u2194 VGW association",
+        "target": null,
         "source_kind": "icon",
-        "target_kind": "group:component",
-        "label": "Managed Interconnect / create + accept",
+        "target_kind": "group:thirdparty_component",
+        "label": "Managed Interconnect / redundant + MACsec",
         "dashed": false,
         "start_arrow": "open",
         "end_arrow": "open",
@@ -24520,7 +24454,7 @@
         "target": "Two Partner VLAN attachments / primary + secondary\nPreactivation=false / separate pairing-key handoff\nCloud Router ASN 16550 / BGP disabled until assigned values verified",
         "source_kind": "icon",
         "target_kind": "icon",
-        "label": "Optional FastConnect + Partner Interconnect\nenable_interconnect / region-pair + cost approval / service pairing keys",
+        "label": "PRIMARY / two FastConnect VCs + Partner VLAN attachments\nenable_interconnect / supported pair + cost approval / pairing keys",
         "dashed": false,
         "start_arrow": "open",
         "end_arrow": "open",
@@ -24540,7 +24474,7 @@
         "target": "Optional HA VPN gateway / two public interfaces\nFour OCI endpoint mappings + IKEv2 tunnels\nIndependent VPN Cloud Router / ASN 64514 / BGP peers",
         "source_kind": "group:component",
         "target_kind": "icon",
-        "label": "Optional independently routed VPN / matching staged endpoint and key maps",
+        "label": "OPTIONAL BACKUP / independently routed HA VPN / staged endpoint + key maps",
         "dashed": false,
         "start_arrow": "open",
         "end_arrow": "open",
@@ -24656,7 +24590,7 @@
       {
         "path": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
         "revision": "working-tree",
-        "sha256": "0a07ce92905e4bb157774bc78094c80883630c734e4a284b773443e972d92789"
+        "sha256": "afd52e97e71e2766f7dde15b931750cbdb2be347e0adae2da120967f18841b65"
       },
       {
         "path": "modules/networking/gcp-private-network/main.tf",
@@ -27179,5 +27113,16 @@
     ],
     "source_files": [],
     "scope": "Illustrative design; no source-backed deployment claim"
+  },
+  "docs/assets/oci-landing-zones-banner": {
+    "relationships": [],
+    "source_files": [
+      {
+        "path": "scripts/diagrams/portfolio-overview.py",
+        "revision": "working-tree",
+        "sha256": "5d3aa921c2d903e18c7fdefafa910db7aa10f878eaf0ab06b0e4a85566f5bf7b"
+      }
+    ],
+    "scope": "Conceptual portfolio presentation; no workload transport or deployment relationship implied"
   }
 }

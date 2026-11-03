@@ -322,3 +322,9 @@ optional scanners when installed, and cleanup of generated Terraform artifacts.
 HTTP backend URLs must be HTTPS and contain no literal query parameters. Invalid URLs are rejected rather than silently losing Azure api-version. Supply query-free adapter URLs, or supported API Gateway request policies/client parameters. An adapter must handle OCI request signing, Azure authentication/API version, and provider-specific payloads. This blueprint does not implement those adapters, frontend authentication, dynamic cost optimization, automatic residency enforcement, or an Azure deployment. Selecting a route strategy chooses a static backend; region labels alone do not enforce data residency. Real deployments require both backend URLs even when placeholder contracts are permitted.
 
 Validation in this round is isolated Terraform schema/lint validation and applicable mocked regressions, not a live AI deployment. All cost-bearing services, inference, ingestion, dedicated clusters, and external-cloud resources remained disabled. Providers ignore only the two OCI-managed provenance tags; customer-defined tags remain managed.
+
+## Repository-wide transport review — 2026-11-04
+
+Prefer a supported native Interconnect or reviewed private partner circuit for private cross-cloud workload traffic. VPN is a separately configured backup or alternative when dedicated connectivity cannot be used. FastConnect/Interconnect and VPN must use separate connectors and transport segments; application replication/API arrows describe a different relationship. This design preference does not create missing gateways, circuits, VPN peers, route policy or automatic failover; prerequisites shown as external remain operator-owned.
+
+See the [repository review](../../../docs/REPOSITORY-REVIEW-20261104.md) and [dated commercial region matrix](../../../docs/multicloud/INTERCONNECT-REGIONS.md). Availability, activation, permissions and traffic need separate acceptance.

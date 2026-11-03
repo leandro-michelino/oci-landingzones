@@ -151,7 +151,7 @@ def dns(d,secondary):
 
 def multicloud(title,index,azure_side):
  d=header(title,index,True);vc=primary(d);other=azure(d) if azure_side else aws(d)
- d.connect(vc,other,kind='dashed',label='EXTERNAL partner Interconnect / supplied circuit IDs only; edge gateways, peering and routes not created',exit=(1,.95),entry=(0,.95),straight=True,label_offset=(0,65))
+ d.connect(vc,other,kind='fastconnect',label='PRIMARY / EXTERNAL FastConnect + '+('ExpressRoute' if azure_side else 'Direct Connect')+' / circuit IDs only; gateways and routes external',exit=(1,.95),entry=(0,.95),straight=True,label_offset=(0,65))
  dns(d,'Azure' if azure_side else 'AWS')
  d.box('SOURCE DEFAULTS ARE INCOMPLETE: OCI network enabled, OKE/node flags false, real Traffic Management false; circuit/secondary/application IDs null.\nIPSec backup is explicitly forbidden by this pattern. Companion Azure/AWS templates deploy separately and do not establish the intercloud path.\nNo workloads, GitOps controller, cluster autoscaling, application LB, data replication or working recovery path is delivered by the OCI contracts.',20,1840,2940,140,kind='note')
  return d

@@ -16,12 +16,12 @@
       block:
         - name: Apply ephemeral Terraform deployment
           ansible.builtin.import_role:
-            name: terraform_runner
+            name: ../roles/terraform_runner
           vars:
             terraform_action: apply
       always:
         - name: Destroy ephemeral Terraform deployment
           ansible.builtin.import_role:
-            name: terraform_runner
+            name: ../roles/terraform_runner
           vars:
             terraform_action: destroy

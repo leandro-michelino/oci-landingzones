@@ -152,3 +152,9 @@ See [the fixed first-39 review](../../../../docs/diagrams/FIRST-39-REVIEW.md) an
 Provider icons: Azure SVGs and AWS native stencils from draw.io identify mapped
 external-cloud resources. Unmapped associations and local contracts retain
 explicit named boxes. See [icon sources](../../../../scripts/diagrams/assets/README.md).
+
+## Repository-wide transport review — 2026-11-04
+
+Prefer a supported native Interconnect or reviewed private partner circuit for private cross-cloud workload traffic. VPN is a separately configured backup or alternative when dedicated connectivity cannot be used. FastConnect/Interconnect and VPN must use separate connectors and transport segments; application replication/API arrows describe a different relationship. This design preference does not create missing gateways, circuits, VPN peers, route policy or automatic failover; prerequisites shown as external remain operator-owned.
+
+See the [repository review](../../../../docs/REPOSITORY-REVIEW-20261104.md) and [dated commercial region matrix](../../../../docs/multicloud/INTERCONNECT-REGIONS.md). Availability, activation, permissions and traffic need separate acceptance.

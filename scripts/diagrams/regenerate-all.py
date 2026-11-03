@@ -23,6 +23,7 @@ def main():
     overviews = list(review.diagrams())
     targets = [(ROOT / 'blueprints' / slug / 'architecture/architecture.drawio', d) for slug, d in overviews]
     targets.append((ROOT / 'docs/diagrams/oci-3tier-adb.drawio', review.load('conceptual-three-tier').build()))
+    targets.append((ROOT / 'docs/assets/oci-landing-zones-banner.drawio', review.load('portfolio-overview').build()))
     for path, diagram in targets:
         warnings = diagram.check() + diagram._crossings([n for n in diagram.nodes if n.kind == 'text'])
         if warnings:
@@ -68,7 +69,11 @@ def main():
             temporary = target.with_suffix('.png.tmp')
             shutil.copyfile(outgoing / f'{i:04}.png', temporary)
             temporary.replace(target)
-    print(f'Completed {len(natives)} paired native/PNG documents', flush=True)
+    svg_export = [binary, '-x', '-f', 'svg', '-o', str(ROOT / 'docs/assets/oci-landing-zones-banner.svg'), str(ROOT / 'docs/assets/oci-landing-zones-banner.drawio'), '--no-sandbox', '--disable-gpu']
+    if sys.platform.startswith('linux') and not os.environ.get('DISPLAY') and shutil.which('xvfb-run'):
+        svg_export = ['xvfb-run', '-a'] + svg_export
+    subprocess.run(svg_export, check=True)
+    print(f'Completed {len(natives)} paired native/PNG documents and portfolio SVG', flush=True)
 
 
 if __name__ == '__main__':

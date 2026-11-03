@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "blueprint": "data-platform/oci-aws-mysql-heatwave-dr",
-  "review_date": "2026-10-28",
+  "review_date": "2026-11-04",
   "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
   "counts_by_cloud": {
     "AWS": 13,
@@ -38,9 +38,9 @@
       "symbol": "primary",
       "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
       "revision": "working-tree",
-      "condition": "count = var.enable_ipsec_connectivity ? 1 : 0",
+      "condition": "count = local.enable_cross_cloud_transport ? 1 : 0",
       "creation_expression": {
-        "count": "var.enable_ipsec_connectivity ? 1 : 0"
+        "count": "local.enable_cross_cloud_transport ? 1 : 0"
       },
       "diagram": {
         "file": "oci-resources.drawio",
@@ -122,9 +122,9 @@
       "symbol": "primary_db",
       "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
       "revision": "working-tree",
-      "condition": "count = var.enable_oci_primary_network && var.enable_ipsec_connectivity ? 1 : 0",
+      "condition": "count = var.enable_oci_primary_network && local.enable_cross_cloud_transport ? 1 : 0",
       "creation_expression": {
-        "count": "var.enable_oci_primary_network && var.enable_ipsec_connectivity ? 1 : 0"
+        "count": "var.enable_oci_primary_network && local.enable_cross_cloud_transport ? 1 : 0"
       },
       "diagram": {
         "file": "oci-resources.drawio",
@@ -660,12 +660,38 @@
         "page_name": "Existing resources / inputs",
         "node_id": "n9"
       }
+    },
+    {
+      "address": "var.fastconnect_virtual_circuit_id",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/variables.tf",
+      "description": "Existing activated FastConnect circuit, externally attached to the DRG created by this root; this identifier is not inspected.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n11"
+      }
+    },
+    {
+      "address": "var.aws_private_connection_id",
+      "source": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/variables.tf",
+      "description": "Existing AWS managed Interconnect or conventional partner Direct Connect identifier; confirm offering, region and DXGW/VGW/TGW attachment externally.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
     }
   ],
   "input_page": {
     "file": "existing-resources.drawio",
     "page_name": "Existing resources / inputs",
-    "references": 4
+    "references": 6
   },
   "data_lookups": [
     {
@@ -686,17 +712,17 @@
     {
       "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/locals.tf",
       "revision": "working-tree",
-      "sha256": "e76c31d503f402ef75153d5b8e6aefa588d3251bb0dc693a5641808f5b35578c"
+      "sha256": "d155581b952cec5de8083b3b68961efc4331932f5b602ae94b428c371923ec64"
     },
     {
       "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/main.tf",
       "revision": "working-tree",
-      "sha256": "710460154a5f20e480eeb7370a82e94b2093c9e617d0fd709612c5411564de6f"
+      "sha256": "6c8073af56ed1aedb54ccbfc1f41aff6ab468f4f2a98c2569862e0f45e81ce4b"
     },
     {
       "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/outputs.tf",
       "revision": "working-tree",
-      "sha256": "de89bcb4efb83999de1ef5401781ae14dffff95d7afd48bdaff37cf3e1dc071f"
+      "sha256": "e7e43ae37973ec47ecb54b20e5ac6f4acb0323ff9271991122a28729281198e3"
     },
     {
       "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/providers.tf",
@@ -706,7 +732,7 @@
     {
       "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/variables.tf",
       "revision": "working-tree",
-      "sha256": "39a226cf256f73b072d159c472be3f0b058fc1613b94785c50e15f21115dfe7b"
+      "sha256": "84c7347ae1af1687195c8b7d522590c15cc98ebae76a13eb921edcc1a2a55c6f"
     },
     {
       "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr/versions.tf",

@@ -113,3 +113,9 @@ python3 scripts/diagrams/multicloud-resource-coverage.py --blueprint networking/
 - [Oracle Interconnect for AWS](https://docs.oracle.com/en-us/iaas/Content/multicloud/interconnect-aws.htm)
 - [AWS managed create/accept workflow](https://docs.aws.amazon.com/interconnect/latest/userguide/getting-started-multicloud.html)
 - [AWS Direct Connect gateway association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dx_gateway_association)
+
+## Repository-wide transport review — 2026-11-04
+
+Prefer a supported native Interconnect or reviewed private partner circuit for private cross-cloud workload traffic. VPN is a separately configured backup or alternative when dedicated connectivity cannot be used. FastConnect/Interconnect and VPN must use separate connectors and transport segments; application replication/API arrows describe a different relationship. This design preference does not create missing gateways, circuits, VPN peers, route policy or automatic failover; prerequisites shown as external remain operator-owned.
+
+See the [repository review](../../../../docs/REPOSITORY-REVIEW-20261104.md) and [dated commercial region matrix](../../../../docs/multicloud/INTERCONNECT-REGIONS.md). Availability, activation, permissions and traffic need separate acceptance.

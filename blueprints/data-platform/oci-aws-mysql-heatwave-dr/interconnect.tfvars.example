@@ -1,0 +1,8 @@
+# Overlay on reviewed local inputs; this file alone is not a full configuration.
+# Use only after the chosen offering/location pair and state ownership are reviewed.
+enable_interconnect_connectivity = true
+enable_ipsec_connectivity = false
+fastconnect_virtual_circuit_id = "ocid1.virtualcircuit.oc1..replace-me"
+aws_private_connection_id = "replace-with-activated-aws-private-connection-id"
+# Staged handoff: first create this root's DRG/VCN foundation, then externally
+# attach the FastConnect circuit to that DRG. IDs do not inspect attachment or BGP.

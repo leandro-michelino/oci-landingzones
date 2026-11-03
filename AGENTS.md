@@ -26,3 +26,10 @@ Prioritize evidence over agreement. State uncertainty explicitly. Distinguish sc
 - Keep exported architecture diagrams free of generic source-review dates, validation summaries and no-provisioning footers. Record validation scope and evidence in repository reports instead.
 - Preserve technical connector legends, creation conditions, input defaults and architecture-specific prerequisites.
 - Apply presentation changes in authoring generators and regenerate both editable draw.io and PNG artifacts, including companion resource/input pages.
+
+## Multicloud Transport Diagrams
+
+- Prefer native Interconnect in supported connection locations, or an explicitly reviewed private partner circuit, for cross-cloud private workload traffic. VPN is a separately configured backup or alternative when dedicated connectivity cannot be used.
+- FastConnect/Interconnect and VPN must use different, individually labelled connectors and distinct transport segments. Do not combine them in one line or overlay them. Retain official provider icons and the OCI toolkit's transport badges.
+- Show external circuit activation, gateways, BGP/route policy and service limitations explicitly. Do not invent VPN support, private connectivity, encryption or automatic failover where the source does not implement them.
+- Public CDN, public API and application replication relationships retain their actual HTTPS/application semantics; do not relabel them as physical Interconnect links.

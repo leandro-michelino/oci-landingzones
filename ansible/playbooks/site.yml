@@ -3,6 +3,6 @@
   hosts: localhost
   gather_facts: true
   roles:
-    - common
-    - oci_cli
-    - validation
+    - ../roles/common
+    - ../roles/oci_cli
+    - ../roles/validation

@@ -4,7 +4,7 @@
 
 Provide a reviewable foundation for cross-cloud MySQL disaster recovery. OCI is
 the intended primary write platform and AWS the intended standby target. OCI
-IPSec resources are optional. AWS VPN routing, MySQL replication, and DNS
+dedicated transport is preferred; IPSec is independently optional. AWS edge routing, MySQL replication, and DNS
 cutover are external implementation steps and must be verified separately.
 
 ## Architecture At A Glance
@@ -15,7 +15,7 @@ cutover are external implementation steps and must be verified separately.
 | Secondary database cloud | AWS |
 | Primary database service | OCI MySQL HeatWave (DB System + HeatWave cluster) |
 | Secondary database endpoint | Optional MySQL 8.0 RDS instance from the separate CloudFormation stack; no replication channel configured |
-| Cross-cloud network | Optional OCI DRG + CPE + static-route IPSec; AWS VPN gateway, tunnel configuration, and routes are not created here |
+| Cross-cloud network | Dedicated-transport DRG/attachment/routes with existing external circuit IDs; separate optional CPE/IPSec leg; AWS edge and return routes remain external |
 | Replication style | Asynchronous replication and TLS requirements documented in a contract; no channel is configured |
 | Failover control | DNS cutover and runbook contract outputs; no automated DNS change or failover |
 
@@ -163,3 +163,15 @@ Implementation references: [OCI static-route Site-to-Site VPN](https://docs.orac
 - Runbook sequencing matches target RTO/RPO and drill cadence.
 - AWS standby outputs are captured and handed back into OCI contracts.
 - No local secrets or generated Terraform artifacts are committed.
+
+## Repository-wide transport review — 2026-11-04
+
+Prefer a supported native Interconnect or reviewed private partner circuit for private cross-cloud workload traffic. VPN is a separately configured backup or alternative when dedicated connectivity cannot be used. FastConnect/Interconnect and VPN must use separate connectors and transport segments; application replication/API arrows describe a different relationship. This design preference does not create missing gateways, circuits, VPN peers, route policy or automatic failover; prerequisites shown as external remain operator-owned.
+
+See the [repository review](../../../../docs/REPOSITORY-REVIEW-20261104.md) and [dated commercial region matrix](../../../../docs/multicloud/INTERCONNECT-REGIONS.md). Availability, activation, permissions and traffic need separate acceptance.
+
+## Dedicated transport without VPN
+
+Set `enable_interconnect_connectivity=true` and supply `fastconnect_virtual_circuit_id` and `aws_private_connection_id`. The root creates its DRG, VCN attachment, remote-prefix route and scoped TCP 3306 ingress independently of `enable_ipsec_connectivity`. It creates or inspects neither circuit. In a staged handoff, obtain this root's DRG output and attach the activated FastConnect circuit to that exact DRG externally; configure the AWS edge and symmetric return path separately. Native AWS managed Interconnect and conventional partner Direct Connect have different activation/availability requirements; select the appropriate network foundation and ownership plan. Do not attach circuits to an unrelated DRG merely because an ID is populated.
+
+`enable_ipsec_connectivity` remains independently optional and disabled by default. If both transport flags are set, `preferred_path` records Interconnect intent; it does not program BGP preference or automatic failover. Both flags remain false in existing defaults. See `interconnect.tfvars.example` for an overlay, not a complete deployable input file. No data channel, seeding, DNS switch or application recovery is added by this transport correction.

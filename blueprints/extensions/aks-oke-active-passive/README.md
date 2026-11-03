@@ -337,3 +337,9 @@ The validator checks Terraform formatting, required deployment README files,
 required architecture README sections, `terraform init -backend=false`,
 `terraform validate`, root Ansible syntax, blueprint-local Ansible syntax,
 optional scanners when installed, and cleanup of generated Terraform artifacts.
+
+## Repository-wide transport review — 2026-11-04
+
+Prefer a supported native Interconnect or reviewed private partner circuit for private cross-cloud workload traffic. VPN is a separately configured backup or alternative when dedicated connectivity cannot be used. FastConnect/Interconnect and VPN must use separate connectors and transport segments; application replication/API arrows describe a different relationship. This root explicitly forbids IPSec backup and only records partner-circuit inputs; no VPN leg, cloud edge gateway or new transport is implied. Native managed AWS Interconnect is distinct from a conventional Direct Connect connection; use the matching networking blueprint and an explicitly reviewed identifier/attachment handoff.
+
+See the [repository review](../../../docs/REPOSITORY-REVIEW-20261104.md) and [dated commercial region matrix](../../../docs/multicloud/INTERCONNECT-REGIONS.md). Availability, activation, permissions and traffic need separate acceptance.

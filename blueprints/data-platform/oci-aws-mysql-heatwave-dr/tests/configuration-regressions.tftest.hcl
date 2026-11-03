@@ -87,3 +87,27 @@ run "reject_unattached_ipsec" {
   }
   expect_failures = [var.enable_ipsec_connectivity]
 }
+
+run "dedicated_transport_without_vpn_keeps_route_and_ingress" {
+  command = plan
+  variables {
+    enable_interconnect_connectivity = true
+    fastconnect_virtual_circuit_id   = "ocid1.virtualcircuit.oc1..example"
+    aws_private_connection_id        = "example-private-connection"
+    create_lakehouse_bucket          = false
+    enable_dr_alert_topic            = false
+  }
+  assert {
+    condition     = length(oci_core_drg.primary) == 1 && length(oci_core_drg_attachment.primary_db) == 1 && length(oci_core_ipsec.aws) == 0 && length([for rule in oci_core_route_table.primary_db[0].route_rules : rule if rule.destination == var.aws_replication_cidr]) == 1 && contains([for rule in oci_core_security_list.primary_db[0].ingress_security_rules : rule.source], var.aws_replication_cidr) && output.connectivity_contract.preferred_path == "interconnect"
+    error_message = "The dedicated path must retain the DRG, attachment, route and scoped MySQL ingress without creating VPN."
+  }
+}
+run "dedicated_transport_requires_external_identifiers" {
+  command = plan
+  variables {
+    enable_interconnect_connectivity = true
+    create_lakehouse_bucket          = false
+    enable_dr_alert_topic            = false
+  }
+  expect_failures = [var.enable_interconnect_connectivity]
+}

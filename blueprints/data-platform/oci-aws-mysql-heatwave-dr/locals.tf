@@ -20,6 +20,8 @@ locals {
   db_system_id_effective = var.create_db_system ? try(oci_mysql_mysql_db_system.primary[0].id, null) : var.existing_db_system_id
   heatwave_id_effective  = var.create_heatwave_cluster ? try(oci_mysql_heat_wave_cluster.primary[0].id, null) : var.existing_heatwave_cluster_id
 
+  enable_cross_cloud_transport = var.enable_interconnect_connectivity || var.enable_ipsec_connectivity
+
   oci_network_contract = {
     oci_is_primary      = true
     vcn_id              = try(oci_core_vcn.primary[0].id, null)
@@ -32,13 +34,17 @@ locals {
   }
 
   connectivity_contract = {
-    mode                  = var.enable_ipsec_connectivity ? "ipsec-static" : "disabled"
-    oci_drg_id            = try(oci_core_drg.primary[0].id, null)
-    aws_cpe_public_ip     = var.aws_cpe_public_ip
-    aws_bgp_asn           = var.aws_bgp_asn
-    ipsec_connection_id   = try(oci_core_ipsec.aws[0].id, null)
-    ipsec_tunnel_count    = var.enable_ipsec_connectivity ? 2 : 0
-    aws_replication_cidrs = [var.aws_replication_cidr]
+    mode                           = var.enable_interconnect_connectivity ? "interconnect" : (var.enable_ipsec_connectivity ? "ipsec-static" : "disabled")
+    preferred_path                 = var.enable_interconnect_connectivity ? "interconnect" : (var.enable_ipsec_connectivity ? "ipsec-static" : "none")
+    fastconnect_virtual_circuit_id = var.fastconnect_virtual_circuit_id
+    aws_private_connection_id      = var.aws_private_connection_id
+    vpn_enabled                    = var.enable_ipsec_connectivity
+    oci_drg_id                     = try(oci_core_drg.primary[0].id, null)
+    aws_cpe_public_ip              = var.aws_cpe_public_ip
+    aws_bgp_asn                    = var.aws_bgp_asn
+    ipsec_connection_id            = try(oci_core_ipsec.aws[0].id, null)
+    ipsec_tunnel_count             = var.enable_ipsec_connectivity ? 2 : 0
+    aws_replication_cidrs          = [var.aws_replication_cidr]
   }
 
   replication_contract = {

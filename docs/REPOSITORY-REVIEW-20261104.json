@@ -1,0 +1,890 @@
+{
+  "review_date": "2026-11-04",
+  "scope": "Local repository source/schema/simulated checks. No real cloud plan, apply, API inventory, circuit activation or workload/HA test.",
+  "providers": {
+    "oracle/oci": "9.11.0",
+    "hashicorp/aws": "6.70.0",
+    "hashicorp/google": "7.46.2",
+    "cloudflare/cloudflare": "5.28.1"
+  },
+  "terraform_roots": 123,
+  "mocked_cases": 254,
+  "roots_with_mocked_suites": 61,
+  "auxiliary_checks": {
+    "ansible-playbook": 358,
+    "tflint": 123,
+    "bicep": 8
+  },
+  "cloud_wrapper_simulations": 12,
+  "cloudformation_templates_parsed": 4,
+  "cloudformation_resource_declarations": 66,
+  "python_regressions": 9,
+  "diagram_overviews": 93,
+  "conceptual_overviews": 1,
+  "presentation_assets": 1,
+  "native_documents": 349,
+  "reviewed_connectors": 735,
+  "roots": [
+    {
+      "path": "blueprints/ai/agents",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/ai/ai-services",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/ai/azure-oci-ai-gateway",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 3,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/ai/document-intelligence",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/ai/embedding-pipeline",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/ai/gcp-oci-ai-gateway",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 2,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/ai/gcp-oci-ai-gateway/gcp",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 4,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/ai/genai-fine-tuning",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 3,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/ai/genai-gateway",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/ai/genai-guardrails",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 3,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/ai/genai-private",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 1,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/ai/multi-agent",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/cis/level1",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/cis/level2",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/compliance/healthcare-pci",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 2,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/compliance/scca-cloud-native",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/compliance/security-posture",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 2,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/compliance/zero-trust",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/core",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 1,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/data-platform/apex-adw",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 4,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/data-platform/autonomous-database",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 3,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/data-platform/mongodb-api",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 3,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/data-platform/mysql-heatwave",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 5,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/data-platform/nosql",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 5,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/data-platform/oci-aws-mysql-heatwave-dr",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 8,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 2,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/data-platform/oci-gcp-mysql-heatwave-dr/gcp",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 3,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/data-platform/opensearch",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 4,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/data-platform/postgresql",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 5,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/data-platform/private-data-platform",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 4,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/devops/oci-devops-pipeline",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 7,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/disaster-recovery/aws-oci-cross-cloud-dr",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 8,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/disaster-recovery/azure-oci-cross-cloud-dr",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 8,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/disaster-recovery/fsdr",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 6,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 2,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/gcp",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 3,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/extensions/aks-oke-active-passive",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/extensions/apigw",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/extensions/cdn-static-assets",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 1,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/extensions/container-instances",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/extensions/digital-assistant",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 3,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/extensions/eks-oke-active-passive",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/extensions/event-driven-platform",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/extensions/exadata",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/extensions/functions",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 3,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/extensions/gke-oke-active-passive",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 2,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/extensions/gke-oke-active-passive/gcp",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 3,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/extensions/oac",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/extensions/observability",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 2,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/extensions/oic",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 4,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/extensions/oke",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/extensions/oke-service-mesh",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/extensions/redis-cache",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/extensions/streaming",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/extensions/waf",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 4,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/identity/cis-basic",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 1,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/identity/custom-identity-domain",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 2,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/identity/new-identity-domain",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 2,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/industry/healthcare-fhir-integration",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 11,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/industry/healthcare-platform",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 10,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/industry/secure-desktops",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 3,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/industry/telco-cloud-native",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 1,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/networking/aws-oci-hybrid-network-backbone",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 5,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/networking/aws-oci-managed-interconnect",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 9,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/networking/azure-oci-dual-connectivity",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 3,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/networking/azure-vwan-oci-drg-transit",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 2,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/networking/externally-managed-vcns",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/networking/gcp-oci-hybrid-network-backbone",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 3,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 7,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/networking/gcp-oci-partner-interconnect",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 11,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-drg-and-three-tier-vcns",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-dual-region-dr",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-fortigate-ha",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-hub-vcn-bastion-jump-host",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-hub-vcn-fastconnect-vc",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-hub-vcn-ipsec-vpn",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-hub-vcn-net-appliance",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-hub-vcn-net-firewall",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-multicloud-interconnect",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-private-dns-split-horizon",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-transit-routing-nva-ha",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/networking/hub-spoke-with-zpr-micro-segmentation",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/networking/multi-tenancy-shared-services",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/networking/network-load-balancer",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 3,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/networking/regional-prod-nonprod-hubs",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 1,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/networking/standalone-private-endpoint-only",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 1,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/networking/standalone-three-tier-vcn-custom",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/networking/standalone-three-tier-vcn-defaults",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/networking/standalone-three-tier-vcn-zpr",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/operating-entity",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/operating-entity/multi-operating-entities",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/operating-entity/workload-vending",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "blueprints/operations/cost-optimization",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 1,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/vmware/azure-avs-ocvs-interconnect",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 9,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/vmware/azure-avs-ocvs-onprem-triangle",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 9,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/vmware/ocvs",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 19,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "blueprints/vmware/ocvs-onprem-hcx",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 7,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "modules/governance/budgets",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 2,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "modules/governance/events",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/governance/logging",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/governance/tagging",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/iam/compartments",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/iam/dynamic-groups",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/iam/groups",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/iam/policies",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/networking/dns",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 2,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "modules/networking/drg",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/networking/fastconnect",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/networking/gcp-private-network",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 4,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "modules/networking/hub-vcn",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/networking/ipsec-vpn",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/networking/net-appliance",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/networking/net-firewall",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 2,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "modules/networking/spoke-vcn",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/networking/zpr",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 1,
+      "test_scope": "mocked Terraform suite"
+    },
+    {
+      "path": "modules/operations/monitoring",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/operations/os-management",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/security/bastion",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/security/cloud-guard",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/security/security-zones",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/security/vault",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    },
+    {
+      "path": "modules/security/vss",
+      "formatting": "passed",
+      "schema": "passed",
+      "mocked_cases": 0,
+      "test_scope": "schema only; no committed root suite"
+    }
+  ]
+}

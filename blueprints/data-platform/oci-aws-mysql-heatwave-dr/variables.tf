@@ -326,3 +326,23 @@ variable "freeform_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "enable_interconnect_connectivity" {
+  description = "Prefer an externally activated private cross-cloud circuit; create only the OCI DRG, VCN attachment, scoped ingress and routes. No circuit is created."
+  type        = bool
+  default     = false
+  validation {
+    condition     = !var.enable_interconnect_connectivity || (var.enable_oci_primary_network && var.fastconnect_virtual_circuit_id != null && var.aws_private_connection_id != null)
+    error_message = "Dedicated transport requires this root's OCI network and existing FastConnect/AWS private connection IDs. Attach the circuit to the DRG output by this root and verify route exchange."
+  }
+}
+variable "fastconnect_virtual_circuit_id" {
+  description = "Existing activated FastConnect circuit, externally attached to the DRG created by this root; this identifier is not inspected."
+  type        = string
+  default     = null
+}
+variable "aws_private_connection_id" {
+  description = "Existing AWS managed Interconnect or conventional partner Direct Connect identifier; confirm offering, region and DXGW/VGW/TGW attachment externally."
+  type        = string
+  default     = null
+}

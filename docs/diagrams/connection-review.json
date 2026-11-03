@@ -1,5 +1,5 @@
 {
-  "review_date": "2026-10-28",
+  "review_date": "2026-11-04",
   "scope": "Static connection/geometry review of published overviews; no runtime verification. Detail/reference maps intentionally have no inferred flows.",
   "checks": [
     "Every overview has relationship lines",
@@ -8,13 +8,15 @@
     "Overview matches authoring script",
     "Every native page has unique IDs and valid references",
     "Reviewed endpoints, labels, arrows, paths and source hashes match contract",
-    "Subnet routing and DNS-view semantic regression checks"
+    "Subnet routing and DNS-view semantic regression checks",
+    "Dedicated Interconnect and VPN use separate cross-cloud transport labels"
   ],
   "overview_count": 93,
   "conceptual_overviews": 1,
-  "native_documents": 348,
-  "main_document_pages": 348,
-  "connector_count": 732,
+  "presentation_assets": 1,
+  "native_documents": 349,
+  "main_document_pages": 349,
+  "connector_count": 735,
   "cross_cloud_overviews": 20,
   "blueprints": [
     {
@@ -145,53 +147,80 @@
     },
     {
       "blueprint": "networking/aws-oci-hybrid-network-backbone",
-      "connections": 5,
+      "connections": 6,
       "cross_cloud_bridges": [
         {
-          "source": "n12",
-          "target": "n21",
-          "label": "VPN requested by default / CPE IP TBC",
+          "source": "n48",
+          "target": "n40",
+          "label": "PRIMARY / EXTERNAL REQUIRED / Managed Interconnect + FastConnect VC",
+          "clouds": [
+            "AWS",
+            "OCI"
+          ]
+        },
+        {
+          "source": "n55",
+          "target": "n59",
+          "label": "OPTIONAL BACKUP / external tunnel pairing + tested route preference",
           "clouds": [
             "AWS",
             "OCI"
           ]
         }
       ],
-      "overview_png_sha256": "f77c2c896bf69269b0383281a4aa3fad1fec0d5cdf08e9056253cbf8cccb884e",
+      "overview_png_sha256": "1b2f38ce8b3b855c3efa9b5161fb4c040894174c7fcb2bf58daea46cb1a777da",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/azure-oci-dual-connectivity",
-      "connections": 5,
+      "connections": 6,
       "cross_cloud_bridges": [
         {
-          "source": "n12",
-          "target": "n21",
-          "label": "VPN requested by default / CPE IP TBC",
+          "source": "n48",
+          "target": "n40",
+          "label": "PRIMARY / EXTERNAL REQUIRED / ExpressRoute + FastConnect VC",
+          "clouds": [
+            "Azure",
+            "OCI"
+          ]
+        },
+        {
+          "source": "n55",
+          "target": "n59",
+          "label": "OPTIONAL BACKUP / external tunnel pairing + tested route preference",
           "clouds": [
             "Azure",
             "OCI"
           ]
         }
       ],
-      "overview_png_sha256": "533b69670d20c7f4508e6a22a567d2c24ec0defd089fc1c068286990176f79d6",
+      "overview_png_sha256": "05c7c20607064387b6f8ac04c72b9baebc5c2905ea2bc7bc2d71916844b75237",
       "layout_warnings": []
     },
     {
       "blueprint": "networking/azure-vwan-oci-drg-transit",
-      "connections": 7,
+      "connections": 8,
       "cross_cloud_bridges": [
         {
-          "source": "n16",
-          "target": "n27",
-          "label": "OCI CPE + IPSec / requested; IP TBC",
+          "source": "n45",
+          "target": "n47",
+          "label": "PRIMARY / FastConnect + ExpressRoute\nExternal circuits / activation / BGP / route policy",
+          "clouds": [
+            "Azure",
+            "OCI"
+          ]
+        },
+        {
+          "source": "n60",
+          "target": "n64",
+          "label": "SEPARATE VPN ALTERNATIVE / disabled by default\nNot concurrent vWAN backup in this implementation",
           "clouds": [
             "Azure",
             "OCI"
           ]
         }
       ],
-      "overview_png_sha256": "6c4bd5d34e7950f1702dcc266ebc667423ba721cf080ad2874e64210066de49e",
+      "overview_png_sha256": "eb64d7a578d376ed4cbf3dbc1f6bdbbbb7c25f05dd7ade468d8b2ede7e47fbce",
       "layout_warnings": []
     },
     {
@@ -330,14 +359,14 @@
         {
           "source": "n7",
           "target": "n88",
-          "label": "Interconnect intent / external circuit prerequisites; IDs only",
+          "label": "PRIMARY / external FastConnect + ExpressRoute / circuit IDs only",
           "clouds": [
             "OCI",
             "Azure"
           ]
         }
       ],
-      "overview_png_sha256": "a99af6dd06747f61b6be99edf8b41f60808acf20177fd76c1cee51bea7ef07c6",
+      "overview_png_sha256": "413e71c2c918e9145b0c70949156fc376697e57d85ec2084ccce18456c98cc96",
       "layout_warnings": []
     },
     {
@@ -347,14 +376,14 @@
         {
           "source": "n7",
           "target": "n87",
-          "label": "Cross-cloud connectivity intent / external interconnect; IDs only",
+          "label": "PRIMARY / external FastConnect + AWS private connection / IDs only",
           "clouds": [
             "OCI",
             "AWS"
           ]
         }
       ],
-      "overview_png_sha256": "8a0f56997681524abce0813f7003bca1835fdfa56f32285ee3663850441c3146",
+      "overview_png_sha256": "09c1ba40ab79d79e756779100fd7dc041ca9769c8fd362e75998129ae49075ee",
       "layout_warnings": []
     },
     {
@@ -404,25 +433,25 @@
       "connections": 8,
       "cross_cloud_bridges": [
         {
-          "source": "n48",
-          "target": "n116",
-          "label": "Optional IPSec / peer required",
+          "source": "n51",
+          "target": "n67",
+          "label": "PRIMARY / FastConnect + AWS private connection\nExternal activation, gateway association and symmetric routes",
           "clouds": [
             "OCI",
             "AWS"
           ]
         },
         {
-          "source": "n10",
-          "target": "n102",
-          "label": "Replication intent / channel setup external",
+          "source": "n71",
+          "target": "n81",
+          "label": "SEPARATE VPN / optional backup or alternative\nIndependent connector; not automatic failover",
           "clouds": [
             "OCI",
             "AWS"
           ]
         }
       ],
-      "overview_png_sha256": "9df3213e5b4f77066d680e2ea2f2f111e5be5c61fef50b88e0216db4028c17bf",
+      "overview_png_sha256": "3110d926f9b53c51d47b413935acdb53a455b935d64e21c984bcee0355d509c4",
       "layout_warnings": []
     },
     {
@@ -540,14 +569,14 @@
         {
           "source": "n5",
           "target": "n69",
-          "label": "EXTERNAL partner Interconnect / supplied circuit IDs only; edge gateways, peering and routes not created",
+          "label": "PRIMARY / EXTERNAL FastConnect + ExpressRoute / circuit IDs only; gateways and routes external",
           "clouds": [
             "OCI",
             "Azure"
           ]
         }
       ],
-      "overview_png_sha256": "fa30e924ff23048cace8a4a737f766247ec4584f0cc04316b58f4a2fb1b7e598",
+      "overview_png_sha256": "c7cca7766cd043ce6c6c46e8b9bc4bd162ddb3faa7540f9888fa2f239a66ec1c",
       "layout_warnings": []
     },
     {
@@ -557,14 +586,14 @@
         {
           "source": "n5",
           "target": "n69",
-          "label": "EXTERNAL partner Interconnect / supplied circuit IDs only; edge gateways, peering and routes not created",
+          "label": "PRIMARY / EXTERNAL FastConnect + Direct Connect / circuit IDs only; gateways and routes external",
           "clouds": [
             "OCI",
             "AWS"
           ]
         }
       ],
-      "overview_png_sha256": "2dca1f3d946f173330bba4c762a6f313a7df2c849eaafe0cee7541f81a1abd80",
+      "overview_png_sha256": "fa31dcd0266fe9ff048f550f7d91b24562c9ae619e7b09eb3e941d63c026f199",
       "layout_warnings": []
     },
     {
@@ -696,14 +725,14 @@
         {
           "source": "n42",
           "target": "n60",
-          "label": "Managed Interconnect / create + accept",
+          "label": "Managed Interconnect / redundant + MACsec",
           "clouds": [
             "OCI",
             "AWS"
           ]
         }
       ],
-      "overview_png_sha256": "1dcd8ce47d1a04e4a7196a763e2fa2422357b65cd95a73e14c89012cd9583b43",
+      "overview_png_sha256": "2b7f5a65ee515ce2905e428679519be436060ba9ed63da69188bc1623b4e0504",
       "layout_warnings": []
     },
     {
@@ -720,7 +749,7 @@
           ]
         }
       ],
-      "overview_png_sha256": "f03a3e8ade1fe9f9aff7cb5e7d24877a235621002618cff20b652e2446eb3167",
+      "overview_png_sha256": "e1d975b8a47cbe3cc0213b37b3932bbf422b8af64be8f8b37a64aeb0820cfc5a",
       "layout_warnings": []
     },
     {
@@ -789,7 +818,7 @@
         {
           "source": "n8",
           "target": "n17",
-          "label": "Optional FastConnect + Partner Interconnect\nenable_interconnect / region-pair + cost approval / service pairing keys",
+          "label": "PRIMARY / two FastConnect VCs + Partner VLAN attachments\nenable_interconnect / supported pair + cost approval / pairing keys",
           "clouds": [
             "OCI",
             "GCP"
@@ -798,14 +827,14 @@
         {
           "source": "n22",
           "target": "n23",
-          "label": "Optional independently routed VPN / matching staged endpoint and key maps",
+          "label": "OPTIONAL BACKUP / independently routed HA VPN / staged endpoint + key maps",
           "clouds": [
             "OCI",
             "GCP"
           ]
         }
       ],
-      "overview_png_sha256": "1315349a2a12fed1c42941d8def2e058f45e4381025e9092e17d3db93b35f667",
+      "overview_png_sha256": "e10281c264785ca2cf872a93656a740f022b41228a33d53b8b5e66bb420babe3",
       "layout_warnings": []
     },
     {

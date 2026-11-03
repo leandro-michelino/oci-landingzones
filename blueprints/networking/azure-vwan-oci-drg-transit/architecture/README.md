@@ -156,3 +156,9 @@ Reference: [Microsoft Virtual WAN VNet prerequisites](https://learn.microsoft.co
 ## Reading the transport lines
 
 The upper transport line is the preferred **FastConnect + ExpressRoute** Interconnect path, with its own circuit/gateway endpoints and official connector badge. The lower transport line is a separate **VPN** alternative, with its own gateway/CPE endpoints and VPN connector badge. The two transport segments do not overlap or share a line. The classic VPN alternative is disabled by default and is not a concurrent vWAN backup implementation; enabling it selects the alternative VNet topology documented above.
+
+## Repository-wide transport review — 2026-11-04
+
+Prefer a supported native Interconnect or reviewed private partner circuit for private cross-cloud workload traffic. VPN is a separately configured backup or alternative when dedicated connectivity cannot be used. FastConnect/Interconnect and VPN must use separate connectors and transport segments; application replication/API arrows describe a different relationship. This design preference does not create missing gateways, circuits, VPN peers, route policy or automatic failover; prerequisites shown as external remain operator-owned.
+
+See the [repository review](../../../../docs/REPOSITORY-REVIEW-20261104.md) and [dated commercial region matrix](../../../../docs/multicloud/INTERCONNECT-REGIONS.md). Availability, activation, permissions and traffic need separate acceptance.

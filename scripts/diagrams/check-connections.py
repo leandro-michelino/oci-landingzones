@@ -91,6 +91,15 @@ def verify_sources(sources,verified):
   verified.add(key)
 
 def semantic_checks(slug,d):
+ # Transport links must not collapse dedicated and VPN paths into one edge.
+ # Internal route-policy labels may legitimately mention both choices.
+ for edge in d.edge_meta:
+  source_cloud,target_cloud=cloud_boundary(edge['a']),cloud_boundary(edge['b'])
+  label=edge['label'].lower()
+  if source_cloud!=target_cloud and 'OCI' in (source_cloud,target_cloud):
+   dedicated=any(word in label for word in ('fastconnect','interconnect','expressroute','direct connect'))
+   vpn=any(word in label for word in ('vpn','ipsec'))
+   assert not (dedicated and vpn),(slug,'Dedicated Interconnect and VPN need separate transport connectors',edge['label'])
  for e in d.edge_meta:
   a,b=e['a'],e['b']
   if b.name=='Route Table':
@@ -107,6 +116,7 @@ def semantic_checks(slug,d):
 
 def main():
  parser=argparse.ArgumentParser(description=__doc__)
+ parser.add_argument('--review-date',help='Evidence date for a newly written report; otherwise preserve its existing date')
  parser.add_argument('--render-updated',action='store_true')
  parser.add_argument('--write-report',action='store_true')
  parser.add_argument('--record-reviewed-connectors',action='store_true',help='Replace the review contract only after source and PNG review')
@@ -160,6 +170,16 @@ def main():
  native_files.add(conceptual_path)
  contracts['docs/diagrams/oci-3tier-adb']={'relationships':relationships(conceptual),'source_files':[],
   'scope':'Illustrative design; no source-backed deployment claim'}
+ # Presentation assets have their own source/geometry checks, not workload transport semantics.
+ presentation=load('portfolio-overview').build()
+ presentation_path=ROOT/'docs/assets/oci-landing-zones-banner.drawio'
+ assert not presentation.check()
+ assert ET.tostring(ET.parse(presentation_path).getroot().find('diagram'))==ET.tostring(ET.fromstring(presentation.xml()).find('diagram'))
+ ET.parse(presentation_path.with_suffix('.svg'))
+ native_files.add(presentation_path)
+ contracts['docs/assets/oci-landing-zones-banner']={'relationships':[],
+  'source_files':[{'path':'scripts/diagrams/portfolio-overview.py','revision':'working-tree','sha256':hashlib.sha256((ROOT/'scripts/diagrams/portfolio-overview.py').read_bytes()).hexdigest()}],
+  'scope':'Conceptual portfolio presentation; no workload transport or deployment relationship implied'}
  found={ROOT/p for p in subprocess.check_output(['rg','--files','-g','*.drawio','-g','!**/.terraform/**'],cwd=ROOT,text=True).splitlines()}
  assert found==native_files,('Native documents missing from review registry',found^native_files)
  for native in native_files:
@@ -175,10 +195,12 @@ def main():
  if args.record_reviewed_connectors:contract_path.write_text(json.dumps(normalized,indent=2)+'\n')
  assert contract_path.exists(),'Record the initial reviewed connector contract after inspecting source and PNGs'
  assert json.loads(contract_path.read_text())==normalized,'Connector/source changes require another semantic and visual review'
- report={'review_date':'2026-10-28','scope':'Static connection/geometry review of published overviews; no runtime verification. Detail/reference maps intentionally have no inferred flows.',
- 'checks':['Every overview has relationship lines','Cross-cloud source inventories have an explicit OCI bridge','Icon and text crossing checks empty','Overview matches authoring script','Every native page has unique IDs and valid references','Reviewed endpoints, labels, arrows, paths and source hashes match contract','Subnet routing and DNS-view semantic regression checks'],
- 'overview_count':len(records),'conceptual_overviews':1,'native_documents':len(native_files),
- 'main_document_pages':native_pages+1,'connector_count':sum(r['connections'] for r in records)+len(conceptual.edge_meta),
+ report_path=ROOT/'docs/diagrams/connection-review.json'
+ review_date=args.review_date or (json.loads(report_path.read_text()).get('review_date','2026-10-28') if report_path.exists() else '2026-10-28')
+ report={'review_date':review_date,'scope':'Static connection/geometry review of published overviews; no runtime verification. Detail/reference maps intentionally have no inferred flows.',
+ 'checks':['Every overview has relationship lines','Cross-cloud source inventories have an explicit OCI bridge','Icon and text crossing checks empty','Overview matches authoring script','Every native page has unique IDs and valid references','Reviewed endpoints, labels, arrows, paths and source hashes match contract','Subnet routing and DNS-view semantic regression checks','Dedicated Interconnect and VPN use separate cross-cloud transport labels'],
+ 'overview_count':len(records),'conceptual_overviews':1,'presentation_assets':1,'native_documents':len(native_files),
+ 'main_document_pages':native_pages+2,'connector_count':sum(r['connections'] for r in records)+len(conceptual.edge_meta),
  'cross_cloud_overviews':sum(bool(r['cross_cloud_bridges']) for r in records),'blueprints':records}
  if args.write_report:(ROOT/'docs/diagrams/connection-review.json').write_text(json.dumps(report,indent=2)+'\n')
  print(f"{len(records)} blueprint + 1 conceptual overviews passed; {report['connector_count']} reviewed connectors; {len(native_files)} native documents and PNGs; {report['cross_cloud_overviews']} explicit OCI/cloud bridges.")

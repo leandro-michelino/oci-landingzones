@@ -6,4 +6,4 @@
     terraform_action: destroy
     terraform_backend_enabled: true
   roles:
-    - terraform_runner
+    - ../roles/terraform_runner

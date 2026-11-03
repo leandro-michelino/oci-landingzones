@@ -78,3 +78,9 @@ Firewall rules apply to matching VM tags and scoped prefixes/ports, not every ma
 
 [Primary service reference](https://docs.cloud.google.com/run/docs/configuring/vpc-direct-vpc).
 [Validation record](../../../../docs/multicloud/GCP-COUNTERPARTS-20261028.md).
+
+## Repository-wide transport review — 2026-11-04
+
+Prefer a supported native Interconnect or reviewed private partner circuit for private cross-cloud workload traffic. VPN is a separately configured backup or alternative when dedicated connectivity cannot be used. FastConnect/Interconnect and VPN must use separate connectors and transport segments; application replication/API arrows describe a different relationship. This design preference does not create missing gateways, circuits, VPN peers, route policy or automatic failover; prerequisites shown as external remain operator-owned.
+
+See the [repository review](../../../../docs/REPOSITORY-REVIEW-20261104.md) and [dated commercial region matrix](../../../../docs/multicloud/INTERCONNECT-REGIONS.md). Availability, activation, permissions and traffic need separate acceptance.

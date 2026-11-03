@@ -7,4 +7,4 @@
     terraform_backend_enabled: true
     terraform_working_dir: "{{ playbook_dir }}/.."
   roles:
-    - terraform_runner
+    - ../../../../ansible/roles/terraform_runner

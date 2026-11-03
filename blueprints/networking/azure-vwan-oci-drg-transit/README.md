@@ -259,3 +259,9 @@ The Bicep default is now `deployVpnGateway=false`: create the Virtual WAN/hub an
 With `deployVpnGateway=true`, the template creates the classic VNet VPN edge and omits the direct hub-to-VNet connection. Its `azureVirtualHubConnectionId` output is empty. A VNet containing a classic VPN Gateway cannot also connect directly to a Virtual WAN hub. This mode is an alternative topology; switching it can remove the existing hub connection. Review the deployment diff and ownership before applying. This is not simultaneous Interconnect/VPN failover. For concurrent backup, design a native Virtual WAN VPN gateway/site/link connection separately; it is not implemented here.
 
 Reference: [Microsoft Virtual WAN VNet prerequisites](https://learn.microsoft.com/en-us/azure/virtual-wan/virtual-wan-site-to-site-portal). Both modes still need explicit BGP/tunnel endpoints, protected secrets, route policy and packet-flow acceptance; the OCI IPSec declaration uses static routes rather than configuring tunnel BGP. See the [review record](../../../docs/NETWORKING-REVIEW-20261103.md).
+
+## Repository-wide transport review — 2026-11-04
+
+Prefer a supported native Interconnect or reviewed private partner circuit for private cross-cloud workload traffic. VPN is a separately configured backup or alternative when dedicated connectivity cannot be used. FastConnect/Interconnect and VPN must use separate connectors and transport segments; application replication/API arrows describe a different relationship. This design preference does not create missing gateways, circuits, VPN peers, route policy or automatic failover; prerequisites shown as external remain operator-owned.
+
+See the [repository review](../../../docs/REPOSITORY-REVIEW-20261104.md) and [dated commercial region matrix](../../../docs/multicloud/INTERCONNECT-REGIONS.md). Availability, activation, permissions and traffic need separate acceptance.

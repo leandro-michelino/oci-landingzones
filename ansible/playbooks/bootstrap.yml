@@ -3,6 +3,6 @@
   hosts: localhost
   gather_facts: true
   roles:
-    - common
-    - oci_cli
-    - landingzone_bootstrap
+    - ../roles/common
+    - ../roles/oci_cli
+    - ../roles/landingzone_bootstrap

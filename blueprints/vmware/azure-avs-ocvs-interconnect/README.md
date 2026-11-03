@@ -108,3 +108,9 @@ apply from a fresh directory against an existing deployment without its state.
 The overview explicitly marks the OCI-to-Azure leg as **OCI DRG ↔ private FastConnect ↔ Oracle-facing ExpressRoute**. The OCI circuit is `oci_core_virtual_circuit.site["azure"]`, configured by `circuits.azure`; it is created only when both `enable_transport` and `enable_circuits` are true and the cost/prerequisite guards pass. The ExpressRoute circuit/private peering, service key and two BGP address pairs require their own reviewed setup. AVS connectivity also requires the separately gated attachment and exact pairing support confirmation. This two-cloud pattern has no on-premises site or on-premises circuit.
 
 Diagram review: 2026-10-28, source/configuration and rendered PNG only. Bidirectional FastConnect badges describe private transport intent; they do not prove BGP establishment, route symmetry, HCX operation or working application traffic. No infrastructure settings or creation defaults changed.
+
+## Repository-wide transport review — 2026-11-04
+
+Prefer a supported native Interconnect or reviewed private partner circuit for private cross-cloud workload traffic. VPN is a separately configured backup or alternative when dedicated connectivity cannot be used. FastConnect/Interconnect and VPN must use separate connectors and transport segments; application replication/API arrows describe a different relationship. This design preference does not create missing gateways, circuits, VPN peers, route policy or automatic failover; prerequisites shown as external remain operator-owned.
+
+See the [repository review](../../../docs/REPOSITORY-REVIEW-20261104.md) and [dated commercial region matrix](../../../docs/multicloud/INTERCONNECT-REGIONS.md). Availability, activation, permissions and traffic need separate acceptance.

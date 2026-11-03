@@ -121,3 +121,9 @@ Real lifecycle evidence from 2026-06-05:
 ## Diagram Review - 2026-10-28
 
 Source, connector direction, creation conditions, native detail pages and PNGs were reviewed locally. Plain lines show ID/configuration associations; solid arrows show declared request/route intent; dashed lines show external prerequisites. No cloud resources were created and no runtime traffic was tested in this review. Historical provider and live-validation evidence remains limited to its original stated scope.
+
+## Repository-wide transport review — 2026-11-04
+
+This blueprint uses public HTTPS/CDN and application delivery interfaces. It does not provide a private FastConnect or VPN path to the CDN. Preserve that distinction when extending its architecture.
+
+See the [repository review](../../../../docs/REPOSITORY-REVIEW-20261104.md) and [dated commercial region matrix](../../../../docs/multicloud/INTERCONNECT-REGIONS.md). Availability, activation, permissions and traffic need separate acceptance.

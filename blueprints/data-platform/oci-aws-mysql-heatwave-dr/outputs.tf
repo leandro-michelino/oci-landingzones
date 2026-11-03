@@ -37,7 +37,7 @@ output "oci_network_contract" {
 }
 
 output "connectivity_contract" {
-  description = "IPSec connectivity contract with DRG, CPE, tunnel, and CIDR metadata used by network operations and incident runbooks."
+  description = "Private Interconnect / optional IPSec contract with DRG, circuit, CPE, tunnel, and CIDR metadata used by network operations and incident runbooks."
   value       = terraform_data.connectivity_contract.input
 }
 

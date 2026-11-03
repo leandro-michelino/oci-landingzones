@@ -7,17 +7,17 @@ Start here for `blueprints/data-platform/oci-aws-mysql-heatwave-dr`: what it bui
 | Item | Details |
 | --- | --- |
 | Folder | `blueprints/data-platform/oci-aws-mysql-heatwave-dr` |
-| Best fit | OCI primary and AWS standby foundation with explicit integration work for VPN, replication, DNS, and failover. |
+| Best fit | OCI primary and AWS standby foundation with dedicated Interconnect preferred and separately configured optional VPN, replication, DNS and failover. |
 | Terraform shape | `oci_core_vcn.primary`, `oci_core_route_table.primary_db`, `oci_core_security_list.primary_db`, `oci_core_subnet.primary_db`, `oci_core_drg.primary`, `oci_core_cpe.aws`, `oci_core_ipsec.aws`, `oci_mysql_mysql_db_system.primary`, `oci_mysql_heat_wave_cluster.primary`, `terraform_data.*_contract` |
-| Inputs to settle first | `enable_ipsec_connectivity`, `aws_cpe_public_ip`, `aws_replication_cidr`, `create_db_system`, `create_heatwave_cluster`, `oci_primary_endpoint`, `aws_secondary_endpoint`, `target_rto_minutes`, `target_rpo_minutes` |
+| Inputs to settle first | `enable_interconnect_connectivity`, `fastconnect_virtual_circuit_id`, `aws_private_connection_id`, `enable_ipsec_connectivity`, `aws_cpe_public_ip`, `aws_replication_cidr`, `create_db_system`, `create_heatwave_cluster`, `oci_primary_endpoint`, `aws_secondary_endpoint`, `target_rto_minutes`, `target_rpo_minutes` |
 | Outputs to hand off | `resource_ids`, `oci_network_contract`, `connectivity_contract`, `replication_contract`, `dns_failover_contract`, `runbook_contract` |
 | Local runner | `terraform plan` for iteration, `ansible/plan.yml` and guarded `ansible/apply.yml` for standard flow |
 
 ## Deployment Purpose
 
 Define an OCI-primary MySQL HeatWave DR foundation. This blueprint can create
-the OCI database, private network, and OCI side of a static-route IPSec
-connection. The AWS template can create a private RDS endpoint. The repository
+the OCI database, private network, dedicated-transport DRG/routes and a
+separate optional static-route IPSec leg. The AWS template can create a private RDS endpoint. The repository
 does not create an AWS VPN gateway or VPN connection, AWS route to OCI, MySQL
 replication channel, or DNS cutover. Its replication and failover outputs are
 handoff contracts, not evidence that DR is operational.
@@ -44,7 +44,7 @@ handoff contracts, not evidence that DR is operational.
 | Kind | Name | Purpose |
 | --- | --- | --- |
 | OCI networking | `oci_core_vcn.primary`, `oci_core_subnet.primary_db`, `oci_core_route_table.primary_db`, `oci_core_security_list.primary_db` | Private database subnet with no Internet Gateway or default route. |
-| OCI connectivity | `oci_core_drg.primary`, `oci_core_cpe.aws`, `oci_core_ipsec.aws`, `oci_core_drg_attachment.primary_db` | Optional OCI side of a static-route IPSec connection. |
+| OCI connectivity | `oci_core_drg.primary`, `oci_core_cpe.aws`, `oci_core_ipsec.aws`, `oci_core_drg_attachment.primary_db` | Conditional OCI DRG/routes for dedicated transport, plus an independently optional static-route IPSec leg. |
 | OCI database | `oci_mysql_mysql_db_system.primary`, `oci_mysql_heat_wave_cluster.primary` | Primary MySQL HeatWave service components. |
 | OCI operations | `oci_objectstorage_bucket.lakehouse`, `oci_ons_notification_topic.dr_alert` | Optional lakehouse/evidence storage and alerting surface. |
 | Contracts | `terraform_data.oci_network_contract`, `terraform_data.connectivity_contract`, `terraform_data.replication_contract`, `terraform_data.dns_failover_contract`, `terraform_data.runbook_contract` | Machine-readable runbook and integration metadata. |
@@ -232,3 +232,15 @@ From repository root:
 ./scripts/validate-changed.sh
 ./scripts/validate-all.sh
 ```
+
+## Repository-wide transport review — 2026-11-04
+
+Prefer a supported native Interconnect or reviewed private partner circuit for private cross-cloud workload traffic. VPN is a separately configured backup or alternative when dedicated connectivity cannot be used. FastConnect/Interconnect and VPN must use separate connectors and transport segments; application replication/API arrows describe a different relationship. This design preference does not create missing gateways, circuits, VPN peers, route policy or automatic failover; prerequisites shown as external remain operator-owned.
+
+See the [repository review](../../../docs/REPOSITORY-REVIEW-20261104.md) and [dated commercial region matrix](../../../docs/multicloud/INTERCONNECT-REGIONS.md). Availability, activation, permissions and traffic need separate acceptance.
+
+## Dedicated transport without VPN
+
+Set `enable_interconnect_connectivity=true` and supply `fastconnect_virtual_circuit_id` and `aws_private_connection_id`. The root creates its DRG, VCN attachment, remote-prefix route and scoped TCP 3306 ingress independently of `enable_ipsec_connectivity`. It creates or inspects neither circuit. In a staged handoff, obtain this root's DRG output and attach the activated FastConnect circuit to that exact DRG externally; configure the AWS edge and symmetric return path separately. Native AWS managed Interconnect and conventional partner Direct Connect have different activation/availability requirements; select the appropriate network foundation and ownership plan. Do not attach circuits to an unrelated DRG merely because an ID is populated.
+
+`enable_ipsec_connectivity` remains independently optional and disabled by default. If both transport flags are set, `preferred_path` records Interconnect intent; it does not program BGP preference or automatic failover. Both flags remain false in existing defaults. See `interconnect.tfvars.example` for an overlay, not a complete deployable input file. No data channel, seeding, DNS switch or application recovery is added by this transport correction.

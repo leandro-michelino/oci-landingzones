@@ -253,3 +253,9 @@ See `architecture/README.md` before customer review.
 ![Architecture](architecture/architecture.png)
 
 [Editable draw.io and resource detail pages](architecture/architecture.drawio) · [Architecture notes](architecture/README.md)
+
+## Repository-wide transport review — 2026-11-04
+
+This blueprint uses public HTTPS/CDN and application delivery interfaces. It does not provide a private FastConnect or VPN path to the CDN. Preserve that distinction when extending its architecture.
+
+See the [repository review](../../../docs/REPOSITORY-REVIEW-20261104.md) and [dated commercial region matrix](../../../docs/multicloud/INTERCONNECT-REGIONS.md). Availability, activation, permissions and traffic need separate acceptance.

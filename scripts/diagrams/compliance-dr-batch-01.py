@@ -149,7 +149,7 @@ def azure(title,index):
  logs=cloud.box(d,'Microsoft.OperationalInsights/workspaces','Log Analytics workspace\n30-day retention; App environment sends logs to workspace',30,650,890,110,parent=az,kind='thirdparty_component')
  d.connect(net,app,kind='plain',label='Environment infrastructureSubnetId',straight=True)
  d.connect(app,logs,label='Environment appLogsConfiguration',straight=True)
- d.connect(sn,app,kind='dashed',label='Interconnect intent / external circuit prerequisites; IDs only',exit=(.5,1),entry=(0,.5),waypoints=[(540,810),(1470,810),(1470,590)])
+ d.connect(sn,app,kind='fastconnect',label='PRIMARY / external FastConnect + ExpressRoute / circuit IDs only',exit=(.5,1),entry=(0,.5),waypoints=[(540,810),(1470,810),(1470,590)])
  footer(d,'CONTRACTS / DEFAULTS NEED REAL INPUTS\nDefault connectivity_mode=interconnect but FastConnect/ExpressRoute IDs are null. DNS contract enabled but endpoint inputs are null; ingress CIDR is null.\nThese contracts do not provision circuits, DRG, VPN, DNS records or a failover controller. RTO 30 min / RPO 15 min / TTL 30 sec are requested metadata.\nOCI and Azure are separate deployments; no workload/data replication, automatic DNS switch or tested DR outcome is created.',1120)
  return d
 
