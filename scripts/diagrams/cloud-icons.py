@@ -33,6 +33,7 @@ AZURE={
  'Microsoft.OperationalInsights/workspaces':'Log_Analytics_Workspaces',
 }
 AWS={
+ 'AWS::DirectConnect::Connection':('direct_connect','#8C4FFF'),
  'AWS::EKS::Cluster':('eks','#ED7100'),
  'aws_vpc':('vpc','#8C4FFF'),
  'aws_subnet':('group_subnet','#7AA116'),

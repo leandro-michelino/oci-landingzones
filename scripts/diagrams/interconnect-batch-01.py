@@ -41,7 +41,7 @@ def build(gcp=False):
   d.text('Google attachments emit pairing keys. OCI creates one private VC per key.\nApproved BGP address pairs are explicit inputs; partner provisioning and\nattachment activation must precede operational BGP verification.',35,780,1090,85,parent=remote,size=15)
  else:
   gw=cloud.icon(d,'aws_vpn_gateway',800,480,parent=vpc,size=55,label='VGW / used by Direct Connect\nNo VPN tunnel created',label_pos='top')
-  edge=d.box('Direct Connect gateway\nDXGW ↔ VGW association',45,430,380,110,parent=vpc)
+  edge=cloud.box(d,'AWS::DirectConnect::Connection','AWS Direct Connect service\nDXGW ↔ VGW association',45,430,380,110,parent=vpc)
   d.connect(edge,gw,kind='plain',straight=True)
   awsrt=cloud.icon(d,'aws_route_table',1000,400,parent=vpc,size=42,label='Subnet RT\nOCI prefix → VGW',label_pos='left')
   d.connect(subnet,awsrt,kind='plain',exit=(.955,1),entry=(.5,0),straight=True)
