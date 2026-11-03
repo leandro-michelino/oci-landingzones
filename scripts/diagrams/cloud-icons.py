@@ -110,9 +110,12 @@ def icon(d,typ,cx,cy,parent=None,size=48,label='',label_pos='bottom'):
  return node
 
 
-def box(d,typ,label,x,y,w,h,parent=None,kind='thirdparty_component'):
+def box(d,typ,label,x,y,w,h,parent=None,kind='thirdparty_component',icon_size=40,text_size=12):
  """Provider component card; exact type remains in detail-page labels."""
  node=d.group(kind,'',x,y,w,h,parent=parent)
- icon(d,typ,45,h/2,parent=node,size=40)
- d.text(label,85,10,w-100,h-20,parent=node,size=12)
+ icon_x=max(45,icon_size/2+20)
+ text_x=icon_x+icon_size/2+20
+ icon_y=h/2 if icon_size==40 else max(h/2,icon_size/2+30)
+ icon(d,typ,icon_x,icon_y,parent=node,size=icon_size)
+ d.text(label,text_x,10,w-text_x-15,h-20,parent=node,size=text_size)
  return node
