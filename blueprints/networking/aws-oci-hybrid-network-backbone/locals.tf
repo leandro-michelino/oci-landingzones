@@ -23,9 +23,10 @@ locals {
     mode                           = var.connectivity_mode
     fastconnect_virtual_circuit_id = var.fastconnect_virtual_circuit_id
     direct_connect_connection_id   = var.direct_connect_connection_id
+    aws_interconnect_id            = var.aws_interconnect_id
     site_to_site_vpn_enabled       = var.enable_site_to_site_vpn
-    preferred_path                 = var.connectivity_mode == "interconnect" ? "interconnect" : "ipsec"
-    validation                     = var.connectivity_mode == "interconnect" ? "partner-interconnect-required" : "interconnect-not-required"
+    preferred_path                 = var.connectivity_mode != "without-interconnect" ? var.connectivity_mode : "ipsec"
+    validation                     = var.connectivity_mode == "managed-interconnect" ? "managed-activation-and-route-verification-required" : (var.connectivity_mode == "interconnect" ? "partner-interconnect-required" : "interconnect-not-required")
   }
 
   routing_contract = {

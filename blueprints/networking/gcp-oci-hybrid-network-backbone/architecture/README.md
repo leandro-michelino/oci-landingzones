@@ -1,5 +1,12 @@
 # GCP and OCI Hybrid Network Backbone Architecture
 
+## Preferred primary path and available regions
+
+Use native Interconnect as the primary path for sustained production traffic in supported locations; retain VPN as an optional, independently engineered alternative or backup. See the [current region matrix and cutover procedure](../../../../docs/multicloud/INTERCONNECT-REGIONS.md), reviewed 2026-11-03. Availability, redundancy and activation differ by provider. No on-premises transit through the native cloud-to-cloud service is assumed.
+
+There are **14 documented commercial pairs**, including **OCI Madrid `eu-madrid-1` ↔ Google `europe-southwest1`** and **OCI São Paulo `sa-saopaulo-1` ↔ Google `southamerica-east1`**. Use two FastConnect VCs and two Partner VLAN attachments across edge availability domains 1 and 2; the native service does not make a single circuit redundant. This is the partner offering, distinct from dedicated Cross-Cloud Interconnect ports.
+
+
 ## Deployment Purpose
 
 Private dedicated connectivity plus an independently routed HA VPN backup.

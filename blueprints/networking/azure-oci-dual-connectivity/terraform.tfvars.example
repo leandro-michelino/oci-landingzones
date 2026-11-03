@@ -1,3 +1,5 @@
+# For the preferred dedicated path see interconnect.tfvars.example and architecture/README.md.
+# This file retains the VPN rollout example for compatibility.
 tenancy_ocid       = "ocid1.tenancy.oc1..example"
 current_user_ocid  = "ocid1.user.oc1..example"
 region             = "eu-madrid-1"

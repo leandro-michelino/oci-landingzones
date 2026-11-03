@@ -1,5 +1,10 @@
 # OCI + AWS Managed Interconnect Architecture
 
+## Preferred primary path and available regions
+
+Use native Interconnect as the primary path for sustained production traffic in supported locations; retain VPN as an optional, independently engineered alternative or backup. See the [current region matrix and cutover procedure](../../../../docs/multicloud/INTERCONNECT-REGIONS.md), reviewed 2026-11-03. Availability, redundancy and activation differ by provider. No on-premises transit through the native cloud-to-cloud service is assumed.
+
+
 ## Deployment Purpose
 
 Provide a source-bounded deployment topology for dedicated interconnect with

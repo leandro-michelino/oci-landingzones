@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "blueprint": "networking/gcp-oci-partner-interconnect",
-  "review_date": "2026-10-28",
+  "review_date": "2026-11-03",
   "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
   "counts_by_cloud": {
     "Contracts": 1,

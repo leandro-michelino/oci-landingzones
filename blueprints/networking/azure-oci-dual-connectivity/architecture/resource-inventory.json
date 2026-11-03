@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "blueprint": "networking/azure-oci-dual-connectivity",
-  "review_date": "2026-10-28",
+  "review_date": "2026-11-03",
   "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
   "counts_by_cloud": {
     "Azure": 9,
@@ -597,7 +597,7 @@
     {
       "path": "blueprints/networking/azure-oci-dual-connectivity/main.tf",
       "revision": "working-tree",
-      "sha256": "5e21d65a4c77f31d979d31fd0e26aef11efee06fe6bf69f16b43cc345e38043f"
+      "sha256": "cdc5ef34d25c062a2452a5406e6470eea657ba9d6ed01523ebc4ba7912a7de81"
     },
     {
       "path": "blueprints/networking/azure-oci-dual-connectivity/outputs.tf",

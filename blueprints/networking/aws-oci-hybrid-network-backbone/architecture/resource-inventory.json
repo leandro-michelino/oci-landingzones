@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "blueprint": "networking/aws-oci-hybrid-network-backbone",
-  "review_date": "2026-10-28",
+  "review_date": "2026-11-03",
   "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
   "counts_by_cloud": {
     "AWS": 17,
@@ -665,24 +665,37 @@
         "page_name": "Existing resources / inputs",
         "node_id": "n11"
       }
+    },
+    {
+      "address": "var.aws_interconnect_id",
+      "source": "blueprints/networking/aws-oci-hybrid-network-backbone/variables.tf",
+      "description": "Existing activated AWS managed Interconnect ID; this root records it but does not create or inspect the managed connection.",
+      "default_expression": "null",
+      "type_expression": "string",
+      "scope": "Input reference; may reuse an existing resource or override a created-resource selection. Not a created resource.",
+      "diagram": {
+        "file": "existing-resources.drawio",
+        "page_name": "Existing resources / inputs",
+        "node_id": "n13"
+      }
     }
   ],
   "input_page": {
     "file": "existing-resources.drawio",
     "page_name": "Existing resources / inputs",
-    "references": 5
+    "references": 6
   },
   "data_lookups": [],
   "source_files": [
     {
       "path": "blueprints/networking/aws-oci-hybrid-network-backbone/locals.tf",
       "revision": "working-tree",
-      "sha256": "56ae47e6d9149fd455f44b992d57ff462f484534549927201323dc55584cc6da"
+      "sha256": "19ad333553cebe0e515c47eced95a9d1f293b5135f2a952fb03fe8a14b766baa"
     },
     {
       "path": "blueprints/networking/aws-oci-hybrid-network-backbone/main.tf",
       "revision": "working-tree",
-      "sha256": "fa2eaea8674025aad45496cac4bcb16f02f2fed6dd28bc63fb0f53082e5f828d"
+      "sha256": "08158accf6a01f8170b98d4f0a3f53d9d30e1470c640114d7bfbdab17367404a"
     },
     {
       "path": "blueprints/networking/aws-oci-hybrid-network-backbone/outputs.tf",
@@ -697,7 +710,7 @@
     {
       "path": "blueprints/networking/aws-oci-hybrid-network-backbone/variables.tf",
       "revision": "working-tree",
-      "sha256": "b9c5e1c67a6b9db881abddc656b21c4733f19c197e0f866665a0b8e52e4028a1"
+      "sha256": "a47d1a9c54c2cd26d68a5460e5605e4d44b06e8ab650018081d6511b975d03c1"
     },
     {
       "path": "blueprints/networking/aws-oci-hybrid-network-backbone/versions.tf",

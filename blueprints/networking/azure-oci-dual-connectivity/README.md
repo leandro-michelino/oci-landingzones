@@ -1,5 +1,12 @@
 # Azure + OCI Dual Connectivity Hardening
 
+## Preferred primary path and available regions
+
+Use native Interconnect as the primary path for sustained production traffic in supported locations; retain VPN as an optional, independently engineered alternative or backup. See the [current region matrix and cutover procedure](../../../docs/multicloud/INTERCONNECT-REGIONS.md), reviewed 2026-11-03. Availability, redundancy and activation differ by provider. No on-premises transit through the native cloud-to-cloud service is assumed.
+
+The native service is documented at **12 OCI connection locations**, including **Johannesburg ↔ ExpressRoute Johannesburg** (nearby Azure region: South Africa North). Peering locations and Azure regions are distinct. Use `connectivity_mode="interconnect"` and the reviewed existing FastConnect/ExpressRoute IDs; see `interconnect.tfvars.example`. The supplied Bicep provisions the VPN edge, not an ExpressRoute circuit or ExpressRoute VNet gateway. Provision those externally for this VNet; the separate vWAN/ExpressRoute blueprint is a different hub design. Subnet routes to Azure remain present when VPN fallback is disabled. DNS and route-weight contracts remain metadata.
+
+
 Start here for `blueprints/networking/azure-oci-dual-connectivity`: what it builds, which inputs deserve a careful look, how to run Terraform or the local Ansible wrappers, and where the detailed architecture notes live.
 
 ## At A Glance
@@ -7,7 +14,7 @@ Start here for `blueprints/networking/azure-oci-dual-connectivity`: what it buil
 | Item | Details |
 | --- | --- |
 | Folder | `blueprints/networking/azure-oci-dual-connectivity` |
-| Best fit | OCI-primary dual-connectivity pattern with IPSec/BGP first, plus optional Interconnect (ExpressRoute + FastConnect) enablement at final cutover. |
+| Best fit | OCI-primary native Interconnect (ExpressRoute + FastConnect) with optional independently configured VPN fallback. |
 | Terraform shape | `oci_core_vcn.primary`, `oci_core_route_table.primary`, `oci_core_security_list.primary_hub`, `oci_core_subnet.primary_hub`, `oci_core_drg.primary`, `oci_core_drg_attachment.primary`, `oci_core_cpe.azure`, `oci_core_ipsec.azure`, `terraform_data.connectivity_contract`, `terraform_data.ipsec_fallback_contract`, `terraform_data.routing_contract`, `terraform_data.dns_contract`, `terraform_data.runbook_contract` |
 | Inputs to settle first | `connectivity_mode`, `fastconnect_virtual_circuit_id`, `expressroute_circuit_id`, `enable_ipsec_fallback`, `azure_cpe_public_ip`, `azure_network_cidrs`, `private_dns_zone_fqdn` |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `connectivity_contract`, `ipsec_fallback_contract`, `routing_contract`, `dns_contract`, `runbook_contract` |
@@ -16,19 +23,19 @@ Start here for `blueprints/networking/azure-oci-dual-connectivity`: what it buil
 ## Deployment Purpose
 
 Implements a hardened cross-cloud connectivity baseline where OCI stays primary,
-IPSec/BGP is enabled first for validation and early traffic, and Interconnect
-can be enabled in the final cutover stage.
+Native FastConnect/ExpressRoute is the preferred primary path in supported locations.
+IPSec is an optional rollout or backup path; tunnel BGP and route policy require separate configuration.
 
 ## When To Use This Deployment
 
 - OCI must remain the primary connectivity and routing control plane.
-- Azure workloads need private connectivity to OCI with IPSec/BGP bring-up first.
+- Azure workloads need native private connectivity to OCI in supported locations.
 - Operations require a deterministic IPSec/BGP fallback posture.
 - Teams need explicit contracts for routing, DNS, and failover runbooks.
 
 ## Practical Use Cases
 
-- **Azure to OCI private baseline:** Use IPSec/BGP first so the team can validate routing before committing production traffic to a private circuit.
+- **Azure to OCI private baseline:** Prefer native FastConnect/ExpressRoute, validate both redundant BGP sessions and use optional independent VPN when required.
 - **Interconnect cutover planning:** Keep ExpressRoute plus FastConnect details in the same operating model without pretending the dedicated path exists too early.
 - **Fallback design:** Document the path preference and recovery steps before a circuit outage makes everyone improvise.
 - **Cross-cloud DNS and probes:** Record resolver endpoints and health probes so failover checks are repeatable.
@@ -42,7 +49,7 @@ can be enabled in the final cutover stage.
 | Resource | `oci_core_cpe.azure`, `oci_core_ipsec.azure` | Optional fallback IPSec resources. |
 | Resource | `oci_ons_notification_topic.connectivity_alert` | Optional connectivity operations topic. |
 | Resource | `terraform_data.oci_network_contract` | OCI network and DRG hand-off contract. |
-| Resource | `terraform_data.connectivity_contract` | Connectivity contract with IPSec-first and optional interconnect mode. |
+| Resource | `terraform_data.connectivity_contract` | Connectivity contract with Interconnect primary and optional VPN. |
 | Resource | `terraform_data.ipsec_fallback_contract` | IPSec/BGP fallback hardening contract. |
 | Resource | `terraform_data.routing_contract` | Route exchange and path preference contract. |
 | Resource | `terraform_data.dns_contract` | Optional DNS forwarding and health-probe contract. |
@@ -99,7 +106,7 @@ Start with `terraform.tfvars.example`, then create a local ignored
 
 | Input | What To Decide |
 | --- | --- |
-| `connectivity_mode` | `without-interconnect` for IPSec-first rollout or `interconnect` for final dedicated-circuit cutover. |
+| `connectivity_mode` | Prefer `interconnect` with existing activated circuits; use `without-interconnect` for VPN-only rollout. |
 | `enable_oci_primary_network` | `true` to create OCI VCN resources in this blueprint, or `false` to reuse an existing VCN. |
 | `existing_oci_primary_vcn_id` | Existing OCI VCN OCID when `enable_oci_primary_network=false`. |
 | `existing_oci_primary_drg_id` | Existing OCI DRG OCID when DRG reuse is required (quota-aware runs). |
@@ -185,9 +192,9 @@ ansible-playbook -i localhost, ansible/serve-hello-world.yml
 ansible-playbook -i localhost, ansible/stop-hello-world.yml
 ```
 
-## Deployment Steps
+## Optional VPN-Only Deployment Steps
 
-1. Set OCI profile and run low-cost mode with IPSec first:
+1. For the optional VPN-only rollout, set the OCI profile:
 ```bash
 export OCI_PROFILE=DEFAULT
 export OCI_CLI_PROFILE=DEFAULT

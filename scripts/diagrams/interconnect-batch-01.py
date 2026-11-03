@@ -17,7 +17,7 @@ def build(gcp=False):
  d=base.base.base.Diagram(toolkit=base.base.base.TOOLKIT,title=title)
  d.text(title,20,10,2460,45,size=25,bold=True)
  d.text('INTERCONNECT / Configuration topology, not operational evidence',20,65,2460,30,size=13)
- reg=d.group('region','OCI / supported region pair / explicit workload compartment',20,160,1090,900)
+ reg=d.group('region','OCI / selected pair among 14 commercial pairs' if gcp else 'OCI us-ashburn-1 / Ashburn / explicit compartment',20,160,1090,900)
  vc=d.group('vcn','Private VCN\n10.56.0.0/16',30,80,990,660,parent=reg)
  sn=d.group('subnet','Workload subnet\n10.56.10.0/24',40,120,700,300,parent=vc)
  d.icon('Security Lists',120,160,parent=sn,size=55,label='Explicit attached security list',label_pos='top')
@@ -27,7 +27,7 @@ def build(gcp=False):
  d.connect(sn,rt,kind='plain',label='route_table_id',exit=(1,.65),entry=(.5,0),waypoints=[(850,635)])
  d.connect(rt,drg,straight=True)
  d.text('No IGW, NAT, default Internet route, VPN or tenancy IAM policy.\nDRG system defaults provide route exchange; verify learned routes\nand export/import scope before adding other attachments.',40,550,900,80,parent=vc,size=15)
- remote=d.group('thirdparty','Google Cloud / existing project + supported region' if gcp else 'AWS / explicit account + supported local region',1320,160,1160,900)
+ remote=d.group('thirdparty','Google Cloud / paired region / two edge availability domains' if gcp else 'AWS us-east-1 / N. Virginia / explicit account',1320,160,1160,900)
  vpc=d.group('thirdparty','Custom regional VPC / no Internet default route' if gcp else 'Private VPC / 10.96.0.0/16 / explicit subnet AZ',30,80,1100,660,parent=remote)
  network=cloud.icon(d,'google_compute_network' if gcp else 'aws_vpc',95,95,parent=vpc,size=52,label='VPC',label_pos='right')
  subnet=d.group('thirdparty','Workload subnet / 10.96.10.0/24',45,180,1000,175,parent=vpc)
@@ -48,7 +48,7 @@ def build(gcp=False):
   d.connect(awsrt,gw,exit=(.5,1),entry=(1,.5),waypoints=[(2350,720)])
   d.text('Subnet route table + association / OCI subnet → VGW\nDXGW association advertises remote subnet only\nDXGW ASN 64512 / VGW ASN 64513',400,560,650,80,parent=vpc,size=15)
   d.text('OCI-first request targets aws_account_id and aws_region. Operator copies\nthe activation key and accepts it in AWS against the created DXGW.\nThe provider-managed Interconnect object is external to this Terraform root.',35,780,1090,85,parent=remote,size=15)
- d.connect(drg,edge,kind='fastconnect',label='2 private VCs / Partner Interconnect' if gcp else 'Managed Interconnect / create + accept',exit=(1,.5),entry=(0,.5),waypoints=[(1160,720),(1260,720),(1260,720)])
+ d.connect(drg,edge,kind='fastconnect',label='2 private VCs / Partner Interconnect' if gcp else 'Managed Interconnect / redundant + MACsec',exit=(1,.5),entry=(0,.5),waypoints=[(1160,720),(1260,720),(1260,720)])
  footer(d,'DISABLED DEFAULTS: enable_foundation=false / enable_interconnect=false / costs_approved=false / region_pair_verified=false / application TCP port set empty.'+('Foundation creates two Google Partner attachments; activate_attachments=false. enable_bgp=false; enabling circuits requires two approved BGP address pairs.\nPartner bandwidth is selected through OCI; no guessed Google PARTNER bandwidth, VLAN or physical cross-connect is created. Private transport does not imply encryption.' if gcp else 'A single OCI managed-interconnect VC represents provider-managed redundant infrastructure. No customer VIF, BGP peer or physical cross-connect is invented.\nAWS acceptance/activation is an explicit operator step. Verify regional offering/account eligibility; generic hosted Direct Connect is a separate service.')+'\nAll source-declared resources and operator-supplied identifiers appear on companion detail pages.')
  return d
 

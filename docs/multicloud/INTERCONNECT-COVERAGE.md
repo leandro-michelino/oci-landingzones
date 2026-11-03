@@ -74,3 +74,7 @@ Diagram layout/export, visual review, source-to-node inventory checks and native
 XML reference checks passed for all ten new pages. Six Ansible playbooks passed
 syntax checks. TFLint passed for both new roots, as did repository contracts,
 local Markdown links and the resource-inventory parser regression tests.
+
+## Interconnect-primary update — November 3, 2026
+
+See the [current regions and selection matrix](INTERCONNECT-REGIONS.md) and [change validation record](INTERCONNECT-PRIMARY-20261103.md). The existing hybrid overviews now prefer native Interconnect where supported. AWS hybrid mode can reference the managed service separately from conventional partner Direct Connect. AWS/Azure subnet routes no longer depend on VPN being enabled in dedicated mode. Historical evidence above remains unchanged.

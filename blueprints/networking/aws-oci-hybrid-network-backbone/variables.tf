@@ -105,13 +105,13 @@ variable "attach_oci_backbone_vcn_to_drg" {
 }
 
 variable "connectivity_mode" {
-  description = "Connectivity mode between OCI and AWS: without-interconnect (IPSec first) or interconnect."
+  description = "Preferred production path: managed-interconnect in its supported pair; interconnect for external partner circuits; without-interconnect for VPN-only rollout. Default retained for existing deployments."
   type        = string
   default     = "without-interconnect"
 
   validation {
-    condition     = contains(["interconnect", "without-interconnect"], var.connectivity_mode)
-    error_message = "connectivity_mode must be interconnect or without-interconnect."
+    condition     = contains(["managed-interconnect", "interconnect", "without-interconnect"], var.connectivity_mode)
+    error_message = "connectivity_mode must be managed-interconnect, interconnect or without-interconnect."
   }
 }
 
@@ -167,4 +167,16 @@ variable "freeform_tags" {
   description = "Freeform tags applied to resources."
   type        = map(string)
   default     = {}
+}
+
+variable "aws_interconnect_id" {
+  description = "Existing activated AWS managed Interconnect ID; this root records it but does not create or inspect the managed connection."
+  type        = string
+  default     = null
+}
+
+variable "aws_region" {
+  description = "AWS region; required for the managed Interconnect region-pair check."
+  type        = string
+  default     = null
 }

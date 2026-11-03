@@ -1,5 +1,14 @@
 # AWS + OCI Hybrid Network Backbone
 
+## Preferred primary path and available regions
+
+Use native Interconnect as the primary path for sustained production traffic in supported locations; retain VPN as an optional, independently engineered alternative or backup. See the [current region matrix and cutover procedure](../../../docs/multicloud/INTERCONNECT-REGIONS.md), reviewed 2026-11-03. Availability, redundancy and activation differ by provider. No on-premises transit through the native cloud-to-cloud service is assumed.
+
+The native managed pair is **OCI `us-ashburn-1` ↔ AWS `us-east-1`**. Prefer [the managed Interconnect root](../aws-oci-managed-interconnect/README.md) for a new isolated private deployment. This hybrid root supports existing managed circuits with `connectivity_mode="managed-interconnect"`, `aws_region`, `fastconnect_virtual_circuit_id` and `aws_interconnect_id`; conventional partner mode remains `interconnect` with `direct_connect_connection_id`. These identifiers are contracts, not resource creation or health checks. The CloudFormation companion still owns a TGW/VPN foundation; DXGW/TGW association and Interconnect attachment are external prerequisites. The managed root instead creates its own VGW foundation; do not apply both roots to the same resources without an explicit state/ownership migration.
+
+Use `interconnect.tfvars.example` as an overlay on a reviewed input file. VPN-only defaults remain compatible with existing configurations; they are not the preferred production topology. With either dedicated mode, remote-prefix subnet routes now remain present even when VPN is disabled.
+
+
 Start here for `blueprints/networking/aws-oci-hybrid-network-backbone`: what it builds, which inputs deserve a careful look, how to run Terraform or the local Ansible wrappers, and where the detailed architecture notes live.
 
 ## At A Glance
@@ -7,7 +16,7 @@ Start here for `blueprints/networking/aws-oci-hybrid-network-backbone`: what it 
 | Item | Details |
 | --- | --- |
 | Folder | `blueprints/networking/aws-oci-hybrid-network-backbone` |
-| Best fit | OCI DRG-primary hybrid network backbone with AWS Transit Gateway pairing and IPSec first, plus optional Direct Connect + FastConnect partner interconnect at final cutover. |
+| Best fit | OCI DRG-primary hybrid network backbone with AWS Transit Gateway pairing and native managed Interconnect in supported regions, external partner circuits elsewhere, and optional VPN. |
 | Terraform shape | `oci_core_vcn.backbone`, `oci_core_route_table.backbone`, `oci_core_security_list.backbone`, `oci_core_subnet.backbone`, `oci_core_drg.primary`, `oci_core_drg_attachment.backbone`, `oci_core_cpe.aws`, `oci_core_ipsec.aws`, `terraform_data.connectivity_contract`, `terraform_data.routing_contract` |
 | Inputs to settle first | `connectivity_mode`, `fastconnect_virtual_circuit_id`, `direct_connect_connection_id`, `enable_site_to_site_vpn`, `aws_cpe_public_ip`, `aws_backbone_cidrs` |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `oci_network_contract`, `connectivity_contract`, `routing_contract`, `oci_drg_id` |
@@ -16,13 +25,13 @@ Start here for `blueprints/networking/aws-oci-hybrid-network-backbone`: what it 
 ## Deployment Purpose
 
 Implements the OCI-primary hybrid network backbone with DRG as the primary
-routing core and contract outputs for IPSec-first rollout and optional partner
-interconnect cutover between OCI and AWS.
+routing core and contract outputs for native managed Interconnect, external partner circuits and
+optional independent VPN between OCI and AWS.
 
 ## When To Use This Deployment
 
 - OCI must remain the primary network hub across clouds.
-- AWS participates through Transit Gateway with site-to-site VPN first, and Direct Connect + FastConnect optional at final cutover.
+- AWS participates through Transit Gateway with native Interconnect preferred where available and optional independent VPN.
 - You need deterministic route and connectivity contracts for operations runbooks.
 - You want deploy-and-use OCI backbone networking in the same blueprint.
 
@@ -47,7 +56,7 @@ provide the same plan/apply/destroy rhythm used across the repo.
 | Resource | `oci_core_cpe.aws`, `oci_core_ipsec.aws` | Optional VPN resources for OCI-to-AWS connectivity. |
 | Resource | `oci_ons_notification_topic.backbone_alert` | Optional hybrid backbone operations alerts topic. |
 | Resource | `terraform_data.oci_network_contract` | OCI backbone network IDs and routing primitives output. |
-| Resource | `terraform_data.connectivity_contract` | IPSec-first and optional interconnect contract output. |
+| Resource | `terraform_data.connectivity_contract` | Managed/partner Interconnect and optional VPN contract output. |
 | Resource | `terraform_data.routing_contract` | DRG and CIDR routing contract output. |
 
 ## Folder Contract
@@ -110,9 +119,11 @@ Start with `terraform.tfvars.example`, then create a local ignored
 | `attach_oci_backbone_vcn_to_drg` | Keep `true` for new VCNs. Set `false` when reusing a VCN that is already attached. |
 | `oci_backbone_vcn_cidr` | CIDR for OCI backbone VCN. |
 | `oci_backbone_subnet_cidr` | CIDR for OCI backbone subnet. |
-| `connectivity_mode` | Select `without-interconnect` for IPSec-first rollout or `interconnect` for final dedicated-circuit cutover. |
+| `connectivity_mode` | Prefer `managed-interconnect` in Ashburn/N. Virginia; `interconnect` for external partner circuits; `without-interconnect` for VPN-only rollout. |
 | `fastconnect_virtual_circuit_id` | FastConnect virtual circuit OCID when interconnect mode is used. |
-| `direct_connect_connection_id` | AWS Direct Connect connection ID when interconnect mode is used. |
+| `direct_connect_connection_id` | Existing conventional Direct Connect ID for partner `interconnect` mode only. |
+| `aws_interconnect_id` | Existing activated managed AWS Interconnect ID for `managed-interconnect` mode; no legacy Direct Connect ID is needed. |
+| `aws_region` | `us-east-1` with OCI `us-ashburn-1` for the currently documented managed service pair. |
 | `enable_site_to_site_vpn` | Enable OCI CPE and IPSec resources for VPN path. |
 | `aws_cpe_public_ip` | AWS VPN endpoint public IP when VPN is enabled. |
 | `aws_backbone_cidrs` | AWS CIDRs expected across backbone route contracts. |
@@ -188,9 +199,9 @@ ansible-playbook -i localhost, ansible/serve-hello-world.yml
 ansible-playbook -i localhost, ansible/stop-hello-world.yml
 ```
 
-## Deployment Steps
+## Optional VPN-Only Deployment Steps
 
-1. Set OCI profile and keep IPSec-first mode:
+1. For the optional VPN-only rollout, set the OCI profile:
 ```bash
 export OCI_PROFILE=DEFAULT
 export OCI_CLI_PROFILE=DEFAULT

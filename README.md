@@ -104,7 +104,7 @@ The goal is not to hide complexity. The goal is to put it in predictable places.
 
 | Pattern | Blueprint |
 |---|---|
-| Hybrid backbone (OCI DRG primary) | [AWS + OCI Hybrid Network Backbone](blueprints/networking/aws-oci-hybrid-network-backbone/) |
+| Native managed Interconnect primary in Ashburn/N. Virginia; optional partner circuit or VPN | [AWS + OCI Hybrid Network Backbone](blueprints/networking/aws-oci-hybrid-network-backbone/) |
 | Cross-cloud DR (OCI primary, AWS standby) | [AWS + OCI Cross-Cloud DR](blueprints/disaster-recovery/aws-oci-cross-cloud-dr/) |
 | Active/passive Kubernetes failover (OCI-primary OKE, EKS standby) | [EKS + OKE Active Passive](blueprints/extensions/eks-oke-active-passive/) |
 | MySQL DR over IPSec (OCI primary) | [OCI + AWS MySQL HeatWave DR](blueprints/data-platform/oci-aws-mysql-heatwave-dr/) |
@@ -113,7 +113,7 @@ The goal is not to hide complexity. The goal is to put it in predictable places.
 
 | Pattern | Blueprint |
 |---|---|
-| Hybrid network foundations | [GCP + OCI Hybrid Network Backbone](blueprints/networking/gcp-oci-hybrid-network-backbone/) |
+| Redundant Partner Interconnect primary with optional independent HA VPN | [GCP + OCI Hybrid Network Backbone](blueprints/networking/gcp-oci-hybrid-network-backbone/) |
 | Cross-cloud DR infrastructure | [GCP + OCI Cross-Cloud DR](blueprints/disaster-recovery/gcp-oci-cross-cloud-dr/) |
 | Kubernetes primary/standby infrastructure | [GKE + OKE Active Passive](blueprints/extensions/gke-oke-active-passive/) |
 | MySQL DR infrastructure | [OCI + GCP MySQL HeatWave DR](blueprints/data-platform/oci-gcp-mysql-heatwave-dr/) |
@@ -206,3 +206,5 @@ validation details live in [tests/README.md](tests/README.md),
 
 Issues and PRs work best when they describe the customer outcome, the operating
 constraints, and the blueprint shape you want to land.
+
+Current commercial connection locations and design choices: [OCI multicloud Interconnect region matrix](docs/multicloud/INTERCONNECT-REGIONS.md).

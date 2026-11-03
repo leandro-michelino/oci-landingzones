@@ -1,5 +1,14 @@
 # AWS + OCI Hybrid Network Backbone Architecture
 
+## Preferred primary path and available regions
+
+Use native Interconnect as the primary path for sustained production traffic in supported locations; retain VPN as an optional, independently engineered alternative or backup. See the [current region matrix and cutover procedure](../../../../docs/multicloud/INTERCONNECT-REGIONS.md), reviewed 2026-11-03. Availability, redundancy and activation differ by provider. No on-premises transit through the native cloud-to-cloud service is assumed.
+
+The native managed pair is **OCI `us-ashburn-1` ↔ AWS `us-east-1`**. Prefer [the managed Interconnect root](../../aws-oci-managed-interconnect/README.md) for a new isolated private deployment. This hybrid root supports existing managed circuits with `connectivity_mode="managed-interconnect"`, `aws_region`, `fastconnect_virtual_circuit_id` and `aws_interconnect_id`; conventional partner mode remains `interconnect` with `direct_connect_connection_id`. These identifiers are contracts, not resource creation or health checks. The CloudFormation companion still owns a TGW/VPN foundation; DXGW/TGW association and Interconnect attachment are external prerequisites. The managed root instead creates its own VGW foundation; do not apply both roots to the same resources without an explicit state/ownership migration.
+
+Use `interconnect.tfvars.example` as an overlay on a reviewed input file. VPN-only defaults remain compatible with existing configurations; they are not the preferred production topology. With either dedicated mode, remote-prefix subnet routes now remain present even when VPN is disabled.
+
+
 This page is the deployment architecture for
 `blueprints/networking/aws-oci-hybrid-network-backbone`. It is intentionally
 Architecture-first so it is easy to review in GitHub, terminals, pull
@@ -8,15 +17,15 @@ requests, runbooks, and customer-safe notes without a diagramming tool.
 ## Deployment Purpose
 
 Implements an OCI-primary hybrid backbone where OCI DRG is the primary routing
-hub, with AWS connectivity through site-to-site VPN first and optional partner
-Direct Connect + FastConnect interconnect contract metadata for final cutover.
+hub, with native managed Interconnect preferred in its supported pair, external partner
+circuits elsewhere when available, and VPN as an optional rollout or backup path.
 
 ## Architecture At A Glance
 
 | Item | Details |
 | --- | --- |
 | Boundary | `blueprints/networking/aws-oci-hybrid-network-backbone` owns this deployment folder and its Terraform + Ansible runners. |
-| Purpose | Build OCI DRG-primary backbone networking and publish IPSec-first, interconnect-ready routing contracts for AWS + OCI operations. |
+| Purpose | Build OCI DRG-primary backbone networking and publish Interconnect-primary routing contracts with optional VPN for AWS + OCI operations. |
 | Terraform components | `oci_core_vcn.backbone`, `oci_core_route_table.backbone`, `oci_core_security_list.backbone`, `oci_core_subnet.backbone`, `oci_core_drg.primary`, `oci_core_drg_attachment.backbone`, `oci_core_cpe.aws`, `oci_core_ipsec.aws`, `terraform_data.connectivity_contract`, `terraform_data.routing_contract` |
 | Primary architecture view | The Architecture diagram below shows the OCI hub, AWS side connectivity assumptions, and contract outputs for this deployment. |
 
@@ -89,7 +98,7 @@ See [the fixed first-39 review](../../../../docs/diagrams/FIRST-39-REVIEW.md) an
 | Resource | `oci_core_cpe.aws`, `oci_core_ipsec.aws` | Optional VPN path resources for AWS connectivity. |
 | Resource | `oci_ons_notification_topic.backbone_alert` | Optional operations topic for backbone alerts. |
 | Resource | `terraform_data.oci_network_contract` | OCI network IDs and subnet/route/security contract output. |
-| Resource | `terraform_data.connectivity_contract` | IPSec-first and optional interconnect mode contract output. |
+| Resource | `terraform_data.connectivity_contract` | Managed/partner Interconnect and optional VPN mode contract output. |
 | Resource | `terraform_data.routing_contract` | Route governance contract output. |
 | Resource | `oci_core_internet_gateway.backbone` | Declared in this blueprint; creation depends on its count or for_each inputs. |
 
@@ -104,7 +113,7 @@ See [the fixed first-39 review](../../../../docs/diagrams/FIRST-39-REVIEW.md) an
 ## Traffic And Trust Boundaries
 
 - Control plane traffic is local or CI execution authenticated to OCI and AWS CLI contexts.
-- Data plane traffic starts through OCI DRG and IPSec tunnels, with optional interconnect path at final cutover.
+- Prefer native managed Interconnect in its documented region pair; independently provision and test optional VPN. The legacy partner-circuit mode remains available.
 - Trust boundaries include OCI tenancy ownership, AWS account ownership, and partner interconnect ownership.
 - Connection IDs, public endpoint IPs, and account identifiers belong in ignored local tfvars or secure pipeline variable stores.
 

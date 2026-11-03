@@ -35,3 +35,16 @@ run "attachment_can_be_disabled" {
     error_message = "The explicit attachment toggle must disable creation."
   }
 }
+
+run "interconnect_without_vpn_keeps_routes" {
+  command = plan
+  variables {
+    connectivity_mode              = "interconnect"
+    fastconnect_virtual_circuit_id = "ocid1.virtualcircuit.oc1.jnb..example"
+    expressroute_circuit_id        = "/subscriptions/example/resourceGroups/example/providers/Microsoft.Network/expressRouteCircuits/example"
+  }
+  assert {
+    condition     = length([for r in oci_core_route_table.primary[0].route_rules : r if r.destination == "10.88.0.0/16"]) == 1 && length(oci_core_ipsec.azure) == 0
+    error_message = "Interconnect needs remote-prefix routes even with VPN fallback disabled."
+  }
+}

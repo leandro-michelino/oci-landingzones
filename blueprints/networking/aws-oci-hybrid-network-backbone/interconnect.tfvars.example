@@ -1,0 +1,10 @@
+# Overlay these values on a reviewed local input file; IDs are placeholders.
+# Preferred managed service pair; provision using ../aws-oci-managed-interconnect
+# OR attach externally provisioned circuits to this root's DRG and AWS TGW/DXGW.
+region = "us-ashburn-1"
+aws_region = "us-east-1"
+connectivity_mode = "managed-interconnect"
+fastconnect_virtual_circuit_id = "ocid1.virtualcircuit.oc1.iad..replace-me"
+aws_interconnect_id = "replace-with-activated-aws-interconnect-id"
+direct_connect_connection_id = null
+enable_site_to_site_vpn = false

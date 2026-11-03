@@ -1,5 +1,12 @@
 # Azure + OCI Dual Connectivity Hardening Architecture
 
+## Preferred primary path and available regions
+
+Use native Interconnect as the primary path for sustained production traffic in supported locations; retain VPN as an optional, independently engineered alternative or backup. See the [current region matrix and cutover procedure](../../../../docs/multicloud/INTERCONNECT-REGIONS.md), reviewed 2026-11-03. Availability, redundancy and activation differ by provider. No on-premises transit through the native cloud-to-cloud service is assumed.
+
+The native service is documented at **12 OCI connection locations**, including **Johannesburg ↔ ExpressRoute Johannesburg** (nearby Azure region: South Africa North). Peering locations and Azure regions are distinct. Use `connectivity_mode="interconnect"` and the reviewed existing FastConnect/ExpressRoute IDs; see `interconnect.tfvars.example`. The supplied Bicep provisions the VPN edge, not an ExpressRoute circuit or ExpressRoute VNet gateway. Provision those externally for this VNet; the separate vWAN/ExpressRoute blueprint is a different hub design. Subnet routes to Azure remain present when VPN fallback is disabled. DNS and route-weight contracts remain metadata.
+
+
 This page is the deployment architecture for
 `blueprints/networking/azure-oci-dual-connectivity`. It is Architecture-first
 so the design is easy to review in GitHub, terminals, pull requests, runbooks,
@@ -8,15 +15,15 @@ and customer-safe notes without a diagramming tool.
 ## Deployment Purpose
 
 Implements an OCI-primary network connectivity pattern with two explicit paths:
-IPSec/BGP for first bring-up and validation, then optional Interconnect for
-final cutover.
+native FastConnect/ExpressRoute as the preferred primary path in supported locations,
+with optional independently validated IPSec fallback.
 
 ## Architecture At A Glance
 
 | Item | Details |
 | --- | --- |
 | Boundary | `blueprints/networking/azure-oci-dual-connectivity` owns this deployment folder and its Terraform + Ansible runners. |
-| Purpose | Build OCI-primary DRG routing baseline and publish IPSec-first, interconnect-optional, DNS, and runbook contracts for Azure + OCI operations. |
+| Purpose | Build OCI-primary DRG routing baseline and publish Interconnect-primary, optional VPN, DNS, and runbook contracts for Azure + OCI operations. |
 | Terraform components | `oci_core_vcn.primary`, `oci_core_route_table.primary`, `oci_core_security_list.primary_hub`, `oci_core_subnet.primary_hub`, `oci_core_drg.primary`, `oci_core_drg_attachment.primary`, `oci_core_cpe.azure`, `oci_core_ipsec.azure`, `terraform_data.connectivity_contract`, `terraform_data.ipsec_fallback_contract`, `terraform_data.routing_contract`, `terraform_data.dns_contract`, `terraform_data.runbook_contract` |
 | Primary architecture view | The Architecture diagram below shows OCI control-plane ownership, Azure edge assumptions, and the route preference model. |
 
@@ -89,7 +96,7 @@ See [the fixed first-39 review](../../../../docs/diagrams/FIRST-39-REVIEW.md) an
 | Resource | `oci_core_cpe.azure`, `oci_core_ipsec.azure` | Optional IPSec fallback tunnel resources for Azure edge failover. |
 | Resource | `oci_ons_notification_topic.connectivity_alert` | Optional operations alerts topic. |
 | Resource | `terraform_data.oci_network_contract` | OCI network and DRG contract output. |
-| Resource | `terraform_data.connectivity_contract` | IPSec-first and optional interconnect-mode contract output. |
+| Resource | `terraform_data.connectivity_contract` | Interconnect-primary and optional VPN-mode contract output. |
 | Resource | `terraform_data.ipsec_fallback_contract` | Fallback IPSec/BGP contract output. |
 | Resource | `terraform_data.routing_contract` | CIDR exchange and path preference contract output. |
 | Resource | `terraform_data.dns_contract` | Optional DNS forwarding and probe contract output. |
@@ -107,7 +114,7 @@ See [the fixed first-39 review](../../../../docs/diagrams/FIRST-39-REVIEW.md) an
 ## Traffic And Trust Boundaries
 
 - Control plane traffic runs from local workstation/CI to OCI and Azure APIs.
-- Data plane starts with IPSec and can shift to Interconnect in final cutover using operator-controlled runbook steps.
+- Prefer native Interconnect in supported locations; optional IPSec fallback requires independent tunnel pairing, route policy and acceptance testing.
 - Trust boundaries include OCI tenancy ownership, Azure subscription ownership, and partner interconnect ownership.
 - Connection IDs, public IP endpoints, and circuit identifiers must stay in ignored local tfvars or secure pipeline variables.
 

@@ -355,6 +355,7 @@ def companion_resources(folder):
 def main():
  parser=argparse.ArgumentParser(description=__doc__)
  parser.add_argument('--render',action='store_true'); parser.add_argument('--blueprint',action='append'); parser.add_argument('--check',action='store_true')
+ parser.add_argument('--review-date',help='Source review date (YYYY-MM-DD); otherwise retain the existing inventory review date')
  parser.add_argument('--first-39',action='store_true',help='Review the fixed 39-overview baseline from first-39-review.json')
  args=parser.parse_args()
  if args.first_39 and args.blueprint:parser.error('Choose --first-39 or --blueprint')
@@ -431,7 +432,8 @@ def main():
     resource_pages.append(render_map(slug,cloud,entries[start:start+18],lookups,args.render,start//18+1))
   input_page=render_inputs(slug,refs,args.render) if refs else None
   if not all('diagram' in e for e in resources): raise RuntimeError('Resource missing diagram mapping')
-  inventory={'schema_version':2,'blueprint':slug,'review_date':'2026-10-28','scope':'Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.','counts_by_cloud':counts,'resources':resources,'resource_pages':resource_pages,'input_references':refs,'input_page':input_page,'data_lookups':lookups,'source_files':sources}
+  review_date=args.review_date or (json.loads(inventory_path.read_text()).get('review_date','2026-10-28') if inventory_path.exists() else '2026-10-28')
+  inventory={'schema_version':2,'blueprint':slug,'review_date':review_date,'scope':'Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.','counts_by_cloud':counts,'resources':resources,'resource_pages':resource_pages,'input_references':refs,'input_page':input_page,'data_lookups':lookups,'source_files':sources}
   inventory_path.write_text(json.dumps(inventory,indent=2)+'\n')
   # Rebuild the native document as overview + generated resource-detail pages.
   # Layouts and all shapes are authored through the skill API, not hand-edited XML.

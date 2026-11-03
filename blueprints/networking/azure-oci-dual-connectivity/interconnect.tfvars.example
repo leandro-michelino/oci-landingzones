@@ -1,0 +1,8 @@
+# Overlay these values on a reviewed local input file; IDs are placeholders.
+# OCI Johannesburg with ExpressRoute peering location Johannesburg.
+# Azure VNet example region: southafricanorth; peering location is not a region.
+region = "af-johannesburg-1"
+connectivity_mode = "interconnect"
+fastconnect_virtual_circuit_id = "ocid1.virtualcircuit.oc1.jnb..replace-me"
+expressroute_circuit_id = "/subscriptions/replace-me/resourceGroups/replace-me/providers/Microsoft.Network/expressRouteCircuits/replace-me"
+enable_ipsec_fallback = false

@@ -85,39 +85,33 @@ def shared(title,index,kind):
 
 def crosscloud(title,index,cloud):
     aws=cloud=='aws'
-    remote_cidr='10.94.0.0/16' if aws else '10.88.0.0/16'
-    oci_cidr='10.54.0.0/16' if aws else '10.58.0.0/16'
-    subnet_cidr='10.54.10.0/24' if aws else '10.58.10.0/24'
-    remote_subnet='10.94.10.0/24' if aws else '10.88.10.0/24'
-    d=header(title,index)
-    remote=d.group('thirdparty',('AWS / separate CloudFormation deployment' if aws else 'Azure / separate Bicep deployment'),20,160,680,850)
-    provider_icons.box(d,'AWS::EC2::VPC' if aws else 'Microsoft.Network/virtualNetworks',('VPC' if aws else 'VNet')+f' {remote_cidr}\nWorkload subnet {remote_subnet}\n'+('No auto public IPs; RT default → Internet Gateway' if aws else 'Workload UDR default → Internet; NSG allows TCP 80/443 inbound'),30,70,620,190,parent=remote,kind='thirdparty_component')
-    provider_icons.box(d,'AWS::EC2::FlowLog' if aws else 'Microsoft.Network/virtualNetworkGateways','VPC Flow Logs → CloudWatch Logs\nKMS key + IAM delivery role; 30-day log retention' if aws else 'GatewaySubnet 10.88.250.0/27 (when VPN enabled)\nStandard static Public IP; VPN gateway VpnGw1AZ',30,300,620,120,parent=remote,kind='thirdparty_component')
-    gateway=provider_icons.box(d,'AWS::EC2::TransitGateway' if aws else 'Microsoft.Network/virtualNetworkGateways','Transit Gateway + VPC attachment\nConditional Customer Gateway + static-route VPN' if aws else 'VPN Gateway + Local Network Gateway\nIPSec connection with BGP enabled (conditional)',30,480,620,120,parent=remote,kind='thirdparty_component')
-    d.box('No Direct Connect is created by this template.\nTGW/VPN routing still needs end-to-end agreement.' if aws else 'No ExpressRoute circuit is created by this template.\nGateway IP / peer IP / shared secret inputs need real values.',30,680,620,120,parent=remote,kind='note')
-    region=d.group('region','OCI / operator-selected region, OCI-primary deployment',850,160,1200,850)
-    comp=d.group('compartment','Target compartment / operator input',20,50,1160,780,parent=region)
-    vcn=d.group('vcn',('Backbone' if aws else 'Primary')+f' VCN\n{oci_cidr} (default)',80,130,980,570,parent=comp)
-    drg=d.icon('DRG',0,130,parent=vcn,size=56,label='DRG + VCN attachment\nCreated by default / existing ID supported',label_pos='top',border=True)
-    sn=d.group('subnet',f'Backbone subnet\n{subnet_cidr}',220,130,500,210,parent=vcn)
-    d.text('Public IPs allowed on VNICs.\nSecurity list: TCP 443 ingress from 10.0.0.0/8; all egress.\nNo compute or load balancer is created.',20,85,460,95,parent=sn,size=13)
-    rt=d.icon('Route Table',820,240,parent=vcn,size=50,label='Default RT\n0.0.0.0/0 → IGW\nRemote CIDR → DRG if VPN enabled',label_pos='bottom')
-    igw=d.icon('Internet Gateway',980,350,parent=vcn,size=52,label='IGW',label_pos='top',border=True)
-    d.connect(sn,rt,kind='plain',exit=(1,.5),entry=(0,.5),straight=True)
-    d.connect(rt,igw,exit=(1,.5),entry=(0,.5),waypoints=[(1840,580),(1840,690)])
-    d.connect(rt,drg,label='Remote prefix / conditional on VPN flag',exit=(.5,0),entry=(.5,0),waypoints=[(1770,405),(950,405)])
-    d.connect(gateway,drg,kind='vpn',label='VPN requested by default / CPE IP TBC',exit=(1,.5),entry=(0,.5),waypoints=[(780,700),(780,470)])
-    internet=d.group('internet','Internet',2110,510,250,190)
-    inet=d.icon('Internet',125,90,parent=internet,size=56,label='OCI subnet default route',label_pos='bottom')
-    d.connect(igw,inet,exit=(1,.5),entry=(0,.5),waypoints=[(2090,690),(2090,600)])
-    d.icon('Notifications',1030,720,parent=comp,size=48,label='Alert topic / default enabled\nNo subscription or alarm declared',label_pos='top')
-    d.text('Create-network=true and attach-VCN-to-DRG=true by default.\nNo NAT or Service Gateway is declared in this OCI root.\nAn existing VCN/DRG can be supplied using the documented flags.',100,715,720,55,parent=comp,size=12)
-    d.box('INTERCONNECT CONTRACT / separate provisioning\nconnectivity_mode=without-interconnect by default; circuit IDs are null.\nInterconnect mode requires existing FastConnect + '+('Direct Connect' if aws else 'ExpressRoute')+' identifiers; it creates neither circuit.',20,1070,1000,150,kind='optional')
-    d.box('DEFAULT INPUTS ARE INCOMPLETE\nVPN flag defaults true but remote CPE public IP is null: full-default plan cannot pass that prerequisite.\nTemplate placeholder addresses and secrets must be replaced; no tunnel interoperability is proven.',1080,1070,1280,150,kind='note')
-    if not aws:
-        d.box('AZURE CONTRACTS / metadata, not deployed DNS or failover\nBGP ASN/timers, path weights, corp.internal DNS and the 120-second failover target are input/runbook data.\nThe OCI root declares static IPSec routes; it does not configure tunnel BGP settings or a failover controller.',20,1270,2340,130,kind='note')
-    else:
-        d.box('AWS / OCI ROUTING LIMIT\nThe two cloud templates are separate deployments, not an automatically paired VPN.\nPeer addressing, tunnel parameters, route exchange and cloud-specific routing must be reconciled before packet tests.',20,1270,2340,130,kind='note')
+    title=('AWS + OCI | Managed Interconnect primary, optional VPN' if aws else 'Azure + OCI | FastConnect + ExpressRoute primary, optional VPN')
+    d=base.Diagram(toolkit=base.TOOLKIT,title=title)
+    d.text(title,20,10,2500,45,size=25,bold=True)
+    d.text('Primary design: supported native Interconnect / dashed links require external provisioning; solid links show source configuration.',20,70,2500,35,size=15)
+    remote=d.group('thirdparty','AWS us-east-1 / N. Virginia' if aws else 'Azure / South Africa North example / ExpressRoute location Johannesburg',20,160,1100,1000)
+    region=d.group('region','OCI us-ashburn-1 / Ashburn' if aws else 'OCI af-johannesburg-1 / Johannesburg example',1420,160,1100,1000)
+    cidr='10.94' if aws else '10.88'
+    oc='10.54' if aws else '10.58'
+    vpc=d.group('thirdparty',('VPC' if aws else 'VNet')+' / '+cidr+'.0.0/16 (source default)',40,80,1020,200,parent=remote)
+    subnet=d.box('Workload subnet / '+cidr+'.10.0/24 (source default)\nSeparate '+('CloudFormation' if aws else 'Bicep')+' foundation / no application created',30,65,960,100,parent=vpc)
+    vcn=d.group('vcn','OCI backbone VCN / '+oc+'.0.0/16 (source default)',40,80,1020,200,parent=region)
+    sn=d.group('subnet','Backbone subnet / '+oc+'.10.0/24',30,65,650,100,parent=vcn)
+    rt=d.icon('Route Table',840,115,parent=vcn,size=48,label='Remote prefixes → DRG\nDedicated OR VPN mode',label_pos='top')
+    d.connect(sn,rt,kind='plain',straight=True)
+    drg=d.icon('DRG',550,470,parent=region,size=65,label='DRG + VCN attachment\nCircuit must attach to this DRG',label_pos='top')
+    d.connect(rt,drg,exit=(.5,1),entry=(.5,0),waypoints=[(2300,520),(1970,520)])
+    primary=d.box(('External DXGW + TGW association\nNative managed Interconnect / accept activation key' if aws else 'External ExpressRoute circuit + private peering\nExpressRoute VNet gateway + VNet connection'),70,400,960,125,parent=remote,kind='optional')
+    d.connect(primary,subnet,kind='dashed',label='External '+('DXGW/TGW association + VPC routing' if aws else 'ExpressRoute gateway connection / return routes'),exit=(.5,0),entry=(.5,1),straight=True)
+    d.connect(primary,drg,kind='dashed',label='PRIMARY / '+('Managed Interconnect + FastConnect VC' if aws else 'ExpressRoute + FastConnect VC'),exit=(1,.5),entry=(0,.5),straight=True,label_offset=(0,50))
+    vpn=provider_icons.box(d,'AWS::EC2::TransitGateway' if aws else 'Microsoft.Network/virtualNetworkGateways',('TGW + optional static-route VPN' if aws else 'Optional VPN gateway + BGP connection')+'\nCompanion template / separate deployment',70,720,960,110,parent=remote,kind='thirdparty_component')
+    ipsec=d.box('Optional OCI CPE + IPSec\nExplicit remote public endpoint / static routes',70,720,960,110,parent=region,kind='optional')
+    d.connect(vpn,ipsec,kind='vpn',label='OPTIONAL BACKUP / external tunnel pairing + tested route preference',straight=True,label_offset=(0,50))
+    d.connect(ipsec,drg,kind='plain',label='drg_id',exit=(.5,0),entry=(.5,1),straight=True)
+    d.text('Source foundation also declares '+('flow logs, KMS and log-delivery IAM.\nTGW/VPC attachment remains managed by the companion template.' if aws else 'Internet UDR, NSG, public IP and VPN edge when enabled.\nIt does not create ExpressRoute resources.'),60,890,980,80,parent=remote,size=15)
+    d.text('Source foundation retains IGW + Internet default route, public-IP-capable\nsubnet, HTTPS security list and optional Notifications topic.\nCircuit IDs record a handoff; this root creates neither primary circuit.',60,890,980,80,parent=region,size=15)
+    d.box(('MANAGED AWS: us-ashburn-1 ↔ us-east-1 only. One logical circuit includes provider device/location redundancy + MACsec.\nUse aws-oci-managed-interconnect for a NEW private VGW foundation; its resources are separate from this TGW backbone.\nOther region pairs: independently assess carrier Direct Connect + FastConnect or VPN; do not assume native service availability.' if aws else 'AZURE: 12 OCI connection locations / full matrix in docs/multicloud/INTERCONNECT-REGIONS.md.\nNative FastConnect + ExpressRoute includes redundant BGP sessions; private transport alone does not imply encryption.\nExisting circuit IDs, ExpressRoute gateway attachment, route filters and private DNS require explicit operator provisioning.'),20,1230,2500,150,kind='note')
+    d.text('CIDRs are editable examples. Keep Internet defaults under review for production. Native cloud-to-cloud Interconnect does not support on-premises transit.\nVPN-only defaults are retained for compatibility; select dedicated mode explicitly. Route preference, DNS and failover require configuration and acceptance tests.',20,1410,2500,75,size=15)
     return d
 
 

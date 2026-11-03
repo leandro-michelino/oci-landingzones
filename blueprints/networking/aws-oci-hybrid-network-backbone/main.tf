@@ -41,7 +41,7 @@ resource "oci_core_route_table" "backbone" {
   }
 
   dynamic "route_rules" {
-    for_each = var.enable_site_to_site_vpn ? var.aws_backbone_cidrs : []
+    for_each = (var.connectivity_mode != "without-interconnect" || var.enable_site_to_site_vpn) ? var.aws_backbone_cidrs : []
 
     content {
       destination       = route_rules.value
@@ -175,13 +175,25 @@ resource "terraform_data" "connectivity_contract" {
       condition = (
         var.connectivity_mode == "interconnect" &&
         var.fastconnect_virtual_circuit_id != null &&
-        var.direct_connect_connection_id != null
+        var.direct_connect_connection_id != null &&
+        var.aws_interconnect_id == null
         ) || (
         var.connectivity_mode == "without-interconnect" &&
         var.fastconnect_virtual_circuit_id == null &&
+        var.direct_connect_connection_id == null &&
+        var.aws_interconnect_id == null
+        ) || (
+        var.connectivity_mode == "managed-interconnect" &&
+        var.fastconnect_virtual_circuit_id != null &&
+        var.aws_interconnect_id != null &&
         var.direct_connect_connection_id == null
       )
-      error_message = "For connectivity_mode=interconnect, set fastconnect_virtual_circuit_id and direct_connect_connection_id. For connectivity_mode=without-interconnect, set both values to null."
+      error_message = "Managed mode requires FastConnect and AWS Interconnect IDs, with no legacy Direct Connect ID. Partner mode requires FastConnect and Direct Connect IDs, with no managed ID. VPN-only mode requires all circuit IDs null."
+    }
+
+    precondition {
+      condition     = var.connectivity_mode != "managed-interconnect" || (var.region == "us-ashburn-1" && var.aws_region == "us-east-1")
+      error_message = "Managed AWS Interconnect currently supports OCI us-ashburn-1 and AWS us-east-1 only; see docs/multicloud/INTERCONNECT-REGIONS.md."
     }
 
     precondition {
