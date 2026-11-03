@@ -39,7 +39,7 @@ resource "google_compute_router_peer" "this" {
   name                      = "${var.name}-${each.key}"
   router                    = module.network.router_name
   interface                 = google_compute_router_interface.this[each.key].name
-  peer_ip_address           = cidrhost(each.value.oracle_ip, 0)
+  peer_ip_address           = split("/", each.value.oracle_ip)[0]
   peer_asn                  = each.value.peer_asn
   advertised_route_priority = 100
 }
@@ -119,7 +119,7 @@ resource "google_compute_router_peer" "vpn" {
   name                      = "${var.name}-vpn-${each.key}"
   router                    = google_compute_router.vpn[0].name
   interface                 = google_compute_router_interface.vpn[each.key].name
-  peer_ip_address           = cidrhost(var.vpn_tunnels[each.key].oracle_ip, 0)
+  peer_ip_address           = split("/", var.vpn_tunnels[each.key].oracle_ip)[0]
   peer_asn                  = var.oci_vpn_asn
   advertised_route_priority = 200
 }

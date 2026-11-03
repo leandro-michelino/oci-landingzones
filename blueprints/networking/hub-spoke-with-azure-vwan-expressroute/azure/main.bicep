@@ -9,6 +9,7 @@ param expressRouteGatewayName string = 'ergw-oci-hub-spoke'
 param expressRouteGatewayScaleUnits int = 1
 param expressRouteConnectionName string = 'conn-ergw-to-oci-fastconnect'
 param expressRouteCircuitPeeringId string = ''
+@secure()
 param expressRouteAuthorizationKey string = ''
 
 param ociAddressPrefixes array = [

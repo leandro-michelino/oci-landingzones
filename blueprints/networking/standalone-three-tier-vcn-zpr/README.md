@@ -193,3 +193,7 @@ cleanup of generated Terraform artifacts.
 Provider configuration ignores only OCI-managed `Oracle-Tags.CreatedBy` and `Oracle-Tags.CreatedOn`; customer-defined tags remain managed. Live validation covers network provisioning and cleanup, without workload packet-flow tests.
 
 ZPR is disabled by default. Onboarding and ZPR policies are tenancy-root administrative resources, outside a compartment-only test. Onboarding requires the tenancy home region. This blueprint does not assign security attributes to workload resources, so provisioning policies alone does not prove enforcement. The corrected local ZPR module requires publication and a refreshed module pin before remote consumers receive its root-scope fix. Public HTTP/HTTPS ingress belongs only to the web subnet; app and database use an ingress-empty baseline.
+
+## Networking review — 2026-11-03
+
+See the [networking review and validation matrix](../../../docs/NETWORKING-REVIEW-20261103.md) for the source scope, local checks, corrections and remaining external prerequisites. Historical cloud lifecycle evidence is not extended by this local review.

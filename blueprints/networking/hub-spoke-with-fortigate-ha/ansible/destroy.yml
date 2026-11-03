@@ -9,4 +9,4 @@
     terraform_require_confirmation: true
     terraform_confirmation_env: CONFIRM_DESTROY
   roles:
-    - role: terraform_runner
+    - role: ../../../../ansible/roles/terraform_runner

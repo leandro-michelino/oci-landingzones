@@ -38,7 +38,7 @@ optional independent VPN between OCI and AWS.
 ## Practical Use Cases
 
 - **AWS apps with OCI shared services:** Keep AWS workloads connected to OCI databases, directory services, observability, or security services without turning every VPC into a custom snowflake.
-- **IPSec-first rollout:** Bring up encrypted connectivity quickly, prove routes and operations, then move to Direct Connect plus FastConnect when the dedicated path is ready.
+- **Dedicated primary and independent VPN:** Prefer managed Interconnect in supported regions; use VPN as a tested backup or when dedicated connectivity is unavailable.
 - **OCI as the network anchor:** Use OCI DRG as the primary routing point while AWS Transit Gateway aggregates the AWS side.
 - **Migration and coexistence:** Run workloads in both clouds during a phased move, with route intent captured clearly for the teams doing the cutover.
 
@@ -234,3 +234,9 @@ ansible-playbook -i localhost, ansible/aws-ipsec-verify.yml
 - AWS CIDRs are documented and do not overlap OCI CIDRs.
 - VPN or interconnect mode matches the IDs supplied in tfvars.
 - Connectivity and routing outputs are useful enough for the AWS and OCI teams to operate from.
+
+## Networking review — 2026-11-03
+
+See the [networking review and validation matrix](../../../docs/NETWORKING-REVIEW-20261103.md) for the source scope, local checks, corrections and remaining external prerequisites. Historical cloud lifecycle evidence is not extended by this local review.
+
+For cross-cloud traffic, prefer a supported native Interconnect or an explicitly reviewed private partner circuit as the primary transport. Use VPN as an independently configured backup, or as the alternative when Interconnect is unavailable or unsuitable. Confirm [current connection locations](../../../docs/multicloud/INTERCONNECT-REGIONS.md), account eligibility, route preference, both return paths and actual failover behavior; an identifier contract alone establishes none of these.

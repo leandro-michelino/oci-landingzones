@@ -7,7 +7,7 @@ Start here for `blueprints/networking/hub-spoke-with-hub-vcn-net-firewall`: what
 | Item | Details |
 | --- | --- |
 | Folder | `blueprints/networking/hub-spoke-with-hub-vcn-net-firewall` |
-| Best fit | Adds OCI Network Firewall into hub-spoke routing so inspection is first-class in the landing-zone network. |
+| Best fit | Creates a hub-spoke foundation and an optional OCI Network Firewall; inspection routes and policy rules require separate configuration. |
 | Terraform shape | `network`, `network_firewall` |
 | Inputs to settle first | `compartment_ocid`, `firewall_label`, `firewall_subnet_key`, `network_firewall_policy_id` |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `hub_vcn_id`, `drg_id`, `hub_subnet_ids`, `network_firewall_id`, plus 1 more |
@@ -15,8 +15,7 @@ Start here for `blueprints/networking/hub-spoke-with-hub-vcn-net-firewall`: what
 
 ## Deployment Purpose
 
-Adds OCI Network Firewall into hub-spoke routing so inspection is first-class in the
-landing-zone network.
+Creates a hub-spoke foundation and an optional OCI Network Firewall; inspection routes and policy rules require separate configuration.
 
 ## When To Use This Deployment
 
@@ -200,3 +199,11 @@ The validator checks Terraform formatting, required deployment README files, req
 architecture README sections, `terraform init -backend=false`, `terraform validate`, root
 Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
 cleanup of generated Terraform artifacts.
+
+## Networking review — 2026-11-03
+
+See the [networking review and validation matrix](../../../docs/NETWORKING-REVIEW-20261103.md) for the source scope, local checks, corrections and remaining external prerequisites. Historical cloud lifecycle evidence is not extended by this local review.
+
+## Implementation boundary
+
+The source creates the firewall/policy resources when enabled, but does not create inspection steering routes, policy security rules or workload probes. A provisioned firewall is not evidence that transit is inspected.

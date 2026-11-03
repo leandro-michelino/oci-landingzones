@@ -208,3 +208,5 @@ Issues and PRs work best when they describe the customer outcome, the operating
 constraints, and the blueprint shape you want to land.
 
 Current commercial connection locations and design choices: [OCI multicloud Interconnect region matrix](docs/multicloud/INTERCONNECT-REGIONS.md).
+
+Networking source review, corrections and local validation: [2026-11-03 review](docs/NETWORKING-REVIEW-20261103.md) · [Networking index](blueprints/networking/README.md).

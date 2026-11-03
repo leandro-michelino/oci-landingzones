@@ -24,7 +24,8 @@ param ociAddressPrefixes array = [
 ]
 param azureAsn int = 65515
 param ociAsn int = 31898
-param fallbackSharedKey string = 'replace-with-secure-key'
+@secure()
+param fallbackSharedKey string
 param tags object = {}
 
 resource vnet 'Microsoft.Network/virtualNetworks@2024-05-01' = {

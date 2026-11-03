@@ -9,3 +9,5 @@ Use `ansible/gcp-plan.yml`, `gcp-apply.yml` and `gcp-destroy.yml` from the paren
 All creation flags default false. Protected inputs, credentials and saved plans must remain out of Git. Deletion protection and non-empty versioned buckets require explicit reviewed removal and data handling before teardown; do not force-destroy backups.
 
 Local schema/mocked checks are configuration evidence only. No Google API discovery, deployment, workload execution, connectivity, replication or recovery test has been run.
+
+BGP peer addresses preserve the host portion of the assigned Oracle interface CIDR. For example, `169.254.10.1/30` configures peer `169.254.10.1`, not subnet `169.254.10.0`. This applies to both Partner Interconnect and HA VPN peers. See [the networking review](../../../../docs/NETWORKING-REVIEW-20261103.md).

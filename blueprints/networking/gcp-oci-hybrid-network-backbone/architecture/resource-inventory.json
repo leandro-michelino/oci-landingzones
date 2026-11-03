@@ -1182,7 +1182,7 @@
     {
       "path": "blueprints/networking/gcp-oci-hybrid-network-backbone/gcp/infrastructure.tf",
       "revision": "working-tree",
-      "sha256": "0a07ce92905e4bb157774bc78094c80883630c734e4a284b773443e972d92789"
+      "sha256": "afd52e97e71e2766f7dde15b931750cbdb2be347e0adae2da120967f18841b65"
     },
     {
       "path": "modules/networking/gcp-private-network/main.tf",

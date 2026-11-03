@@ -41,6 +41,9 @@ data "oci_core_vcn_dns_resolver_association" "this" {
 }
 
 resource "oci_dns_resolver" "vcn" {
+  # Rule source_endpoint_name is a string input; make the lifecycle dependency explicit.
+  depends_on = [oci_dns_resolver_endpoint.this]
+
   for_each = data.oci_core_vcn_dns_resolver_association.this
 
   resolver_id = each.value.dns_resolver_id

@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "blueprint": "networking/hub-spoke-with-azure-vwan-expressroute",
-  "review_date": "2026-10-28",
+  "review_date": "2026-11-03",
   "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
   "counts_by_cloud": {
     "Azure": 9,
@@ -1503,7 +1503,7 @@
     },
     {
       "path": "blueprints/networking/hub-spoke-with-azure-vwan-expressroute/azure/main.bicep",
-      "sha256": "aafee31bb6b03a10a43c81fc25b4a94eea9b82822639c419fb53d4fa7990a5b5"
+      "sha256": "41bd9cf18c0d341cfc4bf06a71db6bc5d69552b0cfd1fbdbdfe33126325f6dc4"
     }
   ]
 }

@@ -15,7 +15,7 @@ spec.loader.exec_module(base)
 icon_spec=importlib.util.spec_from_file_location('cloud_icons',Path(__file__).with_name('cloud-icons.py'))
 cloud=importlib.util.module_from_spec(icon_spec); icon_spec.loader.exec_module(cloud)
 ITEMS=[
-    ('azure-vwan-oci-drg-transit','Azure vWAN + OCI DRG | Transit foundation','vwan'),
+    ('azure-vwan-oci-drg-transit','Azure vWAN + OCI DRG | Interconnect primary / alternative classic VPN','vwan'),
     ('regional-prod-nonprod-hubs','Regional production / nonproduction | Separate foundations','separation'),
     ('network-load-balancer','OCI Network Load Balancer | Create or extend','nlb'),
     ('hub-spoke-with-azure-vwan-expressroute','OCI hub-and-spoke + Azure vWAN | ExpressRoute gateway','expressroute'),
@@ -38,10 +38,10 @@ def vwan(title,index):
     az=d.group('thirdparty','Azure / separate Bicep deployment; location = resource group',20,160,800,1000)
     wan=cloud.box(d,'Microsoft.Network/virtualWans','Standard Virtual WAN\nBranch-to-branch enabled',30,70,740,95,parent=az,kind='thirdparty_component')
     hub=cloud.box(d,'Microsoft.Network/virtualHubs','Virtual Hub 10.89.255.0/24\nHub route table: oci-transit label; explicit routes empty',30,220,740,110,parent=az,kind='thirdparty_component')
-    net=cloud.box(d,'Microsoft.Network/virtualNetworks','VNet 10.88.0.0/16 / workload subnet 10.88.10.0/24\nvHub VNet connection associated with hub route table\nWorkload UDR default → Internet; NSG TCP 80/443 inbound',30,400,740,140,parent=az,kind='thirdparty_component')
-    vpn=cloud.box(d,'Microsoft.Network/virtualNetworkGateways','Conditional VNet VPN Gateway (not a vHub VPN Gateway)\nGatewaySubnet 10.88.250.0/27; Standard static public IP\nVpnGw1AZ + Local Network Gateway + IPSec/BGP connection',30,640,740,140,parent=az,kind='thirdparty_component')
+    net=cloud.box(d,'Microsoft.Network/virtualNetworks','VNet 10.88.0.0/16 / workload subnet 10.88.10.0/24\nvHub connection only when deployVpnGateway=false\nWorkload UDR default → Internet; NSG TCP 80/443 inbound',30,400,740,140,parent=az,kind='thirdparty_component')
+    vpn=cloud.box(d,'Microsoft.Network/virtualNetworkGateways','Alternative classic VNet VPN Gateway / default disabled\nGatewaySubnet 10.88.250.0/27; Standard static public IP\nVpnGw1AZ + Local Network Gateway + IPSec/BGP connection',30,640,740,140,parent=az,kind='thirdparty_component')
     d.connect(wan,hub,kind='plain',straight=True)
-    d.connect(hub,net,kind='plain',straight=True)
+    d.connect(hub,net,kind='plain',label='deployVpnGateway=false only',straight=True)
     d.text('No ExpressRoute gateway or circuit is declared by this Bicep file.\nPeer addresses and secret values must replace the template placeholders.',30,850,740,75,parent=az,size=13)
     reg=d.group('region','OCI / operator-selected region',960,160,1220,1000)
     comp=d.group('compartment','Target compartment / operator input',20,50,1180,920,parent=reg)
@@ -49,7 +49,7 @@ def vwan(title,index):
     drg=d.icon('DRG',0,140,parent=vc,size=56,label='DRG / create or existing ID\nVCN attachment',label_pos='top',border=True)
     sn=d.group('subnet','Hub subnet\n10.58.10.0/24',220,160,520,220,parent=vc)
     d.text('Public IPs allowed; TCP 443 ingress from 10.0.0.0/8.\nAll egress; no Compute workloads are declared.',20,90,480,70,parent=sn,size=13)
-    rt=d.icon('Route Table',850,300,parent=vc,size=52,label='RT: default → IGW\nAzure CIDRs → DRG (always)',label_pos='bottom')
+    rt=d.icon('Route Table',850,300,parent=vc,size=52,label='RT: default → IGW\nAzure CIDRs → DRG if dedicated or VPN',label_pos='bottom')
     igw=d.icon('Internet Gateway',1020,470,parent=vc,size=52,label='IGW',label_pos='top',border=True)
     d.connect(sn,rt,kind='plain',exit=(1,.5),entry=(0,.5),straight=True)
     d.connect(rt,drg,exit=(.5,0),entry=(1,.5),waypoints=[(1910,430),(1110,430),(1110,450)])
@@ -57,10 +57,13 @@ def vwan(title,index):
     inet=d.group('internet','Internet',2240,700,200,180)
     ic=d.icon('Internet',100,85,parent=inet,size=48,label='Default egress',label_pos='bottom')
     d.connect(igw,ic,straight=True)
-    d.connect(vpn,drg,kind='vpn',label='OCI CPE + IPSec / requested; IP TBC',exit=(1,.5),entry=(0,.5),waypoints=[(900,870),(900,450)])
+    er=cloud.icon(d,'Microsoft.Network/expressRouteCircuits',880,260,size=65,label='External ExpressRoute\ncircuit / gateway',label_pos='top')
+    d.connect(hub,er,kind='dashed',label='External gateway binding',exit=(1,.5),entry=(.5,1),waypoints=[(880,435)],label_offset=(-85,0))
+    d.connect(er,drg,kind='fastconnect',label='PRIMARY / external FastConnect + ExpressRoute',exit=(1,.5),entry=(.5,0),waypoints=[(1060,260)],label_offset=(0,-30))
+    d.connect(vpn,drg,kind='vpn',label='Optional classic VPN / off by default / endpoints required',exit=(1,.5),entry=(0,.5),waypoints=[(900,870),(900,450)])
     d.icon('Notifications',960,830,parent=comp,size=48,label='Alert topic enabled by default\nNo alarms or subscriptions declared',label_pos='top')
-    d.text('VPN flag defaults true; Azure CPE IP is null → incomplete full-default inputs.\nNo NAT / SGW. Network creation can be disabled; DRG can be reused.',60,815,780,65,parent=comp,size=12)
-    footer(d,'CONTRACT LIMITS / metadata is not enforcement\nDefault mode: without-interconnect. Interconnect mode needs existing FastConnect, ExpressRoute, vWAN and vHub IDs.\nSegmentation maps, BGP timers, DNS and 120-second convergence target are contracts; they do not deploy segmentation or a failover controller.\nThe Azure VPN endpoint is in the workload VNet; the template does not declare a vHub VPN gateway. Validate actual transit and static OCI IPSec routes separately.')
+    d.text('VPN defaults disabled. Dedicated transport requires existing circuits.\nNo NAT / SGW. Network creation can be disabled; DRG can be reused.',60,815,780,65,parent=comp,size=12)
+    footer(d,'CONTRACT LIMITS / metadata is not enforcement\nDefault mode: without-interconnect. Interconnect mode needs existing FastConnect, ExpressRoute, vWAN and vHub IDs.\nSegmentation maps, BGP timers, DNS and 120-second convergence target are contracts; they do not deploy segmentation or a failover controller.\nClassic VNet VPN mode disconnects the direct vHub VNet connection. Concurrent vWAN VPN backup requires a separately designed native vHub VPN gateway.')
     return d
 
 

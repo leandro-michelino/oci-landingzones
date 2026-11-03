@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "blueprint": "networking/azure-vwan-oci-drg-transit",
-  "review_date": "2026-10-28",
+  "review_date": "2026-11-03",
   "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
   "counts_by_cloud": {
     "Azure": 13,
@@ -487,7 +487,7 @@
       "type": "Microsoft.Network/virtualHubs/hubVirtualNetworkConnections",
       "source": "blueprints/networking/azure-vwan-oci-drg-transit/azure/main.bicep",
       "revision": "working-tree",
-      "condition": "Unconditional declaration in separately deployed Bicep template.",
+      "condition": "if (!deployVpnGateway) {",
       "diagram": {
         "file": "azure-resources.drawio",
         "page_name": "Azure resources",
@@ -682,7 +682,7 @@
     {
       "path": "blueprints/networking/azure-vwan-oci-drg-transit/main.tf",
       "revision": "working-tree",
-      "sha256": "bd55ca15d52e35a1e74d9795ce1fa92c1bfa97c12c5d9274d5f30858b2a4fe87"
+      "sha256": "2f1d0f8116b6bb204951d121c817075fcf7704679397360c7c37351e42fb33b2"
     },
     {
       "path": "blueprints/networking/azure-vwan-oci-drg-transit/outputs.tf",
@@ -697,7 +697,7 @@
     {
       "path": "blueprints/networking/azure-vwan-oci-drg-transit/variables.tf",
       "revision": "working-tree",
-      "sha256": "f710829be41550f10e95ed6bb3b9c131ba219d15aaccffa149d76a53de97c3f9"
+      "sha256": "cc5d8c3acb0575582da5342394bc216c986069dd0f5f2638899aa05d0e113a35"
     },
     {
       "path": "blueprints/networking/azure-vwan-oci-drg-transit/versions.tf",
@@ -706,7 +706,7 @@
     },
     {
       "path": "blueprints/networking/azure-vwan-oci-drg-transit/azure/main.bicep",
-      "sha256": "64de7166e6425198608b7f90c78ef78c266e7ade0b3e13ba706d2445133b88d5"
+      "sha256": "544f4b8f5d0dbc9700264f8a3c88f1f6f7494b53a75aea490b8961cd64e02945"
     }
   ]
 }

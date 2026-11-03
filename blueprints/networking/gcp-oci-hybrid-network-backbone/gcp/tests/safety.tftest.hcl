@@ -78,4 +78,27 @@ run "four_tunnel_bgp_configuration" {
     condition     = length(google_compute_vpn_tunnel.oci) == 4 && length(google_compute_router_peer.vpn) == 4 && alltrue([for t in values(google_compute_vpn_tunnel.oci) : t.ike_version == 2])
     error_message = "Both gateway interfaces must retain four IKEv2 BGP tunnel configurations."
   }
+  assert {
+    condition     = alltrue([for k, peer in google_compute_router_peer.vpn : peer.peer_ip_address == split("/", var.vpn_tunnels[k].oracle_ip)[0]])
+    error_message = "VPN BGP peers must preserve Oracle host addresses instead of advertising network addresses."
+  }
+
+}
+
+run "interconnect_bgp_preserves_host_address" {
+  command = plan
+  variables {
+    enabled              = true
+    costs_approved       = true
+    enable_bgp           = true
+    activate_attachments = true
+    bgp_sessions = {
+      primary   = { customer_ip = "169.254.10.2/30", oracle_ip = "169.254.10.1/30", peer_asn = 31898 }
+      secondary = { customer_ip = "169.254.20.2/30", oracle_ip = "169.254.20.1/30", peer_asn = 31898 }
+    }
+  }
+  assert {
+    condition     = google_compute_router_peer.this["primary"].peer_ip_address == "169.254.10.1" && google_compute_router_peer.this["secondary"].peer_ip_address == "169.254.20.1"
+    error_message = "Partner BGP peers must use Oracle's assigned host IP, not the network address."
+  }
 }

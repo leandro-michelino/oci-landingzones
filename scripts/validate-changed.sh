@@ -100,7 +100,7 @@ nearest_tf_root() {
   fi
 
   while [[ "$dir" == "$REPO_ROOT"* && "$dir" != "$REPO_ROOT" ]]; do
-    if [[ -f "$dir/main.tf" ]]; then
+    if [[ -f "$dir/versions.tf" || -f "$dir/main.tf" || -f "$dir/infrastructure.tf" ]]; then
       printf '%s\n' "$dir"
       return 0
     fi

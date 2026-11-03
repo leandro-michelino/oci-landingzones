@@ -7,7 +7,7 @@ Start here for `blueprints/networking/hub-spoke-with-dual-region-dr`: what it bu
 | Item | Details |
 | --- | --- |
 | Folder | `blueprints/networking/hub-spoke-with-dual-region-dr` |
-| Best fit | Creates paired primary and secondary hub-spoke networking for disaster-recovery-ready regional separation. |
+| Best fit | Creates independent primary and secondary regional network foundations; connectivity and disaster recovery are external. |
 | Terraform shape | `primary_network`, `secondary_network` |
 | Inputs to settle first | `secondary_region`, `secondary_region_key`, `compartment_ocid`, `secondary_compartment_ocid` |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `primary_hub_vcn_id`, `secondary_hub_vcn_id`, `primary_drg_id`, `secondary_drg_id`, plus 2 more |
@@ -15,8 +15,7 @@ Start here for `blueprints/networking/hub-spoke-with-dual-region-dr`: what it bu
 
 ## Deployment Purpose
 
-Creates paired primary and secondary hub-spoke networking for disaster-recovery-ready
-regional separation.
+Creates independent primary and secondary regional network foundations; connectivity and disaster recovery are external.
 
 ## When To Use This Deployment
 
@@ -184,3 +183,11 @@ The validator checks Terraform formatting, required deployment README files, req
 architecture README sections, `terraform init -backend=false`, `terraform validate`, root
 Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
 cleanup of generated Terraform artifacts.
+
+## Networking review — 2026-11-03
+
+See the [networking review and validation matrix](../../../docs/NETWORKING-REVIEW-20261103.md) for the source scope, local checks, corrections and remaining external prerequisites. Historical cloud lifecycle evidence is not extended by this local review.
+
+## Implementation boundary
+
+Both region calls inherit the same source CIDRs, and this wrapper exposes no per-region CIDR overrides. No inter-region peering, replicated workload/data, DNS cutover or failover controller is declared. Use disjoint address plans and a separate transport/recovery design before connecting the regions.

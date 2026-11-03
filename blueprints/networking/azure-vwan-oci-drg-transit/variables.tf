@@ -163,7 +163,7 @@ variable "transit_segments" {
 variable "enable_ipsec_fallback" {
   description = "Create OCI CPE and IPSec resources for fallback path when interconnect is unavailable."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "azure_cpe_public_ip" {

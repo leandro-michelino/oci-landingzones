@@ -17,7 +17,7 @@ route domains.
 | Item | Details |
 | --- | --- |
 | Boundary | `blueprints/networking/azure-vwan-oci-drg-transit` owns this deployment folder and its Terraform + Ansible runners. |
-| Purpose | Build OCI-primary DRG routing baseline and publish IPSec-first, interconnect-default-when-present, route segmentation, DNS, and runbook contracts for Azure + OCI operations. |
+| Purpose | Build OCI-primary DRG routing baseline and publish Interconnect-primary, VPN-alternative, route segmentation, DNS, and runbook contracts for Azure + OCI operations. |
 | Terraform components | `oci_core_vcn.primary`, `oci_core_route_table.primary`, `oci_core_security_list.primary_hub`, `oci_core_subnet.primary_hub`, `oci_core_drg.primary`, `oci_core_drg_attachment.primary`, `oci_core_cpe.azure`, `oci_core_ipsec.azure`, `terraform_data.interconnect_contract`, `terraform_data.ipsec_fallback_contract`, `terraform_data.transit_contract`, `terraform_data.dns_contract`, `terraform_data.runbook_contract` |
 | Primary architecture view | The Architecture diagram below shows OCI control-plane ownership, Azure vWAN/vHub assumptions, and route preference policy. |
 
@@ -108,7 +108,7 @@ See [the fixed first-39 review](../../../../docs/diagrams/FIRST-39-REVIEW.md) an
 ## Traffic And Trust Boundaries
 
 - Control plane traffic runs from workstation or CI to OCI and Azure APIs.
-- Data plane starts with IPSec for rollout tests and can shift to Interconnect as default when dedicated circuits are enabled.
+- Interconnect is the preferred primary path. VPN is an alternative when the dedicated path cannot be used; concurrent vWAN VPN backup requires a native hub VPN design.
 - Trust boundaries include OCI tenancy ownership, Azure subscription ownership, and partner interconnect ownership.
 - Circuit IDs, public IP endpoints, and OCIDs must stay in ignored local tfvars or secure pipeline variables.
 
@@ -144,3 +144,11 @@ See [the fixed first-39 review](../../../../docs/diagrams/FIRST-39-REVIEW.md) an
 Provider icons: Azure SVGs and AWS native stencils from draw.io identify mapped
 external-cloud resources. Unmapped associations and local contracts retain
 explicit named boxes. See [icon sources](../../../../scripts/diagrams/assets/README.md).
+
+## Virtual WAN and classic VPN are alternative modes
+
+The Bicep default is now `deployVpnGateway=false`: create the Virtual WAN/hub and direct workload-VNet hub connection, without a classic VNet VPN Gateway. Existing FastConnect/ExpressRoute circuits and a hub ExpressRoute gateway/connection remain external prerequisites in this blueprint. OCI fallback also defaults to disabled. Remote-prefix subnet routes are present only when dedicated mode or VPN is selected.
+
+With `deployVpnGateway=true`, the template creates the classic VNet VPN edge and omits the direct hub-to-VNet connection. Its `azureVirtualHubConnectionId` output is empty. A VNet containing a classic VPN Gateway cannot also connect directly to a Virtual WAN hub. This mode is an alternative topology; switching it can remove the existing hub connection. Review the deployment diff and ownership before applying. This is not simultaneous Interconnect/VPN failover. For concurrent backup, design a native Virtual WAN VPN gateway/site/link connection separately; it is not implemented here.
+
+Reference: [Microsoft Virtual WAN VNet prerequisites](https://learn.microsoft.com/en-us/azure/virtual-wan/virtual-wan-site-to-site-portal). Both modes still need explicit BGP/tunnel endpoints, protected secrets, route policy and packet-flow acceptance; the OCI IPSec declaration uses static routes rather than configuring tunnel BGP. See the [review record](../../../../docs/NETWORKING-REVIEW-20261103.md).

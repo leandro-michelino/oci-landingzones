@@ -16,7 +16,7 @@ and the IDs that operations will need later.
 | Item | Details |
 | --- | --- |
 | Folder | `blueprints/networking/azure-vwan-oci-drg-transit` |
-| Best fit | OCI-primary transit pattern with Azure Virtual WAN and Virtual Hub on the Azure side, IPSec/BGP first for rollout, and Interconnect as default path when enabled in final cutover. |
+| Best fit | OCI-primary transit pattern with Azure Virtual WAN and Virtual Hub on the Azure side, Interconnect as the preferred primary path in supported locations and VPN as backup or alternative. |
 | Primary OCI resources | Optional VCN/subnet, DRG, DRG attachment, CPE, IPSec connection, and transit alert topic. |
 | Azure session | vWAN, vHub, workload VNet, optional VPN Gateway, Local Network Gateway, and IPSec connection. |
 | Key outputs | `resource_ids`, `interconnect_contract`, `ipsec_fallback_contract`, `transit_contract`, `dns_contract`, `runbook_contract`. |
@@ -39,7 +39,7 @@ is more about the transit contract and OCI-primary operating model.
 | Use case | Why this blueprint helps |
 | --- | --- |
 | Azure app, OCI data tier | Azure VNets can reach OCI private services through a governed transit path while OCI DRG remains the route anchor. |
-| Migration bridge | Teams can move workloads in phases, keep CIDRs documented, and switch between IPSec-first testing and interconnect mode. |
+| Migration bridge | Teams can move workloads in phases, keep CIDRs documented, and use Interconnect as the preferred primary path and independently validate VPN backup or alternative mode. |
 | DR and recovery drills | The `runbook_contract` captures failover and failback sequence so operations are not relying on memory during an incident. |
 | Private cross-cloud backbone | ExpressRoute/FastConnect can become the preferred path, with IPSec kept as a tested backup when enabled. |
 | Route and DNS governance | Segment CIDRs, DNS endpoints, probe names, and convergence targets are recorded as outputs for review and automation. |
@@ -89,7 +89,7 @@ it really is.
 | `compartment_ocid` | Target OCI compartment. If omitted, validation-only runs default to the tenancy OCID. |
 | `existing_drg_id` | Reuse a DRG when quota is tight or you must preserve an existing transit hub. |
 | `enable_oci_primary_network` | Set to `false` if the VCN/subnet already exist elsewhere. |
-| `connectivity_mode` | `without-interconnect` for IPSec-first, `interconnect` for ExpressRoute/FastConnect hand-off. |
+| `connectivity_mode` | `interconnect` for the preferred ExpressRoute/FastConnect hand-off; `without-interconnect` for a VPN-only alternative. |
 | `fastconnect_virtual_circuit_id` | Required only in interconnect mode. |
 | `expressroute_circuit_id` | Required only in interconnect mode. |
 | `azure_virtual_wan_id`, `azure_virtual_hub_id` | Required for interconnect mode contract tracking. |
@@ -245,3 +245,17 @@ blueprints/networking/azure-vwan-oci-drg-transit/
 - Capture validation evidence: Azure provisioning states, OCI IPSec/FastConnect
   states, BGP state, and at least one packet test when compute endpoints are
   available.
+
+## Networking review — 2026-11-03
+
+See the [networking review and validation matrix](../../../docs/NETWORKING-REVIEW-20261103.md) for the source scope, local checks, corrections and remaining external prerequisites. Historical cloud lifecycle evidence is not extended by this local review.
+
+For cross-cloud traffic, prefer a supported native Interconnect or an explicitly reviewed private partner circuit as the primary transport. Use VPN as an independently configured backup, or as the alternative when Interconnect is unavailable or unsuitable. Confirm [current connection locations](../../../docs/multicloud/INTERCONNECT-REGIONS.md), account eligibility, route preference, both return paths and actual failover behavior; an identifier contract alone establishes none of these.
+
+## Virtual WAN and classic VPN are alternative modes
+
+The Bicep default is now `deployVpnGateway=false`: create the Virtual WAN/hub and direct workload-VNet hub connection, without a classic VNet VPN Gateway. Existing FastConnect/ExpressRoute circuits and a hub ExpressRoute gateway/connection remain external prerequisites in this blueprint. OCI fallback also defaults to disabled. Remote-prefix subnet routes are present only when dedicated mode or VPN is selected.
+
+With `deployVpnGateway=true`, the template creates the classic VNet VPN edge and omits the direct hub-to-VNet connection. Its `azureVirtualHubConnectionId` output is empty. A VNet containing a classic VPN Gateway cannot also connect directly to a Virtual WAN hub. This mode is an alternative topology; switching it can remove the existing hub connection. Review the deployment diff and ownership before applying. This is not simultaneous Interconnect/VPN failover. For concurrent backup, design a native Virtual WAN VPN gateway/site/link connection separately; it is not implemented here.
+
+Reference: [Microsoft Virtual WAN VNet prerequisites](https://learn.microsoft.com/en-us/azure/virtual-wan/virtual-wan-site-to-site-portal). Both modes still need explicit BGP/tunnel endpoints, protected secrets, route policy and packet-flow acceptance; the OCI IPSec declaration uses static routes rather than configuring tunnel BGP. See the [review record](../../../docs/NETWORKING-REVIEW-20261103.md).

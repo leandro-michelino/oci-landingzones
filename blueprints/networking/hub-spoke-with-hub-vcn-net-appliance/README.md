@@ -7,7 +7,7 @@ Start here for `blueprints/networking/hub-spoke-with-hub-vcn-net-appliance`: wha
 | Item | Details |
 | --- | --- |
 | Folder | `blueprints/networking/hub-spoke-with-hub-vcn-net-appliance` |
-| Best fit | Adds a network appliance target into hub-spoke routing for inspection or custom transit behavior. |
+| Best fit | Creates optional network appliances and route-target IPs alongside a hub-spoke foundation; transit routing is external. |
 | Terraform shape | `network`, `net_appliance` |
 | Inputs to settle first | `compartment_ocid`, `appliances`, `reserved_route_ips`, `existing_route_target_private_ip_ids` |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `hub_vcn_id`, `drg_id`, `hub_subnet_ids`, `spoke_vcn_ids`, plus 1 more |
@@ -15,8 +15,7 @@ Start here for `blueprints/networking/hub-spoke-with-hub-vcn-net-appliance`: wha
 
 ## Deployment Purpose
 
-Adds a network appliance target into hub-spoke routing for inspection or custom transit
-behavior.
+Creates optional network appliances and route-target IPs alongside a hub-spoke foundation; transit routing is external.
 
 ## When To Use This Deployment
 
@@ -187,3 +186,11 @@ The validator checks Terraform formatting, required deployment README files, req
 architecture README sections, `terraform init -backend=false`, `terraform validate`, root
 Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
 cleanup of generated Terraform artifacts.
+
+## Networking review — 2026-11-03
+
+See the [networking review and validation matrix](../../../docs/NETWORKING-REVIEW-20261103.md) for the source scope, local checks, corrections and remaining external prerequisites. Historical cloud lifecycle evidence is not extended by this local review.
+
+## Implementation boundary
+
+The source provisions optional appliance instances and route-target IPs. It does not configure OS forwarding, vendor inspection policy, health monitoring, traffic steering or failover. Route-target outputs alone do not route packets.

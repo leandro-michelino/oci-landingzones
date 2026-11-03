@@ -90,3 +90,9 @@ No cloud deployment occurred here, so no live cleanup or API inventory was claim
 
 [Provider/service design reference](https://docs.cloud.google.com/network-connectivity/docs/vpn/how-to/creating-ha-vpn).
 [Validation and handoff record](../../../docs/multicloud/GCP-COUNTERPARTS-20261028.md).
+
+## Networking review — 2026-11-03
+
+See the [networking review and validation matrix](../../../docs/NETWORKING-REVIEW-20261103.md) for the source scope, local checks, corrections and remaining external prerequisites. Historical cloud lifecycle evidence is not extended by this local review.
+
+For cross-cloud traffic, prefer a supported native Interconnect or an explicitly reviewed private partner circuit as the primary transport. Use VPN as an independently configured backup, or as the alternative when Interconnect is unavailable or unsuitable. Confirm [current connection locations](../../../docs/multicloud/INTERCONNECT-REGIONS.md), account eligibility, route preference, both return paths and actual failover behavior; an identifier contract alone establishes none of these.

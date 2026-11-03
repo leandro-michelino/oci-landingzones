@@ -44,3 +44,7 @@ For simulation-only checks without cloud-side execution:
 ```bash
 AZURE_SIMULATE_ONLY=true ansible-playbook -i localhost, ansible/azure-plan.yml
 ```
+
+## Secret parameter handling
+
+`fallbackSharedKey` is a required secure Bicep parameter, without a shared default. Supply a protected local parameter file or an Azure Key Vault parameter reference. The example value is a placeholder; do not use it for an activated tunnel or commit real pre-shared keys. Secure parameter typing protects deployment records, not plaintext files that an operator chooses to create.

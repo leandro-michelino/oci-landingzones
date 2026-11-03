@@ -7,7 +7,7 @@ Start here for `blueprints/networking/multi-tenancy-shared-services`: what it bu
 | Item | Details |
 | --- | --- |
 | Folder | `blueprints/networking/multi-tenancy-shared-services` |
-| Best fit | Creates a shared-services network pattern for multi-tenant environments that need central DNS and common network services. |
+| Best fit | Creates a single-tenancy shared network and private DNS foundation for a separately designed multi-tenancy extension. |
 | Terraform shape | `network`, `shared_dns` |
 | Inputs to settle first | `compartment_ocid`, `private_zones` |
 | Outputs to hand off | `blueprint_name`, `name_prefix`, `resource_ids`, `hub_vcn_id`, `spoke_vcn_ids`, `private_view_id`, `private_zone_ids` |
@@ -15,8 +15,7 @@ Start here for `blueprints/networking/multi-tenancy-shared-services`: what it bu
 
 ## Deployment Purpose
 
-Creates a shared-services network pattern for multi-tenant environments that need central
-DNS and common network services.
+Creates a single-tenancy shared network and private DNS foundation for a separately designed multi-tenancy extension.
 
 ## When To Use This Deployment
 
@@ -182,3 +181,11 @@ The validator checks Terraform formatting, required deployment README files, req
 architecture README sections, `terraform init -backend=false`, `terraform validate`, root
 Ansible syntax, blueprint-local Ansible syntax, optional scanners when installed, and
 cleanup of generated Terraform artifacts.
+
+## Networking review — 2026-11-03
+
+See the [networking review and validation matrix](../../../docs/NETWORKING-REVIEW-20261103.md) for the source scope, local checks, corrections and remaining external prerequisites. Historical cloud lifecycle evidence is not extended by this local review.
+
+## Implementation boundary
+
+This wrapper configures one tenancy only. It does not create cross-tenancy IAM endorse/admit policies, cross-tenancy peering or second-tenancy consumer onboarding. Private view associations do not establish cross-tenancy connectivity.

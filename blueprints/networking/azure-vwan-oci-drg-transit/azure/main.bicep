@@ -12,7 +12,8 @@ param gatewaySubnetCidr string = '10.88.250.0/27'
 param networkSecurityGroupName string = 'nsg-oci-azure-transit'
 param workloadRouteTableName string = 'rt-oci-azure-transit-workload'
 
-param deployVpnGateway bool = true
+// Prefer the vWAN/Interconnect foundation; classic VNet VPN is an alternative mode.
+param deployVpnGateway bool = false
 param vpnGatewayPublicIpName string = 'pip-oci-azure-transit-vng'
 param vpnGatewayPublicIpZones array = [
   '1'
@@ -29,7 +30,8 @@ param ociAddressPrefixes array = [
 ]
 param azureAsn int = 65515
 param ociAsn int = 31898
-param fallbackSharedKey string = 'ReplaceWithSecureKey123'
+@secure()
+param fallbackSharedKey string
 param tags object = {}
 
 resource virtualWan 'Microsoft.Network/virtualWans@2024-05-01' = {
@@ -155,7 +157,8 @@ resource gatewaySubnet 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' = 
   }
 }
 
-resource vhubConnection 'Microsoft.Network/virtualHubs/hubVirtualNetworkConnections@2024-05-01' = {
+// A VNet with a classic VPN gateway cannot also have a direct Virtual WAN hub connection.
+resource vhubConnection 'Microsoft.Network/virtualHubs/hubVirtualNetworkConnections@2024-05-01' = if (!deployVpnGateway) {
   parent: virtualHub
   name: 'conn-vhub-to-workload-vnet'
   properties: {
@@ -261,7 +264,7 @@ resource vpnConnection 'Microsoft.Network/connections@2024-05-01' = if (deployVp
 output azureVirtualWanId string = virtualWan.id
 output azureVirtualHubId string = virtualHub.id
 output azureVirtualHubRouteTableId string = vhubRouteTable.id
-output azureVirtualHubConnectionId string = vhubConnection.id
+output azureVirtualHubConnectionId string = !deployVpnGateway ? vhubConnection.id : ''
 output azureWorkloadVnetId string = vnet.id
 output azureWorkloadSubnetId string = workloadSubnet.id
 output azureWorkloadRouteTableId string = workloadRouteTable.id

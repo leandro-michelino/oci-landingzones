@@ -76,3 +76,9 @@ ansible-playbook ansible/plan.yml
 ```
 
 Review `architecture/README.md` before routing production traffic.
+
+## Networking review — 2026-11-03
+
+See the [networking review and validation matrix](../../../docs/NETWORKING-REVIEW-20261103.md) for the source scope, local checks, corrections and remaining external prerequisites. Historical cloud lifecycle evidence is not extended by this local review.
+
+Backend state keys combine the backend-set key and backend key with a hyphen. Ambiguous combinations (for example `a-b` + `c` and `a` + `b-c`) are rejected rather than silently dropping a target. Existing unambiguous state keys are unchanged.

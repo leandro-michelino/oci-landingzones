@@ -82,7 +82,7 @@ run_terraform_blueprint_validation() {
   (cd "$REPO_ROOT" && terraform fmt -check -recursive)
 
   while IFS= read -r main_tf; do
-    terraform_dir="${main_tf%/main.tf}"
+    terraform_dir="${main_tf%/*}"
     terraform_dir_label="${terraform_dir#$REPO_ROOT/}"
 
     terraform_init_with_retry "$terraform_dir" "$terraform_dir_label"
@@ -90,9 +90,9 @@ run_terraform_blueprint_validation() {
     echo "==> terraform validate ${terraform_dir_label}"
     (cd "$terraform_dir" && terraform validate -no-color)
   done < <(
-    find "$REPO_ROOT/blueprints" \
+    find "$REPO_ROOT/blueprints" "$REPO_ROOT/modules" \
       -path "*/.terraform/*" -prune -o \
-      -name main.tf -type f -print | sort
+      -name versions.tf -type f -print | sort
   )
 }
 

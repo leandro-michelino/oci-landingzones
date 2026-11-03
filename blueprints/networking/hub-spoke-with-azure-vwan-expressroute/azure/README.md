@@ -60,3 +60,5 @@ temporary test-host notes belong in local runbooks or pipeline logs.
 - Leave the Azure shared key empty unless the selected provider-key flow
   explicitly supports MD5 on both sides.
 - Validate control-plane state before running bidirectional packet tests.
+
+The ExpressRoute authorization key uses a secure Bicep parameter. Supply actual values through a protected input workflow; keep the empty default when no cross-subscription authorization key is required.

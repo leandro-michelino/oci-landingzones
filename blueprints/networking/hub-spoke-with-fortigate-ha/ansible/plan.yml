@@ -7,4 +7,4 @@
     terraform_action: plan
     terraform_working_dir: "{{ playbook_dir }}/.."
   roles:
-    - role: terraform_runner
+    - role: ../../../../ansible/roles/terraform_runner

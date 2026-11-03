@@ -36,7 +36,7 @@
       "value": "rt-oci-azure-transit-workload-dev"
     },
     "deployVpnGateway": {
-      "value": true
+      "value": false
     },
     "vpnGatewayPublicIpName": {
       "value": "pip-oci-azure-transit-dev"

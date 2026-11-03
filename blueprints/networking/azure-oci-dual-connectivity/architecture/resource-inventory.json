@@ -621,7 +621,7 @@
     },
     {
       "path": "blueprints/networking/azure-oci-dual-connectivity/azure/main.bicep",
-      "sha256": "5eb06998be7dbe1e6115b967defef9910b7f28656cba43e49b6f0a9821129444"
+      "sha256": "88ddcdf0bbf2de2531f54fc0b8c069c222137890264a1ae3992e29286c1d125b"
     }
   ]
 }

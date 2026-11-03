@@ -136,6 +136,12 @@ variable "backend_sets" {
     })), {})
   }))
   default = {}
+
+  validation {
+    condition     = length(distinct(flatten([for set_key, backend_set in var.backend_sets : [for backend_key in keys(backend_set.backends) : "${set_key}-${backend_key}"]]))) == length(flatten([for backend_set in values(var.backend_sets) : keys(backend_set.backends)]))
+    error_message = "Backend set and backend keys must produce unique combined set-backend names; avoid ambiguous hyphen combinations."
+  }
+
 }
 variable "listeners" {
   description = "Listeners keyed by logical name."

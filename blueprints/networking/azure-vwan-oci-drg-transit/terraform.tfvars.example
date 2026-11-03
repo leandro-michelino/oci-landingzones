@@ -38,7 +38,7 @@ transit_segments = {
 }
 
 # Fallback IPSec + BGP profile.
-enable_ipsec_fallback = true
+enable_ipsec_fallback = false
 # azure_cpe_public_ip = "203.0.113.10"
 azure_bgp_asn       = 65515
 azure_network_cidrs = ["10.88.0.0/16"]

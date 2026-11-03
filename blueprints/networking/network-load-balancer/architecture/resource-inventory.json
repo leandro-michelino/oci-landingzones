@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "blueprint": "networking/network-load-balancer",
-  "review_date": "2026-10-28",
+  "review_date": "2026-11-03",
   "scope": "Root resource declarations, transitive pinned same-repository Terraform modules, and separately deployed companion templates. Not a resolved plan or deployment inventory.",
   "counts_by_cloud": {
     "OCI": 5
@@ -217,7 +217,7 @@
     {
       "path": "blueprints/networking/network-load-balancer/variables.tf",
       "revision": "working-tree",
-      "sha256": "780d6d7f2baf203f83d4ac4f71040a8c4a7ddbde40cb3c4b6cb3c753256407c0"
+      "sha256": "93885aac30cde5505a9bd4d8cbfce41b4b529f2f5ac13086bc33e9dce842a594"
     },
     {
       "path": "blueprints/networking/network-load-balancer/versions.tf",

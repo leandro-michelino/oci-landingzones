@@ -41,7 +41,7 @@ resource "oci_core_route_table" "primary" {
   }
 
   dynamic "route_rules" {
-    for_each = var.azure_network_cidrs
+    for_each = (var.connectivity_mode == "interconnect" || var.enable_ipsec_fallback) ? var.azure_network_cidrs : []
 
     content {
       destination       = route_rules.value
