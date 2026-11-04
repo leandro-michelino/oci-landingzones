@@ -29,10 +29,6 @@ def header(title,index):
     return d
 
 
-def footer(d,text,y=1300):
-    d.box(text,20,y,2360,120,kind='note')
-
-
 def vwan(title,index):
     d=header('Azure vWAN + OCI DRG | ExpressRoute + FastConnect primary',index)
     d.text('Independent transport lines: primary private Interconnect above; optional classic VPN alternative below.',20,108,2500,30,size=16)
@@ -62,7 +58,6 @@ def vwan(title,index):
     d.connect(cpe,drg,kind='plain',label='IPSec drg_id / optional',exit=(.5,0),entry=(.5,1),straight=True)
     d.text('Interconnect design: connect workload VNet to hub.\nClassic VNet VPN mode removes that direct hub connection.\nConcurrent backup requires a separately designed native vHub VPN.',60,925,980,90,parent=az,size=17)
     d.text('Foundation retains IGW + Internet default route, HTTPS security list\nand an optional Notifications topic. No workload is created.\nExpressRoute/FastConnect resources are external prerequisites.',60,925,980,90,parent=reg,size=17)
-    d.box('INTERCONNECT PRIMARY: set connectivity_mode=interconnect and supply activated FastConnect, ExpressRoute, vWAN and vHub IDs.\nCircuit IDs, route-weight targets and runbook metadata do not configure a complete failover policy.\nSelect a supported location pair and verify BGP, symmetric routes, security and application traffic before cutover.',20,1280,2500,130,kind='note')
     return d
 
 
@@ -89,7 +84,6 @@ def separation(title,index):
         gateways.append(d.icon('Service Gateway',0,380,parent=spoke,size=42,label='SGW',label_pos='left',border=True))
         base.compact_routes(d,drg,hub,spoke,subnets,gateways)
         d.text('Hub: public RT → IGW; private RT → NAT / SGW. Spoke: default → own DRG; OSN → SGW.\nBaseline lists: empty ingress, all egress. No connection between these foundations is declared.',20,655,1080,45,parent=area,size=11)
-    footer(d,'ISOLATION SCOPE\nDistinct hub/spoke CIDRs, names, tags, DRGs and attachments in the same region and compartment. Two NAT gateways in total.\nNo cross-foundation peering, firewall insertion, workload policy or isolation packet test is provided by this documentation.\nThe diagram shows network separation, not a confirmed security outcome.',1140)
     return d
 
 
@@ -103,19 +97,16 @@ def nlb(title,index):
     service=d.box('Network Load Balancer (Layer 4)\nCreate flag=false; existing ID=null by default\nWhen created: private=true; IP version IPV4\nSource/destination preservation=false; symmetric hash=false',25,65,580,135,parent=opt)
     config=d.box('Listeners and backend sets\nBoth maps empty by default\nPolicy / health checker / protocol / ports from inputs',850,110,650,150,parent=vc)
     d.connect(service,config,kind='dashed',exit=(1,.5),entry=(0,.5),waypoints=[(825,540),(825,545)])
-    d.text('The existing network, subnet routes and security controls are supplied separately.\nThis blueprint configures the NLB and optional access policy; it does not create workload targets.',50,700,1450,45,parent=comp,size=12)
     targets=d.group('other','Backend targets / operator-supplied ownership and placement',1760,160,700,470)
     d.box('Configured IP addresses or target IDs\nNo backend VMs are created.\nTargets need not be in the NLB subnet.\nHealth, network reachability and security remain to be verified.',25,100,650,180,parent=targets)
     d.connect(config,targets,kind='dashed',exit=(1,.5),entry=(0,.5),waypoints=[(1730,545),(1730,395)])
     iam=d.group('optional','IAM / no policy by default',1760,720,700,290,style_extra='verticalAlign=top;spacingTop=12;')
     d.text('policy_statements=[]\nWhen provided, IAM policy targets tenancy root by default\nor an explicit policy compartment, through the home-region provider.\nThis scope is separate from the network compartment.',25,75,650,140,parent=iam,size=14)
-    footer(d,'DEFAULT RESULT / NO RESOURCE CREATION\ncreate_network_load_balancer=false, existing NLB ID=null, backend_sets={}, listeners={}, policy_statements=[].\nTo create, supply a subnet and enable creation. To extend, supply an existing NLB ID and the desired configuration maps.\nDashed arrows show configuration relationships; there is no operational listener or backend path under the defaults.',1090)
     return d
 
 
 def expressroute(title,index):
-    note='DEFAULT OCI FOUNDATION ONLY: FastConnect, IPSec and route-contract validation are disabled.\nThe separate Azure template creates one VNet by default; existing ExpressRoute private-peering identifiers are required to attach a circuit.'
-    d=base.build(title,'base',index,scope_note=note,subtitle=f'NETWORKING {index:02} / Official OCI Toolkit v24.2 / Source foundation + separate Azure template')
+    d=base.build(title,'base',index,subtitle=f'NETWORKING {index:02} / Official OCI Toolkit v24.2 / Source foundation + separate Azure template')
     az=d.group('thirdparty','Azure / separate Bicep template, resource-group location',1760,160,740,1080)
     wan=cloud.box(d,'Microsoft.Network/virtualWans','Standard Virtual WAN + Virtual Hub\nvHub prefix 10.88.255.0/24 (default)\nHub route table: oci-transit label; routes empty',25,80,690,130,parent=az,kind='thirdparty_component')
     er=cloud.box(d,'Microsoft.Network/expressRouteGateways','ExpressRoute Gateway / deploy flag=true\nConnection created only if private-peering ID is nonempty\nCircuit itself is not created',25,300,690,130,parent=az,kind='thirdparty_component')

@@ -28,7 +28,7 @@ def overviews():
    if name=='networking-batch-01':d=m.external(title,index) if index==5 else m.network(*entry,index)
    elif name=='networking-batch-02':d=m.build(title,kind,index)
    elif name=='networking-batch-03':
-    d=m.base.build(title,'base',index,fortigate=kind=='fortigate',scope_note=m.NOTES[kind],subtitle=f'NETWORKING {index:02} / Official OCI Toolkit v24.2 / Default foundation + explicit extension scope');m.panel(d,kind)
+    d=m.base.build(title,'base',index,fortigate=kind=='fortigate',subtitle=f'NETWORKING {index:02} / Official OCI Toolkit v24.2 / Default foundation + explicit extension scope');m.panel(d,kind)
    elif name=='networking-batch-04':d=m.dual(title,index) if kind=='dr' else m.shared(title,index,kind) if kind in ('tenancy','multi') else m.crosscloud(title,index,kind)
    elif name=='networking-batch-05':d=getattr(m,kind)(title,index)
    elif name=='foundation-batch-01':d=m.foundation(title,index,kind) if kind in ('core','level1','level2') else m.identity(title,index) if kind=='identity' else m.domain(title,index)

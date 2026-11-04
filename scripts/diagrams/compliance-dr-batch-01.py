@@ -24,12 +24,8 @@ ITEMS=[
 def header(title,index):
  d=base.Diagram(toolkit=base.TOOLKIT,title=title)
  d.text(title,20,10,2460,45,size=25,bold=True)
- d.text(f'COMPLIANCE / DR {index:02} / Official OCI Toolkit v24.2 / Source defaults, not operational evidence',20,65,2460,30,size=13)
+ d.text(f'COMPLIANCE / DR {index:02} / Official OCI Toolkit v24.2 / Source defaults',20,65,2460,30,size=13)
  return d
-
-
-def footer(d,text,y=1200):
- d.box(text,20,y,2460,135,kind='note')
 
 
 def zero(title,index):
@@ -66,7 +62,6 @@ def zero(title,index):
   d.icon(name,x,250,parent=panel,size=48,label=label,label_pos='top')
  d.text('Tenancy-wide Cloud Guard configuration + 365-day Audit retention.\nEvents enabled; Monitoring, Budgets and Security Zones disabled.',20,335,660,65,parent=panel,size=12)
  d.box('ZPR / tenancy root / disabled by default\nOnboarding requires home_region == region.\nPolicy map has empty starter statements.\nNo workload security-attribute assignment is declared.',25,490,650,160,parent=panel,kind='optional')
- footer(d,'DEFAULT NETWORK IS NOT PRIVATE-ONLY: Web is public; app/database ingress is empty and all tiers allow egress.\nZPR flags are false. Routes, IAM and service creation do not prove Zero Trust enforcement or complete authorization policy.\nNo workloads, NSGs, app/database sessions or policy-enforcement tests are created by this diagram. No compliance certification is implied.')
  return d
 
 
@@ -86,7 +81,6 @@ def health(title,index):
  target=d.icon('Data Safe',110,120,parent=opt,size=60,label='Target registration',label_pos='top')
  d.text('Requires an existing Autonomous Database ID for default type.\nCredentials are included only when username and password are both supplied.\nNo assessments, audit collection or masking jobs are declared.',250,70,910,135,parent=opt,size=14)
  d.connect(existing,target,kind='dashed',straight=True)
- footer(d,'DEFAULT RESULT: No resources. This folder declares an optional IAM policy, budget/alert and Data Safe database target registration.\nIt creates no Core foundation, network, Vault, scanning service or application. Budget values are source input defaults, not estimated or actual spend.\nThe Healthcare / PCI title does not establish regulatory compliance; registration does not prove database security or assessment coverage.',1100)
  return d
 
 
@@ -107,7 +101,6 @@ def posture(title,index):
   services.append(d.icon(icon,100,125,parent=panel,size=52,label='',label_pos='top'))
   d.text(text,25,220,730,95,parent=panel,size=13)
  d.connect(services[4],services[3],label='ONS action / local topic fallback when no topic ID supplied',straight=True)
- footer(d,'DEFAULT RESULT: No resources. All create flags are false; event_rules={}, alarms={}, policy_statements=[].\nOptional access policy uses the home-region provider and defaults to tenancy-root placement. No IAM policy is created with empty statements.\nNo remediation Function, scan result export, report upload, notification delivery or security outcome is implemented or verified by this diagram.',1150)
  return d
 
 
@@ -127,7 +120,6 @@ def fsdr(title,index):
    d.box('Optional DR plan / disabled by default\nenable_dr_plan=false; type defaults SWITCHOVER\nPlan belongs to standby DRPG; groups must be enabled.',30,590,1100,115,parent=comp,kind='optional')
   icons.append(pg)
  d.connect(icons[1],icons[0],kind='dashed',exit=(.5,0),entry=(.5,0),waypoints=[(1460,270),(200,270)],label='Standby → primary association only; not data replication')
- footer(d,'DEFAULT RESOURCE SHAPE: 2 DR protection groups + 2 regional log buckets, once required region/provider inputs are supplied.\nMember lists are empty and DR plan creation is disabled. Plan creation does not execute switchover/failover or configure workload replication.\nNo RTO/RPO or recoverability outcome is validated. Primary/standby placement is an input, not an approved live test scope.',1100)
  return d
 
 
@@ -150,7 +142,6 @@ def azure(title,index):
  d.connect(net,app,kind='plain',label='Environment infrastructureSubnetId',straight=True)
  d.connect(app,logs,label='Environment appLogsConfiguration',straight=True)
  d.connect(sn,app,kind='fastconnect',label='PRIMARY / external FastConnect + ExpressRoute / circuit IDs only',exit=(.5,1),entry=(0,.5),waypoints=[(540,810),(1470,810),(1470,590)])
- footer(d,'CONTRACTS / DEFAULTS NEED REAL INPUTS\nDefault connectivity_mode=interconnect but FastConnect/ExpressRoute IDs are null. DNS contract enabled but endpoint inputs are null; ingress CIDR is null.\nThese contracts do not provision circuits, DRG, VPN, DNS records or a failover controller. RTO 30 min / RPO 15 min / TTL 30 sec are requested metadata.\nOCI and Azure are separate deployments; no workload/data replication, automatic DNS switch or tested DR outcome is created.',1120)
  return d
 
 

@@ -44,7 +44,7 @@ def azure(d,x):
  return r,er,managed,hcx
 
 def workloads(d,width,y=1370,placement='Workload cluster VMs / external proposal'):
- d.text('PROPOSED GENERIC WORKLOAD / '+placement+' / NOT deployed or tested',20,y,width,40,size=19,bold=True)
+ d.text('PROPOSED GENERIC WORKLOAD / '+placement+'',20,y,width,40,size=19,bold=True)
  step=width/4;nodes=[]
  for i,label in enumerate(['Client / browser\nExisting private entry / HTTPS 443','NGINX web VM\nLinux / TLS termination + proxy','Spring Boot API VM\nLinux / identity and secrets required','PostgreSQL VM\nTLS / backup + WAL archive / restore test']):
   nodes.append(d.box(label,20+i*step,y+75,step-100,115,kind='optional'))
@@ -58,7 +58,7 @@ def build(index):
  title=['On-premises VMware + OCVS | HCX and partner FastConnect','Azure AVS + OCVS | ExpressRoute / FastConnect and proposed Global Reach','VMware triangle | On-premises, OCVS and AVS with three independent legs'][index]
  d=base.network.Diagram(toolkit=base.network.TOOLKIT,title=title)
  d.text(title,20,10,width,45,size=25,bold=True)
- d.text('Plain: declared ID/config associations. FastConnect badges: optional private circuits (bidirectional intent). Dashed: external prerequisites or proposed apps. No runtime evidence.',20,85,width,45,size=14)
+ d.text('Plain: declared ID/config associations. FastConnect badges: optional private circuits (bidirectional intent). Dashed: external prerequisites or proposed apps.',20,85,width,45,size=14)
  if has_onprem:op,edge,connector=onprem(d,20,tri)
  oci_x=1040 if has_onprem else 20
  reg,drg,sddc=oci(d,oci_x)
@@ -79,11 +79,8 @@ def build(index):
   d.connect(edge,customer_er,kind='dashed',label='External customer edge / carrier handoff',exit=(.1,1),entry=(0,.5),waypoints=[(142,1205)],label_offset=(80,-30))
   d.connect(remote,customer_er,kind='plain',label='Direct customer–Azure ExpressRoute / onpremCircuitId + authorizationKey',exit=(0,.5),entry=(1,.5),straight=True,label_offset=(0,25))
   d.connect(remote,managed,kind='plain',label='AVS parent',exit=(1,.5),entry=(1,.5),waypoints=[(3040,1205),(3040,570)],label_offset=(0,-30))
- else:
-  d.text('HCX site pairing / profiles / service meshes and source-to-target VM migration remain external steps.\nPrivate circuits alone do not configure application access, database consistency, replication, backup or failover.',20,1130,width,105,size=18)
  placement=['Move a complete three-tier VM stack from onprem to OCVS in controlled waves','Example: web/API on AVS, database on OCVS; measure latency before accepting split tiers','Start onprem, pilot on AVS, final target OCVS; keep each active stack colocated'][index]
  workloads(d,width,1370,placement)
- d.box('DISABLED DEFAULTS / no cloud resources or network reads. Costs, offering/region, CIDRs, BGP, security, routes, MTU, DNS/NTP and licensing require review.\nOCI creates optional SDDC/DRG/attachment/partner VCs; existing VCN/subnets/VLANs, NSX routing and firewall policy remain external.\nAVS-to-Oracle Global Reach is a proposed pairing requiring vendor confirmation. A VNet gateway does not transit two circuits; onprem needs independent cloud legs.\nNo site pairing, guest VM, package, database, backup, replication or automatic failover is deployed. Complete source inventory and input pages accompany this overview.',20,1630,width,155,kind='note')
  return d
 
 def main():

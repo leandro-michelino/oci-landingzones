@@ -18,8 +18,8 @@ ITEMS=[
 def header(title,index):
  d=base.base.base.Diagram(toolkit=base.base.base.TOOLKIT,title=title)
  d.text(title,20,10,2460,45,size=25,bold=True)
- d.text(f'DATA / AI {index:02} / Official OCI Toolkit v24.2 / Source defaults, not operational evidence',20,65,2460,30,size=13)
- d.text('Lines: solid = declared association / configuration; dashed = external workflow or missing prerequisite. No line proves working traffic.',20,108,2460,30,size=13)
+ d.text(f'DATA / AI {index:02} / Official OCI Toolkit v24.2 / Source defaults',20,65,2460,30,size=13)
+ d.text('Lines: solid = declared association / configuration; dashed = external workflow or missing prerequisite.',20,108,2460,30,size=13)
  return d
 
 def database(title,index,search=False):
@@ -48,7 +48,6 @@ def database(title,index,search=False):
  else:
   d.connect(db,bucket,kind='dashed',label='Snapshot registration / export: external',exit=(1,.5),entry=(0,.5),waypoints=[(1720,520),(1720,400)])
  d.connect(nsg,db,kind='plain',label='NSG attachment',straight=True)
- base.footer(d,('DEFAULT RESULT: No resources; all creation flags false and policy statements empty.\nCluster requires the created private network or existing VCN, subnet and NSG IDs. No mixed unused created network is allowed.\nNo client workloads, indexes, ingestion, automated snapshots or tested API/Dashboard access are delivered.' if search else 'DEFAULT RESULT: No resources; all creation flags false and policy statements empty.\nReuse a supplied subnet/NSGs or create the optional network; HeatWave can attach to a supplied DB System ID.\nBucket creation does not authorize Lakehouse reads.'))
  return d
 
 def dr(title,index):
@@ -85,7 +84,6 @@ def dr(title,index):
  for i,(typ,label) in enumerate([('AWS::EC2::FlowLog','VPC flow log / ALL'),('AWS::Logs::LogGroup','Encrypted Log Group / 30 days'),('AWS::KMS::Key','KMS key / rotation')]):
   logs.append(cloud.icon(d,typ,200+400*i,1100,parent=aws,size=60,label=label,label_pos='top'))
  d.connect(logs[0],logs[1],label='Delivery',straight=True);d.connect(logs[2],logs[1],label='Encryption',straight=True)
- d.box('EXTERNAL DR OPERATIONS: no MySQL channel/seeding, AWS edge/return routes, DNS cutover or failover controller is created.\nSupply the activated circuit IDs, attach FastConnect to the DRG from this root, verify BGP and route preference, then test the application path.\nRTO/RPO/TTL are contract targets. The chosen managed or partner offering must support the selected connection locations.',20,1440,2600,140,kind='note')
  return d
 
 def genai(title,index):
@@ -103,7 +101,6 @@ def genai(title,index):
  d.icon('Policies',140,445,parent=services,size=55,label='IAM access policy / optional',label_pos='top')
  d.text('policy_statements=[] / home provider\nPolicy compartment defaults to tenancy root\nNo group, dynamic group or model created',280,380,550,145,parent=services,size=15)
  d.connect(caller,archive,kind='dashed',label='Optional archive writes / external',exit=(.5,0),entry=(0,.5),waypoints=[(290,410),(1490,410)])
- base.footer(d,'DEFAULT RESULT: No resources; private endpoint and archive bucket flags false, policy statements empty.\nThe endpoint provides a private-transport configuration resource. No model deployment, dedicated AI cluster, inference application or archival pipeline is declared.\nThe bucket is an independent storage resource.')
  return d
 
 def ai(title,index):
@@ -126,7 +123,6 @@ def ai(title,index):
  d.connect(caller,out,kind='dashed',label='External result writes',exit=(.5,1),entry=(.5,1),waypoints=[(1245,800),(835,800)])
  d.connect(caller,pe,kind='dashed',label='Optional Vision private access',exit=(1,.5),entry=(.5,0),waypoints=[(1850,535)])
  d.text('No VCN, subnet, routing or NSG is created.\nNo private endpoints for Document or Language declared.',35,270,1120,70,parent=net,size=15)
- base.footer(d,'DEFAULT RESULT: No resources; project, bucket and Vision endpoint flags false, policy statements empty.\nOptional IAM access policy uses the home provider; its compartment defaults to tenancy root. Existing KMS key and network identifiers are references only.\nNo model, OCR/inference job, event rule, function, ingestion worker or application is declared. The diagram shows configuration groups, not an executed data pipeline.')
  return d
 
 def main():

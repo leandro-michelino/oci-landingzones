@@ -19,8 +19,8 @@ def header(title,index,wide=False):
  d=base.network.Diagram(toolkit=base.network.TOOLKIT,title=title)
  w=2940 if wide else 2460
  d.text(title,20,10,w,45,size=25,bold=True)
- d.text(f'INDUSTRY / EXTENSIONS {index:02} / Official OCI Toolkit v24.2 + provider-native glyphs / Source configuration only',20,65,w,30,size=13)
- d.text('Plain: ID/configuration associations. Solid arrows: configured route/action intent. Dashed: external workflows or prerequisites. No line proves working traffic.',20,108,w,30,size=13)
+ d.text(f'INDUSTRY / EXTENSIONS {index:02} / Official OCI Toolkit v24.2 + provider-native glyphs',20,65,w,30,size=13)
+ d.text('Plain: ID/configuration associations. Solid arrows: configured route/action intent. Dashed: external workflows or prerequisites.',20,108,w,30,size=13)
  return d
 
 def desktops(title,index):
@@ -39,7 +39,7 @@ def desktops(title,index):
  d.connect(alarms,dest,kind='plain',label='destinations / explicit IDs',exit=(.5,1),entry=(.24285714,0),straight=True)
  d.icon('Policies',260,790,parent=r,size=50,label='Optional IAM policy / statements=[]\nHome provider / policy compartment fallback tenancy',label_pos='top')
  d.text('Pool configuration: display/keyboard/pointer on; audio, clipboard, drives, printing and video off.\nStart/stop schedules null; session lifecycle actions false with disconnect/inactivity inputs null.\nUser onboarding, identity groups, access transport and application targets remain external.',600,735,1000,110,parent=r,size=15)
- return base.finish(d,'DEFAULT RESULT: No cloud resources; pool disabled, alarms empty and policy statements empty. Image, network, AD and backup-policy selections are operator inputs.\nPrivate-access details are pool configuration, not a created VCN, subnet, NSG, VPN or standalone endpoint. No user-to-desktop or application data path is invented.\nAn existing desktop_pool_id is only an output/reference fallback; this code does not attach new policies or configuration to an existing pool.\nHistorical provider validation is unchanged.')
+ return d
 
 def oke(title,index):
  d=header(title,index)
@@ -54,7 +54,7 @@ def oke(title,index):
  d.connect(lbs,cluster,kind='plain',label='Optional service-LB subnet configuration',exit=(.5,0),entry=(.5,1),straight=True)
  d.text('Cluster CNI input: OCI_VCN_IP_NATIVE. Kubernetes version is operator supplied.\nEndpoint NSGs=[]; no security rules, route tables, gateways or IAM are created.\nAn endpoint subnet is optional in code; the false public-IP flag alone does not\ncreate an API subnet, private endpoint or a working operator access path.',1270,420,1060,160,parent=vc,size=17)
  d.text('Worker subnet, image and shape choices are explicit inputs; no autoscaling, workload, ingress controller or image registry is deployed.',50,790,2320,65,parent=r,size=16)
- return base.finish(d,'DEFAULT RESULT: No resources. enable_cluster=false and enable_node_pool=false. Exactly two resource declarations, with existing-resource identifier references.\nEndpoint configuration is emitted only when endpoint_subnet_id is non-null. CIDRs and actual existing network exposure are not inferred.\nNode pool uses the selected cluster and supplied worker subnets. Network reachability, compatible image/version, IAM and application manifests require separate review.\nNo cluster, nodes, pods, service Load Balancer, private access, autoscaling or runtime Kubernetes connection was provisioned or tested.')
+ return d
 
 def mesh(title,index):
  d=header(title,index)
@@ -63,8 +63,7 @@ def mesh(title,index):
  addon=d.box('OKE add-on definition / enable_service_mesh_addon=false\naddon_name=ServiceMesh / addon_version=null\noverride_existing=false / remove resources on delete=false\naddon_configurations=[] / operator supplied key/value entries',850,180,1450,200,parent=r)
  d.connect(addon,cluster,kind='plain',label='cluster_id',straight=True)
  apm=d.icon('Application Performance Monitoring',380,680,parent=r,size=70,label='Optional APM domain / enable_apm_domain=false\nis_free_tier=true',label_pos='top')
- d.text('Independent resource: no add-on-to-APM binding, agent injection, exporter,\ningestion key or tracing endpoint configuration is declared. The operator must\nconfigure tracing separately; no automatic telemetry connector is drawn.',850,585,1450,160,parent=r,size=19)
- return base.finish(d,'DEFAULT RESULT: No resources; both flags false. Exactly two declarations: oci_containerengine_addon.service_mesh and oci_apm_apm_domain.tracing.\nThe ServiceMesh add-on name is a source default, not a verified supported add-on/version for a particular cluster or region. No mesh-policy resources are created.\nNo cluster, network, proxies, application manifests, virtual services/deployments, mTLS policy, traffic routing or tracing exporter is declared here.\nThe add-on ID association is configuration only.')
+ return d
 
 def primary(d):
  r=d.group('region','OCI primary / selected region and compartment; tenancy fallback',20,160,1420,1120)
@@ -84,7 +83,6 @@ def primary(d):
  d.connect(rt,igw,label='0.0.0.0/0',straight=True)
  d.text('SLs: API TCP 6443 from 0.0.0.0/0; node CIDRs 6443/12250 + ICMP 3/4.\nNodes: all VCN ingress; LB-source 80/443 from 0.0.0.0/0; SSH input null; all egress.\nAn IGW route does not provide Internet egress to private worker addresses. No NAT or SGW.',35,505,1240,80,parent=vc,size=14)
  d.box('Four local metadata/validation contracts\nNetwork + Interconnect always; GitOps + steering contracts enabled by default\nArgo CD / Flux are NOT installed; repository URL=null\nNo manifests, replication or application ingress deployed',50,780,1320,155,parent=r,kind='note')
- d.text('Cluster/node creation is independently optional. Existing VCN/subnet/cluster IDs can be selected.\nNo DRG, FastConnect, peering, VPN or remote-prefix route is declared by this entry point.\nDefault contracts have null endpoint/circuit/secondary IDs; source defaults are not a complete failover configuration.',50,970,1320,110,parent=r,size=15)
  return vc
 
 def azure(d):
@@ -100,7 +98,6 @@ def azure(d):
  d.connect(sn,nsg,kind='plain',label='networkSecurityGroup.id',exit=(1,.8),entry=(.5,0),waypoints=[(2580,594),(2690,594)])
  d.connect(rt,internet,label='0.0.0.0/0 → Internet',exit=(1,.5),entry=(1,.5),waypoints=[(2880,440),(2880,750)])
  d.box('Five Bicep resource declarations\nVNet / subnet / route table / NSG / AKS\nSystem-pool and load-balancer settings are managed-cluster profiles.\nNo ExpressRoute circuit, gateway, VNet peering or OCI return route created.',50,780,1320,155,parent=r,kind='note')
- d.text('AKS outputs are manually supplied to OCI contracts. No deployed application endpoint is inferred\nfrom the AKS control-plane FQDN. Kubernetes versions are source parameters, not verified availability.',50,970,1320,100,parent=r,size=15)
  return vc
 
 def aws(d):
@@ -132,7 +129,6 @@ def aws(d):
  d.connect(flow,logs,label='Log delivery / dedicated role',straight=True)
  d.connect(vc,flow,kind='plain',label='ResourceId / VPC',exit=(1,.9),entry=(1,.5),waypoints=[(2935,780),(2935,1010)])
  d.connect(key,cluster,kind='plain',label='Secret EncryptionConfig',exit=(0,.5),entry=(0,.5),waypoints=[(1570,1010),(1570,570)])
- d.text('IAM: cluster role → EKS; node role → node group; flow-log role → delivery (all three declared).\nNo Direct Connect, virtual gateway, private endpoints, NAT or OCI return route is created.\nNode-role and cluster-role grants do not prove registration, image pulls or application readiness.',50,970,1320,100,parent=r,size=15)
  return vc
 
 def dns(d,secondary):
@@ -147,13 +143,11 @@ def dns(d,secondary):
  d.connect(policy,monitor,kind='plain',label='Optional health_check_monitor_id / existing override allowed',straight=True)
  d.connect(policy,targets,kind='plain',label='answers.rdata / primary + standby',exit=(.5,1),entry=(0,1),waypoints=[(890,1610),(1840,1610),(1840,1635)])
  d.connect(monitor,targets,label='Optional configured probe targets',exit=(1,.5),entry=(0,0),waypoints=[(1850,1490),(1850,1510),(1940,1510)])
- d.text('DNS policy returns an answer; it does not forward application packets or replicate data. Health checks require reachable targets. No active-active weights are implemented.\nThe default GitOps/steering contracts store metadata only. Optional real DNS resources do not install applications, data synchronization or failover runbooks.',40,380,2840,45,parent=r,size=14)
 
 def multicloud(title,index,azure_side):
  d=header(title,index,True);vc=primary(d);other=azure(d) if azure_side else aws(d)
  d.connect(vc,other,kind='fastconnect',label='PRIMARY / EXTERNAL FastConnect + '+('ExpressRoute' if azure_side else 'Direct Connect')+' / circuit IDs only; gateways and routes external',exit=(1,.95),entry=(0,.95),straight=True,label_offset=(0,65))
  dns(d,'Azure' if azure_side else 'AWS')
- d.box('SOURCE DEFAULTS ARE INCOMPLETE: OCI network enabled, OKE/node flags false, real Traffic Management false; circuit/secondary/application IDs null.\nIPSec backup is explicitly forbidden by this pattern. Companion Azure/AWS templates deploy separately and do not establish the intercloud path.\nNo workloads, GitOps controller, cluster autoscaling, application LB, data replication or working recovery path is delivered by the OCI contracts.',20,1840,2940,140,kind='note')
  return d
 
 def aks(title,index):return multicloud(title,index,True)

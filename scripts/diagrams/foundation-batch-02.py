@@ -28,10 +28,6 @@ def header(title,index):
     return d
 
 
-def footer(d,text,y=1170):
-    d.box(text,20,y,2360,130,kind='note')
-
-
 def domains(title,index):
     d=header(title,index)
     provider=d.group('other','OCI IAM home-region provider / coalesce(home_region, region)',20,160,2360,760)
@@ -42,7 +38,6 @@ def domains(title,index):
     replicas=d.box('oci_identity_domain_replication_to_region.replicas\nFlattened key: domain_key.region\nPer-domain replica_regions defaults empty\nOnly explicitly listed replica regions are created',370,390,1160,145,parent=resource)
     d.connect(inputs,domain,kind='dashed',exit=(1,.5),entry=(0,.9),waypoints=[(700,360),(700,520)])
     d.connect(domain,replicas,kind='dashed',straight=True)
-    footer(d,'DEFAULT RESULT: No domains or replicas. Domain entries drive creation directly; list already-managed domains explicitly when maintaining configuration.\nPer-entry home_region does not reconfigure the shared provider endpoint. Review provider placement, domain/admin/license inputs and requested replica regions.\nNo users, applications, federation, MFA or access policies are configured by these two resource types.',990)
     return d
 
 
@@ -70,18 +65,11 @@ def entities(title,index,kind):
         d.text('Child map can be overridden. Root + child compartment paths feed delegated policies.',25,345,w-50,45,parent=root,size=12)
     for root in roots:
         d.connect(policy,root,kind='plain',exit=(.5,1),entry=(.5,0),waypoints=[(1840,470),(root.center()[0],470)])
-    details={
-        'single':'DEFAULT SHAPE: 1 root + 3 children; 2 IAM groups and 2 policies.\nAdministrators manage all-resources; auditors read all-resources in the generated entity root and child paths.',
-        'multi':'DEFAULT SHAPE: Finance + Engineering, each with 1 root + 3 children; total 8 compartments, 4 groups and 4 policies.\nEach entity may override its parent, child map, names and policy compartment. Separate roots are delegation boundaries, not verified tenant isolation.',
-        'workload':'DEFAULT SHAPE: 1 workload root + app/data/ops children; 3 groups and 3 policies.\nAdmins manage, operators use and auditors read all-resources in workload root and child paths. No approval portal or workload runtime is created.',
-    }
-    footer(d,details[kind]+'\nNo VCN, compute, database, users or membership assignments are created. enable_delete defaults true for the generated compartment package.')
     return d
 
 
 def scca(title,index):
-    note='SCCA-STYLE FOUNDATION: Core + hub/spoke network + optional OS Management Hub module.\nCloud Guard, Audit retention, Vault/KMS, VSS and Events are enabled. Firewall, Security Zones, Monitoring, Budgets and OS Management are disabled. No accreditation is implied.'
-    d=base.build(title,'base',index,scope_note=note,subtitle=f'FOUNDATION / IDENTITY {index:02} / Official OCI Toolkit v24.2 / SCCA source defaults')
+    d=base.build(title,'base',index,subtitle=f'FOUNDATION / IDENTITY {index:02} / Official OCI Toolkit v24.2 / SCCA source defaults')
     panel=d.group('other','Core + operations detail / source-defined enablement',1760,160,740,1080)
     d.text('module.core / pinned Core, cis_level=level2\nCreates root + governance/security/network/workloads compartments,\n6 default IAM groups, 2 dynamic groups, scoped policies, tags and log groups.',20,70,700,100,parent=panel,size=13)
     for name,x,label in [('Cloud Guard',120,'Cloud Guard\nEnabled'),('Vault',370,'Vault + HSM key\nEnabled'),('Vulnerability Scanning',620,'VSS host scan\nEnabled')]:
@@ -89,7 +77,6 @@ def scca(title,index):
     d.text('Cloud Guard configuration and Audit retention (365 days) target tenancy scope.\nCloud Guard target covers the Core root; recipe lists default empty.\nDefault Vault + AES key in security; VSS recipe/target for workloads.\nEnabled resources do not imply scanned workloads or detected findings.',20,360,700,125,parent=panel,size=13)
     d.box('Events + Notifications / enabled\nDefault IAM-change event rules and topic.\nSubscriptions default empty; delivery is not established by this diagram.',25,540,690,110,parent=panel)
     d.box('Optional controls / disabled by default\nNetwork Firewall; Security Zones; Monitoring; Budgets.\nOS Management Hub flag=false; managed-instance/job maps empty.',25,720,690,130,parent=panel,kind='optional')
-    d.text('Network placement: network_compartment_ocid override,\notherwise module.core.network_compartment_id.\nThe left view is the default hub/spoke foundation only.\nAppliances, inserted inspection paths and application workloads are absent.',20,900,700,115,parent=panel,size=13)
     return d
 
 

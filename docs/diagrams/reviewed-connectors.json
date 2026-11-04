@@ -22667,7 +22667,7 @@
         "straight": true
       },
       {
-        "source": "Optional replica in supplied second OCI region\ncreate_table AND enable_table_replica / replica flag=false\nregion=null / read 100 / write 100 / no runtime failover proof",
+        "source": "Optional replica in supplied second OCI region\ncreate_table AND enable_table_replica / replica flag=false\nregion=null / read 100 / write 100",
         "target": "Regional managed table / create_table=true\nPROVISIONED / read 100 / write 100 / storage 25 GB\nDefault DDL: orders / id primary key\nNot placed in the application subnet",
         "source_kind": "group:component",
         "target_kind": "icon",
@@ -25151,7 +25151,7 @@
       },
       {
         "source": "Optional internal-only Cloud Run adapter / explicit image\nDedicated SA / Vertex AI IAM role / explicit run.invoker identities\nDirect VPC ALL_TRAFFIC egress / deletion protection",
-        "target": "Existing Vertex AI model/API + separately prepared service APIs\nAdapter image must implement Google ADC inference calls\nNo custom model, dedicated endpoint, image build or token broker\nPrivate VPC and optional NAT do not prove API reachability",
+        "target": "Existing Vertex AI model/API + separately prepared service APIs\nAdapter image must implement Google ADC inference calls\nNo custom model, dedicated endpoint, image build or token broker",
         "source_kind": "icon",
         "target_kind": "group:component",
         "label": "Application implementation + API/DNS/egress prerequisites",
@@ -25567,7 +25567,7 @@
         "straight": true
       },
       {
-        "source": "Optional existing Replication-Net VLAN\nPassed when supplied; required for applicable bundles, including VMware 7.x\nNo replication job, channel, schedule or tested DR is created",
+        "source": "Optional existing Replication-Net VLAN\nPassed when supplied; required for applicable bundles, including VMware 7.x",
         "target": "Existing VLAN identifier bindings / eight baseline roles per cluster\nvSphere / vMotion / vSAN / NSX host VTEP / NSX Edge VTEP\nNSX Edge uplink 1 / uplink 2 / Provisioning-Net\nAll clusters use distinct VLAN IDs; same VCN + compartment; compatible AD\nSelected optional HCX / Replication-Net IDs extend this map",
         "source_kind": "group:optional",
         "target_kind": "group:component",
@@ -26244,7 +26244,7 @@
       },
       {
         "source": "Private app VMs / optional",
-        "target": "Existing boot-volume backup policy\nAssignment per app VM / restore not tested",
+        "target": "Existing boot-volume backup policy\nAssignment per app VM",
         "source_kind": "icon",
         "target_kind": "group:optional",
         "label": "Boot-volume backup assignment",

@@ -23,7 +23,7 @@ Prioritize evidence over agreement. State uncertainty explicitly. Distinguish sc
 
 ## Diagram Presentation
 
-- Keep exported architecture diagrams free of generic source-review dates, validation summaries and no-provisioning footers. Record validation scope and evidence in repository reports instead.
+- Keep exported architecture diagrams free of generic source-review dates, validation summaries and no-provisioning footers. Remove standalone source-audit paragraphs and lists of absent features from drawing generators and exports; keep validation scope and evidence in repository reports instead.
 - Preserve technical connector legends, creation conditions, input defaults and architecture-specific prerequisites.
 - Apply presentation changes in authoring generators and regenerate both editable draw.io and PNG artifacts, including companion resource/input pages.
 

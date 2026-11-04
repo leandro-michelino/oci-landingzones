@@ -340,7 +340,6 @@ def render_inputs(slug,refs,render):
  return {'file':path.name,'page_name':'Existing resources / inputs','references':len(refs)}
 
 
-
 def companion_resources(folder):
  """Read separately executed cloud roots, including Terraform entries without main.tf."""
  resources=[];lookups=[];sources=[]

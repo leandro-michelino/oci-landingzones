@@ -27,7 +27,7 @@ ITEMS=[
 def header(title,index):
     d=base.Diagram(toolkit=base.TOOLKIT,title=title)
     d.text(title,20,10,2350,45,size=25,bold=True)
-    d.text(f'NETWORKING {index:02} / Official OCI Toolkit v24.2 / Source defaults and explicit prerequisites / No live deployment',20,65,2350,30,size=13)
+    d.text(f'NETWORKING {index:02} / Official OCI Toolkit v24.2 / Source defaults and explicit prerequisites',20,65,2350,30,size=13)
     return d
 
 
@@ -56,16 +56,12 @@ def dual(title,index):
     d=header(title,index)
     regional(d,20,'Primary region / required operator input')
     regional(d,1200,'Secondary region / eu-amsterdam-1 default')
-    d.box('NO INTER-REGION LINK IS DECLARED\nTwo separate hub/spoke foundations and regional DRGs. No RPC, replication, application failover or DR orchestration is created.',20,1020,2280,110,kind='note')
-    d.box('ADDRESSING / DEFAULTS\nBoth module calls inherit the same hub 10.0.0.0/16 and spoke 10.1.0.0/16 CIDRs. Do not infer routable inter-region connectivity.\nThe wrapper does not expose network CIDR overrides; connected designs require a reviewed addressing/configuration change.',20,1180,2280,110,kind='note')
     return d
 
 
 def shared(title,index,kind):
-    note=('DEFAULT SHARED DNS: one private view, shared.internal zone, hub + app1 resolver associations.\nThis wrapper creates no second tenancy, cross-tenancy IAM, cross-tenancy peering or consumer onboarding.' if kind=='tenancy' else 'OPTIONAL LINKS: enable_fastconnect=false and enable_ipsec=false. Both conditional OCI services attach to the shared DRG when enabled.\nThe remote cloud, carrier circuit, routes, symmetric return paths and failover policy require separate configuration.')
-    d=base.build(title,'base',index,scope_note=note,subtitle=f'NETWORKING {index:02} / Official OCI Toolkit v24.2 / Default foundation + explicit extension scope')
+    d=base.build(title,'base',index,subtitle=f'NETWORKING {index:02} / Official OCI Toolkit v24.2 / Default foundation + explicit extension scope')
     panel=d.group('other' if kind=='tenancy' else 'optional','Shared-services detail / source scope' if kind=='tenancy' else 'Multicloud detail / conditional links, disabled by default',1760,160,740,1080,style_extra='verticalAlign=top;spacingTop=16;')
-    d.text('Detail inset: configuration and ownership, not a verified packet path.',20,60,700,40,parent=panel,size=12)
     if kind=='tenancy':
         view=d.icon('DNS',370,200,parent=panel,size=60,label='Private DNS view\nenable_private_dns=true',label_pos='top')
         zone=d.box('shared.internal\nPRIMARY / PRIVATE zone (default)',25,350,690,110,parent=panel)
@@ -120,7 +116,6 @@ def crosscloud(title,index,cloud):
     for i,(typ,label) in enumerate([('Internet Gateway','IGW / Internet default'),('Security Lists','HTTPS security list'),('Notifications','Optional alert topic')]):
         d.icon(typ,180+i*350,935,parent=region,size=65,label=label)
     d.box(('MANAGED AWS: us-ashburn-1 ↔ us-east-1 only. One logical circuit includes provider device/location redundancy + MACsec.\nUse aws-oci-managed-interconnect for a NEW private VGW foundation; its resources are separate from this TGW backbone.\nOther region pairs: independently assess carrier Direct Connect + FastConnect or VPN; do not assume native service availability.' if aws else 'AZURE: 12 OCI connection locations / full matrix in docs/multicloud/INTERCONNECT-REGIONS.md.\nNative FastConnect + ExpressRoute includes redundant BGP sessions; private transport alone does not imply encryption.\nExisting circuit IDs, ExpressRoute gateway attachment, route filters and private DNS require explicit operator provisioning.'),20,1230,2500,150,kind='note')
-    d.text('CIDRs are editable examples. Keep Internet defaults under review for production. Native cloud-to-cloud Interconnect does not support on-premises transit.\nVPN-only defaults are retained for compatibility; select dedicated mode explicitly. Route preference, DNS and failover require configuration and acceptance tests.',20,1410,2500,75,size=15)
     return d
 
 

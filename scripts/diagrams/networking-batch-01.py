@@ -111,7 +111,6 @@ def external(title, index):
     d.connect(normalize, outputs, kind='dashed', straight=True)
     downstream = d.box('Downstream deployment / separate operator wiring\nConsumes exported identifiers without adopting the existing resource lifecycle', 520, 790, 900, 100, kind='thirdparty_component')
     d.connect(outputs, downstream, kind='dashed', exit=(.5,1), entry=(.9,0), waypoints=[(1475,750),(1330,750)])
-    d.box('OWNERSHIP BOUNDARY\nNo OCI resources or network data-source lookups are declared here. No creation, import, adoption or modification.\nExisting IDs, region, compartment, routes and security must be verified independently.', 20, 930, 1700, 90, kind='note')
     return d
 
 

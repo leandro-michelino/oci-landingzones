@@ -9,7 +9,7 @@ def build():
  d=base.Diagram(toolkit=base.TOOLKIT,title='Hospital integration and FHIR | Private API mediation and optional event queue')
  d.text('Hospital integration and FHIR | Private API mediation and optional event queue',20,10,2740,45,size=25,bold=True)
  d.text('Source-defined OCI infrastructure / External FHIR server, identity and clinical adapters / All cloud creation disabled by default',20,70,2740,30,size=14)
- d.text('Solid: declared routes, API backend/token validation or logging. Plain: bindings. Dashed: external transport / middleware / workflow. No line proves runtime behavior.',20,112,2740,30,size=13)
+ d.text('Solid: declared routes, API backend/token validation or logging. Plain: bindings. Dashed: external transport / middleware / workflow.',20,112,2740,30,size=13)
  existing=d.group('thirdparty','Existing hospital / approved backend environment / location verified by operator',20,180,600,1050)
  client=d.box('EHR / HIS / LIS / PACS clients\nApproved hospital prefixes / TLS + Bearer token\nSystems and private transport are not created',20,80,560,120,parent=existing,kind='thirdparty_component')
  adapter=d.box('HL7 v2 / other source adapters\nEXTERNAL / mapping, ACK/NACK, retries, reconciliation\nNo MLLP listener or conversion engine created',20,290,560,130,parent=existing,kind='optional')
@@ -49,8 +49,6 @@ def build():
  for i,subnet in enumerate([api,sn]):
   x=[1785,2660][i];y=900+10*i
   d.connect(subnet,logs,label='Subnet OCISERVICE flowlogs' if i==0 else '',exit=(1,.9),entry=(.5,0),waypoints=[(x,subnet.abs[1]+.9*subnet.h),(x,y),(1280,y)])
- d.text('No IGW, NAT, public endpoint or Internet default route.\nHospital transport, private DNS, clinical authorization and adapters need separate implementation and testing.',50,990,1880,45,parent=reg,size=13)
- d.box('DEFAULTS: enable_foundation/api/queue=false; costs_approved=false. Local guard + FHIR metadata contracts only.\nAPI requires approved client/backend/JWKS prefixes, HTTPS URLs, issuer/audience values, existing DRG and acknowledged backend authorization. Queue is independently enabled with an existing KMS key.\nFHIR server software, persistence, SMART scopes, consent, HL7 mappings, event workers, replay and clinical audit are not created. The patient-data blueprint remains an independent project.',20,1330,2740,155,kind='note')
  return d
 if __name__=='__main__':
  d=build();warnings=d.check()+d._crossings([n for n in d.nodes if n.kind=='text']);assert not warnings,warnings

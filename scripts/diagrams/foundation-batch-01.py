@@ -30,10 +30,6 @@ def header(title,index):
     return d
 
 
-def footer(d,text,y=1190):
-    d.box(text,20,y,2360,130,kind='note')
-
-
 def foundation(title,index,kind):
     cis=kind!='core'
     d=header(title,index)
@@ -66,15 +62,12 @@ def foundation(title,index,kind):
     d.text('Enablement and customer inputs required.\nSecurity Zones depend on Cloud Guard and a recipe.',20,180,480,45,parent=opt,size=12)
     d.box('network / default child compartment\nNo VCN, DRG or subnet created by this foundation.',30,455,1100,90,parent=root)
     d.box('workloads / default child compartment\nNo workload instances, databases or application ingress.',1190,455,1100,90,parent=root)
-    text=('CORE DEFAULTS: Compartments, tags, log groups, default IAM groups, dynamic groups and policies are enabled.\nCloud Guard, Vault, Security Zones, VSS, Events, Monitoring and Budgets are opt-in. Default parent = tenancy; review IAM/global scope before apply.\nThe log groups do not imply Audit-event ingestion or VCN flow-log collection.' if not cis else f'CIS {kind.upper()}: Uses pinned Core with cis_level={kind} and a compliance tag.\nAudit retention, Cloud Guard and Events are enabled; Vault, Security Zones, VSS and Monitoring are disabled. Budget creation needs amount/map inputs.\nLevel 1 and Level 2 wrappers currently have the same service-enable defaults; the label alone is not CIS certification or full control coverage.')
-    footer(d,text)
     return d
 
 
 def identity(title,index):
     d=header(title,index)
     scope=d.group('other','OCI IAM / tenancy home region (home_region fallback: region)',20,160,2360,770)
-    d.text('Default target_compartment_ocid = tenancy_ocid unless explicitly supplied.\nGroup/dynamic-group operations and policy scope must be reviewed against the referenced modules and actual policy statements.',30,60,2300,65,parent=scope,size=14)
     modules=[]
     for i,(name,icon,text) in enumerate([
         ('module.groups','User Group','enable_default_groups=false\ngroups={}\nNo users or memberships are created.'),
@@ -85,7 +78,6 @@ def identity(title,index):
         d.text(text,30,215,680,125,parent=panel,size=15)
         modules.append(panel)
     d.connect(modules[0],modules[2],kind='dashed',exit=(.5,1),entry=(.5,1),waypoints=[(420,840),(1980,840)],label='Configured group names feed local CIS policy statements')
-    footer(d,'DEFAULT RESULT: No IAM writes. Custom maps can create resources even when default-resource flags remain false.\nOpt-in CIS policies reference created auditors, security-admins and governance-admins groups. Empty statement lists are filtered by the policy module.\nNo identity domain, federation, MFA configuration, users or security certification is created here.',1000)
     return d
 
 
@@ -100,7 +92,6 @@ def domain(title,index):
     replica=d.group('optional','Additional regions / explicitly selected only',1530,160,850,750,style_extra='verticalAlign=top;spacingTop=12;')
     repl=d.box('oci_identity_domain_replication_to_region.replicas\nreplica_regions=[] by default\nOne resource per selected region, only if domain creation is enabled.\nReplica locations TBC; no region is assumed.',30,190,790,220,parent=replica)
     d.connect(resource,repl,kind='dashed',exit=(1,.5),entry=(0,.5),waypoints=[(1470,545),(1470,620)],label='Conditional replication configuration')
-    footer(d,'DEFAULT RESULT: No identity domain or replicas. Supply approved admin, license, home-region and compartment inputs before enabling creation.\nNo users, groups, apps, federation, login policy or workload access is configured by these two resources.\nThe license value shown is an input default, not a cost or licensing assessment. Replication arrows are configuration dependencies, not tested availability.',1000)
     return d
 
 

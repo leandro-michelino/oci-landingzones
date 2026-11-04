@@ -12,7 +12,7 @@ def build(kind,title):
  d=base.base.base.network.Diagram(toolkit=base.base.base.network.TOOLKIT,title=title)
  d.text(title,20,10,2940,45,size=25,bold=True)
  d.text('Official OCI Toolkit + native GCP stencils / Separate OCI and GCP execution roots / All creation and cost approval flags false',20,65,2940,30,size=13)
- d.text('Plain: ID/control-plane association. Solid/badged: optional configured route/circuit intent. Dashed: external workflow or prerequisite. No runtime evidence.',20,108,2940,30,size=13)
+ d.text('Plain: ID/control-plane association. Solid/badged: optional configured route/circuit intent. Dashed: external workflow or prerequisite.',20,108,2940,30,size=13)
  r=d.group('region','OCI / Madrid eu-madrid-1 example / explicit compartment' if kind=='network' else 'OCI / explicit compartment and region / DEFAULT profile',20,160,1400,1120)
  g=d.group('thirdparty','Google europe-southwest1 example / separate root + existing project + ADC' if kind=='network' else 'Google Cloud / separately executed GCP root / existing project + ADC',1560,160,1400,1120)
  if kind=='network':
@@ -45,7 +45,6 @@ def build(kind,title):
   d.connect(oke,inputs,kind='plain',label='Network and worker placement identifiers',exit=(.5,1),entry=(.5,0),straight=True)
   ranges=box(d,g,'Created VPC + private subnet / flow logs\nNamed pod range 10.97.0.0/16 + service range 10.98.0.0/20\nControl-plane example 172.28.0.0/28 / check overlap\nOptional NAT is separately billed / private API access needs routes',100,650,1200,170)
   d.connect(gke,ranges,kind='plain',label='network / subnetwork / secondary range bindings',exit=(.5,1),entry=(.5,0),straight=True)
-  d.text('Cross-cloud network, DNS, application ingress, identity federation, data consistency and weighted routing are external. No automatic failover or RPO/RTO is installed.',100,1010,1200,80,parent=r,size=16)
  elif kind=='mysql':
   mysql=d.icon('MySQL Database System',700,280,parent=r,size=80,label='Optional OCI MySQL primary / enable_database=false\nPrivate VCN/subnet + scoped TCP 3306 NSG\nReviewed shape / AD / protected admin credentials',label_pos='top')
   sql=cloud.icon(d,'google_sql_database_instance',700,280,parent=g,size=80,label='Optional independent Cloud SQL MySQL 8.0 instance\nPrivate IP only / regional HA / encrypted-only connections\nBackups + binlogs / protected admin user / deletion protection',label_pos='top')
@@ -54,17 +53,15 @@ def build(kind,title):
   d.connect(heat,mysql,kind='plain',label='db_system_id / analytics cluster binding',exit=(.5,0),entry=(.5,1),straight=True)
   psa=box(d,g,'Private VPC + subnet / separate allocated peering range\nService Networking connection / private_network binding\nCustom-route export and service-range return advertisements\nNeed explicit transport, DNS, security and TLS acceptance',100,650,1200,170)
   d.connect(sql,psa,kind='plain',label='private_network / allocated_ip_range / service connection dependency',exit=(.5,1),entry=(.5,0),straight=True)
-  d.text('No replication channel, DMS job, import, source data, automatic promotion, DNS cutover or HeatWave capacity exists on the GCP side. Protect both passwords and backups.',100,1010,1200,80,parent=r,size=16)
  else:
   api=d.icon('API Gateway',700,280,parent=r,size=80,label='Optional PRIVATE OCI API Gateway / existing subnet\nOptional /ai/oci/inference + /ai/gcp/inference HTTPS backends\nDeployment gated by adapter_auth_verified + reviewed URLs',label_pos='top')
   run=cloud.icon(d,'google_cloud_run_v2_service',700,280,parent=g,size=80,label='Optional internal-only Cloud Run adapter / explicit image\nDedicated SA / Vertex AI IAM role / explicit run.invoker identities\nDirect VPC ALL_TRAFFIC egress / deletion protection',label_pos='top')
   d.connect(api,run,kind='dashed',label='External secure adapter URL handoff / private route + Google caller token required',straight=True)
   ocib=box(d,r,'Existing OCI inference adapter / HTTPS URL\nHandles caller validation + OCI request signing\nNot created; raw OCI inference endpoint is not a generic HTTP adapter\nNo API Gateway token broker or shared credential injection',100,650,1200,170)
   d.connect(api,ocib,label='Configured /oci/inference HTTP backend when deployment enabled',exit=(.5,1),entry=(.5,0),straight=True)
-  vertex=box(d,g,'Existing Vertex AI model/API + separately prepared service APIs\nAdapter image must implement Google ADC inference calls\nNo custom model, dedicated endpoint, image build or token broker\nPrivate VPC and optional NAT do not prove API reachability',100,650,1200,170)
+  vertex=box(d,g,'Existing Vertex AI model/API + separately prepared service APIs\nAdapter image must implement Google ADC inference calls\nNo custom model, dedicated endpoint, image build or token broker',100,650,1200,170)
   d.connect(run,vertex,kind='dashed',label='Application implementation + API/DNS/egress prerequisites',exit=(.5,1),entry=(.5,0),straight=True)
-  d.text('No public allUsers or allAuthenticatedUsers invoker. OCI adapters enforce caller authentication; operator attestations are not runtime proof. No inference or token exchange tested.',100,1010,1200,80,parent=r,size=16)
- return base.finish(d,'DEFAULT RESULT: No cloud resources; cost and creation/workload flags false. Local metadata guards remain. Separate roots and credentials for each cloud.\nNative detail pages enumerate every root/module/companion declaration, including private networking, flow logs, IAM and service-specific dependencies.\nExisting projects/APIs, scoped credentials, region eligibility, quota, supported images/versions, address plans, routes and DNS are explicit prerequisites.',True)
+ return d
 def main():
  p=argparse.ArgumentParser();p.add_argument('--render',action='store_true');p.add_argument('--blueprint',action='append');a=p.parse_args()
  for slug,title,kind in ITEMS:

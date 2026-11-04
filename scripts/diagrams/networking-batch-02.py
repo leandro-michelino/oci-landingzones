@@ -46,7 +46,7 @@ def compact_routes(d, drg, hub, spoke, subnets, gateways):
     d.connect(spoke_rt,drg,exit=(0,.5),entry=(1,.5),waypoints=[(x,spoke_rt.center()[1]),(x,y),(drg.center()[0]+65,y),(drg.center()[0]+65,drg.center()[1])])
 
 
-def build(title, variant, index, fortigate=False, scope_note=None, subtitle=None):
+def build(title, variant, index, fortigate=False, subtitle=None):
     d = Diagram(toolkit=TOOLKIT, title=title)
     d.text(title, 20, 10, 1960, 45, size=25, bold=True)
     d.text(subtitle or f'NETWORKING {index:02} / Official OCI Toolkit v24.2 / Default network foundation + explicitly marked optional extension', 20, 65, 1960, 25, size=13)
@@ -113,14 +113,6 @@ def build(title, variant, index, fortigate=False, scope_note=None, subtitle=None
         cpe = d.icon('Customer Premises Equipment', 100, 85, parent=remote, size=48, label='CPE IP / CIDRs TBC' if variant=='vpn' else 'Partner / BGP details TBC', label_pos='bottom')
         d.text('Disabled by default', 15, 160, 170, 25, parent=remote, size=12)
         d.connect(cpe, drg, kind='vpn' if variant=='vpn' else 'fastconnect', label='Optional IPSec / off by default' if variant=='vpn' else 'Optional FastConnect / off by default', waypoints=[(260,230),(260,300)], entry=(0,.5))
-    notes = {
-        'base': 'FOUNDATION ONLY: Hub + one private three-tier spoke + DRG attachments. More spokes require input map entries.\nAttachments do not establish inspected transit, centralized NAT, hub ingress routes or workload connectivity.',
-        'vpn': 'OPTIONAL VPN: enable_ipsec=false. When enabled, creates OCI CPE + IPSec resources bound to the DRG.\nReal CPE public/private IP and on-premises routes are required. No remote-device setup or verified tunnel / BGP / failover is implied.',
-        'fc': 'OPTIONAL FASTCONNECT: enable_fastconnect=false. Default circuit type PRIVATE; default bandwidth 1 Gbps.\nCarrier/partner, customer ASN and provisioning inputs are required. Circuit and partner costs need separate review; no active circuit is shown.',
-        'fw': 'OPTIONAL FIREWALL: enable_network_firewall=false. When enabled, targets the hub firewall subnet.\nAn existing policy may be supplied or a policy created. Traffic insertion, rules and symmetric routing require separate configuration and testing.',
-        'nva': 'OPTIONAL APPLIANCES: enable_net_appliance=false; enable_reserved_route_ips=false; appliance/route-IP maps are empty.\nImage, availability domain, subnet and route-target inputs are required. The blueprint does not force hub placement or establish HA / guest forwarding.',
-    }
-    d.box(scope_note or notes[variant], 20, 1300, 1680, 95, kind='note' if variant=='base' else 'optional')
     return d
 
 

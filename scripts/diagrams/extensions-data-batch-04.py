@@ -14,13 +14,12 @@ ITEMS=[
  ('extensions/digital-assistant','Digital Assistant | Optional service, endpoint and explicit attachment','oda'),
 ]
 def frame(title,index):return base.frame(title,index,True)
-def finish(d,text):return base.finish(d,text,True)
 def box(d,r,text,x,y,w=800,h=130):return d.box(text,x,y,w,h,parent=r)
 def cdn(title,index):
  d=base.base.base.network.Diagram(toolkit=base.base.base.network.TOOLKIT,title=title)
  d.text(title,20,10,2940,45,size=25,bold=True)
- d.text('Official OCI Toolkit v24.2 / Named Cloudflare resources where no exact native glyph is available / Source configuration only',20,65,2940,30,size=13)
- d.text('Plain: ID/config association. Solid arrow: configured request intent. Dashed: external prerequisite. No line proves working traffic.',20,108,2940,30,size=13)
+ d.text('Official OCI Toolkit v24.2 / Named Cloudflare resources where no exact native glyph is available',20,65,2940,30,size=13)
+ d.text('Plain: ID/config association. Solid arrow: configured request intent. Dashed: external prerequisite.',20,108,2940,30,size=13)
  cf=d.group('thirdparty','Cloudflare / supplied account and zone; independently enabled resources',20,160,1400,1120)
  r=d.group('region','OCI / selected region and compartment; tenancy fallback requires review',1560,160,1400,1120)
  route=box(d,cf,'Optional Worker route / create_cloudflare_worker_proxy=false\nZone + supplied pattern, or hostname + smoke path wildcard\nBinds the created script name',100,130,1200)
@@ -34,8 +33,7 @@ def cdn(title,index):
  d.connect(par,bucket,kind='plain',label='PAR grant scope: bucket / optional object',exit=(1,.5),entry=(1,.5),waypoints=[(2940,1067.5),(2940,660)],label_offset=(-100,0))
  d.connect(worker,bucket,label='Cache miss: fetch fixed OCI_PAR_URL / only when configured',exit=(1,.5),entry=(0,.5),straight=True)
  d.text('OCI DNS CNAME / create_dns_cname=false: existing zone + explicit target hostname.\nIAM policy / statements=[]: home provider, policy compartment falls back to tenancy.\nCloudflare zone/account, KMS key and DNS zones are references, not created resources.\nOrigin rules alone cannot read a private bucket. PAR broker sample is not deployed.',100,660,1200,130,parent=r,size=16)
- d.text('Worker caches successful responses; TTL default 300 s.\nNo path append to the fixed upstream URL. Review query-insensitive\ncache keys and PAR scope before using personalized content.\nDNS, cache and origin rules can be enabled independently.',100,650,1200,130,parent=cf,size=16)
- return finish(d,'DEFAULT RESULT: No created cloud resources; all create flags false, maps and IAM statements empty. The namespace data lookup still runs.\nSix OCI and five Cloudflare resource declarations are enumerated in native detail pages. DNS records do not automatically bind each other.\nThe explicit Worker-to-bucket arrow is configured fetch intent, not a claim of successful authorization, origin connectivity or cache delivery.')
+ return d
 def redis(title,index):
  d,r=frame(title,index)
  cluster=box(d,r,'Optional OCI Redis cluster / create_cluster=false\nSource defaults: software 7.0.5 / two nodes / 2 GB per node\nOptional shard_count, cluster_mode, configuration-set ID and backup ID\nVersion and capacity availability require service/region review',100,170,1200,165)
@@ -45,8 +43,7 @@ def redis(title,index):
  targets=box(d,r,'Existing notification destination IDs per alarm\nNo destination topic or subscription is created\nMetric compartment: per-alarm override or target compartment',1660,580,1180,140)
  d.connect(alarms,targets,kind='plain',label='destinations[] / supplied identifiers',straight=True)
  d.icon('Policies',650,960,parent=r,size=55,label='Optional IAM policy / statements=[]\nHome provider / policy compartment fallback: tenancy',label_pos='top')
- d.text('redis_cluster_id is the output fallback when creation is disabled; no existing cluster is changed.\nvault_secret_id is output metadata only; it is not bound to the cluster or a workload.\nPrimary/discovery FQDN outputs come only from a created cluster. No application is deployed.\nNo exact Redis resource glyph is mapped; the named resource box avoids a substitute icon.',1660,850,1180,170,parent=r,size=17)
- return finish(d,'DEFAULT RESULT: No resources; cluster creation false, alarms map empty and IAM statements empty. Three resource declarations.\nAlarms are independent of the cluster flag and use operator-supplied metric queries; no automatic cluster metrics filter or notification recipient is inferred.\nLines show supplied configuration only. No authentication, Vault secret retrieval, cache client, route or application connection is created.')
+ return d
 def nosql(title,index):
  d,r=frame(title,index)
  v=d.group('vcn','Optional application VCN / enable_app_network=true / 10.84.0.0/16',60,80,1320,920,parent=r)
@@ -60,10 +57,10 @@ def nosql(title,index):
  table=d.icon('NoSQL Database',2200,250,parent=r,size=85,label='Regional managed table / create_table=true\nPROVISIONED / read 100 / write 100 / storage 25 GB\nDefault DDL: orders / id primary key\nNot placed in the application subnet',label_pos='top')
  idx=box(d,r,'Optional secondary index / create_table AND create_secondary_index\nIndex flag=false / columns default to customerId',1620,510,1250,125)
  d.connect(idx,table,kind='plain',label='table_name_or_id / index binding',exit=(.464,0),entry=(.5,1),straight=True)
- replica=box(d,r,'Optional replica in supplied second OCI region\ncreate_table AND enable_table_replica / replica flag=false\nregion=null / read 100 / write 100 / no runtime failover proof',1620,820,1250,140)
+ replica=box(d,r,'Optional replica in supplied second OCI region\ncreate_table AND enable_table_replica / replica flag=false\nregion=null / read 100 / write 100',1620,820,1250,140)
  d.connect(replica,table,kind='plain',label='table_name_or_id / region / replication configuration',exit=(1,.5),entry=(1,.5),waypoints=[(2940,1050),(2940,410)],label_offset=(-220,0))
  d.text('Optional topic / create_alert_topic=true: no alarm or subscription declared.\nIAM policy / statements=[]: home provider, tenancy fallback.\nTwo terraform_data contracts hold metadata, not deployed services.\nNo app/SDK, private endpoint or table-to-subnet binding is declared.',60,1020,2800,85,parent=r,size=16)
- return finish(d,'DEFAULT RESULT: Seven OCI instances by source defaults: five network resources, one table and one topic; two local metadata contracts also exist.\nTen OCI declarations plus two local contract declarations include the disabled index, replica and policy branches. Default settings can incur charges if applied.\nThe application network is separate from regional NoSQL; no SDK client, service access path, IAM grant, object data or working Internet path is inferred.\nOnly this documentation was generated.')
+ return d
 def mongo(title,index):
  d,r=frame(title,index)
  v=d.group('vcn','Optional VCN / create_private_network=false / 10.80.0.0/16',60,80,1320,920,parent=r)
@@ -79,7 +76,7 @@ def mongo(title,index):
  backup=box(d,r,'Optional manual Autonomous Database backup\nDatabase creation AND create_manual_backup (false)',1620,880,1250,120)
  d.connect(backup,adb,kind='plain',label='autonomous_database_id',exit=(1,.5),entry=(1,.5),waypoints=[(2940,1100),(2940,410)],label_offset=(-170,0))
  d.text('No gateway or explicit route created.\nNew network can remain unused when explicit\nexisting network overrides are supplied.\nIAM policy optional / statements=[] / home provider.',100,780,1150,130,parent=v,size=17)
- return finish(d,'DEFAULT RESULT: No resources; private-network, database and manual-backup flags false; IAM statements empty. Eight OCI declarations.\nCreated DB defaults: compute/storage autoscaling, mTLS required, paid non-free tier. KMS ID and backup retention are optional inputs.\nPublic ACL defaults off; private placement requires an actual selected subnet. A disabled database flag does not create a MongoDB API service.')
+ return d
 def oda(title,index):
  d,r=frame(title,index)
  v=d.group('vcn','Optional application VCN / enable_oda_network=false / 10.86.0.0/16',60,80,1320,920,parent=r)
@@ -98,7 +95,7 @@ def oda(title,index):
  d.connect(ep,nsg,kind='plain',label='Created NSG included only when network enabled',exit=(0,.75),entry=(1,.5),waypoints=[(1510,1036.25),(1510,1050)])
  d.text('No NAT, IGW, service gateway or private DNS.\nHTTPS rules alone do not create a path.\nOptional topic has no subscription or alarm.\nOptional home-provider IAM policy: statements=[].',100,720,650,130,parent=v,size=17)
  d.text('Two terraform_data contracts contain metadata only. No bot, skill, channel, backend application or conversational workload is created.',100,1020,2750,55,parent=r,size=17)
- return finish(d,'DEFAULT RESULT: No OCI resources; all network/service/endpoint/attachment/topic flags false; IAM statements empty. Two local metadata contracts remain.\nEleven OCI resource declarations plus two contracts. Endpoint creation requires a selected subnet and at least one NSG. Attachment requires both selected IDs.\nNetwork creation alone does not attach an endpoint to ODA; endpoint and attachment have independent flags. Existing IDs do not prove active resources or a route.')
+ return d
 def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--render',action='store_true');p.add_argument('--blueprint',action='append',choices=[v[0] for v in ITEMS]);a=p.parse_args()
  for i,(slug,title,kind) in enumerate(ITEMS,51):

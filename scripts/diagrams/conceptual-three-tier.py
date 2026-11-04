@@ -7,7 +7,7 @@ base=importlib.util.module_from_spec(spec);spec.loader.exec_module(base)
 def build():
  d=base.Diagram(toolkit=base.TOOLKIT,title='Conceptual three-tier application with private Autonomous Database')
  d.text('Conceptual three-tier application | Private Autonomous Database',20,10,2450,45,size=25,bold=True)
- d.text('ILLUSTRATIVE DESIGN / All workloads and paths require separate configuration; no blueprint deployment evidence',20,70,2450,30,size=14)
+ d.text('ILLUSTRATIVE DESIGN / Solid arrows: proposed request and outbound paths',20,70,2450,30,size=14)
  reg=d.group('region','OCI region / operator selected',280,160,1840,900)
  vc=d.group('vcn','Example VCN\n10.0.0.0/16 / illustrative addressing',40,70,1760,730,parent=reg)
  web=d.group('subnet','Public web subnet\n10.0.1.0/24 / example',80,100,470,440,parent=vc)
@@ -36,8 +36,6 @@ def build():
  osn=d.group('osn','Oracle Services Network',2200,800,320,250)
  services=d.icon('Oracle Services Network',160,95,parent=osn,size=56,label='Supported regional services',label_pos='bottom')
  d.connect(sg,services,exit=(.5,1),entry=(0,.5),waypoints=[(1420,1090),(2160,1090),(2160,895)])
- d.text('Illustrative route and security intent only. NSGs, route tables, return paths, DNS, TLS certificates and availability placement require design and configuration.\nDatabase traffic uses the private endpoint; the Service Gateway path reaches regional Oracle services. NAT has no inbound client path.',360,1140,2100,65,size=14)
- d.box('CONCEPTUAL SCOPE: Solid arrows show proposed request / outbound paths, not Terraform-created bindings or working sessions.',20,1220,2500,140,kind='note')
  return d
 if __name__=='__main__':
  d=build();assert not d.check(),d.check()

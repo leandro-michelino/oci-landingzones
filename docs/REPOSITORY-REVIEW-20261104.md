@@ -1,5 +1,7 @@
 # Repository-wide transport and source review — 2026-11-04
 
+Presentation follow-up: [diagram commentary cleanup](DIAGRAM-PRESENTATION-CLEANUP-20261104.md).
+
 ## Scope
 
 Reviewed all **123 Terraform roots** under blueprints and modules, **93 published blueprint architecture overviews**, their source/resource inventories, the conceptual three-tier drawing and the portfolio banner. This extends the [networking review](NETWORKING-REVIEW-20261103.md) to the whole repository. The review combines local provider-schema validation, committed mocked suites, static source/diagram checks, template compilation, Ansible syntax and explicit wrapper simulation. It is not a comprehensive security audit or evidence of deployed behavior.
