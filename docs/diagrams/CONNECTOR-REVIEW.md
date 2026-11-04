@@ -42,6 +42,8 @@ connector counts, PNG hashes and explicit OCI bridges in ten multicloud views.
 The checker also checks icon/text crossings, valid native references, overview
 agreement with authoring scripts, subnet RT bindings and DNS-view associations.
 Every `.drawio` file must belong to the registered overview/detail/reference set.
+Banner and presentation assets publish PNG/SVG images only. Their editable
+intermediates must remain temporary and do not belong to the public native registry.
 
 ```bash
 python3 scripts/diagrams/check-connections.py --write-report

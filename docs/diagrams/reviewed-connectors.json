@@ -27120,7 +27120,7 @@
       {
         "path": "scripts/diagrams/portfolio-overview.py",
         "revision": "working-tree",
-        "sha256": "5d3aa921c2d903e18c7fdefafa910db7aa10f878eaf0ab06b0e4a85566f5bf7b"
+        "sha256": "bde5c9d7734b68f1cb85ff0cea3b46edd08ab6c7a64a572f3ae193c160647a12"
       }
     ],
     "scope": "Conceptual portfolio presentation; no workload transport or deployment relationship implied"

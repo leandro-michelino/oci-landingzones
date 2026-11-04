@@ -1,7 +1,5 @@
 ![OCI Landing Zones portfolio overview](docs/assets/oci-landing-zones-banner.png)
 
-[Editable portfolio overview (draw.io)](docs/assets/oci-landing-zones-banner.drawio)
-
 # OCI Landing Zones
 
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)

@@ -25,7 +25,8 @@ Prioritize evidence over agreement. State uncertainty explicitly. Distinguish sc
 
 - Keep exported architecture diagrams free of generic source-review dates, validation summaries and no-provisioning footers. Remove standalone source-audit paragraphs and lists of absent features from drawing generators and exports; keep validation scope and evidence in repository reports instead.
 - Preserve technical connector legends, creation conditions, input defaults and architecture-specific prerequisites.
-- Apply presentation changes in authoring generators and regenerate both editable draw.io and PNG artifacts, including companion resource/input pages.
+- For architecture diagrams, apply presentation changes in authoring generators and regenerate both editable draw.io and PNG artifacts, including companion resource/input pages.
+- Publish banners and presentation graphics as PNG/SVG images only. Generate editable intermediates in a temporary directory; do not publish their draw.io files or editable-download links.
 
 ## Multicloud Transport Diagrams
 

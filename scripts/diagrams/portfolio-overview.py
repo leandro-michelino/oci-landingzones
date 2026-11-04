@@ -52,20 +52,26 @@ def build():
     return d
 
 
-def main():
+def export():
+    """Publish presentation images; keep the editable intermediate temporary."""
+    import shutil
+    import subprocess
+    import tempfile
+
     d=build()
     warnings=d.check()
     print('Layout warnings:',warnings)
     if warnings: raise SystemExit(1)
-    d.save(str(OUT/'oci-landing-zones-banner.drawio'))
-    assert d.render(str(OUT/'oci-landing-zones-banner.png'),scale=1.5)
-    print('Created draw.io and PNG')
-
-    import shutil
-    import subprocess
-    cli = shutil.which('drawio') or '/Applications/draw.io.app/Contents/MacOS/draw.io'
-    subprocess.run([cli, '-x', '-f', 'svg', '-o', str(OUT / 'oci-landing-zones-banner.svg'), str(OUT / 'oci-landing-zones-banner.drawio'), '--no-sandbox', '--disable-gpu'], check=True)
+    cli = shutil.which('drawio') or shutil.which('draw.io') or '/Applications/draw.io.app/Contents/MacOS/draw.io'
+    with tempfile.TemporaryDirectory(prefix='oci-portfolio-') as temp:
+        source=Path(temp)/'portfolio.drawio'
+        assert d.render(str(OUT/'oci-landing-zones-banner.png'),scale=1.5,src=str(source))
+        command=[cli, '-x', '-f', 'svg', '-o', str(OUT/'oci-landing-zones-banner.svg'), str(source), '--no-sandbox', '--disable-gpu']
+        if sys.platform.startswith('linux') and not os.environ.get('DISPLAY') and shutil.which('xvfb-run'):
+            command=['xvfb-run','-a']+command
+        subprocess.run(command,check=True)
+    print('Created portfolio PNG and SVG; temporary editable source removed')
 
 
 if __name__=='__main__':
-    main()
+    export()

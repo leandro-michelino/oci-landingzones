@@ -172,11 +172,11 @@ def main():
   'scope':'Illustrative design; no source-backed deployment claim'}
  # Presentation assets have their own source/geometry checks, not workload transport semantics.
  presentation=load('portfolio-overview').build()
- presentation_path=ROOT/'docs/assets/oci-landing-zones-banner.drawio'
+ presentation_path=ROOT/'docs/assets/oci-landing-zones-banner'
  assert not presentation.check()
- assert ET.tostring(ET.parse(presentation_path).getroot().find('diagram'))==ET.tostring(ET.fromstring(presentation.xml()).find('diagram'))
+ assert not presentation_path.with_suffix('.drawio').exists(),'Presentation editables must stay temporary'
+ assert presentation_path.with_suffix('.png').read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
  ET.parse(presentation_path.with_suffix('.svg'))
- native_files.add(presentation_path)
  contracts['docs/assets/oci-landing-zones-banner']={'relationships':[],
   'source_files':[{'path':'scripts/diagrams/portfolio-overview.py','revision':'working-tree','sha256':hashlib.sha256((ROOT/'scripts/diagrams/portfolio-overview.py').read_bytes()).hexdigest()}],
   'scope':'Conceptual portfolio presentation; no workload transport or deployment relationship implied'}
@@ -200,7 +200,7 @@ def main():
  report={'review_date':review_date,'scope':'Static connection/geometry review of published overviews; no runtime verification. Detail/reference maps intentionally have no inferred flows.',
  'checks':['Every overview has relationship lines','Cross-cloud source inventories have an explicit OCI bridge','Icon and text crossing checks empty','Overview matches authoring script','Every native page has unique IDs and valid references','Reviewed endpoints, labels, arrows, paths and source hashes match contract','Subnet routing and DNS-view semantic regression checks','Dedicated Interconnect and VPN use separate cross-cloud transport labels'],
  'overview_count':len(records),'conceptual_overviews':1,'presentation_assets':1,'native_documents':len(native_files),
- 'main_document_pages':native_pages+2,'connector_count':sum(r['connections'] for r in records)+len(conceptual.edge_meta),
+ 'main_document_pages':native_pages+1,'connector_count':sum(r['connections'] for r in records)+len(conceptual.edge_meta),
  'cross_cloud_overviews':sum(bool(r['cross_cloud_bridges']) for r in records),'blueprints':records}
  if args.write_report:(ROOT/'docs/diagrams/connection-review.json').write_text(json.dumps(report,indent=2)+'\n')
  print(f"{len(records)} blueprint + 1 conceptual overviews passed; {report['connector_count']} reviewed connectors; {len(native_files)} native documents and PNGs; {report['cross_cloud_overviews']} explicit OCI/cloud bridges.")

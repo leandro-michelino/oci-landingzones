@@ -68,3 +68,6 @@ __pycache__/
 .vscode/
 *.swp
 *.swo
+
+# Presentation exports: keep editable intermediates temporary
+/docs/assets/*.drawio
